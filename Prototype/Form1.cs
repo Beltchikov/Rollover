@@ -1,5 +1,6 @@
 ﻿using IBApi;
 using IBSampleApp;
+using IBSampleApp.messages;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -26,7 +27,8 @@ namespace Prototype
             signal = new EReaderMonitorSignal();
             ibClient = new IBClient(signal);
 
-            ibClient.Error += ibClient_Error;
+            ibClient.Error += OnError;
+            ibClient.NextValidId += OnNextValidId;
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
@@ -64,7 +66,7 @@ namespace Prototype
 
         }
 
-        void ibClient_Error(int id, int errorCode, string str, Exception ex)
+        private void OnError(int id, int errorCode, string str, Exception ex)
         {
             txtMessage.Text += Environment.NewLine + str;
             
@@ -85,6 +87,28 @@ namespace Prototype
             //ErrorMessage error = new ErrorMessage(id, errorCode, str);
 
             //HandleErrorMessage(error);
+        }
+
+        private void OnNextValidId(ConnectionStatusMessage statusMessage)
+        {
+            string msg = statusMessage.IsConnected
+                ? "Connected! Your client Id: " + ibClient.ClientId
+                : "Disconnected...";
+
+            txtMessage.Text += msg;
+
+            //IsConnected = statusMessage.IsConnected;
+
+            //if (statusMessage.IsConnected)
+            //{
+            //    status_CT.Text = "Connected! Your client Id: " + ibClient.ClientId;
+            //    connectButton.Text = "Disconnect";
+            //}
+            //else
+            //{
+            //    status_CT.Text = "Disconnected...";
+            //    connectButton.Text = "Connect";
+            //}
         }
     }
 }
