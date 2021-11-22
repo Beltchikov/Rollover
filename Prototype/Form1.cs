@@ -29,6 +29,7 @@ namespace Prototype
 
             ibClient.Error += OnError;
             ibClient.NextValidId += OnNextValidId;
+            ibClient.ManagedAccounts += OnManagedAccounts;
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
@@ -55,7 +56,7 @@ namespace Prototype
                 { IsBackground = true }
                 .Start();
             }
-            catch (Exception ex )
+            catch (Exception ex)
             {
                 txtMessage.Text += Environment.NewLine + ex.ToString();
             }
@@ -69,7 +70,7 @@ namespace Prototype
         private void OnError(int id, int errorCode, string str, Exception ex)
         {
             txtMessage.Text += Environment.NewLine + str;
-            
+
             //if (ex != null)
             //{
             //    addTextToBox("Error: " + ex);
@@ -109,6 +110,21 @@ namespace Prototype
             //    status_CT.Text = "Disconnected...";
             //    connectButton.Text = "Connect";
             //}
+        }
+
+        private void OnManagedAccounts(ManagedAccountsMessage message)
+        {
+            if(!message.ManagedAccounts.Any())
+            {
+                throw new Exception("Unexpected");
+            }
+
+            string msg = Environment.NewLine + "Acoounts found: " + message.ManagedAccounts.Aggregate((r, n) => r + ", " + n);
+            txtMessage.Text += msg;
+
+            //orderManager.ManagedAccounts = message.ManagedAccounts;
+            //accountManager.ManagedAccounts = message.ManagedAccounts;
+            //exerciseAccount.Items.AddRange(message.ManagedAccounts.ToArray());
         }
     }
 }
