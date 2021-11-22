@@ -26,6 +26,7 @@ namespace Prototype
             signal = new EReaderMonitorSignal();
             ibClient = new IBClient(signal);
 
+            ibClient.Error += ibClient_Error;
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
@@ -61,6 +62,29 @@ namespace Prototype
         private void Form1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        void ibClient_Error(int id, int errorCode, string str, Exception ex)
+        {
+            txtMessage.Text += Environment.NewLine + str;
+            
+            //if (ex != null)
+            //{
+            //    addTextToBox("Error: " + ex);
+
+            //    return;
+            //}
+
+            //if (id == 0 || errorCode == 0)
+            //{
+            //    addTextToBox("Error: " + str + "\n");
+
+            //    return;
+            //}
+
+            //ErrorMessage error = new ErrorMessage(id, errorCode, str);
+
+            //HandleErrorMessage(error);
         }
     }
 }
