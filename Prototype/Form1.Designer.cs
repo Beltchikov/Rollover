@@ -36,14 +36,18 @@
             this.txtClientId = new System.Windows.Forms.TextBox();
             this.btnConnect = new System.Windows.Forms.Button();
             this.txtMessage = new System.Windows.Forms.TextBox();
+            this.lblSymbol = new System.Windows.Forms.Label();
+            this.txtSymbol = new System.Windows.Forms.TextBox();
+            this.btCheckSymbol = new System.Windows.Forms.Button();
+            this.btListPositions = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtHost
             // 
-            this.txtHost.Location = new System.Drawing.Point(63, 16);
+            this.txtHost.Location = new System.Drawing.Point(75, 16);
             this.txtHost.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtHost.Name = "txtHost";
-            this.txtHost.Size = new System.Drawing.Size(126, 23);
+            this.txtHost.Size = new System.Drawing.Size(114, 23);
             this.txtHost.TabIndex = 0;
             this.txtHost.Text = "localhost";
             // 
@@ -65,11 +69,11 @@
             this.lblPort.TabIndex = 3;
             this.lblPort.Text = "Port";
             // 
-            // textBox1
+            // txtPort
             // 
             this.txtPort.Location = new System.Drawing.Point(264, 16);
             this.txtPort.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.txtPort.Name = "textBox1";
+            this.txtPort.Name = "txtPort";
             this.txtPort.Size = new System.Drawing.Size(63, 23);
             this.txtPort.TabIndex = 2;
             this.txtPort.Text = "4001";
@@ -105,7 +109,7 @@
             // 
             // txtMessage
             // 
-            this.txtMessage.Location = new System.Drawing.Point(22, 71);
+            this.txtMessage.Location = new System.Drawing.Point(22, 140);
             this.txtMessage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtMessage.Multiline = true;
             this.txtMessage.Name = "txtMessage";
@@ -113,11 +117,53 @@
             this.txtMessage.Size = new System.Drawing.Size(711, 170);
             this.txtMessage.TabIndex = 7;
             // 
+            // lblSymbol
+            // 
+            this.lblSymbol.AutoSize = true;
+            this.lblSymbol.Location = new System.Drawing.Point(22, 100);
+            this.lblSymbol.Name = "lblSymbol";
+            this.lblSymbol.Size = new System.Drawing.Size(47, 15);
+            this.lblSymbol.TabIndex = 9;
+            this.lblSymbol.Text = "Symbol";
+            // 
+            // txtSymbol
+            // 
+            this.txtSymbol.Location = new System.Drawing.Point(75, 95);
+            this.txtSymbol.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtSymbol.Name = "txtSymbol";
+            this.txtSymbol.Size = new System.Drawing.Size(114, 23);
+            this.txtSymbol.TabIndex = 8;
+            // 
+            // btCheckSymbol
+            // 
+            this.btCheckSymbol.Location = new System.Drawing.Point(223, 96);
+            this.btCheckSymbol.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btCheckSymbol.Name = "btCheckSymbol";
+            this.btCheckSymbol.Size = new System.Drawing.Size(212, 22);
+            this.btCheckSymbol.TabIndex = 10;
+            this.btCheckSymbol.Text = "Check Symbol";
+            this.btCheckSymbol.UseVisualStyleBackColor = true;
+            this.btCheckSymbol.Click += new System.EventHandler(this.btCheckSymbol_Click);
+            // 
+            // btListPositions
+            // 
+            this.btListPositions.Location = new System.Drawing.Point(75, 54);
+            this.btListPositions.Name = "btListPositions";
+            this.btListPositions.Size = new System.Drawing.Size(360, 25);
+            this.btListPositions.TabIndex = 11;
+            this.btListPositions.Text = "List positions";
+            this.btListPositions.UseVisualStyleBackColor = true;
+            this.btListPositions.Click += new System.EventHandler(this.btListPositions_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(767, 321);
+            this.Controls.Add(this.btListPositions);
+            this.Controls.Add(this.btCheckSymbol);
+            this.Controls.Add(this.lblSymbol);
+            this.Controls.Add(this.txtSymbol);
             this.Controls.Add(this.txtMessage);
             this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.lblClientId);
@@ -145,5 +191,9 @@
         private System.Windows.Forms.TextBox txtClientId;
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.TextBox txtMessage;
+        private System.Windows.Forms.Label lblSymbol;
+        private System.Windows.Forms.TextBox txtSymbol;
+        private System.Windows.Forms.Button btCheckSymbol;
+        private System.Windows.Forms.Button btListPositions;
     }
 }

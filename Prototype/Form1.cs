@@ -30,6 +30,7 @@ namespace Prototype
             ibClient.Error += OnError;
             ibClient.NextValidId += OnNextValidId;
             ibClient.ManagedAccounts += OnManagedAccounts;
+            ibClient.Position += OnPosition;
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
@@ -127,6 +128,12 @@ namespace Prototype
             //exerciseAccount.Items.AddRange(message.ManagedAccounts.ToArray());
         }
 
+        private void OnPosition(PositionMessage obj)
+        {
+            string msg = obj.Contract.LocalSymbol;
+            AddLineToTextbox(txtMessage, msg);
+        }
+
         private void AddLineToTextbox(TextBox textBox, string msg)
         {
             if (string.IsNullOrWhiteSpace(msg))
@@ -140,6 +147,16 @@ namespace Prototype
             }
             
             textBox.Text += msg;
+        }
+
+        private void btCheckSymbol_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void btListPositions_Click(object sender, EventArgs e)
+        {
+            ibClient.ClientSocket.reqPositions();
         }
     }
 }
