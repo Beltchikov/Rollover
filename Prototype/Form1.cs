@@ -67,9 +67,9 @@ namespace Prototype
 
         }
 
-        private void OnError(int id, int errorCode, string str, Exception ex)
+        private void OnError(int id, int errorCode, string msg, Exception ex)
         {
-            txtMessage.Text += Environment.NewLine + str;
+            AddLineToTextbox(txtMessage, msg);
 
             //if (ex != null)
             //{
@@ -96,7 +96,7 @@ namespace Prototype
                 ? "Connected! Your client Id: " + ibClient.ClientId
                 : "Disconnected...";
 
-            txtMessage.Text += msg;
+            AddLineToTextbox(txtMessage, msg);
 
             //IsConnected = statusMessage.IsConnected;
 
@@ -114,17 +114,32 @@ namespace Prototype
 
         private void OnManagedAccounts(ManagedAccountsMessage message)
         {
-            if(!message.ManagedAccounts.Any())
+            if (!message.ManagedAccounts.Any())
             {
                 throw new Exception("Unexpected");
             }
 
-            string msg = Environment.NewLine + "Acoounts found: " + message.ManagedAccounts.Aggregate((r, n) => r + ", " + n);
-            txtMessage.Text += msg;
+            string msg = Environment.NewLine + "Acounts found: " + message.ManagedAccounts.Aggregate((r, n) => r + ", " + n);
+            AddLineToTextbox(txtMessage, msg);
 
             //orderManager.ManagedAccounts = message.ManagedAccounts;
             //accountManager.ManagedAccounts = message.ManagedAccounts;
             //exerciseAccount.Items.AddRange(message.ManagedAccounts.ToArray());
+        }
+
+        private void AddLineToTextbox(TextBox textBox, string msg)
+        {
+            if (string.IsNullOrWhiteSpace(msg))
+            {
+                return;
+            }
+
+            if (!string.IsNullOrWhiteSpace(textBox.Text))
+            {
+                textBox.Text += Environment.NewLine;
+            }
+            
+            textBox.Text += msg;
         }
     }
 }
