@@ -24,6 +24,10 @@ namespace Prototype
         {
             InitializeComponent();
 
+            this.btListPositions.Enabled = false;
+            this.txtSymbol.Enabled = false;
+            this.btCheckSymbol.Enabled = false;
+
             signal = new EReaderMonitorSignal();
             ibClient = new IBClient(signal);
 
@@ -56,6 +60,11 @@ namespace Prototype
                 })
                 { IsBackground = true }
                 .Start();
+
+                //
+                this.btListPositions.Enabled = true;
+                this.txtSymbol.Enabled = true;
+                this.btCheckSymbol.Enabled = true;
             }
             catch (Exception ex)
             {
