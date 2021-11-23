@@ -140,8 +140,12 @@ namespace Prototype
 
         private void OnPosition(PositionMessage obj)
         {
-            string msg = $"{obj.Contract.LocalSymbol} Avg.price:{obj.AverageCost} Symbol:{obj.Contract.Symbol} " +
-                $"Sec. type:{obj.Contract.SecType} Multiplier:{obj.Contract.Multiplier}";
+            string msg = $"Local Symbol:{obj.Contract.LocalSymbol} " +
+                $"ConId:{obj.Contract.ConId} " +
+                $"Avg.price:{obj.AverageCost} " +
+                $"Symbol:{obj.Contract.Symbol} " +
+                $"Sec. type:{obj.Contract.SecType} " +
+                $"Multiplier:{obj.Contract.Multiplier}";
 
             AddLineToTextbox(txtMessage, msg);
         }
