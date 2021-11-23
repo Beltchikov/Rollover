@@ -26,7 +26,7 @@ namespace Prototype
 
             this.btListPositions.Enabled = false;
             this.txtSymbol.Enabled = false;
-            this.btCheckSymbol.Enabled = false;
+            this.btGetConnId.Enabled = false;
 
             signal = new EReaderMonitorSignal();
             ibClient = new IBClient(signal);
@@ -65,7 +65,7 @@ namespace Prototype
                 //
                 this.btListPositions.Enabled = true;
                 this.txtSymbol.Enabled = true;
-                this.btCheckSymbol.Enabled = true;
+                this.btGetConnId.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -179,6 +179,16 @@ namespace Prototype
         private void btListPositions_Click(object sender, EventArgs e)
         {
             ibClient.ClientSocket.reqPositions();
+        }
+
+        private void lblCurrency_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtCurrency_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
