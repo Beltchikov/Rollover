@@ -188,7 +188,6 @@
             this.lblCurrency.Size = new System.Drawing.Size(55, 15);
             this.lblCurrency.TabIndex = 14;
             this.lblCurrency.Text = "Currency";
-            this.lblCurrency.Click += new System.EventHandler(this.lblCurrency_Click);
             // 
             // txtCurrency
             // 
@@ -197,7 +196,6 @@
             this.txtCurrency.Size = new System.Drawing.Size(63, 23);
             this.txtCurrency.TabIndex = 15;
             this.txtCurrency.Text = "USD";
-            this.txtCurrency.TextChanged += new System.EventHandler(this.txtCurrency_TextChanged);
             // 
             // label1
             // 
@@ -242,7 +240,6 @@
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

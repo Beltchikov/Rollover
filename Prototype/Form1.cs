@@ -2,14 +2,8 @@
 using IBSampleApp;
 using IBSampleApp.messages;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Prototype
@@ -19,14 +13,11 @@ namespace Prototype
         private EReaderMonitorSignal signal;
         private IBClient ibClient;
 
-
         public Form1()
         {
             InitializeComponent();
 
-            this.btListPositions.Enabled = false;
-            this.txtSymbol.Enabled = false;
-            this.btGetConnId.Enabled = false;
+            EnableControls(false);
 
             signal = new EReaderMonitorSignal();
             ibClient = new IBClient(signal);
@@ -62,10 +53,7 @@ namespace Prototype
                 { IsBackground = true }
                 .Start();
 
-                //
-                this.btListPositions.Enabled = true;
-                this.txtSymbol.Enabled = true;
-                this.btGetConnId.Enabled = true;
+                EnableControls(true);
             }
             catch (Exception ex)
             {
@@ -73,9 +61,16 @@ namespace Prototype
             }
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void EnableControls(bool enable)
         {
+            this.btListPositions.Enabled = enable;
 
+            this.txtSymbol.Enabled = enable;
+            this.tbSecType.Enabled = enable;
+            this.txtCurrency.Enabled = enable;
+            this.tbExchange.Enabled = enable;
+
+            this.btGetConnId.Enabled = enable;
         }
 
         private void OnError(int id, int errorCode, string msg, Exception ex)
@@ -167,7 +162,7 @@ namespace Prototype
             {
                 textBox.Text += Environment.NewLine;
             }
-            
+
             textBox.Text += msg;
         }
 
@@ -179,16 +174,6 @@ namespace Prototype
         private void btListPositions_Click(object sender, EventArgs e)
         {
             ibClient.ClientSocket.reqPositions();
-        }
-
-        private void lblCurrency_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtCurrency_TextChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }
