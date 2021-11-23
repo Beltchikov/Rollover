@@ -35,6 +35,7 @@ namespace Prototype
             ibClient.NextValidId += OnNextValidId;
             ibClient.ManagedAccounts += OnManagedAccounts;
             ibClient.Position += OnPosition;
+            ibClient.PositionEnd += OnPositionEnd;
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
@@ -140,6 +141,12 @@ namespace Prototype
         private void OnPosition(PositionMessage obj)
         {
             string msg = obj.Contract.LocalSymbol;
+            AddLineToTextbox(txtMessage, msg);
+        }
+
+        private void OnPositionEnd()
+        {
+            string msg = "End of all positions";
             AddLineToTextbox(txtMessage, msg);
         }
 
