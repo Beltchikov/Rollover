@@ -40,12 +40,6 @@
             this.txtSymbol = new System.Windows.Forms.TextBox();
             this.btGetConnId = new System.Windows.Forms.Button();
             this.btListPositions = new System.Windows.Forms.Button();
-            this.lblSecType = new System.Windows.Forms.Label();
-            this.tbSecType = new System.Windows.Forms.TextBox();
-            this.lblCurrency = new System.Windows.Forms.Label();
-            this.txtCurrency = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.tbExchange = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // txtHost
@@ -143,12 +137,12 @@
             // 
             // btGetConnId
             // 
-            this.btGetConnId.Location = new System.Drawing.Point(707, 96);
+            this.btGetConnId.Location = new System.Drawing.Point(144, 96);
             this.btGetConnId.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btGetConnId.Name = "btGetConnId";
-            this.btGetConnId.Size = new System.Drawing.Size(93, 22);
+            this.btGetConnId.Size = new System.Drawing.Size(276, 24);
             this.btGetConnId.TabIndex = 10;
-            this.btGetConnId.Text = "Get ConnId";
+            this.btGetConnId.Text = "Match Symbol and get ConnId";
             this.btGetConnId.UseVisualStyleBackColor = true;
             this.btGetConnId.Click += new System.EventHandler(this.btCheckSymbol_Click);
             // 
@@ -162,69 +156,11 @@
             this.btListPositions.UseVisualStyleBackColor = true;
             this.btListPositions.Click += new System.EventHandler(this.btListPositions_Click);
             // 
-            // lblSecType
-            // 
-            this.lblSecType.AutoSize = true;
-            this.lblSecType.Location = new System.Drawing.Point(165, 100);
-            this.lblSecType.Name = "lblSecType";
-            this.lblSecType.Size = new System.Drawing.Size(52, 15);
-            this.lblSecType.TabIndex = 12;
-            this.lblSecType.Text = "Sec Type";
-            this.lblSecType.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // tbSecType
-            // 
-            this.tbSecType.Location = new System.Drawing.Point(223, 96);
-            this.tbSecType.Name = "tbSecType";
-            this.tbSecType.Size = new System.Drawing.Size(60, 23);
-            this.tbSecType.TabIndex = 13;
-            this.tbSecType.Text = "IND";
-            // 
-            // lblCurrency
-            // 
-            this.lblCurrency.AutoSize = true;
-            this.lblCurrency.Location = new System.Drawing.Point(326, 100);
-            this.lblCurrency.Name = "lblCurrency";
-            this.lblCurrency.Size = new System.Drawing.Size(55, 15);
-            this.lblCurrency.TabIndex = 14;
-            this.lblCurrency.Text = "Currency";
-            // 
-            // txtCurrency
-            // 
-            this.txtCurrency.Location = new System.Drawing.Point(397, 96);
-            this.txtCurrency.Name = "txtCurrency";
-            this.txtCurrency.Size = new System.Drawing.Size(63, 23);
-            this.txtCurrency.TabIndex = 15;
-            this.txtCurrency.Text = "USD";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(505, 100);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(58, 15);
-            this.label1.TabIndex = 16;
-            this.label1.Text = "Exchange";
-            // 
-            // tbExchange
-            // 
-            this.tbExchange.Location = new System.Drawing.Point(569, 96);
-            this.tbExchange.Name = "tbExchange";
-            this.tbExchange.Size = new System.Drawing.Size(100, 23);
-            this.tbExchange.TabIndex = 17;
-            this.tbExchange.Text = "SMART";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(924, 321);
-            this.Controls.Add(this.tbExchange);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.txtCurrency);
-            this.Controls.Add(this.lblCurrency);
-            this.Controls.Add(this.tbSecType);
-            this.Controls.Add(this.lblSecType);
             this.Controls.Add(this.btListPositions);
             this.Controls.Add(this.btGetConnId);
             this.Controls.Add(this.lblSymbol);
@@ -259,11 +195,5 @@
         private System.Windows.Forms.TextBox txtSymbol;
         private System.Windows.Forms.Button btGetConnId;
         private System.Windows.Forms.Button btListPositions;
-        private System.Windows.Forms.Label lblSecType;
-        private System.Windows.Forms.TextBox tbSecType;
-        private System.Windows.Forms.Label lblCurrency;
-        private System.Windows.Forms.TextBox txtCurrency;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox tbExchange;
     }
 }

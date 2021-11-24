@@ -69,10 +69,7 @@ namespace Prototype
             this.btListPositions.Enabled = enable;
 
             this.txtSymbol.Enabled = enable;
-            this.tbSecType.Enabled = enable;
-            this.txtCurrency.Enabled = enable;
-            this.tbExchange.Enabled = enable;
-
+           
             this.btGetConnId.Enabled = enable;
         }
 
