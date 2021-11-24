@@ -3,6 +3,7 @@ using IBSampleApp;
 using IBSampleApp.messages;
 using System;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -12,6 +13,7 @@ namespace Prototype
     {
         private EReaderMonitorSignal signal;
         private IBClient ibClient;
+        int activeReqId = 0;
 
         public Form1()
         {
@@ -27,6 +29,7 @@ namespace Prototype
             ibClient.ManagedAccounts += OnManagedAccounts;
             ibClient.Position += OnPosition;
             ibClient.PositionEnd += OnPositionEnd;
+            ibClient.SymbolSamples += OnSymbolSamples;
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
@@ -151,6 +154,19 @@ namespace Prototype
             AddLineToTextbox(txtMessage, msg);
         }
 
+        private void OnSymbolSamples(SymbolSamplesMessage obj)
+        {
+            var msg = new StringBuilder();
+
+            var contracts = obj.ContractDescriptions.Select(d => d.Contract).ToList();
+            foreach (var contract in contracts)
+            {
+                msg.AppendLine($"{contract.Symbol} {contract.SecType} {contract.Currency} {contract.Exchange} ConId:{contract.ConId}");
+            }
+
+            AddLineToTextbox(txtMessage, msg.ToString());
+        }
+
         private void AddLineToTextbox(TextBox textBox, string msg)
         {
             if (string.IsNullOrWhiteSpace(msg))
@@ -168,7 +184,16 @@ namespace Prototype
 
         private void btCheckSymbol_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+
+            //int reqID = 70100001;
+            var symbol = txtSymbol.Text;
+            //var exchange = tbExchange.Text;
+            //var secType = tbSecType.Text;
+            
+            // TODO
+            //ibClient.ClientSocket.reqSecDefOptParams(reqId, symbol, exchange, secType, conId);
+
+            ibClient.ClientSocket.reqMatchingSymbols(++activeReqId, symbol);
         }
 
         private void btListPositions_Click(object sender, EventArgs e)
