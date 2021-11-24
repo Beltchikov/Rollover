@@ -171,20 +171,16 @@ namespace Prototype
                 return;
             }
 
-            //if (!string.IsNullOrWhiteSpace(textBox.Text))
-            //{
-            //    textBox.Text += Environment.NewLine;
-            //}
-
-            //textBox.Text += msg;
-
             if (string.IsNullOrWhiteSpace(textBox.Text))
             {
                 textBox.Text = msg;
             }
             else
             {
-                textBox.Text = msg + Environment.NewLine + textBox.Text;
+                var fullMsg = msg + Environment.NewLine + textBox.Text;
+                fullMsg = fullMsg.Replace(Environment.NewLine + Environment.NewLine, Environment.NewLine);
+
+                textBox.Text = fullMsg;
             }
         }
 
