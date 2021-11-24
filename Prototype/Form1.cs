@@ -171,12 +171,21 @@ namespace Prototype
                 return;
             }
 
-            if (!string.IsNullOrWhiteSpace(textBox.Text))
-            {
-                textBox.Text += Environment.NewLine;
-            }
+            //if (!string.IsNullOrWhiteSpace(textBox.Text))
+            //{
+            //    textBox.Text += Environment.NewLine;
+            //}
 
-            textBox.Text += msg;
+            //textBox.Text += msg;
+
+            if (string.IsNullOrWhiteSpace(textBox.Text))
+            {
+                textBox.Text = msg;
+            }
+            else
+            {
+                textBox.Text = msg + Environment.NewLine + textBox.Text;
+            }
         }
 
         private void btCheckSymbol_Click(object sender, EventArgs e)
