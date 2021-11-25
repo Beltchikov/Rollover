@@ -71,8 +71,14 @@ namespace Prototype
             this.btListPositions.Enabled = enable;
 
             this.txtSymbol.Enabled = enable;
-           
             this.btGetConnId.Enabled = enable;
+
+            txtReqId.Enabled = enable;
+            txtSymbolStrike.Enabled = enable;
+            txtExchange.Enabled = enable;
+            txtSecType.Enabled = enable;
+            txtConId.Enabled = enable;
+            btStrikes.Enabled = enable;
         }
 
         private void OnError(int id, int errorCode, string msg, Exception ex)
