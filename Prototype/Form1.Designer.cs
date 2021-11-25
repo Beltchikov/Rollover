@@ -40,6 +40,17 @@
             this.txtSymbol = new System.Windows.Forms.TextBox();
             this.btGetConnId = new System.Windows.Forms.Button();
             this.btListPositions = new System.Windows.Forms.Button();
+            this.btStrikes = new System.Windows.Forms.Button();
+            this.txtReqId = new System.Windows.Forms.TextBox();
+            this.lblReqId = new System.Windows.Forms.Label();
+            this.txtSymbolStrike = new System.Windows.Forms.TextBox();
+            this.lblSymbolStrike = new System.Windows.Forms.Label();
+            this.txtExchange = new System.Windows.Forms.TextBox();
+            this.lblExchange = new System.Windows.Forms.Label();
+            this.txtSecType = new System.Windows.Forms.TextBox();
+            this.lblSecType = new System.Windows.Forms.Label();
+            this.txtConId = new System.Windows.Forms.TextBox();
+            this.lblConId = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // txtHost
@@ -109,7 +120,7 @@
             // 
             // txtMessage
             // 
-            this.txtMessage.Location = new System.Drawing.Point(22, 140);
+            this.txtMessage.Location = new System.Drawing.Point(22, 328);
             this.txtMessage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtMessage.Multiline = true;
             this.txtMessage.Name = "txtMessage";
@@ -156,14 +167,125 @@
             this.btListPositions.UseVisualStyleBackColor = true;
             this.btListPositions.Click += new System.EventHandler(this.btListPositions_Click);
             // 
+            // btStrikes
+            // 
+            this.btStrikes.Location = new System.Drawing.Point(762, 135);
+            this.btStrikes.Name = "btStrikes";
+            this.btStrikes.Size = new System.Drawing.Size(75, 23);
+            this.btStrikes.TabIndex = 12;
+            this.btStrikes.Text = "Strikes";
+            this.btStrikes.UseVisualStyleBackColor = true;
+            this.btStrikes.Click += new System.EventHandler(this.btStrikes_Click);
+            // 
+            // txtReqId
+            // 
+            this.txtReqId.Location = new System.Drawing.Point(75, 135);
+            this.txtReqId.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtReqId.Name = "txtReqId";
+            this.txtReqId.Size = new System.Drawing.Size(54, 23);
+            this.txtReqId.TabIndex = 8;
+            this.txtReqId.Text = "70100001";
+            // 
+            // lblReqId
+            // 
+            this.lblReqId.AutoSize = true;
+            this.lblReqId.Location = new System.Drawing.Point(22, 139);
+            this.lblReqId.Name = "lblReqId";
+            this.lblReqId.Size = new System.Drawing.Size(41, 15);
+            this.lblReqId.TabIndex = 9;
+            this.lblReqId.Text = "Req ID";
+            // 
+            // txtSymbolStrike
+            // 
+            this.txtSymbolStrike.Location = new System.Drawing.Point(229, 135);
+            this.txtSymbolStrike.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtSymbolStrike.Name = "txtSymbolStrike";
+            this.txtSymbolStrike.Size = new System.Drawing.Size(54, 23);
+            this.txtSymbolStrike.TabIndex = 8;
+            this.txtSymbolStrike.Text = "MNQ";
+            // 
+            // lblSymbolStrike
+            // 
+            this.lblSymbolStrike.AutoSize = true;
+            this.lblSymbolStrike.Location = new System.Drawing.Point(144, 138);
+            this.lblSymbolStrike.Name = "lblSymbolStrike";
+            this.lblSymbolStrike.Size = new System.Drawing.Size(79, 15);
+            this.lblSymbolStrike.TabIndex = 9;
+            this.lblSymbolStrike.Text = "Symbol Strike";
+            // 
+            // txtExchange
+            // 
+            this.txtExchange.Location = new System.Drawing.Point(377, 135);
+            this.txtExchange.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtExchange.Name = "txtExchange";
+            this.txtExchange.Size = new System.Drawing.Size(54, 23);
+            this.txtExchange.TabIndex = 8;
+            this.txtExchange.Text = "GLOBEX";
+            // 
+            // lblExchange
+            // 
+            this.lblExchange.AutoSize = true;
+            this.lblExchange.Location = new System.Drawing.Point(313, 139);
+            this.lblExchange.Name = "lblExchange";
+            this.lblExchange.Size = new System.Drawing.Size(58, 15);
+            this.lblExchange.TabIndex = 9;
+            this.lblExchange.Text = "Exchange";
+            // 
+            // txtSecType
+            // 
+            this.txtSecType.Location = new System.Drawing.Point(533, 135);
+            this.txtSecType.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtSecType.Name = "txtSecType";
+            this.txtSecType.Size = new System.Drawing.Size(54, 23);
+            this.txtSecType.TabIndex = 8;
+            this.txtSecType.Text = "IND";
+            // 
+            // lblSecType
+            // 
+            this.lblSecType.AutoSize = true;
+            this.lblSecType.Location = new System.Drawing.Point(471, 139);
+            this.lblSecType.Name = "lblSecType";
+            this.lblSecType.Size = new System.Drawing.Size(54, 15);
+            this.lblSecType.TabIndex = 9;
+            this.lblSecType.Text = "Sec. type";
+            // 
+            // txtConId
+            // 
+            this.txtConId.Location = new System.Drawing.Point(672, 135);
+            this.txtConId.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtConId.Name = "txtConId";
+            this.txtConId.Size = new System.Drawing.Size(54, 23);
+            this.txtConId.TabIndex = 8;
+            this.txtConId.Text = "362687422";
+            // 
+            // lblConId
+            // 
+            this.lblConId.AutoSize = true;
+            this.lblConId.Location = new System.Drawing.Point(619, 139);
+            this.lblConId.Name = "lblConId";
+            this.lblConId.Size = new System.Drawing.Size(43, 15);
+            this.lblConId.TabIndex = 9;
+            this.lblConId.Text = "Con ID";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(924, 321);
+            this.ClientSize = new System.Drawing.Size(924, 524);
+            this.Controls.Add(this.btStrikes);
             this.Controls.Add(this.btListPositions);
             this.Controls.Add(this.btGetConnId);
+            this.Controls.Add(this.lblReqId);
+            this.Controls.Add(this.lblSymbolStrike);
+            this.Controls.Add(this.lblExchange);
+            this.Controls.Add(this.lblSecType);
+            this.Controls.Add(this.lblConId);
             this.Controls.Add(this.lblSymbol);
+            this.Controls.Add(this.txtSymbolStrike);
+            this.Controls.Add(this.txtReqId);
+            this.Controls.Add(this.txtExchange);
+            this.Controls.Add(this.txtSecType);
+            this.Controls.Add(this.txtConId);
             this.Controls.Add(this.txtSymbol);
             this.Controls.Add(this.txtMessage);
             this.Controls.Add(this.btnConnect);
@@ -195,5 +317,16 @@
         private System.Windows.Forms.TextBox txtSymbol;
         private System.Windows.Forms.Button btGetConnId;
         private System.Windows.Forms.Button btListPositions;
+        private System.Windows.Forms.Button btStrikes;
+        private System.Windows.Forms.TextBox txtReqId;
+        private System.Windows.Forms.Label lblReqId;
+        private System.Windows.Forms.TextBox txtSymbolStrike;
+        private System.Windows.Forms.Label lblSymbolStrike;
+        private System.Windows.Forms.TextBox txtExchange;
+        private System.Windows.Forms.Label lblExchange;
+        private System.Windows.Forms.TextBox txtSecType;
+        private System.Windows.Forms.Label lblSecType;
+        private System.Windows.Forms.TextBox txtConId;
+        private System.Windows.Forms.Label lblConId;
     }
 }

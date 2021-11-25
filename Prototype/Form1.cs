@@ -30,6 +30,8 @@ namespace Prototype
             ibClient.Position += OnPosition;
             ibClient.PositionEnd += OnPositionEnd;
             ibClient.SymbolSamples += OnSymbolSamples;
+            ibClient.SecurityDefinitionOptionParameter += OnSecurityDefinitionOptionParameter;
+            ibClient.SecurityDefinitionOptionParameterEnd += OnSecurityDefinitionOptionParameterEnd;
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
@@ -164,6 +166,23 @@ namespace Prototype
             AddLineToTextbox(txtMessage, msg.ToString());
         }
 
+        private void OnSecurityDefinitionOptionParameter(SecurityDefinitionOptionParameterMessage obj)
+        {
+            //string msg = $"Local Symbol:{obj.Contract.LocalSymbol} " +
+            //    $"ConId:{obj.Contract.ConId} " +
+            //    $"Avg.price:{obj.AverageCost} " +
+            //    $"Symbol:{obj.Contract.Symbol} " +
+            //    $"Sec. type:{obj.Contract.SecType} " +
+            //    $"Multiplier:{obj.Contract.Multiplier}";
+
+            //AddLineToTextbox(txtMessage, msg);
+        }
+
+        private void OnSecurityDefinitionOptionParameterEnd(int obj)
+        {
+            
+        }
+
         private void AddLineToTextbox(TextBox textBox, string msg)
         {
             if (string.IsNullOrWhiteSpace(msg))
@@ -201,6 +220,17 @@ namespace Prototype
         private void btListPositions_Click(object sender, EventArgs e)
         {
             ibClient.ClientSocket.reqPositions();
+        }
+
+        private void btStrikes_Click(object sender, EventArgs e)
+        {
+            int reqId = Convert.ToInt32(txtReqId.Text);
+            string symbol = txtSymbolStrike.Text;
+            string exchange = txtExchange.Text;
+            string secType = txtSecType.Text;
+            int conId = Convert.ToInt32(txtConId.Text);
+
+            ibClient.ClientSocket.reqSecDefOptParams(reqId, symbol, exchange, secType, conId);
         }
     }
 }
