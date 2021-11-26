@@ -15,6 +15,8 @@ namespace Prototype
         private IBClient ibClient;
         int activeReqId = 0;
 
+        public const int RT_BARS_ID_BASE = 40000000;
+
         public Form1()
         {
             InitializeComponent();
@@ -32,6 +34,7 @@ namespace Prototype
             ibClient.SymbolSamples += OnSymbolSamples;
             ibClient.SecurityDefinitionOptionParameter += OnSecurityDefinitionOptionParameter;
             ibClient.SecurityDefinitionOptionParameterEnd += OnSecurityDefinitionOptionParameterEnd;
+            ibClient.RealtimeBar += OnRealtimeBar;
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
@@ -189,6 +192,11 @@ namespace Prototype
             
         }
 
+        private void OnRealtimeBar(RealTimeBarMessage obj)
+        {
+            
+        }
+
         private void AddLineToTextbox(TextBox textBox, string msg)
         {
             if (string.IsNullOrWhiteSpace(msg))
@@ -237,6 +245,29 @@ namespace Prototype
             int conId = Convert.ToInt32(txtConId.Text);
 
             ibClient.ClientSocket.reqSecDefOptParams(reqId, symbol, exchange, secType, conId);
+        }
+
+        private void btReqRealTime_Click(object sender, EventArgs e)
+        {
+            var currentTicker = 1;
+            var whatToShow = "MIDPOINT";
+            var useRTH = true;
+            Contract contract = new Contract
+            {
+                Symbol = txtSymbolRealTime.Text,
+                Currency = txtCurrencyRealTime.Text,
+                Exchange = txtExchangeRealTime.Text,
+                SecType = txtSecTypeRealTime.Text
+            };
+
+            //ibClient.ClientSocket.reqRealTimeBars(currentTicker + RT_BARS_ID_BASE, contract, 5, whatToShow, useRTH, null);
+            ibClient.ClientSocket.reqRealTimeBars(3001, contract, 5, whatToShow, useRTH, null);
+        }
+
+        private void btCancelRealTime_Click(object sender, EventArgs e)
+        {
+            var currentTicker = 1;
+            ibClient.ClientSocket.cancelRealTimeBars(currentTicker + RT_BARS_ID_BASE);
         }
     }
 }
