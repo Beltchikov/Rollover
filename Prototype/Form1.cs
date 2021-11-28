@@ -36,6 +36,30 @@ namespace Prototype
             ibClient.SecurityDefinitionOptionParameter += OnSecurityDefinitionOptionParameter;
             ibClient.SecurityDefinitionOptionParameterEnd += OnSecurityDefinitionOptionParameterEnd;
             ibClient.RealtimeBar += OnRealtimeBar;
+            ibClient.TickPrice += OnTickPrice;
+            ibClient.TickSize += OnTickSize;
+            ibClient.TickString+= TickString;
+            ibClient.TickGeneric+= OnTickGeneric;
+        }
+
+        private void OnTickGeneric(int arg1, int arg2, double arg3)
+        {
+            // TODO
+        }
+
+        private void TickString(int arg1, int arg2, string arg3)
+        {
+            // TODO
+        }
+
+        private void OnTickSize(TickSizeMessage obj)
+        {
+            // TODO
+        }
+
+        private void OnTickPrice(TickPriceMessage obj)
+        {
+            // TODO
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
