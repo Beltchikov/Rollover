@@ -269,5 +269,10 @@ namespace Prototype
             var currentTicker = 1;
             ibClient.ClientSocket.cancelRealTimeBars(currentTicker + RT_BARS_ID_BASE);
         }
+
+        private void lblCurrencyRealTime_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
