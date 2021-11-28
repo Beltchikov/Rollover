@@ -61,7 +61,7 @@
             this.lblSecTypeRealTime = new System.Windows.Forms.Label();
             this.btReqRealTime = new System.Windows.Forms.Button();
             this.btCancelRealTime = new System.Windows.Forms.Button();
-            this.txtLocalSymbol = new System.Windows.Forms.TextBox();
+            this.txtLocalSymbolRealTime = new System.Windows.Forms.TextBox();
             this.lblLocalSymbol = new System.Windows.Forms.Label();
             this.lblLocalSymbolSample = new System.Windows.Forms.Label();
             this.lblFopSample = new System.Windows.Forms.Label();
@@ -374,14 +374,14 @@
             this.btCancelRealTime.UseVisualStyleBackColor = true;
             this.btCancelRealTime.Click += new System.EventHandler(this.btCancelRealTime_Click);
             // 
-            // txtLocalSymbol
+            // txtLocalSymbolRealTime
             // 
-            this.txtLocalSymbol.Location = new System.Drawing.Point(701, 191);
-            this.txtLocalSymbol.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.txtLocalSymbol.Name = "txtLocalSymbol";
-            this.txtLocalSymbol.Size = new System.Drawing.Size(100, 23);
-            this.txtLocalSymbol.TabIndex = 8;
-            this.txtLocalSymbol.Text = "MNQZ1";
+            this.txtLocalSymbolRealTime.Location = new System.Drawing.Point(701, 191);
+            this.txtLocalSymbolRealTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtLocalSymbolRealTime.Name = "txtLocalSymbolRealTime";
+            this.txtLocalSymbolRealTime.Size = new System.Drawing.Size(100, 23);
+            this.txtLocalSymbolRealTime.TabIndex = 8;
+            this.txtLocalSymbolRealTime.Text = "MNQZ1";
             // 
             // lblLocalSymbol
             // 
@@ -440,7 +440,7 @@
             this.Controls.Add(this.txtSecTypeRealTime);
             this.Controls.Add(this.txtSecType);
             this.Controls.Add(this.txtCurrencyRealTime);
-            this.Controls.Add(this.txtLocalSymbol);
+            this.Controls.Add(this.txtLocalSymbolRealTime);
             this.Controls.Add(this.txtSymbolRealTime);
             this.Controls.Add(this.txtConId);
             this.Controls.Add(this.txtSymbol);
@@ -495,7 +495,7 @@
         private System.Windows.Forms.Label lblSecTypeRealTime;
         private System.Windows.Forms.Button btReqRealTime;
         private System.Windows.Forms.Button btCancelRealTime;
-        private System.Windows.Forms.TextBox txtLocalSymbol;
+        private System.Windows.Forms.TextBox txtLocalSymbolRealTime;
         private System.Windows.Forms.Label lblLocalSymbol;
         private System.Windows.Forms.Label lblLocalSymbolSample;
         private System.Windows.Forms.Label lblFopSample;

@@ -82,6 +82,14 @@ namespace Prototype
             txtSecType.Enabled = enable;
             txtConId.Enabled = enable;
             btStrikes.Enabled = enable;
+
+            txtSymbolRealTime.Enabled = enable;
+            txtSecTypeRealTime.Enabled = enable;
+            txtCurrencyRealTime.Enabled = enable;
+            txtExchangeRealTime.Enabled = enable;
+            txtLocalSymbolRealTime.Enabled = enable;
+            btReqRealTime.Enabled = enable;
+            btCancelRealTime.Enabled= enable;
         }
 
         private void OnError(int id, int errorCode, string msg, Exception ex)
