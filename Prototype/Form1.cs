@@ -42,26 +42,6 @@ namespace Prototype
             ibClient.TickGeneric+= OnTickGeneric;
         }
 
-        private void OnTickGeneric(int arg1, int arg2, double arg3)
-        {
-            // TODO
-        }
-
-        private void TickString(int arg1, int arg2, string arg3)
-        {
-            // TODO
-        }
-
-        private void OnTickSize(TickSizeMessage obj)
-        {
-            // TODO
-        }
-
-        private void OnTickPrice(TickPriceMessage obj)
-        {
-            // TODO
-        }
-
         private void btnConnect_Click(object sender, EventArgs e)
         {
             try
@@ -229,6 +209,26 @@ namespace Prototype
         private void OnRealtimeBar(RealTimeBarMessage obj)
         {
             
+        }
+
+        private void OnTickGeneric(int arg1, int arg2, double arg3)
+        {
+            // TODO
+        }
+
+        private void TickString(int arg1, int arg2, string arg3)
+        {
+            // TODO
+        }
+
+        private void OnTickSize(TickSizeMessage obj)
+        {
+            // TODO
+        }
+
+        private void OnTickPrice(TickPriceMessage obj)
+        {
+            // TODO
         }
 
         private void AddLineToTextbox(TextBox textBox, string msg)
