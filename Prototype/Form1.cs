@@ -282,5 +282,10 @@ namespace Prototype
         {
 
         }
+
+        private void lblSecType_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

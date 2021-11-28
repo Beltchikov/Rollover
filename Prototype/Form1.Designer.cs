@@ -211,7 +211,7 @@
             // 
             // txtSymbolStrike
             // 
-            this.txtSymbolStrike.Location = new System.Drawing.Point(229, 135);
+            this.txtSymbolStrike.Location = new System.Drawing.Point(395, 138);
             this.txtSymbolStrike.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtSymbolStrike.Name = "txtSymbolStrike";
             this.txtSymbolStrike.Size = new System.Drawing.Size(54, 23);
@@ -221,7 +221,7 @@
             // lblSymbolStrike
             // 
             this.lblSymbolStrike.AutoSize = true;
-            this.lblSymbolStrike.Location = new System.Drawing.Point(144, 138);
+            this.lblSymbolStrike.Location = new System.Drawing.Point(310, 141);
             this.lblSymbolStrike.Name = "lblSymbolStrike";
             this.lblSymbolStrike.Size = new System.Drawing.Size(79, 15);
             this.lblSymbolStrike.TabIndex = 9;
@@ -229,17 +229,17 @@
             // 
             // txtExchange
             // 
-            this.txtExchange.Location = new System.Drawing.Point(377, 135);
+            this.txtExchange.Location = new System.Drawing.Point(533, 137);
             this.txtExchange.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtExchange.Name = "txtExchange";
-            this.txtExchange.Size = new System.Drawing.Size(54, 23);
+            this.txtExchange.Size = new System.Drawing.Size(70, 23);
             this.txtExchange.TabIndex = 8;
             this.txtExchange.Text = "GLOBEX";
             // 
             // lblExchange
             // 
             this.lblExchange.AutoSize = true;
-            this.lblExchange.Location = new System.Drawing.Point(313, 139);
+            this.lblExchange.Location = new System.Drawing.Point(469, 141);
             this.lblExchange.Name = "lblExchange";
             this.lblExchange.Size = new System.Drawing.Size(58, 15);
             this.lblExchange.TabIndex = 9;
@@ -247,21 +247,22 @@
             // 
             // txtSecType
             // 
-            this.txtSecType.Location = new System.Drawing.Point(533, 135);
+            this.txtSecType.Location = new System.Drawing.Point(229, 136);
             this.txtSecType.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtSecType.Name = "txtSecType";
-            this.txtSecType.Size = new System.Drawing.Size(70, 23);
+            this.txtSecType.Size = new System.Drawing.Size(54, 23);
             this.txtSecType.TabIndex = 8;
             this.txtSecType.Text = "IND";
             // 
             // lblSecType
             // 
             this.lblSecType.AutoSize = true;
-            this.lblSecType.Location = new System.Drawing.Point(471, 139);
+            this.lblSecType.Location = new System.Drawing.Point(167, 140);
             this.lblSecType.Name = "lblSecType";
             this.lblSecType.Size = new System.Drawing.Size(54, 15);
             this.lblSecType.TabIndex = 9;
             this.lblSecType.Text = "Sec. type";
+            this.lblSecType.Click += new System.EventHandler(this.lblSecType_Click);
             // 
             // txtConId
             // 
@@ -301,7 +302,7 @@
             // 
             // txtCurrencyRealTime
             // 
-            this.txtCurrencyRealTime.Location = new System.Drawing.Point(377, 190);
+            this.txtCurrencyRealTime.Location = new System.Drawing.Point(395, 190);
             this.txtCurrencyRealTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtCurrencyRealTime.Name = "txtCurrencyRealTime";
             this.txtCurrencyRealTime.Size = new System.Drawing.Size(54, 23);
@@ -311,7 +312,7 @@
             // lblCurrencyRealTime
             // 
             this.lblCurrencyRealTime.AutoSize = true;
-            this.lblCurrencyRealTime.Location = new System.Drawing.Point(313, 193);
+            this.lblCurrencyRealTime.Location = new System.Drawing.Point(334, 193);
             this.lblCurrencyRealTime.Name = "lblCurrencyRealTime";
             this.lblCurrencyRealTime.Size = new System.Drawing.Size(55, 15);
             this.lblCurrencyRealTime.TabIndex = 9;
