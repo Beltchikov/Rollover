@@ -2,6 +2,7 @@
 using IBSampleApp;
 using IBSampleApp.messages;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -83,6 +84,7 @@ namespace Prototype
             txtConId.Enabled = enable;
             btStrikes.Enabled = enable;
 
+            txtGenericTickList.Enabled= enable;
             txtSymbolRealTime.Enabled = enable;
             txtSecTypeRealTime.Enabled = enable;
             txtCurrencyRealTime.Enabled = enable;
@@ -257,19 +259,18 @@ namespace Prototype
 
         private void btReqRealTime_Click(object sender, EventArgs e)
         {
-            var currentTicker = 1;
-            var whatToShow = "MIDPOINT";
-            var useRTH = true;
+            int nextReqId = Convert.ToInt32(txtReqId.Text);
             Contract contract = new Contract
             {
                 Symbol = txtSymbolRealTime.Text,
                 Currency = txtCurrencyRealTime.Text,
                 Exchange = txtExchangeRealTime.Text,
-                SecType = txtSecTypeRealTime.Text
+                SecType = txtSecTypeRealTime.Text,
+                LocalSymbol = txtLocalSymbolRealTime.Text,
             };
+            string genericTickList = this.txtGenericTickList.Text;
 
-            //ibClient.ClientSocket.reqRealTimeBars(currentTicker + RT_BARS_ID_BASE, contract, 5, whatToShow, useRTH, null);
-            ibClient.ClientSocket.reqRealTimeBars(3001, contract, 5, whatToShow, useRTH, null);
+            ibClient.ClientSocket.reqMktData(nextReqId, contract, genericTickList, false, false, new List<TagValue>());
         }
 
         private void btCancelRealTime_Click(object sender, EventArgs e)
