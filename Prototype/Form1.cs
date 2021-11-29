@@ -213,22 +213,26 @@ namespace Prototype
 
         private void OnTickGeneric(int arg1, int arg2, double arg3)
         {
-            // TODO
+            var msg = $"OnTickGeneric: arg1:{arg1} arg2:{arg2} arg3:{arg3}";
+            AddLineToTextbox(txtMessage, msg.ToString());
         }
 
         private void TickString(int arg1, int arg2, string arg3)
         {
-            // TODO
+            var msg = $"TickString: arg1:{arg1} arg2:{arg2} arg3:{arg3}";
+            AddLineToTextbox(txtMessage, msg.ToString());
         }
 
         private void OnTickSize(TickSizeMessage obj)
         {
-            // TODO
+            var msg = $"OnTickSize: obj.RequestId:{obj.RequestId} obj.Field:{obj.Field} obj.Size:{obj.Size}";
+            AddLineToTextbox(txtMessage, msg.ToString());
         }
 
         private void OnTickPrice(TickPriceMessage obj)
         {
-            // TODO
+            var msg = $"OnTickPrice: obj.RequestId:{obj.RequestId} obj.Field:{obj.Field} obj.Price:{obj.Price}";
+            AddLineToTextbox(txtMessage, msg.ToString());
         }
 
         private void AddLineToTextbox(TextBox textBox, string msg)
