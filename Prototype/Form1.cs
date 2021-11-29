@@ -191,19 +191,16 @@ namespace Prototype
 
         private void OnSecurityDefinitionOptionParameter(SecurityDefinitionOptionParameterMessage obj)
         {
-            //string msg = $"Local Symbol:{obj.Contract.LocalSymbol} " +
-            //    $"ConId:{obj.Contract.ConId} " +
-            //    $"Avg.price:{obj.AverageCost} " +
-            //    $"Symbol:{obj.Contract.Symbol} " +
-            //    $"Sec. type:{obj.Contract.SecType} " +
-            //    $"Multiplier:{obj.Contract.Multiplier}";
+            var expirations = obj.Expirations.Aggregate((r,n) => r + "," +n);
+            var strikes = obj.Strikes.Select(s => s.ToString()).Aggregate((r, n) => r + "," + n);
+            string msg = $"ReqId:{obj.ReqId} expirations:{expirations} strikes:{strikes}";
 
-            //AddLineToTextbox(txtMessage, msg);
+            AddLineToTextbox(txtMessage, msg);
         }
 
         private void OnSecurityDefinitionOptionParameterEnd(int obj)
         {
-            
+            AddLineToTextbox(txtMessage, "OnSecurityDefinitionOptionParameterEnd: all strikes are listed");
         }
 
         private void OnRealtimeBar(RealTimeBarMessage obj)
