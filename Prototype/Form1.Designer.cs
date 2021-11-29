@@ -67,6 +67,7 @@
             this.lblFopSample = new System.Windows.Forms.Label();
             this.txtGenericTickList = new System.Windows.Forms.TextBox();
             this.lblGenericTicksList = new System.Windows.Forms.Label();
+            this.btnClear = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtHost
@@ -430,11 +431,22 @@
             this.lblGenericTicksList.TabIndex = 9;
             this.lblGenericTicksList.Text = "Generic Tick List";
             // 
+            // btnClear
+            // 
+            this.btnClear.Location = new System.Drawing.Point(22, 506);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(75, 23);
+            this.btnClear.TabIndex = 14;
+            this.btnClear.Text = "Clear";
+            this.btnClear.UseVisualStyleBackColor = true;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1075, 524);
+            this.ClientSize = new System.Drawing.Size(1075, 541);
+            this.Controls.Add(this.btnClear);
             this.Controls.Add(this.btCancelRealTime);
             this.Controls.Add(this.btReqRealTime);
             this.Controls.Add(this.btStrikes);
@@ -523,5 +535,6 @@
         private System.Windows.Forms.Label lblFopSample;
         private System.Windows.Forms.TextBox txtGenericTickList;
         private System.Windows.Forms.Label lblGenericTicksList;
+        private System.Windows.Forms.Button btnClear;
     }
 }
