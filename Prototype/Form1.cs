@@ -280,8 +280,9 @@ namespace Prototype
                 LocalSymbol = txtLocalSymbolRealTime.Text,
             };
             string genericTickList = this.txtGenericTickList.Text;
+            bool snapshot = true; // set it to false to receive permanent stream of data
 
-            ibClient.ClientSocket.reqMktData(nextReqId, contract, genericTickList, false, false, new List<TagValue>());
+            ibClient.ClientSocket.reqMktData(nextReqId, contract, genericTickList, snapshot, false, new List<TagValue>());
         }
 
         private void btCancelRealTime_Click(object sender, EventArgs e)
