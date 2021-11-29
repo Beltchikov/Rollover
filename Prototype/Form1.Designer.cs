@@ -265,7 +265,6 @@
             this.lblSecType.Size = new System.Drawing.Size(54, 15);
             this.lblSecType.TabIndex = 9;
             this.lblSecType.Text = "Sec. type";
-            this.lblSecType.Click += new System.EventHandler(this.lblSecType_Click);
             // 
             // txtConId
             // 
@@ -320,7 +319,6 @@
             this.lblCurrencyRealTime.Size = new System.Drawing.Size(55, 15);
             this.lblCurrencyRealTime.TabIndex = 9;
             this.lblCurrencyRealTime.Text = "Currency";
-            this.lblCurrencyRealTime.Click += new System.EventHandler(this.lblCurrencyRealTime_Click);
             // 
             // txtExchangeRealTime
             // 

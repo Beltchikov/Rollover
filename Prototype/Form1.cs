@@ -35,11 +35,10 @@ namespace Prototype
             ibClient.SymbolSamples += OnSymbolSamples;
             ibClient.SecurityDefinitionOptionParameter += OnSecurityDefinitionOptionParameter;
             ibClient.SecurityDefinitionOptionParameterEnd += OnSecurityDefinitionOptionParameterEnd;
-            ibClient.RealtimeBar += OnRealtimeBar;
             ibClient.TickPrice += OnTickPrice;
             ibClient.TickSize += OnTickSize;
-            ibClient.TickString+= TickString;
-            ibClient.TickGeneric+= OnTickGeneric;
+            ibClient.TickString += TickString;
+            ibClient.TickGeneric += OnTickGeneric;
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
@@ -76,10 +75,10 @@ namespace Prototype
 
         private void EnableControls(bool enable)
         {
-            this.btListPositions.Enabled = enable;
+            btListPositions.Enabled = enable;
 
-            this.txtSymbol.Enabled = enable;
-            this.btGetConnId.Enabled = enable;
+            txtSymbol.Enabled = enable;
+            btGetConnId.Enabled = enable;
 
             txtReqId.Enabled = enable;
             txtSymbolStrike.Enabled = enable;
@@ -88,14 +87,14 @@ namespace Prototype
             txtConId.Enabled = enable;
             btStrikes.Enabled = enable;
 
-            txtGenericTickList.Enabled= enable;
+            txtGenericTickList.Enabled = enable;
             txtSymbolRealTime.Enabled = enable;
             txtSecTypeRealTime.Enabled = enable;
             txtCurrencyRealTime.Enabled = enable;
             txtExchangeRealTime.Enabled = enable;
             txtLocalSymbolRealTime.Enabled = enable;
             btReqRealTime.Enabled = enable;
-            btCancelRealTime.Enabled= enable;
+            btCancelRealTime.Enabled = enable;
         }
 
         private void OnError(int id, int errorCode, string msg, Exception ex)
@@ -191,7 +190,7 @@ namespace Prototype
 
         private void OnSecurityDefinitionOptionParameter(SecurityDefinitionOptionParameterMessage obj)
         {
-            var expirations = obj.Expirations.Aggregate((r,n) => r + "," +n);
+            var expirations = obj.Expirations.Aggregate((r, n) => r + "," + n);
             var strikes = obj.Strikes.Select(s => s.ToString()).Aggregate((r, n) => r + "," + n);
             string msg = $"ReqId:{obj.ReqId} expirations:{expirations} strikes:{strikes}";
 
@@ -201,11 +200,6 @@ namespace Prototype
         private void OnSecurityDefinitionOptionParameterEnd(int obj)
         {
             AddLineToTextbox(txtMessage, "OnSecurityDefinitionOptionParameterEnd: all strikes are listed");
-        }
-
-        private void OnRealtimeBar(RealTimeBarMessage obj)
-        {
-            
         }
 
         private void OnTickGeneric(int arg1, int arg2, double arg3)
@@ -254,15 +248,7 @@ namespace Prototype
 
         private void btCheckSymbol_Click(object sender, EventArgs e)
         {
-
-            //int reqID = 70100001;
             var symbol = txtSymbol.Text;
-            //var exchange = tbExchange.Text;
-            //var secType = tbSecType.Text;
-            
-            // TODO
-            //ibClient.ClientSocket.reqSecDefOptParams(reqId, symbol, exchange, secType, conId);
-
             ibClient.ClientSocket.reqMatchingSymbols(++activeReqId, symbol);
         }
 
@@ -302,16 +288,6 @@ namespace Prototype
         {
             var currentTicker = 1;
             ibClient.ClientSocket.cancelRealTimeBars(currentTicker + RT_BARS_ID_BASE);
-        }
-
-        private void lblCurrencyRealTime_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lblSecType_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void btnClear_Click(object sender, EventArgs e)
