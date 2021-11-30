@@ -8,6 +8,7 @@ namespace Rollover
         {
             IConfigurationManager configurationManager = new ConfigurationManager();
             IRolloverAgent rolloverAgent = new RolloverAgent(configurationManager);
+            
             rolloverAgent.Run();
         }
     }

@@ -12,7 +12,7 @@
 
         public void Run()
         {
-            throw new System.NotImplementedException();
+            _configurationManager.CheckConfiguration();
         }
     }
 }

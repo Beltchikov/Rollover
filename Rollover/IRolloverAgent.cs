@@ -1,6 +1,6 @@
 ﻿namespace Rollover
 {
-    internal interface IRolloverAgent
+    public interface IRolloverAgent
     {
         public void Run();
     }

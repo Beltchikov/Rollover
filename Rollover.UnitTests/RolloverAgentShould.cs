@@ -1,4 +1,3 @@
-using System;
 using AutoFixture.Xunit2;
 using NSubstitute;
 using Xunit;
@@ -12,6 +11,7 @@ namespace Rollover.UnitTests
             [Frozen] IConfigurationManager configurationManager,
             RolloverAgent sut)
         {
+            sut.Run();
             configurationManager.Received().CheckConfiguration();
         }
     }
