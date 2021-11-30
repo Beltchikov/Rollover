@@ -1,14 +1,18 @@
 using System;
+using AutoFixture.Xunit2;
+using NSubstitute;
 using Xunit;
 
 namespace Rollover.UnitTests
 {
     public class RolloverAgentShould
     {
-        [Fact]
-        public void CallConfigurationManagerCheckConfiguration()
+        [Theory, AutoNSubstituteData]
+        public void CallConfigurationManagerCheckConfiguration(
+            [Frozen] IConfigurationManager configurationManager,
+            RolloverAgent sut)
         {
-            //var sut = new RolloverAgent();
+            configurationManager.Received().CheckConfiguration();
         }
     }
 }
