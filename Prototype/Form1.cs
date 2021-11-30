@@ -2,6 +2,7 @@
 using IBSampleApp;
 using IBSampleApp.messages;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -14,6 +15,8 @@ namespace Prototype
         private EReaderMonitorSignal signal;
         private IBClient ibClient;
         int activeReqId = 0;
+
+        public const int RT_BARS_ID_BASE = 40000000;
 
         public Form1()
         {
@@ -30,6 +33,12 @@ namespace Prototype
             ibClient.Position += OnPosition;
             ibClient.PositionEnd += OnPositionEnd;
             ibClient.SymbolSamples += OnSymbolSamples;
+            ibClient.SecurityDefinitionOptionParameter += OnSecurityDefinitionOptionParameter;
+            ibClient.SecurityDefinitionOptionParameterEnd += OnSecurityDefinitionOptionParameterEnd;
+            ibClient.TickPrice += OnTickPrice;
+            ibClient.TickSize += OnTickSize;
+            ibClient.TickString += TickString;
+            ibClient.TickGeneric += OnTickGeneric;
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
@@ -66,11 +75,26 @@ namespace Prototype
 
         private void EnableControls(bool enable)
         {
-            this.btListPositions.Enabled = enable;
+            btListPositions.Enabled = enable;
 
-            this.txtSymbol.Enabled = enable;
-           
-            this.btGetConnId.Enabled = enable;
+            txtSymbol.Enabled = enable;
+            btGetConnId.Enabled = enable;
+
+            txtReqId.Enabled = enable;
+            txtSymbolStrike.Enabled = enable;
+            txtExchange.Enabled = enable;
+            txtSecType.Enabled = enable;
+            txtConId.Enabled = enable;
+            btStrikes.Enabled = enable;
+
+            txtGenericTickList.Enabled = enable;
+            txtSymbolRealTime.Enabled = enable;
+            txtSecTypeRealTime.Enabled = enable;
+            txtCurrencyRealTime.Enabled = enable;
+            txtExchangeRealTime.Enabled = enable;
+            txtLocalSymbolRealTime.Enabled = enable;
+            btReqRealTime.Enabled = enable;
+            btCancelRealTime.Enabled = enable;
         }
 
         private void OnError(int id, int errorCode, string msg, Exception ex)
@@ -164,6 +188,44 @@ namespace Prototype
             AddLineToTextbox(txtMessage, msg.ToString());
         }
 
+        private void OnSecurityDefinitionOptionParameter(SecurityDefinitionOptionParameterMessage obj)
+        {
+            var expirations = obj.Expirations.Aggregate((r, n) => r + "," + n);
+            var strikes = obj.Strikes.Select(s => s.ToString()).Aggregate((r, n) => r + "," + n);
+            string msg = $"ReqId:{obj.ReqId} expirations:{expirations} strikes:{strikes}";
+
+            AddLineToTextbox(txtMessage, msg);
+        }
+
+        private void OnSecurityDefinitionOptionParameterEnd(int obj)
+        {
+            AddLineToTextbox(txtMessage, "OnSecurityDefinitionOptionParameterEnd: all strikes are listed");
+        }
+
+        private void OnTickGeneric(int arg1, int arg2, double arg3)
+        {
+            var msg = $"OnTickGeneric: arg1:{arg1} arg2:{arg2} arg3:{arg3}";
+            AddLineToTextbox(txtMessage, msg.ToString());
+        }
+
+        private void TickString(int arg1, int arg2, string arg3)
+        {
+            var msg = $"TickString: arg1:{arg1} arg2:{arg2} arg3:{arg3}";
+            AddLineToTextbox(txtMessage, msg.ToString());
+        }
+
+        private void OnTickSize(TickSizeMessage obj)
+        {
+            var msg = $"OnTickSize: obj.RequestId:{obj.RequestId} obj.Field:{obj.Field} obj.Size:{obj.Size}";
+            AddLineToTextbox(txtMessage, msg.ToString());
+        }
+
+        private void OnTickPrice(TickPriceMessage obj)
+        {
+            var msg = $"OnTickPrice: obj.RequestId:{obj.RequestId} obj.Field:{obj.Field} obj.Price:{obj.Price}";
+            AddLineToTextbox(txtMessage, msg.ToString());
+        }
+
         private void AddLineToTextbox(TextBox textBox, string msg)
         {
             if (string.IsNullOrWhiteSpace(msg))
@@ -171,40 +233,67 @@ namespace Prototype
                 return;
             }
 
-            //if (!string.IsNullOrWhiteSpace(textBox.Text))
-            //{
-            //    textBox.Text += Environment.NewLine;
-            //}
-
-            //textBox.Text += msg;
-
             if (string.IsNullOrWhiteSpace(textBox.Text))
             {
                 textBox.Text = msg;
             }
             else
             {
-                textBox.Text = msg + Environment.NewLine + textBox.Text;
+                var fullMsg = msg + Environment.NewLine + textBox.Text;
+                fullMsg = fullMsg.Replace(Environment.NewLine + Environment.NewLine, Environment.NewLine);
+
+                textBox.Text = fullMsg;
             }
         }
 
         private void btCheckSymbol_Click(object sender, EventArgs e)
         {
-
-            //int reqID = 70100001;
             var symbol = txtSymbol.Text;
-            //var exchange = tbExchange.Text;
-            //var secType = tbSecType.Text;
-            
-            // TODO
-            //ibClient.ClientSocket.reqSecDefOptParams(reqId, symbol, exchange, secType, conId);
-
             ibClient.ClientSocket.reqMatchingSymbols(++activeReqId, symbol);
         }
 
         private void btListPositions_Click(object sender, EventArgs e)
         {
             ibClient.ClientSocket.reqPositions();
+        }
+
+        private void btStrikes_Click(object sender, EventArgs e)
+        {
+            int reqId = Convert.ToInt32(txtReqId.Text);
+            string symbol = txtSymbolStrike.Text;
+            string exchange = txtExchange.Text;
+            string secType = txtSecType.Text;
+            int conId = Convert.ToInt32(txtConId.Text);
+
+            ibClient.ClientSocket.reqSecDefOptParams(reqId, symbol, exchange, secType, conId);
+        }
+
+        private void btReqRealTime_Click(object sender, EventArgs e)
+        {
+            int nextReqId = Convert.ToInt32(txtReqId.Text);
+            Contract contract = new Contract
+            {
+                Symbol = txtSymbolRealTime.Text,
+                Currency = txtCurrencyRealTime.Text,
+                Exchange = txtExchangeRealTime.Text,
+                SecType = txtSecTypeRealTime.Text,
+                LocalSymbol = txtLocalSymbolRealTime.Text,
+            };
+            string genericTickList = this.txtGenericTickList.Text;
+            bool snapshot = true; // set it to false to receive permanent stream of data
+
+            ibClient.ClientSocket.reqMktData(nextReqId, contract, genericTickList, snapshot, false, new List<TagValue>());
+        }
+
+        private void btCancelRealTime_Click(object sender, EventArgs e)
+        {
+            var currentTicker = 1;
+            ibClient.ClientSocket.cancelRealTimeBars(currentTicker + RT_BARS_ID_BASE);
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            txtMessage.Clear();
         }
     }
 }
