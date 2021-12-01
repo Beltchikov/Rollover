@@ -1,16 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Rollover
+﻿namespace Rollover
 {
     public class ConfigurationManager : IConfigurationManager
     {
+        private IFileHelper _fileHelper;
+
+        public ConfigurationManager(IFileHelper fileHelper)
+        {
+            _fileHelper = fileHelper;
+        }
+
         public void CheckConfiguration()
         {
-            throw new NotImplementedException();
+                
+            
+            //throw new NotImplementedException();
         }
     }
 }
