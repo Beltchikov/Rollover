@@ -17,12 +17,11 @@ namespace Rollover.UnitTests
             ConfigurationManager sut)
         {
             sut.CheckConfiguration();
-            fileHelper.Received().ReadAllText(Arg.Any<string>());
+            fileHelper.Received().ReadAllText(ConfigurationManager.CONFIGURATION_FILE);
         }
 
         [Theory, AutoNSubstituteData]
         public void CallSerializer(
-            [Frozen] IFileHelper fileHelper,
             [Frozen] ISerializer serializer,
             ConfigurationManager sut)
         {

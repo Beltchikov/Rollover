@@ -4,7 +4,7 @@
     {
         private IFileHelper _fileHelper;
         private ISerializer _serializer;
-        private const string CONFIGURATION_FILE = "Configuration.json";
+        public const string CONFIGURATION_FILE = "Configuration.json";
 
         public ConfigurationManager(IFileHelper fileHelper, ISerializer serializer)
         {
