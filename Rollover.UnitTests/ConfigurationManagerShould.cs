@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AutoFixture.Xunit2;
+using NSubstitute;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,10 +11,13 @@ namespace Rollover.UnitTests
 {
     public class ConfigurationManagerShould
     {
-        [Fact]
-        public void ReadConfigurationFile()
+        [Theory, AutoNSubstituteData]
+        public void ReadConfigurationFile(
+            [Frozen] IFileHelper fileHelper,
+            ConfigurationManager sut)
         {
-
+            sut.CheckConfiguration();
+            fileHelper.Received().ReadAllText(Arg.Any<string>());
         }
     }
 }
