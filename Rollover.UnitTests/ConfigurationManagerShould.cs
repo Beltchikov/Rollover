@@ -19,5 +19,15 @@ namespace Rollover.UnitTests
             sut.CheckConfiguration();
             fileHelper.Received().ReadAllText(Arg.Any<string>());
         }
+
+        [Theory, AutoNSubstituteData]
+        public void CallSerializer(
+            [Frozen] IFileHelper fileHelper,
+            [Frozen] ISerializer serializer,
+            ConfigurationManager sut)
+        {
+            sut.CheckConfiguration();
+            serializer.Received().Deserialize<Configuration>(Arg.Any<string>());
+        }
     }
 }
