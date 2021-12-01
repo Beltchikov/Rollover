@@ -1,4 +1,6 @@
-﻿namespace Rollover
+﻿using System;
+
+namespace Rollover
 {
     public class RolloverAgent : IRolloverAgent
     {
@@ -12,7 +14,16 @@
 
         public void Run()
         {
-            var configuration =_configurationManager.GetConfiguration();
+            var configuration = _configurationManager.GetConfiguration();
+
+            while (true)
+            {
+                var input = Console.ReadLine();
+                if (input != null && input.Equals("q", StringComparison.OrdinalIgnoreCase))
+                {
+                    break;
+                }
+            }
         }
     }
 }
