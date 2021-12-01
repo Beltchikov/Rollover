@@ -14,5 +14,16 @@ namespace Rollover.UnitTests
             sut.Run();
             configurationManager.Received().GetConfiguration();
         }
+
+        // ibClient.ClientSocket.eConnect called
+
+        // EReader inject
+
+        // reader.Start() called
+
+        // ThreadManager.Create called
+
+        // ThreadManager.StartThread
+
     }
 }
