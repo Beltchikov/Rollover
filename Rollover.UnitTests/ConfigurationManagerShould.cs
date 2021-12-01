@@ -16,7 +16,7 @@ namespace Rollover.UnitTests
             [Frozen] IFileHelper fileHelper,
             ConfigurationManager sut)
         {
-            sut.CheckConfiguration();
+            sut.GetConfiguration();
             fileHelper.Received().ReadAllText(ConfigurationManager.CONFIGURATION_FILE);
         }
 
@@ -25,7 +25,7 @@ namespace Rollover.UnitTests
             [Frozen] ISerializer serializer,
             ConfigurationManager sut)
         {
-            sut.CheckConfiguration();
+            sut.GetConfiguration();
             serializer.Received().Deserialize<Configuration>(Arg.Any<string>());
         }
     }

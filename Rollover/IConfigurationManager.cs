@@ -2,6 +2,6 @@
 {
     public interface IConfigurationManager
     {
-        void CheckConfiguration();
+        Configuration GetConfiguration();
     }
 }

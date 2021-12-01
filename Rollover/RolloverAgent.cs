@@ -12,7 +12,7 @@
 
         public void Run()
         {
-            _configurationManager.CheckConfiguration();
+            var configuration =_configurationManager.GetConfiguration();
         }
     }
 }

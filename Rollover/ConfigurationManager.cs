@@ -12,12 +12,11 @@
             _serializer = serializer;
         }
 
-        public void CheckConfiguration()
+        public Configuration GetConfiguration()
         {
             var configurationAsText = _fileHelper.ReadAllText(CONFIGURATION_FILE);
             var configuration = _serializer.Deserialize<Configuration>(configurationAsText);
-
-            //throw new NotImplementedException();
+            return configuration;
         }
     }
 }

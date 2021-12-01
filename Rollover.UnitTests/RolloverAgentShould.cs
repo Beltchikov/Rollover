@@ -12,7 +12,7 @@ namespace Rollover.UnitTests
             RolloverAgent sut)
         {
             sut.Run();
-            configurationManager.Received().CheckConfiguration();
+            configurationManager.Received().GetConfiguration();
         }
     }
 }
