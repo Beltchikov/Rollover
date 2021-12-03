@@ -16,14 +16,16 @@ namespace Rollover
         {
             var configuration = _configurationManager.GetConfiguration();
 
-            while (true)
-            {
-                var input = Console.ReadLine();
-                if (input != null && input.Equals("q", StringComparison.OrdinalIgnoreCase))
-                {
-                    break;
-                }
-            }
+            //while (true)
+            //{
+            //    // queue.dequeue
+                
+            //    var input = Console.ReadLine();
+            //    if (input != null && input.Equals("q", StringComparison.OrdinalIgnoreCase))
+            //    {
+            //        break;
+            //    }
+            //}
         }
     }
 }

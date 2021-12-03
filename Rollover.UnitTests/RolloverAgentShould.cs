@@ -7,7 +7,7 @@ namespace Rollover.UnitTests
     public class RolloverAgentShould
     {
         [Theory, AutoNSubstituteData]
-        public void CallConfigurationManagerCheckConfiguration(
+        public void CallConfigurationManagerGetConfiguration(
             [Frozen] IConfigurationManager configurationManager,
             RolloverAgent sut)
         {
