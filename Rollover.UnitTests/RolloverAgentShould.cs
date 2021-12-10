@@ -9,10 +9,23 @@ namespace Rollover.UnitTests
         [Theory, AutoNSubstituteData]
         public void CallConfigurationManagerGetConfiguration(
             [Frozen] IConfigurationManager configurationManager,
+            [Frozen] IInputQueue inputQueue,
             RolloverAgent sut)
         {
+            inputQueue.ReadLine().Returns("q");
             sut.Run();
             configurationManager.Received().GetConfiguration();
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void InputQueueCalled(
+            [Frozen] IInputQueue inputQueue,
+            RolloverAgent sut)
+        {
+            inputQueue.ReadLine().Returns("SomeInput", "q");
+           
+            sut.Run();
+            inputQueue.Received().ReadLine();
         }
 
         // ibClient.ClientSocket.eConnect called

@@ -8,8 +8,9 @@
             ISerializer serializer = new Serializer();
             IConfigurationManager configurationManager = new ConfigurationManager(
                 fileHelper, serializer);
+            IInputQueue inputQueue = new InputQueue();
             
-            IRolloverAgent rolloverAgent = new RolloverAgent(configurationManager);
+            IRolloverAgent rolloverAgent = new RolloverAgent(configurationManager, inputQueue);
             rolloverAgent.Run();
         }
     }
