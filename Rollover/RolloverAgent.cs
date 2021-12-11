@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Rollover.Configuration;
+using Rollover.Input;
+using System;
 using System.Threading;
 
 namespace Rollover
@@ -7,12 +9,16 @@ namespace Rollover
     {
         private IConfigurationManager _configurationManager;
         private IConsoleWrapper _consoleWrapper;
-        private string _input;
+        private IInputQueue _inputQueue;
 
-        public RolloverAgent(IConfigurationManager configurationManager, IConsoleWrapper inputQueue)
+        public RolloverAgent(
+            IConfigurationManager configurationManager, 
+            IConsoleWrapper consoleWrapper,
+            IInputQueue inputQueue)
         {
             _configurationManager = configurationManager;
-            _consoleWrapper = inputQueue;
+            _consoleWrapper = consoleWrapper;
+            _inputQueue = inputQueue;
         }
 
 
@@ -22,15 +28,13 @@ namespace Rollover
 
             while (true)
             {
-                new Thread(() => { _input = _consoleWrapper.ReadLine();})
-                { IsBackground = true}
-                .Start();
-                
+                //// Todo use Queue instead
+                //new Thread(() => { _inputQueue.Enqueue(_consoleWrapper.ReadLine());})
+                //{ IsBackground = true}
+                //.Start();
 
-                // queue.dequeue
-
-                //var input = console.readline();
-                if (_input != null && _input.Equals("q", StringComparison.InvariantCultureIgnoreCase))
+                var input = _inputQueue.Dequeue();
+                if (input != null && input.Equals("q", StringComparison.InvariantCultureIgnoreCase))
                 {
                     break;
                 }

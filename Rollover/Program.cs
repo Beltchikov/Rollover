@@ -1,4 +1,7 @@
-﻿namespace Rollover
+﻿using Rollover.Configuration;
+using Rollover.Input;
+
+namespace Rollover
 {
     class Program
     {
@@ -8,9 +11,13 @@
             ISerializer serializer = new Serializer();
             IConfigurationManager configurationManager = new ConfigurationManager(
                 fileHelper, serializer);
-            IConsoleWrapper inputQueue = new ConsoleWrapper();
-            
-            IRolloverAgent rolloverAgent = new RolloverAgent(configurationManager, inputQueue);
+            IConsoleWrapper consoleWrapper = new ConsoleWrapper();
+            IInputQueue inputQueue = new InputQueue();
+
+            IRolloverAgent rolloverAgent = new RolloverAgent(
+                configurationManager, 
+                consoleWrapper,
+                inputQueue);
             rolloverAgent.Run();
         }
     }

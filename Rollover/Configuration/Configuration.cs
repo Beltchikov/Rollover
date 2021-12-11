@@ -1,4 +1,4 @@
-﻿namespace Rollover
+﻿namespace Rollover.Configuration
 {
     public class Configuration
     {

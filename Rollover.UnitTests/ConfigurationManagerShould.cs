@@ -1,5 +1,6 @@
 ﻿using AutoFixture.Xunit2;
 using NSubstitute;
+using Rollover.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace Rollover.UnitTests
             ConfigurationManager sut)
         {
             sut.GetConfiguration();
-            serializer.Received().Deserialize<Configuration>(Arg.Any<string>());
+            serializer.Received().Deserialize<Configuration.Configuration>(Arg.Any<string>());
         }
     }
 }

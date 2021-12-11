@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Rollover
+namespace Rollover.Input
 {
     public class ConsoleWrapper : IConsoleWrapper
     {

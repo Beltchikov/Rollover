@@ -1,4 +1,4 @@
-﻿namespace Rollover
+﻿namespace Rollover.Input
 {
     public interface IConsoleWrapper
     {

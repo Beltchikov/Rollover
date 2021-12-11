@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
-namespace Rollover
+namespace Rollover.Configuration
 {
     [ExcludeFromCodeCoverage]
     public class FileHelper : IFileHelper
