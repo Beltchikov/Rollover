@@ -18,7 +18,7 @@ namespace Rollover.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
-        public void InputQueueCalled(
+        public void CallConsoleWrapper(
             [Frozen] IConsoleWrapper inputQueue,
             RolloverAgent sut)
         {
