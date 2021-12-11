@@ -9,7 +9,7 @@ namespace Rollover.UnitTests
         [Theory, AutoNSubstituteData]
         public void CallConfigurationManagerGetConfiguration(
             [Frozen] IConfigurationManager configurationManager,
-            [Frozen] IInputQueue inputQueue,
+            [Frozen] IConsoleWrapper inputQueue,
             RolloverAgent sut)
         {
             inputQueue.ReadLine().Returns("q");
@@ -19,7 +19,7 @@ namespace Rollover.UnitTests
 
         [Theory, AutoNSubstituteData]
         public void InputQueueCalled(
-            [Frozen] IInputQueue inputQueue,
+            [Frozen] IConsoleWrapper inputQueue,
             RolloverAgent sut)
         {
             inputQueue.ReadLine().Returns("SomeInput", "q");

@@ -1,6 +1,6 @@
 ﻿namespace Rollover
 {
-    public interface IInputQueue
+    public interface IConsoleWrapper
     {
         public string ReadLine();
     }

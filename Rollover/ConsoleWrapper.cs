@@ -2,7 +2,7 @@
 
 namespace Rollover
 {
-    public class InputQueue : IInputQueue
+    public class ConsoleWrapper : IConsoleWrapper
     {
         public string ReadLine()
         {

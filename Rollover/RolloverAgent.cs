@@ -6,13 +6,13 @@ namespace Rollover
     public class RolloverAgent : IRolloverAgent
     {
         private IConfigurationManager _configurationManager;
-        private IInputQueue _inputQueue;
+        private IConsoleWrapper _consoleWrapper;
         private string _input;
 
-        public RolloverAgent(IConfigurationManager configurationManager, IInputQueue inputQueue)
+        public RolloverAgent(IConfigurationManager configurationManager, IConsoleWrapper inputQueue)
         {
             _configurationManager = configurationManager;
-            _inputQueue = inputQueue;
+            _consoleWrapper = inputQueue;
         }
 
 
@@ -22,7 +22,7 @@ namespace Rollover
 
             while (true)
             {
-                new Thread(() => { _input = _inputQueue.ReadLine();})
+                new Thread(() => { _input = _consoleWrapper.ReadLine();})
                 { IsBackground = true}
                 .Start();
                 
