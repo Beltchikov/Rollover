@@ -22,7 +22,9 @@ namespace Rollover.Input
 
         string IInputQueue.Dequeue()
         {
-            return _inputQueue.Dequeue();
+            return _inputQueue.Any() 
+                ? _inputQueue.Dequeue()
+                : null;
         }
     }
 }

@@ -11,10 +11,10 @@ namespace Rollover.UnitTests
         [Theory, AutoNSubstituteData]
         public void CallConfigurationManagerGetConfiguration(
             [Frozen] IConfigurationManager configurationManager,
-            [Frozen] IConsoleWrapper inputQueue,
+            [Frozen] IInputQueue inputQueue,
             RolloverAgent sut)
         {
-            inputQueue.ReadLine().Returns("Q");
+            inputQueue.Dequeue().Returns("Q");
             sut.Run();
             configurationManager.Received().GetConfiguration();
         }
@@ -22,20 +22,20 @@ namespace Rollover.UnitTests
         [Theory, AutoNSubstituteData]
         public void CallConsoleWrapper(
             [Frozen] IConsoleWrapper consoleWrapper,
+            [Frozen] IInputQueue inputQueue,
             RolloverAgent sut)
         {
-            consoleWrapper.ReadLine().Returns("SomeInput", "q");
+            inputQueue.Dequeue().Returns("SomeInput", "q");
             sut.Run();
             consoleWrapper.Received().ReadLine();
         }
 
         [Theory, AutoNSubstituteData]
         public void CallInputQueue(
-            [Frozen] IConsoleWrapper consoleWrapper,
             [Frozen] IInputQueue inputQueue,
             RolloverAgent sut)
         {
-            consoleWrapper.ReadLine().Returns("SomeInput", "q");
+            inputQueue.Dequeue().Returns("SomeInput", "q");
             sut.Run();
             inputQueue.Received().Enqueue(Arg.Any<string>());
         }

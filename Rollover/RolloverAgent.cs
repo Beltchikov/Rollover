@@ -26,13 +26,12 @@ namespace Rollover
         {
             var configuration = _configurationManager.GetConfiguration();
 
+            new Thread(() => { _inputQueue.Enqueue(_consoleWrapper.ReadLine()); })
+            { IsBackground = true }
+            .Start();
+
             while (true)
             {
-                //// Todo use Queue instead
-                //new Thread(() => { _inputQueue.Enqueue(_consoleWrapper.ReadLine());})
-                //{ IsBackground = true}
-                //.Start();
-
                 var input = _inputQueue.Dequeue();
                 if (input != null && input.Equals("q", StringComparison.InvariantCultureIgnoreCase))
                 {
