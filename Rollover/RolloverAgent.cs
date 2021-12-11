@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace Rollover
 {
@@ -6,6 +7,7 @@ namespace Rollover
     {
         private IConfigurationManager _configurationManager;
         private IInputQueue _inputQueue;
+        private string _input;
 
         public RolloverAgent(IConfigurationManager configurationManager, IInputQueue inputQueue)
         {
@@ -20,12 +22,15 @@ namespace Rollover
 
             while (true)
             {
-                var input = _inputQueue.ReadLine();
+                new Thread(() => { _input = _inputQueue.ReadLine();})
+                { IsBackground = true}
+                .Start();
+                
 
                 // queue.dequeue
 
                 //var input = console.readline();
-                if (input != null && input.Equals("q", StringComparison.InvariantCultureIgnoreCase))
+                if (_input != null && _input.Equals("q", StringComparison.InvariantCultureIgnoreCase))
                 {
                     break;
                 }
