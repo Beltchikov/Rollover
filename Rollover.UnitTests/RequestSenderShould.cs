@@ -33,5 +33,23 @@ namespace Rollover.UnitTests
             sut.Connect("", 0, 0);
             ibClient.Received().ReaderFactory();
         }
+
+        [Theory, AutoNSubstituteData]
+        public void CallIbClientIsConnectedInConnect(
+            [Frozen] IIbClientWrapper ibClient,
+            RequestSender sut)
+        {
+            sut.Connect("", 0, 0);
+            ibClient.Received().IsConnected();
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallIbClientWaitForSignalConnect(
+            [Frozen] IIbClientWrapper ibClient,
+            RequestSender sut)
+        {
+            sut.Connect("", 0, 0);
+            ibClient.Received().WaitForSignal();
+        }
     }
 }

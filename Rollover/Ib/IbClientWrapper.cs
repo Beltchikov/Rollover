@@ -29,5 +29,15 @@ namespace Rollover.Ib
         {
             return new EReader(_ibClient.ClientSocket, _signal);
         }
+
+        public bool IsConnected()
+        {
+            return _ibClient.ClientSocket.IsConnected();
+        }
+
+        public void WaitForSignal()
+        {
+            _signal.waitForSignal();
+        }
     }
 }

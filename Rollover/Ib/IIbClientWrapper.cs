@@ -12,5 +12,7 @@ namespace Rollover.Ib
 
         void Connect(string host, int port, int clientId);
         EReader ReaderFactory();
+        bool IsConnected();
+        void WaitForSignal();
     }
 }

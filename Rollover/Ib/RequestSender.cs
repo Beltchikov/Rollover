@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading;
 
 namespace Rollover.Ib
 {
@@ -22,25 +18,16 @@ namespace Rollover.Ib
             var reader = _ibClient.ReaderFactory();
             reader.Start();
 
-            //string host = txtHost.Text;
-            //int port = Int32.Parse(txtPort.Text);
-            //int clientId = Int32.Parse(txtClientId.Text);
-
-            //ibClient.ClientSocket.eConnect(host, port, ibClient.ClientId);
-
-            //// The EReader Thread
-            //var reader = new EReader(ibClient.ClientSocket, signal);
-            //reader.Start();
-            //new Thread(() =>
-            //{
-            //    while (ibClient.ClientSocket.IsConnected())
-            //    {
-            //        signal.waitForSignal();
-            //        reader.processMsgs();
-            //    }
-            //})
-            //{ IsBackground = true }
-            //.Start();
+            new Thread(() =>
+            {
+                while (_ibClient.IsConnected())
+                {
+                    _ibClient.WaitForSignal();
+                    reader.processMsgs();
+                }
+            })
+            { IsBackground = true }
+            .Start();
         }
 
         public void RegisterResponseHandlers()
