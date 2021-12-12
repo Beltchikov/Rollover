@@ -47,7 +47,7 @@ namespace Rollover
             var reader = _ibClient.ReaderFactory();
             reader.Start();
 
-            new Thread(() =>  // https://devblogs.microsoft.com/pfxteam/await-synchronizationcontext-and-console-apps/
+            new Thread(() =>  
             {
                 while (_ibClient.IsConnected())
                 {
