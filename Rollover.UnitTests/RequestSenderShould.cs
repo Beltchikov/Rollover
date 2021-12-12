@@ -13,7 +13,7 @@ namespace Rollover.UnitTests
     public class RequestSenderShould
     {
         [Theory, AutoNSubstituteData]
-        public void CallIbClientEConnectInConnect(
+        public void CallIbClientConnectInConnect(
             [Frozen] IIbClientWrapper ibClient,
             RequestSender sut)
         {
@@ -23,6 +23,15 @@ namespace Rollover.UnitTests
 
             sut.Connect(host, port, clientId);
             ibClient.Received().Connect(host, port, clientId);
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallIbClientReaderFactoryInConnect(
+            [Frozen] IIbClientWrapper ibClient,
+            RequestSender sut)
+        {
+            sut.Connect("", 0, 0);
+            ibClient.Received().ReaderFactory();
         }
     }
 }

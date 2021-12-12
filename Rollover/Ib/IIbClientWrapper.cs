@@ -1,4 +1,5 @@
-﻿using IBSampleApp.messages;
+﻿using IBApi;
+using IBSampleApp.messages;
 using System;
 
 namespace Rollover.Ib
@@ -10,5 +11,6 @@ namespace Rollover.Ib
         public event Action<ManagedAccountsMessage> ManagedAccounts;
 
         void Connect(string host, int port, int clientId);
+        EReader ReaderFactory();
     }
 }

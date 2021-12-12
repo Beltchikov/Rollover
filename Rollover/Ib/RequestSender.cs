@@ -19,7 +19,8 @@ namespace Rollover.Ib
         {
             _ibClient.Connect(host, port, clientId);
 
-            
+            var reader = _ibClient.ReaderFactory();
+            reader.Start();
 
             //string host = txtHost.Text;
             //int port = Int32.Parse(txtPort.Text);
