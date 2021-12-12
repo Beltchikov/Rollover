@@ -41,7 +41,10 @@ namespace Rollover
             // Register response handlers
             _requestSender.RegisterResponseHandlers();
 
+            // Connect
+            _requestSender.Connect();
 
+            // Start input loop
             while (true)
             {
                 var input = _inputQueue.Dequeue();

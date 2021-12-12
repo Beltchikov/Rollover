@@ -15,6 +15,11 @@ namespace Rollover.Ib
             _ibClient = ibClient;
         }
 
+        public void Connect()
+        {
+            throw new NotImplementedException();
+        }
+
         public void RegisterResponseHandlers()
         {
             _ibClient.Error += ResponseHandlers.OnError;

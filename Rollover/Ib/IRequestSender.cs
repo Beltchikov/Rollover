@@ -3,5 +3,6 @@
     public interface IRequestSender
     {
         void RegisterResponseHandlers();
+        void Connect();
     }
 }
