@@ -14,7 +14,9 @@ namespace Rollover
                 fileHelper, serializer);
             IConsoleWrapper consoleWrapper = new ConsoleWrapper();
             IInputQueue inputQueue = new InputQueue();
-            IRequestSender requestSender = new RequestSender();
+
+            IIbClientWrapper ibClient = new IbClientWrapper();
+            IRequestSender requestSender = new RequestSender(ibClient);
 
             IRolloverAgent rolloverAgent = new RolloverAgent(
                 configurationManager, 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IBSampleApp.messages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,5 +10,7 @@ namespace Rollover.Ib
     public class IbClientWrapper : IIbClientWrapper
     {
         public event Action<int, int, string, Exception> Error;
+        public event Action<ConnectionStatusMessage> NextValidId;
+        public event Action<ManagedAccountsMessage> ManagedAccounts;
     }
 }

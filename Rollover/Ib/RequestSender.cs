@@ -8,9 +8,20 @@ namespace Rollover.Ib
 {
     public class RequestSender : IRequestSender
     {
+        private IIbClientWrapper _ibClient;
+
+        public RequestSender(IIbClientWrapper ibClient)
+        {
+            _ibClient = ibClient;
+        }
+
         public void RegisterResponseHandlers()
         {
-            throw new NotImplementedException();
+            _ibClient.Error += ResponseHandlers.OnError;
+            _ibClient.NextValidId += ResponseHandlers.NextValidId;
+            _ibClient.ManagedAccounts += ResponseHandlers.ManagedAccounts;
         }
+
+        
     }
 }
