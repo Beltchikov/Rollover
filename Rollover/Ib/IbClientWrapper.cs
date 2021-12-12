@@ -12,5 +12,10 @@ namespace Rollover.Ib
         public event Action<int, int, string, Exception> Error;
         public event Action<ConnectionStatusMessage> NextValidId;
         public event Action<ManagedAccountsMessage> ManagedAccounts;
+
+        public void Connect(string host, int port, int clientId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

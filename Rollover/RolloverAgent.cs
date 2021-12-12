@@ -42,7 +42,7 @@ namespace Rollover
             _requestSender.RegisterResponseHandlers();
 
             // Connect
-            _requestSender.Connect();
+            _requestSender.Connect(configuration.Host, configuration.Port, configuration.ClientId);
 
             // Start input loop
             while (true)

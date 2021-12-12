@@ -71,7 +71,7 @@ namespace Rollover.UnitTests
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
             sut.Run();
-            requestSender.Received().Connect();
+            requestSender.Received().Connect(Arg.Any<string>(), Arg.Any<int>(), Arg.Any<int>());
         }
 
 
