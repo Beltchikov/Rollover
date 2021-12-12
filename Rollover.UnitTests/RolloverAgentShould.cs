@@ -52,6 +52,29 @@ namespace Rollover.UnitTests
             consoleWrapper.Received().WriteLine(Arg.Any<string>());
         }
 
+        [Theory, AutoNSubstituteData]
+        public void CallRequestSenderRegisterRequestHandlers(
+            [Frozen] IInputQueue inputQueue,
+            [Frozen] IRequestSender requestSender,
+            RolloverAgent sut)
+        {
+            inputQueue.Dequeue().Returns("SomeInput", "q");
+            sut.Run();
+            requestSender.Received().RegisterResponseHandlers();
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallRequestSenderConnect(
+            [Frozen] IInputQueue inputQueue,
+            [Frozen] IRequestSender requestSender,
+            RolloverAgent sut)
+        {
+            inputQueue.Dequeue().Returns("SomeInput", "q");
+            sut.Run();
+            requestSender.Received().Connect(Arg.Any<string>(), Arg.Any<int>(), Arg.Any<int>());
+        }
+
+
         // ibClient.ClientSocket.eConnect called
 
         // EReader inject

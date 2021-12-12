@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Nito.AsyncEx.Context" Version="5.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\TWSAPI\source\CSharpClient\client\CSharpAPI.csproj" />
   </ItemGroup>
 
