@@ -9,6 +9,7 @@ using IBApi;
 using System.Threading;
 using System.Threading.Tasks;
 using IBSampleApp.messages;
+using Rollover.Ib;
 
 namespace IBSampleApp
 {
@@ -116,7 +117,7 @@ namespace IBSampleApp
         public IBClient(EReaderSignal signal)
         {
             clientSocket = new EClientSocket(this, signal);
-            sc = SynchronizationContext.Current;
+            sc = SynchronizationContext.Current ?? new SingleThreadSynchronizationContext();
         }
 
         public EClientSocket ClientSocket

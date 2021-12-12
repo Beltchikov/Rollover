@@ -1,5 +1,4 @@
-﻿using Nito.AsyncEx;
-using Rollover.Configuration;
+﻿using Rollover.Configuration;
 using Rollover.Ib;
 using Rollover.Input;
 using System;
@@ -8,31 +7,23 @@ namespace Rollover
 {
     class Program
     {
-        [STAThread]
         static void Main(string[] args)
         {
-            AsyncContext.Run(() =>
-            {
-                IFileHelper fileHelper = new FileHelper();
-                ISerializer serializer = new Serializer();
-                IConfigurationManager configurationManager = new ConfigurationManager(
-                    fileHelper, serializer);
-                IConsoleWrapper consoleWrapper = new ConsoleWrapper();
-                IInputQueue inputQueue = new InputQueue();
+            IFileHelper fileHelper = new FileHelper();
+            ISerializer serializer = new Serializer();
+            IConfigurationManager configurationManager = new ConfigurationManager(
+                fileHelper, serializer);
+            IConsoleWrapper consoleWrapper = new ConsoleWrapper();
+            IInputQueue inputQueue = new InputQueue();
+            IIbClientWrapper ibClient = new IbClientWrapper();
 
-                IIbClientWrapper ibClient = new IbClientWrapper();
-                IRequestSender requestSender = new RequestSender(ibClient);
+            IRolloverAgent rolloverAgent = new RolloverAgent(
+                configurationManager,
+                consoleWrapper,
+                inputQueue,
+                ibClient);
 
-                IRolloverAgent rolloverAgent = new RolloverAgent(
-                    configurationManager,
-                    consoleWrapper,
-                    inputQueue,
-                    requestSender);
-
-                rolloverAgent.Run();
-            });
-
-            
+            rolloverAgent.Run();
         }
     }
 }

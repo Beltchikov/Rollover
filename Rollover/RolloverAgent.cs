@@ -12,20 +12,19 @@ namespace Rollover
         private IConfigurationManager _configurationManager;
         private IConsoleWrapper _consoleWrapper;
         private IInputQueue _inputQueue;
-        private IRequestSender _requestSender;
+        private IIbClientWrapper _ibClient;
 
         public RolloverAgent(
             IConfigurationManager configurationManager,
             IConsoleWrapper consoleWrapper,
-            IInputQueue inputQueue, 
-            IRequestSender requestSender)
+            IInputQueue inputQueue,
+            IIbClientWrapper ibClient)
         {
             _configurationManager = configurationManager;
             _consoleWrapper = consoleWrapper;
             _inputQueue = inputQueue;
-            _requestSender = requestSender;
+            _ibClient = ibClient;
         }
-
 
         public void Run()
         {
@@ -40,10 +39,24 @@ namespace Rollover
             .Start();
 
             // Register response handlers
-            _requestSender.RegisterResponseHandlers();
+            _ibClient.RegisterResponseHandlers();
 
             // Connect
-            _requestSender.Connect(configuration.Host, configuration.Port, configuration.ClientId);
+            _ibClient.Connect(configuration.Host, configuration.Port, configuration.ClientId);
+
+            var reader = _ibClient.ReaderFactory();
+            reader.Start();
+
+            new Thread(() =>  // https://devblogs.microsoft.com/pfxteam/await-synchronizationcontext-and-console-apps/
+            {
+                while (_ibClient.IsConnected())
+                {
+                    _ibClient.WaitForSignal();
+                    reader.processMsgs();
+                }
+            })
+            { IsBackground = true }
+            .Start();
 
             // Start input loop
             while (true)
