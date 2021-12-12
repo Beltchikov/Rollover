@@ -25,6 +25,8 @@ namespace Rollover
         public void Run()
         {
             var configuration = _configurationManager.GetConfiguration();
+            var msg = $"Rollover: Host:{configuration.Host} Port:{configuration.Port} ClientId:{configuration.ClientId} Input Q to quit.";
+            _consoleWrapper.WriteLine(msg);
 
             new Thread(() => { _inputQueue.Enqueue(_consoleWrapper.ReadLine()); })
             { IsBackground = true }

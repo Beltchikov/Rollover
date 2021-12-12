@@ -8,5 +8,10 @@ namespace Rollover.Input
         {
             return Console.ReadLine();
         }
+
+        public void WriteLine(string message)
+        {
+            Console.WriteLine(message);
+        }
     }
 }

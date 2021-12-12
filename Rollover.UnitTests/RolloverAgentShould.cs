@@ -20,7 +20,17 @@ namespace Rollover.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
-        public void CallConsoleWrapper(
+        public void CallInputQueue(
+            [Frozen] IInputQueue inputQueue,
+            RolloverAgent sut)
+        {
+            inputQueue.Dequeue().Returns("SomeInput", "q");
+            sut.Run();
+            inputQueue.Received().Enqueue(Arg.Any<string>());
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallConsoleWrapperReadLine(
             [Frozen] IConsoleWrapper consoleWrapper,
             [Frozen] IInputQueue inputQueue,
             RolloverAgent sut)
@@ -31,14 +41,16 @@ namespace Rollover.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
-        public void CallInputQueue(
+        public void CallConsoleWrapperWriteLineWithConfiguration(
+            [Frozen] IConsoleWrapper consoleWrapper,
             [Frozen] IInputQueue inputQueue,
             RolloverAgent sut)
         {
-            inputQueue.Dequeue().Returns("SomeInput", "q");
+            inputQueue.Dequeue().Returns("Q");
             sut.Run();
-            inputQueue.Received().Enqueue(Arg.Any<string>());
+            consoleWrapper.Received().WriteLine(Arg.Any<string>());
         }
+
 
         // ibClient.ClientSocket.eConnect called
 
