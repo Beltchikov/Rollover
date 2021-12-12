@@ -1,6 +1,7 @@
 using AutoFixture.Xunit2;
 using NSubstitute;
 using Rollover.Configuration;
+using Rollover.Ib;
 using Rollover.Input;
 using Xunit;
 
@@ -49,6 +50,17 @@ namespace Rollover.UnitTests
             inputQueue.Dequeue().Returns("Q");
             sut.Run();
             consoleWrapper.Received().WriteLine(Arg.Any<string>());
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallRequestSenderRegisterRequestHandlers(
+            [Frozen] IInputQueue inputQueue,
+            [Frozen] IRequestSender requestSender,
+            RolloverAgent sut)
+        {
+            inputQueue.Dequeue().Returns("SomeInput", "q");
+            sut.Run();
+            requestSender.Received().RegisterResponseHandlers();
         }
 
 

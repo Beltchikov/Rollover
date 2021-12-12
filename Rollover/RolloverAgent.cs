@@ -1,4 +1,5 @@
 ﻿using Rollover.Configuration;
+using Rollover.Ib;
 using Rollover.Input;
 using System;
 using System.Threading;
@@ -10,27 +11,36 @@ namespace Rollover
         private IConfigurationManager _configurationManager;
         private IConsoleWrapper _consoleWrapper;
         private IInputQueue _inputQueue;
+        private IRequestSender _requestSender;
 
         public RolloverAgent(
-            IConfigurationManager configurationManager, 
+            IConfigurationManager configurationManager,
             IConsoleWrapper consoleWrapper,
-            IInputQueue inputQueue)
+            IInputQueue inputQueue, 
+            IRequestSender requestSender)
         {
             _configurationManager = configurationManager;
             _consoleWrapper = consoleWrapper;
             _inputQueue = inputQueue;
+            _requestSender = requestSender;
         }
 
 
         public void Run()
         {
+            // Read configuration
             var configuration = _configurationManager.GetConfiguration();
             var msg = $"Rollover: Host:{configuration.Host} Port:{configuration.Port} ClientId:{configuration.ClientId} Input Q to quit.";
             _consoleWrapper.WriteLine(msg);
 
+            // Start input thread
             new Thread(() => { _inputQueue.Enqueue(_consoleWrapper.ReadLine()); })
             { IsBackground = true }
             .Start();
+
+            // Register response handlers
+            _requestSender.RegisterResponseHandlers();
+
 
             while (true)
             {

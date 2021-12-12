@@ -1,4 +1,5 @@
 ﻿using Rollover.Configuration;
+using Rollover.Ib;
 using Rollover.Input;
 
 namespace Rollover
@@ -13,11 +14,13 @@ namespace Rollover
                 fileHelper, serializer);
             IConsoleWrapper consoleWrapper = new ConsoleWrapper();
             IInputQueue inputQueue = new InputQueue();
+            IRequestSender requestSender = new RequestSender();
 
             IRolloverAgent rolloverAgent = new RolloverAgent(
                 configurationManager, 
                 consoleWrapper,
-                inputQueue);
+                inputQueue,
+                requestSender);
             rolloverAgent.Run();
         }
     }
