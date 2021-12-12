@@ -1,29 +1,38 @@
-﻿using Rollover.Configuration;
+﻿using Nito.AsyncEx;
+using Rollover.Configuration;
 using Rollover.Ib;
 using Rollover.Input;
+using System;
 
 namespace Rollover
 {
     class Program
     {
+        [STAThread]
         static void Main(string[] args)
         {
-            IFileHelper fileHelper = new FileHelper();
-            ISerializer serializer = new Serializer();
-            IConfigurationManager configurationManager = new ConfigurationManager(
-                fileHelper, serializer);
-            IConsoleWrapper consoleWrapper = new ConsoleWrapper();
-            IInputQueue inputQueue = new InputQueue();
+            AsyncContext.Run(() =>
+            {
+                IFileHelper fileHelper = new FileHelper();
+                ISerializer serializer = new Serializer();
+                IConfigurationManager configurationManager = new ConfigurationManager(
+                    fileHelper, serializer);
+                IConsoleWrapper consoleWrapper = new ConsoleWrapper();
+                IInputQueue inputQueue = new InputQueue();
 
-            IIbClientWrapper ibClient = new IbClientWrapper();
-            IRequestSender requestSender = new RequestSender(ibClient);
+                IIbClientWrapper ibClient = new IbClientWrapper();
+                IRequestSender requestSender = new RequestSender(ibClient);
 
-            IRolloverAgent rolloverAgent = new RolloverAgent(
-                configurationManager, 
-                consoleWrapper,
-                inputQueue,
-                requestSender);
-            rolloverAgent.Run();
+                IRolloverAgent rolloverAgent = new RolloverAgent(
+                    configurationManager,
+                    consoleWrapper,
+                    inputQueue,
+                    requestSender);
+
+                rolloverAgent.Run();
+            });
+
+            
         }
     }
 }

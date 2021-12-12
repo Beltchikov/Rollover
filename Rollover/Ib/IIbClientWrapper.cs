@@ -14,5 +14,6 @@ namespace Rollover.Ib
         EReader ReaderFactory();
         bool IsConnected();
         void WaitForSignal();
+        void RegisterResponseHandlers();
     }
 }

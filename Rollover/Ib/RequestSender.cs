@@ -32,11 +32,7 @@ namespace Rollover.Ib
 
         public void RegisterResponseHandlers()
         {
-            _ibClient.Error += ResponseHandlers.OnError;
-            _ibClient.NextValidId += ResponseHandlers.NextValidId;
-            _ibClient.ManagedAccounts += ResponseHandlers.ManagedAccounts;
+            _ibClient.RegisterResponseHandlers();
         }
-
-        
     }
 }
