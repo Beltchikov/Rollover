@@ -6,23 +6,21 @@ namespace Rollover.Input
     {
         public void Run(IConsoleWrapper consoleWrapper, IInputQueue inputQueue)
         {
-            throw new NotImplementedException();
+            while (true)
+            {
+                var input = inputQueue.Dequeue();
+                if (input == null)
+                {
+                    continue;
+                }
 
-            //while (true)
-            //{
-            //    var input = _inputQueue.Dequeue();
-            //    if (input == null)
-            //    {
-            //        continue;
-            //    }
+                consoleWrapper.WriteLine(input);
 
-            //    _consoleWrapper.WriteLine(input);
-
-            //    if (input.Equals("q", StringComparison.InvariantCultureIgnoreCase))
-            //    {
-            //        break;
-            //    }
-            //}
+                if (input.Equals("q", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    break;
+                }
+            }
         }
     }
 }

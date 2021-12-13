@@ -1,9 +1,7 @@
 ﻿using Rollover.Configuration;
 using Rollover.Ib;
 using Rollover.Input;
-using System;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Rollover
 {
@@ -50,22 +48,6 @@ namespace Rollover
 
             // Start input loop
             _inputLoop.Run(_consoleWrapper, _inputQueue);
-
-            //while (true)
-            //{
-            //    var input = _inputQueue.Dequeue();
-            //    if(input == null)
-            //    {
-            //        continue;
-            //    }
-
-            //    _consoleWrapper.WriteLine(input);
-
-            //    if (input.Equals("q", StringComparison.InvariantCultureIgnoreCase))
-            //    {
-            //        break;
-            //    }
-            //}
 
             // Disconnect
             _requestSender.Disconnect();
