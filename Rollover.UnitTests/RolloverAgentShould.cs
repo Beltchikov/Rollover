@@ -3,6 +3,7 @@ using NSubstitute;
 using Rollover.Configuration;
 using Rollover.Ib;
 using Rollover.Input;
+using System.Threading;
 using Xunit;
 
 namespace Rollover.UnitTests
@@ -60,7 +61,7 @@ namespace Rollover.UnitTests
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
             sut.Run();
-            requestSender.Received().RegisterResponseHandlers();
+            requestSender.Received().RegisterResponseHandlers(inputQueue, Arg.Any<SynchronizationContext>());
         }
 
         [Theory, AutoNSubstituteData]

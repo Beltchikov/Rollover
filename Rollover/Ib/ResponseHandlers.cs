@@ -1,26 +1,38 @@
 ﻿using IBSampleApp.messages;
 using Rollover.Input;
 using System;
+using System.Linq;
+using System.Threading;
 
 namespace Rollover.Ib
 {
     public static class ResponseHandlers
     {
         public static IInputQueue InputQueue { get; set; }
+        public static SynchronizationContext SynchronizationContext { get; internal set; }
 
-        public static void OnError(int arg1, int arg2, string arg3, Exception arg4)
+        public static void OnError(int id, int errorCode, string msg, Exception ex)
         {
-            throw new NotImplementedException();
+            InputQueue.Enqueue(msg);
         }
 
-        public static void NextValidId(ConnectionStatusMessage obj)
+        public static void NextValidId(ConnectionStatusMessage connectionStatusMessage)
         {
-            throw new NotImplementedException();
+            string msg = connectionStatusMessage.IsConnected
+                ? "Connected!"
+                : "Disconnected...";
+            InputQueue.Enqueue(msg);
         }
 
-        public static void ManagedAccounts(ManagedAccountsMessage obj)
+        public static void ManagedAccounts(ManagedAccountsMessage managedAccountsMessage)
         {
-            throw new NotImplementedException();
+            if (!managedAccountsMessage.ManagedAccounts.Any())
+            {
+                throw new Exception("Unexpected");
+            }
+
+            string msg = Environment.NewLine + "Acounts found: " + managedAccountsMessage.ManagedAccounts.Aggregate((r, n) => r + ", " + n);
+            InputQueue.Enqueue(msg);
         }
     }
 }

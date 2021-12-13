@@ -1,6 +1,7 @@
 ﻿using IBApi;
 using IBSampleApp.messages;
 using System;
+using System.Threading;
 
 namespace Rollover.Ib
 {
@@ -14,6 +15,6 @@ namespace Rollover.Ib
         EReader ReaderFactory();
         bool IsConnected();
         void WaitForSignal();
-        void RegisterResponseHandlers();
+        void RegisterResponseHandlers(Input.IInputQueue _inputQueue, SynchronizationContext synchronizationContext);
     }
 }

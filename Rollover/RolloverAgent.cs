@@ -17,7 +17,7 @@ namespace Rollover
         public RolloverAgent(
             IConfigurationManager configurationManager,
             IConsoleWrapper consoleWrapper,
-            IInputQueue inputQueue, 
+            IInputQueue inputQueue,
             IRequestSender requestSender)
         {
             _configurationManager = configurationManager;
@@ -40,7 +40,7 @@ namespace Rollover
             .Start();
 
             // Register response handlers
-            _requestSender.RegisterResponseHandlers();
+            _requestSender.RegisterResponseHandlers(_inputQueue, new SynchronizationContext());
 
             // Connect
             _requestSender.Connect(configuration.Host, configuration.Port, configuration.ClientId);
@@ -49,7 +49,14 @@ namespace Rollover
             while (true)
             {
                 var input = _inputQueue.Dequeue();
-                if (input != null && input.Equals("q", StringComparison.InvariantCultureIgnoreCase))
+                if(input == null)
+                {
+                    continue;
+                }
+
+                _consoleWrapper.WriteLine(input);
+
+                if (input.Equals("q", StringComparison.InvariantCultureIgnoreCase))
                 {
                     break;
                 }

@@ -1,8 +1,10 @@
-﻿namespace Rollover.Ib
+﻿using System.Threading;
+
+namespace Rollover.Ib
 {
     public interface IRequestSender
     {
-        void RegisterResponseHandlers();
+        void RegisterResponseHandlers(Input.IInputQueue _inputQueue, SynchronizationContext synchronizationContext);
         void Connect(string host, int port, int clientId);
     }
 }

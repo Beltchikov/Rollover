@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using Rollover.Input;
+using System.Threading;
 
 namespace Rollover.Ib
 {
@@ -30,9 +31,9 @@ namespace Rollover.Ib
             .Start();
         }
 
-        public void RegisterResponseHandlers()
+        public void RegisterResponseHandlers(IInputQueue _inputQueue, SynchronizationContext synchronizationContext)
         {
-            _ibClient.RegisterResponseHandlers();
+            _ibClient.RegisterResponseHandlers(_inputQueue, synchronizationContext);
         }
     }
 }

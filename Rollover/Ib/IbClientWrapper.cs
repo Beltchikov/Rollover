@@ -1,7 +1,9 @@
 ﻿using IBApi;
 using IBSampleApp;
 using IBSampleApp.messages;
+using Rollover.Input;
 using System;
+using System.Threading;
 
 namespace Rollover.Ib
 {
@@ -40,8 +42,11 @@ namespace Rollover.Ib
             _signal.waitForSignal();
         }
 
-        public void RegisterResponseHandlers()
+        public void RegisterResponseHandlers(IInputQueue _inputQueue, SynchronizationContext synchronizationContext)
         {
+            ResponseHandlers.InputQueue = _inputQueue;
+            ResponseHandlers.SynchronizationContext = synchronizationContext;
+
             _ibClient.Error += ResponseHandlers.OnError;
             _ibClient.NextValidId += ResponseHandlers.NextValidId;
             _ibClient.ManagedAccounts += ResponseHandlers.ManagedAccounts;
