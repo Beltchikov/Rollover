@@ -49,23 +49,23 @@ namespace Rollover
             _requestSender.Connect(configuration.Host, configuration.Port, configuration.ClientId);
 
             // Start input loop
-            _inputLoop.Run();
+            _inputLoop.Run(_consoleWrapper, _inputQueue);
 
-            while (true)
-            {
-                var input = _inputQueue.Dequeue();
-                if(input == null)
-                {
-                    continue;
-                }
+            //while (true)
+            //{
+            //    var input = _inputQueue.Dequeue();
+            //    if(input == null)
+            //    {
+            //        continue;
+            //    }
 
-                _consoleWrapper.WriteLine(input);
+            //    _consoleWrapper.WriteLine(input);
 
-                if (input.Equals("q", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    break;
-                }
-            }
+            //    if (input.Equals("q", StringComparison.InvariantCultureIgnoreCase))
+            //    {
+            //        break;
+            //    }
+            //}
 
             // Disconnect
             _requestSender.Disconnect();

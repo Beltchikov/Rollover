@@ -2,6 +2,6 @@
 {
     public interface IInputLoop
     {
-        void Run();
+        void Run(IConsoleWrapper consoleWrapper, IInputQueue inputQueue);
     }
 }

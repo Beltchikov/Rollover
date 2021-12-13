@@ -90,13 +90,13 @@ namespace Rollover.UnitTests
         [Theory, AutoNSubstituteData]
         public void CallInputLoopRun(
            [Frozen] IInputQueue inputQueue,
-           [Frozen] IRequestSender requestSender,
+           [Frozen] IConsoleWrapper consoleWrapper,
            [Frozen] IInputLoop inputLoop,
            RolloverAgent sut)
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
             sut.Run();
-            inputLoop.Received().Run();
+            inputLoop.Received().Run(consoleWrapper, inputQueue);
         }
 
 
