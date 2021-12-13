@@ -87,6 +87,18 @@ namespace Rollover.UnitTests
             requestSender.Received().Disconnect();
         }
 
+        [Theory, AutoNSubstituteData]
+        public void CallInputLoopRun(
+           [Frozen] IInputQueue inputQueue,
+           [Frozen] IRequestSender requestSender,
+           [Frozen] IInputLoop inputLoop,
+           RolloverAgent sut)
+        {
+            inputQueue.Dequeue().Returns("SomeInput", "q");
+            sut.Run();
+            inputLoop.Received().Run();
+        }
+
 
         // ibClient.ClientSocket.eConnect called
 

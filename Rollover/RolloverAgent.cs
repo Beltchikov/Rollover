@@ -13,17 +13,20 @@ namespace Rollover
         private IConsoleWrapper _consoleWrapper;
         private IInputQueue _inputQueue;
         private IRequestSender _requestSender;
+        private IInputLoop _inputLoop;
 
         public RolloverAgent(
             IConfigurationManager configurationManager,
             IConsoleWrapper consoleWrapper,
             IInputQueue inputQueue,
-            IRequestSender requestSender)
+            IRequestSender requestSender, 
+            IInputLoop inputLoop)
         {
             _configurationManager = configurationManager;
             _consoleWrapper = consoleWrapper;
             _inputQueue = inputQueue;
             _requestSender = requestSender;
+            _inputLoop = inputLoop;
         }
 
 
@@ -46,6 +49,8 @@ namespace Rollover
             _requestSender.Connect(configuration.Host, configuration.Port, configuration.ClientId);
 
             // Start input loop
+            _inputLoop.Run();
+
             while (true)
             {
                 var input = _inputQueue.Dequeue();

@@ -18,12 +18,14 @@ namespace Rollover
 
             IIbClientWrapper ibClient = new IbClientWrapper();
             IRequestSender requestSender = new RequestSender(ibClient);
+            IInputLoop inputLoop = new InputLoop();
 
             IRolloverAgent rolloverAgent = new RolloverAgent(
                 configurationManager,
                 consoleWrapper,
                 inputQueue,
-                requestSender);
+                requestSender,
+                inputLoop);
 
             rolloverAgent.Run();
         }
