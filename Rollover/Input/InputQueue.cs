@@ -26,5 +26,10 @@ namespace Rollover.Input
                 ? _inputQueue.Dequeue()
                 : null;
         }
+
+        public int Count()
+        { 
+            return _inputQueue.Count(); 
+        }
     }
 }

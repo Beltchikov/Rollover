@@ -31,6 +31,11 @@ namespace Rollover.Ib
             .Start();
         }
 
+        public void Disconnect()
+        {
+            _ibClient.Disconnect();
+        }
+
         public void RegisterResponseHandlers(IInputQueue _inputQueue, SynchronizationContext synchronizationContext)
         {
             _ibClient.RegisterResponseHandlers(_inputQueue, synchronizationContext);

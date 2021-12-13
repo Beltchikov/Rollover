@@ -51,5 +51,15 @@ namespace Rollover.Ib
             _ibClient.NextValidId += ResponseHandlers.NextValidId;
             _ibClient.ManagedAccounts += ResponseHandlers.ManagedAccounts;
         }
+
+        public void Disconnect()
+        {
+            if(! IsConnected())
+            {
+                return;
+            }
+
+            _ibClient.ClientSocket.eDisconnect();
+        }
     }
 }

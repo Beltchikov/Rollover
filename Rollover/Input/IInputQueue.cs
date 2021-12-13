@@ -4,5 +4,6 @@
     {
         void Enqueue(string v);
         string Dequeue();
+        int Count();
     }
 }

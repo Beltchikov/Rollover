@@ -61,6 +61,9 @@ namespace Rollover
                     break;
                 }
             }
+
+            // Disconnect
+            _requestSender.Disconnect();
         }
     }
 }

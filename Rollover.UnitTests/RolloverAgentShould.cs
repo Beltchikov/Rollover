@@ -76,6 +76,18 @@ namespace Rollover.UnitTests
         }
 
 
+        [Theory, AutoNSubstituteData]
+        public void CallRequestSenderDisconnect(
+            [Frozen] IInputQueue inputQueue,
+            [Frozen] IRequestSender requestSender,
+            RolloverAgent sut)
+        {
+            inputQueue.Dequeue().Returns("SomeInput", "q");
+            sut.Run();
+            requestSender.Received().Disconnect();
+        }
+
+
         // ibClient.ClientSocket.eConnect called
 
         // EReader inject

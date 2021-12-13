@@ -16,5 +16,6 @@ namespace Rollover.Ib
         bool IsConnected();
         void WaitForSignal();
         void RegisterResponseHandlers(Input.IInputQueue _inputQueue, SynchronizationContext synchronizationContext);
+        void Disconnect();
     }
 }
