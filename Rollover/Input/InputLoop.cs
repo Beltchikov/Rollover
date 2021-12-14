@@ -4,6 +4,13 @@ namespace Rollover.Input
 {
     public class InputLoop : IInputLoop
     {
+        private IOutputHelper _outputHelper;
+
+        public InputLoop(IOutputHelper outputHelper)
+        {
+            _outputHelper = outputHelper;
+        }
+
         public void Run(IConsoleWrapper consoleWrapper, IInputQueue inputQueue)
         {
             while (true)

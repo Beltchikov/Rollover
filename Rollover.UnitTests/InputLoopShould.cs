@@ -40,5 +40,17 @@ namespace Rollover.UnitTests
             sut.Run(consoleWrapper, inputQueue);
             consoleWrapper.Received().WriteLine("q");
         }
+
+        [Theory, AutoNSubstituteData]
+        public void CallOutputHelperConvert(
+           [Frozen] IInputQueue inputQueue,
+           [Frozen] IConsoleWrapper consoleWrapper,
+           [Frozen] IOutputHelper outputHelper,
+           InputLoop sut)
+        {
+            inputQueue.Dequeue().Returns("SomeInput", "q");
+            sut.Run(consoleWrapper, inputQueue);
+            outputHelper.Received().Convert(Arg.Any<string>());
+        }
     }
 }

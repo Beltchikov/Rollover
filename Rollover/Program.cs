@@ -18,7 +18,8 @@ namespace Rollover
 
             IIbClientWrapper ibClient = new IbClientWrapper();
             IRequestSender requestSender = new RequestSender(ibClient);
-            IInputLoop inputLoop = new InputLoop();
+            IOutputHelper outputHelper = new OutputHelper();
+            IInputLoop inputLoop = new InputLoop(outputHelper);
 
             IRolloverAgent rolloverAgent = new RolloverAgent(
                 configurationManager,

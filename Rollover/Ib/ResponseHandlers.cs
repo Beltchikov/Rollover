@@ -31,7 +31,7 @@ namespace Rollover.Ib
                 throw new Exception("Unexpected");
             }
 
-            string msg = Environment.NewLine + "Acounts found: " + managedAccountsMessage.ManagedAccounts.Aggregate((r, n) => r + ", " + n);
+            string msg = Environment.NewLine + "Accounts found: " + managedAccountsMessage.ManagedAccounts.Aggregate((r, n) => r + ", " + n);
             InputQueue.Enqueue(msg);
         }
     }
