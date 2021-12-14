@@ -32,5 +32,10 @@ namespace Rollover.Input
 
             consoleWrapper.WriteLine("Goodbye!");
         }
+
+        public bool CheckConnectionMessages(IConsoleWrapper consoleWrapper, IInputQueue inputQueue)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

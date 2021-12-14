@@ -47,6 +47,11 @@ namespace Rollover
 
             // Connect
             _requestSender.Connect(configuration.Host, configuration.Port, configuration.ClientId);
+            if(!_inputLoop.CheckConnectionMessages(_consoleWrapper, _inputQueue))
+            {
+                _consoleWrapper.WriteLine("Can not connect!");
+                return;
+            }
 
             // Start input loop
             _inputLoop.Run(_consoleWrapper, _inputQueue);
