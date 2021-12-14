@@ -36,7 +36,9 @@ namespace Rollover
             _consoleWrapper.WriteLine(msg);
 
             // Start input thread
-            new Thread(() => { _inputQueue.Enqueue(_consoleWrapper.ReadLine()); })
+            new Thread(() => {
+                while (true) { _inputQueue.Enqueue(_consoleWrapper.ReadLine()); }
+            })
             { IsBackground = true }
             .Start();
 

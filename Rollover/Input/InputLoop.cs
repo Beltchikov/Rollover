@@ -21,13 +21,16 @@ namespace Rollover.Input
                     continue;
                 }
 
-                consoleWrapper.WriteLine(input);
+                var outputList = _outputHelper.Convert(input);
+                outputList.ForEach(o => consoleWrapper.WriteLine(o));
 
                 if (input.Equals("q", StringComparison.InvariantCultureIgnoreCase))
                 {
                     break;
                 }
             }
+
+            consoleWrapper.WriteLine("Goodbye!");
         }
     }
 }

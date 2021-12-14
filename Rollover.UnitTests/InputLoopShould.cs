@@ -38,7 +38,7 @@ namespace Rollover.UnitTests
         {
             inputQueue.Dequeue().Returns((string)null, "q");
             sut.Run(consoleWrapper, inputQueue);
-            consoleWrapper.Received().WriteLine("q");
+            consoleWrapper.Received().WriteLine("Goodbye!");
         }
 
         [Theory, AutoNSubstituteData]

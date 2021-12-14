@@ -5,9 +5,11 @@ namespace Rollover.Input
 {
     public class OutputHelper : IOutputHelper
     {
-        public List<string> Convert(string v)
+        public List<string> Convert(string input)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            // TODO
+            return new List<string> { input };
         }
     }
 }
