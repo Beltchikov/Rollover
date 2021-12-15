@@ -68,6 +68,22 @@ namespace Rollover.UnitTests
 
 
         [Theory, AutoNSubstituteData]
+        public void WaitForConnectionResponseTimeout(
+           [Frozen] IInputQueue inputQueue,
+           [Frozen] IConsoleWrapper consoleWrapper,
+           InputLoop sut)
+        {
+            int timeout = 10000;
+            inputQueue.Dequeue().Returns("SomeInput", "q");
+
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            var result = sut.CheckConnectionMessages(consoleWrapper, inputQueue, timeout);
+            Assert.True(stopWatch.Elapsed.TotalMilliseconds > timeout);
+        }
+
+        [Theory, AutoNSubstituteData]
         public void ReturnFalseFromCheckConnectionMessagesAfterTimeout(
            [Frozen] IInputQueue inputQueue,
            [Frozen] IConsoleWrapper consoleWrapper,
@@ -80,9 +96,23 @@ namespace Rollover.UnitTests
             stopWatch.Start();
 
             var result = sut.CheckConnectionMessages(consoleWrapper, inputQueue, timeout);
+            Assert.False(result);
+        }
 
-            Assert.True(stopWatch.Elapsed.TotalMilliseconds > timeout);
+        [Theory, AutoNSubstituteData]
+        public void ReturnTrueFromCheckConnectionMessagesIfSomeResponseContainsConnected(
+           [Frozen] IInputQueue inputQueue,
+           [Frozen] IConsoleWrapper consoleWrapper,
+           InputLoop sut)
+        {
+            int timeout = 10000;
+            inputQueue.Dequeue().Returns("Connected");
 
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            var result = sut.CheckConnectionMessages(consoleWrapper, inputQueue, timeout);
+            Assert.True(result);
         }
     }
 }

@@ -42,13 +42,13 @@ namespace Rollover.Input
             while (stopWatch.Elapsed.TotalMilliseconds < timeout)
             {
                 var input = inputQueue.Dequeue();
-                //if (input == null)
-                //{
-                //    continue;
-                //}
+                if (input.Contains("Connected"))
+                {
+                    return true;
+                }
             }
 
-            return true;
+            return false;
         }
     }
 }
