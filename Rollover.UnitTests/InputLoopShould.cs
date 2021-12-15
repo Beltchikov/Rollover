@@ -1,6 +1,7 @@
 ﻿using AutoFixture.Xunit2;
 using NSubstitute;
 using Rollover.Configuration;
+using Rollover.Ib;
 using Rollover.Input;
 using System.Diagnostics;
 using Xunit;
@@ -108,11 +109,24 @@ namespace Rollover.UnitTests
             int timeout = 10000;
             inputQueue.Dequeue().Returns(null, "Connected");
 
-            Stopwatch stopWatch = new Stopwatch();
-            stopWatch.Start();
-
             var result = sut.CheckConnectionMessages(consoleWrapper, inputQueue, timeout);
             Assert.True(result);
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallConnectedConditionInCheckConnectionMessages(
+           [Frozen] IInputQueue inputQueue,
+           [Frozen] IConsoleWrapper consoleWrapper,
+           [Frozen] IConnectedCondition connectedCondition,
+           InputLoop sut)
+        {
+            var input = "SomeInput";
+            inputQueue.Dequeue().Returns(input);
+            
+            sut.CheckConnectionMessages(consoleWrapper, inputQueue, 10000);
+            
+            connectedCondition.Received().AddInput(input);
+            connectedCondition.Received().IsConnected();
         }
     }
 }
