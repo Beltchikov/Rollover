@@ -42,6 +42,10 @@ namespace Rollover.Input
             while (stopWatch.Elapsed.TotalMilliseconds < timeout)
             {
                 var input = inputQueue.Dequeue();
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    continue;
+                }
                 if (input.Contains("Connected"))
                 {
                     return true;

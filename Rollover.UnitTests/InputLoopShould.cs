@@ -106,7 +106,7 @@ namespace Rollover.UnitTests
            InputLoop sut)
         {
             int timeout = 10000;
-            inputQueue.Dequeue().Returns("Connected");
+            inputQueue.Dequeue().Returns(null, "Connected");
 
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
