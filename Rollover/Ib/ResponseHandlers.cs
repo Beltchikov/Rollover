@@ -13,14 +13,14 @@ namespace Rollover.Ib
 
         public static void OnError(int id, int errorCode, string msg, Exception ex)
         {
-            InputQueue.Enqueue(msg);
+            InputQueue.Enqueue($"id={id} errorCode={errorCode} msg={msg} Exception={ex}");
         }
 
         public static void NextValidId(ConnectionStatusMessage connectionStatusMessage)
         {
             string msg = connectionStatusMessage.IsConnected
-                ? "Connected!"
-                : "Disconnected...";
+                ? "Connected."
+                : "Disconnected.";
             InputQueue.Enqueue(msg);
         }
 

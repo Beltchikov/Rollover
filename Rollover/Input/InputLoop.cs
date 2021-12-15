@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rollover.Ib;
+using System;
 using System.Diagnostics;
 
 namespace Rollover.Input
@@ -6,10 +7,12 @@ namespace Rollover.Input
     public class InputLoop : IInputLoop
     {
         private IOutputHelper _outputHelper;
+        private IConnectedCondition _connectedCondition;
 
-        public InputLoop(IOutputHelper outputHelper)
+        public InputLoop(IOutputHelper outputHelper, IConnectedCondition connectedCondition)
         {
             _outputHelper = outputHelper;
+            _connectedCondition = connectedCondition;
         }
 
         public void Run(IConsoleWrapper consoleWrapper, IInputQueue inputQueue)
@@ -46,7 +49,15 @@ namespace Rollover.Input
                 {
                     continue;
                 }
-                if (input.Contains("Connected"))
+
+                //var connectedCondition = input.Contains("Connected");
+                //if (connectedCondition)
+                //{
+                //    return true;
+                //}
+
+                _connectedCondition.AddInput(input);
+                if (_connectedCondition.IsConnected())
                 {
                     return true;
                 }
