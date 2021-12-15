@@ -1,29 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Rollover.Ib
 {
     public class ConnectedCondition : IConnectedCondition
     {
+        private List<string> _inputList = new List<string>();
+        
         public void AddInput(string input)
         {
-            throw new NotImplementedException();
+            _inputList.Add(input);  
         }
 
         public bool IsConnected()
         {
-            throw new NotImplementedException();
+            bool condition = _inputList.Any(i => i.Contains("id=-1"));
+            condition = condition && _inputList.Any(i => i.Contains("errorCode=2104"));
+            condition = condition && _inputList.Any(i => i.Contains("Market data"));
+            condition = condition && _inputList.Any(i => i.Contains("OK"));
 
-      //      id = -1 errorCode = 2104 msg = Market data farm connection is OK:usfarm.nj Exception =
-
-      //Accounts found: U7292073
-      //id = -1 errorCode = 2104 msg = Market data farm connection is OK:eufarm Exception =
-      //      id = -1 errorCode = 2104 msg = Market data farm connection is OK:usfuture Exception =
-      //            id = -1 errorCode = 2104 msg = Market data farm connection is OK:cashfarm Exception =
-      //                  id = -1 errorCode = 2104 msg = Market data farm connection is OK:usopt Exception =
-      //                        id = -1 errorCode = 2104 msg = Market data farm connection is OK:usfarm Exception =
-      //                              id = -1 errorCode = 2106 msg = HMDS data farm connection is OK:euhmds Exception =
-      //                                    id = -1 errorCode = 2106 msg = HMDS data farm connection is OK:ushmds Exception =
-      //                                          id = -1 errorCode = 2158 msg = Sec - def data farm connection is OK:secdefil Exception =
-        }
+            return condition;
+       }
     }
 }
