@@ -48,6 +48,7 @@ namespace Rollover.UnitTests
             [Frozen] IIbClientWrapper ibClient,
             RequestSender sut)
         {
+            ibClient.IsConnected().Returns(true);
             sut.Connect("", 0, 0);
             ibClient.Received().WaitForSignal();
         }

@@ -62,7 +62,7 @@ namespace Rollover.UnitTests
            InputLoop sut)
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
-            sut.CheckConnectionMessages(consoleWrapper, inputQueue, 0);
+            sut.CheckConnectionMessages(consoleWrapper, inputQueue, 10000);
             inputQueue.Received().Dequeue();
         }
 
