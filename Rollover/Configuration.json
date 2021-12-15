@@ -1,5 +1,6 @@
 {
   "Host": "localhost",
   "Port": 4001,
-  "ClientId":  1 
+  "ClientId": 1,
+  "Timeout":  10000
 }

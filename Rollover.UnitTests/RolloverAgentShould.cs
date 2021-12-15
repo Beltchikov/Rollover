@@ -108,7 +108,7 @@ namespace Rollover.UnitTests
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
             sut.Run();
-            inputLoop.Received().CheckConnectionMessages(consoleWrapper, inputQueue);
+            inputLoop.Received().CheckConnectionMessages(consoleWrapper, inputQueue, Arg.Any<int>());
         }
 
         [Theory, AutoNSubstituteData]
@@ -119,7 +119,7 @@ namespace Rollover.UnitTests
            RolloverAgent sut)
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
-            inputLoop.CheckConnectionMessages(consoleWrapper, inputQueue)
+            inputLoop.CheckConnectionMessages(consoleWrapper, inputQueue, Arg.Any<int>())
                 .Returns(false);
 
             sut.Run();

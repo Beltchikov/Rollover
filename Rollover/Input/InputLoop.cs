@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace Rollover.Input
 {
@@ -33,10 +34,21 @@ namespace Rollover.Input
             consoleWrapper.WriteLine("Goodbye!");
         }
 
-        public bool CheckConnectionMessages(IConsoleWrapper consoleWrapper, IInputQueue inputQueue)
+        public bool CheckConnectionMessages(IConsoleWrapper consoleWrapper, IInputQueue inputQueue, int timeout)
         {
-            //throw new NotImplementedException();
-            return false;
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            while (stopWatch.Elapsed.TotalMilliseconds < timeout)
+            {
+                var input = inputQueue.Dequeue();
+                //if (input == null)
+                //{
+                //    continue;
+                //}
+            }
+
+            return true;
         }
     }
 }

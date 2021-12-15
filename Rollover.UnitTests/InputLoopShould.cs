@@ -1,6 +1,8 @@
 ﻿using AutoFixture.Xunit2;
 using NSubstitute;
+using Rollover.Configuration;
 using Rollover.Input;
+using System.Diagnostics;
 using Xunit;
 
 namespace Rollover.UnitTests
@@ -51,6 +53,36 @@ namespace Rollover.UnitTests
             inputQueue.Dequeue().Returns("SomeInput", "q");
             sut.Run(consoleWrapper, inputQueue);
             outputHelper.Received().Convert(Arg.Any<string>());
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallInputQueueDequeueInCheckConnectionMessages(
+           [Frozen] IInputQueue inputQueue,
+           [Frozen] IConsoleWrapper consoleWrapper,
+           InputLoop sut)
+        {
+            inputQueue.Dequeue().Returns("SomeInput", "q");
+            sut.CheckConnectionMessages(consoleWrapper, inputQueue, 0);
+            inputQueue.Received().Dequeue();
+        }
+
+
+        [Theory, AutoNSubstituteData]
+        public void ReturnFalseFromCheckConnectionMessagesAfterTimeout(
+           [Frozen] IInputQueue inputQueue,
+           [Frozen] IConsoleWrapper consoleWrapper,
+           InputLoop sut)
+        {
+            int timeout = 10000;
+            inputQueue.Dequeue().Returns("SomeInput", "q");
+
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            var result = sut.CheckConnectionMessages(consoleWrapper, inputQueue, timeout);
+
+            Assert.True(stopWatch.Elapsed.TotalMilliseconds > timeout);
+
         }
     }
 }
