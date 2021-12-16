@@ -20,6 +20,12 @@ namespace Rollover.Ib
             condition = condition && _inputList.Any(i => i.Contains("Market data"));
             condition = condition && _inputList.Any(i => i.Contains("OK"));
 
+            condition = condition && _inputList.Any(i => i.Contains("Accounts found"));
+            condition = condition && ! _inputList.Any(i => i.Contains("Disconnected"));
+            condition = condition && _inputList.Any(i => i.Contains("Connected"));
+
+            condition = condition && _inputList.Count() > 1;
+            
             return condition;
        }
     }
