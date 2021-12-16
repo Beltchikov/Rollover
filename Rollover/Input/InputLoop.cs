@@ -50,11 +50,8 @@ namespace Rollover.Input
                     continue;
                 }
 
-                //var connectedCondition = input.Contains("Connected");
-                //if (connectedCondition)
-                //{
-                //    return true;
-                //}
+                var outputList = _outputHelper.Convert(input);
+                outputList.ForEach(o => consoleWrapper.WriteLine(o));
 
                 _connectedCondition.AddInput(input);
                 if (_connectedCondition.IsConnected())

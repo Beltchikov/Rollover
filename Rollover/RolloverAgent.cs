@@ -53,6 +53,7 @@ namespace Rollover
                 _consoleWrapper.WriteLine("Can not connect!");
                 return;
             }
+            _consoleWrapper.WriteLine("Connected.");
 
             // Start input loop
             _inputLoop.Run(_consoleWrapper, _inputQueue);
