@@ -15,28 +15,6 @@ namespace Rollover.Input
             _connectedCondition = connectedCondition;
         }
 
-        public void Run(IConsoleWrapper consoleWrapper, IInputQueue inputQueue)
-        {
-            while (true)
-            {
-                var input = inputQueue.Dequeue();
-                if (input == null)
-                {
-                    continue;
-                }
-
-                var outputList = _outputHelper.Convert(input);
-                outputList.ForEach(o => consoleWrapper.WriteLine(o));
-
-                if (input.Equals("q", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    break;
-                }
-            }
-
-            consoleWrapper.WriteLine("Goodbye!");
-        }
-
         public bool CheckConnectionMessages(IConsoleWrapper consoleWrapper, IInputQueue inputQueue, int timeout)
         {
             Stopwatch stopWatch = new Stopwatch();
@@ -62,5 +40,29 @@ namespace Rollover.Input
 
             return false;
         }
+
+        public void Run(IConsoleWrapper consoleWrapper, IInputQueue inputQueue)
+        {
+            while (true)
+            {
+                var input = inputQueue.Dequeue();
+                if (input == null)
+                {
+                    continue;
+                }
+
+                var outputList = _outputHelper.Convert(input);
+                outputList.ForEach(o => consoleWrapper.WriteLine(o));
+
+                if (input.Equals("q", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    break;
+                }
+            }
+
+            consoleWrapper.WriteLine("Goodbye!");
+        }
+
+        
     }
 }
