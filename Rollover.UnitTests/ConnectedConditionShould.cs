@@ -10,16 +10,84 @@ namespace Rollover.UnitTests
 {
     public class ConnectedConditionShould
     {
-        [Theory]
-        [InlineData("id=-1 errorCode=2104 msg=Market data farm connection is OK:eufarm Exception=")]
-        void ReturnTrueIfAllConditionsMet(string input)
+        [Fact]
+        void ReturnFalseIfNoErrorCode2104()
         {
+            List<string> inputList = new List<string>
+            {
+                "errorCode=2104 msg=Market data farm connection is OK:eufarm Exception=",
+                "Accounts found: U7292073"
+            };
+
             IConnectedCondition sut = new ConnectedCondition();
-            sut.AddInput(input);
+            inputList.ForEach(i => sut.AddInput(i));
 
             var result = sut.IsConnected();
+            Assert.False(result);
+        }
 
-            Assert.True(result);    
+        [Fact]
+        void ReturnFalseIfNoIdMinusOne()
+        {
+            List<string> inputList = new List<string>
+            {
+                "id=-1 msg=Market data farm connection is OK:eufarm Exception=",
+                "Accounts found: U7292073"
+            };
+
+            IConnectedCondition sut = new ConnectedCondition();
+            inputList.ForEach(i => sut.AddInput(i));
+
+            var result = sut.IsConnected();
+            Assert.False(result);
+        }
+
+        [Fact]
+        void ReturnFalseIfNoMarketData()
+        {
+            List<string> inputList = new List<string>
+            {
+                "id=-1 errorCode=2104 msg= farm connection is OK:eufarm Exception=",
+                "Accounts found: U7292073"
+            };
+
+            IConnectedCondition sut = new ConnectedCondition();
+            inputList.ForEach(i => sut.AddInput(i));
+
+            var result = sut.IsConnected();
+            Assert.False(result);
+        }
+
+        [Fact]
+        void ReturnFalseIfNoOk()
+        {
+            List<string> inputList = new List<string>
+            {
+                "id=-1 errorCode=2104 msg=Market data farm connection is:eufarm Exception=",
+                "Accounts found: U7292073"
+            };
+
+            IConnectedCondition sut = new ConnectedCondition();
+            inputList.ForEach(i => sut.AddInput(i));
+
+            var result = sut.IsConnected();
+            Assert.False(result);
+        }
+
+        [Fact]
+        void ReturnTrueIfAllConditionsMet()
+        {
+            List<string> inputList = new List<string>
+            {
+                "id=-1 errorCode=2104 msg=Market data farm connection is OK:eufarm Exception=",
+                "Accounts found: U7292073"
+            };
+            
+            IConnectedCondition sut = new ConnectedCondition();
+            inputList.ForEach(i => sut.AddInput(i));
+
+            var result = sut.IsConnected();
+            Assert.True(result);
         }
 
         //      id = -1 errorCode = 2104 msg = Market data farm connection is OK:usfarm.nj Exception =
