@@ -72,10 +72,12 @@ namespace Rollover.UnitTests
         public void WaitForConnectionResponseTimeout(
            [Frozen] IInputQueue inputQueue,
            [Frozen] IConsoleWrapper consoleWrapper,
+           [Frozen] IConnectedCondition connectedCondition,
            InputLoop sut)
         {
             int timeout = 10000;
-            inputQueue.Dequeue().Returns("SomeInput", "q");
+            inputQueue.Dequeue().Returns("SomeInput", "SomeInput2");
+            connectedCondition.IsConnected().Returns(false);
 
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -88,10 +90,12 @@ namespace Rollover.UnitTests
         public void ReturnFalseFromCheckConnectionMessagesAfterTimeout(
            [Frozen] IInputQueue inputQueue,
            [Frozen] IConsoleWrapper consoleWrapper,
+           [Frozen] IConnectedCondition connectedCondition,
            InputLoop sut)
         {
             int timeout = 10000;
             inputQueue.Dequeue().Returns("SomeInput", "q");
+            connectedCondition.IsConnected().Returns(false);
 
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -99,20 +103,7 @@ namespace Rollover.UnitTests
             var result = sut.CheckConnectionMessages(consoleWrapper, inputQueue, timeout);
             Assert.False(result);
         }
-
-        [Theory, AutoNSubstituteData]
-        public void ReturnTrueFromCheckConnectionMessagesIfSomeResponseContainsConnected(
-           [Frozen] IInputQueue inputQueue,
-           [Frozen] IConsoleWrapper consoleWrapper,
-           InputLoop sut)
-        {
-            int timeout = 10000;
-            inputQueue.Dequeue().Returns(null, "Connected");
-
-            var result = sut.CheckConnectionMessages(consoleWrapper, inputQueue, timeout);
-            Assert.True(result);
-        }
-
+        
         [Theory, AutoNSubstituteData]
         public void CallConnectedConditionInCheckConnectionMessages(
            [Frozen] IInputQueue inputQueue,
@@ -127,6 +118,20 @@ namespace Rollover.UnitTests
             
             connectedCondition.Received().AddInput(input);
             connectedCondition.Received().IsConnected();
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void ReturnTrueFromCheckConnectionMessagesIfConnected(
+            [Frozen] IInputQueue inputQueue,
+            [Frozen] IConsoleWrapper consoleWrapper,
+            [Frozen] IConnectedCondition connectedCondition,
+            InputLoop sut)
+        {
+            int timeout = 10000;
+            connectedCondition.IsConnected().Returns(true);
+
+            var result = sut.CheckConnectionMessages(consoleWrapper, inputQueue, timeout);
+            Assert.True(result);
         }
     }
 }
