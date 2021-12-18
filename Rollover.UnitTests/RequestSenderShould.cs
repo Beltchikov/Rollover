@@ -52,5 +52,14 @@ namespace Rollover.UnitTests
             sut.Connect("", 0, 0);
             ibClient.Received().WaitForSignal();
         }
+
+        [Theory, AutoNSubstituteData]
+        public void CallIbClientDisconnect(
+            [Frozen] IIbClientWrapper ibClient,
+            RequestSender sut)
+        {
+            sut.Disconnect();   
+            ibClient.Received().Disconnect();
+        }
     }
 }
