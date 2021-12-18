@@ -53,8 +53,7 @@ namespace Rollover
                 _consoleWrapper.WriteLine("Can not connect!");
                 return;
             }
-            _consoleWrapper.WriteLine("Connected.");
-
+ 
             // List positions
             _requestSender.ListPositions();
 
