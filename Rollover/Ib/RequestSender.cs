@@ -43,7 +43,7 @@ namespace Rollover.Ib
 
         public void ListPositions()
         {
-            throw new System.NotImplementedException();
+            _ibClient.ListPositions();
         }
     }
 }

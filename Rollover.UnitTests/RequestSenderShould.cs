@@ -74,5 +74,14 @@ namespace Rollover.UnitTests
             sut.RegisterResponseHandlers(inputQueue, synchronizationContext);
             ibClient.Received().RegisterResponseHandlers(inputQueue, synchronizationContext);
         }
+
+        [Theory, AutoNSubstituteData]
+        public void CallIbClientListPositions(
+            [Frozen] IIbClientWrapper ibClient,
+            RequestSender sut)
+        {
+            sut.ListPositions();
+            ibClient.Received().ListPositions();
+        }
     }
 }

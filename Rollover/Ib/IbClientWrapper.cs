@@ -61,5 +61,10 @@ namespace Rollover.Ib
 
             _ibClient.ClientSocket.eDisconnect();
         }
+
+        public void ListPositions()
+        {
+            _ibClient.ClientSocket.reqPositions();
+        }
     }
 }
