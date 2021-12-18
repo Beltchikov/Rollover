@@ -55,6 +55,9 @@ namespace Rollover
             }
             _consoleWrapper.WriteLine("Connected.");
 
+            // List positions
+            _requestSender.ListPositions();
+
             // Start input loop
             _inputLoop.Run(_consoleWrapper, _inputQueue);
 

@@ -126,6 +126,23 @@ namespace Rollover.UnitTests
             consoleWrapper.Received().WriteLine("Can not connect!");
         }
 
+        [Theory, AutoNSubstituteData]
+        public void CallRequestSenderListPositions(
+           [Frozen] IInputQueue inputQueue,
+           [Frozen] IRequestSender requestSender,
+           [Frozen] IConsoleWrapper consoleWrapper,
+           [Frozen] IInputLoop inputLoop,
+           RolloverAgent sut)
+        {
+            inputQueue.Dequeue().Returns("SomeInput");
+            inputLoop.CheckConnectionMessages(consoleWrapper, inputQueue, Arg.Any<int>())
+                .Returns(true);
+
+            sut.Run();
+
+            requestSender.Received().ListPositions();
+        }
+
 
         // ibClient.ClientSocket.eConnect called
 

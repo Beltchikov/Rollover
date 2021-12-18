@@ -40,5 +40,10 @@ namespace Rollover.Ib
         {
             _ibClient.RegisterResponseHandlers(_inputQueue, synchronizationContext);
         }
+
+        public void ListPositions()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

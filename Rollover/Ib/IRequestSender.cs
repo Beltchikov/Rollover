@@ -7,5 +7,6 @@ namespace Rollover.Ib
         void RegisterResponseHandlers(Input.IInputQueue _inputQueue, SynchronizationContext synchronizationContext);
         void Connect(string host, int port, int clientId);
         void Disconnect();
+        void ListPositions();
     }
 }
