@@ -50,6 +50,8 @@ namespace Rollover.Ib
             _ibClient.Error += ResponseHandlers.OnError;
             _ibClient.NextValidId += ResponseHandlers.NextValidId;
             _ibClient.ManagedAccounts += ResponseHandlers.ManagedAccounts;
+            _ibClient.Position += ResponseHandlers.OnPosition;
+            _ibClient.PositionEnd += ResponseHandlers.OnPositionEnd;
         }
 
         public void Disconnect()

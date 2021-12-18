@@ -34,5 +34,16 @@ namespace Rollover.Ib
             string msg = Environment.NewLine + "Accounts found: " + managedAccountsMessage.ManagedAccounts.Aggregate((r, n) => r + ", " + n);
             InputQueue.Enqueue(msg);
         }
+
+        public static void OnPosition(PositionMessage obj)
+        {
+            var localSymbol = obj.Contract.LocalSymbol;
+            InputQueue.Enqueue(localSymbol);
+        }
+
+        public static void OnPositionEnd()
+        {
+            InputQueue.Enqueue("Enter a command:");
+        }
     }
 }

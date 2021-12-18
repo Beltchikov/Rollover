@@ -8,7 +8,7 @@ using IBApi;
 
 namespace IBSampleApp.messages
 {
-    class PositionMessage 
+    public class PositionMessage 
     {
         private string account;
         private Contract contract;

@@ -12,7 +12,7 @@ namespace Rollover.Input
 
         public InputQueue()
         {
-            _inputQueue = new Queue<string>();
+            _inputQueue = new Queue<string>(100);
         }
         
         public void Enqueue(string item)
