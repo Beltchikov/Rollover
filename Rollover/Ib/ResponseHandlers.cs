@@ -59,13 +59,14 @@ namespace Rollover.Ib
 
         public void OnPosition(PositionMessage obj)
         {
+            // _portfolio.Add(obj)
             var localSymbol = obj.Contract.LocalSymbol;
             _inputQueue.Enqueue(localSymbol);
         }
 
         public void OnPositionEnd()
         {
-            _inputQueue.Enqueue("Enter a command:");
+            _inputQueue.Enqueue("Enter a symbol to track :");
         }
     }
 }

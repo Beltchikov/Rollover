@@ -58,6 +58,10 @@ namespace Rollover.Input
                 {
                     break;
                 }
+
+                // if(_portfolio.SymbolExists(input))
+                //      if( ! _trackedSymbols.SymbolExists(input))
+                //          _trackedSymbols.Add(input)
             }
 
             consoleWrapper.WriteLine("Goodbye!");
