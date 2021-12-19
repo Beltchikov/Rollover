@@ -10,12 +10,18 @@ namespace Rollover.Input
         private IOutputHelper _outputHelper;
         private IConnectedCondition _connectedCondition;
         private IPortfolio _portfolio;
+        private ITrackedSymbols _trackedSymbols;
 
-        public InputLoop(IOutputHelper outputHelper, IConnectedCondition connectedCondition, IPortfolio portfolio)
+        public InputLoop(
+            IOutputHelper outputHelper, 
+            IConnectedCondition connectedCondition, 
+            IPortfolio portfolio, 
+            ITrackedSymbols trackedSymbols)
         {
             _outputHelper = outputHelper;
             _connectedCondition = connectedCondition;
             _portfolio = portfolio;
+            _trackedSymbols = trackedSymbols;
         }
 
         public bool CheckConnectionMessages(IConsoleWrapper consoleWrapper, IInputQueue inputQueue, int timeout)
@@ -64,8 +70,10 @@ namespace Rollover.Input
 
                 if (_portfolio.SymbolExists(input))
                 {
-                    //      if( ! _trackedSymbols.SymbolExists(input))
-                    //          _trackedSymbols.Add(input)
+                    if (! _trackedSymbols.SymbolExists(input))
+                    {
+                        //          _trackedSymbols.Add(input)
+                    }
                 }
             }
 

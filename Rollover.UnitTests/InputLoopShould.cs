@@ -104,7 +104,7 @@ namespace Rollover.UnitTests
             var result = sut.CheckConnectionMessages(consoleWrapper, inputQueue, timeout);
             Assert.False(result);
         }
-        
+
         [Theory, AutoNSubstituteData]
         public void CallConnectedConditionInCheckConnectionMessages(
            [Frozen] IInputQueue inputQueue,
@@ -114,9 +114,9 @@ namespace Rollover.UnitTests
         {
             var input = "SomeInput";
             inputQueue.Dequeue().Returns(input);
-            
+
             sut.CheckConnectionMessages(consoleWrapper, inputQueue, 10000);
-            
+
             connectedCondition.Received().AddInput(input);
             connectedCondition.Received().IsConnected();
         }
@@ -145,6 +145,22 @@ namespace Rollover.UnitTests
             inputQueue.Dequeue().Returns("SomeInput", "q");
             sut.Run(consoleWrapper, inputQueue);
             portfolio.Received().SymbolExists("SomeInput");
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallTrackedSymbolsSymbolExists(
+            [Frozen] IInputQueue inputQueue,
+            [Frozen] IConsoleWrapper consoleWrapper,
+            [Frozen] IPortfolio portfolio,
+            [Frozen] ITrackedSymbols trackedSymbols,
+            InputLoop sut)
+        {
+            var input = "SomeInput";
+            inputQueue.Dequeue().Returns(input, "q");
+            portfolio.SymbolExists(input).Returns(true);
+
+            sut.Run(consoleWrapper, inputQueue);
+            trackedSymbols.Received().SymbolExists(input);
         }
     }
 }
