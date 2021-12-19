@@ -1,17 +1,20 @@
 ﻿using IBSampleApp.messages;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Rollover.Tracking
 {
-    public class Portfolio : IPortfolio
+    public class _posisionList : IPortfolio
     {
+        private readonly List<PositionMessage> _posisionList;
+
+        public Portfolio()
+        {
+            _posisionList = new List<PositionMessage>();
+        }
+        
         public void Add(PositionMessage positionMessage)
         {
-            throw new NotImplementedException();
+            _posisionList.Add(positionMessage);
         }
     }
 }
