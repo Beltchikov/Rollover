@@ -11,17 +11,21 @@ namespace Rollover.Input
         private IConnectedCondition _connectedCondition;
         private IPortfolio _portfolio;
         private ITrackedSymbols _trackedSymbols;
+        private string _state;
+        private IReducer _reducer;
 
         public InputLoop(
-            IOutputHelper outputHelper, 
-            IConnectedCondition connectedCondition, 
-            IPortfolio portfolio, 
-            ITrackedSymbols trackedSymbols)
+            IOutputHelper outputHelper,
+            IConnectedCondition connectedCondition,
+            IPortfolio portfolio,
+            ITrackedSymbols trackedSymbols, 
+            IReducer reducer)
         {
             _outputHelper = outputHelper;
             _connectedCondition = connectedCondition;
             _portfolio = portfolio;
             _trackedSymbols = trackedSymbols;
+            _reducer = reducer;
         }
 
         public bool CheckConnectionMessages(IConsoleWrapper consoleWrapper, IInputQueue inputQueue, int timeout)
@@ -55,7 +59,7 @@ namespace Rollover.Input
             while (true)
             {
                 var input = inputQueue.Dequeue();
-                //_state = _reducer.GetState(_state, input);
+                _state = _reducer.GetState(_state, input);
                 if (input == null)
                 {
                     continue;

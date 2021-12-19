@@ -179,5 +179,19 @@ namespace Rollover.UnitTests
             sut.Run(consoleWrapper, inputQueue);
             trackedSymbols.Received().Add(input);
         }
+
+        [Theory, AutoNSubstituteData]
+        public void CallReducerGetState(
+            [Frozen] IInputQueue inputQueue,
+            [Frozen] IConsoleWrapper consoleWrapper,
+            [Frozen] IReducer reducer,
+            InputLoop sut)
+        {
+            var input = "SomeInput";
+            inputQueue.Dequeue().Returns(input, "q");
+
+            sut.Run(consoleWrapper, inputQueue);
+            reducer.Received().GetState(Arg.Any<string>(), input);
+        }
     }
 }

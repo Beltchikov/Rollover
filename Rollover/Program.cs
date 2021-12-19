@@ -2,7 +2,6 @@
 using Rollover.Ib;
 using Rollover.Input;
 using Rollover.Tracking;
-using System;
 
 namespace Rollover
 {
@@ -24,7 +23,13 @@ namespace Rollover
             IOutputHelper outputHelper = new OutputHelper();
             IConnectedCondition connectedCondition  = new ConnectedCondition();
             ITrackedSymbols trackedSymbols  = new TrackedSymbols();
-            IInputLoop inputLoop = new InputLoop(outputHelper, connectedCondition, portfolio, trackedSymbols);
+            IReducer reducer = new Reducer();
+            IInputLoop inputLoop = new InputLoop(
+                outputHelper, 
+                connectedCondition, 
+                portfolio, 
+                trackedSymbols, 
+                reducer);
 
             IRolloverAgent rolloverAgent = new RolloverAgent(
                 configurationManager,
