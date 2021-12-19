@@ -1,6 +1,7 @@
 ﻿using IBSampleApp.messages;
 using Rollover.Input;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 
@@ -17,6 +18,7 @@ namespace Rollover.Ib
             _inputQueue = inputQueue;
         }
 
+        [ExcludeFromCodeCoverage]
         public static IResponseHandlers CreateInstance(IInputQueue inputQueue)
         {
             lock (_locker)
