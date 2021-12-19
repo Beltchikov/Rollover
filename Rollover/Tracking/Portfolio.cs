@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Rollover.Tracking
 {
-    public class _posisionList : IPortfolio
+    public class Portfolio : IPortfolio
     {
         private readonly List<PositionMessage> _posisionList;
 
