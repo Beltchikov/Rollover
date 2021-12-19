@@ -15,8 +15,9 @@ namespace Rollover
                 fileHelper, serializer);
             IConsoleWrapper consoleWrapper = new ConsoleWrapper();
             IInputQueue inputQueue = new InputQueue();
+            IResponseHandlers responseHandlers = ResponseHandlers.CreateInstance(inputQueue);
 
-            IIbClientWrapper ibClient = new IbClientWrapper();
+            IIbClientWrapper ibClient = new IbClientWrapper(responseHandlers);
             IRequestSender requestSender = new RequestSender(ibClient);
             IOutputHelper outputHelper = new OutputHelper();
             IConnectedCondition connectedCondition  = new ConnectedCondition();

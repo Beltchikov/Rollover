@@ -6,25 +6,45 @@ using System.Threading;
 
 namespace Rollover.Ib
 {
-    public static class ResponseHandlers
+    public class ResponseHandlers : IResponseHandlers
     {
-        public static IInputQueue InputQueue { get; set; }
-        public static SynchronizationContext SynchronizationContext { get; internal set; }
+        private readonly IInputQueue _inputQueue;
+        private static IResponseHandlers _responseHandlers;
+        private static object _locker = new object();
 
-        public static void OnError(int id, int errorCode, string msg, Exception ex)
+        private ResponseHandlers(IInputQueue inputQueue)
         {
-            InputQueue.Enqueue($"id={id} errorCode={errorCode} msg={msg} Exception={ex}");
+            _inputQueue = inputQueue;
         }
 
-        public static void NextValidId(ConnectionStatusMessage connectionStatusMessage)
+        public static IResponseHandlers CreateInstance(IInputQueue inputQueue)
+        {
+            lock (_locker)
+            {
+                if (_responseHandlers == null)
+                {
+                    _responseHandlers = new ResponseHandlers(inputQueue);
+                }
+                return _responseHandlers; 
+            }
+        }
+
+        public SynchronizationContext SynchronizationContext { get; set; }
+
+        public void OnError(int id, int errorCode, string msg, Exception ex)
+        {
+            _inputQueue.Enqueue($"id={id} errorCode={errorCode} msg={msg} Exception={ex}");
+        }
+
+        public void NextValidId(ConnectionStatusMessage connectionStatusMessage)
         {
             string msg = connectionStatusMessage.IsConnected
                 ? "Connected."
                 : "Disconnected.";
-            InputQueue.Enqueue(msg);
+            _inputQueue.Enqueue(msg);
         }
 
-        public static void ManagedAccounts(ManagedAccountsMessage managedAccountsMessage)
+        public void ManagedAccounts(ManagedAccountsMessage managedAccountsMessage)
         {
             if (!managedAccountsMessage.ManagedAccounts.Any())
             {
@@ -32,18 +52,18 @@ namespace Rollover.Ib
             }
 
             string msg = Environment.NewLine + "Accounts found: " + managedAccountsMessage.ManagedAccounts.Aggregate((r, n) => r + ", " + n);
-            InputQueue.Enqueue(msg);
+            _inputQueue.Enqueue(msg);
         }
 
-        public static void OnPosition(PositionMessage obj)
+        public void OnPosition(PositionMessage obj)
         {
             var localSymbol = obj.Contract.LocalSymbol;
-            InputQueue.Enqueue(localSymbol);
+            _inputQueue.Enqueue(localSymbol);
         }
 
-        public static void OnPositionEnd()
+        public void OnPositionEnd()
         {
-            InputQueue.Enqueue("Enter a command:");
+            _inputQueue.Enqueue("Enter a command:");
         }
     }
 }

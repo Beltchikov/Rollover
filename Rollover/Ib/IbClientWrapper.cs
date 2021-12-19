@@ -11,15 +11,17 @@ namespace Rollover.Ib
     {
         private EReaderMonitorSignal _signal;
         private IBClient _ibClient;
+        private IResponseHandlers _responseHandlers;
 
         public event Action<int, int, string, Exception> Error;
         public event Action<ConnectionStatusMessage> NextValidId;
         public event Action<ManagedAccountsMessage> ManagedAccounts;
 
-        public IbClientWrapper()
+        public IbClientWrapper(IResponseHandlers responseHandlers)
         {
             _signal = new EReaderMonitorSignal();
             _ibClient = new IBClient(_signal);
+            _responseHandlers = responseHandlers;
         }
 
         public void Connect(string host, int port, int clientId)
@@ -44,14 +46,13 @@ namespace Rollover.Ib
 
         public void RegisterResponseHandlers(IInputQueue _inputQueue, SynchronizationContext synchronizationContext)
         {
-            ResponseHandlers.InputQueue = _inputQueue;
-            ResponseHandlers.SynchronizationContext = synchronizationContext;
+            _responseHandlers.SynchronizationContext = synchronizationContext;
 
-            _ibClient.Error += ResponseHandlers.OnError;
-            _ibClient.NextValidId += ResponseHandlers.NextValidId;
-            _ibClient.ManagedAccounts += ResponseHandlers.ManagedAccounts;
-            _ibClient.Position += ResponseHandlers.OnPosition;
-            _ibClient.PositionEnd += ResponseHandlers.OnPositionEnd;
+            _ibClient.Error += _responseHandlers.OnError;
+            _ibClient.NextValidId += _responseHandlers.NextValidId;
+            _ibClient.ManagedAccounts += _responseHandlers.ManagedAccounts;
+            _ibClient.Position += _responseHandlers.OnPosition;
+            _ibClient.PositionEnd += _responseHandlers.OnPositionEnd;
         }
 
         public void Disconnect()
