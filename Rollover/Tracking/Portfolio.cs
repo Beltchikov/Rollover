@@ -20,7 +20,9 @@ namespace Rollover.Tracking
 
         public bool SymbolExists(string symbol)
         {
-            return _posisionList.Any(p => p.Contract.LocalSymbol == symbol);    
+            return _posisionList.Any() 
+                ? _posisionList.Any(p => p.Contract.LocalSymbol == symbol)
+                : false;    
         }
     }
 }
