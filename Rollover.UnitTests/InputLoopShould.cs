@@ -3,6 +3,7 @@ using NSubstitute;
 using Rollover.Configuration;
 using Rollover.Ib;
 using Rollover.Input;
+using Rollover.Tracking;
 using System.Diagnostics;
 using Xunit;
 
@@ -132,6 +133,18 @@ namespace Rollover.UnitTests
 
             var result = sut.CheckConnectionMessages(consoleWrapper, inputQueue, timeout);
             Assert.True(result);
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallPortfolioSymbolExists(
+            [Frozen] IInputQueue inputQueue,
+            [Frozen] IConsoleWrapper consoleWrapper,
+            [Frozen] IPortfolio portfolio,
+            InputLoop sut)
+        {
+            inputQueue.Dequeue().Returns("SomeInput", "q");
+            sut.Run(consoleWrapper, inputQueue);
+            portfolio.Received().SymbolExists("SomeInput");
         }
     }
 }

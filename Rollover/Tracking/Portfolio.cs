@@ -1,5 +1,6 @@
 ﻿using IBSampleApp.messages;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Rollover.Tracking
 {
@@ -15,6 +16,11 @@ namespace Rollover.Tracking
         public void Add(PositionMessage positionMessage)
         {
             _posisionList.Add(positionMessage);
+        }
+
+        public bool SymbolExists(string symbol)
+        {
+            return _posisionList.Any(p => p.Contract.LocalSymbol == symbol);    
         }
     }
 }

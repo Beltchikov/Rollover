@@ -1,4 +1,5 @@
 ﻿using Rollover.Ib;
+using Rollover.Tracking;
 using System;
 using System.Diagnostics;
 
@@ -8,11 +9,13 @@ namespace Rollover.Input
     {
         private IOutputHelper _outputHelper;
         private IConnectedCondition _connectedCondition;
+        private IPortfolio _portfolio;
 
-        public InputLoop(IOutputHelper outputHelper, IConnectedCondition connectedCondition)
+        public InputLoop(IOutputHelper outputHelper, IConnectedCondition connectedCondition, IPortfolio portfolio)
         {
             _outputHelper = outputHelper;
             _connectedCondition = connectedCondition;
+            _portfolio = portfolio;
         }
 
         public bool CheckConnectionMessages(IConsoleWrapper consoleWrapper, IInputQueue inputQueue, int timeout)
@@ -59,9 +62,11 @@ namespace Rollover.Input
                     break;
                 }
 
-                // if(_portfolio.SymbolExists(input))
-                //      if( ! _trackedSymbols.SymbolExists(input))
-                //          _trackedSymbols.Add(input)
+                if (_portfolio.SymbolExists(input))
+                {
+                    //      if( ! _trackedSymbols.SymbolExists(input))
+                    //          _trackedSymbols.Add(input)
+                }
             }
 
             consoleWrapper.WriteLine("Goodbye!");

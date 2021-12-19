@@ -23,7 +23,7 @@ namespace Rollover
             IRequestSender requestSender = new RequestSender(ibClient);
             IOutputHelper outputHelper = new OutputHelper();
             IConnectedCondition connectedCondition  = new ConnectedCondition();
-            IInputLoop inputLoop = new InputLoop(outputHelper, connectedCondition);
+            IInputLoop inputLoop = new InputLoop(outputHelper, connectedCondition, portfolio);
 
             IRolloverAgent rolloverAgent = new RolloverAgent(
                 configurationManager,
