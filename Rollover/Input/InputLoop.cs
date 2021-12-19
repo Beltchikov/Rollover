@@ -55,6 +55,7 @@ namespace Rollover.Input
             while (true)
             {
                 var input = inputQueue.Dequeue();
+                //_state = _reducer.GetState(_state, input);
                 if (input == null)
                 {
                     continue;
@@ -73,6 +74,7 @@ namespace Rollover.Input
                     if (! _trackedSymbols.SymbolExists(input))
                     {
                         _trackedSymbols.Add(input);
+                        //inputQueue.Enqueue("Symbol added");
                     }
                 }
             }
