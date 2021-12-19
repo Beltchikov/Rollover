@@ -20,12 +20,12 @@ namespace Rollover
 
             IIbClientWrapper ibClient = new IbClientWrapper(responseHandlers);
             IRequestSender requestSender = new RequestSender(ibClient);
-            IOutputHelper outputHelper = new OutputHelper();
+            IInputProcessor inputProcessor = new InputProcessor();
             IConnectedCondition connectedCondition  = new ConnectedCondition();
             ITrackedSymbols trackedSymbols  = new TrackedSymbols();
             IReducer reducer = new Reducer();
             IInputLoop inputLoop = new InputLoop(
-                outputHelper, 
+                inputProcessor, 
                 connectedCondition, 
                 portfolio, 
                 trackedSymbols, 

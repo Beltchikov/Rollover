@@ -7,7 +7,7 @@ namespace Rollover.Input
 {
     public class InputLoop : IInputLoop
     {
-        private IOutputHelper _outputHelper;
+        private IInputProcessor _inputProcessor;
         private IConnectedCondition _connectedCondition;
         private IPortfolio _portfolio;
         private ITrackedSymbols _trackedSymbols;
@@ -16,13 +16,13 @@ namespace Rollover.Input
         IInputQueue _inputQueue;
 
         public InputLoop(
-            IOutputHelper outputHelper,
+            IInputProcessor inputProcessor,
             IConnectedCondition connectedCondition,
             IPortfolio portfolio,
             ITrackedSymbols trackedSymbols, 
             IReducer reducer)
         {
-            _outputHelper = outputHelper;
+            _inputProcessor = inputProcessor;
             _connectedCondition = connectedCondition;
             _portfolio = portfolio;
             _trackedSymbols = trackedSymbols;
@@ -44,7 +44,7 @@ namespace Rollover.Input
                     continue;
                 }
 
-                var outputList = _outputHelper.Convert(input, _state);
+                var outputList = _inputProcessor.Convert(input, _state);
                 outputList.ForEach(o => consoleWrapper.WriteLine(o));
 
                 _connectedCondition.AddInput(input);
@@ -71,7 +71,7 @@ namespace Rollover.Input
                     continue;
                 }
 
-                var outputList = _outputHelper.Convert(input, _state);
+                var outputList = _inputProcessor.Convert(input, _state);
                 outputList.ForEach(o => consoleWrapper.WriteLine(o));
 
                 if (input.Equals("q", StringComparison.InvariantCultureIgnoreCase))

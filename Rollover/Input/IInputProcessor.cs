@@ -2,7 +2,7 @@
 
 namespace Rollover.Input
 {
-    public interface IOutputHelper
+    public interface IInputProcessor
     {
         List<string> Convert(string input, string state);
     }

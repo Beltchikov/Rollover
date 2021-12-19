@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Rollover.Input
 {
-    public class OutputHelper : IOutputHelper
+    public class InputProcessor : IInputProcessor
     {
         public List<string> Convert(string input, string state)
         {

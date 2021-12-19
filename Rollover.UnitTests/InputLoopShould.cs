@@ -49,7 +49,7 @@ namespace Rollover.UnitTests
         public void CallOutputHelperConvert(
            [Frozen] IInputQueue inputQueue,
            [Frozen] IConsoleWrapper consoleWrapper,
-           [Frozen] IOutputHelper outputHelper,
+           [Frozen] IInputProcessor outputHelper,
            InputLoop sut)
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
