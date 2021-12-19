@@ -72,7 +72,7 @@ namespace Rollover.Input
                 {
                     if (! _trackedSymbols.SymbolExists(input))
                     {
-                        //          _trackedSymbols.Add(input)
+                        _trackedSymbols.Add(input);
                     }
                 }
             }

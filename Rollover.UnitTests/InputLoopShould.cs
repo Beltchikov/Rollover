@@ -162,5 +162,22 @@ namespace Rollover.UnitTests
             sut.Run(consoleWrapper, inputQueue);
             trackedSymbols.Received().SymbolExists(input);
         }
+
+        [Theory, AutoNSubstituteData]
+        public void CallTrackedSymbolsAdd(
+            [Frozen] IInputQueue inputQueue,
+            [Frozen] IConsoleWrapper consoleWrapper,
+            [Frozen] IPortfolio portfolio,
+            [Frozen] ITrackedSymbols trackedSymbols,
+            InputLoop sut)
+        {
+            var input = "SomeInput";
+            inputQueue.Dequeue().Returns(input, "q");
+            portfolio.SymbolExists(input).Returns(true);
+            trackedSymbols.SymbolExists(input).Returns(false);
+
+            sut.Run(consoleWrapper, inputQueue);
+            trackedSymbols.Received().Add(input);
+        }
     }
 }
