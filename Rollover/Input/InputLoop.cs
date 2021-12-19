@@ -44,7 +44,7 @@ namespace Rollover.Input
                     continue;
                 }
 
-                var outputList = _outputHelper.Convert(input);
+                var outputList = _outputHelper.Convert(input, _state);
                 outputList.ForEach(o => consoleWrapper.WriteLine(o));
 
                 _connectedCondition.AddInput(input);
@@ -71,7 +71,7 @@ namespace Rollover.Input
                     continue;
                 }
 
-                var outputList = _outputHelper.Convert(input);
+                var outputList = _outputHelper.Convert(input, _state);
                 outputList.ForEach(o => consoleWrapper.WriteLine(o));
 
                 if (input.Equals("q", StringComparison.InvariantCultureIgnoreCase))

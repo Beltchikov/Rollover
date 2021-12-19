@@ -15,6 +15,11 @@ namespace Rollover.Tracking
         
         public void Add(PositionMessage positionMessage)
         {
+            if(positionMessage == null)
+            {
+                return;
+            }
+
             _posisionList.Add(positionMessage);
         }
 

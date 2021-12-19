@@ -5,11 +5,18 @@ namespace Rollover.Input
 {
     public class OutputHelper : IOutputHelper
     {
-        public List<string> Convert(string input)
+        public List<string> Convert(string input, string state)
         {
-            //throw new NotImplementedException();
-            // TODO
-            return new List<string> { input };
+            switch(state)
+            {
+                case "Connected":
+                    return new List<string> { input };
+                case "WaitingForSymbol":
+                    return new List<string> { input };
+                default:
+                    return new List<string>();
+
+            }
         }
     }
 }
