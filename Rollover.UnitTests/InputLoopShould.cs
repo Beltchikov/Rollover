@@ -46,15 +46,19 @@ namespace Rollover.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
-        public void CallOutputHelperConvert(
+        public void CallInputProcessorConvert(
            [Frozen] IInputQueue inputQueue,
            [Frozen] IConsoleWrapper consoleWrapper,
-           [Frozen] IInputProcessor outputHelper,
+           [Frozen] IInputProcessor inputProcessor,
            InputLoop sut)
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
             sut.Run(consoleWrapper, inputQueue);
-            outputHelper.Received().Convert(Arg.Any<string>());
+            inputProcessor.Received().Convert(
+                Arg.Any<string>(),
+                Arg.Any<string>(),
+                Arg.Any<IPortfolio>(),
+                Arg.Any<ITrackedSymbols>());
         }
 
         [Theory, AutoNSubstituteData]

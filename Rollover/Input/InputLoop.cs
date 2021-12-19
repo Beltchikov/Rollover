@@ -35,6 +35,7 @@ namespace Rollover.Input
         {
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
+            _state = "Connecting";
 
             while (stopWatch.Elapsed.TotalMilliseconds < timeout)
             {
@@ -44,7 +45,7 @@ namespace Rollover.Input
                     continue;
                 }
 
-                var outputList = _inputProcessor.Convert(input, _state);
+                var outputList = _inputProcessor.Convert(input, _state, _portfolio, _trackedSymbols);
                 outputList.ForEach(o => consoleWrapper.WriteLine(o));
 
                 _connectedCondition.AddInput(input);
@@ -71,21 +72,12 @@ namespace Rollover.Input
                     continue;
                 }
 
-                var outputList = _inputProcessor.Convert(input, _state);
+                var outputList = _inputProcessor.Convert(input, _state, _portfolio, _trackedSymbols);
                 outputList.ForEach(o => consoleWrapper.WriteLine(o));
 
                 if (input.Equals("q", StringComparison.InvariantCultureIgnoreCase))
                 {
                     break;
-                }
-
-                if (_portfolio.SymbolExists(input))
-                {
-                    if (! _trackedSymbols.SymbolExists(input))
-                    {
-                        _trackedSymbols.Add(input);
-                        //inputQueue.Enqueue("Symbol added");
-                    }
                 }
             }
 
