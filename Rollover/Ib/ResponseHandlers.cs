@@ -69,7 +69,7 @@ namespace Rollover.Ib
 
         public void OnPositionEnd()
         {
-            _inputQueue.Enqueue("Enter a symbol to track :");
+            _inputQueue.Enqueue("Enter a symbol to track:");
         }
     }
 }

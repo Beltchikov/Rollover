@@ -1,16 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Rollover.Input
+﻿namespace Rollover.Input
 {
     public class Reducer : IReducer
     {
+        public event IReducer.StateChangedHandler StateChanged;
+
         public string GetState(string stateBefore, string input)
         {
-            throw new NotImplementedException();
+            if(stateBefore == "Connected")
+            {
+                if(input == "Enter a symbol to track:")
+                {
+                    string state = "WaitingForSymbol";
+                    StateChanged.Invoke(this, new StateChangedEventArgs(state, stateBefore));
+                    return state;
+                }
+            }
+
+            return stateBefore;
         }
     }
 }
