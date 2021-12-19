@@ -2,6 +2,7 @@
 using NSubstitute;
 using Rollover.Ib;
 using Rollover.Input;
+using Rollover.Tracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,8 +23,9 @@ namespace Rollover.UnitTests
             Exception ex = new ArgumentException("SomeArgument");
             
             var inputQueue = Substitute.For<IInputQueue>();
-            
-            var sut = ResponseHandlers.CreateInstance(inputQueue);
+            var portfolio = Substitute.For<IPortfolio>();
+
+            var sut = ResponseHandlers.CreateInstance(inputQueue, portfolio);
             sut.OnError(id, errorCode, msg , ex);
 
             inputQueue.Received().Enqueue(Arg.Any<string>());
@@ -33,7 +35,9 @@ namespace Rollover.UnitTests
         public void CallEnqueueInNextValidId()
         {
             var inputQueue = Substitute.For<IInputQueue>();
-            var sut = ResponseHandlers.CreateInstance(inputQueue);
+            var portfolio = Substitute.For<IPortfolio>();
+
+            var sut = ResponseHandlers.CreateInstance(inputQueue, portfolio);
             sut.NextValidId(new ConnectionStatusMessage(true));
             inputQueue.Received().Enqueue(Arg.Any<string>());
         }
@@ -42,7 +46,9 @@ namespace Rollover.UnitTests
         public void CallEnqueueInManagedAccounts()
         {
             var inputQueue = Substitute.For<IInputQueue>();
-            var sut = ResponseHandlers.CreateInstance(inputQueue);
+            var portfolio = Substitute.For<IPortfolio>();
+
+            var sut = ResponseHandlers.CreateInstance(inputQueue, portfolio);
             sut.ManagedAccounts(new ManagedAccountsMessage("accounts"));
             inputQueue.Received().Enqueue(Arg.Any<string>());
         }
@@ -51,7 +57,9 @@ namespace Rollover.UnitTests
         public void CallEnqueueInOnPosition()
         {
             var inputQueue = Substitute.For<IInputQueue>();
-            var sut = ResponseHandlers.CreateInstance(inputQueue);
+            var portfolio = Substitute.For<IPortfolio>();
+
+            var sut = ResponseHandlers.CreateInstance(inputQueue, portfolio);
             sut.OnPosition(new PositionMessage("account", new IBApi.Contract(),2, 1000));
             inputQueue.Received().Enqueue(Arg.Any<string>());
         }
@@ -60,9 +68,23 @@ namespace Rollover.UnitTests
         public void CallEnqueueInOnPositionEnd()
         {
             var inputQueue = Substitute.For<IInputQueue>();
-            var sut = ResponseHandlers.CreateInstance(inputQueue);
+            var portfolio = Substitute.For<IPortfolio>();
+
+            var sut = ResponseHandlers.CreateInstance(inputQueue, portfolio);
             sut.OnPositionEnd();
             inputQueue.Received().Enqueue(Arg.Any<string>());
+        }
+
+        [Fact]
+        public void CallPortfolioAddInOnPositionEnd()
+        {
+            var inputQueue = Substitute.For<IInputQueue>();
+            var portfolio = Substitute.For<IPortfolio>();
+            var positionMessage = new PositionMessage("account", new IBApi.Contract(), 2, 1000);
+
+            var sut = ResponseHandlers.CreateInstance(inputQueue, portfolio);
+            sut.OnPosition(positionMessage);
+            portfolio.Received().Add(positionMessage);
         }
     }
 }

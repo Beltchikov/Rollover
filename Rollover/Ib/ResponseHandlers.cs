@@ -1,5 +1,6 @@
 ﻿using IBSampleApp.messages;
 using Rollover.Input;
+using Rollover.Tracking;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -10,22 +11,24 @@ namespace Rollover.Ib
     public class ResponseHandlers : IResponseHandlers
     {
         private readonly IInputQueue _inputQueue;
+        private readonly IPortfolio _portfolio;
         private static IResponseHandlers _responseHandlers;
         private static object _locker = new object();
 
-        private ResponseHandlers(IInputQueue inputQueue)
+        private ResponseHandlers(IInputQueue inputQueue, IPortfolio portfolio)
         {
             _inputQueue = inputQueue;
+            _portfolio = portfolio;
         }
 
         [ExcludeFromCodeCoverage]
-        public static IResponseHandlers CreateInstance(IInputQueue inputQueue)
+        public static IResponseHandlers CreateInstance(IInputQueue inputQueue, IPortfolio portfolio)
         {
             lock (_locker)
             {
                 if (_responseHandlers == null)
                 {
-                    _responseHandlers = new ResponseHandlers(inputQueue);
+                    _responseHandlers = new ResponseHandlers(inputQueue, portfolio);
                 }
                 return _responseHandlers; 
             }
@@ -59,7 +62,7 @@ namespace Rollover.Ib
 
         public void OnPosition(PositionMessage obj)
         {
-            // _portfolio.Add(obj)
+            _portfolio.Add(obj);
             var localSymbol = obj.Contract.LocalSymbol;
             _inputQueue.Enqueue(localSymbol);
         }

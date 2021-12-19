@@ -1,6 +1,7 @@
 ﻿using Rollover.Configuration;
 using Rollover.Ib;
 using Rollover.Input;
+using Rollover.Tracking;
 using System;
 
 namespace Rollover
@@ -15,7 +16,8 @@ namespace Rollover
                 fileHelper, serializer);
             IConsoleWrapper consoleWrapper = new ConsoleWrapper();
             IInputQueue inputQueue = new InputQueue();
-            IResponseHandlers responseHandlers = ResponseHandlers.CreateInstance(inputQueue);
+            IPortfolio portfolio = new Portfolio();
+            IResponseHandlers responseHandlers = ResponseHandlers.CreateInstance(inputQueue, portfolio);
 
             IIbClientWrapper ibClient = new IbClientWrapper(responseHandlers);
             IRequestSender requestSender = new RequestSender(ibClient);
