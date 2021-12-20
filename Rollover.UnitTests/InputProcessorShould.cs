@@ -68,7 +68,7 @@ namespace Rollover.UnitTests
         }
 
         [Fact]
-        public void ReturnSymbolAddedIfStateIsWaitingForSymbolAndInputIsValidSymbolk()
+        public void ReturnSymbolAddedIfStateIsWaitingForSymbolAndInputIsValidSymbol()
         {
             string testInput = "DAX:";
 
@@ -81,7 +81,7 @@ namespace Rollover.UnitTests
             var sut = new InputProcessor();
             var resultList = sut.Convert(testInput, "WaitingForSymbol", portfolio, trackedSymbols);
 
-            Assert.True(resultList.Count() == 1);
+            Assert.True(resultList.Count() == 2);
             Assert.Contains(testInput, resultList.First());
             Assert.Contains("Symbol", resultList.First());
             Assert.Contains("added", resultList.First());

@@ -18,6 +18,11 @@ namespace Rollover.Tracking
             _symbols.Add(input);
         }
 
+        public IEnumerable<string> All()
+        {
+            return _symbols;
+        }
+
         public bool SymbolExists(string input)
         {
             return _symbols.Contains(input);
