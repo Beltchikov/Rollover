@@ -19,6 +19,10 @@ namespace Rollover.Input
                     {
                         return new List<string>();
                     }
+                    else if (input.Contains("STATE"))
+                    {
+                        return new List<string> { input };
+                    }
                     throw new NotImplementedException();
                 default:
                     throw new NotImplementedException();

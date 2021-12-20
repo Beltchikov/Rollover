@@ -44,5 +44,17 @@ namespace Rollover.UnitTests
 
             Assert.True(!resultList.Any());
         }
+
+        [Fact]
+        public void ReturnInputIfStateIsWaitingForSymbolAndInputContainsState()
+        {
+            string testInput = "STATE: Diagnostic message";
+            var sut = new InputProcessor();
+
+            var resultList = sut.Convert(testInput, "WaitingForSymbol", null, null);
+
+            Assert.True(resultList.Count() == 1);
+            Assert.True(resultList.First() == testInput);
+        }
     }
 }
