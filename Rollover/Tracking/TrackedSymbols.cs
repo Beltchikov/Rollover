@@ -17,8 +17,6 @@ namespace Rollover.Tracking
 
         public void Add(string input)
         {
-            // TODO Factory
-            //var newSymbol = new TrackedSymbol { Name = input };
             var newSymbol = _factory.Create(input);
             _symbols.Add(newSymbol);
         }

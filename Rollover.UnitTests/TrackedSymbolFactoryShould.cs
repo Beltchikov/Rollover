@@ -17,7 +17,7 @@ namespace Rollover.UnitTests
         public void CallRequestSender()
         {
             var ibClient = Substitute.For<IIbClientWrapper>();
-            var requestSender = Substitute.For<RequestSender>(ibClient);
+            var requestSender = Substitute.For<IRequestSender>();
             
             var sut = new TrackedSymbolFactory();
             sut.Create("someSymbol");
