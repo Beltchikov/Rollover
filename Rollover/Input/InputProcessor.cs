@@ -6,7 +6,7 @@ namespace Rollover.Input
 {
     public class InputProcessor : IInputProcessor
     {
-        public List<string> Convert(string input, string state, IPortfolio _portfolio, ITrackedSymbols _trackedSymbols)
+        public List<string> Convert(string input, string state, IPortfolio portfolio, ITrackedSymbols trackedSymbols)
         {
             switch (state)
             {
@@ -29,11 +29,11 @@ namespace Rollover.Input
                     }
                     else
                     {
-                        if (_portfolio.SymbolExists(input))
+                        if (portfolio.SymbolExists(input))
                         {
-                            if (!_trackedSymbols.SymbolExists(input))
+                            if (!trackedSymbols.SymbolExists(input))
                             {
-                                _trackedSymbols.Add(input);
+                                trackedSymbols.Add(input);
                                 return new List<string> { $"Symbol {input} added" };
                             }
                             else
