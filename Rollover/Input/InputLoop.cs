@@ -33,7 +33,7 @@ namespace Rollover.Input
 
         public bool CheckConnectionMessages(IConsoleWrapper consoleWrapper, IInputQueue inputQueue, int timeout)
         {
-            Stopwatch stopWatch = new Stopwatch();
+            var stopWatch = new Stopwatch();
             stopWatch.Start();
             _state = "Connecting";
 
@@ -46,7 +46,7 @@ namespace Rollover.Input
                 }
 
                 var outputList = _inputProcessor.Convert(input, _state, _portfolio, _trackedSymbols);
-                outputList.ForEach(o => consoleWrapper.WriteLine(o));
+                outputList.ForEach(consoleWrapper.WriteLine);
 
                 _connectedCondition.AddInput(input);
                 if (_connectedCondition.IsConnected())
@@ -73,7 +73,7 @@ namespace Rollover.Input
                 }
 
                 var outputList = _inputProcessor.Convert(input, _state, _portfolio, _trackedSymbols);
-                outputList.ForEach(o => consoleWrapper.WriteLine(o));
+                outputList.ForEach(consoleWrapper.WriteLine);
 
                 if (input.Equals("q", StringComparison.InvariantCultureIgnoreCase))
                 {
