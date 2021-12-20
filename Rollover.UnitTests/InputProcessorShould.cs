@@ -92,7 +92,7 @@ namespace Rollover.UnitTests
         }
 
         [Fact]
-        public void ReturnUnknownSymbolIfStateIsWaitingForSymbolAndInputIsInvalidSymbolk()
+        public void ReturnUnknownSymbolIfStateIsWaitingForSymbolAndInputIsInvalidSymbol()
         {
             string testInput = "DAX:";
 
@@ -104,6 +104,26 @@ namespace Rollover.UnitTests
 
             Assert.True(resultList.Count() == 1);
             Assert.Contains("Unknown symbol", resultList.First());
+        }
+
+        [Fact]
+        public void ReturnSymbolAlreadyTrackedIfStateIsWaitingForSymbolAndAlreadyTracked()
+        {
+            string testInput = "DAX:";
+
+            var portfolio = Substitute.For<IPortfolio>();
+            portfolio.SymbolExists(testInput).Returns(true);
+
+            var trackedSymbols = Substitute.For<ITrackedSymbols>();
+            trackedSymbols.SymbolExists(testInput).Returns(true);
+
+            var sut = new InputProcessor();
+            var resultList = sut.Convert(testInput, "WaitingForSymbol", portfolio, trackedSymbols);
+
+            Assert.True(resultList.Count() == 1);
+            Assert.Contains(testInput, resultList.First());
+            Assert.Contains("Symbol", resultList.First());
+            Assert.Contains("is allready tracked", resultList.First());
         }
     }
 }
