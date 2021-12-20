@@ -1,11 +1,7 @@
 ﻿using NSubstitute;
 using Rollover.Input;
 using Rollover.Tracking;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Rollover.UnitTests
@@ -123,7 +119,7 @@ namespace Rollover.UnitTests
             Assert.True(resultList.Count() == 1);
             Assert.Contains(testInput, resultList.First());
             Assert.Contains("Symbol", resultList.First());
-            Assert.Contains("is allready tracked", resultList.First());
+            Assert.Contains("is already tracked", resultList.First());
         }
     }
 }
