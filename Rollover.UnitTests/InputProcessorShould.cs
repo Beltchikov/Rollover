@@ -56,5 +56,17 @@ namespace Rollover.UnitTests
             Assert.True(resultList.Count() == 1);
             Assert.True(resultList.First() == testInput);
         }
+
+        [Fact]
+        public void ReturnInputIfStateIsWaitingForSymbolAndInputIsEnterSymbolToTrack()
+        {
+            string testInput = "Enter a symbol to track:";
+            var sut = new InputProcessor();
+
+            var resultList = sut.Convert(testInput, "WaitingForSymbol", null, null);
+
+            Assert.True(resultList.Count() == 1);
+            Assert.True(resultList.First() == testInput);
+        }
     }
 }

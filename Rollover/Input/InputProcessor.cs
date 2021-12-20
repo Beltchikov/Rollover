@@ -23,6 +23,10 @@ namespace Rollover.Input
                     {
                         return new List<string> { input };
                     }
+                    else if (input == "Enter a symbol to track:")
+                    {
+                        return new List<string> { input };
+                    }
                     throw new NotImplementedException();
                 default:
                     throw new NotImplementedException();
