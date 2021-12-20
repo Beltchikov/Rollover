@@ -1,24 +1,24 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+﻿using Rollover.Ib;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Rollover.Tracking
 {
     public class TrackedSymbols : ITrackedSymbols
     {
-        private readonly ITrackedSymbolFactory _factory;
+        private readonly IRequestSender _requestSender;
         private readonly List<TrackedSymbol> _symbols;
 
-        public TrackedSymbols(ITrackedSymbolFactory factory)
+        public TrackedSymbols(IRequestSender requestSender)
         {
-            _factory = factory;
+            _requestSender = requestSender;
             _symbols = new List<TrackedSymbol>();
         }
 
-        public void Add(string input)
+        public void BeginAdd(string input)
         {
-            var newSymbol = _factory.Create(input);
-            _symbols.Add(newSymbol);
+            // TODO
+            //_requestSender.ReqSecDefOptParams.Add(input);
         }
 
         public IEnumerable<string> AllAsString()

@@ -33,12 +33,13 @@ namespace Rollover.Input
                         {
                             if (!trackedSymbols.SymbolExists(input))
                             {
-                                trackedSymbols.Add(input);
-                                var outputList = new List<string>();
-                                outputList.Add($"Symbol {input} added");
-                                outputList.Add($"Tracked symbols:");
-                                outputList.AddRange(trackedSymbols.AllAsString());
-                                return outputList;
+                                trackedSymbols.BeginAdd(input);
+                                //var outputList = new List<string>();
+                                //outputList.Add($"Symbol {input} added");
+                                //outputList.Add($"Tracked symbols:");
+                                //outputList.AddRange(trackedSymbols.AllAsString());
+                                //return outputList;
+                                return new List<string>();
                             }
                             else
                             {

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NSubstitute;
+﻿using NSubstitute;
 using Rollover.Tracking;
 using Xunit;
 
@@ -12,14 +7,19 @@ namespace Rollover.UnitTests
     public class TrackedSymbolsShould
     {
         [Fact]
-        public void CallTrackedSymbolFactory()
+        public void CallRequestSenderInBeginAdd()
         {
             var symbol = "someSymbol";
-            var factory = Substitute.For<ITrackedSymbolFactory>();
+            var requestSender = Substitute.For<Ib.IRequestSender>();
 
-            var sut = new TrackedSymbols(factory);
-            sut.Add(symbol);
-            factory.Received().Create(symbol);
+            var sut = new TrackedSymbols(requestSender);
+            sut.BeginAdd(symbol);
+            requestSender.Received().ReqSecDefOptParams(
+                Arg.Any<int>(),
+                Arg.Any<string>(),
+                Arg.Any<string>(),
+                Arg.Any<string>(),
+                Arg.Any<int>());
         }
     }
 }
