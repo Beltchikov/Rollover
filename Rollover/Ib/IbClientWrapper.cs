@@ -44,7 +44,7 @@ namespace Rollover.Ib
             _signal.waitForSignal();
         }
 
-        public void RegisterResponseHandlers(IInputQueue _inputQueue, SynchronizationContext synchronizationContext)
+        public void RegisterResponseHandlers(IInputQueue inputQueue, SynchronizationContext synchronizationContext)
         {
             _responseHandlers.SynchronizationContext = synchronizationContext;
 
@@ -68,6 +68,11 @@ namespace Rollover.Ib
         public void ListPositions()
         {
             _ibClient.ClientSocket.reqPositions();
+        }
+
+        public void ReqSecDefOptParams(int reqId, string symbol, string exchange, string secType, int conId)
+        {
+            _ibClient.ClientSocket.reqSecDefOptParams(reqId, symbol, exchange, secType, conId);
         }
     }
 }

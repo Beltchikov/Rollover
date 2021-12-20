@@ -1,4 +1,5 @@
 ﻿using Rollover.Input;
+using System;
 using System.Threading;
 
 namespace Rollover.Ib
@@ -30,7 +31,6 @@ namespace Rollover.Ib
             { IsBackground = true }
             .Start();
         }
-
         public void Disconnect()
         {
             _ibClient.Disconnect();
@@ -44,6 +44,10 @@ namespace Rollover.Ib
         public void ListPositions()
         {
             _ibClient.ListPositions();
+        }
+        public void ReqSecDefOptParams(int reqId, string symbol, string exchange, string secType, int conId)
+        {
+            _ibClient.ReqSecDefOptParams(reqId, symbol, exchange, secType, conId);
         }
     }
 }

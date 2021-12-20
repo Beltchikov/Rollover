@@ -15,8 +15,9 @@ namespace Rollover.Ib
         EReader ReaderFactory();
         bool IsConnected();
         void WaitForSignal();
-        void RegisterResponseHandlers(Input.IInputQueue _inputQueue, SynchronizationContext synchronizationContext);
+        void RegisterResponseHandlers(Input.IInputQueue inputQueue, SynchronizationContext synchronizationContext);
         void Disconnect();
         void ListPositions();
+        void ReqSecDefOptParams(int reqId, string symbol, string exchange, string secType, int conId);
     }
 }

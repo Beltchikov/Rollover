@@ -8,5 +8,6 @@ namespace Rollover.Ib
         void Connect(string host, int port, int clientId);
         void Disconnect();
         void ListPositions();
+        void ReqSecDefOptParams(int reqId, string symbol, string exchange, string secType, int conId);
     }
 }
