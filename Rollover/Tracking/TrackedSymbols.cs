@@ -12,23 +12,19 @@ namespace Rollover.Tracking
         {
             _symbols = new List<TrackedSymbol>();
         }
-        
+
         public void Add(string input)
         {
             // TODO Factory
-            var newSymbol = new TrackedSymbol {Name = input};
+            var newSymbol = new TrackedSymbol { Name = input };
             _symbols.Add(newSymbol);
         }
 
         public IEnumerable<string> AllAsString()
         {
             var allAsString = _symbols.Select(s => s.ToString()).ToList();
-            if (!allAsString.Any())
-            {
-                return allAsString;
-            }
-
-            return allAsString.OrderBy(a => a);
+            allAsString.Sort();
+            return allAsString;
         }
 
         public bool SymbolExists(string input)
