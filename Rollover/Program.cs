@@ -22,7 +22,8 @@ namespace Rollover
             IRequestSender requestSender = new RequestSender(ibClient);
             IInputProcessor inputProcessor = new InputProcessor();
             IConnectedCondition connectedCondition  = new ConnectedCondition();
-            ITrackedSymbols trackedSymbols  = new TrackedSymbols();
+            ITrackedSymbolFactory factory = new TrackedSymbolFactory();
+            ITrackedSymbols trackedSymbols  = new TrackedSymbols(factory);
             IReducer reducer = new Reducer();
             IInputLoop inputLoop = new InputLoop(
                 inputProcessor, 

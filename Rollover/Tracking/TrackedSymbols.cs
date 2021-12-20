@@ -6,17 +6,20 @@ namespace Rollover.Tracking
 {
     public class TrackedSymbols : ITrackedSymbols
     {
+        private readonly ITrackedSymbolFactory _factory;
         private readonly List<TrackedSymbol> _symbols;
 
-        public TrackedSymbols()
+        public TrackedSymbols(ITrackedSymbolFactory factory)
         {
+            _factory = factory;
             _symbols = new List<TrackedSymbol>();
         }
 
         public void Add(string input)
         {
             // TODO Factory
-            var newSymbol = new TrackedSymbol { Name = input };
+            //var newSymbol = new TrackedSymbol { Name = input };
+            var newSymbol = _factory.Create(input);
             _symbols.Add(newSymbol);
         }
 
