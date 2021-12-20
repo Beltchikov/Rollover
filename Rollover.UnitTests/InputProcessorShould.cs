@@ -90,5 +90,20 @@ namespace Rollover.UnitTests
             Assert.Contains("Symbol", resultList.First());
             Assert.Contains("added", resultList.First());
         }
+
+        [Fact]
+        public void ReturnUnknownSymbolIfStateIsWaitingForSymbolAndInputIsInvalidSymbolk()
+        {
+            string testInput = "DAX:";
+
+            var portfolio = Substitute.For<IPortfolio>();
+            portfolio.SymbolExists(testInput).Returns(false);
+
+            var sut = new InputProcessor();
+            var resultList = sut.Convert(testInput, "WaitingForSymbol", portfolio, null);
+
+            Assert.True(resultList.Count() == 1);
+            Assert.Contains("Unknown symbol", resultList.First());
+        }
     }
 }
