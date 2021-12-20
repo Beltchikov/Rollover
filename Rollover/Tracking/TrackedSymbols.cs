@@ -1,31 +1,39 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace Rollover.Tracking
 {
-    [ExcludeFromCodeCoverage(Justification ="It's a wrapper")]
     public class TrackedSymbols : ITrackedSymbols
     {
-        private readonly List<string> _symbols;
+        private readonly List<TrackedSymbol> _symbols;
 
         public TrackedSymbols()
         {
-            _symbols = new List<string>();
+            _symbols = new List<TrackedSymbol>();
         }
         
         public void Add(string input)
         {
-            _symbols.Add(input);
+            // TODO Factory
+            var newSymbol = new TrackedSymbol {Name = input};
+            _symbols.Add(newSymbol);
         }
 
-        public IEnumerable<string> All()
+        public IEnumerable<string> AllAsString()
         {
-            return _symbols;
+            var allAsString = _symbols.Select(s => s.ToString()).ToList();
+            if (!allAsString.Any())
+            {
+                return allAsString;
+            }
+
+            return allAsString.OrderBy(a => a);
         }
 
         public bool SymbolExists(string input)
         {
-            return _symbols.Contains(input);
+            return _symbols.Any(s => s.Name == input);
         }
     }
 }

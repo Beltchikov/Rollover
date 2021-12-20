@@ -37,7 +37,7 @@ namespace Rollover.Input
                                 var outputList = new List<string>();
                                 outputList.Add($"Symbol {input} added");
                                 outputList.Add($"Tracked symbols:");
-                                outputList.AddRange(trackedSymbols.All());
+                                outputList.AddRange(trackedSymbols.AllAsString());
                                 return outputList;
                             }
                             else

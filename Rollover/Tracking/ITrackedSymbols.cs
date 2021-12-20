@@ -6,6 +6,6 @@ namespace Rollover.Tracking
     {
         bool SymbolExists(string input);
         void Add(string input);
-        IEnumerable<string> All();
+        IEnumerable<string> AllAsString();
     }
 }
