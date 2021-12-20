@@ -12,6 +12,8 @@ namespace Rollover.Input
             {
                 case "Connecting":
                     return new List<string> { input };
+                case "Connected":
+                    return new List<string> { input };
                 default:
                     throw new NotImplementedException();
             }

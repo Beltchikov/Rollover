@@ -21,5 +21,17 @@ namespace Rollover.UnitTests
             Assert.True(resultList.Count() == 1);
             Assert.True(resultList.First() == testInput);
         }
+
+        [Fact]
+        public void ReturnInputIfStateIsConnected()
+        {
+            var testInput = "TEST";
+            var sut = new InputProcessor();
+
+            var resultList = sut.Convert(testInput, "Connected", null, null);
+
+            Assert.True(resultList.Count() == 1);
+            Assert.True(resultList.First() == testInput);
+        }
     }
 }
