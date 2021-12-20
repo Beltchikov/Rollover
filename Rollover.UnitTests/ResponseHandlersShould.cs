@@ -54,14 +54,17 @@ namespace Rollover.UnitTests
         }
 
         [Fact]
-        public void CallEnqueueInOnPosition()
+        public void CallEnqueueInOnPositionEndAfterOnPosition()
         {
             var inputQueue = Substitute.For<IInputQueue>();
             var portfolio = Substitute.For<IPortfolio>();
 
             var sut = ResponseHandlers.CreateInstance(inputQueue, portfolio);
-            sut.OnPosition(new PositionMessage("account", new IBApi.Contract(),2, 1000));
-            inputQueue.Received().Enqueue(Arg.Any<string>());
+            sut.OnPosition(new PositionMessage("account1", new IBApi.Contract(),2, 1000));
+            sut.OnPosition(new PositionMessage("account2", new IBApi.Contract(),2, 1000));
+            sut.OnPositionEnd();
+            
+            inputQueue.Received(3).Enqueue(Arg.Any<string>());
         }
 
         [Fact]

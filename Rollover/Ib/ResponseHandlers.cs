@@ -2,6 +2,7 @@
 using Rollover.Input;
 using Rollover.Tracking;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
@@ -14,6 +15,7 @@ namespace Rollover.Ib
         private readonly IPortfolio _portfolio;
         private static IResponseHandlers _responseHandlers;
         private static object _locker = new object();
+        private static List<string> _localSymbolsList = new List<string>();
 
         private ResponseHandlers(IInputQueue inputQueue, IPortfolio portfolio)
         {
@@ -60,11 +62,13 @@ namespace Rollover.Ib
         {
             _portfolio.Add(obj);
             var localSymbol = obj.Contract.LocalSymbol;
-            _inputQueue.Enqueue(localSymbol);
+            _localSymbolsList.Add(localSymbol);
         }
 
         public void OnPositionEnd()
         {
+            _localSymbolsList.ForEach(s => _inputQueue.Enqueue(s));
+            _localSymbolsList.Clear();
             _inputQueue.Enqueue("Enter a symbol to track:");
         }
     }
