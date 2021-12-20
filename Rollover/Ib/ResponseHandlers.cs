@@ -26,11 +26,7 @@ namespace Rollover.Ib
         {
             lock (_locker)
             {
-                if (_responseHandlers == null)
-                {
-                    _responseHandlers = new ResponseHandlers(inputQueue, portfolio);
-                }
-                return _responseHandlers; 
+                return _responseHandlers ??= new ResponseHandlers(inputQueue, portfolio);
             }
         }
 
