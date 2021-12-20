@@ -1,4 +1,6 @@
-﻿using Rollover.Input;
+﻿using NSubstitute;
+using Rollover.Input;
+using Rollover.Tracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,6 +69,26 @@ namespace Rollover.UnitTests
 
             Assert.True(resultList.Count() == 1);
             Assert.True(resultList.First() == testInput);
+        }
+
+        [Fact]
+        public void ReturnSymbolAddedIfStateIsWaitingForSymbolAndInputIsValidSymbolk()
+        {
+            string testInput = "DAX:";
+
+            var portfolio = Substitute.For<IPortfolio>();
+            portfolio.SymbolExists(testInput).Returns(true);
+
+            var trackedSymbols = Substitute.For<ITrackedSymbols>();
+            trackedSymbols.SymbolExists(testInput).Returns(false);
+
+            var sut = new InputProcessor();
+            var resultList = sut.Convert(testInput, "WaitingForSymbol", portfolio, trackedSymbols);
+
+            Assert.True(resultList.Count() == 1);
+            Assert.Contains(testInput, resultList.First());
+            Assert.Contains("Symbol", resultList.First());
+            Assert.Contains("added", resultList.First());
         }
     }
 }

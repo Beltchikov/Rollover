@@ -27,7 +27,25 @@ namespace Rollover.Input
                     {
                         return new List<string> { input };
                     }
-                    throw new NotImplementedException();
+                    else
+                    {
+                        if (_portfolio.SymbolExists(input))
+                        {
+                            if (!_trackedSymbols.SymbolExists(input))
+                            {
+                                _trackedSymbols.Add(input);
+                                return new List<string> { $"Symbol {input} added" };
+                            }
+                            else
+                            {
+                                return new List<string> { $"Symbol {input} is allready tracked" };
+                            }
+                        }
+                        else
+                        {
+                            return new List<string> { $"Unknown symbol {input}" };
+                        }
+                    }
                 default:
                     throw new NotImplementedException();
             }
