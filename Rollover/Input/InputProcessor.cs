@@ -14,6 +14,12 @@ namespace Rollover.Input
                     return new List<string> { input };
                 case "Connected":
                     return new List<string> { input };
+                case "WaitingForSymbol":
+                    if (input == null)
+                    {
+                        return new List<string>();
+                    }
+                    throw new NotImplementedException();
                 default:
                     throw new NotImplementedException();
             }
