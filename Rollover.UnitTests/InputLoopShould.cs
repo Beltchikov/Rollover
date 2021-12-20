@@ -140,51 +140,6 @@ namespace Rollover.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
-        public void CallPortfolioSymbolExists(
-            [Frozen] IInputQueue inputQueue,
-            [Frozen] IConsoleWrapper consoleWrapper,
-            [Frozen] IPortfolio portfolio,
-            InputLoop sut)
-        {
-            inputQueue.Dequeue().Returns("SomeInput", "q");
-            sut.Run(consoleWrapper, inputQueue);
-            portfolio.Received().SymbolExists("SomeInput");
-        }
-
-        [Theory, AutoNSubstituteData]
-        public void CallTrackedSymbolsSymbolExists(
-            [Frozen] IInputQueue inputQueue,
-            [Frozen] IConsoleWrapper consoleWrapper,
-            [Frozen] IPortfolio portfolio,
-            [Frozen] ITrackedSymbols trackedSymbols,
-            InputLoop sut)
-        {
-            var input = "SomeInput";
-            inputQueue.Dequeue().Returns(input, "q");
-            portfolio.SymbolExists(input).Returns(true);
-
-            sut.Run(consoleWrapper, inputQueue);
-            trackedSymbols.Received().SymbolExists(input);
-        }
-
-        [Theory, AutoNSubstituteData]
-        public void CallTrackedSymbolsAdd(
-            [Frozen] IInputQueue inputQueue,
-            [Frozen] IConsoleWrapper consoleWrapper,
-            [Frozen] IPortfolio portfolio,
-            [Frozen] ITrackedSymbols trackedSymbols,
-            InputLoop sut)
-        {
-            var input = "SomeInput";
-            inputQueue.Dequeue().Returns(input, "q");
-            portfolio.SymbolExists(input).Returns(true);
-            trackedSymbols.SymbolExists(input).Returns(false);
-
-            sut.Run(consoleWrapper, inputQueue);
-            trackedSymbols.Received().Add(input);
-        }
-
-        [Theory, AutoNSubstituteData]
         public void CallReducerGetState(
             [Frozen] IInputQueue inputQueue,
             [Frozen] IConsoleWrapper consoleWrapper,
