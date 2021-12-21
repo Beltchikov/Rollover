@@ -29,11 +29,14 @@ namespace Rollover.Input
                     }
                     else
                     {
-                        if (portfolio.SymbolExists(input))
+                        var position = portfolio.PositionBySymbol(input);
+                        if (position != null)
                         {
+                            var symbol = position.Contract.Symbol;
+
                             if (!trackedSymbols.SymbolExists(input))
                             {
-                                trackedSymbols.BeginAdd(input);
+                                trackedSymbols.BeginAdd(70100001, symbol, "GLOBEX", "IND", position.Contract.ConId);
                                 //var outputList = new List<string>();
                                 //outputList.Add($"Symbol {input} added");
                                 //outputList.Add($"Tracked symbols:");

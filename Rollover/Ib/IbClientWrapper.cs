@@ -53,6 +53,8 @@ namespace Rollover.Ib
             _ibClient.ManagedAccounts += _responseHandlers.ManagedAccounts;
             _ibClient.Position += _responseHandlers.OnPosition;
             _ibClient.PositionEnd += _responseHandlers.OnPositionEnd;
+            _ibClient.SecurityDefinitionOptionParameter += _responseHandlers.OnSecurityDefinitionOptionParameter;
+            _ibClient.SecurityDefinitionOptionParameterEnd += _responseHandlers.OnSecurityDefinitionOptionParameterEnd;
         }
 
         public void Disconnect()
