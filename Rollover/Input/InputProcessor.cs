@@ -36,6 +36,12 @@ namespace Rollover.Input
 
                             if (!trackedSymbols.SymbolExists(input))
                             {
+                                // TODO get con id
+                                //ibClient.ClientSocket.reqContractDetails(CONTRACT_DETAILS_ID, contract);
+                                //ibClient.ContractDetails += HandleContractDataMessage;
+
+
+
                                 trackedSymbols.BeginAdd(70100001, symbol, "GLOBEX", "IND", position.Contract.ConId);
                                 //var outputList = new List<string>();
                                 //outputList.Add($"Symbol {input} added");
