@@ -11,23 +11,18 @@ namespace Rollover.Input
         private IConnectedCondition _connectedCondition;
         private IPortfolio _portfolio;
         private ITrackedSymbols _trackedSymbols;
-        private IReducer _reducer;
         IInputQueue _inputQueue;
 
         public InputLoop(
             IInputProcessor inputProcessor,
             IConnectedCondition connectedCondition,
             IPortfolio portfolio,
-            ITrackedSymbols trackedSymbols, 
-            IReducer reducer)
+            ITrackedSymbols trackedSymbols)
         {
             _inputProcessor = inputProcessor;
             _connectedCondition = connectedCondition;
             _portfolio = portfolio;
             _trackedSymbols = trackedSymbols;
-            _reducer = reducer;
-
-            _reducer.StateChanged += OnStateChanged;
         }
 
         public bool CheckConnectionMessages(IConsoleWrapper consoleWrapper, IInputQueue inputQueue, int timeout)
@@ -78,11 +73,5 @@ namespace Rollover.Input
 
             consoleWrapper.WriteLine("Goodbye!");
         }
-
-        private void OnStateChanged(object sender, StateChangedEventArgs e)
-        {
-            _inputQueue.Enqueue($"STATE:{e.State}");
-        }
-
     }
 }

@@ -7,6 +7,12 @@ namespace Rollover.Input
     public class InputProcessor : IInputProcessor
     {
         private string _state;
+        private IReducer _reducer;
+
+        public InputProcessor(IReducer reducer)
+        {
+            _reducer = reducer;
+        }
 
         public List<string> Convert(string input, IPortfolio portfolio, ITrackedSymbols trackedSymbols)
         {
@@ -18,7 +24,26 @@ namespace Rollover.Input
             switch (_state)
             {
                 case "Connected":
+                    _state = _reducer.GetState(_state, input);
                     return new List<string> { input };
+                case "WaitingForSymbol":
+                    if (input == null)
+                    {
+                        return new List<string>();
+                    }
+                    else if (input.Contains("STATE"))
+                    {
+                        return new List<string> { input };
+                    }
+                    else if (input == "Enter a symbol to track:")
+                    {
+                        return new List<string> { input };
+                    }
+                    else
+                    {
+                        // TODO
+                        break;
+                    }
                 default:
                     throw new NotImplementedException();
             }

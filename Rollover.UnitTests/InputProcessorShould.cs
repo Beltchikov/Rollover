@@ -2,6 +2,7 @@
 using Rollover.Input;
 using Rollover.Tracking;
 using System.Linq;
+using AutoFixture.Xunit2;
 using Xunit;
 
 namespace Rollover.UnitTests
@@ -12,12 +13,23 @@ namespace Rollover.UnitTests
         public void ReturnInputIfStateIsConnected()
         {
             var testInput = "TEST";
-            var sut = new InputProcessor();
+            var reducer = Substitute.For<IReducer>();
+            var sut = new InputProcessor(reducer);
 
             var resultList = sut.Convert(testInput, null, null);
 
             Assert.True(resultList.Count() == 1);
             Assert.True(resultList.First() == testInput);
+        }
+
+        [Fact]
+        public void CallReducerIfStateIsConnectedAndInputNull()
+        {
+            var reducer = Substitute.For<IReducer>();
+            var sut = new InputProcessor(reducer);
+
+            sut.Convert(null, null, null);
+            reducer.Received().GetState(Arg.Any<string>(), Arg.Any<string>());
         }
 
         //[Fact]
