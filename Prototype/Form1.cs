@@ -39,6 +39,7 @@ namespace Prototype
             ibClient.TickSize += OnTickSize;
             ibClient.TickString += TickString;
             ibClient.TickGeneric += OnTickGeneric;
+            ibClient.ContractDetails += HandleContractDataMessage;
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
@@ -175,6 +176,12 @@ namespace Prototype
             AddLineToTextbox(txtMessage, msg);
         }
 
+        private void HandleContractDataMessage(ContractDetailsMessage obj)
+        {
+            string msg = $"ConId:{obj.ContractDetails.Contract.ConId} ";
+            AddLineToTextbox(txtMessage, msg);
+        }
+
         private void OnSymbolSamples(SymbolSamplesMessage obj)
         {
             var msg = new StringBuilder();
@@ -249,7 +256,15 @@ namespace Prototype
         private void btCheckSymbol_Click(object sender, EventArgs e)
         {
             var symbol = txtSymbol.Text;
-            ibClient.ClientSocket.reqMatchingSymbols(++activeReqId, symbol);
+            //ibClient.ClientSocket.reqMatchingSymbols(++activeReqId, symbol);
+            var contract = new Contract()
+            {
+                Symbol = symbol,
+                SecType = "IND",
+                Currency = "USD",
+                Exchange ="GLOBEX"
+            };
+            ibClient.ClientSocket.reqContractDetails(60000001, contract);
         }
 
         private void btListPositions_Click(object sender, EventArgs e)

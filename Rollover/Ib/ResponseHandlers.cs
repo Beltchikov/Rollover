@@ -72,5 +72,15 @@ namespace Rollover.Ib
             _localSymbolsList.Clear();
             _inputQueue.Enqueue("Enter a symbol to track:");
         }
+
+        public void OnSecurityDefinitionOptionParameter(SecurityDefinitionOptionParameterMessage obj)
+        {
+            //throw new NotImplementedException();
+        }
+
+        public void OnSecurityDefinitionOptionParameterEnd(int obj)
+        {
+            //throw new NotImplementedException();
+        }
     }
 }

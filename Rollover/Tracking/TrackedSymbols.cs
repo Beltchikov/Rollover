@@ -15,10 +15,9 @@ namespace Rollover.Tracking
             _symbols = new List<TrackedSymbol>();
         }
 
-        public void BeginAdd(string input)
+        public void BeginAdd(int reqId, string symbol, string exchange, string secType, int conId)
         {
-            // TODO
-            //_requestSender.ReqSecDefOptParams.Add(input);
+            _requestSender.ReqSecDefOptParams(reqId, symbol, exchange, secType, conId);
         }
 
         public IEnumerable<string> AllAsString()

@@ -13,5 +13,7 @@ namespace Rollover.Ib
         void OnError(int id, int errorCode, string msg, Exception ex);
         void OnPosition(PositionMessage obj);
         void OnPositionEnd();
+        void OnSecurityDefinitionOptionParameter(SecurityDefinitionOptionParameterMessage obj);
+        void OnSecurityDefinitionOptionParameterEnd(int obj);
     }
 }

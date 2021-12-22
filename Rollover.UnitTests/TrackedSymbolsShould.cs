@@ -13,7 +13,7 @@ namespace Rollover.UnitTests
             var requestSender = Substitute.For<Ib.IRequestSender>();
 
             var sut = new TrackedSymbols(requestSender);
-            sut.BeginAdd(symbol);
+            sut.BeginAdd(70100001, symbol, "GLOBEX", "IND", 2133);
             requestSender.Received().ReqSecDefOptParams(
                 Arg.Any<int>(),
                 Arg.Any<string>(),
