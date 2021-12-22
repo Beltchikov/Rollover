@@ -6,8 +6,8 @@ namespace Rollover.Input
 {
     public class InputProcessor : IInputProcessor
     {
-        private string _state;
         private IReducer _reducer;
+        public string State { get; private set; }
 
         public InputProcessor(IReducer reducer)
         {
@@ -16,12 +16,12 @@ namespace Rollover.Input
 
         public List<string> Convert(string input, IPortfolio portfolio, ITrackedSymbols trackedSymbols)
         {
-            if (string.IsNullOrWhiteSpace(_state))
+            if (string.IsNullOrWhiteSpace(State))
             {
-                _state = "WaitingForSymbol";
+                State = "WaitingForSymbol";
             }
 
-            switch (_state)
+            switch (State)
             {
                 case "WaitingForSymbol":
                     if (input == null)

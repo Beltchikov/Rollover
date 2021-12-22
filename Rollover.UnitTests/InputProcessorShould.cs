@@ -9,28 +9,28 @@ namespace Rollover.UnitTests
 {
     public class InputProcessorShould
     {
-        [Fact]
-        public void ReturnInputIfStateIsConnected()
-        {
-            var testInput = "TEST";
-            var reducer = Substitute.For<IReducer>();
-            var sut = new InputProcessor(reducer);
+        //[Fact]
+        //public void ReturnInputIfStateIsConnected()
+        //{
+        //    var testInput = "TEST";
+        //    var reducer = Substitute.For<IReducer>();
+        //    var sut = new InputProcessor(reducer);
 
-            var resultList = sut.Convert(testInput, null, null);
+        //    var resultList = sut.Convert(testInput, null, null);
 
-            Assert.True(resultList.Count() == 1);
-            Assert.True(resultList.First() == testInput);
-        }
+        //    Assert.True(resultList.Count() == 1);
+        //    Assert.True(resultList.First() == testInput);
+        //}
 
-        [Fact]
-        public void CallReducerIfStateIsConnectedAndInputNull()
-        {
-            var reducer = Substitute.For<IReducer>();
-            var sut = new InputProcessor(reducer);
+        //[Fact]
+        //public void CallReducerIfStateIsConnectedAndInputNull()
+        //{
+        //    var reducer = Substitute.For<IReducer>();
+        //    var sut = new InputProcessor(reducer);
 
-            sut.Convert(null, null, null);
-            reducer.Received().GetState(Arg.Any<string>(), Arg.Any<string>());
-        }
+        //    sut.Convert(null, null, null);
+        //    reducer.Received().GetState(Arg.Any<string>(), Arg.Any<string>());
+        //}
 
         //[Fact]
         //public void ReturnEmptyArrayIfStateIsWaitingForSymbolAndInputIsNull()
