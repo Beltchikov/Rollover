@@ -18,51 +18,30 @@ namespace Rollover.UnitTests
             Assert.True(sut.State == "WaitingForSymbol");
         }
 
-        //[Fact]
-        //public void ReturnInputIfStateIsConnected()
-        //{
-        //    var testInput = "TEST";
-        //    var reducer = Substitute.For<IReducer>();
-        //    var sut = new InputProcessor(reducer);
+        [Fact]
+        public void ReturnEmptyArrayIfStateIsWaitingForSymbolAndInputIsNull()
+        {
+            string testInput = null;
+            var reducer = Substitute.For<IReducer>();
+            var sut = new InputProcessor(reducer);
 
-        //    var resultList = sut.Convert(testInput, null, null);
+            var resultList = sut.Convert(testInput, null, null);
 
-        //    Assert.True(resultList.Count() == 1);
-        //    Assert.True(resultList.First() == testInput);
-        //}
+            Assert.True(!resultList.Any());
+        }
 
-        //[Fact]
-        //public void CallReducerIfStateIsConnectedAndInputNull()
-        //{
-        //    var reducer = Substitute.For<IReducer>();
-        //    var sut = new InputProcessor(reducer);
+        [Fact]
+        public void ReturnInputIfStateIsWaitingForSymbolAndInputContainsState()
+        {
+            string testInput = "STATE: Diagnostic message";
+            var reducer = Substitute.For<IReducer>();
+            var sut = new InputProcessor(reducer);
 
-        //    sut.Convert(null, null, null);
-        //    reducer.Received().GetState(Arg.Any<string>(), Arg.Any<string>());
-        //}
+            var resultList = sut.Convert(testInput, null, null);
 
-        //[Fact]
-        //public void ReturnEmptyArrayIfStateIsWaitingForSymbolAndInputIsNull()
-        //{
-        //    string testInput = null;
-        //    var sut = new InputProcessor();
-
-        //    var resultList = sut.Convert(testInput, null, null);
-
-        //    Assert.True(!resultList.Any());
-        //}
-
-        //[Fact]
-        //public void ReturnInputIfStateIsWaitingForSymbolAndInputContainsState()
-        //{
-        //    string testInput = "STATE: Diagnostic message";
-        //    var sut = new InputProcessor();
-
-        //    var resultList = sut.Convert(testInput, null, null);
-
-        //    Assert.True(resultList.Count() == 1);
-        //    Assert.True(resultList.First() == testInput);
-        //}
+            Assert.True(resultList.Count() == 1);
+            Assert.True(resultList.First() == testInput);
+        }
 
         //[Fact]
         //public void ReturnInputIfStateIsWaitingForSymbolAndInputIsEnterSymbolToTrack()
