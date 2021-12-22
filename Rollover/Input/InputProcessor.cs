@@ -18,14 +18,11 @@ namespace Rollover.Input
         {
             if (string.IsNullOrWhiteSpace(_state))
             {
-                _state = "Connected";
+                _state = "WaitingForSymbol";
             }
 
             switch (_state)
             {
-                case "Connected":
-                    _state = _reducer.GetState(_state, input);
-                    return new List<string> { input };
                 case "WaitingForSymbol":
                     if (input == null)
                     {
@@ -41,8 +38,7 @@ namespace Rollover.Input
                     }
                     else
                     {
-                        // TODO
-                        break;
+                        return new List<string> { input };
                     }
                 default:
                     throw new NotImplementedException();
@@ -53,7 +49,7 @@ namespace Rollover.Input
             // case Connected
             // case WaitingForSymbol
 
-            throw new NotImplementedException();
+            return new List<string>();
 
             //switch (state)
             //{
