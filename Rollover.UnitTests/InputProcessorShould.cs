@@ -13,8 +13,11 @@ namespace Rollover.UnitTests
         public void HaveStateWaitingForSymbolIfFirstRun()
         {
             var reducer = Substitute.For<IReducer>();
-            var sut = new InputProcessor(reducer);
-            sut.Convert(null, null, null);
+            var portfolio = Substitute.For<IPortfolio>();
+            var trackedSymbols = Substitute.For<ITrackedSymbols>();
+            var sut = new InputProcessor(reducer, portfolio, trackedSymbols);
+
+            sut.Convert(null);
             Assert.True(sut.State == "WaitingForSymbol");
         }
 
@@ -22,11 +25,13 @@ namespace Rollover.UnitTests
         public void ReturnEmptyArrayIfStateIsWaitingForSymbolAndInputIsNull()
         {
             string testInput = null;
+
             var reducer = Substitute.For<IReducer>();
-            var sut = new InputProcessor(reducer);
+            var portfolio = Substitute.For<IPortfolio>();
+            var trackedSymbols = Substitute.For<ITrackedSymbols>();
+            var sut = new InputProcessor(reducer, portfolio, trackedSymbols);
 
-            var resultList = sut.Convert(testInput, null, null);
-
+            var resultList = sut.Convert(testInput);
             Assert.True(!resultList.Any());
         }
 
@@ -34,10 +39,13 @@ namespace Rollover.UnitTests
         public void ReturnInputIfStateIsWaitingForSymbolAndInputContainsState()
         {
             string testInput = "STATE: Diagnostic message";
-            var reducer = Substitute.For<IReducer>();
-            var sut = new InputProcessor(reducer);
 
-            var resultList = sut.Convert(testInput, null, null);
+            var reducer = Substitute.For<IReducer>();
+            var portfolio = Substitute.For<IPortfolio>();
+            var trackedSymbols = Substitute.For<ITrackedSymbols>();
+            var sut = new InputProcessor(reducer, portfolio, trackedSymbols);
+
+            var resultList = sut.Convert(testInput);
 
             Assert.True(resultList.Count() == 1);
             Assert.True(resultList.First() == testInput);
@@ -47,10 +55,13 @@ namespace Rollover.UnitTests
         public void ReturnInputIfStateIsWaitingForSymbolAndInputIsEnterSymbolToTrack()
         {
             string testInput = "Enter a symbol to track:";
-            var reducer = Substitute.For<IReducer>();
-            var sut = new InputProcessor(reducer);
 
-            var resultList = sut.Convert(testInput, null, null);
+            var reducer = Substitute.For<IReducer>();
+            var portfolio = Substitute.For<IPortfolio>();
+            var trackedSymbols = Substitute.For<ITrackedSymbols>();
+            var sut = new InputProcessor(reducer, portfolio, trackedSymbols);
+
+            var resultList = sut.Convert(testInput);
 
             Assert.True(resultList.Count() == 1);
             Assert.True(resultList.First() == testInput);

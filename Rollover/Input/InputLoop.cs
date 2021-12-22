@@ -1,5 +1,4 @@
 ﻿using Rollover.Ib;
-using Rollover.Tracking;
 using System;
 using System.Diagnostics;
 
@@ -9,20 +8,14 @@ namespace Rollover.Input
     {
         private IInputProcessor _inputProcessor;
         private IConnectedCondition _connectedCondition;
-        private IPortfolio _portfolio;
-        private ITrackedSymbols _trackedSymbols;
         IInputQueue _inputQueue;
 
         public InputLoop(
             IInputProcessor inputProcessor,
-            IConnectedCondition connectedCondition,
-            IPortfolio portfolio,
-            ITrackedSymbols trackedSymbols)
+            IConnectedCondition connectedCondition)
         {
             _inputProcessor = inputProcessor;
             _connectedCondition = connectedCondition;
-            _portfolio = portfolio;
-            _trackedSymbols = trackedSymbols;
         }
 
         public bool CheckConnectionMessages(IConsoleWrapper consoleWrapper, IInputQueue inputQueue, int timeout)
@@ -62,7 +55,7 @@ namespace Rollover.Input
                     continue;
                 }
 
-                var outputList = _inputProcessor.Convert(input, _portfolio, _trackedSymbols);
+                var outputList = _inputProcessor.Convert(input);
                 outputList.ForEach(consoleWrapper.WriteLine);
 
                 if (input.Equals("q", StringComparison.InvariantCultureIgnoreCase))

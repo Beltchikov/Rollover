@@ -6,15 +6,19 @@ namespace Rollover.Input
 {
     public class InputProcessor : IInputProcessor
     {
-        private IReducer _reducer;
+        private readonly IReducer _reducer;
+        private readonly IPortfolio _portfolio;
+        private readonly ITrackedSymbols _trackedSymbols;
         public string State { get; private set; }
 
-        public InputProcessor(IReducer reducer)
+        public InputProcessor(IReducer reducer, IPortfolio portfolio, ITrackedSymbols trackedSymbols)
         {
             _reducer = reducer;
+            _portfolio = portfolio;
+            _trackedSymbols = trackedSymbols;
         }
 
-        public List<string> Convert(string input, IPortfolio portfolio, ITrackedSymbols trackedSymbols)
+        public List<string> Convert(string input)
         {
             if (string.IsNullOrWhiteSpace(State))
             {

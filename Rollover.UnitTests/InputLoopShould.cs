@@ -54,10 +54,7 @@ namespace Rollover.UnitTests
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
             sut.Run(consoleWrapper, inputQueue);
-            inputProcessor.Received().Convert(
-                Arg.Any<string>(),
-                Arg.Any<IPortfolio>(),
-                Arg.Any<ITrackedSymbols>());
+            inputProcessor.Received().Convert(Arg.Any<string>());
         }
 
         [Theory, AutoNSubstituteData]
