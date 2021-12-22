@@ -14,7 +14,7 @@ namespace Rollover.UnitTests
             var testInput = "TEST";
             var sut = new InputProcessor();
 
-            var resultList = sut.Convert(testInput, "Connecting", null, null);
+            var resultList = sut.Convert(testInput, null, null);
 
             Assert.True(resultList.Count() == 1);
             Assert.True(resultList.First() == testInput);
@@ -26,7 +26,7 @@ namespace Rollover.UnitTests
             var testInput = "TEST";
             var sut = new InputProcessor();
 
-            var resultList = sut.Convert(testInput, "Connected", null, null);
+            var resultList = sut.Convert(testInput, null, null);
 
             Assert.True(resultList.Count() == 1);
             Assert.True(resultList.First() == testInput);
@@ -38,7 +38,7 @@ namespace Rollover.UnitTests
             string testInput = null;
             var sut = new InputProcessor();
 
-            var resultList = sut.Convert(testInput, "WaitingForSymbol", null, null);
+            var resultList = sut.Convert(testInput, null, null);
 
             Assert.True(!resultList.Any());
         }
@@ -49,7 +49,7 @@ namespace Rollover.UnitTests
             string testInput = "STATE: Diagnostic message";
             var sut = new InputProcessor();
 
-            var resultList = sut.Convert(testInput, "WaitingForSymbol", null, null);
+            var resultList = sut.Convert(testInput, null, null);
 
             Assert.True(resultList.Count() == 1);
             Assert.True(resultList.First() == testInput);
@@ -61,7 +61,7 @@ namespace Rollover.UnitTests
             string testInput = "Enter a symbol to track:";
             var sut = new InputProcessor();
 
-            var resultList = sut.Convert(testInput, "WaitingForSymbol", null, null);
+            var resultList = sut.Convert(testInput, null, null);
 
             Assert.True(resultList.Count() == 1);
             Assert.True(resultList.First() == testInput);
@@ -79,7 +79,7 @@ namespace Rollover.UnitTests
             trackedSymbols.SymbolExists(testInput).Returns(false);
 
             var sut = new InputProcessor();
-            var resultList = sut.Convert(testInput, "WaitingForSymbol", portfolio, trackedSymbols);
+            var resultList = sut.Convert(testInput, portfolio, trackedSymbols);
 
             Assert.True(resultList.Count() == 2);
             Assert.Contains(testInput, resultList.First());
@@ -96,7 +96,7 @@ namespace Rollover.UnitTests
             portfolio.SymbolExists(testInput).Returns(false);
 
             var sut = new InputProcessor();
-            var resultList = sut.Convert(testInput, "WaitingForSymbol", portfolio, null);
+            var resultList = sut.Convert(testInput, portfolio, null);
 
             Assert.True(resultList.Count() == 1);
             Assert.Contains("Unknown symbol", resultList.First());
@@ -114,7 +114,7 @@ namespace Rollover.UnitTests
             trackedSymbols.SymbolExists(testInput).Returns(true);
 
             var sut = new InputProcessor();
-            var resultList = sut.Convert(testInput, "WaitingForSymbol", portfolio, trackedSymbols);
+            var resultList = sut.Convert(testInput, portfolio, trackedSymbols);
 
             Assert.True(resultList.Count() == 1);
             Assert.Contains(testInput, resultList.First());

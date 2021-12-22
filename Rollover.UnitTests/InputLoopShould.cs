@@ -56,7 +56,6 @@ namespace Rollover.UnitTests
             sut.Run(consoleWrapper, inputQueue);
             inputProcessor.Received().Convert(
                 Arg.Any<string>(),
-                Arg.Any<string>(),
                 Arg.Any<IPortfolio>(),
                 Arg.Any<ITrackedSymbols>());
         }

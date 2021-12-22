@@ -5,6 +5,6 @@ namespace Rollover.Input
 {
     public interface IInputProcessor
     {
-        List<string> Convert(string input, string state, IPortfolio portfolio, ITrackedSymbols trackedSymbols);
+        List<string> Convert(string input, IPortfolio portfolio, ITrackedSymbols trackedSymbols);
     }
 }

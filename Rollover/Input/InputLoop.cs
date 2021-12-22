@@ -11,7 +11,6 @@ namespace Rollover.Input
         private IConnectedCondition _connectedCondition;
         private IPortfolio _portfolio;
         private ITrackedSymbols _trackedSymbols;
-        private string _state;
         private IReducer _reducer;
         IInputQueue _inputQueue;
 
@@ -35,8 +34,7 @@ namespace Rollover.Input
         {
             var stopWatch = new Stopwatch();
             stopWatch.Start();
-            _state = "Connecting";
-
+           
             while (stopWatch.Elapsed.TotalMilliseconds < timeout)
             {
                 var input = inputQueue.Dequeue();
@@ -45,8 +43,7 @@ namespace Rollover.Input
                     continue;
                 }
 
-                var outputList = _inputProcessor.Convert(input, _state, _portfolio, _trackedSymbols);
-                outputList.ForEach(consoleWrapper.WriteLine);
+                consoleWrapper.WriteLine(input);
 
                 _connectedCondition.AddInput(input);
                 if (_connectedCondition.IsConnected())
@@ -61,18 +58,16 @@ namespace Rollover.Input
         public void Run(IConsoleWrapper consoleWrapper, IInputQueue inputQueue)
         {
             _inputQueue = inputQueue;
-            _state = "Connected";
-
+           
             while (true)
             {
                 var input = inputQueue.Dequeue();
-                _state = _reducer.GetState(_state, input);
                 if (input == null)
                 {
                     continue;
                 }
 
-                var outputList = _inputProcessor.Convert(input, _state, _portfolio, _trackedSymbols);
+                var outputList = _inputProcessor.Convert(input, _portfolio, _trackedSymbols);
                 outputList.ForEach(consoleWrapper.WriteLine);
 
                 if (input.Equals("q", StringComparison.InvariantCultureIgnoreCase))
