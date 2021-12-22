@@ -38,6 +38,32 @@ namespace Rollover.Input
                     }
                     else
                     {
+                        //            var position = portfolio.PositionBySymbol(input);
+                        //            if (position != null)
+                        //            {
+                        //                var symbol = position.Contract.Symbol;
+
+                        //                if (!trackedSymbols.SymbolExists(input))
+                        //                {
+                        //                    // TODO get con id
+                        //                    //ibClient.ClientSocket.reqContractDetails(CONTRACT_DETAILS_ID, contract);
+                        //                    //ibClient.ContractDetails += HandleContractDataMessage;
+
+
+
+                        //                    trackedSymbols.BeginAdd(70100001, symbol, "GLOBEX", "IND", position.Contract.ConId);
+                        //                    //var outputList = new List<string>();
+                        //                    //outputList.Add($"Symbol {input} added");
+                        //                    //outputList.Add($"Tracked symbols:");
+                        //                    //outputList.AddRange(trackedSymbols.AllAsString());
+                        //                    //return outputList;
+                        //                    return new List<string>();
+                        //                }
+                        //                else
+                        //                {
+                        //                    return new List<string> { $"Symbol {input} is already tracked" };
+                        //                }
+
                         return new List<string> { input };
                     }
                 default:
