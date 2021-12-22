@@ -22,11 +22,14 @@ namespace Rollover.Input
         {
             if (string.IsNullOrWhiteSpace(State))
             {
-                State = "WaitingForSymbol";
+                State = "Connected";
             }
 
             switch (State)
             {
+                case "Connected":
+                    State = _reducer.GetState(State, input);
+                    return new List<string> { input };
                 case "WaitingForSymbol":
                     if (input == null)
                     {
