@@ -33,7 +33,7 @@ namespace Rollover.Tracking
         public PositionMessage PositionBySymbol(string symbol)
         {
             return _posisionList.Any()
-                ? _posisionList.First(p => p.Contract.LocalSymbol == symbol)
+                ? _posisionList.FirstOrDefault(p => p.Contract.LocalSymbol == symbol)
                 : null;
         }
     }
