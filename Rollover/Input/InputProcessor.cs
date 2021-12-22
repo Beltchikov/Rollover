@@ -42,6 +42,8 @@ namespace Rollover.Input
                     }
                     else
                     {
+                        var position = _portfolio.PositionBySymbol(input);
+
                         //            var position = portfolio.PositionBySymbol(input);
                         //            if (position != null)
                         //            {

@@ -67,6 +67,16 @@ namespace Rollover.UnitTests
             Assert.True(resultList.First() == testInput);
         }
 
+        [Theory, AutoNSubstituteData]
+        public void CallsPortfolioPositionBySymbol(
+            [Frozen] IPortfolio portfolio,
+            InputProcessor sut)
+        {
+            string testInput = "DAX:";
+            sut.Convert(testInput);
+            portfolio.Received().PositionBySymbol(testInput);
+        }
+
         //[Fact]
         //public void ReturnSymbolAddedIfStateIsWaitingForSymbolAndInputIsValidSymbol()
         //{
