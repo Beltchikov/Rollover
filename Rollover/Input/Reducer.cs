@@ -11,7 +11,7 @@
                 if(input == "Enter a symbol to track:")
                 {
                     string state = "WaitingForSymbol";
-                    StateChanged.Invoke(this, new StateChangedEventArgs(state, stateBefore));
+                    StateChanged?.Invoke(this, new StateChangedEventArgs(state, stateBefore));
                     return state;
                 }
             }
