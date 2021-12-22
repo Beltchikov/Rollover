@@ -137,19 +137,5 @@ namespace Rollover.UnitTests
             var result = sut.CheckConnectionMessages(consoleWrapper, inputQueue, timeout);
             Assert.True(result);
         }
-
-        [Theory, AutoNSubstituteData]
-        public void CallReducerGetState(
-            [Frozen] IInputQueue inputQueue,
-            [Frozen] IConsoleWrapper consoleWrapper,
-            [Frozen] IReducer reducer,
-            InputLoop sut)
-        {
-            var input = "SomeInput";
-            inputQueue.Dequeue().Returns(input, "q");
-
-            sut.Run(consoleWrapper, inputQueue);
-            reducer.Received().GetState(Arg.Any<string>(), input);
-        }
     }
 }
