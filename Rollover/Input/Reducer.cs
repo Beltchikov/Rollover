@@ -6,9 +6,13 @@
 
         public string GetState(string stateBefore, string input)
         {
-            if(stateBefore == "Connected")
+            if (stateBefore == "Connected")
             {
-                if(input == "Enter a symbol to track:")
+                if (input == null)
+                {
+                    return stateBefore;
+                }
+                else if (input == "Enter a symbol to track:")
                 {
                     string state = "WaitingForSymbol";
                     StateChanged?.Invoke(this, new StateChangedEventArgs(state, stateBefore));
