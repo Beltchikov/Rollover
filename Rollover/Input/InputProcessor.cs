@@ -10,6 +10,19 @@ namespace Rollover.Input
 
         public List<string> Convert(string input, IPortfolio portfolio, ITrackedSymbols trackedSymbols)
         {
+            if (string.IsNullOrWhiteSpace(_state))
+            {
+                _state = "Connected";
+            }
+
+            switch (_state)
+            {
+                case "Connected":
+                    return new List<string> { input };
+                default:
+                    throw new NotImplementedException();
+            }
+
             // if state NullOrWhitespace - state = Connected
             //else _state = _reducer.GetState(_state, input);
             // case Connected
