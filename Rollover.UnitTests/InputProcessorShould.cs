@@ -73,7 +73,11 @@ namespace Rollover.UnitTests
             string testInput = "DAX:";
 
             var portfolio = Substitute.For<IPortfolio>();
-            portfolio.SymbolExists(testInput).Returns(true);
+            portfolio.PositionBySymbol(testInput).Returns(new IBSampleApp.messages.PositionMessage(
+                "account",
+                new IBApi.Contract(),
+                1,
+                1000));
 
             var trackedSymbols = Substitute.For<ITrackedSymbols>();
             trackedSymbols.SymbolExists(testInput).Returns(false);
