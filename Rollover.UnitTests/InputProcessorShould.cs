@@ -80,15 +80,19 @@ namespace Rollover.UnitTests
             Assert.True(sut.State == "WaitingForSymbol");
         }
 
-        //[Theory, AutoNSubstituteData]
-        //public void CallsPortfolioPositionBySymbol(
-        //    [Frozen] IPortfolio portfolio,
-        //    InputProcessor sut)
-        //{
-        //    string testInput = "DAX:";
-        //    sut.Convert(testInput);
-        //    portfolio.Received().PositionBySymbol(testInput);
-        //}
+        [Fact]
+        public void CallsPortfolioPositionBySymbol()
+        {
+            var reducer = new Reducer();
+            var portfolio = Substitute.For<IPortfolio>();
+            var trackedSymbols = Substitute.For<ITrackedSymbols>();
+            var sut = new InputProcessor(reducer, portfolio, trackedSymbols);
+
+            sut.Convert("Enter a symbol to track:");
+            sut.Convert("Some input");
+            
+            portfolio.Received().PositionBySymbol("Some input");
+        }
 
         //[Fact]
         //public void ReturnSymbolAddedIfStateIsWaitingForSymbolAndInputIsValidSymbol()
