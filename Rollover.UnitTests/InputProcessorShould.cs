@@ -4,6 +4,8 @@ using Rollover.Tracking;
 using System.Linq;
 using AutoFixture.Xunit2;
 using Xunit;
+using IBSampleApp.messages;
+using IBApi;
 
 namespace Rollover.UnitTests
 {
@@ -83,15 +85,41 @@ namespace Rollover.UnitTests
         [Fact]
         public void CallsPortfolioPositionBySymbol()
         {
+            var testSymbol = "Some input";
+
             var reducer = new Reducer();
             var portfolio = Substitute.For<IPortfolio>();
             var trackedSymbols = Substitute.For<ITrackedSymbols>();
             var sut = new InputProcessor(reducer, portfolio, trackedSymbols);
 
+            var contract = new Contract() { Symbol = testSymbol };
+            var positionMessage = new PositionMessage("account", contract, 1, 1000);
+            portfolio.PositionBySymbol(Arg.Any<string>()).Returns(positionMessage);
+
             sut.Convert("Enter a symbol to track:");
-            sut.Convert("Some input");
+            sut.Convert(testSymbol);
             
-            portfolio.Received().PositionBySymbol("Some input");
+            portfolio.Received().PositionBySymbol(testSymbol);
+        }
+
+        [Fact]
+        public void CallsTrackedSymbolsSymbolExists()
+        {
+            var testSymbol = "MNQ";
+
+            var reducer = new Reducer();
+            var portfolio = Substitute.For<IPortfolio>();
+            var trackedSymbols = Substitute.For<ITrackedSymbols>();
+            var sut = new InputProcessor(reducer, portfolio, trackedSymbols);
+
+            var contract = new Contract() { Symbol = testSymbol };
+            var positionMessage = new PositionMessage("account", contract, 1, 1000);
+            portfolio.PositionBySymbol(Arg.Any<string>()).Returns(positionMessage);
+
+            sut.Convert("Enter a symbol to track:");
+            sut.Convert(testSymbol);
+
+            trackedSymbols.Received().SymbolExists(testSymbol);
         }
 
         //[Fact]

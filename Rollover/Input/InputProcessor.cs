@@ -32,34 +32,39 @@ namespace Rollover.Input
                     return new List<string> { input };
                 case "WaitingForSymbol":
                     var position = _portfolio.PositionBySymbol(input);
+                    var symbol = position?.Contract?.Symbol;
+                    if (!_trackedSymbols.SymbolExists(symbol))
+                    {
 
-                    //            var position = portfolio.PositionBySymbol(input);
-                    //            if (position != null)
-                    //            {
-                    //                var symbol = position.Contract.Symbol;
+                    }
 
-                    //                if (!trackedSymbols.SymbolExists(input))
-                    //                {
-                    //                    // TODO get con id
-                    //                    //ibClient.ClientSocket.reqContractDetails(CONTRACT_DETAILS_ID, contract);
-                    //                    //ibClient.ContractDetails += HandleContractDataMessage;
+                        //            var position = portfolio.PositionBySymbol(input);
+                        //            if (position != null)
+                        //            {
+                        //                var symbol = position.Contract.Symbol;
+
+                        //                if (!trackedSymbols.SymbolExists(input))
+                        //                {
+                        //                    // TODO get con id
+                        //                    //ibClient.ClientSocket.reqContractDetails(CONTRACT_DETAILS_ID, contract);
+                        //                    //ibClient.ContractDetails += HandleContractDataMessage;
 
 
 
-                    //                    trackedSymbols.BeginAdd(70100001, symbol, "GLOBEX", "IND", position.Contract.ConId);
-                    //                    //var outputList = new List<string>();
-                    //                    //outputList.Add($"Symbol {input} added");
-                    //                    //outputList.Add($"Tracked symbols:");
-                    //                    //outputList.AddRange(trackedSymbols.AllAsString());
-                    //                    //return outputList;
-                    //                    return new List<string>();
-                    //                }
-                    //                else
-                    //                {
-                    //                    return new List<string> { $"Symbol {input} is already tracked" };
-                    //                }
+                        //                    trackedSymbols.BeginAdd(70100001, symbol, "GLOBEX", "IND", position.Contract.ConId);
+                        //                    //var outputList = new List<string>();
+                        //                    //outputList.Add($"Symbol {input} added");
+                        //                    //outputList.Add($"Tracked symbols:");
+                        //                    //outputList.AddRange(trackedSymbols.AllAsString());
+                        //                    //return outputList;
+                        //                    return new List<string>();
+                        //                }
+                        //                else
+                        //                {
+                        //                    return new List<string> { $"Symbol {input} is already tracked" };
+                        //                }
 
-                    return new List<string> { input };
+                        return new List<string> { input };
                 default:
                     throw new NotImplementedException();
             }
