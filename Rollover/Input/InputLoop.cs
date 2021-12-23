@@ -8,7 +8,6 @@ namespace Rollover.Input
     {
         private IInputProcessor _inputProcessor;
         private IConnectedCondition _connectedCondition;
-        IInputQueue _inputQueue;
 
         public InputLoop(
             IInputProcessor inputProcessor,
@@ -45,8 +44,6 @@ namespace Rollover.Input
 
         public void Run(IConsoleWrapper consoleWrapper, IInputQueue inputQueue)
         {
-            _inputQueue = inputQueue;
-           
             while (true)
             {
                 var input = inputQueue.Dequeue();
