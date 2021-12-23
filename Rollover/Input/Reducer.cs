@@ -19,6 +19,20 @@
                     return state;
                 }
             }
+            else if (stateBefore == "WaitingForSymbol")
+            {
+                if (input != null)
+                {
+                    return "ContractInfo";
+                }
+            }
+            else if (stateBefore == "ContractInfo")
+            {
+                if (input != null)
+                {
+                    return "WaitingForSymbol";
+                }
+            }
 
             return stateBefore;
         }

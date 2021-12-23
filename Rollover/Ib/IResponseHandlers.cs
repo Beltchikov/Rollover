@@ -15,5 +15,6 @@ namespace Rollover.Ib
         void OnPositionEnd();
         void OnSecurityDefinitionOptionParameter(SecurityDefinitionOptionParameterMessage obj);
         void OnSecurityDefinitionOptionParameterEnd(int obj);
+        void OnContractDetails(ContractDetailsMessage obj);
     }
 }
