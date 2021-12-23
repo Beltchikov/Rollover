@@ -22,7 +22,7 @@ namespace Rollover.UnitTests
         }
 
         [Fact]
-        public void ReturnEmptyArrayIfStateIsWaitingForSymbolAndInputIsNull()
+        public void ReturnInputIfStateIsConnected()
         {
             string testInput = null;
 
@@ -32,7 +32,8 @@ namespace Rollover.UnitTests
             var sut = new InputProcessor(reducer, portfolio, trackedSymbols);
 
             var resultList = sut.Convert(testInput);
-            Assert.True(!resultList.Any());
+            Assert.True(resultList.Any());
+            Assert.Equal(testInput, resultList.First());
         }
 
         [Fact]
@@ -67,15 +68,27 @@ namespace Rollover.UnitTests
             Assert.True(resultList.First() == testInput);
         }
 
-        [Theory, AutoNSubstituteData]
-        public void CallsPortfolioPositionBySymbol(
-            [Frozen] IPortfolio portfolio,
-            InputProcessor sut)
+        [Fact]
+        public void TransitToStateWaitingForSymbol()
         {
-            string testInput = "DAX:";
-            sut.Convert(testInput);
-            portfolio.Received().PositionBySymbol(testInput);
+            var reducer = new Reducer();
+            var portfolio = Substitute.For<IPortfolio>();
+            var trackedSymbols = Substitute.For<ITrackedSymbols>();
+            var sut = new InputProcessor(reducer, portfolio, trackedSymbols);
+
+            sut.Convert("Enter a symbol to track:");
+            Assert.True(sut.State == "WaitingForSymbol");
         }
+
+        //[Theory, AutoNSubstituteData]
+        //public void CallsPortfolioPositionBySymbol(
+        //    [Frozen] IPortfolio portfolio,
+        //    InputProcessor sut)
+        //{
+        //    string testInput = "DAX:";
+        //    sut.Convert(testInput);
+        //    portfolio.Received().PositionBySymbol(testInput);
+        //}
 
         //[Fact]
         //public void ReturnSymbolAddedIfStateIsWaitingForSymbolAndInputIsValidSymbol()
