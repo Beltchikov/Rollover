@@ -49,5 +49,10 @@ namespace Rollover.Ib
         {
             _ibClient.ReqSecDefOptParams(reqId, symbol, exchange, secType, conId);
         }
+
+        public void ContractDetails(int reqId, IBApi.Contract contract)
+        {
+            _ibClient.ContractDetails(reqId, contract);
+        }
     }
 }

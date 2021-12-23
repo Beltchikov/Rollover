@@ -76,5 +76,10 @@ namespace Rollover.Ib
         {
             _ibClient.ClientSocket.reqSecDefOptParams(reqId, symbol, exchange, secType, conId);
         }
+
+        public void ContractDetails(int reqId, Contract contract)
+        {
+            _ibClient.ClientSocket.reqContractDetails(reqId, contract);
+        }
     }
 }

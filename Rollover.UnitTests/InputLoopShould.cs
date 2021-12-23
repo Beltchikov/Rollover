@@ -16,10 +16,11 @@ namespace Rollover.UnitTests
         public void CallInputQueueDequeue(
            [Frozen] IInputQueue inputQueue,
            [Frozen] IConsoleWrapper consoleWrapper,
+           [Frozen] IRequestSender requestSender,
            InputLoop sut)
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
-            sut.Run(consoleWrapper, inputQueue);
+            sut.Run(consoleWrapper, inputQueue, requestSender);
             inputQueue.Received().Dequeue();
         }
 
@@ -27,10 +28,11 @@ namespace Rollover.UnitTests
         public void CallConsoleWrapperWriteLine(
            [Frozen] IInputQueue inputQueue,
            [Frozen] IConsoleWrapper consoleWrapper,
+           [Frozen] IRequestSender requestSender,
            InputLoop sut)
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
-            sut.Run(consoleWrapper, inputQueue);
+            sut.Run(consoleWrapper, inputQueue, requestSender);
             consoleWrapper.Received().WriteLine(Arg.Any<string>());
         }
 
@@ -38,10 +40,11 @@ namespace Rollover.UnitTests
         public void CallConsoleWrapperWriteLineIfInputNull(
            [Frozen] IInputQueue inputQueue,
            [Frozen] IConsoleWrapper consoleWrapper,
+           [Frozen] IRequestSender requestSender,
            InputLoop sut)
         {
             inputQueue.Dequeue().Returns((string)null, "q");
-            sut.Run(consoleWrapper, inputQueue);
+            sut.Run(consoleWrapper, inputQueue, requestSender);
             consoleWrapper.Received().WriteLine("Goodbye!");
         }
 
@@ -50,11 +53,12 @@ namespace Rollover.UnitTests
            [Frozen] IInputQueue inputQueue,
            [Frozen] IConsoleWrapper consoleWrapper,
            [Frozen] IInputProcessor inputProcessor,
+           [Frozen] IRequestSender requestSender,
            InputLoop sut)
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
-            sut.Run(consoleWrapper, inputQueue);
-            inputProcessor.Received().Convert(Arg.Any<string>());
+            sut.Run(consoleWrapper, inputQueue, requestSender);
+            inputProcessor.Received().Convert(Arg.Any<string>(), Arg.Any<IRequestSender>());
         }
 
         [Theory, AutoNSubstituteData]

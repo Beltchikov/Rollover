@@ -1,4 +1,5 @@
-﻿using Rollover.Tracking;
+﻿using Rollover.Ib;
+using Rollover.Tracking;
 using System;
 using System.Collections.Generic;
 
@@ -18,7 +19,7 @@ namespace Rollover.Input
             _trackedSymbols = trackedSymbols;
         }
 
-        public List<string> Convert(string input)
+        public List<string> Convert(string input, IRequestSender requestSender)
         {
             if (string.IsNullOrWhiteSpace(State))
             {
@@ -33,9 +34,22 @@ namespace Rollover.Input
                 case "WaitingForSymbol":
                     var position = _portfolio.PositionBySymbol(input);
                     var symbol = position?.Contract?.Symbol;
+                    if(position == null || symbol == null)
+                    {
+                        return new List<string>();
+                    }
+
                     if (!_trackedSymbols.SymbolExists(symbol))
                     {
+                        //var contract = new Contract()
+                        //{
+                        //    Symbol = symbol,
+                        //    SecType = "IND",
+                        //    Currency = "USD",
+                        //    Exchange = "GLOBEX"
+                        //};
 
+                        requestSender.ContractDetails(1, position.Contract);
                     }
 
                         //            var position = portfolio.PositionBySymbol(input);

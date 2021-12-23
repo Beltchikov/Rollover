@@ -58,7 +58,7 @@ namespace Rollover
             _requestSender.ListPositions();
 
             // Start input loop
-            _inputLoop.Run(_consoleWrapper, _inputQueue);
+            _inputLoop.Run(_consoleWrapper, _inputQueue, _requestSender);
 
             // Disconnect
             _requestSender.Disconnect();

@@ -19,5 +19,6 @@ namespace Rollover.Ib
         void Disconnect();
         void ListPositions();
         void ReqSecDefOptParams(int reqId, string symbol, string exchange, string secType, int conId);
+        void ContractDetails(int reqId, Contract contract);
     }
 }

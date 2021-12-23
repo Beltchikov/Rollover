@@ -92,11 +92,12 @@ namespace Rollover.UnitTests
            [Frozen] IInputQueue inputQueue,
            [Frozen] IConsoleWrapper consoleWrapper,
            [Frozen] IInputLoop inputLoop,
+           [Frozen] IRequestSender requestSender,
            RolloverAgent sut)
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
             sut.Run();
-            inputLoop.Received().Run(consoleWrapper, inputQueue);
+            inputLoop.Received().Run(consoleWrapper, inputQueue, requestSender);
         }
 
         [Theory, AutoNSubstituteData]

@@ -42,7 +42,7 @@ namespace Rollover.Input
             return false;
         }
 
-        public void Run(IConsoleWrapper consoleWrapper, IInputQueue inputQueue)
+        public void Run(IConsoleWrapper consoleWrapper, IInputQueue inputQueue, IRequestSender requestSender)
         {
             while (true)
             {
@@ -52,7 +52,7 @@ namespace Rollover.Input
                     continue;
                 }
 
-                var outputList = _inputProcessor.Convert(input);
+                var outputList = _inputProcessor.Convert(input, requestSender);
                 outputList.ForEach(consoleWrapper.WriteLine);
 
                 if (input.Equals("q", StringComparison.InvariantCultureIgnoreCase))
