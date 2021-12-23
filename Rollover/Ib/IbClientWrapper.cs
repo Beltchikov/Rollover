@@ -55,6 +55,12 @@ namespace Rollover.Ib
             _ibClient.PositionEnd += _responseHandlers.OnPositionEnd;
             _ibClient.SecurityDefinitionOptionParameter += _responseHandlers.OnSecurityDefinitionOptionParameter;
             _ibClient.SecurityDefinitionOptionParameterEnd += _responseHandlers.OnSecurityDefinitionOptionParameterEnd;
+            _ibClient.ContractDetails += OnContractDetails;
+        }
+
+        private void OnContractDetails(ContractDetailsMessage obj)
+        {
+            throw new NotImplementedException();
         }
 
         public void Disconnect()
