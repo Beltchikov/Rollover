@@ -35,14 +35,6 @@ namespace Rollover.Input
                     {
                         return new List<string>();
                     }
-                    else if (input.Contains("STATE"))
-                    {
-                        return new List<string> { input };
-                    }
-                    else if (input == "Enter a symbol to track:")
-                    {
-                        return new List<string> { input };
-                    }
                     else
                     {
                         var position = _portfolio.PositionBySymbol(input);
