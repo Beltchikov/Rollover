@@ -39,6 +39,8 @@ namespace Rollover.Input
                     if (!_trackedSymbols.SymbolExists(symbol))
                     {
                         State = _reducer.GetState(State, input);
+                        // TODO
+                        // repository.GetPriceAndStrikes(position.Contract)
                         repository.ContractDetails(1, position.Contract);
                     }
 
