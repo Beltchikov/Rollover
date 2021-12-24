@@ -17,10 +17,10 @@ namespace Rollover.Ib
         private List<string> _positions = new List<string>();
 
         public Repository(
-            IIbClientWrapper ibClient, 
-            IConnectedCondition connectedCondition, 
-            IConsoleWrapper consoleWrapper, 
-            IInputQueue inputQueue, 
+            IIbClientWrapper ibClient,
+            IConnectedCondition connectedCondition,
+            IConsoleWrapper consoleWrapper,
+            IInputQueue inputQueue,
             IConfigurationManager configurationManager)
         {
             _ibClient = ibClient;
@@ -30,62 +30,12 @@ namespace Rollover.Ib
             _configurationManager = configurationManager;
         }
 
+        #region Connect, Disconnect
+
         public bool Connect(string host, int port, int clientId)
         {
             ConnectAndStartConsoleThread(host, port, clientId);
             return CheckConnectionMessages(_inputQueue, _configurationManager.GetConfiguration().Timeout);
-        }
-
-        public void Disconnect()
-        {
-            _ibClient.Disconnect();
-        }
-
-        public List<string> AllPositions()
-        {
-            ListPositions();
-            ReadPositions(_inputQueue, _configurationManager.GetConfiguration().Timeout);
-            
-            var positionsBuffer = new List<string>(_positions);
-            _positions.Clear();
-            return positionsBuffer;
-        }
-
-        private void ListPositions()
-        {
-            _ibClient.ListPositions();
-        }
-
-        private void ReadPositions(IInputQueue inputQueue, int timeout)
-        {
-            var stopWatch = new Stopwatch();
-            stopWatch.Start();
-
-            while (stopWatch.Elapsed.TotalMilliseconds < timeout)
-            {
-                var input = inputQueue.Dequeue();
-                if (string.IsNullOrWhiteSpace(input))
-                {
-                    continue;
-                }
-
-                if (input == Reducer.ENTER_SYMBOL_TO_TRACK)
-                {
-                    return;
-                }
-
-                _positions.Add(input);
-            }
-        }
-
-        public void ReqSecDefOptParams(int reqId, string symbol, string exchange, string secType, int conId)
-        {
-            _ibClient.ReqSecDefOptParams(reqId, symbol, exchange, secType, conId);
-        }
-
-        public void ContractDetails(int reqId, IBApi.Contract contract)
-        {
-            _ibClient.ContractDetails(reqId, contract);
         }
 
         private void ConnectAndStartConsoleThread(string host, int port, int clientId)
@@ -130,6 +80,64 @@ namespace Rollover.Ib
             }
 
             return false;
+        }
+
+        public void Disconnect()
+        {
+            _ibClient.Disconnect();
+        }
+
+        #endregion
+
+        #region AllPositions
+
+        public List<string> AllPositions()
+        {
+            ListPositions();
+            ReadPositions(_inputQueue, _configurationManager.GetConfiguration().Timeout);
+
+            var positionsBuffer = new List<string>(_positions);
+            _positions.Clear();
+            return positionsBuffer;
+        }
+
+        private void ListPositions()
+        {
+            _ibClient.ListPositions();
+        }
+
+        private void ReadPositions(IInputQueue inputQueue, int timeout)
+        {
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            while (stopWatch.Elapsed.TotalMilliseconds < timeout)
+            {
+                var input = inputQueue.Dequeue();
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    continue;
+                }
+
+                if (input == Reducer.ENTER_SYMBOL_TO_TRACK)
+                {
+                    return;
+                }
+
+                _positions.Add(input);
+            }
+        }
+
+        #endregion
+
+        public void ReqSecDefOptParams(int reqId, string symbol, string exchange, string secType, int conId)
+        {
+            _ibClient.ReqSecDefOptParams(reqId, symbol, exchange, secType, conId);
+        }
+
+        public void ContractDetails(int reqId, IBApi.Contract contract)
+        {
+            _ibClient.ContractDetails(reqId, contract);
         }
     }
 }
