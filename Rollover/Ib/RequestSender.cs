@@ -1,5 +1,6 @@
 ﻿using Rollover.Input;
 using System;
+using System.Diagnostics;
 using System.Threading;
 
 namespace Rollover.Ib
@@ -7,13 +8,21 @@ namespace Rollover.Ib
     public class RequestSender : IRequestSender
     {
         private IIbClientWrapper _ibClient;
+        private IConnectedCondition _connectedCondition;
 
-        public RequestSender(IIbClientWrapper ibClient)
+        public RequestSender(IIbClientWrapper ibClient, IConnectedCondition connectedCondition)
         {
             _ibClient = ibClient;
+            _connectedCondition = connectedCondition;
         }
 
-        public void Connect(string host, int port, int clientId)
+        public bool Connect(string host, int port, int clientId, IInputQueue inputQueue, int timeout)
+        {
+            ConnectAndStartConsoleThread(host, port, clientId);
+            return CheckConnectionMessages(inputQueue, timeout);
+        }
+
+        private void ConnectAndStartConsoleThread(string host, int port, int clientId)
         {
             _ibClient.Connect(host, port, clientId);
 
@@ -30,6 +39,29 @@ namespace Rollover.Ib
             })
             { IsBackground = true }
             .Start();
+        }
+
+        private bool CheckConnectionMessages(IInputQueue inputQueue, int timeout)
+        {
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            while (stopWatch.Elapsed.TotalMilliseconds < timeout)
+            {
+                var input = inputQueue.Dequeue();
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    continue;
+                }
+
+                _connectedCondition.AddInput(input);
+                if (_connectedCondition.IsConnected())
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
         public void Disconnect()
         {
