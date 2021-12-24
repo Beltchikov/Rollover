@@ -9,11 +9,13 @@ namespace Rollover.Ib
     {
         private IIbClientWrapper _ibClient;
         private IConnectedCondition _connectedCondition;
+        IConsoleWrapper _consoleWrapper;
 
-        public RequestSender(IIbClientWrapper ibClient, IConnectedCondition connectedCondition)
+        public RequestSender(IIbClientWrapper ibClient, IConnectedCondition connectedCondition, IConsoleWrapper consoleWrapper)
         {
             _ibClient = ibClient;
             _connectedCondition = connectedCondition;
+            _consoleWrapper = consoleWrapper;
         }
 
         public bool Connect(string host, int port, int clientId, IInputQueue inputQueue, int timeout)
@@ -53,6 +55,8 @@ namespace Rollover.Ib
                 {
                     continue;
                 }
+
+                _consoleWrapper.WriteLine(input);
 
                 _connectedCondition.AddInput(input);
                 if (_connectedCondition.IsConnected())
