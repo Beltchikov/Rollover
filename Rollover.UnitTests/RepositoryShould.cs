@@ -56,5 +56,14 @@ namespace Rollover.UnitTests
             sut.Disconnect();
             ibClient.Received().Disconnect();
         }
+
+        [Theory, AutoNSubstituteData]
+        public void CallIbClientListPositionsInAllPositions(
+            [Frozen] IIbClientWrapper ibClient,
+            Repository sut)
+        {
+            sut.AllPositions();
+            ibClient.Received().ListPositions();
+        }
     }
 }
