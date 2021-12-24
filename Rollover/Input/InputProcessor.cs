@@ -19,7 +19,7 @@ namespace Rollover.Input
             _trackedSymbols = trackedSymbols;
         }
 
-        public List<string> Convert(string input, IRepository requestSender)
+        public List<string> Convert(string input, IRepository repository)
         {
             if (string.IsNullOrWhiteSpace(State))
             {
@@ -47,7 +47,7 @@ namespace Rollover.Input
                         //};
 
                         State = _reducer.GetState(State, input);
-                        requestSender.ContractDetails(1, position.Contract);
+                        repository.ContractDetails(1, position.Contract);
                     }
 
                     //            var position = portfolio.PositionBySymbol(input);
