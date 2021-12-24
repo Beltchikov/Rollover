@@ -12,7 +12,7 @@ using Xunit;
 
 namespace Rollover.UnitTests
 {
-    public class RequestSenderShould
+    public class RepositoryShould
     {
         [Theory, AutoNSubstituteData]
         public void CallIbClientConnectInConnect(
@@ -60,28 +60,8 @@ namespace Rollover.UnitTests
             [Frozen] IIbClientWrapper ibClient,
             Repository sut)
         {
-            sut.Disconnect();   
+            sut.Disconnect();
             ibClient.Received().Disconnect();
-        }
-
-        [Theory, AutoNSubstituteData]
-        public void CallIbClientRegisterResponseHandlers(
-            [Frozen] IIbClientWrapper ibClient,
-            [Frozen] IInputQueue inputQueue,
-            [Frozen] SynchronizationContext synchronizationContext,
-            Repository sut)
-        {
-            sut.RegisterResponseHandlers(inputQueue, synchronizationContext);
-            ibClient.Received().RegisterResponseHandlers(inputQueue, synchronizationContext);
-        }
-
-        [Theory, AutoNSubstituteData]
-        public void CallIbClientListPositions(
-            [Frozen] IIbClientWrapper ibClient,
-            Repository sut)
-        {
-            sut.ListPositions();
-            ibClient.Received().ListPositions();
         }
     }
 }

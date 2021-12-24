@@ -54,17 +54,6 @@ namespace Rollover.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
-        public void CallRequestSenderRegisterRequestHandlers(
-            [Frozen] IInputQueue inputQueue,
-            [Frozen] IRepository requestSender,
-            RolloverAgent sut)
-        {
-            inputQueue.Dequeue().Returns("SomeInput", "q");
-            sut.Run();
-            requestSender.Received().RegisterResponseHandlers(inputQueue, Arg.Any<SynchronizationContext>());
-        }
-
-        [Theory, AutoNSubstituteData]
         public void CallRequestSenderConnect(
             [Frozen] IInputQueue inputQueue,
             [Frozen] IRepository requestSender,
@@ -99,61 +88,5 @@ namespace Rollover.UnitTests
             sut.Run();
             inputLoop.Received().Run(consoleWrapper, inputQueue, requestSender);
         }
-
-        [Theory, AutoNSubstituteData]
-        public void CallInputLoopCheckConnectionMessages(
-           [Frozen] IInputQueue inputQueue,
-           [Frozen] IConsoleWrapper consoleWrapper,
-           [Frozen] IInputLoop inputLoop,
-           RolloverAgent sut)
-        {
-            inputQueue.Dequeue().Returns("SomeInput", "q");
-            sut.Run();
-            inputLoop.Received().CheckConnectionMessages(consoleWrapper, inputQueue, Arg.Any<int>());
-        }
-
-        [Theory, AutoNSubstituteData]
-        public void CallConsoleWrapperWriteLineIfCheckConnectionMessagesReturnsFalse(
-           [Frozen] IInputQueue inputQueue,
-           [Frozen] IConsoleWrapper consoleWrapper,
-           [Frozen] IInputLoop inputLoop,
-           RolloverAgent sut)
-        {
-            inputQueue.Dequeue().Returns("SomeInput", "q");
-            inputLoop.CheckConnectionMessages(consoleWrapper, inputQueue, Arg.Any<int>())
-                .Returns(false);
-
-            sut.Run();
-            consoleWrapper.Received().WriteLine("Can not connect!");
-        }
-
-        [Theory, AutoNSubstituteData]
-        public void CallRequestSenderListPositions(
-           [Frozen] IInputQueue inputQueue,
-           [Frozen] IRepository requestSender,
-           [Frozen] IConsoleWrapper consoleWrapper,
-           [Frozen] IInputLoop inputLoop,
-           RolloverAgent sut)
-        {
-            inputQueue.Dequeue().Returns("SomeInput");
-            inputLoop.CheckConnectionMessages(consoleWrapper, inputQueue, Arg.Any<int>())
-                .Returns(true);
-
-            sut.Run();
-
-            requestSender.Received().ListPositions();
-        }
-
-
-        // ibClient.ClientSocket.eConnect called
-
-        // EReader inject
-
-        // reader.Start() called
-
-        // ThreadManager.Create called
-
-        // ThreadManager.StartThread
-
     }
 }
