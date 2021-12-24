@@ -42,9 +42,6 @@ namespace Rollover
             { IsBackground = true }
             .Start();
 
-            // Register response handlers
-            _requestSender.RegisterResponseHandlers(_inputQueue, new SynchronizationContext());
-
             // Connect
             _requestSender.Connect(configuration.Host, configuration.Port, configuration.ClientId);
             var connected = _inputLoop.CheckConnectionMessages(_consoleWrapper, _inputQueue, configuration.Timeout);

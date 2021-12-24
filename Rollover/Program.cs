@@ -2,6 +2,7 @@
 using Rollover.Ib;
 using Rollover.Input;
 using Rollover.Tracking;
+using System.Threading;
 
 namespace Rollover
 {
@@ -16,9 +17,8 @@ namespace Rollover
             IConsoleWrapper consoleWrapper = new ConsoleWrapper();
             IInputQueue inputQueue = new InputQueue();
             IPortfolio portfolio = new Portfolio();
-            IResponseHandlers responseHandlers = ResponseHandlers.CreateInstance(inputQueue, portfolio);
-
-            IIbClientWrapper ibClient = new IbClientWrapper(responseHandlers);
+           
+            IIbClientWrapper ibClient = new IbClientWrapper(new SynchronizationContext(), inputQueue, portfolio);
             IRequestSender requestSender = new RequestSender(ibClient);
             ITrackedSymbols trackedSymbols = new TrackedSymbols(requestSender);
             IReducer reducer = new Reducer();

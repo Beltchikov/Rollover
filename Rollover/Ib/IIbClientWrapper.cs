@@ -12,13 +12,12 @@ namespace Rollover.Ib
         public event Action<ManagedAccountsMessage> ManagedAccounts;
 
         void Connect(string host, int port, int clientId);
-        EReader ReaderFactory();
         bool IsConnected();
-        void WaitForSignal();
-        void RegisterResponseHandlers(Input.IInputQueue inputQueue, SynchronizationContext synchronizationContext);
         void Disconnect();
         void ListPositions();
         void ReqSecDefOptParams(int reqId, string symbol, string exchange, string secType, int conId);
         void ContractDetails(int reqId, Contract contract);
+        EReader ReaderFactory();
+        void WaitForSignal();
     }
 }
