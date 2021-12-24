@@ -44,24 +44,6 @@ namespace Rollover.UnitTests
         }
 
         [Fact]
-        public void ReturnInputIfStateIsWaitingForSymbolAndInputIsEnterSymbolToTrack()
-        {
-            string testInput = "Enter a symbol to track:";
-
-            var reducer = Substitute.For<IReducer>();
-            var portfolio = Substitute.For<IPortfolio>();
-            var trackedSymbols = Substitute.For<ITrackedSymbols>();
-            var requestSender = Substitute.For<IRepository>();
-
-            var sut = new InputProcessor(reducer, portfolio, trackedSymbols);
-
-            var resultList = sut.Convert(testInput, requestSender);
-
-            Assert.True(resultList.Count() == 1);
-            Assert.True(resultList.First() == testInput);
-        }
-
-        [Fact]
         public void CallsPortfolioPositionBySymbol()
         {
             var testSymbol = "Some input";
