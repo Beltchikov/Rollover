@@ -53,6 +53,7 @@ namespace Rollover
             // List positions
             var positionList = _repository.AllPositions();
             positionList.ForEach(p => _consoleWrapper.WriteLine(p));
+            _consoleWrapper.WriteLine(Reducer.ENTER_SYMBOL_TO_TRACK);
 
             // Start input loop
             _inputLoop.Run(_consoleWrapper, _inputQueue, _repository);
