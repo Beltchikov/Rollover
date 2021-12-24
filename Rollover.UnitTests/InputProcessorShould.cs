@@ -1,12 +1,11 @@
-﻿using NSubstitute;
+﻿using IBApi;
+using IBSampleApp.messages;
+using NSubstitute;
+using Rollover.Ib;
 using Rollover.Input;
 using Rollover.Tracking;
 using System.Linq;
-using AutoFixture.Xunit2;
 using Xunit;
-using IBSampleApp.messages;
-using IBApi;
-using Rollover.Ib;
 
 namespace Rollover.UnitTests
 {
@@ -59,9 +58,8 @@ namespace Rollover.UnitTests
             var positionMessage = new PositionMessage("account", contract, 1, 1000);
             portfolio.PositionBySymbol(Arg.Any<string>()).Returns(positionMessage);
 
-            sut.Convert("Enter a symbol to track:", requestSender);
             sut.Convert(testSymbol, requestSender);
-            
+
             portfolio.Received().PositionBySymbol(testSymbol);
         }
 
@@ -96,7 +94,7 @@ namespace Rollover.UnitTests
             var portfolio = Substitute.For<IPortfolio>();
             var trackedSymbols = Substitute.For<ITrackedSymbols>();
             var requestSender = Substitute.For<IRepository>();
-                        
+
             var sut = new InputProcessor(reducer, portfolio, trackedSymbols);
 
             var contract = new Contract() { Symbol = testSymbol };
@@ -109,64 +107,5 @@ namespace Rollover.UnitTests
 
             requestSender.Received().ContractDetails(Arg.Any<int>(), Arg.Any<Contract>());
         }
-
-        //[Fact]
-        //public void ReturnSymbolAddedIfStateIsWaitingForSymbolAndInputIsValidSymbol()
-        //{
-        //    string testInput = "DAX:";
-
-        //    var portfolio = Substitute.For<IPortfolio>();
-        //    portfolio.PositionBySymbol(testInput).Returns(new IBSampleApp.messages.PositionMessage(
-        //        "account",
-        //        new IBApi.Contract(),
-        //        1,
-        //        1000));
-
-        //    var trackedSymbols = Substitute.For<ITrackedSymbols>();
-        //    trackedSymbols.SymbolExists(testInput).Returns(false);
-
-        //    var sut = new InputProcessor();
-        //    var resultList = sut.Convert(testInput, portfolio, trackedSymbols);
-
-        //    Assert.True(resultList.Count() == 2);
-        //    Assert.Contains(testInput, resultList.First());
-        //    Assert.Contains("Symbol", resultList.First());
-        //    Assert.Contains("added", resultList.First());
-        //}
-
-        //[Fact]
-        //public void ReturnUnknownSymbolIfStateIsWaitingForSymbolAndInputIsInvalidSymbol()
-        //{
-        //    string testInput = "DAX:";
-
-        //    var portfolio = Substitute.For<IPortfolio>();
-        //    portfolio.SymbolExists(testInput).Returns(false);
-
-        //    var sut = new InputProcessor();
-        //    var resultList = sut.Convert(testInput, portfolio, null);
-
-        //    Assert.True(resultList.Count() == 1);
-        //    Assert.Contains("Unknown symbol", resultList.First());
-        //}
-
-        //[Fact]
-        //public void ReturnSymbolAlreadyTrackedIfStateIsWaitingForSymbolAndAlreadyTracked()
-        //{
-        //    string testInput = "DAX:";
-
-        //    var portfolio = Substitute.For<IPortfolio>();
-        //    portfolio.SymbolExists(testInput).Returns(true);
-
-        //    var trackedSymbols = Substitute.For<ITrackedSymbols>();
-        //    trackedSymbols.SymbolExists(testInput).Returns(true);
-
-        //    var sut = new InputProcessor();
-        //    var resultList = sut.Convert(testInput, portfolio, trackedSymbols);
-
-        //    Assert.True(resultList.Count() == 1);
-        //    Assert.Contains(testInput, resultList.First());
-        //    Assert.Contains("Symbol", resultList.First());
-        //    Assert.Contains("is already tracked", resultList.First());
-        //}
     }
 }
