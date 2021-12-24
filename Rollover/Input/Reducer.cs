@@ -8,20 +8,7 @@
 
         public string GetState(string stateBefore, string input)
         {
-            if (stateBefore == "Connected")
-            {
-                if (input == null)
-                {
-                    return stateBefore;
-                }
-                else if (input == ENTER_SYMBOL_TO_TRACK)
-                {
-                    string state = "WaitingForSymbol";
-                    StateChanged?.Invoke(this, new StateChangedEventArgs(state, stateBefore));
-                    return state;
-                }
-            }
-            else if (stateBefore == "WaitingForSymbol")
+            if (stateBefore == "WaitingForSymbol")
             {
                 if (input != null)
                 {

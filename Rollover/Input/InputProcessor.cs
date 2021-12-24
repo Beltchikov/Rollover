@@ -23,14 +23,11 @@ namespace Rollover.Input
         {
             if (string.IsNullOrWhiteSpace(State))
             {
-                State = "Connected";
+                State = "WaitingForSymbol";
             }
 
             switch (State)
             {
-                case "Connected":
-                    State = _reducer.GetState(State, input);
-                    return new List<string> { input };
                 case "WaitingForSymbol":
                     var position = _portfolio.PositionBySymbol(input);
                     var symbol = position?.Contract?.Symbol;
