@@ -4,6 +4,8 @@
     {
         public event IReducer.StateChangedHandler StateChanged;
 
+        public const string ENTER_SYMBOL_TO_TRACK = "Enter a symbol to track:";
+
         public string GetState(string stateBefore, string input)
         {
             if (stateBefore == "Connected")
@@ -12,7 +14,7 @@
                 {
                     return stateBefore;
                 }
-                else if (input == "Enter a symbol to track:")
+                else if (input == ENTER_SYMBOL_TO_TRACK)
                 {
                     string state = "WaitingForSymbol";
                     StateChanged?.Invoke(this, new StateChangedEventArgs(state, stateBefore));

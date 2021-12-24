@@ -102,7 +102,7 @@ namespace Rollover.Ib
             _localSymbolsList.Sort();
             _localSymbolsList.ForEach(s => _inputQueue.Enqueue(s));
             _localSymbolsList.Clear();
-            _inputQueue.Enqueue("Enter a symbol to track:");
+            _inputQueue.Enqueue(Reducer.ENTER_SYMBOL_TO_TRACK);
         }
 
         #endregion

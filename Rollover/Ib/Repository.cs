@@ -1,5 +1,7 @@
-﻿using Rollover.Input;
+﻿using Rollover.Configuration;
+using Rollover.Input;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 
@@ -9,19 +11,81 @@ namespace Rollover.Ib
     {
         private IIbClientWrapper _ibClient;
         private IConnectedCondition _connectedCondition;
-        IConsoleWrapper _consoleWrapper;
+        private IConsoleWrapper _consoleWrapper;
+        private IInputQueue _inputQueue;
+        private IConfigurationManager _configurationManager;
+        private List<string> _positions = new List<string>();
 
-        public Repository(IIbClientWrapper ibClient, IConnectedCondition connectedCondition, IConsoleWrapper consoleWrapper)
+        public Repository(
+            IIbClientWrapper ibClient, 
+            IConnectedCondition connectedCondition, 
+            IConsoleWrapper consoleWrapper, 
+            IInputQueue inputQueue, 
+            IConfigurationManager configurationManager)
         {
             _ibClient = ibClient;
             _connectedCondition = connectedCondition;
             _consoleWrapper = consoleWrapper;
+            _inputQueue = inputQueue;
+            _configurationManager = configurationManager;
         }
 
-        public bool Connect(string host, int port, int clientId, IInputQueue inputQueue, int timeout)
+        public bool Connect(string host, int port, int clientId)
         {
             ConnectAndStartConsoleThread(host, port, clientId);
-            return CheckConnectionMessages(inputQueue, timeout);
+            return CheckConnectionMessages(_inputQueue, _configurationManager.GetConfiguration().Timeout);
+        }
+
+        public void Disconnect()
+        {
+            _ibClient.Disconnect();
+        }
+
+        public List<string> AllPositions()
+        {
+            ListPositions();
+            ReadPositions(_inputQueue, _configurationManager.GetConfiguration().Timeout);
+            
+            var positionsBuffer = new List<string>(_positions);
+            _positions.Clear();
+            return positionsBuffer;
+        }
+
+        private void ListPositions()
+        {
+            _ibClient.ListPositions();
+        }
+
+        private void ReadPositions(IInputQueue inputQueue, int timeout)
+        {
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            while (stopWatch.Elapsed.TotalMilliseconds < timeout)
+            {
+                var input = inputQueue.Dequeue();
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    continue;
+                }
+
+                if (input == Reducer.ENTER_SYMBOL_TO_TRACK)
+                {
+                    return;
+                }
+
+                _positions.Add(input);
+            }
+        }
+
+        public void ReqSecDefOptParams(int reqId, string symbol, string exchange, string secType, int conId)
+        {
+            _ibClient.ReqSecDefOptParams(reqId, symbol, exchange, secType, conId);
+        }
+
+        public void ContractDetails(int reqId, IBApi.Contract contract)
+        {
+            _ibClient.ContractDetails(reqId, contract);
         }
 
         private void ConnectAndStartConsoleThread(string host, int port, int clientId)
@@ -66,24 +130,6 @@ namespace Rollover.Ib
             }
 
             return false;
-        }
-        public void Disconnect()
-        {
-            _ibClient.Disconnect();
-        }
-
-        public void ListPositions()
-        {
-            _ibClient.ListPositions();
-        }
-        public void ReqSecDefOptParams(int reqId, string symbol, string exchange, string secType, int conId)
-        {
-            _ibClient.ReqSecDefOptParams(reqId, symbol, exchange, secType, conId);
-        }
-
-        public void ContractDetails(int reqId, IBApi.Contract contract)
-        {
-            _ibClient.ContractDetails(reqId, contract);
         }
     }
 }

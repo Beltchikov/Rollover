@@ -14,14 +14,22 @@ namespace Rollover
             ISerializer serializer = new Serializer();
             IConfigurationManager configurationManager = new ConfigurationManager(
                 fileHelper, serializer);
+            
             IConsoleWrapper consoleWrapper = new ConsoleWrapper();
             IInputQueue inputQueue = new InputQueue();
             IPortfolio portfolio = new Portfolio();
            
             IIbClientWrapper ibClient = new IbClientWrapper(new SynchronizationContext(), inputQueue, portfolio);
             IConnectedCondition connectedCondition = new ConnectedCondition();
-            IRepository requestSender = new Repository(ibClient, connectedCondition, consoleWrapper);
-            ITrackedSymbols trackedSymbols = new TrackedSymbols(requestSender);
+            IRepository repository = new Repository(
+                ibClient, 
+                connectedCondition, 
+                consoleWrapper,
+                inputQueue,
+                configurationManager);
+            
+            
+            ITrackedSymbols trackedSymbols = new TrackedSymbols(repository);
             IReducer reducer = new Reducer();
             IInputProcessor inputProcessor = new InputProcessor(
                 reducer,
@@ -34,7 +42,7 @@ namespace Rollover
                 configurationManager,
                 consoleWrapper,
                 inputQueue,
-                requestSender,
+                repository,
                 inputLoop);
 
             rolloverAgent.Run();

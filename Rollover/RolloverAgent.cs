@@ -10,20 +10,20 @@ namespace Rollover
         private IConfigurationManager _configurationManager;
         private IConsoleWrapper _consoleWrapper;
         private IInputQueue _inputQueue;
-        private IRepository _requestSender;
+        private IRepository _repository;
         private IInputLoop _inputLoop;
 
         public RolloverAgent(
             IConfigurationManager configurationManager,
             IConsoleWrapper consoleWrapper,
             IInputQueue inputQueue,
-            IRepository requestSender, 
+            IRepository repository, 
             IInputLoop inputLoop)
         {
             _configurationManager = configurationManager;
             _consoleWrapper = consoleWrapper;
             _inputQueue = inputQueue;
-            _requestSender = requestSender;
+            _repository = repository;
             _inputLoop = inputLoop;
         }
 
@@ -43,7 +43,7 @@ namespace Rollover
             .Start();
 
             // Connect
-            var connected = _requestSender.Connect(configuration.Host, configuration.Port, configuration.ClientId, _inputQueue, configuration.Timeout);
+            var connected = _repository.Connect(configuration.Host, configuration.Port, configuration.ClientId);
             if (!connected)
             {
                 _consoleWrapper.WriteLine("Can not connect!");
@@ -51,13 +51,14 @@ namespace Rollover
             }
  
             // List positions
-            _requestSender.ListPositions();
+            var positionList = _repository.AllPositions();
+            positionList.ForEach(p => _consoleWrapper.WriteLine(p));
 
             // Start input loop
-            _inputLoop.Run(_consoleWrapper, _inputQueue, _requestSender);
+            _inputLoop.Run(_consoleWrapper, _inputQueue, _repository);
 
             // Disconnect
-            _requestSender.Disconnect();
+            _repository.Disconnect();
         }
     }
 }
