@@ -6,6 +6,6 @@ namespace Rollover.Input
 {
     public interface IInputProcessor
     {
-        List<string> Convert(string input, IRequestSender requestSender);
+        List<string> Convert(string input, IRepository requestSender);
     }
 }

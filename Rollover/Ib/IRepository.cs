@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace Rollover.Ib
 {
-    public interface IRequestSender
+    public interface IRepository
     {
         bool Connect(string host, int port, int clientId, IInputQueue inputQueue, int timeout);
         void Disconnect();

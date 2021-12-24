@@ -19,7 +19,7 @@ namespace Rollover.Input
             _trackedSymbols = trackedSymbols;
         }
 
-        public List<string> Convert(string input, IRequestSender requestSender)
+        public List<string> Convert(string input, IRepository requestSender)
         {
             if (string.IsNullOrWhiteSpace(State))
             {

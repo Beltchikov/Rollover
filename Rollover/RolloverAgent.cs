@@ -10,14 +10,14 @@ namespace Rollover
         private IConfigurationManager _configurationManager;
         private IConsoleWrapper _consoleWrapper;
         private IInputQueue _inputQueue;
-        private IRequestSender _requestSender;
+        private IRepository _requestSender;
         private IInputLoop _inputLoop;
 
         public RolloverAgent(
             IConfigurationManager configurationManager,
             IConsoleWrapper consoleWrapper,
             IInputQueue inputQueue,
-            IRequestSender requestSender, 
+            IRepository requestSender, 
             IInputLoop inputLoop)
         {
             _configurationManager = configurationManager;

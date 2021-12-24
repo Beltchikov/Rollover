@@ -5,13 +5,13 @@ using System.Threading;
 
 namespace Rollover.Ib
 {
-    public class RequestSender : IRequestSender
+    public class Repository : IRepository
     {
         private IIbClientWrapper _ibClient;
         private IConnectedCondition _connectedCondition;
         IConsoleWrapper _consoleWrapper;
 
-        public RequestSender(IIbClientWrapper ibClient, IConnectedCondition connectedCondition, IConsoleWrapper consoleWrapper)
+        public Repository(IIbClientWrapper ibClient, IConnectedCondition connectedCondition, IConsoleWrapper consoleWrapper)
         {
             _ibClient = ibClient;
             _connectedCondition = connectedCondition;

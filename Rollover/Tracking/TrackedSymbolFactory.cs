@@ -9,9 +9,9 @@ namespace Rollover.Tracking
 {
     public class TrackedSymbolFactory : ITrackedSymbolFactory
     {
-        private readonly IRequestSender _requestSender;
+        private readonly IRepository _requestSender;
 
-        public TrackedSymbolFactory(IRequestSender requestSender)
+        public TrackedSymbolFactory(IRepository requestSender)
         {
             _requestSender = requestSender;
         }

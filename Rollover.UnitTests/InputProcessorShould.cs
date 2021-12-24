@@ -18,7 +18,7 @@ namespace Rollover.UnitTests
             var reducer = new Reducer();
             var portfolio = Substitute.For<IPortfolio>();
             var trackedSymbols = Substitute.For<ITrackedSymbols>();
-            var requestSender = Substitute.For<IRequestSender>();
+            var requestSender = Substitute.For<IRepository>();
 
             var sut = new InputProcessor(reducer, portfolio, trackedSymbols);
 
@@ -34,7 +34,7 @@ namespace Rollover.UnitTests
             var reducer = Substitute.For<IReducer>();
             var portfolio = Substitute.For<IPortfolio>();
             var trackedSymbols = Substitute.For<ITrackedSymbols>();
-            var requestSender = Substitute.For<IRequestSender>();
+            var requestSender = Substitute.For<IRepository>();
 
             var sut = new InputProcessor(reducer, portfolio, trackedSymbols);
 
@@ -51,7 +51,7 @@ namespace Rollover.UnitTests
             var reducer = Substitute.For<IReducer>();
             var portfolio = Substitute.For<IPortfolio>();
             var trackedSymbols = Substitute.For<ITrackedSymbols>();
-            var requestSender = Substitute.For<IRequestSender>();
+            var requestSender = Substitute.For<IRepository>();
 
             var sut = new InputProcessor(reducer, portfolio, trackedSymbols);
 
@@ -69,7 +69,7 @@ namespace Rollover.UnitTests
             var reducer = Substitute.For<IReducer>();
             var portfolio = Substitute.For<IPortfolio>();
             var trackedSymbols = Substitute.For<ITrackedSymbols>();
-            var requestSender = Substitute.For<IRequestSender>();
+            var requestSender = Substitute.For<IRepository>();
 
             var sut = new InputProcessor(reducer, portfolio, trackedSymbols);
 
@@ -85,7 +85,7 @@ namespace Rollover.UnitTests
             var reducer = new Reducer();
             var portfolio = Substitute.For<IPortfolio>();
             var trackedSymbols = Substitute.For<ITrackedSymbols>();
-            var requestSender = Substitute.For<IRequestSender>();
+            var requestSender = Substitute.For<IRepository>();
 
             var sut = new InputProcessor(reducer, portfolio, trackedSymbols);
 
@@ -101,7 +101,7 @@ namespace Rollover.UnitTests
             var reducer = new Reducer();
             var portfolio = Substitute.For<IPortfolio>();
             var trackedSymbols = Substitute.For<ITrackedSymbols>();
-            var requestSender = Substitute.For<IRequestSender>();
+            var requestSender = Substitute.For<IRepository>();
 
             var sut = new InputProcessor(reducer, portfolio, trackedSymbols);
 
@@ -123,7 +123,7 @@ namespace Rollover.UnitTests
             var reducer = new Reducer();
             var portfolio = Substitute.For<IPortfolio>();
             var trackedSymbols = Substitute.For<ITrackedSymbols>();
-            var requestSender = Substitute.For<IRequestSender>();
+            var requestSender = Substitute.For<IRepository>();
 
             var sut = new InputProcessor(reducer, portfolio, trackedSymbols);
 
@@ -145,7 +145,7 @@ namespace Rollover.UnitTests
             var reducer = new Reducer();
             var portfolio = Substitute.For<IPortfolio>();
             var trackedSymbols = Substitute.For<ITrackedSymbols>();
-            var requestSender = Substitute.For<IRequestSender>();
+            var requestSender = Substitute.For<IRepository>();
                         
             var sut = new InputProcessor(reducer, portfolio, trackedSymbols);
 

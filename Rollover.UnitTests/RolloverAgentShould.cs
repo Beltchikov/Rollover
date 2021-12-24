@@ -56,7 +56,7 @@ namespace Rollover.UnitTests
         [Theory, AutoNSubstituteData]
         public void CallRequestSenderRegisterRequestHandlers(
             [Frozen] IInputQueue inputQueue,
-            [Frozen] IRequestSender requestSender,
+            [Frozen] IRepository requestSender,
             RolloverAgent sut)
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
@@ -67,7 +67,7 @@ namespace Rollover.UnitTests
         [Theory, AutoNSubstituteData]
         public void CallRequestSenderConnect(
             [Frozen] IInputQueue inputQueue,
-            [Frozen] IRequestSender requestSender,
+            [Frozen] IRepository requestSender,
             RolloverAgent sut)
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
@@ -79,7 +79,7 @@ namespace Rollover.UnitTests
         [Theory, AutoNSubstituteData]
         public void CallRequestSenderDisconnect(
             [Frozen] IInputQueue inputQueue,
-            [Frozen] IRequestSender requestSender,
+            [Frozen] IRepository requestSender,
             RolloverAgent sut)
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
@@ -92,7 +92,7 @@ namespace Rollover.UnitTests
            [Frozen] IInputQueue inputQueue,
            [Frozen] IConsoleWrapper consoleWrapper,
            [Frozen] IInputLoop inputLoop,
-           [Frozen] IRequestSender requestSender,
+           [Frozen] IRepository requestSender,
            RolloverAgent sut)
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
@@ -130,7 +130,7 @@ namespace Rollover.UnitTests
         [Theory, AutoNSubstituteData]
         public void CallRequestSenderListPositions(
            [Frozen] IInputQueue inputQueue,
-           [Frozen] IRequestSender requestSender,
+           [Frozen] IRepository requestSender,
            [Frozen] IConsoleWrapper consoleWrapper,
            [Frozen] IInputLoop inputLoop,
            RolloverAgent sut)

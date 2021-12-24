@@ -15,7 +15,7 @@ namespace Rollover.Input
             _inputProcessor = inputProcessor;
         }
         
-        public void Run(IConsoleWrapper consoleWrapper, IInputQueue inputQueue, IRequestSender requestSender)
+        public void Run(IConsoleWrapper consoleWrapper, IInputQueue inputQueue, IRepository requestSender)
         {
             while (true)
             {

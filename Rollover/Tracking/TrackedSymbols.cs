@@ -6,10 +6,10 @@ namespace Rollover.Tracking
 {
     public class TrackedSymbols : ITrackedSymbols
     {
-        private readonly IRequestSender _requestSender;
+        private readonly IRepository _requestSender;
         private readonly List<TrackedSymbol> _symbols;
 
-        public TrackedSymbols(IRequestSender requestSender)
+        public TrackedSymbols(IRepository requestSender)
         {
             _requestSender = requestSender;
             _symbols = new List<TrackedSymbol>();
