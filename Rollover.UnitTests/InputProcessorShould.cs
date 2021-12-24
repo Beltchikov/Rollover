@@ -62,20 +62,6 @@ namespace Rollover.UnitTests
         }
 
         [Fact]
-        public void TransitToStateWaitingForSymbol()
-        {
-            var reducer = new Reducer();
-            var portfolio = Substitute.For<IPortfolio>();
-            var trackedSymbols = Substitute.For<ITrackedSymbols>();
-            var requestSender = Substitute.For<IRepository>();
-
-            var sut = new InputProcessor(reducer, portfolio, trackedSymbols);
-
-            sut.Convert("Enter a symbol to track:", requestSender);
-            Assert.True(sut.State == "WaitingForSymbol");
-        }
-
-        [Fact]
         public void CallsPortfolioPositionBySymbol()
         {
             var testSymbol = "Some input";
