@@ -13,7 +13,7 @@ namespace Rollover.UnitTests
     public class InputProcessorShould
     {
         [Fact]
-        public void HaveStateConnectedIfFirstRun()
+        public void HaveStateWaitingForSymbolIfFirstRun()
         {
             var reducer = new Reducer();
             var portfolio = Substitute.For<IPortfolio>();
@@ -23,7 +23,7 @@ namespace Rollover.UnitTests
             var sut = new InputProcessor(reducer, portfolio, trackedSymbols);
 
             sut.Convert(null, requestSender);
-            Assert.True(sut.State == "Connected");
+            Assert.True(sut.State == "WaitingForSymbol");
         }
 
         [Fact]
