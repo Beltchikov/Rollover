@@ -16,7 +16,17 @@ namespace Rollover.Tracking
 
         public TrackedSymbol FromContractDetailsMessage(ContractDetailsMessage contractDetailsMessage)
         {
-            throw new NotImplementedException();
+            var trackedSymbol = new TrackedSymbol
+            {
+                ReqIdContractDetails = contractDetailsMessage.RequestId,
+                Symbol = contractDetailsMessage.ContractDetails.Contract.Symbol,
+                ConId = contractDetailsMessage.ContractDetails.Contract.ConId,
+                SecType = contractDetailsMessage.ContractDetails.Contract.SecType,
+                Currency = contractDetailsMessage.ContractDetails.Contract.Currency,
+                Exchange = contractDetailsMessage.ContractDetails.Contract.Exchange,
+                Strike = contractDetailsMessage.ContractDetails.Contract.Strike
+            };
+            return trackedSymbol;
         }
     }
 }

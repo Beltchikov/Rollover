@@ -8,7 +8,7 @@
         public string SecType { get; set; }
         public string Currency { get; set; }
         public string Exchange { get; set; }
-        public int Strike { get; set; }
+        public double Strike { get; set; }
 
         // Three last figures are behind the comma figures
         public int NextStrike { get; set; }
