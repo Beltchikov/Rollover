@@ -138,8 +138,8 @@ namespace Rollover.Ib
             
             
             var _trackedSymbol = _trackedSymbolFactory.FromContractDetailsMessage(obj);
-            //var serialized = JsonSerializer.Serialize(_trackedSymbol);
-            //_inputQueue.Enqueue(serialized);
+            var serialized = JsonSerializer.Serialize(_trackedSymbol);
+            _inputQueue.Enqueue(serialized);
         }
 
         #endregion

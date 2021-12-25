@@ -31,5 +31,27 @@ namespace Rollover.UnitTests
 
             trackedSymbolFactory.Received().FromContractDetailsMessage(contractDetailsMessage);
         }
+
+
+        [Fact]
+        public void CallEnqueueInOnContractDetails()
+        {
+            SynchronizationContext synchronizationContext = new SynchronizationContext();
+            var inputQueue = Substitute.For<IInputQueue>();
+            var portfolio = Substitute.For<IPortfolio>();
+            var trackedSymbolFactory = Substitute.For<ITrackedSymbolFactory>();
+
+            var sut = new IbClientWrapper(
+                synchronizationContext,
+                inputQueue,
+                portfolio,
+                trackedSymbolFactory);
+
+            var contractDetails = new ContractDetails();
+            var contractDetailsMessage = new ContractDetailsMessage(5, contractDetails);
+            sut.OnContractDetails(contractDetailsMessage);
+
+            inputQueue.Received().Enqueue(Arg.Any<string>());
+        }
     }
 }
