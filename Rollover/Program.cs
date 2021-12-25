@@ -18,8 +18,14 @@ namespace Rollover
             IConsoleWrapper consoleWrapper = new ConsoleWrapper();
             IInputQueue inputQueue = new InputQueue();
             IPortfolio portfolio = new Portfolio();
-           
-            IIbClientWrapper ibClient = new IbClientWrapper(new SynchronizationContext(), inputQueue, portfolio);
+
+            ITrackedSymbolFactory trackedSymbolFactory = new TrackedSymbolFactory();
+            IIbClientWrapper ibClient = new IbClientWrapper(
+                new SynchronizationContext(), 
+                inputQueue, 
+                portfolio, 
+                trackedSymbolFactory);
+                       
             IConnectedCondition connectedCondition = new ConnectedCondition();
             IRepository repository = new Repository(
                 ibClient, 

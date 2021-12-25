@@ -2,7 +2,13 @@
 {
     public class TrackedSymbol : ITrackedSymbol
     {
-        public string Name { get; set; }
+        public string Symbol { get; set; }
+        public int ReqIdContractDetails { get; set; }
+        public int ConId { get; set; }
+        public string SecType { get; set; }
+        public string Currency { get; set; }
+        public string Exchange { get; set; }
+        public int Strike { get; set; }
 
         // Three last figures are behind the comma figures
         public int NextStrike { get; set; }
@@ -10,17 +16,9 @@
         // Three last figures are behind the comma figures
         public int OverNextStrike { get; set; }
 
-        //// obj.RequestId  0=> ReqIdContractDetails
-        //var msg = $"ConId={obj.ContractDetails.Contract.ConId} " +
-        //    $"SecType={obj.ContractDetails.Contract.SecType} " +
-        //    $"Symbol={obj.ContractDetails.Contract.Symbol} " +
-        //    $"Currency={obj.ContractDetails.Contract.Currency} " +
-        //    $"Exchange={obj.ContractDetails.Contract.Exchange} " +
-        //    $"Strike={obj.ContractDetails.Contract.Strike } ";
-
         public override string ToString()
         {
-            return $"{Name} {NextStrike} {OverNextStrike}";
+            return $"{Symbol} {NextStrike} {OverNextStrike}";
         }
     }
 }

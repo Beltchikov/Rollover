@@ -6,6 +6,7 @@ using Rollover.Tracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading;
 
 namespace Rollover.Ib
@@ -17,13 +18,20 @@ namespace Rollover.Ib
         private SynchronizationContext _synchronizationContext;
         private IInputQueue _inputQueue;
         private IPortfolio _portfolio;
+        private ITrackedSymbolFactory _trackedSymbolFactory;
+
+
         private static List<string> _localSymbolsList = new List<string>();
 
         public event Action<int, int, string, Exception> Error;
         public event Action<ConnectionStatusMessage> NextValidId;
         public event Action<ManagedAccountsMessage> ManagedAccounts;
 
-        public IbClientWrapper(SynchronizationContext synchronizationContext, IInputQueue inputQueue, IPortfolio portfolio)
+        public IbClientWrapper(
+            SynchronizationContext synchronizationContext,
+            IInputQueue inputQueue,
+            IPortfolio portfolio, 
+            ITrackedSymbolFactory trackedSymbolFactory)
         {
             _signal = new EReaderMonitorSignal();
             _ibClient = new IBClient(_signal);
@@ -32,7 +40,7 @@ namespace Rollover.Ib
             _portfolio = portfolio;
 
             RegisterResponseHandlers();
-
+            _trackedSymbolFactory = trackedSymbolFactory;
         }
 
         #region Connect, Disconnect
@@ -116,15 +124,22 @@ namespace Rollover.Ib
 
         public void OnContractDetails(ContractDetailsMessage obj)
         {
-            // obj.RequestId
-            var msg = $"ConId={obj.ContractDetails.Contract.ConId} " +
-                $"SecType={obj.ContractDetails.Contract.SecType} " +
-                $"Symbol={obj.ContractDetails.Contract.Symbol} " +
-                $"Currency={obj.ContractDetails.Contract.Currency} " +
-                $"Exchange={obj.ContractDetails.Contract.Exchange} " +
-                $"Strike={obj.ContractDetails.Contract.Strike } ";
+            //var msg = $"ConId={obj.ContractDetails.Contract.ConId} " +
+            //    $"SecType={obj.ContractDetails.Contract.SecType} " +
+            //    $"Symbol={obj.ContractDetails.Contract.Symbol} " +
+            //    $"Currency={obj.ContractDetails.Contract.Currency} " +
+            //    $"Exchange={obj.ContractDetails.Contract.Exchange} " +
+            //    $"Strike={obj.ContractDetails.Contract.Strike } ";
 
-            _inputQueue.Enqueue(msg);
+            //_inputQueue.Enqueue(msg);
+
+            
+            //////////////////////////////////
+            
+            
+            var _trackedSymbol = _trackedSymbolFactory.FromContractDetailsMessage(obj);
+            //var serialized = JsonSerializer.Serialize(_trackedSymbol);
+            //_inputQueue.Enqueue(serialized);
         }
 
         #endregion

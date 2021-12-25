@@ -29,7 +29,7 @@ namespace Rollover.Tracking
 
         public bool SymbolExists(string input)
         {
-            return _symbols.Any(s => s.Name == input);
+            return _symbols.Any(s => s.Symbol == input);
         }
     }
 }
