@@ -4,6 +4,7 @@ using Rollover.Tracking;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text.Json;
 using System.Threading;
 
 namespace Rollover.Ib
@@ -15,7 +16,10 @@ namespace Rollover.Ib
         private IConsoleWrapper _consoleWrapper;
         private IInputQueue _inputQueue;
         private IConfigurationManager _configurationManager;
+        
         private List<string> _positions = new List<string>();
+        private int _reqIdContractDetails = 0;
+        private int _timeout;
 
         public Repository(
             IIbClientWrapper ibClient,
@@ -29,6 +33,8 @@ namespace Rollover.Ib
             _consoleWrapper = consoleWrapper;
             _inputQueue = inputQueue;
             _configurationManager = configurationManager;
+
+            _timeout = _configurationManager.GetConfiguration().Timeout;
         }
 
         #region Connect, Disconnect
@@ -138,25 +144,26 @@ namespace Rollover.Ib
 
         public ITrackedSymbol GetTrackedSymbol(IBApi.Contract contract)
         {
-            //ibClient.ContractDetails(reqId, contract);
+            var reqId = _reqIdContractDetails++;
+            _ibClient.ContractDetails(reqId, contract);
 
-            //while (stopWatch.Elapsed.TotalMilliseconds < timeout)
-            //{
-            //    var input = inputQueue.Dequeue();
-            //    if (string.IsNullOrWhiteSpace(input))
-            //    {
-            //        continue;
-            //    }
+            var stopWatch = new Stopwatch();
+            while (stopWatch.Elapsed.TotalMilliseconds < _timeout)
+            {
+                var input = _inputQueue.Dequeue();
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    continue;
+                }
 
-            //    if (input == Reducer.ENTER_SYMBOL_TO_TRACK)
-            //    {
-            //        return;
-            //    }
+                var trackedSymbol = JsonSerializer.Deserialize<TrackedSymbol>(input);
+                if (trackedSymbol?.ReqIdContractDetails == reqId )
+                {
+                    return trackedSymbol;
+                }
+            }
 
-            //    _positions.Add(input);
-            //}
-
-            throw new NotImplementedException();
+            return null;
         }
 
         public void ReqSecDefOptParams(int reqId, string symbol, string exchange, string secType, int conId)

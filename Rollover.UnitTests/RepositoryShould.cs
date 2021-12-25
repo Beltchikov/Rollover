@@ -1,7 +1,10 @@
 ﻿using AutoFixture.Xunit2;
+using IBApi;
 using NSubstitute;
+using Rollover.Configuration;
 using Rollover.Ib;
 using Rollover.Input;
+using System.Threading;
 using Xunit;
 
 namespace Rollover.UnitTests
@@ -70,11 +73,24 @@ namespace Rollover.UnitTests
         [Fact]
         public void ReturnNullIfNoTrackedSymbolAfterTimeout()
         {
-            var ibClinet = Substitute.For<IbClientWrapper>();
+            var timeout = 1000;
+
             var inputQueue = Substitute.For<IInputQueue>();
+            var ibClinet = Substitute.For<IIbClientWrapper>();
+            ibClinet.When(c => c.ContractDetails(Arg.Any<int>(), Arg.Any<Contract>()))
+                .Do(c => { });
+
+            var configurationManager = Substitute.For<IConfigurationManager>();
+            var contract = new Contract();
+
+            Configuration.Configuration configuration = new Configuration.Configuration();
+            configurationManager.GetConfiguration().Returns(configuration);
+
+            var sut = new Repository(ibClinet, null, null, inputQueue, configurationManager);
+            var trackedSymbol = sut.GetTrackedSymbol(contract);
+            Thread.Sleep(timeout);
             
-            var sut = new Repository(ibClinet, null, null, inputQueue, null);
-            // TODO
+            Assert.Null(trackedSymbol);
         }
 
         [Fact]
