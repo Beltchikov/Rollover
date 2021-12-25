@@ -131,11 +131,6 @@ namespace Rollover.Ib
 
         #endregion
 
-        public void ReqSecDefOptParams(int reqId, string symbol, string exchange, string secType, int conId)
-        {
-            _ibClient.ReqSecDefOptParams(reqId, symbol, exchange, secType, conId);
-        }
-
         public void ContractDetails(int reqId, IBApi.Contract contract)
         {
             _ibClient.ContractDetails(reqId, contract);
@@ -143,7 +138,30 @@ namespace Rollover.Ib
 
         public ITrackedSymbol GetTrackedSymbol(IBApi.Contract contract)
         {
+            //ibClient.ContractDetails(reqId, contract);
+
+            //while (stopWatch.Elapsed.TotalMilliseconds < timeout)
+            //{
+            //    var input = inputQueue.Dequeue();
+            //    if (string.IsNullOrWhiteSpace(input))
+            //    {
+            //        continue;
+            //    }
+
+            //    if (input == Reducer.ENTER_SYMBOL_TO_TRACK)
+            //    {
+            //        return;
+            //    }
+
+            //    _positions.Add(input);
+            //}
+
             throw new NotImplementedException();
+        }
+
+        public void ReqSecDefOptParams(int reqId, string symbol, string exchange, string secType, int conId)
+        {
+            _ibClient.ReqSecDefOptParams(reqId, symbol, exchange, secType, conId);
         }
     }
 }

@@ -116,6 +116,7 @@ namespace Rollover.Ib
 
         public void OnContractDetails(ContractDetailsMessage obj)
         {
+            // obj.RequestId
             var msg = $"ConId={obj.ContractDetails.Contract.ConId} " +
                 $"SecType={obj.ContractDetails.Contract.SecType} " +
                 $"Symbol={obj.ContractDetails.Contract.Symbol} " +
