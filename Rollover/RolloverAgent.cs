@@ -56,7 +56,7 @@ namespace Rollover
             _consoleWrapper.WriteLine(Reducer.ENTER_SYMBOL_TO_TRACK);
 
             // Start input loop
-            _inputLoop.Run(_consoleWrapper, _inputQueue, _repository);
+            _inputLoop.Run(_consoleWrapper, _inputQueue);
 
             // Disconnect
             _repository.Disconnect();

@@ -1,6 +1,5 @@
 ﻿using Rollover.Ib;
 using System;
-using System.Diagnostics;
 
 namespace Rollover.Input
 {
@@ -15,7 +14,7 @@ namespace Rollover.Input
             _inputProcessor = inputProcessor;
         }
         
-        public void Run(IConsoleWrapper consoleWrapper, IInputQueue inputQueue, IRepository requestSender)
+        public void Run(IConsoleWrapper consoleWrapper, IInputQueue inputQueue)
         {
             while (true)
             {
@@ -25,7 +24,7 @@ namespace Rollover.Input
                     continue;
                 }
 
-                var outputList = _inputProcessor.Convert(input, requestSender);
+                var outputList = _inputProcessor.Convert(input);
                 outputList.ForEach(consoleWrapper.WriteLine);
 
                 if (input.Equals("q", StringComparison.InvariantCultureIgnoreCase))

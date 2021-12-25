@@ -54,26 +54,26 @@ namespace Rollover.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
-        public void CallRequestSenderConnect(
+        public void CallrepositoryConnect(
             [Frozen] IInputQueue inputQueue,
-            [Frozen] IRepository requestSender,
+            [Frozen] IRepository repository,
             RolloverAgent sut)
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
             sut.Run();
-            requestSender.Received().Connect(Arg.Any<string>(), Arg.Any<int>(), Arg.Any<int>());
+            repository.Received().Connect(Arg.Any<string>(), Arg.Any<int>(), Arg.Any<int>());
         }
 
 
         [Theory, AutoNSubstituteData]
-        public void CallRequestSenderDisconnect(
+        public void CallrepositoryDisconnect(
             [Frozen] IInputQueue inputQueue,
-            [Frozen] IRepository requestSender,
+            [Frozen] IRepository repository,
             RolloverAgent sut)
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
             sut.Run();
-            requestSender.Received().Disconnect();
+            repository.Received().Disconnect();
         }
 
         [Theory, AutoNSubstituteData]
@@ -81,12 +81,11 @@ namespace Rollover.UnitTests
            [Frozen] IInputQueue inputQueue,
            [Frozen] IConsoleWrapper consoleWrapper,
            [Frozen] IInputLoop inputLoop,
-           [Frozen] IRepository requestSender,
            RolloverAgent sut)
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
             sut.Run();
-            inputLoop.Received().Run(consoleWrapper, inputQueue, requestSender);
+            inputLoop.Received().Run(consoleWrapper, inputQueue);
         }
     }
 }

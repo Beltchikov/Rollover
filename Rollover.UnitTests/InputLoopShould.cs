@@ -20,7 +20,7 @@ namespace Rollover.UnitTests
            InputLoop sut)
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
-            sut.Run(consoleWrapper, inputQueue, requestSender);
+            sut.Run(consoleWrapper, inputQueue);
             inputQueue.Received().Dequeue();
         }
 
@@ -32,7 +32,7 @@ namespace Rollover.UnitTests
            InputLoop sut)
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
-            sut.Run(consoleWrapper, inputQueue, requestSender);
+            sut.Run(consoleWrapper, inputQueue);
             consoleWrapper.Received().WriteLine(Arg.Any<string>());
         }
 
@@ -44,7 +44,7 @@ namespace Rollover.UnitTests
            InputLoop sut)
         {
             inputQueue.Dequeue().Returns((string)null, "q");
-            sut.Run(consoleWrapper, inputQueue, requestSender);
+            sut.Run(consoleWrapper, inputQueue);
             consoleWrapper.Received().WriteLine("Goodbye!");
         }
 
@@ -57,8 +57,8 @@ namespace Rollover.UnitTests
            InputLoop sut)
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
-            sut.Run(consoleWrapper, inputQueue, requestSender);
-            inputProcessor.Received().Convert(Arg.Any<string>(), Arg.Any<IRepository>());
+            sut.Run(consoleWrapper, inputQueue);
+            inputProcessor.Received().Convert(Arg.Any<string>());
         }
     }
 }

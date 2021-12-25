@@ -27,14 +27,14 @@ namespace Rollover
                 consoleWrapper,
                 inputQueue,
                 configurationManager);
-            
-            
+                        
             ITrackedSymbols trackedSymbols = new TrackedSymbols(repository);
             IReducer reducer = new Reducer();
             IInputProcessor inputProcessor = new InputProcessor(
                 reducer,
                 portfolio,
-                trackedSymbols);
+                trackedSymbols,
+                repository);
             
             IInputLoop inputLoop = new InputLoop(inputProcessor,connectedCondition);
 

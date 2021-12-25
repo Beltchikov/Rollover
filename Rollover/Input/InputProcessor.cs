@@ -10,16 +10,18 @@ namespace Rollover.Input
         private readonly IReducer _reducer;
         private readonly IPortfolio _portfolio;
         private readonly ITrackedSymbols _trackedSymbols;
+        private readonly IRepository _repository;
         public string State { get; private set; }
 
-        public InputProcessor(IReducer reducer, IPortfolio portfolio, ITrackedSymbols trackedSymbols)
+        public InputProcessor(IReducer reducer, IPortfolio portfolio, ITrackedSymbols trackedSymbols, IRepository repository)
         {
             _reducer = reducer;
             _portfolio = portfolio;
             _trackedSymbols = trackedSymbols;
+            _repository = repository;
         }
 
-        public List<string> Convert(string input, IRepository repository)
+        public List<string> Convert(string input)
         {
             if (string.IsNullOrWhiteSpace(State))
             {
@@ -40,8 +42,8 @@ namespace Rollover.Input
                     {
                         State = _reducer.GetState(State, input);
                         // TODO
-                        // repository.GetPriceAndStrikes(position.Contract)
-                        repository.ContractDetails(1, position.Contract);
+                        // repository.GetTrackedSymbol(position.Contract)
+                        _repository.ContractDetails(1, position.Contract);
                     }
 
                     return new List<string>();

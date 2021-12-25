@@ -17,11 +17,11 @@ namespace Rollover.UnitTests
             var reducer = new Reducer();
             var portfolio = Substitute.For<IPortfolio>();
             var trackedSymbols = Substitute.For<ITrackedSymbols>();
-            var requestSender = Substitute.For<IRepository>();
+            var repository = Substitute.For<IRepository>();
 
-            var sut = new InputProcessor(reducer, portfolio, trackedSymbols);
+            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository);
 
-            sut.Convert(null, requestSender);
+            sut.Convert(null);
             Assert.True(sut.State == "WaitingForSymbol");
         }
 
@@ -33,11 +33,11 @@ namespace Rollover.UnitTests
             var reducer = Substitute.For<IReducer>();
             var portfolio = Substitute.For<IPortfolio>();
             var trackedSymbols = Substitute.For<ITrackedSymbols>();
-            var requestSender = Substitute.For<IRepository>();
+            var repository = Substitute.For<IRepository>();
 
-            var sut = new InputProcessor(reducer, portfolio, trackedSymbols);
+            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository);
 
-            var resultList = sut.Convert(testInput, requestSender);
+            var resultList = sut.Convert(testInput);
             Assert.True(resultList.Any());
             Assert.Equal(testInput, resultList.First());
         }
@@ -50,15 +50,15 @@ namespace Rollover.UnitTests
             var reducer = new Reducer();
             var portfolio = Substitute.For<IPortfolio>();
             var trackedSymbols = Substitute.For<ITrackedSymbols>();
-            var requestSender = Substitute.For<IRepository>();
+            var repository = Substitute.For<IRepository>();
 
-            var sut = new InputProcessor(reducer, portfolio, trackedSymbols);
+            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository);
 
             var contract = new Contract() { Symbol = testSymbol };
             var positionMessage = new PositionMessage("account", contract, 1, 1000);
             portfolio.PositionBySymbol(Arg.Any<string>()).Returns(positionMessage);
 
-            sut.Convert(testSymbol, requestSender);
+            sut.Convert(testSymbol);
 
             portfolio.Received().PositionBySymbol(testSymbol);
         }
@@ -71,41 +71,47 @@ namespace Rollover.UnitTests
             var reducer = new Reducer();
             var portfolio = Substitute.For<IPortfolio>();
             var trackedSymbols = Substitute.For<ITrackedSymbols>();
-            var requestSender = Substitute.For<IRepository>();
+            var repository = Substitute.For<IRepository>();
 
-            var sut = new InputProcessor(reducer, portfolio, trackedSymbols);
+            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository);
 
             var contract = new Contract() { Symbol = testSymbol };
             var positionMessage = new PositionMessage("account", contract, 1, 1000);
             portfolio.PositionBySymbol(Arg.Any<string>()).Returns(positionMessage);
 
-            sut.Convert("Enter a symbol to track:", requestSender);
-            sut.Convert(testSymbol, requestSender);
+            sut.Convert("Enter a symbol to track:");
+            sut.Convert(testSymbol);
 
             trackedSymbols.Received().SymbolExists(testSymbol);
         }
 
         [Fact]
-        public void CallsRequestSenderContractDetails()
+        public void CallsrepositoryContractDetails()
         {
             var testSymbol = "MNQ";
 
             var reducer = new Reducer();
             var portfolio = Substitute.For<IPortfolio>();
             var trackedSymbols = Substitute.For<ITrackedSymbols>();
-            var requestSender = Substitute.For<IRepository>();
+            var repository = Substitute.For<IRepository>();
 
-            var sut = new InputProcessor(reducer, portfolio, trackedSymbols);
+            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository);
 
             var contract = new Contract() { Symbol = testSymbol };
             var positionMessage = new PositionMessage("account", contract, 1, 1000);
             portfolio.PositionBySymbol(Arg.Any<string>()).Returns(positionMessage);
             trackedSymbols.SymbolExists(Arg.Any<string>()).Returns(false);
 
-            sut.Convert("Enter a symbol to track:", requestSender);
-            sut.Convert(testSymbol, requestSender);
+            sut.Convert("Enter a symbol to track:");
+            sut.Convert(testSymbol);
 
-            requestSender.Received().ContractDetails(Arg.Any<int>(), Arg.Any<Contract>());
+            repository.Received().ContractDetails(Arg.Any<int>(), Arg.Any<Contract>());
+        }
+
+        [Fact]
+        public void CallsRepositoryGetTrackedSymbol()
+        {
+
         }
     }
 }
