@@ -1,6 +1,7 @@
 ﻿using AutoFixture.Xunit2;
 using NSubstitute;
 using Rollover.Ib;
+using Rollover.Input;
 using Xunit;
 
 namespace Rollover.UnitTests
@@ -64,6 +65,22 @@ namespace Rollover.UnitTests
         {
             sut.AllPositions();
             ibClient.Received().ListPositions();
+        }
+
+        [Fact]
+        public void ReturnNullIfNoTrackedSymbolAfterTimeout()
+        {
+            var ibClinet = Substitute.For<IbClientWrapper>();
+            var inputQueue = Substitute.For<IInputQueue>();
+            
+            var sut = new Repository(ibClinet, null, null, inputQueue, null);
+            // TODO
+        }
+
+        [Fact]
+        public void ReturnTrackedSymbol()
+        {
+
         }
     }
 }
