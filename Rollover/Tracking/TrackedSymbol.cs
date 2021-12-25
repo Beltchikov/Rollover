@@ -1,9 +1,9 @@
 ﻿namespace Rollover.Tracking
 {
-    public class TrackedSymbol
+    public class TrackedSymbol : ITrackedSymbol
     {
         public string Name { get; set; }
-        
+
         // Three last figures are behind the comma figures
         public int NextStrike { get; set; }
 

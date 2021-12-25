@@ -1,5 +1,6 @@
 ﻿using Rollover.Configuration;
 using Rollover.Input;
+using Rollover.Tracking;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -138,6 +139,11 @@ namespace Rollover.Ib
         public void ContractDetails(int reqId, IBApi.Contract contract)
         {
             _ibClient.ContractDetails(reqId, contract);
+        }
+
+        public ITrackedSymbol GetTrackedSymbol(IBApi.Contract contract)
+        {
+            throw new NotImplementedException();
         }
     }
 }

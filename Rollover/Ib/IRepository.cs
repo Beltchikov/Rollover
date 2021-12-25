@@ -1,5 +1,6 @@
 ﻿using IBApi;
 using Rollover.Input;
+using Rollover.Tracking;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -11,6 +12,7 @@ namespace Rollover.Ib
         void Disconnect();
         List<string> AllPositions();
         void ReqSecDefOptParams(int reqId, string symbol, string exchange, string secType, int conId);
-        void ContractDetails(int reqId, Contract contract); 
+        void ContractDetails(int reqId, Contract contract);
+        ITrackedSymbol GetTrackedSymbol(Contract contract);
     }
 }
