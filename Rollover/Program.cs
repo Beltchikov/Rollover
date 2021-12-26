@@ -21,7 +21,6 @@ namespace Rollover
 
             ITrackedSymbolFactory trackedSymbolFactory = new TrackedSymbolFactory();
             IIbClientWrapper ibClient = new IbClientWrapper(
-                new SynchronizationContext(), 
                 inputQueue, 
                 portfolio, 
                 trackedSymbolFactory);

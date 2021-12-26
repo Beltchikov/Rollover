@@ -4,7 +4,6 @@ using NSubstitute;
 using Rollover.Ib;
 using Rollover.Input;
 using Rollover.Tracking;
-using System.Threading;
 using Xunit;
 
 namespace Rollover.UnitTests
@@ -14,13 +13,11 @@ namespace Rollover.UnitTests
         [Fact]
         public void CallTrackedSymbolFactoryFromContractDetailsMessageInOnContractDetails()
         {
-            SynchronizationContext synchronizationContext = new SynchronizationContext();
             var inputQueue = Substitute.For<IInputQueue>();
             var portfolio = Substitute.For<IPortfolio>();
             var trackedSymbolFactory = Substitute.For<ITrackedSymbolFactory>();
 
             var sut = new IbClientWrapper(
-                synchronizationContext, 
                 inputQueue, 
                 portfolio, 
                 trackedSymbolFactory);
@@ -36,13 +33,11 @@ namespace Rollover.UnitTests
         [Fact]
         public void CallEnqueueInOnContractDetails()
         {
-            SynchronizationContext synchronizationContext = new SynchronizationContext();
             var inputQueue = Substitute.For<IInputQueue>();
             var portfolio = Substitute.For<IPortfolio>();
             var trackedSymbolFactory = Substitute.For<ITrackedSymbolFactory>();
 
             var sut = new IbClientWrapper(
-                synchronizationContext,
                 inputQueue,
                 portfolio,
                 trackedSymbolFactory);

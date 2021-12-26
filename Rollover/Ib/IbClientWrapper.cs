@@ -15,7 +15,6 @@ namespace Rollover.Ib
     {
         private EReaderMonitorSignal _signal;
         private IBClient _ibClient;
-        private SynchronizationContext _synchronizationContext;
         private IInputQueue _inputQueue;
         private IPortfolio _portfolio;
         private ITrackedSymbolFactory _trackedSymbolFactory;
@@ -28,14 +27,12 @@ namespace Rollover.Ib
         public event Action<ManagedAccountsMessage> ManagedAccounts;
 
         public IbClientWrapper(
-            SynchronizationContext synchronizationContext,
             IInputQueue inputQueue,
             IPortfolio portfolio, 
             ITrackedSymbolFactory trackedSymbolFactory)
         {
             _signal = new EReaderMonitorSignal();
             _ibClient = new IBClient(_signal);
-            _synchronizationContext = synchronizationContext;
             _inputQueue = inputQueue;
             _portfolio = portfolio;
 
