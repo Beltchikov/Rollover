@@ -13,7 +13,6 @@ namespace Rollover.Ib
     {
         private IIbClientWrapper _ibClient;
         private IConnectedCondition _connectedCondition;
-        private IConsoleWrapper _consoleWrapper;
         private IInputQueue _inputQueue;
         private IConfigurationManager _configurationManager;
         
@@ -30,7 +29,6 @@ namespace Rollover.Ib
         {
             _ibClient = ibClient;
             _connectedCondition = connectedCondition;
-            _consoleWrapper = consoleWrapper;
             _inputQueue = inputQueue;
             _configurationManager = configurationManager;
 
@@ -78,7 +76,6 @@ namespace Rollover.Ib
                     continue;
                 }
 
-                //_consoleWrapper.WriteLine(input);
                 messages.Add(input);    
 
                 _connectedCondition.AddInput(input);
