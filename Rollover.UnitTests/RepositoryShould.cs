@@ -71,6 +71,31 @@ namespace Rollover.UnitTests
         }
 
         [Fact]
+        public void ReturnPositionsInAllPositions()
+        {
+            var timeout = 1000;
+
+            var inputQueue = Substitute.For<IInputQueue>();
+            inputQueue.Dequeue().Returns("pos1", "pos2", Reducer.ENTER_SYMBOL_TO_TRACK);
+
+            var ibClinet = Substitute.For<IIbClientWrapper>();
+            ibClinet.When(c => c.ContractDetails(Arg.Any<int>(), Arg.Any<Contract>()))
+                .Do(c => { });
+
+            var configurationManager = Substitute.For<IConfigurationManager>();
+            var contract = new Contract();
+
+            Configuration.Configuration configuration = new Configuration.Configuration
+            { Timeout = timeout };
+            configurationManager.GetConfiguration().Returns(configuration);
+
+            var sut = new Repository(ibClinet, null, inputQueue, configurationManager);
+            var resultList = sut.AllPositions();
+
+            Assert.Equal(2, resultList.Count);
+        }
+
+        [Fact]
         public void ReturnNullIfNoTrackedSymbolAfterTimeout()
         {
             var timeout = 1000;
