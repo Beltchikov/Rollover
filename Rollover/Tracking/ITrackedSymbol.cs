@@ -2,9 +2,16 @@
 {
     public interface ITrackedSymbol
     {
-        string Symbol { get; set; }
+        int ConId { get; set; }
+        string Currency { get; set; }
+        string Exchange { get; set; }
+        string LocalSymbol { get; set; }
         int NextStrike { get; set; }
         int OverNextStrike { get; set; }
+        int ReqIdContractDetails { get; set; }
+        string SecType { get; set; }
+        double Strike { get; set; }
+        string Symbol { get; set; }
 
         string ToString();
     }

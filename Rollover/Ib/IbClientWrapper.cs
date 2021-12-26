@@ -124,19 +124,6 @@ namespace Rollover.Ib
 
         public void OnContractDetails(ContractDetailsMessage obj)
         {
-            //var msg = $"ConId={obj.ContractDetails.Contract.ConId} " +
-            //    $"SecType={obj.ContractDetails.Contract.SecType} " +
-            //    $"Symbol={obj.ContractDetails.Contract.Symbol} " +
-            //    $"Currency={obj.ContractDetails.Contract.Currency} " +
-            //    $"Exchange={obj.ContractDetails.Contract.Exchange} " +
-            //    $"Strike={obj.ContractDetails.Contract.Strike } ";
-
-            //_inputQueue.Enqueue(msg);
-
-            
-            //////////////////////////////////
-            
-            
             var _trackedSymbol = _trackedSymbolFactory.FromContractDetailsMessage(obj);
             var serialized = JsonSerializer.Serialize(_trackedSymbol);
             _inputQueue.Enqueue(serialized);

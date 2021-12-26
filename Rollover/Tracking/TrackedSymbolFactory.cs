@@ -19,6 +19,7 @@ namespace Rollover.Tracking
             var trackedSymbol = new TrackedSymbol
             {
                 ReqIdContractDetails = contractDetailsMessage.RequestId,
+                LocalSymbol = contractDetailsMessage.ContractDetails.Contract.LocalSymbol,
                 Symbol = contractDetailsMessage.ContractDetails.Contract.Symbol,
                 ConId = contractDetailsMessage.ContractDetails.Contract.ConId,
                 SecType = contractDetailsMessage.ContractDetails.Contract.SecType,

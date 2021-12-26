@@ -15,6 +15,7 @@
 
         // Three last figures are behind the comma figures
         public int OverNextStrike { get; set; }
+        public string LocalSymbol { get; set; }
 
         public override string ToString()
         {
