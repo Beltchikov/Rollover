@@ -105,35 +105,11 @@ namespace Rollover.UnitTests
             var positionMessage = new PositionMessage("account", contract, 1, 1000);
             portfolio.PositionBySymbol(Arg.Any<string>()).Returns(positionMessage);
 
-            //sut.Convert("Enter a symbol to track:");
             var resultList = sut.Convert(testSymbol);
 
             Assert.Single(resultList);
             Assert.Equal("Symbol details could not be queried.", resultList.First());
         }
-
-        //[Fact]
-        //public void CallsrepositoryContractDetails()
-        //{
-        //    var testSymbol = "MNQ";
-
-        //    var reducer = new Reducer();
-        //    var portfolio = Substitute.For<IPortfolio>();
-        //    var trackedSymbols = Substitute.For<ITrackedSymbols>();
-        //    var repository = Substitute.For<IRepository>();
-
-        //    var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository);
-
-        //    var contract = new Contract() { Symbol = testSymbol };
-        //    var positionMessage = new PositionMessage("account", contract, 1, 1000);
-        //    portfolio.PositionBySymbol(Arg.Any<string>()).Returns(positionMessage);
-        //    trackedSymbols.SymbolExists(Arg.Any<string>()).Returns(false);
-
-        //    sut.Convert("Enter a symbol to track:");
-        //    sut.Convert(testSymbol);
-
-        //    repository.Received().ContractDetails(Arg.Any<int>(), Arg.Any<Contract>());
-        //}
 
         [Fact]
         public void CallsRepositoryGetTrackedSymbol()

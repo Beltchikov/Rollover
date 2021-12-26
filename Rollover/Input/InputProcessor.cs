@@ -39,25 +39,21 @@ namespace Rollover.Input
                         return new List<string> { "Symbol is not valid." };
                     }
 
-                    if (!_trackedSymbols.SymbolExists(symbol))
+                    var trackedSymbol = _repository.GetTrackedSymbol(position.Contract);
+                    if (trackedSymbol != null)
                     {
-                        var trackedSymbol = _repository.GetTrackedSymbol(position.Contract);
-                        if (trackedSymbol != null)
+                        if (!_trackedSymbols.Add(trackedSymbol))
                         {
-                            if(!_trackedSymbols.Add(trackedSymbol))
-                            {
-                                return new List<string> { "Symbol is tracked already." };
-                            }
-                            var serialized = JsonSerializer.Serialize(trackedSymbol);
-                            return new List<string> { serialized };
+                            return new List<string> { "Symbol is tracked already." };
                         }
-                        else
-                        {
-                            return new List<string> { "Symbol details could not be queried." };
-                        }
+                        var serialized = JsonSerializer.Serialize(trackedSymbol);
+                        return new List<string> { serialized };
+                    }
+                    else
+                    {
+                        return new List<string> { "Symbol details could not be queried." };
                     }
 
-                    return new List<string> { "Symbol is tracked already." };
                 default:
                     throw new NotImplementedException();
             }
