@@ -73,6 +73,8 @@ namespace Rollover.UnitTests
             var trackedSymbols = Substitute.For<ITrackedSymbols>();
             var repository = Substitute.For<IRepository>();
 
+            trackedSymbols.Add(Arg.Any<ITrackedSymbol>()).Returns(true);
+
             var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository);
 
             var contract = new Contract() { Symbol = testSymbol };
@@ -83,6 +85,31 @@ namespace Rollover.UnitTests
             sut.Convert(testSymbol);
 
             trackedSymbols.Received().SymbolExists(testSymbol);
+        }
+
+        [Fact]
+        public void ReturnSymbolDetailsCouldNotBeQueried()
+        {
+            var testSymbol = "MNQ";
+
+            var reducer = new Reducer();
+            var portfolio = Substitute.For<IPortfolio>();
+            var trackedSymbols = Substitute.For<ITrackedSymbols>();
+            var repository = Substitute.For<IRepository>();
+
+            repository.GetTrackedSymbol(Arg.Any<Contract>()).Returns(null as ITrackedSymbol);
+
+            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository);
+
+            var contract = new Contract() { Symbol = testSymbol };
+            var positionMessage = new PositionMessage("account", contract, 1, 1000);
+            portfolio.PositionBySymbol(Arg.Any<string>()).Returns(positionMessage);
+
+            //sut.Convert("Enter a symbol to track:");
+            var resultList = sut.Convert(testSymbol);
+
+            Assert.Single(resultList);
+            Assert.Equal("Symbol details could not be queried.", resultList.First());
         }
 
         //[Fact]
