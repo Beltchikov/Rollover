@@ -30,7 +30,6 @@ namespace Rollover
             IRepository repository = new Repository(
                 ibClient, 
                 connectedCondition, 
-                consoleWrapper,
                 inputQueue,
                 configurationManager);
                         

@@ -87,7 +87,7 @@ namespace Rollover.UnitTests
             { Timeout = timeout};
             configurationManager.GetConfiguration().Returns(configuration);
 
-            var sut = new Repository(ibClinet, null, null, inputQueue, configurationManager);
+            var sut = new Repository(ibClinet, null, inputQueue, configurationManager);
             var trackedSymbol = sut.GetTrackedSymbol(contract);
             Thread.Sleep(timeout);
             
@@ -114,7 +114,7 @@ namespace Rollover.UnitTests
             { Timeout = timeout };
             configurationManager.GetConfiguration().Returns(configuration);
 
-            var sut = new Repository(ibClinet, null, null, inputQueue, configurationManager);
+            var sut = new Repository(ibClinet, null, inputQueue, configurationManager);
             var trackedSymbol = sut.GetTrackedSymbol(contract);
             Thread.Sleep(timeout);
 

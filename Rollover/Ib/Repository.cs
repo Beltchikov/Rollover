@@ -23,7 +23,6 @@ namespace Rollover.Ib
         public Repository(
             IIbClientWrapper ibClient,
             IConnectedCondition connectedCondition,
-            IConsoleWrapper consoleWrapper,
             IInputQueue inputQueue,
             IConfigurationManager configurationManager)
         {
