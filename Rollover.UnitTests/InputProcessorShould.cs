@@ -26,7 +26,7 @@ namespace Rollover.UnitTests
         }
 
         [Fact]
-        public void ReturnInputIfStateIsConnected()
+        public void ReturnSymbolNotValid()
         {
             string testInput = null;
 
@@ -39,7 +39,7 @@ namespace Rollover.UnitTests
 
             var resultList = sut.Convert(testInput);
             Assert.True(resultList.Any());
-            Assert.Equal(testInput, resultList.First());
+            Assert.Equal("Symbol is not valid.", resultList.First());
         }
 
         [Fact]
