@@ -2,6 +2,7 @@
 using Rollover.Tracking;
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 
 namespace Rollover.Input
 {
@@ -40,17 +41,15 @@ namespace Rollover.Input
 
                     if (!_trackedSymbols.SymbolExists(symbol))
                     {
-                        State = _reducer.GetState(State, input);
-                        // TODO
                         var trackedSymbol = _repository.GetTrackedSymbol(position.Contract);
+                        if (trackedSymbol != null)
+                        {
+                            var serialized = JsonSerializer.Serialize(trackedSymbol);
+                            return new List<string> { serialized };
+                        }
                     }
 
                     return new List<string>();
-
-                case "ContractInfo":
-                    State = _reducer.GetState(State, input);
-                    return new List<string> { input };
-
                 default:
                     throw new NotImplementedException();
             }
