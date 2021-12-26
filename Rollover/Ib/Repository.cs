@@ -18,6 +18,7 @@ namespace Rollover.Ib
 
         private List<string> _positions = new List<string>();
         private int _reqIdContractDetails = 0;
+        private int _reqIdSecDefOptParam = 0;
         private int _timeout;
 
         public Repository(
@@ -139,13 +140,17 @@ namespace Rollover.Ib
 
         public ITrackedSymbol GetTrackedSymbol(IBApi.Contract contract)
         {
-            var reqId = _reqIdContractDetails + 1;
+            var reqId = ++_reqIdContractDetails;
             _ibClient.ContractDetails(reqId, contract);
             var trackedSymbol = ReadContractDetails(reqId);
 
             // TODO
-            // if trackedSymbol != null
-            // _ibClient.ReqSecDefOptParams(reqId, symbol, exchange, secType, conId);
+            if(trackedSymbol != null)
+            {
+                trackedSymbol.ReqIdSecDefOptParams = ++_reqIdSecDefOptParam;
+                ReqSecDefOptParams(trackedSymbol);
+            }
+            
             // (strike, overNextStrike) ReadSecDefOptParams(strike)
             // update trackedSymbol
 
@@ -176,9 +181,15 @@ namespace Rollover.Ib
 
         #endregion
 
-        public void ReqSecDefOptParams(int reqId, string symbol, string exchange, string secType, int conId)
+        
+        private void ReqSecDefOptParams(ITrackedSymbol trackedSymbol)
         {
-            _ibClient.ReqSecDefOptParams(reqId, symbol, exchange, secType, conId);
+            _ibClient.ReqSecDefOptParams(
+                trackedSymbol.ReqIdSecDefOptParams, 
+                trackedSymbol.Symbol, 
+                trackedSymbol.Exchange, 
+                trackedSymbol.SecType, 
+                trackedSymbol.ConId);
         }
     }
 }

@@ -32,6 +32,11 @@ namespace Rollover.Input
             switch (State)
             {
                 case "WaitingForSymbol":
+                    if(input.Contains("errorCode"))
+                    {
+                        return new List<string> { input };  
+                    }
+                    
                     var position = _portfolio.PositionBySymbol(input);
                     var symbol = position?.Contract?.Symbol;
                     if (position == null || symbol == null)

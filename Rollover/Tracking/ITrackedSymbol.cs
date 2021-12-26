@@ -9,6 +9,7 @@
         int NextStrike { get; set; }
         int OverNextStrike { get; set; }
         int ReqIdContractDetails { get; set; }
+        int ReqIdSecDefOptParams { get; set; }
         string SecType { get; set; }
         double Strike { get; set; }
         string Symbol { get; set; }
