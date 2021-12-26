@@ -32,7 +32,7 @@ namespace Rollover
                 inputQueue,
                 configurationManager);
                         
-            ITrackedSymbols trackedSymbols = new TrackedSymbols(repository);
+            ITrackedSymbols trackedSymbols = new TrackedSymbols();
             IReducer reducer = new Reducer();
             IInputProcessor inputProcessor = new InputProcessor(
                 reducer,

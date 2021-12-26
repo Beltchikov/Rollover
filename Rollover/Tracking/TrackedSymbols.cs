@@ -6,18 +6,11 @@ namespace Rollover.Tracking
 {
     public class TrackedSymbols : ITrackedSymbols
     {
-        private readonly IRepository _requestSender;
         private readonly List<TrackedSymbol> _symbols;
 
-        public TrackedSymbols(IRepository requestSender)
+        public TrackedSymbols()
         {
-            _requestSender = requestSender;
             _symbols = new List<TrackedSymbol>();
-        }
-
-        public void BeginAdd(int reqId, string symbol, string exchange, string secType, int conId)
-        {
-            _requestSender.ReqSecDefOptParams(reqId, symbol, exchange, secType, conId);
         }
 
         public IEnumerable<string> AllAsString()
@@ -27,9 +20,9 @@ namespace Rollover.Tracking
             return allAsString;
         }
 
-        public bool SymbolExists(string input)
+        public bool SymbolExists(string symbol)
         {
-            return _symbols.Any(s => s.Symbol == input);
+            return _symbols.Any(s => s.Symbol == symbol);
         }
     }
 }
