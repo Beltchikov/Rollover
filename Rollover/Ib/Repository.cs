@@ -135,16 +135,21 @@ namespace Rollover.Ib
 
         #endregion
 
-        private void ContractDetails(int reqId, IBApi.Contract contract)
-        {
-            _ibClient.ContractDetails(reqId, contract);
-        }
+        #region GetTrackedSymbol
 
         public ITrackedSymbol GetTrackedSymbol(IBApi.Contract contract)
         {
             var reqId = _reqIdContractDetails + 1;
             _ibClient.ContractDetails(reqId, contract);
+            var trackedSymbol = ReadContractDetails(reqId);
 
+            // TODO
+
+            return trackedSymbol;
+        }
+
+        private ITrackedSymbol ReadContractDetails(int reqId)
+        {
             var stopWatch = new Stopwatch();
             stopWatch.Start();
             while (stopWatch.Elapsed.TotalMilliseconds < _timeout)
@@ -156,7 +161,7 @@ namespace Rollover.Ib
                 }
 
                 var trackedSymbol = JsonSerializer.Deserialize<TrackedSymbol>(input);
-                if (trackedSymbol?.ReqIdContractDetails == reqId )
+                if (trackedSymbol?.ReqIdContractDetails == reqId)
                 {
                     return trackedSymbol;
                 }
@@ -164,6 +169,8 @@ namespace Rollover.Ib
 
             return null;
         }
+
+        #endregion
 
         public void ReqSecDefOptParams(int reqId, string symbol, string exchange, string secType, int conId)
         {
