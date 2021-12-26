@@ -83,7 +83,8 @@ namespace Rollover.UnitTests
             var configurationManager = Substitute.For<IConfigurationManager>();
             var contract = new Contract();
 
-            Configuration.Configuration configuration = new Configuration.Configuration();
+            Configuration.Configuration configuration = new Configuration.Configuration 
+            { Timeout = timeout};
             configurationManager.GetConfiguration().Returns(configuration);
 
             var sut = new Repository(ibClinet, null, null, inputQueue, configurationManager);
@@ -96,7 +97,28 @@ namespace Rollover.UnitTests
         [Fact]
         public void ReturnTrackedSymbol()
         {
+            var timeout = 1000;
 
+            var trackedSymbolString = @"{""Symbol"":""MNQ"",""ReqIdContractDetails"":1,""ConId"":515971877,""SecType"":""FOP"",""Currency"":""USD"",""Exchange"":""GLOBEX"",""Strike"":16300,""NextStrike"":0,""OverNextStrike"":0}";
+            var inputQueue = Substitute.For<IInputQueue>();
+            inputQueue.Dequeue().Returns(trackedSymbolString);
+
+            var ibClinet = Substitute.For<IIbClientWrapper>();
+            ibClinet.When(c => c.ContractDetails(Arg.Any<int>(), Arg.Any<Contract>()))
+                .Do(c => { });
+
+            var configurationManager = Substitute.For<IConfigurationManager>();
+            var contract = new Contract();
+
+            Configuration.Configuration configuration = new Configuration.Configuration
+            { Timeout = timeout };
+            configurationManager.GetConfiguration().Returns(configuration);
+
+            var sut = new Repository(ibClinet, null, null, inputQueue, configurationManager);
+            var trackedSymbol = sut.GetTrackedSymbol(contract);
+            Thread.Sleep(timeout);
+
+            Assert.NotNull(trackedSymbol);
         }
     }
 }

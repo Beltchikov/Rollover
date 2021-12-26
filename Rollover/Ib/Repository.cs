@@ -144,10 +144,11 @@ namespace Rollover.Ib
 
         public ITrackedSymbol GetTrackedSymbol(IBApi.Contract contract)
         {
-            var reqId = _reqIdContractDetails++;
+            var reqId = _reqIdContractDetails + 1;
             _ibClient.ContractDetails(reqId, contract);
 
             var stopWatch = new Stopwatch();
+            stopWatch.Start();
             while (stopWatch.Elapsed.TotalMilliseconds < _timeout)
             {
                 var input = _inputQueue.Dequeue();
