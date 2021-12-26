@@ -36,7 +36,7 @@ namespace Rollover.Input
                     var symbol = position?.Contract?.Symbol;
                     if (position == null || symbol == null)
                     {
-                        return new List<string> { input };
+                        return new List<string> { "Symbol is not valid." };
                     }
 
                     if (!_trackedSymbols.SymbolExists(symbol))
