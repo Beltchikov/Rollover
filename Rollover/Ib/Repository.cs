@@ -15,7 +15,7 @@ namespace Rollover.Ib
         private IConnectedCondition _connectedCondition;
         private IInputQueue _inputQueue;
         private IConfigurationManager _configurationManager;
-        
+
         private List<string> _positions = new List<string>();
         private int _reqIdContractDetails = 0;
         private int _timeout;
@@ -61,7 +61,7 @@ namespace Rollover.Ib
             .Start();
         }
 
-        private Tuple<bool, List<string>>  CheckConnectionMessages(IInputQueue inputQueue, int timeout)
+        private Tuple<bool, List<string>> CheckConnectionMessages(IInputQueue inputQueue, int timeout)
         {
             var messages = new List<string>();
             var stopWatch = new Stopwatch();
@@ -75,7 +75,7 @@ namespace Rollover.Ib
                     continue;
                 }
 
-                messages.Add(input);    
+                messages.Add(input);
 
                 _connectedCondition.AddInput(input);
                 if (_connectedCondition.IsConnected())
@@ -144,6 +144,10 @@ namespace Rollover.Ib
             var trackedSymbol = ReadContractDetails(reqId);
 
             // TODO
+            // if trackedSymbol != null
+            // _ibClient.ReqSecDefOptParams(reqId, symbol, exchange, secType, conId);
+            // (strike, overNextStrike) ReadSecDefOptParams(strike)
+            // update trackedSymbol
 
             return trackedSymbol;
         }
