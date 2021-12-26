@@ -11,7 +11,6 @@ namespace Rollover.Ib
         void Disconnect();
         List<string> AllPositions();
         void ReqSecDefOptParams(int reqId, string symbol, string exchange, string secType, int conId);
-        void ContractDetails(int reqId, Contract contract);
         ITrackedSymbol GetTrackedSymbol(Contract contract);
     }
 }

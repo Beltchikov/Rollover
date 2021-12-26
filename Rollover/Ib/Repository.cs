@@ -135,7 +135,7 @@ namespace Rollover.Ib
 
         #endregion
 
-        public void ContractDetails(int reqId, IBApi.Contract contract)
+        private void ContractDetails(int reqId, IBApi.Contract contract)
         {
             _ibClient.ContractDetails(reqId, contract);
         }
