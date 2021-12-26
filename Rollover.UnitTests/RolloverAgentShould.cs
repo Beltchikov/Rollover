@@ -3,6 +3,8 @@ using NSubstitute;
 using Rollover.Configuration;
 using Rollover.Ib;
 using Rollover.Input;
+using System;
+using System.Collections.Generic;
 using System.Threading;
 using Xunit;
 
@@ -86,6 +88,22 @@ namespace Rollover.UnitTests
             inputQueue.Dequeue().Returns("SomeInput", "q");
             sut.Run();
             inputLoop.Received().Run(consoleWrapper, inputQueue);
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallConsoleWrapperWriteCanNotConnect(
+            [Frozen] IConsoleWrapper consoleWrapper,
+            [Frozen] IInputQueue inputQueue,
+            [Frozen] IRepository repository,
+            RolloverAgent sut)
+        {
+            inputQueue.Dequeue().Returns("Q");
+            var connectedTupel = new Tuple<bool, List<string>>(false, new List<string>());
+            repository.Connect(Arg.Any<string>(), Arg.Any<int>(), Arg.Any<int>())
+                .Returns(connectedTupel);
+
+            sut.Run();
+            consoleWrapper.Received().WriteLine("Can not connect!");
         }
     }
 }
