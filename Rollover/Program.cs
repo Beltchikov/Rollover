@@ -41,7 +41,7 @@ namespace Rollover
                 trackedSymbols,
                 repository);
             
-            IInputLoop inputLoop = new InputLoop(inputProcessor,connectedCondition);
+            IInputLoop inputLoop = new InputLoop(inputProcessor);
 
             IRolloverAgent rolloverAgent = new RolloverAgent(
                 configurationManager,

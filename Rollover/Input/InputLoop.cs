@@ -1,5 +1,4 @@
-﻿using Rollover.Ib;
-using System;
+﻿using System;
 
 namespace Rollover.Input
 {
@@ -7,9 +6,7 @@ namespace Rollover.Input
     {
         private IInputProcessor _inputProcessor;
 
-        public InputLoop(
-            IInputProcessor inputProcessor,
-            IConnectedCondition connectedCondition)
+        public InputLoop(IInputProcessor inputProcessor)
         {
             _inputProcessor = inputProcessor;
         }
