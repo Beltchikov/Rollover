@@ -6,11 +6,16 @@ namespace Rollover.Tracking
 {
     public class TrackedSymbols : ITrackedSymbols
     {
-        private readonly List<TrackedSymbol> _symbols;
+        private readonly HashSet<ITrackedSymbol> _symbols;
 
         public TrackedSymbols()
         {
-            _symbols = new List<TrackedSymbol>();
+            _symbols = new HashSet<ITrackedSymbol>();
+        }
+
+        public bool Add(ITrackedSymbol trackedSymbol)
+        {
+            return _symbols.Add(trackedSymbol);
         }
 
         public IEnumerable<string> AllAsString()

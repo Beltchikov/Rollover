@@ -44,7 +44,10 @@ namespace Rollover.Input
                         var trackedSymbol = _repository.GetTrackedSymbol(position.Contract);
                         if (trackedSymbol != null)
                         {
-                            //_trackedSymbols.Add(trackedSymbol);
+                            if(!_trackedSymbols.Add(trackedSymbol))
+                            {
+                                return new List<string> { "Symbol is tracked already." };
+                            }
                             var serialized = JsonSerializer.Serialize(trackedSymbol);
                             return new List<string> { serialized };
                         }

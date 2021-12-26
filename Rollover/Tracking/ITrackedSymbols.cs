@@ -6,5 +6,6 @@ namespace Rollover.Tracking
     {
         bool SymbolExists(string input);
         IEnumerable<string> AllAsString();
+        bool Add(ITrackedSymbol trackedSymbol);
     }
 }
