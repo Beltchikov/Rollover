@@ -43,13 +43,15 @@ namespace Rollover
             .Start();
 
             // Connect
-            var connected = _repository.Connect(configuration.Host, configuration.Port, configuration.ClientId);
-            if (!connected)
+            var connectedTuple = _repository.Connect(configuration.Host, configuration.Port, configuration.ClientId);
+            if (!connectedTuple.Item1)
             {
+                connectedTuple.Item2.ForEach(m => _consoleWrapper.WriteLine(m));
                 _consoleWrapper.WriteLine("Can not connect!");
                 return;
             }
- 
+            connectedTuple.Item2.ForEach(m => _consoleWrapper.WriteLine(m));
+
             // List positions
             var positionList = _repository.AllPositions();
             positionList.ForEach(p => _consoleWrapper.WriteLine(p));

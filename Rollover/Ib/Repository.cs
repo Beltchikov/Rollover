@@ -39,7 +39,7 @@ namespace Rollover.Ib
 
         #region Connect, Disconnect
 
-        public bool Connect(string host, int port, int clientId)
+        public Tuple<bool, List<string>> Connect(string host, int port, int clientId)
         {
             ConnectAndStartConsoleThread(host, port, clientId);
             return CheckConnectionMessages(_inputQueue, _configurationManager.GetConfiguration().Timeout);
@@ -64,8 +64,9 @@ namespace Rollover.Ib
             .Start();
         }
 
-        private bool CheckConnectionMessages(IInputQueue inputQueue, int timeout)
+        private Tuple<bool, List<string>>  CheckConnectionMessages(IInputQueue inputQueue, int timeout)
         {
+            var messages = new List<string>();
             var stopWatch = new Stopwatch();
             stopWatch.Start();
 
@@ -77,16 +78,17 @@ namespace Rollover.Ib
                     continue;
                 }
 
-                _consoleWrapper.WriteLine(input);
+                //_consoleWrapper.WriteLine(input);
+                messages.Add(input);    
 
                 _connectedCondition.AddInput(input);
                 if (_connectedCondition.IsConnected())
                 {
-                    return true;
+                    return new Tuple<bool, List<string>>(true, messages);
                 }
             }
 
-            return false;
+            return new Tuple<bool, List<string>>(false, messages);
         }
 
         public void Disconnect()
