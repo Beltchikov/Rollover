@@ -42,8 +42,7 @@ namespace Rollover.Input
                     {
                         State = _reducer.GetState(State, input);
                         // TODO
-                        //_repository.GetTrackedSymbol(position.Contract);
-                        _repository.ContractDetails(1, position.Contract);
+                        var trackedSymbol = _repository.GetTrackedSymbol(position.Contract);
                     }
 
                     return new List<string>();
