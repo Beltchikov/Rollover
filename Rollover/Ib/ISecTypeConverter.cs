@@ -1,7 +1,9 @@
-﻿namespace Rollover.Ib
+﻿using IBApi;
+
+namespace Rollover.Ib
 {
     public interface ISecTypeConverter
     {
-        string GetUnderlyingSecType(string derivativeSecType);
+        Contract GetUnderlyingSecType(Contract derivativeContract);
     }
 }

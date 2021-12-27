@@ -54,8 +54,8 @@ namespace Rollover.Input
                     }
 
 
-                    position.Contract.SecType = _secTypeConverter.GetUnderlyingSecType(position.Contract.SecType);
-                    var trackedSymbol = _repository.GetTrackedSymbol(position.Contract);
+                    var underlyingContract = _secTypeConverter.GetUnderlyingSecType(position.Contract);
+                    var trackedSymbol = _repository.GetTrackedSymbol(underlyingContract);
                     if (trackedSymbol != null)
                     {
                         if (!_trackedSymbols.Add(trackedSymbol))

@@ -1,19 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using IBApi;
+using System.Collections.Generic;
 
 namespace Rollover.Ib
 {
     public class SecTypeConverter : ISecTypeConverter
     {
-        private Dictionary<string, string> _secTypeMap;
-
-        public SecTypeConverter()
+        public Contract GetUnderlyingSecType(Contract derivativeContract)
         {
+            // SecType, Symbol, Currency
+            // TODO
+            return derivativeContract;
 
-        }
-
-        public string GetUnderlyingSecType(string derivativeSecType)
-        {
-            return _secTypeMap[derivativeSecType];
+            //return _secTypeMap[derivativeSecType];
         }
     }
 }

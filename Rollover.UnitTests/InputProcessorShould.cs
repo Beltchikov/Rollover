@@ -156,7 +156,7 @@ namespace Rollover.UnitTests
         public void CallSecTypeConverter([Frozen] ISecTypeConverter secTypeConverter, InputProcessor sut)
         {
             sut.Convert("Some input");
-            secTypeConverter.Received().GetUnderlyingSecType(Arg.Any<string>());
+            secTypeConverter.Received().GetUnderlyingSecType(Arg.Any<Contract>());
         }
     }
 }
