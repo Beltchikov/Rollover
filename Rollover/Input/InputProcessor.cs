@@ -34,7 +34,9 @@ namespace Rollover.Input
                 case "WaitingForSymbol":
                     if(input.Contains("errorCode"))
                     {
-                        return new List<string> { input };  
+                        return input.Contains("id=-1")
+                            ? new List<string> ()
+                            : new List<string> { input };
                     }
                     
                     var position = _portfolio.PositionBySymbol(input);
