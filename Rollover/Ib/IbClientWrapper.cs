@@ -97,6 +97,11 @@ namespace Rollover.Ib
 
         public void OnPosition(PositionMessage obj)
         {
+            if(obj.Position == 0)
+            {
+                return;
+            }
+
             _portfolio.Add(obj);
             var localSymbol = obj.Contract.LocalSymbol;
             _localSymbolsList.Add(localSymbol);
