@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Rollover.UnitTests
 {
-    public class SecTypeConverterShould
+    public class UnderlyingConverterShould
     {
         [Fact]
         public void ReturnUnderlyingForMnq()
