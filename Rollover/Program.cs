@@ -34,11 +34,13 @@ namespace Rollover
                         
             ITrackedSymbols trackedSymbols = new TrackedSymbols();
             IReducer reducer = new Reducer();
+            ISecTypeConverter secTypeConverter = new SecTypeConverter();
             IInputProcessor inputProcessor = new InputProcessor(
                 reducer,
                 portfolio,
                 trackedSymbols,
-                repository);
+                repository,
+                secTypeConverter);
             
             IInputLoop inputLoop = new InputLoop(inputProcessor);
 

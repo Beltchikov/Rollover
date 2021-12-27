@@ -188,8 +188,10 @@ namespace Rollover.Ib
                 trackedSymbol.ReqIdSecDefOptParams, 
                 trackedSymbol.Symbol, 
                 trackedSymbol.Exchange, 
-                trackedSymbol.SecType, 
-                trackedSymbol.ConId);
+                //trackedSymbol.SecType, 
+                "IND",
+                //trackedSymbol.ConId
+                362687422);
         }
     }
 }

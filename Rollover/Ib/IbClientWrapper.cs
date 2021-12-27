@@ -142,6 +142,7 @@ namespace Rollover.Ib
 
         public void OnSecurityDefinitionOptionParameterEnd(int obj)
         {
+            // obj = 1;
             //throw new NotImplementedException();
         }
 
