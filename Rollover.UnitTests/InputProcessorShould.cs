@@ -132,5 +132,14 @@ namespace Rollover.UnitTests
 
             repository.Received().GetTrackedSymbol(Arg.Any<Contract>());
         }
+
+        [Fact]
+        public void ReturnInputIfInputContainsErrorCode()
+        {
+            var testInput = "id=1 errorCode=321 msg=Error validating request.-'cw' : cause - Invalid";
+            var sut = new InputProcessor(null, null, null, null);
+            var result = sut.Convert(testInput);
+            Assert.Equal(testInput,result.First());
+        }
     }
 }
