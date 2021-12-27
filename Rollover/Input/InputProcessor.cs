@@ -12,7 +12,7 @@ namespace Rollover.Input
         private readonly IPortfolio _portfolio;
         private readonly ITrackedSymbols _trackedSymbols;
         private readonly IRepository _repository;
-        private readonly ISecTypeConverter _secTypeConverter;
+        private readonly IUnderlyingConverter _secTypeConverter;
         public string State { get; private set; }
 
         public InputProcessor(
@@ -20,7 +20,7 @@ namespace Rollover.Input
             IPortfolio portfolio, 
             ITrackedSymbols trackedSymbols, 
             IRepository repository, 
-            ISecTypeConverter secTypeConverter)
+            IUnderlyingConverter secTypeConverter)
         {
             _reducer = reducer;
             _portfolio = portfolio;
@@ -54,7 +54,7 @@ namespace Rollover.Input
                     }
 
 
-                    var underlyingContract = _secTypeConverter.GetUnderlyingSecType(position.Contract);
+                    var underlyingContract = _secTypeConverter.GetUnderlying(position.Contract);
                     var trackedSymbol = _repository.GetTrackedSymbol(underlyingContract);
                     if (trackedSymbol != null)
                     {

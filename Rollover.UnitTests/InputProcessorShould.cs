@@ -153,10 +153,10 @@ namespace Rollover.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
-        public void CallSecTypeConverter([Frozen] ISecTypeConverter secTypeConverter, InputProcessor sut)
+        public void CallSecTypeConverter([Frozen] IUnderlyingConverter secTypeConverter, InputProcessor sut)
         {
             sut.Convert("Some input");
-            secTypeConverter.Received().GetUnderlyingSecType(Arg.Any<Contract>());
+            secTypeConverter.Received().GetUnderlying(Arg.Any<Contract>());
         }
     }
 }
