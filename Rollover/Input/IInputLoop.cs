@@ -4,6 +4,6 @@ namespace Rollover.Input
 {
     public interface IInputLoop
     {
-        void Run(IConsoleWrapper consoleWrapper, IInputQueue inputQueue);
+        void Run(IConsoleWrapper consoleWrapper, IInputQueue inputQueue, IIbClientQueue ibClientQueue);
     }
 }

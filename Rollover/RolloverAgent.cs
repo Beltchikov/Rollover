@@ -10,6 +10,7 @@ namespace Rollover
         private IConfigurationManager _configurationManager;
         private IConsoleWrapper _consoleWrapper;
         private IInputQueue _inputQueue;
+        private IIbClientQueue _ibClientQueue;
         private IRepository _repository;
         private IInputLoop _inputLoop;
 
@@ -17,7 +18,8 @@ namespace Rollover
             IConfigurationManager configurationManager,
             IConsoleWrapper consoleWrapper,
             IInputQueue inputQueue,
-            IRepository repository, 
+            IIbClientQueue ibClientQueue,
+            IRepository repository,
             IInputLoop inputLoop)
         {
             _configurationManager = configurationManager;
@@ -25,6 +27,7 @@ namespace Rollover
             _inputQueue = inputQueue;
             _repository = repository;
             _inputLoop = inputLoop;
+            _ibClientQueue = ibClientQueue;
         }
 
 
@@ -58,7 +61,7 @@ namespace Rollover
             _consoleWrapper.WriteLine(Reducer.ENTER_SYMBOL_TO_TRACK);
 
             // Start input loop
-            _inputLoop.Run(_consoleWrapper, _inputQueue);
+            _inputLoop.Run(_consoleWrapper, _inputQueue, _ibClientQueue);
 
             // Disconnect
             _repository.Disconnect();

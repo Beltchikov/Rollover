@@ -13,7 +13,7 @@ namespace Rollover.UnitTests
         [Fact]
         public void CallTrackedSymbolFactoryFromContractDetailsMessageInOnContractDetails()
         {
-            var inputQueue = Substitute.For<IInputQueue>();
+            var inputQueue = Substitute.For<IIbClientQueue>();
             var portfolio = Substitute.For<IPortfolio>();
             var trackedSymbolFactory = Substitute.For<ITrackedSymbolFactory>();
 
@@ -33,7 +33,7 @@ namespace Rollover.UnitTests
         [Fact]
         public void CallEnqueueInOnContractDetails()
         {
-            var inputQueue = Substitute.For<IInputQueue>();
+            var inputQueue = Substitute.For<IIbClientQueue>();
             var portfolio = Substitute.For<IPortfolio>();
             var trackedSymbolFactory = Substitute.For<ITrackedSymbolFactory>();
 

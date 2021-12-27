@@ -15,16 +15,17 @@ namespace Rollover
                 fileHelper, serializer);
             
             IConsoleWrapper consoleWrapper = new ConsoleWrapper();
-            IInputQueue inputQueue = new InputQueue();
+            IIbClientQueue ibClientQueue = new IbClientQueue();
             IPortfolio portfolio = new Portfolio();
 
             ITrackedSymbolFactory trackedSymbolFactory = new TrackedSymbolFactory();
             IIbClientWrapper ibClient = new IbClientWrapper(
-                inputQueue, 
+                ibClientQueue, 
                 portfolio, 
                 trackedSymbolFactory);
                        
             IConnectedCondition connectedCondition = new ConnectedCondition();
+            IInputQueue inputQueue = new InputQueue();
             IQueryParametersConverter queryParametersConverter = new QueryParametersConverter();
             IRepository repository = new Repository(
                 ibClient, 
@@ -47,6 +48,7 @@ namespace Rollover
                 configurationManager,
                 consoleWrapper,
                 inputQueue,
+                ibClientQueue,
                 repository,
                 inputLoop);
 

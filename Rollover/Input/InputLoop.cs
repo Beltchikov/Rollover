@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rollover.Ib;
+using System;
 
 namespace Rollover.Input
 {
@@ -11,17 +12,21 @@ namespace Rollover.Input
             _inputProcessor = inputProcessor;
         }
         
-        public void Run(IConsoleWrapper consoleWrapper, IInputQueue inputQueue)
+        public void Run(IConsoleWrapper consoleWrapper, IInputQueue inputQueue, IIbClientQueue ibClientQueue)
         {
             while (true)
             {
                 var input = inputQueue.Dequeue();
-                if (input == null)
+                var message = ibClientQueue.Dequeue();
+                if (input == null && message == null)
                 {
                     continue;
                 }
 
                 var outputList = _inputProcessor.Convert(input);
+                var messageList = _inputProcessor.ConvertMessage(message);
+                outputList.AddRange(messageList);
+
                 outputList.ForEach(consoleWrapper.WriteLine);
 
                 if (input.Equals("q", StringComparison.InvariantCultureIgnoreCase))

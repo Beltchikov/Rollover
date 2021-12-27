@@ -15,50 +15,64 @@ namespace Rollover.UnitTests
         [Theory, AutoNSubstituteData]
         public void CallInputQueueDequeue(
            [Frozen] IInputQueue inputQueue,
+           [Frozen] IIbClientQueue ibClientQueue,
            [Frozen] IConsoleWrapper consoleWrapper,
-           [Frozen] IRepository requestSender,
            InputLoop sut)
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
-            sut.Run(consoleWrapper, inputQueue);
+            sut.Run(consoleWrapper, inputQueue, ibClientQueue);
             inputQueue.Received().Dequeue();
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallIbClientQueueDequeue(
+           [Frozen] IInputQueue inputQueue,
+           [Frozen] IIbClientQueue ibClientQueue,
+           [Frozen] IConsoleWrapper consoleWrapper,
+           InputLoop sut)
+        {
+            inputQueue.Dequeue().Returns("SomeInput", "q");
+            sut.Run(consoleWrapper, inputQueue, ibClientQueue);
+            ibClientQueue.Received().Dequeue();
         }
 
         [Theory, AutoNSubstituteData]
         public void CallConsoleWrapperWriteLine(
            [Frozen] IInputQueue inputQueue,
+           [Frozen] IIbClientQueue ibClientQueue,
            [Frozen] IConsoleWrapper consoleWrapper,
-           [Frozen] IRepository requestSender,
            InputLoop sut)
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
-            sut.Run(consoleWrapper, inputQueue);
+            sut.Run(consoleWrapper, inputQueue, ibClientQueue);
             consoleWrapper.Received().WriteLine(Arg.Any<string>());
         }
 
         [Theory, AutoNSubstituteData]
-        public void CallConsoleWrapperWriteLineIfInputNull(
+        public void CallConsoleWrapperWriteLineIfInputAndMessageNull(
            [Frozen] IInputQueue inputQueue,
+           [Frozen] IIbClientQueue ibClientQueue,
            [Frozen] IConsoleWrapper consoleWrapper,
-           [Frozen] IRepository requestSender,
            InputLoop sut)
         {
             inputQueue.Dequeue().Returns((string)null, "q");
-            sut.Run(consoleWrapper, inputQueue);
+            ibClientQueue.Dequeue().Returns(null);
+            sut.Run(consoleWrapper, inputQueue, ibClientQueue);
             consoleWrapper.Received().WriteLine("Goodbye!");
         }
 
         [Theory, AutoNSubstituteData]
         public void CallInputProcessorConvert(
            [Frozen] IInputQueue inputQueue,
+           [Frozen] IIbClientQueue ibClientQueue,
            [Frozen] IConsoleWrapper consoleWrapper,
            [Frozen] IInputProcessor inputProcessor,
-           [Frozen] IRepository requestSender,
            InputLoop sut)
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
-            sut.Run(consoleWrapper, inputQueue);
+            sut.Run(consoleWrapper, inputQueue, ibClientQueue);
             inputProcessor.Received().Convert(Arg.Any<string>());
+            inputProcessor.Received().ConvertMessage(Arg.Any<object>());
         }
     }
 }

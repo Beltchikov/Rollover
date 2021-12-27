@@ -15,7 +15,7 @@ namespace Rollover.Ib
     {
         private EReaderMonitorSignal _signal;
         private IBClient _ibClient;
-        private IInputQueue _inputQueue;
+        private IIbClientQueue _ibClientQueue;
         private IPortfolio _portfolio;
         private ITrackedSymbolFactory _trackedSymbolFactory;
 
@@ -27,13 +27,13 @@ namespace Rollover.Ib
         public event Action<ManagedAccountsMessage> ManagedAccounts;
 
         public IbClientWrapper(
-            IInputQueue inputQueue,
+            IIbClientQueue inputQueue,
             IPortfolio portfolio, 
             ITrackedSymbolFactory trackedSymbolFactory)
         {
             _signal = new EReaderMonitorSignal();
             _ibClient = new IBClient(_signal);
-            _inputQueue = inputQueue;
+            _ibClientQueue = inputQueue;
             _portfolio = portfolio;
 
             RegisterResponseHandlers();
@@ -54,26 +54,30 @@ namespace Rollover.Ib
 
         public void OnError(int id, int errorCode, string msg, Exception ex)
         {
-            _inputQueue.Enqueue($"id={id} errorCode={errorCode} msg={msg} Exception={ex}");
+            _ibClientQueue.Enqueue($"id={id} errorCode={errorCode} msg={msg} Exception={ex}");
         }
 
         public void OnNextValidId(ConnectionStatusMessage connectionStatusMessage)
         {
-            string msg = connectionStatusMessage.IsConnected
-                ? "Connected."
-                : "Disconnected.";
-            _inputQueue.Enqueue(msg);
+            //string msg = connectionStatusMessage.IsConnected
+            //    ? "Connected."
+            //    : "Disconnected.";
+            //_ibClientQueue.Enqueue(msg);
+
+            _ibClientQueue.Enqueue(connectionStatusMessage);
         }
 
         public void OnManagedAccounts(ManagedAccountsMessage managedAccountsMessage)
         {
-            if (!managedAccountsMessage.ManagedAccounts.Any())
-            {
-                throw new Exception("Unexpected");
-            }
+            //if (!managedAccountsMessage.ManagedAccounts.Any())
+            //{
+            //    throw new Exception("Unexpected");
+            //}
 
-            string msg = Environment.NewLine + "Accounts found: " + managedAccountsMessage.ManagedAccounts.Aggregate((r, n) => r + ", " + n);
-            _inputQueue.Enqueue(msg);
+            //string msg = Environment.NewLine + "Accounts found: " + managedAccountsMessage.ManagedAccounts.Aggregate((r, n) => r + ", " + n);
+            //_ibClientQueue.Enqueue(msg);
+
+            _ibClientQueue.Enqueue(managedAccountsMessage);
         }
 
         public void Disconnect()
@@ -110,9 +114,9 @@ namespace Rollover.Ib
         public void OnPositionEnd()
         {
             _localSymbolsList.Sort();
-            _localSymbolsList.ForEach(s => _inputQueue.Enqueue(s));
+            _localSymbolsList.ForEach(s => _ibClientQueue.Enqueue(s));
             _localSymbolsList.Clear();
-            _inputQueue.Enqueue(Reducer.ENTER_SYMBOL_TO_TRACK);
+            _ibClientQueue.Enqueue(Reducer.ENTER_SYMBOL_TO_TRACK);
         }
 
         #endregion
@@ -128,7 +132,7 @@ namespace Rollover.Ib
         {
             var _trackedSymbol = _trackedSymbolFactory.FromContractDetailsMessage(obj);
             var serialized = JsonSerializer.Serialize(_trackedSymbol);
-            _inputQueue.Enqueue(serialized);
+            _ibClientQueue.Enqueue(serialized);
         }
 
         #endregion

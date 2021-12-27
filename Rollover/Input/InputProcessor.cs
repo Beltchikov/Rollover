@@ -1,7 +1,9 @@
-﻿using Rollover.Ib;
+﻿using IBSampleApp.messages;
+using Rollover.Ib;
 using Rollover.Tracking;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 
 namespace Rollover.Input
@@ -68,6 +70,33 @@ namespace Rollover.Input
                 default:
                     throw new NotImplementedException();
             }
+        }
+
+        public List<string> ConvertMessage(object obj)
+        {
+            if(obj is string)
+            {
+                return new List<string> { obj as string };
+            }
+            else if (obj is ConnectionStatusMessage)
+            {
+                return (obj as ConnectionStatusMessage).IsConnected
+                    ? new List<string> { "Connected." }
+                    : new List<string> { "Disconnected." };
+            }
+            else if (obj is ManagedAccountsMessage)
+            {
+                if (!(obj as ManagedAccountsMessage).ManagedAccounts.Any())
+                {
+                    throw new Exception("Unexpected: no positions.");
+                }
+
+                string msg = Environment.NewLine + "Accounts found: " 
+                    + (obj as ManagedAccountsMessage).ManagedAccounts.Aggregate((r, n) => r + ", " + n);
+                return new List<string> { msg };
+            }
+
+            throw new NotImplementedException();
         }
     }
 }

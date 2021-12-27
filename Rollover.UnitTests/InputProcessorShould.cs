@@ -140,7 +140,7 @@ namespace Rollover.UnitTests
             var testInput = "id=1 errorCode=321 msg=Error validating request.-'cw' : cause - Invalid";
             var sut = new InputProcessor(null, null, null, null);
             var result = sut.Convert(testInput);
-            Assert.Equal(testInput,result.First());
+            Assert.Equal(testInput, result.First());
         }
 
         [Fact]
@@ -150,6 +150,43 @@ namespace Rollover.UnitTests
             var sut = new InputProcessor(null, null, null, null);
             var result = sut.Convert(testInput);
             Assert.Empty(result);
+        }
+
+        [Fact]
+        public void ReturnMessageIfTypeString()
+        {
+            var testMessage = "id=-1 errorCode=321 msg=Error validating request.-'cw' : cause - Invalid";
+            var sut = new InputProcessor(null, null, null, null);
+            var result = sut.ConvertMessage(testMessage);
+            Assert.Equal(testMessage, result.First());
+        }
+
+        [Fact]
+        public void ReturnConnectedIfTypeConnectionStatusMessage()
+        {
+            var testMessage = new ConnectionStatusMessage(true);
+            var sut = new InputProcessor(null, null, null, null);
+            var result = sut.ConvertMessage(testMessage);
+            Assert.Equal("Connected.", result.First());
+        }
+
+        [Fact]
+        public void ReturnDisconnectedIfTypeConnectionStatusMessage()
+        {
+            var testMessage = new ConnectionStatusMessage(false);
+            var sut = new InputProcessor(null, null, null, null);
+            var result = sut.ConvertMessage(testMessage);
+            Assert.Equal("Disconnected.", result.First());
+        }
+
+        [Fact]
+        public void ReturnAccountsIfTypeManagedAccountsMessage()
+        {
+            var testMessage = new ManagedAccountsMessage("GOOG\r\nMSFT");
+            var sut = new InputProcessor(null, null, null, null);
+            var result = sut.ConvertMessage(testMessage);
+            Assert.Contains("GOOG", result.First());
+            Assert.Contains("MSFT", result.First());
         }
     }
 }
