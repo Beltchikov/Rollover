@@ -20,7 +20,7 @@ namespace Rollover.UnitTests
             var trackedSymbols = Substitute.For<ITrackedSymbols>();
             var repository = Substitute.For<IRepository>();
 
-            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository, null);
+            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository);
 
             sut.Convert(null);
             Assert.True(sut.State == "WaitingForSymbol");
@@ -36,7 +36,7 @@ namespace Rollover.UnitTests
             var trackedSymbols = Substitute.For<ITrackedSymbols>();
             var repository = Substitute.For<IRepository>();
 
-            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository, null);
+            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository);
 
             var resultList = sut.Convert(testInput);
             Assert.True(resultList.Any());
@@ -53,7 +53,7 @@ namespace Rollover.UnitTests
             var trackedSymbols = Substitute.For<ITrackedSymbols>();
             var repository = Substitute.For<IRepository>();
 
-            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository, null);
+            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository);
 
             var contract = new Contract() { Symbol = testSymbol };
             var positionMessage = new PositionMessage("account", contract, 1, 1000);
@@ -76,7 +76,7 @@ namespace Rollover.UnitTests
 
             trackedSymbols.Add(Arg.Any<ITrackedSymbol>()).Returns(true);
 
-            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository, null);
+            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository);
 
             var contract = new Contract() { Symbol = testSymbol };
             var positionMessage = new PositionMessage("account", contract, 1, 1000);
@@ -100,7 +100,7 @@ namespace Rollover.UnitTests
 
             repository.GetTrackedSymbol(Arg.Any<Contract>()).Returns(null as ITrackedSymbol);
 
-            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository, null);
+            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository);
 
             var contract = new Contract() { Symbol = testSymbol };
             var positionMessage = new PositionMessage("account", contract, 1, 1000);
@@ -120,7 +120,7 @@ namespace Rollover.UnitTests
             var trackedSymbols = Substitute.For<ITrackedSymbols>();
             var repository = Substitute.For<IRepository>();
 
-            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository, null);
+            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository);
 
             var testSymbol = "MNQ";
             var contract = new Contract() { Symbol = testSymbol };
@@ -138,7 +138,7 @@ namespace Rollover.UnitTests
         public void ReturnInputIfInputContainsErrorCode()
         {
             var testInput = "id=1 errorCode=321 msg=Error validating request.-'cw' : cause - Invalid";
-            var sut = new InputProcessor(null, null, null, null, null);
+            var sut = new InputProcessor(null, null, null, null);
             var result = sut.Convert(testInput);
             Assert.Equal(testInput,result.First());
         }
@@ -147,16 +147,9 @@ namespace Rollover.UnitTests
         public void ReturnEmptyIfInputContainsErrorCodeAndIdMinusOne()
         {
             var testInput = "id=-1 errorCode=321 msg=Error validating request.-'cw' : cause - Invalid";
-            var sut = new InputProcessor(null, null, null, null, null);
+            var sut = new InputProcessor(null, null, null, null);
             var result = sut.Convert(testInput);
             Assert.Empty(result);
-        }
-
-        [Theory, AutoNSubstituteData]
-        public void CallSecTypeConverter([Frozen] IUnderlyingConverter secTypeConverter, InputProcessor sut)
-        {
-            sut.Convert("Some input");
-            secTypeConverter.Received().GetUnderlying(Arg.Any<Contract>());
         }
     }
 }

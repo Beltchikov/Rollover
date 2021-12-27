@@ -12,21 +12,18 @@ namespace Rollover.Input
         private readonly IPortfolio _portfolio;
         private readonly ITrackedSymbols _trackedSymbols;
         private readonly IRepository _repository;
-        private readonly IUnderlyingConverter _secTypeConverter;
         public string State { get; private set; }
 
         public InputProcessor(
             IReducer reducer, 
             IPortfolio portfolio, 
             ITrackedSymbols trackedSymbols, 
-            IRepository repository, 
-            IUnderlyingConverter secTypeConverter)
+            IRepository repository)
         {
             _reducer = reducer;
             _portfolio = portfolio;
             _trackedSymbols = trackedSymbols;
             _repository = repository;
-            _secTypeConverter = secTypeConverter;
         }
 
         public List<string> Convert(string input)
@@ -53,9 +50,7 @@ namespace Rollover.Input
                         return new List<string> { "Symbol is not valid." };
                     }
 
-
-                    var underlyingContract = _secTypeConverter.GetUnderlying(position.Contract);
-                    var trackedSymbol = _repository.GetTrackedSymbol(underlyingContract);
+                    var trackedSymbol = _repository.GetTrackedSymbol(position.Contract);
                     if (trackedSymbol != null)
                     {
                         if (!_trackedSymbols.Add(trackedSymbol))
