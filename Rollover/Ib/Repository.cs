@@ -184,14 +184,21 @@ namespace Rollover.Ib
         
         private void ReqSecDefOptParams(ITrackedSymbol trackedSymbol)
         {
+            //_ibClient.ReqSecDefOptParams(
+            //    trackedSymbol.ReqIdSecDefOptParams, 
+            //    trackedSymbol.Symbol, 
+            //    trackedSymbol.Exchange, 
+            //    //trackedSymbol.SecType, 
+            //    "IND",
+            //    //trackedSymbol.ConId
+            //    362687422);
+
             _ibClient.ReqSecDefOptParams(
-                trackedSymbol.ReqIdSecDefOptParams, 
-                trackedSymbol.Symbol, 
-                trackedSymbol.Exchange, 
-                //trackedSymbol.SecType, 
-                "IND",
-                //trackedSymbol.ConId
-                362687422);
+                trackedSymbol.ReqIdSecDefOptParams,
+                trackedSymbol.Symbol,
+                trackedSymbol.Exchange,
+                trackedSymbol.SecType, 
+                trackedSymbol.ConId);
         }
     }
 }
