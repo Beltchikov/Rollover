@@ -4,6 +4,7 @@ using NSubstitute;
 using Rollover.Configuration;
 using Rollover.Ib;
 using Rollover.Input;
+using Rollover.Tracking;
 using System.Threading;
 using Xunit;
 
@@ -89,7 +90,7 @@ namespace Rollover.UnitTests
             { Timeout = timeout };
             configurationManager.GetConfiguration().Returns(configuration);
 
-            var sut = new Repository(ibClinet, null, inputQueue, configurationManager);
+            var sut = new Repository(ibClinet, null, inputQueue, configurationManager, null);
             var resultList = sut.AllPositions();
 
             Assert.Equal(2, resultList.Count);
@@ -112,7 +113,7 @@ namespace Rollover.UnitTests
             { Timeout = timeout};
             configurationManager.GetConfiguration().Returns(configuration);
 
-            var sut = new Repository(ibClinet, null, inputQueue, configurationManager);
+            var sut = new Repository(ibClinet, null, inputQueue, configurationManager, null);
             var trackedSymbol = sut.GetTrackedSymbol(contract);
             Thread.Sleep(timeout);
             
@@ -139,11 +140,26 @@ namespace Rollover.UnitTests
             { Timeout = timeout };
             configurationManager.GetConfiguration().Returns(configuration);
 
-            var sut = new Repository(ibClinet, null, inputQueue, configurationManager);
+            var sut = new Repository(ibClinet, null, inputQueue, configurationManager, null);
             var trackedSymbol = sut.GetTrackedSymbol(contract);
             Thread.Sleep(timeout);
 
             Assert.NotNull(trackedSymbol);
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallQueryParametersConverter(
+            [Frozen] IInputQueue inputQueue,
+            [Frozen] IQueryParametersConverter queryParametersConverter,
+            Repository sut)
+        {
+            var trackedSymbolString = @"{""Symbol"":""MNQ"",""ReqIdContractDetails"":1,""ConId"":515971877,""SecType"":""FOP"",""Currency"":""USD"",""Exchange"":""GLOBEX"",""Strike"":16300,""NextStrike"":0,""OverNextStrike"":0}";
+            inputQueue.Dequeue().Returns(trackedSymbolString);
+            var contract = new Contract();
+            
+            var trackedSymbol = sut.GetTrackedSymbol(contract);
+            
+            queryParametersConverter.Received().TrackedSymbolForReqSecDefOptParams(Arg.Any<ITrackedSymbol>());
         }
     }
 }

@@ -2,7 +2,6 @@
 using Rollover.Ib;
 using Rollover.Input;
 using Rollover.Tracking;
-using System.Threading;
 
 namespace Rollover
 {
@@ -26,11 +25,13 @@ namespace Rollover
                 trackedSymbolFactory);
                        
             IConnectedCondition connectedCondition = new ConnectedCondition();
+            IQueryParametersConverter queryParametersConverter = new QueryParametersConverter();
             IRepository repository = new Repository(
                 ibClient, 
                 connectedCondition, 
                 inputQueue,
-                configurationManager);
+                configurationManager,
+                queryParametersConverter);
                         
             ITrackedSymbols trackedSymbols = new TrackedSymbols();
             IReducer reducer = new Reducer();

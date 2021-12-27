@@ -15,6 +15,7 @@ namespace Rollover.Ib
         private IConnectedCondition _connectedCondition;
         private IInputQueue _inputQueue;
         private IConfigurationManager _configurationManager;
+        private IQueryParametersConverter _queryParametersConverter;
 
         private List<string> _positions = new List<string>();
         private int _reqIdContractDetails = 0;
@@ -25,7 +26,8 @@ namespace Rollover.Ib
             IIbClientWrapper ibClient,
             IConnectedCondition connectedCondition,
             IInputQueue inputQueue,
-            IConfigurationManager configurationManager)
+            IConfigurationManager configurationManager, 
+            IQueryParametersConverter queryParametersConverter)
         {
             _ibClient = ibClient;
             _connectedCondition = connectedCondition;
@@ -33,6 +35,7 @@ namespace Rollover.Ib
             _configurationManager = configurationManager;
 
             _timeout = _configurationManager.GetConfiguration().Timeout;
+            _queryParametersConverter = queryParametersConverter;
         }
 
         #region Connect, Disconnect
@@ -193,12 +196,14 @@ namespace Rollover.Ib
             //    //trackedSymbol.ConId
             //    362687422);
 
+            var trackedSymbolCopy = _queryParametersConverter.TrackedSymbolForReqSecDefOptParams(trackedSymbol);
+
             _ibClient.ReqSecDefOptParams(
-                trackedSymbol.ReqIdSecDefOptParams,
-                trackedSymbol.Symbol,
-                trackedSymbol.Exchange,
-                trackedSymbol.SecType, 
-                trackedSymbol.ConId);
+                trackedSymbolCopy.ReqIdSecDefOptParams,
+                trackedSymbolCopy.Symbol,
+                trackedSymbolCopy.Exchange,
+                trackedSymbolCopy.SecType, 
+                trackedSymbolCopy.ConId);
         }
     }
 }
