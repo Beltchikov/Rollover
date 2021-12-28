@@ -128,7 +128,7 @@ namespace Rollover.Ib
                     continue;
                 }
 
-                if (input == Reducer.ENTER_SYMBOL_TO_TRACK)
+                if (input == Constants.ENTER_SYMBOL_TO_TRACK)
                 {
                     return;
                 }

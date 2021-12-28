@@ -120,7 +120,7 @@ namespace Rollover.Ib
             //_localSymbolsList.Clear();
             //_ibClientQueue.Enqueue(Reducer.ENTER_SYMBOL_TO_TRACK);
 
-            _ibClientQueue.Enqueue("OnPositionEnd");
+            _ibClientQueue.Enqueue(Constants.ON_POSITION_END);
         }
 
         #endregion

@@ -15,7 +15,7 @@ namespace Rollover.Input
         private readonly ITrackedSymbols _trackedSymbols;
         private readonly IRepository _repository;
 
-        private static List<string> _localSymbolsList = new List<string>();
+        private static List<PositionMessage> _positionMessageList = new List<PositionMessage>();
         public string State { get; private set; }
 
         public InputProcessor(
@@ -78,7 +78,7 @@ namespace Rollover.Input
         {
             if(obj is string)
             {
-                return new List<string> { obj as string };
+                return ConvertMessageString(obj as string);
             }
             else if (obj is ConnectionStatusMessage)
             {
@@ -101,13 +101,28 @@ namespace Rollover.Input
             {
                 if ((obj as PositionMessage).Position > 0)
                 {
-                    _localSymbolsList.Add((obj as PositionMessage).Contract.LocalSymbol);
+                    _positionMessageList.Add((obj as PositionMessage));
                 }
                                 
                 return new List<string>();
             }
 
             throw new NotImplementedException();
+        }
+
+        private List<string> ConvertMessageString(string obj)
+        {
+            switch(obj)
+            {
+                case Constants.ON_POSITION_END:
+                    List<string> resultList = _positionMessageList.Select(x => x.Contract.LocalSymbol)
+                        .OrderBy(x => x).ToList();
+                    resultList.Add(Constants.ENTER_SYMBOL_TO_TRACK);
+                    _positionMessageList.Clear();
+                    return resultList;
+                default:
+                    return new List<string> { obj as string };
+            }
         }
     }
 }

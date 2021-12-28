@@ -77,7 +77,7 @@ namespace Rollover.UnitTests
             var timeout = 1000;
 
             var inputQueue = Substitute.For<IInputQueue>();
-            inputQueue.Dequeue().Returns("pos1", "pos2", Reducer.ENTER_SYMBOL_TO_TRACK);
+            inputQueue.Dequeue().Returns("pos1", "pos2", Constants.ENTER_SYMBOL_TO_TRACK);
 
             var ibClinet = Substitute.For<IIbClientWrapper>();
             ibClinet.When(c => c.ContractDetails(Arg.Any<int>(), Arg.Any<Contract>()))

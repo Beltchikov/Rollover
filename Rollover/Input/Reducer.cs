@@ -4,8 +4,6 @@
     {
         public event IReducer.StateChangedHandler StateChanged;
 
-        public const string ENTER_SYMBOL_TO_TRACK = "Enter a symbol to track:";
-
         public string GetState(string stateBefore, string input)
         {
             if (stateBefore == "WaitingForSymbol")
