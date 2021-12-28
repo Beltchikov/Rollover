@@ -73,14 +73,14 @@ namespace Rollover.Ib
             switch (obj)
             {
                 case Constants.ON_POSITION_END:
-                    //var positionMessages = input
-                    //_portfolio.Add(obj);
-
+                    _positionMessageList.ForEach(p => _portfolio.Add(p));
+                    
                     List<string> resultList = _positionMessageList.Select(x => x.Contract.LocalSymbol)
                         .OrderBy(x => x).ToList();
                     resultList.Add(Constants.ENTER_SYMBOL_TO_TRACK);
                     _positionMessageList = new List<PositionMessage>();
                     return resultList;
+               
                 default:
                     return new List<string> { obj as string };
             }

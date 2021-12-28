@@ -31,6 +31,11 @@ namespace Rollover.Input
 
         public List<string> Convert(string input)
         {
+            if(input == null)
+            {
+                return new List<string>();
+            }
+            
             if (string.IsNullOrWhiteSpace(State))
             {
                 State = "WaitingForSymbol";

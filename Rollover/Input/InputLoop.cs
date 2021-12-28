@@ -31,7 +31,7 @@ namespace Rollover.Input
 
                 outputList.ForEach(consoleWrapper.WriteLine);
 
-                if (input.Equals("q", StringComparison.InvariantCultureIgnoreCase))
+                if (input != null && input.Equals("q", StringComparison.InvariantCultureIgnoreCase))
                 {
                     break;
                 }
