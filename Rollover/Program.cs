@@ -40,7 +40,8 @@ namespace Rollover
                 reducer,
                 portfolio,
                 trackedSymbols,
-                repository);
+                repository,
+                trackedSymbolFactory);
             
             IInputLoop inputLoop = new InputLoop(inputProcessor);
 

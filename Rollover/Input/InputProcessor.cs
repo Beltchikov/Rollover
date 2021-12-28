@@ -14,20 +14,22 @@ namespace Rollover.Input
         private readonly IPortfolio _portfolio;
         private readonly ITrackedSymbols _trackedSymbols;
         private readonly IRepository _repository;
+        private ITrackedSymbolFactory _trackedSymbolFactory;
 
         private static List<PositionMessage> _positionMessageList = new List<PositionMessage>();
         public string State { get; private set; }
 
         public InputProcessor(
-            IReducer reducer, 
-            IPortfolio portfolio, 
-            ITrackedSymbols trackedSymbols, 
-            IRepository repository)
+            IReducer reducer,
+            IPortfolio portfolio,
+            ITrackedSymbols trackedSymbols,
+            IRepository repository, ITrackedSymbolFactory trackedSymbolFactory)
         {
             _reducer = reducer;
             _portfolio = portfolio;
             _trackedSymbols = trackedSymbols;
             _repository = repository;
+            _trackedSymbolFactory = trackedSymbolFactory;
         }
 
         public List<string> Convert(string input)
@@ -105,6 +107,12 @@ namespace Rollover.Input
                 }
                                 
                 return new List<string>();
+            }
+            else if (obj is ContractDetailsMessage)
+            {
+                var _trackedSymbol = _trackedSymbolFactory.FromContractDetailsMessage(obj as ContractDetailsMessage);
+                var serialized = JsonSerializer.Serialize(_trackedSymbol);
+                return new List<string> { serialized };
             }
 
             throw new NotImplementedException();

@@ -134,9 +134,11 @@ namespace Rollover.Ib
 
         public void OnContractDetails(ContractDetailsMessage obj)
         {
-            var _trackedSymbol = _trackedSymbolFactory.FromContractDetailsMessage(obj);
-            var serialized = JsonSerializer.Serialize(_trackedSymbol);
-            _ibClientQueue.Enqueue(serialized);
+            //var _trackedSymbol = _trackedSymbolFactory.FromContractDetailsMessage(obj);
+            //var serialized = JsonSerializer.Serialize(_trackedSymbol);
+            //_ibClientQueue.Enqueue(serialized);
+
+            _ibClientQueue.Enqueue(obj);
         }
 
         #endregion

@@ -7,6 +7,7 @@ using Rollover.Input;
 using Rollover.Tracking;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using Xunit;
 
 namespace Rollover.UnitTests
@@ -21,7 +22,7 @@ namespace Rollover.UnitTests
             var trackedSymbols = Substitute.For<ITrackedSymbols>();
             var repository = Substitute.For<IRepository>();
 
-            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository);
+            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository, null);
 
             sut.Convert(null);
             Assert.True(sut.State == "WaitingForSymbol");
@@ -37,7 +38,7 @@ namespace Rollover.UnitTests
             var trackedSymbols = Substitute.For<ITrackedSymbols>();
             var repository = Substitute.For<IRepository>();
 
-            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository);
+            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository, null);
 
             var resultList = sut.Convert(testInput);
             Assert.True(resultList.Any());
@@ -54,7 +55,7 @@ namespace Rollover.UnitTests
             var trackedSymbols = Substitute.For<ITrackedSymbols>();
             var repository = Substitute.For<IRepository>();
 
-            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository);
+            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository, null);
 
             var contract = new Contract() { Symbol = testSymbol };
             var positionMessage = new PositionMessage("account", contract, 1, 1000);
@@ -77,7 +78,7 @@ namespace Rollover.UnitTests
 
             trackedSymbols.Add(Arg.Any<ITrackedSymbol>()).Returns(true);
 
-            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository);
+            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository, null);
 
             var contract = new Contract() { Symbol = testSymbol };
             var positionMessage = new PositionMessage("account", contract, 1, 1000);
@@ -101,7 +102,7 @@ namespace Rollover.UnitTests
 
             repository.GetTrackedSymbol(Arg.Any<Contract>()).Returns(null as ITrackedSymbol);
 
-            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository);
+            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository, null);
 
             var contract = new Contract() { Symbol = testSymbol };
             var positionMessage = new PositionMessage("account", contract, 1, 1000);
@@ -121,7 +122,7 @@ namespace Rollover.UnitTests
             var trackedSymbols = Substitute.For<ITrackedSymbols>();
             var repository = Substitute.For<IRepository>();
 
-            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository);
+            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository, null);
 
             var testSymbol = "MNQ";
             var contract = new Contract() { Symbol = testSymbol };
@@ -139,7 +140,7 @@ namespace Rollover.UnitTests
         public void ReturnInputIfInputContainsErrorCode()
         {
             var testInput = "id=1 errorCode=321 msg=Error validating request.-'cw' : cause - Invalid";
-            var sut = new InputProcessor(null, null, null, null);
+            var sut = new InputProcessor(null, null, null, null, null);
             var result = sut.Convert(testInput);
             Assert.Equal(testInput, result.First());
         }
@@ -148,7 +149,7 @@ namespace Rollover.UnitTests
         public void ReturnEmptyIfInputContainsErrorCodeAndIdMinusOne()
         {
             var testInput = "id=-1 errorCode=321 msg=Error validating request.-'cw' : cause - Invalid";
-            var sut = new InputProcessor(null, null, null, null);
+            var sut = new InputProcessor(null, null, null, null, null);
             var result = sut.Convert(testInput);
             Assert.Empty(result);
         }
@@ -157,7 +158,7 @@ namespace Rollover.UnitTests
         public void ReturnMessageIfTypeString()
         {
             var testMessage = "id=-1 errorCode=321 msg=Error validating request.-'cw' : cause - Invalid";
-            var sut = new InputProcessor(null, null, null, null);
+            var sut = new InputProcessor(null, null, null, null, null);
             var result = sut.ConvertMessage(testMessage);
             Assert.Equal(testMessage, result.First());
         }
@@ -166,7 +167,7 @@ namespace Rollover.UnitTests
         public void ReturnConnectedIfTypeConnectionStatusMessage()
         {
             var testMessage = new ConnectionStatusMessage(true);
-            var sut = new InputProcessor(null, null, null, null);
+            var sut = new InputProcessor(null, null, null, null, null);
             var result = sut.ConvertMessage(testMessage);
             Assert.Equal("Connected.", result.First());
         }
@@ -175,7 +176,7 @@ namespace Rollover.UnitTests
         public void ReturnDisconnectedIfTypeConnectionStatusMessage()
         {
             var testMessage = new ConnectionStatusMessage(false);
-            var sut = new InputProcessor(null, null, null, null);
+            var sut = new InputProcessor(null, null, null, null, null);
             var result = sut.ConvertMessage(testMessage);
             Assert.Equal("Disconnected.", result.First());
         }
@@ -184,7 +185,7 @@ namespace Rollover.UnitTests
         public void ReturnAccountsIfTypeManagedAccountsMessage()
         {
             var testMessage = new ManagedAccountsMessage("GOOG\r\nMSFT");
-            var sut = new InputProcessor(null, null, null, null);
+            var sut = new InputProcessor(null, null, null, null, null);
             var result = sut.ConvertMessage(testMessage);
             Assert.Contains("GOOG", result.First());
             Assert.Contains("MSFT", result.First());
@@ -205,7 +206,7 @@ namespace Rollover.UnitTests
                 new PositionMessage("account", contracts[1], 2, 2000),
             };
 
-            var sut = new InputProcessor(null, null, null, null);
+            var sut = new InputProcessor(null, null, null, null, null);
             var result1 = sut.ConvertMessage(positionMessages[0]);
             var result2 = sut.ConvertMessage(positionMessages[1]);
 
@@ -228,7 +229,7 @@ namespace Rollover.UnitTests
                 new PositionMessage("account", contracts[1], 2, 2000),
             };
 
-            var sut = new InputProcessor(null, null, null, null);
+            var sut = new InputProcessor(null, null, null, null, null);
             sut.ConvertMessage(positionMessages[0]);
             sut.ConvertMessage(positionMessages[1]);
             var resultList = sut.ConvertMessage(Constants.ON_POSITION_END);
@@ -252,7 +253,7 @@ namespace Rollover.UnitTests
                 new PositionMessage("account", contracts[1], 2, 2000),
             };
 
-            var sut = new InputProcessor(null, null, null, null);
+            var sut = new InputProcessor(null, null, null, null, null);
             sut.ConvertMessage(positionMessages[0]);
             sut.ConvertMessage(positionMessages[1]);
             sut.ConvertMessage(Constants.ON_POSITION_END);
@@ -293,7 +294,7 @@ namespace Rollover.UnitTests
                 new PositionMessage("account", contracts[1], 0, 2000),
             };
 
-            var sut = new InputProcessor(null, null, null, null);
+            var sut = new InputProcessor(null, null, null, null, null);
             sut.ConvertMessage(positionMessages[0]);
             sut.ConvertMessage(positionMessages[1]);
             var resultList = sut.ConvertMessage(Constants.ON_POSITION_END);
@@ -302,5 +303,21 @@ namespace Rollover.UnitTests
             Assert.Equal(Constants.ENTER_SYMBOL_TO_TRACK, resultList[1]);
         }
 
+        [Fact]
+        public void ReturnSerializedTrackedSymbolIfTypeContractDetailsMessage()
+        {
+            var contractDetails = new ContractDetails();
+            var message = new ContractDetailsMessage(1001, contractDetails);
+
+            var trackedSymbolFactory = Substitute.For<ITrackedSymbolFactory>();
+            trackedSymbolFactory.FromContractDetailsMessage(Arg.Any<ContractDetailsMessage>())
+                .Returns(new TrackedSymbol());
+
+            var sut = new InputProcessor(null, null, null, null, trackedSymbolFactory);
+            var result = sut.ConvertMessage(message);
+
+            var trackesSymbol = JsonSerializer.Deserialize<TrackedSymbol>(result.First());
+            Assert.IsType<TrackedSymbol>(trackesSymbol);
+        }
     }
 }
