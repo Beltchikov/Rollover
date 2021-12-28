@@ -18,6 +18,7 @@ namespace Rollover.Ib
         private IConfigurationManager _configurationManager;
         private IQueryParametersConverter _queryParametersConverter;
         private IMessageProcessor _messageProcessor;
+        private IPortfolio _portfolio;
 
         private List<string> _positions = new List<string>();
         private int _reqIdContractDetails = 0;
@@ -30,7 +31,8 @@ namespace Rollover.Ib
             IIbClientQueue ibClientQueue,
             IConfigurationManager configurationManager,
             IQueryParametersConverter queryParametersConverter,
-            IMessageProcessor messageProcessor)
+            IMessageProcessor messageProcessor, 
+            IPortfolio portfolio)
         {
             _ibClient = ibClient;
             _connectedCondition = connectedCondition;
@@ -40,6 +42,7 @@ namespace Rollover.Ib
             _timeout = _configurationManager.GetConfiguration().Timeout;
             _queryParametersConverter = queryParametersConverter;
             _messageProcessor = messageProcessor;
+            _portfolio = portfolio;
         }
 
         #region Connect, Disconnect
@@ -136,6 +139,8 @@ namespace Rollover.Ib
 
                 if (input.Any(m => m == Constants.ENTER_SYMBOL_TO_TRACK))
                 {
+                    //var positionMessages = input
+                    //_portfolio.Add(obj);
                     _positions.AddRange(input);
                     return;
                 }

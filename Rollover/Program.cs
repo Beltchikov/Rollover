@@ -19,10 +19,7 @@ namespace Rollover
             IPortfolio portfolio = new Portfolio();
 
             ITrackedSymbolFactory trackedSymbolFactory = new TrackedSymbolFactory();
-            IIbClientWrapper ibClient = new IbClientWrapper(
-                ibClientQueue, 
-                portfolio, 
-                trackedSymbolFactory);
+            IIbClientWrapper ibClient = new IbClientWrapper(ibClientQueue);
                        
             IConnectedCondition connectedCondition = new ConnectedCondition();
             IInputQueue inputQueue = new InputQueue();
@@ -34,7 +31,8 @@ namespace Rollover
                 ibClientQueue,
                 configurationManager,
                 queryParametersConverter,
-                messageProcessor);
+                messageProcessor,
+                portfolio);
                         
             ITrackedSymbols trackedSymbols = new TrackedSymbols();
             IReducer reducer = new Reducer();

@@ -1,13 +1,7 @@
 ﻿using IBApi;
 using IBSampleApp;
 using IBSampleApp.messages;
-using Rollover.Input;
-using Rollover.Tracking;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
-using System.Threading;
 
 namespace Rollover.Ib
 {
@@ -16,28 +10,18 @@ namespace Rollover.Ib
         private EReaderMonitorSignal _signal;
         private IBClient _ibClient;
         private IIbClientQueue _ibClientQueue;
-        private IPortfolio _portfolio;
-        private ITrackedSymbolFactory _trackedSymbolFactory;
-
-
-        private static List<string> _localSymbolsList = new List<string>();
 
         public event Action<int, int, string, Exception> Error;
         public event Action<ConnectionStatusMessage> NextValidId;
         public event Action<ManagedAccountsMessage> ManagedAccounts;
 
-        public IbClientWrapper(
-            IIbClientQueue inputQueue,
-            IPortfolio portfolio, 
-            ITrackedSymbolFactory trackedSymbolFactory)
+        public IbClientWrapper(IIbClientQueue inputQueue)
         {
             _signal = new EReaderMonitorSignal();
             _ibClient = new IBClient(_signal);
             _ibClientQueue = inputQueue;
-            _portfolio = portfolio;
 
             RegisterResponseHandlers();
-            _trackedSymbolFactory = trackedSymbolFactory;
         }
 
         #region Connect, Disconnect
