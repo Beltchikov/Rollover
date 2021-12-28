@@ -12,10 +12,12 @@ namespace Rollover.Ib
     public class MessageProcessor : IMessageProcessor
     {
         private ITrackedSymbolFactory _trackedSymbolFactory;
+        private IPortfolio _portfolio;
 
-        public MessageProcessor(ITrackedSymbolFactory trackedSymbolFactory)
+        public MessageProcessor(ITrackedSymbolFactory trackedSymbolFactory, IPortfolio portfolio)
         {
             _trackedSymbolFactory = trackedSymbolFactory;
+            _portfolio = portfolio;
         }
 
         private static List<PositionMessage> _positionMessageList = new List<PositionMessage>();
@@ -71,6 +73,9 @@ namespace Rollover.Ib
             switch (obj)
             {
                 case Constants.ON_POSITION_END:
+                    //var positionMessages = input
+                    //_portfolio.Add(obj);
+
                     List<string> resultList = _positionMessageList.Select(x => x.Contract.LocalSymbol)
                         .OrderBy(x => x).ToList();
                     resultList.Add(Constants.ENTER_SYMBOL_TO_TRACK);

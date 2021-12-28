@@ -24,15 +24,14 @@ namespace Rollover
             IConnectedCondition connectedCondition = new ConnectedCondition();
             IInputQueue inputQueue = new InputQueue();
             IQueryParametersConverter queryParametersConverter = new QueryParametersConverter();
-            IMessageProcessor messageProcessor = new MessageProcessor(trackedSymbolFactory);
+            IMessageProcessor messageProcessor = new MessageProcessor(trackedSymbolFactory, portfolio);
             IRepository repository = new Repository(
                 ibClient, 
                 connectedCondition,
                 ibClientQueue,
                 configurationManager,
                 queryParametersConverter,
-                messageProcessor,
-                portfolio);
+                messageProcessor);
                         
             ITrackedSymbols trackedSymbols = new TrackedSymbols();
             IReducer reducer = new Reducer();
