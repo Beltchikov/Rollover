@@ -236,11 +236,47 @@ namespace Rollover.UnitTests
             Assert.Equal("PRDO", resultList[0]);
             Assert.Equal("STX", resultList[1]);
             Assert.Equal(Constants.ENTER_SYMBOL_TO_TRACK, resultList[2]);
-
         }
 
-        //[Fact]
-        //public void NotReturnOldLocalSymbolsIfTypePositionMessage()
+        [Fact]
+        public void NotReturnOldLocalSymbolsIfTypePositionMessage()
+        {
+            List<Contract> contracts = new List<Contract>
+            {
+                new Contract {LocalSymbol = "STX"},
+                new Contract {LocalSymbol = "PRDO"}
+            };
+            List<PositionMessage> positionMessages = new List<PositionMessage>
+            {
+                new PositionMessage("account", contracts[0], 1, 1000),
+                new PositionMessage("account", contracts[1], 2, 2000),
+            };
+
+            var sut = new InputProcessor(null, null, null, null);
+            sut.ConvertMessage(positionMessages[0]);
+            sut.ConvertMessage(positionMessages[1]);
+            sut.ConvertMessage(Constants.ON_POSITION_END);
+
+            // Second portion of messages
+            contracts = new List<Contract>
+            {
+                new Contract {LocalSymbol = "CAG"},
+                new Contract {LocalSymbol = "AA"}
+            };
+            positionMessages = new List<PositionMessage>
+            {
+                new PositionMessage("account", contracts[0], 1, 1000),
+                new PositionMessage("account", contracts[1], 2, 2000),
+            };
+
+            sut.ConvertMessage(positionMessages[0]);
+            sut.ConvertMessage(positionMessages[1]);
+            var resultList = sut.ConvertMessage(Constants.ON_POSITION_END);
+
+            Assert.Equal("AA", resultList[0]);
+            Assert.Equal("CAG", resultList[1]);
+            Assert.Equal(Constants.ENTER_SYMBOL_TO_TRACK, resultList[2]);
+        }
 
         //[Fact]
         //public void IgnorePositionZeroIfTypePositionMessage()

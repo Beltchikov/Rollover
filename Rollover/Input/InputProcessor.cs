@@ -118,7 +118,7 @@ namespace Rollover.Input
                     List<string> resultList = _positionMessageList.Select(x => x.Contract.LocalSymbol)
                         .OrderBy(x => x).ToList();
                     resultList.Add(Constants.ENTER_SYMBOL_TO_TRACK);
-                    _positionMessageList.Clear();
+                    _positionMessageList = new List<PositionMessage>();
                     return resultList;
                 default:
                     return new List<string> { obj as string };
