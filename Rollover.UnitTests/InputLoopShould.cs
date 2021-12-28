@@ -67,12 +67,13 @@ namespace Rollover.UnitTests
            [Frozen] IIbClientQueue ibClientQueue,
            [Frozen] IConsoleWrapper consoleWrapper,
            [Frozen] IInputProcessor inputProcessor,
+           [Frozen] IMessageProcessor messageProcessor,
            InputLoop sut)
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
             sut.Run(consoleWrapper, inputQueue, ibClientQueue);
             inputProcessor.Received().Convert(Arg.Any<string>());
-            inputProcessor.Received().ConvertMessage(Arg.Any<object>());
+            messageProcessor.Received().ConvertMessage(Arg.Any<object>());
         }
     }
 }

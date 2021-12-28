@@ -6,12 +6,14 @@ namespace Rollover.Input
     public class InputLoop : IInputLoop
     {
         private IInputProcessor _inputProcessor;
+        private IMessageProcessor _messageProcessor;
 
-        public InputLoop(IInputProcessor inputProcessor)
+        public InputLoop(IInputProcessor inputProcessor, IMessageProcessor messageProcessor)
         {
             _inputProcessor = inputProcessor;
+            _messageProcessor = messageProcessor;
         }
-        
+
         public void Run(IConsoleWrapper consoleWrapper, IInputQueue inputQueue, IIbClientQueue ibClientQueue)
         {
             while (true)
@@ -24,7 +26,7 @@ namespace Rollover.Input
                 }
 
                 var outputList = _inputProcessor.Convert(input);
-                var messageList = _inputProcessor.ConvertMessage(message);
+                var messageList = _messageProcessor.ConvertMessage(message);
                 outputList.AddRange(messageList);
 
                 outputList.ForEach(consoleWrapper.WriteLine);

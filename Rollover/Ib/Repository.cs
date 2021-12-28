@@ -4,6 +4,7 @@ using Rollover.Tracking;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text.Json;
 using System.Threading;
 
@@ -13,9 +14,10 @@ namespace Rollover.Ib
     {
         private IIbClientWrapper _ibClient;
         private IConnectedCondition _connectedCondition;
-        private IInputQueue _inputQueue;
+        private IIbClientQueue _ibClientQueue;
         private IConfigurationManager _configurationManager;
         private IQueryParametersConverter _queryParametersConverter;
+        private IMessageProcessor _messageProcessor;
 
         private List<string> _positions = new List<string>();
         private int _reqIdContractDetails = 0;
@@ -25,17 +27,19 @@ namespace Rollover.Ib
         public Repository(
             IIbClientWrapper ibClient,
             IConnectedCondition connectedCondition,
-            IInputQueue inputQueue,
-            IConfigurationManager configurationManager, 
-            IQueryParametersConverter queryParametersConverter)
+            IIbClientQueue ibClientQueue,
+            IConfigurationManager configurationManager,
+            IQueryParametersConverter queryParametersConverter,
+            IMessageProcessor messageProcessor)
         {
             _ibClient = ibClient;
             _connectedCondition = connectedCondition;
-            _inputQueue = inputQueue;
+            _ibClientQueue = ibClientQueue;
             _configurationManager = configurationManager;
 
             _timeout = _configurationManager.GetConfiguration().Timeout;
             _queryParametersConverter = queryParametersConverter;
+            _messageProcessor = messageProcessor;
         }
 
         #region Connect, Disconnect
@@ -43,7 +47,7 @@ namespace Rollover.Ib
         public Tuple<bool, List<string>> Connect(string host, int port, int clientId)
         {
             ConnectAndStartConsoleThread(host, port, clientId);
-            return CheckConnectionMessages(_inputQueue, _configurationManager.GetConfiguration().Timeout);
+            return CheckConnectionMessages(_ibClientQueue, _configurationManager.GetConfiguration().Timeout);
         }
 
         private void ConnectAndStartConsoleThread(string host, int port, int clientId)
@@ -65,7 +69,7 @@ namespace Rollover.Ib
             .Start();
         }
 
-        private Tuple<bool, List<string>> CheckConnectionMessages(IInputQueue inputQueue, int timeout)
+        private Tuple<bool, List<string>> CheckConnectionMessages(IIbClientQueue ibClientQueue, int timeout)
         {
             var messages = new List<string>();
             var stopWatch = new Stopwatch();
@@ -73,15 +77,16 @@ namespace Rollover.Ib
 
             while (stopWatch.Elapsed.TotalMilliseconds < timeout)
             {
-                var input = inputQueue.Dequeue();
-                if (string.IsNullOrWhiteSpace(input))
+                var message = ibClientQueue.Dequeue();
+                var input = _messageProcessor.ConvertMessage(message);
+                if (!input.Any())
                 {
                     continue;
                 }
 
-                messages.Add(input);
+                messages.AddRange(input);
 
-                _connectedCondition.AddInput(input);
+                input.ForEach(i => _connectedCondition.AddInput(i));
                 if (_connectedCondition.IsConnected())
                 {
                     return new Tuple<bool, List<string>>(true, messages);
@@ -103,7 +108,7 @@ namespace Rollover.Ib
         public List<string> AllPositions()
         {
             ListPositions();
-            ReadPositions(_inputQueue, _configurationManager.GetConfiguration().Timeout);
+            ReadPositions(_ibClientQueue, _configurationManager.GetConfiguration().Timeout);
 
             var positionsBuffer = new List<string>(_positions);
             _positions.Clear();
@@ -115,25 +120,26 @@ namespace Rollover.Ib
             _ibClient.ListPositions();
         }
 
-        private void ReadPositions(IInputQueue inputQueue, int timeout)
+        private void ReadPositions(IIbClientQueue ibClientQueue, int timeout)
         {
             var stopWatch = new Stopwatch();
             stopWatch.Start();
 
             while (stopWatch.Elapsed.TotalMilliseconds < timeout)
             {
-                var input = inputQueue.Dequeue();
-                if (string.IsNullOrWhiteSpace(input))
+                var message = ibClientQueue.Dequeue();
+                var input = _messageProcessor.ConvertMessage(message);
+                if (!input.Any())
                 {
                     continue;
                 }
 
-                if (input == Constants.ENTER_SYMBOL_TO_TRACK)
+                if (input.Count() == 1 && input.First() == Constants.ENTER_SYMBOL_TO_TRACK)
                 {
                     return;
                 }
 
-                _positions.Add(input);
+                _positions.AddRange(input);
             }
         }
 
@@ -166,13 +172,14 @@ namespace Rollover.Ib
             stopWatch.Start();
             while (stopWatch.Elapsed.TotalMilliseconds < _timeout)
             {
-                var input = _inputQueue.Dequeue();
-                if (string.IsNullOrWhiteSpace(input))
+                var message = _ibClientQueue.Dequeue();
+                var input = _messageProcessor.ConvertMessage(message);
+                if (!input.Any())
                 {
                     continue;
                 }
 
-                var trackedSymbol = JsonSerializer.Deserialize<TrackedSymbol>(input);
+                var trackedSymbol = JsonSerializer.Deserialize<TrackedSymbol>(input.First());
                 if (trackedSymbol?.ReqIdContractDetails == reqId)
                 {
                     return trackedSymbol;

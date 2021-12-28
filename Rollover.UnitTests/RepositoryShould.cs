@@ -76,8 +76,8 @@ namespace Rollover.UnitTests
         {
             var timeout = 1000;
 
-            var inputQueue = Substitute.For<IInputQueue>();
-            inputQueue.Dequeue().Returns("pos1", "pos2", Constants.ENTER_SYMBOL_TO_TRACK);
+            var ibClientQueue = Substitute.For<IIbClientQueue>();
+            ibClientQueue.Dequeue().Returns("pos1", "pos2", Constants.ENTER_SYMBOL_TO_TRACK);
 
             var ibClinet = Substitute.For<IIbClientWrapper>();
             ibClinet.When(c => c.ContractDetails(Arg.Any<int>(), Arg.Any<Contract>()))
@@ -90,7 +90,7 @@ namespace Rollover.UnitTests
             { Timeout = timeout };
             configurationManager.GetConfiguration().Returns(configuration);
 
-            var sut = new Repository(ibClinet, null, inputQueue, configurationManager, null);
+            var sut = new Repository(ibClinet, null, ibClientQueue, configurationManager, null, null);
             var resultList = sut.AllPositions();
 
             Assert.Equal(2, resultList.Count);
@@ -101,7 +101,7 @@ namespace Rollover.UnitTests
         {
             var timeout = 1000;
 
-            var inputQueue = Substitute.For<IInputQueue>();
+            var ibClientQueue = Substitute.For<IIbClientQueue>();
             var ibClinet = Substitute.For<IIbClientWrapper>();
             ibClinet.When(c => c.ContractDetails(Arg.Any<int>(), Arg.Any<Contract>()))
                 .Do(c => { });
@@ -113,7 +113,7 @@ namespace Rollover.UnitTests
             { Timeout = timeout};
             configurationManager.GetConfiguration().Returns(configuration);
 
-            var sut = new Repository(ibClinet, null, inputQueue, configurationManager, null);
+            var sut = new Repository(ibClinet, null, ibClientQueue, configurationManager, null, null);
             var trackedSymbol = sut.GetTrackedSymbol(contract);
             Thread.Sleep(timeout);
             
@@ -126,8 +126,8 @@ namespace Rollover.UnitTests
             var timeout = 1000;
 
             var trackedSymbolString = @"{""Symbol"":""MNQ"",""ReqIdContractDetails"":1,""ConId"":515971877,""SecType"":""FOP"",""Currency"":""USD"",""Exchange"":""GLOBEX"",""Strike"":16300,""NextStrike"":0,""OverNextStrike"":0}";
-            var inputQueue = Substitute.For<IInputQueue>();
-            inputQueue.Dequeue().Returns(trackedSymbolString);
+            var ibClientQueue = Substitute.For<IIbClientQueue>();
+            ibClientQueue.Dequeue().Returns(trackedSymbolString);
 
             var ibClinet = Substitute.For<IIbClientWrapper>();
             ibClinet.When(c => c.ContractDetails(Arg.Any<int>(), Arg.Any<Contract>()))
@@ -140,7 +140,7 @@ namespace Rollover.UnitTests
             { Timeout = timeout };
             configurationManager.GetConfiguration().Returns(configuration);
 
-            var sut = new Repository(ibClinet, null, inputQueue, configurationManager, null);
+            var sut = new Repository(ibClinet, null, ibClientQueue, configurationManager, null, null);
             var trackedSymbol = sut.GetTrackedSymbol(contract);
             Thread.Sleep(timeout);
 

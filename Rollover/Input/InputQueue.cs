@@ -19,7 +19,7 @@ namespace Rollover.Input
             _inputQueue.Enqueue(item);
         }
 
-        string IInputQueue.Dequeue()
+        public string Dequeue()
         {
             string item;
             if(_inputQueue.TryDequeue(out item))
