@@ -14,6 +14,8 @@ namespace Rollover.Input
         private readonly IPortfolio _portfolio;
         private readonly ITrackedSymbols _trackedSymbols;
         private readonly IRepository _repository;
+
+        private static List<string> _localSymbolsList = new List<string>();
         public string State { get; private set; }
 
         public InputProcessor(
@@ -94,6 +96,15 @@ namespace Rollover.Input
                 string msg = Environment.NewLine + "Accounts found: " 
                     + (obj as ManagedAccountsMessage).ManagedAccounts.Aggregate((r, n) => r + ", " + n);
                 return new List<string> { msg };
+            }
+            else if (obj is PositionMessage)
+            {
+                if ((obj as PositionMessage).Position > 0)
+                {
+                    _localSymbolsList.Add((obj as PositionMessage).Contract.LocalSymbol);
+                }
+                                
+                return new List<string>();
             }
 
             throw new NotImplementedException();

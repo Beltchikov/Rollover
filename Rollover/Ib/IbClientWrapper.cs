@@ -101,22 +101,26 @@ namespace Rollover.Ib
 
         public void OnPosition(PositionMessage obj)
         {
-            if(obj.Position == 0)
-            {
-                return;
-            }
+            //if(obj.Position == 0)
+            //{
+            //    return;
+            //}
 
-            _portfolio.Add(obj);
-            var localSymbol = obj.Contract.LocalSymbol;
-            _localSymbolsList.Add(localSymbol);
+            //_portfolio.Add(obj);
+            //var localSymbol = obj.Contract.LocalSymbol;
+            //_localSymbolsList.Add(localSymbol);
+
+            _ibClientQueue.Enqueue(obj);
         }
 
         public void OnPositionEnd()
         {
-            _localSymbolsList.Sort();
-            _localSymbolsList.ForEach(s => _ibClientQueue.Enqueue(s));
-            _localSymbolsList.Clear();
-            _ibClientQueue.Enqueue(Reducer.ENTER_SYMBOL_TO_TRACK);
+            //_localSymbolsList.Sort();
+            //_localSymbolsList.ForEach(s => _ibClientQueue.Enqueue(s));
+            //_localSymbolsList.Clear();
+            //_ibClientQueue.Enqueue(Reducer.ENTER_SYMBOL_TO_TRACK);
+
+            _ibClientQueue.Enqueue("OnPositionEnd");
         }
 
         #endregion

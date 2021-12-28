@@ -5,6 +5,7 @@ using NSubstitute;
 using Rollover.Ib;
 using Rollover.Input;
 using Rollover.Tracking;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
@@ -188,5 +189,54 @@ namespace Rollover.UnitTests
             Assert.Contains("GOOG", result.First());
             Assert.Contains("MSFT", result.First());
         }
+
+        [Fact]
+        public void ReturnNullIfTypePositionMessageAndNoOnPositionEndString()
+        {
+            List<Contract> contracts = new List<Contract>
+            {
+                new Contract {LocalSymbol = "STX"},
+                new Contract {LocalSymbol = "PRDO"}
+            };
+
+            List<PositionMessage> positionMessages = new List<PositionMessage>
+            {
+                new PositionMessage("account", contracts[0], 1, 1000),
+                new PositionMessage("account", contracts[1], 2, 2000),
+            };
+
+            var sut = new InputProcessor(null, null, null, null);
+            var result1 = sut.ConvertMessage(positionMessages[0]);
+            var result2 = sut.ConvertMessage(positionMessages[1]);
+
+            Assert.Empty(result1);
+            Assert.Empty(result2);
+        }
+
+        //[Fact]
+        //public void ReturnLocalSymbolsAndEnterSymbolToTrackIfTypePositionMessage()
+        //{
+        //    List<Contract> contracts = new List<Contract>
+        //    { 
+        //        new Contract {LocalSymbol = "STX"},
+        //        new Contract {LocalSymbol = "PRDO"}
+        //    };
+
+        //    List<PositionMessage> positionMessages = new List<PositionMessage>
+        //    {
+        //        new PositionMessage("account", contracts[0], 1, 1000),
+        //        new PositionMessage("account", contracts[1], 2, 2000),
+        //    };
+
+        //    var sut = new InputProcessor(null, null, null, null);
+        //    var result1 = sut.ConvertMessage(positionMessages[0]);
+        //    var result2 = sut.ConvertMessage(positionMessages[2]);
+
+        //    Assert.Equal("STX.", result1);
+        //}
+
+        //[Fact]
+        //public void IgnorePositionZeroIfTypePositionMessage()
+
     }
 }
