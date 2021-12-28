@@ -134,12 +134,11 @@ namespace Rollover.Ib
                     continue;
                 }
 
-                if (input.Count() == 1 && input.First() == Constants.ENTER_SYMBOL_TO_TRACK)
+                if (input.Any(m => m == Constants.ENTER_SYMBOL_TO_TRACK))
                 {
+                    _positions.AddRange(input);
                     return;
                 }
-
-                _positions.AddRange(input);
             }
         }
 
@@ -154,12 +153,12 @@ namespace Rollover.Ib
             var trackedSymbol = ReadContractDetails(reqId);
 
             // TODO
-            if(trackedSymbol != null)
+            if (trackedSymbol != null)
             {
                 trackedSymbol.ReqIdSecDefOptParams = ++_reqIdSecDefOptParam;
                 ReqSecDefOptParams(trackedSymbol);
             }
-            
+
             // (strike, overNextStrike) ReadSecDefOptParams(strike)
             // update trackedSymbol
 
@@ -191,7 +190,7 @@ namespace Rollover.Ib
 
         #endregion
 
-        
+
         private void ReqSecDefOptParams(ITrackedSymbol trackedSymbol)
         {
             //_ibClient.ReqSecDefOptParams(
@@ -209,7 +208,7 @@ namespace Rollover.Ib
                 trackedSymbolCopy.ReqIdSecDefOptParams,
                 trackedSymbolCopy.Symbol,
                 trackedSymbolCopy.Exchange,
-                trackedSymbolCopy.SecType, 
+                trackedSymbolCopy.SecType,
                 trackedSymbolCopy.ConId);
         }
     }
