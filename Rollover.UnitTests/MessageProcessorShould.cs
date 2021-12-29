@@ -30,9 +30,9 @@ namespace Rollover.UnitTests
             IPortfolio portfolio = Substitute.For<IPortfolio>();
 
             var sut = new MessageProcessor(null, portfolio);
-            sut.ConvertMessage(positionMessages[0]);
-            sut.ConvertMessage(positionMessages[1]);
-            var resultList = sut.ConvertMessage(Constants.ON_POSITION_END);
+            var resultList = sut.ConvertMessage(positionMessages[0]);
+            resultList = sut.ConvertMessage(positionMessages[1]);
+            resultList = sut.ConvertMessage(Constants.ON_POSITION_END);
 
             Assert.Equal("PRDO", resultList[0]);
             Assert.Equal("STX", resultList[1]);
