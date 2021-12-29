@@ -1,5 +1,6 @@
 ﻿using AutoFixture.Xunit2;
 using IBApi;
+using IBSampleApp.messages;
 using NSubstitute;
 using Rollover.Configuration;
 using Rollover.Ib;
@@ -71,95 +72,104 @@ namespace Rollover.UnitTests
             ibClient.Received().ListPositions();
         }
 
-        //[Fact]
-        //public void ReturnPositionsInAllPositions()
-        //{
-        //    var timeout = 1000;
+        [Fact]
+        public void ReturnPositionsInAllPositions()
+        {
+            var timeout = 1000;
 
-        //    var ibClientQueue = Substitute.For<IIbClientQueue>();
-        //    ibClientQueue.Dequeue().Returns("pos1", "pos2", Constants.ENTER_SYMBOL_TO_TRACK);
+            var contract1 = new Contract();
+            var positionMessage1 = new PositionMessage("account", contract1, 1, 1000);
 
-        //    var ibClinet = Substitute.For<IIbClientWrapper>();
-        //    ibClinet.When(c => c.ContractDetails(Arg.Any<int>(), Arg.Any<Contract>()))
-        //        .Do(c => { });
+            var contract2 = new Contract();
+            var positionMessage2 = new PositionMessage("account", contract2, 2, 2000);
 
-        //    var configurationManager = Substitute.For<IConfigurationManager>();
-        //    var contract = new Contract();
+            var ibClientQueue = Substitute.For<IIbClientQueue>();
+            ibClientQueue.Dequeue().Returns(positionMessage1, positionMessage2, Constants.ON_POSITION_END);
 
-        //    Configuration.Configuration configuration = new Configuration.Configuration
-        //    { Timeout = timeout };
-        //    configurationManager.GetConfiguration().Returns(configuration);
+            var ibClinet = Substitute.For<IIbClientWrapper>();
+            ibClinet.When(c => c.ContractDetails(Arg.Any<int>(), Arg.Any<Contract>()))
+                .Do(c => { });
 
-        //    var sut = new Repository(ibClinet, null, ibClientQueue, configurationManager, null, null);
-        //    var resultList = sut.AllPositions();
-
-        //    Assert.Equal(2, resultList.Count);
-        //}
-
-        //[Fact]
-        //public void ReturnNullIfNoTrackedSymbolAfterTimeout()
-        //{
-        //    var timeout = 1000;
-
-        //    var ibClientQueue = Substitute.For<IIbClientQueue>();
-        //    var ibClinet = Substitute.For<IIbClientWrapper>();
-        //    ibClinet.When(c => c.ContractDetails(Arg.Any<int>(), Arg.Any<Contract>()))
-        //        .Do(c => { });
-
-        //    var configurationManager = Substitute.For<IConfigurationManager>();
-        //    var contract = new Contract();
-
-        //    Configuration.Configuration configuration = new Configuration.Configuration 
-        //    { Timeout = timeout};
-        //    configurationManager.GetConfiguration().Returns(configuration);
-
-        //    var sut = new Repository(ibClinet, null, ibClientQueue, configurationManager, null, null);
-        //    var trackedSymbol = sut.GetTrackedSymbol(contract);
-        //    Thread.Sleep(timeout);
+            var configurationManager = Substitute.For<IConfigurationManager>();
             
-        //    Assert.Null(trackedSymbol);
-        //}
-
-        //[Fact]
-        //public void ReturnTrackedSymbol()
-        //{
-        //    var timeout = 1000;
-
-        //    var trackedSymbolString = @"{""Symbol"":""MNQ"",""ReqIdContractDetails"":1,""ConId"":515971877,""SecType"":""FOP"",""Currency"":""USD"",""Exchange"":""GLOBEX"",""Strike"":16300,""NextStrike"":0,""OverNextStrike"":0}";
-        //    var ibClientQueue = Substitute.For<IIbClientQueue>();
-        //    ibClientQueue.Dequeue().Returns(trackedSymbolString);
-
-        //    var ibClinet = Substitute.For<IIbClientWrapper>();
-        //    ibClinet.When(c => c.ContractDetails(Arg.Any<int>(), Arg.Any<Contract>()))
-        //        .Do(c => { });
-
-        //    var configurationManager = Substitute.For<IConfigurationManager>();
-        //    var contract = new Contract();
-
-        //    Configuration.Configuration configuration = new Configuration.Configuration
-        //    { Timeout = timeout };
-        //    configurationManager.GetConfiguration().Returns(configuration);
-
-        //    var sut = new Repository(ibClinet, null, ibClientQueue, configurationManager, null, null);
-        //    var trackedSymbol = sut.GetTrackedSymbol(contract);
-        //    Thread.Sleep(timeout);
-
-        //    Assert.NotNull(trackedSymbol);
-        //}
-
-        //[Theory, AutoNSubstituteData]
-        //public void CallQueryParametersConverter(
-        //    [Frozen] IInputQueue inputQueue,
-        //    [Frozen] IQueryParametersConverter queryParametersConverter,
-        //    Repository sut)
-        //{
-        //    var trackedSymbolString = @"{""Symbol"":""MNQ"",""ReqIdContractDetails"":1,""ConId"":515971877,""SecType"":""FOP"",""Currency"":""USD"",""Exchange"":""GLOBEX"",""Strike"":16300,""NextStrike"":0,""OverNextStrike"":0}";
-        //    inputQueue.Dequeue().Returns(trackedSymbolString);
-        //    var contract = new Contract();
+            var trackedSymbolFactory = new TrackedSymbolFactory();
+            var portfolio = new Portfolio();
+            var messageProcessor = new MessageProcessor(trackedSymbolFactory, portfolio);
             
-        //    var trackedSymbol = sut.GetTrackedSymbol(contract);
-            
-        //    queryParametersConverter.Received().TrackedSymbolForReqSecDefOptParams(Arg.Any<ITrackedSymbol>());
-        //}
+            Configuration.Configuration configuration = new Configuration.Configuration
+            { Timeout = timeout };
+            configurationManager.GetConfiguration().Returns(configuration);
+
+            var sut = new Repository(ibClinet, null, ibClientQueue, configurationManager, null, messageProcessor);
+            var resultList = sut.AllPositions();
+
+            Assert.Equal(3, resultList.Count);
+        }
+
+        [Fact]
+        public void ReturnNullIfNoTrackedSymbolAfterTimeout()
+        {
+            var timeout = 1000;
+
+            var ibClientQueue = Substitute.For<IIbClientQueue>();
+            var ibClinet = Substitute.For<IIbClientWrapper>();
+            ibClinet.When(c => c.ContractDetails(Arg.Any<int>(), Arg.Any<Contract>()))
+                .Do(c => { });
+
+            var configurationManager = Substitute.For<IConfigurationManager>();
+            var contract = new Contract();
+
+            Configuration.Configuration configuration = new Configuration.Configuration
+            { Timeout = timeout };
+            configurationManager.GetConfiguration().Returns(configuration);
+
+            var sut = new Repository(ibClinet, null, ibClientQueue, configurationManager, null, null);
+            var trackedSymbol = sut.GetTrackedSymbol(contract);
+            Thread.Sleep(timeout);
+
+            Assert.Null(trackedSymbol);
+        }
+
+        [Fact]
+        public void ReturnTrackedSymbol()
+        {
+            var timeout = 1000;
+
+            var trackedSymbolString = @"{""Symbol"":""MNQ"",""ReqIdContractDetails"":1,""ConId"":515971877,""SecType"":""FOP"",""Currency"":""USD"",""Exchange"":""GLOBEX"",""Strike"":16300,""NextStrike"":0,""OverNextStrike"":0}";
+            var ibClientQueue = Substitute.For<IIbClientQueue>();
+            ibClientQueue.Dequeue().Returns(trackedSymbolString);
+
+            var ibClinet = Substitute.For<IIbClientWrapper>();
+            ibClinet.When(c => c.ContractDetails(Arg.Any<int>(), Arg.Any<Contract>()))
+                .Do(c => { });
+
+            var configurationManager = Substitute.For<IConfigurationManager>();
+            var contract = new Contract();
+
+            Configuration.Configuration configuration = new Configuration.Configuration
+            { Timeout = timeout };
+            configurationManager.GetConfiguration().Returns(configuration);
+
+            var sut = new Repository(ibClinet, null, ibClientQueue, configurationManager, null, null);
+            var trackedSymbol = sut.GetTrackedSymbol(contract);
+            Thread.Sleep(timeout);
+
+            Assert.NotNull(trackedSymbol);
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallQueryParametersConverter(
+            [Frozen] IInputQueue inputQueue,
+            [Frozen] IQueryParametersConverter queryParametersConverter,
+            Repository sut)
+        {
+            var trackedSymbolString = @"{""Symbol"":""MNQ"",""ReqIdContractDetails"":1,""ConId"":515971877,""SecType"":""FOP"",""Currency"":""USD"",""Exchange"":""GLOBEX"",""Strike"":16300,""NextStrike"":0,""OverNextStrike"":0}";
+            inputQueue.Dequeue().Returns(trackedSymbolString);
+            var contract = new Contract();
+
+            var trackedSymbol = sut.GetTrackedSymbol(contract);
+
+            queryParametersConverter.Received().TrackedSymbolForReqSecDefOptParams(Arg.Any<ITrackedSymbol>());
+        }
     }
 }
