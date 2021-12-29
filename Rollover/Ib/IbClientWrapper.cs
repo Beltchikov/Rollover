@@ -43,24 +43,11 @@ namespace Rollover.Ib
 
         public void OnNextValidId(ConnectionStatusMessage connectionStatusMessage)
         {
-            //string msg = connectionStatusMessage.IsConnected
-            //    ? "Connected."
-            //    : "Disconnected.";
-            //_ibClientQueue.Enqueue(msg);
-
             _ibClientQueue.Enqueue(connectionStatusMessage);
         }
 
         public void OnManagedAccounts(ManagedAccountsMessage managedAccountsMessage)
         {
-            //if (!managedAccountsMessage.ManagedAccounts.Any())
-            //{
-            //    throw new Exception("Unexpected");
-            //}
-
-            //string msg = Environment.NewLine + "Accounts found: " + managedAccountsMessage.ManagedAccounts.Aggregate((r, n) => r + ", " + n);
-            //_ibClientQueue.Enqueue(msg);
-
             _ibClientQueue.Enqueue(managedAccountsMessage);
         }
 
@@ -85,25 +72,11 @@ namespace Rollover.Ib
 
         public void OnPosition(PositionMessage obj)
         {
-            //if(obj.Position == 0)
-            //{
-            //    return;
-            //}
-
-            //_portfolio.Add(obj);
-            //var localSymbol = obj.Contract.LocalSymbol;
-            //_localSymbolsList.Add(localSymbol);
-
             _ibClientQueue.Enqueue(obj);
         }
 
         public void OnPositionEnd()
         {
-            //_localSymbolsList.Sort();
-            //_localSymbolsList.ForEach(s => _ibClientQueue.Enqueue(s));
-            //_localSymbolsList.Clear();
-            //_ibClientQueue.Enqueue(Reducer.ENTER_SYMBOL_TO_TRACK);
-
             _ibClientQueue.Enqueue(Constants.ON_POSITION_END);
         }
 
@@ -118,10 +91,6 @@ namespace Rollover.Ib
 
         public void OnContractDetails(ContractDetailsMessage obj)
         {
-            //var _trackedSymbol = _trackedSymbolFactory.FromContractDetailsMessage(obj);
-            //var serialized = JsonSerializer.Serialize(_trackedSymbol);
-            //_ibClientQueue.Enqueue(serialized);
-
             _ibClientQueue.Enqueue(obj);
         }
 
