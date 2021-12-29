@@ -27,7 +27,9 @@ namespace Rollover.UnitTests
                 new PositionMessage("account", contracts[1], 2, 2000),
             };
 
-            var sut = new MessageProcessor(null, null);
+            IPortfolio portfolio = Substitute.For<IPortfolio>();
+
+            var sut = new MessageProcessor(null, portfolio);
             sut.ConvertMessage(positionMessages[0]);
             sut.ConvertMessage(positionMessages[1]);
             var resultList = sut.ConvertMessage(Constants.ON_POSITION_END);
@@ -51,7 +53,9 @@ namespace Rollover.UnitTests
                 new PositionMessage("account", contracts[1], 2, 2000),
             };
 
-            var sut = new MessageProcessor(null, null);
+            IPortfolio portfolio = Substitute.For<IPortfolio>();
+
+            var sut = new MessageProcessor(null, portfolio);
             sut.ConvertMessage(positionMessages[0]);
             sut.ConvertMessage(positionMessages[1]);
             sut.ConvertMessage(Constants.ON_POSITION_END);
@@ -92,7 +96,9 @@ namespace Rollover.UnitTests
                 new PositionMessage("account", contracts[1], 0, 2000),
             };
 
-            var sut = new MessageProcessor(null, null);
+            IPortfolio portfolio = Substitute.For<IPortfolio>();
+
+            var sut = new MessageProcessor(null, portfolio);
             sut.ConvertMessage(positionMessages[0]);
             sut.ConvertMessage(positionMessages[1]);
             var resultList = sut.ConvertMessage(Constants.ON_POSITION_END);
@@ -111,7 +117,9 @@ namespace Rollover.UnitTests
             trackedSymbolFactory.FromContractDetailsMessage(Arg.Any<ContractDetailsMessage>())
                 .Returns(new TrackedSymbol());
 
-            var sut = new MessageProcessor(null, null);
+            IPortfolio portfolio = Substitute.For<IPortfolio>();
+            
+            var sut = new MessageProcessor(trackedSymbolFactory, portfolio);
             var result = sut.ConvertMessage(message);
 
             var trackesSymbol = JsonSerializer.Deserialize<TrackedSymbol>(result.First());
