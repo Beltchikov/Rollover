@@ -15,6 +15,15 @@ namespace Rollover.UnitTests
     public class InputProcessorShould
     {
         [Fact]
+        public void ReturnEmptyArrayIfInputNull()
+        {
+            var sut = new InputProcessor(null, null, null, null, null);
+            var output = sut.Convert(null);
+            Assert.Empty(output);
+        }
+
+
+        [Fact]
         public void HaveStateWaitingForSymbolIfFirstRun()
         {
             var reducer = new Reducer();
@@ -24,14 +33,14 @@ namespace Rollover.UnitTests
 
             var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository, null);
 
-            sut.Convert(null);
+            sut.Convert("Some input");
             Assert.True(sut.State == "WaitingForSymbol");
         }
 
         [Fact]
         public void ReturnSymbolNotValid()
         {
-            string testInput = null;
+            string testInput = "Invalid Symbol";
 
             var reducer = Substitute.For<IReducer>();
             var portfolio = Substitute.For<IPortfolio>();
@@ -64,30 +73,6 @@ namespace Rollover.UnitTests
             sut.Convert(testSymbol);
 
             portfolio.Received().PositionBySymbol(testSymbol);
-        }
-
-        [Fact]
-        public void CallsTrackedSymbolsSymbolExists()
-        {
-            var testSymbol = "MNQ";
-
-            var reducer = new Reducer();
-            var portfolio = Substitute.For<IPortfolio>();
-            var trackedSymbols = Substitute.For<ITrackedSymbols>();
-            var repository = Substitute.For<IRepository>();
-
-            trackedSymbols.Add(Arg.Any<ITrackedSymbol>()).Returns(true);
-
-            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository, null);
-
-            var contract = new Contract() { Symbol = testSymbol };
-            var positionMessage = new PositionMessage("account", contract, 1, 1000);
-            portfolio.PositionBySymbol(Arg.Any<string>()).Returns(positionMessage);
-
-            sut.Convert("Enter a symbol to track:");
-            sut.Convert(testSymbol);
-
-            trackedSymbols.Received().SymbolExists(testSymbol);
         }
 
         [Fact]
@@ -212,112 +197,6 @@ namespace Rollover.UnitTests
 
             Assert.Empty(result1);
             Assert.Empty(result2);
-        }
-
-        [Fact]
-        public void ReturnLocalSymbolsAndEnterSymbolToTrackIfTypePositionMessage()
-        {
-            List<Contract> contracts = new List<Contract>
-            {
-                new Contract {LocalSymbol = "STX"},
-                new Contract {LocalSymbol = "PRDO"}
-            };
-
-            List<PositionMessage> positionMessages = new List<PositionMessage>
-            {
-                new PositionMessage("account", contracts[0], 1, 1000),
-                new PositionMessage("account", contracts[1], 2, 2000),
-            };
-
-            var sut = new MessageProcessor(null, null);
-            sut.ConvertMessage(positionMessages[0]);
-            sut.ConvertMessage(positionMessages[1]);
-            var resultList = sut.ConvertMessage(Constants.ON_POSITION_END);
-
-            Assert.Equal("PRDO", resultList[0]);
-            Assert.Equal("STX", resultList[1]);
-            Assert.Equal(Constants.ENTER_SYMBOL_TO_TRACK, resultList[2]);
-        }
-
-        [Fact]
-        public void NotReturnOldLocalSymbolsIfTypePositionMessage()
-        {
-            List<Contract> contracts = new List<Contract>
-            {
-                new Contract {LocalSymbol = "STX"},
-                new Contract {LocalSymbol = "PRDO"}
-            };
-            List<PositionMessage> positionMessages = new List<PositionMessage>
-            {
-                new PositionMessage("account", contracts[0], 1, 1000),
-                new PositionMessage("account", contracts[1], 2, 2000),
-            };
-
-            var sut = new MessageProcessor(null, null);
-            sut.ConvertMessage(positionMessages[0]);
-            sut.ConvertMessage(positionMessages[1]);
-            sut.ConvertMessage(Constants.ON_POSITION_END);
-
-            // Second portion of messages
-            contracts = new List<Contract>
-            {
-                new Contract {LocalSymbol = "CAG"},
-                new Contract {LocalSymbol = "AA"}
-            };
-            positionMessages = new List<PositionMessage>
-            {
-                new PositionMessage("account", contracts[0], 1, 1000),
-                new PositionMessage("account", contracts[1], 2, 2000),
-            };
-
-            sut.ConvertMessage(positionMessages[0]);
-            sut.ConvertMessage(positionMessages[1]);
-            var resultList = sut.ConvertMessage(Constants.ON_POSITION_END);
-
-            Assert.Equal("AA", resultList[0]);
-            Assert.Equal("CAG", resultList[1]);
-            Assert.Equal(Constants.ENTER_SYMBOL_TO_TRACK, resultList[2]);
-        }
-
-        [Fact]
-        public void IgnorePositionZeroIfTypePositionMessage()
-        {
-            List<Contract> contracts = new List<Contract>
-            {
-                new Contract {LocalSymbol = "STX"},
-                new Contract {LocalSymbol = "PRDO"}
-            };
-
-            List<PositionMessage> positionMessages = new List<PositionMessage>
-            {
-                new PositionMessage("account", contracts[0], 1, 1000),
-                new PositionMessage("account", contracts[1], 0, 2000),
-            };
-
-            var sut = new MessageProcessor(null, null);
-            sut.ConvertMessage(positionMessages[0]);
-            sut.ConvertMessage(positionMessages[1]);
-            var resultList = sut.ConvertMessage(Constants.ON_POSITION_END);
-
-            Assert.Equal("STX", resultList[0]);
-            Assert.Equal(Constants.ENTER_SYMBOL_TO_TRACK, resultList[1]);
-        }
-
-        [Fact]
-        public void ReturnSerializedTrackedSymbolIfTypeContractDetailsMessage()
-        {
-            var contractDetails = new ContractDetails();
-            var message = new ContractDetailsMessage(1001, contractDetails);
-
-            var trackedSymbolFactory = Substitute.For<ITrackedSymbolFactory>();
-            trackedSymbolFactory.FromContractDetailsMessage(Arg.Any<ContractDetailsMessage>())
-                .Returns(new TrackedSymbol());
-
-            var sut = new MessageProcessor(null, null);
-            var result = sut.ConvertMessage(message);
-
-            var trackesSymbol = JsonSerializer.Deserialize<TrackedSymbol>(result.First());
-            Assert.IsType<TrackedSymbol>(trackesSymbol);
         }
     }
 }
