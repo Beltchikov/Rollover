@@ -2,7 +2,6 @@
 using IBSampleApp.messages;
 using NSubstitute;
 using Rollover.Ib;
-using Rollover.Input;
 using Rollover.Tracking;
 using Xunit;
 
@@ -17,10 +16,7 @@ namespace Rollover.UnitTests
             var portfolio = Substitute.For<IPortfolio>();
             var trackedSymbolFactory = Substitute.For<ITrackedSymbolFactory>();
 
-            var sut = new IbClientWrapper(
-                inputQueue, 
-                portfolio, 
-                trackedSymbolFactory);
+            var sut = new IbClientWrapper(inputQueue);
 
             var contractDetails = new ContractDetails();
             var contractDetailsMessage = new ContractDetailsMessage(5, contractDetails);
@@ -37,10 +33,7 @@ namespace Rollover.UnitTests
             var portfolio = Substitute.For<IPortfolio>();
             var trackedSymbolFactory = Substitute.For<ITrackedSymbolFactory>();
 
-            var sut = new IbClientWrapper(
-                inputQueue,
-                portfolio,
-                trackedSymbolFactory);
+            var sut = new IbClientWrapper(inputQueue);
 
             var contractDetails = new ContractDetails();
             var contractDetailsMessage = new ContractDetailsMessage(5, contractDetails);
