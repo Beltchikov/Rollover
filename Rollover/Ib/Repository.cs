@@ -1,4 +1,5 @@
-﻿using Rollover.Configuration;
+﻿using IBSampleApp.messages;
+using Rollover.Configuration;
 using Rollover.Tracking;
 using System;
 using System.Collections.Generic;
@@ -149,7 +150,9 @@ namespace Rollover.Ib
         {
             var reqId = ++_reqIdContractDetails;
             _ibClient.ContractDetails(reqId, contract);
-            var trackedSymbol = ReadContractDetails(reqId);
+            var contractDetailsMessage = ReadContractDetails(reqId);
+
+            var trackedSymbol = TrackedSymbolFromContractDetailsMessage(contractDetailsMessage, reqId);
 
             // TODO
             if (trackedSymbol != null)
@@ -164,24 +167,34 @@ namespace Rollover.Ib
             return trackedSymbol;
         }
 
-        private ITrackedSymbol ReadContractDetails(int reqId)
+        private ITrackedSymbol TrackedSymbolFromContractDetailsMessage(ContractDetailsMessage contractDetailsMessage, int reqId)
         {
-            var stopWatch = new Stopwatch();
-            stopWatch.Start();
-            while (stopWatch.Elapsed.TotalMilliseconds < _timeout)
+            var input = _messageProcessor.ConvertMessage(contractDetailsMessage);
+            if (input.Any())
             {
-                var message = _ibClientQueue.Dequeue();
-                var input = _messageProcessor.ConvertMessage(message);
-                if (!input.Any())
-                {
-                    continue;
-                }
-
                 var trackedSymbol = JsonSerializer.Deserialize<TrackedSymbol>(input.First());
                 if (trackedSymbol?.ReqIdContractDetails == reqId)
                 {
                     return trackedSymbol;
                 }
+            }
+
+            return null;
+        }
+
+        private ContractDetailsMessage ReadContractDetails(int reqId)
+        {
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+            while (stopWatch.Elapsed.TotalMilliseconds < _timeout)
+            {
+                var message = _ibClientQueue.Dequeue() as ContractDetailsMessage;
+                if (message == null)
+                {
+                    continue;
+                }
+
+                return message;
             }
 
             return null;
