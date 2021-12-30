@@ -68,6 +68,10 @@
             this.txtGenericTickList = new System.Windows.Forms.TextBox();
             this.lblGenericTicksList = new System.Windows.Forms.Label();
             this.btnClear = new System.Windows.Forms.Button();
+            this.tbSecTypeCheckSymbol = new System.Windows.Forms.TextBox();
+            this.tbExchangeCheckSymbol = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // txtHost
@@ -165,10 +169,10 @@
             // 
             // btGetConnId
             // 
-            this.btGetConnId.Location = new System.Drawing.Point(229, 96);
+            this.btGetConnId.Location = new System.Drawing.Point(619, 100);
             this.btGetConnId.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btGetConnId.Name = "btGetConnId";
-            this.btGetConnId.Size = new System.Drawing.Size(374, 24);
+            this.btGetConnId.Size = new System.Drawing.Size(220, 24);
             this.btGetConnId.TabIndex = 10;
             this.btGetConnId.Text = "Match Symbol and get ConnId";
             this.btGetConnId.UseVisualStyleBackColor = true;
@@ -439,6 +443,42 @@
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
+            // tbSecTypeCheckSymbol
+            // 
+            this.tbSecTypeCheckSymbol.Location = new System.Drawing.Point(229, 97);
+            this.tbSecTypeCheckSymbol.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tbSecTypeCheckSymbol.Name = "tbSecTypeCheckSymbol";
+            this.tbSecTypeCheckSymbol.Size = new System.Drawing.Size(54, 23);
+            this.tbSecTypeCheckSymbol.TabIndex = 8;
+            this.tbSecTypeCheckSymbol.Text = "IND";
+            // 
+            // tbExchangeCheckSymbol
+            // 
+            this.tbExchangeCheckSymbol.Location = new System.Drawing.Point(533, 98);
+            this.tbExchangeCheckSymbol.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tbExchangeCheckSymbol.Name = "tbExchangeCheckSymbol";
+            this.tbExchangeCheckSymbol.Size = new System.Drawing.Size(70, 23);
+            this.tbExchangeCheckSymbol.TabIndex = 8;
+            this.tbExchangeCheckSymbol.Text = "GLOBEX";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(167, 101);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(54, 15);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Sec. type";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(469, 102);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(58, 15);
+            this.label2.TabIndex = 9;
+            this.label2.Text = "Exchange";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -453,8 +493,10 @@
             this.Controls.Add(this.lblReqId);
             this.Controls.Add(this.lblSymbolStrike);
             this.Controls.Add(this.lblExchangeRealTime);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.lblExchange);
             this.Controls.Add(this.lblSecTypeRealTime);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.lblSecType);
             this.Controls.Add(this.lblConId);
             this.Controls.Add(this.lblCurrencyRealTime);
@@ -467,8 +509,10 @@
             this.Controls.Add(this.txtSymbolStrike);
             this.Controls.Add(this.txtExchangeRealTime);
             this.Controls.Add(this.txtReqId);
+            this.Controls.Add(this.tbExchangeCheckSymbol);
             this.Controls.Add(this.txtExchange);
             this.Controls.Add(this.txtSecTypeRealTime);
+            this.Controls.Add(this.tbSecTypeCheckSymbol);
             this.Controls.Add(this.txtSecType);
             this.Controls.Add(this.txtCurrencyRealTime);
             this.Controls.Add(this.txtLocalSymbolRealTime);
@@ -487,6 +531,7 @@
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -534,5 +579,9 @@
         private System.Windows.Forms.TextBox txtGenericTickList;
         private System.Windows.Forms.Label lblGenericTicksList;
         private System.Windows.Forms.Button btnClear;
+        private System.Windows.Forms.TextBox tbSecTypeCheckSymbol;
+        private System.Windows.Forms.TextBox tbExchangeCheckSymbol;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
     }
 }

@@ -1,4 +1,5 @@
-﻿using IBSampleApp.messages;
+﻿using IBApi;
+using IBSampleApp.messages;
 using Rollover.Configuration;
 using Rollover.Tracking;
 using System;
@@ -146,11 +147,18 @@ namespace Rollover.Ib
 
         #region GetTrackedSymbol
 
-        public ITrackedSymbol GetTrackedSymbol(IBApi.Contract contract)
+        public ITrackedSymbol GetTrackedSymbol(Contract contract)
         {
             var reqId = ++_reqIdContractDetails;
             _ibClient.ContractDetails(reqId, contract);
             var contractDetailsMessage = ReadContractDetails(reqId);
+            
+            // Under contract
+            var underContract = UnderContractFromContractDetailsMessage(contractDetailsMessage);
+            reqId = ++_reqIdContractDetails;
+            _ibClient.ContractDetails(reqId, underContract);
+            contractDetailsMessage = ReadContractDetails(reqId);
+
 
             var trackedSymbol = TrackedSymbolFromContractDetailsMessage(contractDetailsMessage, reqId);
 
@@ -165,6 +173,17 @@ namespace Rollover.Ib
             // update trackedSymbol
 
             return trackedSymbol;
+        }
+
+        private static Contract UnderContractFromContractDetailsMessage(ContractDetailsMessage contractDetailsMessage)
+        {
+            return new Contract
+            {
+                SecType = contractDetailsMessage.ContractDetails.UnderSecType,
+                Symbol = contractDetailsMessage.ContractDetails.UnderSecType,
+                Currency = contractDetailsMessage.ContractDetails.Contract.Currency,
+                Exchange = contractDetailsMessage.ContractDetails.Contract.Exchange
+            };
         }
 
         private ITrackedSymbol TrackedSymbolFromContractDetailsMessage(ContractDetailsMessage contractDetailsMessage, int reqId)

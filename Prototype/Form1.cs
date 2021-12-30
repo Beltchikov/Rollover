@@ -255,14 +255,13 @@ namespace Prototype
 
         private void btCheckSymbol_Click(object sender, EventArgs e)
         {
-            var symbol = txtSymbol.Text;
             //ibClient.ClientSocket.reqMatchingSymbols(++activeReqId, symbol);
             var contract = new Contract()
             {
-                Symbol = symbol,
-                SecType = "IND",
+                Symbol = txtSymbol.Text,
+                SecType = tbSecTypeCheckSymbol.Text,
                 Currency = "USD",
-                Exchange ="GLOBEX"
+                Exchange = tbExchangeCheckSymbol.Text
             };
             ibClient.ClientSocket.reqContractDetails(60000001, contract);
         }
@@ -309,6 +308,11 @@ namespace Prototype
         private void btnClear_Click(object sender, EventArgs e)
         {
             txtMessage.Clear();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
