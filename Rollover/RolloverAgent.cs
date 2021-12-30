@@ -33,8 +33,12 @@ namespace Rollover
         public void Run()
         {
             Connect();
-            ListPositions();
-            RunInputLoop();
+
+            var positionList = _repository.AllPositions();
+            positionList.ForEach(p => _consoleWrapper.WriteLine(p));
+
+            _inputLoop.Run(_consoleWrapper, _inputQueue, _ibClientQueue);
+            _repository.Disconnect();
         }
 
         public void Connect()
@@ -60,18 +64,6 @@ namespace Rollover
                 return;
             }
             connectedTuple.Item2.ForEach(m => _consoleWrapper.WriteLine(m));
-        }
-
-        public void ListPositions()
-        {
-            var positionList = _repository.AllPositions();
-            positionList.ForEach(p => _consoleWrapper.WriteLine(p));
-        }
-
-        public void RunInputLoop()
-        {
-            _inputLoop.Run(_consoleWrapper, _inputQueue, _ibClientQueue);
-            _repository.Disconnect();
         }
     }
 }

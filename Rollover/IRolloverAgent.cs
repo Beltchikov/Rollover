@@ -4,7 +4,5 @@
     {
         public void Run();
         public void Connect();
-        public void ListPositions();
-        public void RunInputLoop();
     }
 }

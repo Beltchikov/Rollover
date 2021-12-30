@@ -13,26 +13,33 @@ namespace Rollover
             ISerializer serializer = new Serializer();
             IConfigurationManager configurationManager = new ConfigurationManager(
                 fileHelper, serializer);
-            
+
+            IRolloverAgent rolloverAgent = CreateRolloverAgent(configurationManager);
+
+            rolloverAgent.Run();
+        }
+
+        public static IRolloverAgent CreateRolloverAgent(IConfigurationManager configurationManager)
+        {
             IConsoleWrapper consoleWrapper = new ConsoleWrapper();
-            IIbClientQueue ibClientQueue = new Ib.IbClientQueue();
+            IIbClientQueue ibClientQueue = new IbClientQueue();
             IPortfolio portfolio = new Portfolio();
 
             ITrackedSymbolFactory trackedSymbolFactory = new TrackedSymbolFactory();
             IIbClientWrapper ibClient = new IbClientWrapper(ibClientQueue);
-                       
+
             IConnectedCondition connectedCondition = new ConnectedCondition();
             IInputQueue inputQueue = new InputQueue();
             IQueryParametersConverter queryParametersConverter = new QueryParametersConverter();
             IMessageProcessor messageProcessor = new MessageProcessor(trackedSymbolFactory, portfolio);
             IRepository repository = new Repository(
-                ibClient, 
+                ibClient,
                 connectedCondition,
                 ibClientQueue,
                 configurationManager,
                 queryParametersConverter,
                 messageProcessor);
-                        
+
             ITrackedSymbols trackedSymbols = new TrackedSymbols();
             IReducer reducer = new Reducer();
             IInputProcessor inputProcessor = new InputProcessor(
@@ -41,7 +48,7 @@ namespace Rollover
                 trackedSymbols,
                 repository,
                 trackedSymbolFactory);
-            
+
             IInputLoop inputLoop = new InputLoop(inputProcessor, messageProcessor);
 
             IRolloverAgent rolloverAgent = new RolloverAgent(
@@ -51,8 +58,7 @@ namespace Rollover
                 ibClientQueue,
                 repository,
                 inputLoop);
-
-            rolloverAgent.Run();
+            return rolloverAgent;
         }
     }
 }
