@@ -26,7 +26,7 @@ namespace Rollover.Ib
 
         #region Connect, Disconnect
 
-        public void Connect(string host, int port, int clientId)
+        public void eConnect(string host, int port, int clientId)
         {
             _ibClient.ClientSocket.eConnect(host, port, clientId);
         }
@@ -51,7 +51,7 @@ namespace Rollover.Ib
             _ibClientQueue.Enqueue(managedAccountsMessage);
         }
 
-        public void Disconnect()
+        public void eDisconnect()
         {
             if (!IsConnected())
             {
@@ -65,7 +65,7 @@ namespace Rollover.Ib
 
         #region ListPositions
 
-        public void ListPositions()
+        public void reqPositions()
         {
             _ibClient.ClientSocket.reqPositions();
         }
@@ -84,7 +84,7 @@ namespace Rollover.Ib
 
         #region ContractDetails
 
-        public void ContractDetails(int reqId, Contract contract)
+        public void reqContractDetails(int reqId, Contract contract)
         {
             _ibClient.ClientSocket.reqContractDetails(reqId, contract);
         }
@@ -94,11 +94,17 @@ namespace Rollover.Ib
             _ibClientQueue.Enqueue(obj);
         }
 
+        private void OnContractDetailsEnd(int obj)
+        {
+            // TODO
+            //throw new NotImplementedException();
+        }
+
         #endregion
 
         #region OptionParameters
 
-        public void ReqSecDefOptParams(int reqId, string symbol, string exchange, string secType, int conId)
+        public void reqSecDefOptParams(int reqId, string symbol, string exchange, string secType, int conId)
         {
             _ibClient.ClientSocket.reqSecDefOptParams(reqId, symbol, exchange, secType, conId);
         }
@@ -138,6 +144,7 @@ namespace Rollover.Ib
             _ibClient.SecurityDefinitionOptionParameter += OnSecurityDefinitionOptionParameter;
             _ibClient.SecurityDefinitionOptionParameterEnd += OnSecurityDefinitionOptionParameterEnd;
             _ibClient.ContractDetails += OnContractDetails;
+            _ibClient.ContractDetailsEnd += OnContractDetailsEnd;
         }
 
         #endregion

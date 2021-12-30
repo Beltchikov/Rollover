@@ -53,7 +53,7 @@ namespace Rollover.Ib
 
         private void ConnectAndStartConsoleThread(string host, int port, int clientId)
         {
-            _ibClient.Connect(host, port, clientId);
+            _ibClient.eConnect(host, port, clientId);
 
             var reader = _ibClient.ReaderFactory();
             reader.Start();
@@ -99,7 +99,7 @@ namespace Rollover.Ib
 
         public void Disconnect()
         {
-            _ibClient.Disconnect();
+            _ibClient.eDisconnect();
         }
 
         #endregion
@@ -118,7 +118,7 @@ namespace Rollover.Ib
 
         private void ListPositions()
         {
-            _ibClient.ListPositions();
+            _ibClient.reqPositions();
         }
 
         private void ReadPositions(IIbClientQueue ibClientQueue, int timeout)
@@ -150,13 +150,13 @@ namespace Rollover.Ib
         public ITrackedSymbol GetTrackedSymbol(Contract contract)
         {
             var reqId = ++_reqIdContractDetails;
-            _ibClient.ContractDetails(reqId, contract);
+            _ibClient.reqContractDetails(reqId, contract);
             var contractDetailsMessage = ReadContractDetails(reqId);
             
             // Under contract
             var underContract = UnderContractFromContractDetailsMessage(contractDetailsMessage);
             reqId = ++_reqIdContractDetails;
-            _ibClient.ContractDetails(reqId, underContract);
+            _ibClient.reqContractDetails(reqId, underContract);
             contractDetailsMessage = ReadContractDetails(reqId);
 
 
@@ -235,7 +235,7 @@ namespace Rollover.Ib
 
             var trackedSymbolCopy = _queryParametersConverter.TrackedSymbolForReqSecDefOptParams(trackedSymbol);
 
-            _ibClient.ReqSecDefOptParams(
+            _ibClient.reqSecDefOptParams(
                 trackedSymbolCopy.ReqIdSecDefOptParams,
                 trackedSymbolCopy.Symbol,
                 trackedSymbolCopy.Exchange,

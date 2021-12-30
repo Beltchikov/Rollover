@@ -23,7 +23,7 @@ namespace Rollover.UnitTests
             int clientId = 29;
 
             sut.Connect(host, port, clientId);
-            ibClient.Received().Connect(host, port, clientId);
+            ibClient.Received().eConnect(host, port, clientId);
         }
 
         [Theory, AutoNSubstituteData]
@@ -60,7 +60,7 @@ namespace Rollover.UnitTests
             Repository sut)
         {
             sut.Disconnect();
-            ibClient.Received().Disconnect();
+            ibClient.Received().eDisconnect();
         }
 
         [Theory, AutoNSubstituteData]
@@ -69,7 +69,7 @@ namespace Rollover.UnitTests
             Repository sut)
         {
             sut.AllPositions();
-            ibClient.Received().ListPositions();
+            ibClient.Received().reqPositions();
         }
 
         [Fact]
@@ -87,7 +87,7 @@ namespace Rollover.UnitTests
             ibClientQueue.Dequeue().Returns(positionMessage1, positionMessage2, Constants.ON_POSITION_END);
 
             var ibClinet = Substitute.For<IIbClientWrapper>();
-            ibClinet.When(c => c.ContractDetails(Arg.Any<int>(), Arg.Any<Contract>()))
+            ibClinet.When(c => c.reqContractDetails(Arg.Any<int>(), Arg.Any<Contract>()))
                 .Do(c => { });
 
             var configurationManager = Substitute.For<IConfigurationManager>();
@@ -113,7 +113,7 @@ namespace Rollover.UnitTests
 
             var ibClientQueue = Substitute.For<IIbClientQueue>();
             var ibClinet = Substitute.For<IIbClientWrapper>();
-            ibClinet.When(c => c.ContractDetails(Arg.Any<int>(), Arg.Any<Contract>()))
+            ibClinet.When(c => c.reqContractDetails(Arg.Any<int>(), Arg.Any<Contract>()))
                 .Do(c => { });
 
             var configurationManager = Substitute.For<IConfigurationManager>();
