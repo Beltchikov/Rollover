@@ -33,6 +33,8 @@ namespace Rollover
             _twsConnector = twsConnector;
         }
 
+        public IRepository Repository => _repository;
+
         public void Run()
         {
             _twsConnector.Connect();
