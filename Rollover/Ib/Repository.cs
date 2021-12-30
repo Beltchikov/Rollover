@@ -180,7 +180,7 @@ namespace Rollover.Ib
             return new Contract
             {
                 SecType = contractDetailsMessage.ContractDetails.UnderSecType,
-                Symbol = contractDetailsMessage.ContractDetails.UnderSecType,
+                Symbol = contractDetailsMessage.ContractDetails.Contract.Symbol,
                 Currency = contractDetailsMessage.ContractDetails.Contract.Currency,
                 Exchange = contractDetailsMessage.ContractDetails.Contract.Exchange
             };
