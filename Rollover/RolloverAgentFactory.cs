@@ -46,13 +46,15 @@ namespace Rollover
 
             IInputLoop inputLoop = new InputLoop(inputProcessor, messageProcessor);
 
+            ITwsConnector twsConnector = new TwsConnector(_configurationManager, consoleWrapper, inputQueue, repository);
             IRolloverAgent rolloverAgent = new RolloverAgent(
                 _configurationManager,
                 consoleWrapper,
                 inputQueue,
                 ibClientQueue,
                 repository,
-                inputLoop);
+                inputLoop,
+                twsConnector);
             return rolloverAgent;
         }
     }
