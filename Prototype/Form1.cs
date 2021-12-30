@@ -259,9 +259,9 @@ namespace Prototype
             var contract = new Contract()
             {
                 Symbol = txtSymbol.Text,
-                SecType = tbSecTypeCheckSymbol.Text,
+                SecType = txtSecTypeCheckSymbol.Text,
                 Currency = "USD",
-                Exchange = tbExchangeCheckSymbol.Text
+                Exchange = txtExchangeCheckSymbol.Text
             };
             ibClient.ClientSocket.reqContractDetails(60000001, contract);
         }
