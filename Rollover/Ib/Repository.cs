@@ -87,9 +87,39 @@ namespace Rollover.Ib
             //return trackedSymbol;
 
             var contractDetailsMessageList = _messageCollector.reqContractDetails(contract);
-            // TODO Evtl TrackedSymbol.Init(ContractDetailsMessage)
-            //var trackedSymbol = TrackedSymbolFromContractDetailsMessage(contractDetailsMessageList.First());
-            var trackedSymbol = _trackedSymbolFactory.InitFromContractDetailsMessage(contractDetailsMessageList.First());
+            if(contractDetailsMessageList.Count() > 1)
+            {
+                throw new ApplicationException("Unexpected. Multiple ContractDetailsMessages");
+            }
+            var contractDetailsMessage = contractDetailsMessageList.First();  
+
+            var trackedSymbol = _trackedSymbolFactory.InitFromContractDetailsMessage(contractDetailsMessage);
+
+            var underContract = UnderContractFromContractDetailsMessage(contractDetailsMessage);
+            if(underContract != null)
+            {
+                var underContractDetailsMessageList = _messageCollector.reqContractDetails(underContract);
+                var underContractDetailsMessage = underContractDetailsMessageList
+                    .First(c => c.ContractDetails.ContractMonth == contractDetailsMessage.ContractDetails.ContractMonth);
+
+                var secondUnderContract = UnderContractFromContractDetailsMessage(underContractDetailsMessage);
+                if(secondUnderContract != null)
+                {
+                    var secondUnderContractDetailsMessageList = _messageCollector.reqContractDetails(secondUnderContract);
+                    if (secondUnderContractDetailsMessageList.Count() > 1)
+                    {
+                        throw new ApplicationException("Unexpected. Multiple secondUnderContractDetailsMessage");
+                    }
+
+                    var secondUnderContractDetailsMessage = secondUnderContractDetailsMessageList.First();
+                    var conId = secondUnderContractDetailsMessage.ContractDetails.Contract.ConId;
+                    var secType = secondUnderContractDetailsMessage.ContractDetails.Contract.SecType;
+                }
+                else
+                {
+
+                }
+            }
 
             // TODO
             // var underContract = UnderContractFromContractDetailsMessage(contractDetailsMessage);
@@ -108,6 +138,11 @@ namespace Rollover.Ib
 
         private static Contract UnderContractFromContractDetailsMessage(ContractDetailsMessage contractDetailsMessage)
         {
+            if (string.IsNullOrWhiteSpace(contractDetailsMessage.ContractDetails.UnderSecType))
+            {
+                return null;
+            }
+            
             return new Contract
             {
                 SecType = contractDetailsMessage.ContractDetails.UnderSecType,
