@@ -6,6 +6,7 @@ using Rollover.Configuration;
 using Rollover.Ib;
 using Rollover.Input;
 using Rollover.Tracking;
+using System.Collections.Generic;
 using System.Threading;
 using Xunit;
 
@@ -163,6 +164,37 @@ namespace Rollover.UnitTests
             IRepository sut = new Repository(null, null, configurationManager, null, null, messageCollector, null);
             sut.GetTrackedSymbol(contract);
             messageCollector.Received().reqContractDetails(contract);
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallMessageCollectorReqSecDefOptParams(
+            [Frozen] IMessageCollector messageCollector,
+            [Frozen] IConfigurationManager configurationManager,
+            [Frozen] ITrackedSymbolFactory trackedSymbolFactory)
+        {
+            var contract = new Contract
+            {
+                Symbol = "MNQ",
+                Currency="USD",
+                Exchange="GLOBEX"
+            };
+            var contractDetails = new ContractDetails 
+            { Contract = contract,
+                UnderSecType = "FUT"
+            };
+            contractDetails.Contract = contract;
+            var contractDetailsMessage = new ContractDetailsMessage(1, contractDetails);
+            var contractDetailsMessageList = new List<ContractDetailsMessage> { contractDetailsMessage };
+            messageCollector.reqContractDetails(Arg.Any<Contract>()).Returns(contractDetailsMessageList);
+
+            IRepository sut = new Repository(null, null, configurationManager, 
+                null, null, messageCollector, trackedSymbolFactory);
+            sut.GetTrackedSymbol(contract);
+            messageCollector.Received().reqSecDefOptParams(
+                Arg.Any<string>(),
+                Arg.Any<string>(),
+                Arg.Any<string>(),
+                Arg.Any<int>());
         }
 
 

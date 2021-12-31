@@ -16,6 +16,7 @@ namespace Rollover.Ib
         private IConfigurationManager _configurationManager;
 
         private int _reqIdContractDetails = 0;
+        private int _reqIdSecDefOptParam = 0;
 
         public MessageCollector(
             IIbClientWrapper ibClient,
@@ -154,6 +155,38 @@ namespace Rollover.Ib
             }
 
             return contractDetailsMessages;
+        }
+
+        public List<SecurityDefinitionOptionParameterMessage> reqSecDefOptParams(string symbol, string exchange, string secType, int conId)
+        {
+            List<SecurityDefinitionOptionParameterMessage> securityDefinitionOptionParameterMessage 
+                = new List<SecurityDefinitionOptionParameterMessage>();
+
+            var reqId = ++_reqIdSecDefOptParam;
+            _ibClient.reqSecDefOptParams(reqId, symbol, exchange, secType, conId);
+
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            while (stopWatch.Elapsed.TotalMilliseconds < _configurationManager.GetConfiguration().Timeout)
+            {
+                var message = _ibClientQueue.Dequeue();
+
+                if (message is SecurityDefinitionOptionParameterMessage)
+                {
+                    securityDefinitionOptionParameterMessage.Add(message as SecurityDefinitionOptionParameterMessage);
+                }
+                else if (message is string)
+                {
+                    var messageAsString = message as string;
+                    if (messageAsString == Constants.ON_SECURITY_DEFINITION_OPTION_PARAMETER_END)
+                    {
+                        return securityDefinitionOptionParameterMessage;
+                    }
+                }
+            }
+
+            return securityDefinitionOptionParameterMessage;
         }
     }
 }

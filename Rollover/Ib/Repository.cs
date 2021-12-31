@@ -21,7 +21,6 @@ namespace Rollover.Ib
         private ITrackedSymbolFactory _trackedSymbolFactory;
 
         private List<string> _positions = new List<string>();
-        private int _reqIdSecDefOptParam = 0;
         private int _timeout;
 
         public Repository(
@@ -112,8 +111,13 @@ namespace Rollover.Ib
                     }
 
                     var secondUnderContractDetailsMessage = secondUnderContractDetailsMessageList.First();
-                    var conId = secondUnderContractDetailsMessage.ContractDetails.Contract.ConId;
-                    var secType = secondUnderContractDetailsMessage.ContractDetails.Contract.SecType;
+                    
+                    var SecDefOptParamMessageList = _messageCollector.reqSecDefOptParams(
+                        secondUnderContractDetailsMessage.ContractDetails.Contract.Symbol,
+                        secondUnderContractDetailsMessage.ContractDetails.Contract.Exchange,
+                        secondUnderContractDetailsMessage.ContractDetails.Contract.SecType,
+                        secondUnderContractDetailsMessage.ContractDetails.Contract.ConId
+                        );
                 }
                 else
                 {
