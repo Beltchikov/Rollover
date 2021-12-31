@@ -60,31 +60,6 @@ namespace Rollover.Ib
 
         public ITrackedSymbol GetTrackedSymbol(Contract contract)
         {
-            //var reqId = ++_reqIdContractDetails;
-            //_ibClient.reqContractDetails(reqId, contract);
-            //var contractDetailsMessage = ReadContractDetails(reqId);
-
-            //// Under contract
-            //var underContract = UnderContractFromContractDetailsMessage(contractDetailsMessage);
-            //reqId = ++_reqIdContractDetails;
-            //_ibClient.reqContractDetails(reqId, underContract);
-            //contractDetailsMessage = ReadContractDetails(reqId);
-
-
-            //var trackedSymbol = TrackedSymbolFromContractDetailsMessage(contractDetailsMessage, reqId);
-
-            //// TODO
-            //if (trackedSymbol != null)
-            //{
-            //    trackedSymbol.ReqIdSecDefOptParams = ++_reqIdSecDefOptParam;
-            //    ReqSecDefOptParams(trackedSymbol);
-            //}
-
-            //// (strike, overNextStrike) ReadSecDefOptParams(strike)
-            //// update trackedSymbol
-
-            //return trackedSymbol;
-
             var contractDetailsMessageList = _messageCollector.reqContractDetails(contract);
             if (contractDetailsMessageList.Count() > 1)
             {
