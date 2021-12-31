@@ -1,4 +1,5 @@
-﻿using IBSampleApp.messages;
+﻿using IBApi;
+using IBSampleApp.messages;
 using System.Collections.Generic;
 
 namespace Rollover.Ib
@@ -6,6 +7,7 @@ namespace Rollover.Ib
     public interface IMessageCollector
     {
         ConnectionMessages eConnect(string host, int port, int clientId);
-        public List<PositionMessage> reqPositions();
+        List<PositionMessage> reqPositions();
+        List<ContractDetailsMessage> reqContractDetails(int reqId, Contract contract);
     }
 }

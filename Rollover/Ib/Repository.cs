@@ -58,34 +58,38 @@ namespace Rollover.Ib
             return _messageCollector.reqPositions();    
         }
 
-        #region GetTrackedSymbol
-
-        public ITrackedSymbol GetTrackedSymbol(Contract contract)
+       public ITrackedSymbol GetTrackedSymbol(Contract contract)
         {
+            //var reqId = ++_reqIdContractDetails;
+            //_ibClient.reqContractDetails(reqId, contract);
+            //var contractDetailsMessage = ReadContractDetails(reqId);
+
+            //// Under contract
+            //var underContract = UnderContractFromContractDetailsMessage(contractDetailsMessage);
+            //reqId = ++_reqIdContractDetails;
+            //_ibClient.reqContractDetails(reqId, underContract);
+            //contractDetailsMessage = ReadContractDetails(reqId);
+
+
+            //var trackedSymbol = TrackedSymbolFromContractDetailsMessage(contractDetailsMessage, reqId);
+
+            //// TODO
+            //if (trackedSymbol != null)
+            //{
+            //    trackedSymbol.ReqIdSecDefOptParams = ++_reqIdSecDefOptParam;
+            //    ReqSecDefOptParams(trackedSymbol);
+            //}
+
+            //// (strike, overNextStrike) ReadSecDefOptParams(strike)
+            //// update trackedSymbol
+
+            //return trackedSymbol;
+
             var reqId = ++_reqIdContractDetails;
-            _ibClient.reqContractDetails(reqId, contract);
-            var contractDetailsMessage = ReadContractDetails(reqId);
-            
-            // Under contract
-            var underContract = UnderContractFromContractDetailsMessage(contractDetailsMessage);
-            reqId = ++_reqIdContractDetails;
-            _ibClient.reqContractDetails(reqId, underContract);
-            contractDetailsMessage = ReadContractDetails(reqId);
-
-
-            var trackedSymbol = TrackedSymbolFromContractDetailsMessage(contractDetailsMessage, reqId);
+            var contractDetailsMessageList = _messageCollector.reqContractDetails(reqId, contract);
 
             // TODO
-            if (trackedSymbol != null)
-            {
-                trackedSymbol.ReqIdSecDefOptParams = ++_reqIdSecDefOptParam;
-                ReqSecDefOptParams(trackedSymbol);
-            }
-
-            // (strike, overNextStrike) ReadSecDefOptParams(strike)
-            // update trackedSymbol
-
-            return trackedSymbol;
+            return null;
         }
 
         private static Contract UnderContractFromContractDetailsMessage(ContractDetailsMessage contractDetailsMessage)
@@ -131,8 +135,6 @@ namespace Rollover.Ib
 
             return null;
         }
-
-        #endregion
 
         private Tuple<bool, List<string>> ConnectionMessagesToConnectionTuple(ConnectionMessages connectionMessages)
         {

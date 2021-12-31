@@ -154,6 +154,17 @@ namespace Rollover.UnitTests
             messageCollector.Received().reqPositions();
         }
 
+        [Theory, AutoNSubstituteData]
+        public void CallMessageCollectorReqContractDetails(
+            [Frozen] IMessageCollector messageCollector,
+            [Frozen] IConfigurationManager configurationManager,
+            [Frozen] Contract contract)
+        {
+            IRepository sut = new Repository(null, null, configurationManager, null, null, messageCollector);
+            sut.GetTrackedSymbol(contract);
+            messageCollector.Received().reqContractDetails(Arg.Any<int>(), contract);
+        }
+
 
         //[Fact]
         //public void ReturnTrackedSymbol()

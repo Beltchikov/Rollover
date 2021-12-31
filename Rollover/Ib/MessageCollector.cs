@@ -1,4 +1,5 @@
-﻿using IBSampleApp.messages;
+﻿using IBApi;
+using IBSampleApp.messages;
 using Rollover.Configuration;
 using System;
 using System.Collections.Generic;
@@ -120,6 +121,11 @@ namespace Rollover.Ib
             }
 
             return positionMessages;
+        }
+
+        public List<ContractDetailsMessage> reqContractDetails(int reqId, Contract contract)
+        {
+            throw new NotImplementedException();
         }
     }
 }
