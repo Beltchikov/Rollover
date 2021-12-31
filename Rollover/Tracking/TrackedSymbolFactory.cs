@@ -14,7 +14,7 @@ namespace Rollover.Tracking
             throw new NotImplementedException();
         }
 
-        public TrackedSymbol FromContractDetailsMessage(ContractDetailsMessage contractDetailsMessage)
+        public TrackedSymbol InitFromContractDetailsMessage(ContractDetailsMessage contractDetailsMessage)
         {
             var trackedSymbol = new TrackedSymbol
             {

@@ -143,7 +143,7 @@ namespace Rollover.UnitTests
         public void ReturnMessageIfTypeString()
         {
             var testMessage = "id=-1 errorCode=321 msg=Error validating request.-'cw' : cause - Invalid";
-            var sut = new MessageProcessor(null, null);
+            var sut = new MessageProcessor(null);
             var result = sut.ConvertMessage(testMessage);
             Assert.Equal(testMessage, result.First());
         }
@@ -152,7 +152,7 @@ namespace Rollover.UnitTests
         public void ReturnConnectedIfTypeConnectionStatusMessage()
         {
             var testMessage = new ConnectionStatusMessage(true);
-            var sut = new MessageProcessor(null, null);
+            var sut = new MessageProcessor(null);
             var result = sut.ConvertMessage(testMessage);
             Assert.Equal("Connected.", result.First());
         }
@@ -161,7 +161,7 @@ namespace Rollover.UnitTests
         public void ReturnDisconnectedIfTypeConnectionStatusMessage()
         {
             var testMessage = new ConnectionStatusMessage(false);
-            var sut = new MessageProcessor(null, null);
+            var sut = new MessageProcessor(null);
             var result = sut.ConvertMessage(testMessage);
             Assert.Equal("Disconnected.", result.First());
         }
@@ -170,7 +170,7 @@ namespace Rollover.UnitTests
         public void ReturnAccountsIfTypeManagedAccountsMessage()
         {
             var testMessage = new ManagedAccountsMessage("GOOG\r\nMSFT");
-            var sut = new MessageProcessor(null, null);
+            var sut = new MessageProcessor(null);
             var result = sut.ConvertMessage(testMessage);
             Assert.Contains("GOOG", result.First());
             Assert.Contains("MSFT", result.First());
@@ -191,7 +191,7 @@ namespace Rollover.UnitTests
                 new PositionMessage("account", contracts[1], 2, 2000),
             };
 
-            var sut = new MessageProcessor(null, null);
+            var sut = new MessageProcessor(null);
             var result1 = sut.ConvertMessage(positionMessages[0]);
             var result2 = sut.ConvertMessage(positionMessages[1]);
 

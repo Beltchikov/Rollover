@@ -94,13 +94,13 @@ namespace Rollover.UnitTests
 
             var trackedSymbolFactory = new TrackedSymbolFactory();
             var portfolio = new Portfolio();
-            var messageProcessor = new MessageProcessor(trackedSymbolFactory, portfolio);
+            var messageProcessor = new MessageProcessor(portfolio);
 
             Configuration.Configuration configuration = new Configuration.Configuration
             { Timeout = timeout };
             configurationManager.GetConfiguration().Returns(configuration);
 
-            var sut = new Repository(ibClinet, ibClientQueue, configurationManager, null, messageProcessor, null);
+            var sut = new Repository(ibClinet, ibClientQueue, configurationManager, null, messageProcessor, null, null);
             var resultList = sut.AllPositions();
 
             Assert.Equal(3, resultList.Count);
@@ -125,9 +125,9 @@ namespace Rollover.UnitTests
 
             var trackedSymbolFactory = new TrackedSymbolFactory();
             var portfolio = new Portfolio();
-            var messageProcessor = new MessageProcessor(trackedSymbolFactory, portfolio);
+            var messageProcessor = new MessageProcessor(portfolio);
 
-            var sut = new Repository(ibClinet, ibClientQueue, configurationManager, null, messageProcessor, null);
+            var sut = new Repository(ibClinet, ibClientQueue, configurationManager, null, messageProcessor, null, null);
             var trackedSymbol = sut.GetTrackedSymbol(contract);
             Thread.Sleep(timeout);
 
@@ -139,7 +139,7 @@ namespace Rollover.UnitTests
             [Frozen] IMessageCollector messageCollector,
             [Frozen] IConfigurationManager configurationManager)
         {
-            IRepository sut = new Repository(null, null, configurationManager, null, null, messageCollector);
+            IRepository sut = new Repository(null, null, configurationManager, null, null, messageCollector, null);
             sut.Connect("localhost", 4001, 1);
             messageCollector.Received().eConnect("localhost", 4001, 1);
         }
@@ -149,7 +149,7 @@ namespace Rollover.UnitTests
             [Frozen] IMessageCollector messageCollector,
             [Frozen] IConfigurationManager configurationManager)
         {
-            IRepository sut = new Repository(null, null, configurationManager, null, null, messageCollector);
+            IRepository sut = new Repository(null, null, configurationManager, null, null, messageCollector, null);
             sut.AllPositions();
             messageCollector.Received().reqPositions();
         }
@@ -160,7 +160,7 @@ namespace Rollover.UnitTests
             [Frozen] IConfigurationManager configurationManager,
             [Frozen] Contract contract)
         {
-            IRepository sut = new Repository(null, null, configurationManager, null, null, messageCollector);
+            IRepository sut = new Repository(null, null, configurationManager, null, null, messageCollector, null);
             sut.GetTrackedSymbol(contract);
             messageCollector.Received().reqContractDetails(contract);
         }

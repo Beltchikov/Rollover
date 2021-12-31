@@ -9,12 +9,10 @@ namespace Rollover.Ib
 {
     public class MessageProcessor : IMessageProcessor
     {
-        private ITrackedSymbolFactory _trackedSymbolFactory;
         private IPortfolio _portfolio;
 
-        public MessageProcessor(ITrackedSymbolFactory trackedSymbolFactory, IPortfolio portfolio)
+        public MessageProcessor(IPortfolio portfolio)
         {
-            _trackedSymbolFactory = trackedSymbolFactory;
             _portfolio = portfolio;
         }
 
@@ -56,13 +54,7 @@ namespace Rollover.Ib
 
                 return new List<string>();
             }
-            else if (obj is ContractDetailsMessage)
-            {
-                var _trackedSymbol = _trackedSymbolFactory.FromContractDetailsMessage(obj as ContractDetailsMessage);
-                var serialized = JsonSerializer.Serialize(_trackedSymbol);
-                return new List<string> { serialized };
-            }
-
+            
             throw new NotImplementedException();
         }
 

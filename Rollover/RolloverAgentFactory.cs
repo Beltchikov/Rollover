@@ -26,7 +26,7 @@ namespace Rollover
             IConnectedCondition connectedCondition = new ConnectedCondition();
             IInputQueue inputQueue = new InputQueue();
             IQueryParametersConverter queryParametersConverter = new QueryParametersConverter();
-            IMessageProcessor messageProcessor = new MessageProcessor(trackedSymbolFactory, portfolio);
+            IMessageProcessor messageProcessor = new MessageProcessor(portfolio);
             IMessageCollector messageCollector = new MessageCollector(
                 ibClient,
                 connectedCondition,
@@ -38,7 +38,8 @@ namespace Rollover
                 _configurationManager,
                 queryParametersConverter,
                 messageProcessor,
-                messageCollector);
+                messageCollector,
+                trackedSymbolFactory);
 
             ITrackedSymbols trackedSymbols = new TrackedSymbols();
             IReducer reducer = new Reducer();

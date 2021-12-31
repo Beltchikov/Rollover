@@ -29,7 +29,7 @@ namespace Rollover.UnitTests
 
             IPortfolio portfolio = Substitute.For<IPortfolio>();
 
-            var sut = new MessageProcessor(null, portfolio);
+            var sut = new MessageProcessor(portfolio);
             var resultList = sut.ConvertMessage(positionMessages[0]);
             resultList = sut.ConvertMessage(positionMessages[1]);
             resultList = sut.ConvertMessage(Constants.ON_POSITION_END);
@@ -55,7 +55,7 @@ namespace Rollover.UnitTests
 
             IPortfolio portfolio = Substitute.For<IPortfolio>();
 
-            var sut = new MessageProcessor(null, portfolio);
+            var sut = new MessageProcessor(portfolio);
             sut.ConvertMessage(positionMessages[0]);
             sut.ConvertMessage(positionMessages[1]);
             sut.ConvertMessage(Constants.ON_POSITION_END);
@@ -98,7 +98,7 @@ namespace Rollover.UnitTests
 
             IPortfolio portfolio = Substitute.For<IPortfolio>();
 
-            var sut = new MessageProcessor(null, portfolio);
+            var sut = new MessageProcessor(portfolio);
             sut.ConvertMessage(positionMessages[0]);
             sut.ConvertMessage(positionMessages[1]);
             var resultList = sut.ConvertMessage(Constants.ON_POSITION_END);
@@ -114,12 +114,12 @@ namespace Rollover.UnitTests
             var message = new ContractDetailsMessage(1001, contractDetails);
 
             var trackedSymbolFactory = Substitute.For<ITrackedSymbolFactory>();
-            trackedSymbolFactory.FromContractDetailsMessage(Arg.Any<ContractDetailsMessage>())
+            trackedSymbolFactory.InitFromContractDetailsMessage(Arg.Any<ContractDetailsMessage>())
                 .Returns(new TrackedSymbol());
 
             IPortfolio portfolio = Substitute.For<IPortfolio>();
             
-            var sut = new MessageProcessor(trackedSymbolFactory, portfolio);
+            var sut = new MessageProcessor(portfolio);
             var result = sut.ConvertMessage(message);
 
             var trackesSymbol = JsonSerializer.Deserialize<TrackedSymbol>(result.First());

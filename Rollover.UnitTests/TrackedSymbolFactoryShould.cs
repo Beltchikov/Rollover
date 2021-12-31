@@ -26,7 +26,7 @@ namespace Rollover.UnitTests
             var contractDetailsMessage = new ContractDetailsMessage(requestId, contractDetails);
 
             var sut = new TrackedSymbolFactory();
-            var trackedSymbol = sut.FromContractDetailsMessage(contractDetailsMessage);
+            var trackedSymbol = sut.InitFromContractDetailsMessage(contractDetailsMessage);
 
             Assert.Equal(contractDetailsMessage.RequestId, trackedSymbol.ReqIdContractDetails);
             Assert.Equal(contractDetailsMessage.ContractDetails.Contract.Symbol, trackedSymbol.Symbol);

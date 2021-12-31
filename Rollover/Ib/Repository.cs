@@ -18,6 +18,7 @@ namespace Rollover.Ib
         private IQueryParametersConverter _queryParametersConverter;
         private IMessageProcessor _messageProcessor;
         private IMessageCollector _messageCollector;
+        private ITrackedSymbolFactory _trackedSymbolFactory;
 
         private List<string> _positions = new List<string>();
         private int _reqIdSecDefOptParam = 0;
@@ -28,8 +29,8 @@ namespace Rollover.Ib
             IIbClientQueue ibClientQueue,
             IConfigurationManager configurationManager,
             IQueryParametersConverter queryParametersConverter,
-            IMessageProcessor messageProcessor, 
-            IMessageCollector messageCollector)
+            IMessageProcessor messageProcessor,
+            IMessageCollector messageCollector, ITrackedSymbolFactory trackedSymbolFactory)
         {
             _ibClient = ibClient;
             _ibClientQueue = ibClientQueue;
@@ -39,6 +40,7 @@ namespace Rollover.Ib
             _queryParametersConverter = queryParametersConverter;
             _messageProcessor = messageProcessor;
             _messageCollector = messageCollector;
+            _trackedSymbolFactory = trackedSymbolFactory;
         }
 
         public Tuple<bool, List<string>> Connect(string host, int port, int clientId)
@@ -86,7 +88,8 @@ namespace Rollover.Ib
 
             var contractDetailsMessageList = _messageCollector.reqContractDetails(contract);
             // TODO Evtl TrackedSymbol.Init(ContractDetailsMessage)
-            var trackedSymbol = TrackedSymbolFromContractDetailsMessage(contractDetailsMessageList.First());
+            //var trackedSymbol = TrackedSymbolFromContractDetailsMessage(contractDetailsMessageList.First());
+            var trackedSymbol = _trackedSymbolFactory.InitFromContractDetailsMessage(contractDetailsMessageList.First());
 
             // TODO
             // var underContract = UnderContractFromContractDetailsMessage(contractDetailsMessage);
