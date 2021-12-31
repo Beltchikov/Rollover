@@ -126,6 +126,10 @@ namespace Rollover.Ib
                         throw new ApplicationException("Unexpected. Multiple secDefOptParamMessageExpirationList");
                     }
                     var secDefOptParamMessage = secDefOptParamMessageExpirationList.First();
+
+                    // TODO
+                    // Price secondUnderContract
+                    // Update trackedSymbol with Strikes
                 }
                 else
                 {

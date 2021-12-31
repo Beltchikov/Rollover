@@ -349,7 +349,7 @@
             this.txtSecTypeRealTime.Name = "txtSecTypeRealTime";
             this.txtSecTypeRealTime.Size = new System.Drawing.Size(54, 23);
             this.txtSecTypeRealTime.TabIndex = 8;
-            this.txtSecTypeRealTime.Text = "FUT";
+            this.txtSecTypeRealTime.Text = "IND";
             // 
             // lblSecTypeRealTime
             // 
@@ -387,7 +387,7 @@
             this.txtLocalSymbolRealTime.Name = "txtLocalSymbolRealTime";
             this.txtLocalSymbolRealTime.Size = new System.Drawing.Size(100, 23);
             this.txtLocalSymbolRealTime.TabIndex = 8;
-            this.txtLocalSymbolRealTime.Text = "MNQZ1";
+            this.txtLocalSymbolRealTime.Text = "MNQ";
             // 
             // lblLocalSymbol
             // 
@@ -443,20 +443,20 @@
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
-            // tbSecTypeCheckSymbol
+            // txtSecTypeCheckSymbol
             // 
             this.txtSecTypeCheckSymbol.Location = new System.Drawing.Point(229, 97);
             this.txtSecTypeCheckSymbol.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.txtSecTypeCheckSymbol.Name = "tbSecTypeCheckSymbol";
+            this.txtSecTypeCheckSymbol.Name = "txtSecTypeCheckSymbol";
             this.txtSecTypeCheckSymbol.Size = new System.Drawing.Size(54, 23);
             this.txtSecTypeCheckSymbol.TabIndex = 8;
             this.txtSecTypeCheckSymbol.Text = "IND";
             // 
-            // tbExchangeCheckSymbol
+            // txtExchangeCheckSymbol
             // 
             this.txtExchangeCheckSymbol.Location = new System.Drawing.Point(533, 98);
             this.txtExchangeCheckSymbol.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.txtExchangeCheckSymbol.Name = "tbExchangeCheckSymbol";
+            this.txtExchangeCheckSymbol.Name = "txtExchangeCheckSymbol";
             this.txtExchangeCheckSymbol.Size = new System.Drawing.Size(70, 23);
             this.txtExchangeCheckSymbol.TabIndex = 8;
             this.txtExchangeCheckSymbol.Text = "GLOBEX";
