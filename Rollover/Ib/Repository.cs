@@ -80,51 +80,47 @@ namespace Rollover.Ib
 
         public HashSet<double> GetStrikes(ContractDetailsMessage contractDetailsMessage)
         {
+            // UnderContractDetailsMessage
             var underContract = UnderContractFromContractDetailsMessage(contractDetailsMessage);
-            if (underContract != null)
+            var underContractDetailsMessageList = ContractDetails(underContract);
+            if(!underContractDetailsMessageList.Any())
             {
-                var underContractDetailsMessageList = ContractDetails(underContract);
-                var underContractDetailsMessage = underContractDetailsMessageList
-                    .First(c => c.ContractDetails.ContractMonth == contractDetailsMessage.ContractDetails.ContractMonth);
-
-                var secondUnderContract = UnderContractFromContractDetailsMessage(underContractDetailsMessage);
-                if (secondUnderContract != null)
-                {
-                    var secondUnderContractDetailsMessageList = ContractDetails(secondUnderContract);
-                    if (secondUnderContractDetailsMessageList.Count() > 1)
-                    {
-                        throw new ApplicationException("Unexpected. Multiple secondUnderContractDetailsMessage");
-                    }
-
-                    var secondUnderContractDetailsMessage = secondUnderContractDetailsMessageList.First();
-
-                    var secDefOptParamMessageList = _messageCollector.reqSecDefOptParams(
-                        secondUnderContractDetailsMessage.ContractDetails.Contract.Symbol,
-                        secondUnderContractDetailsMessage.ContractDetails.Contract.Exchange,
-                        secondUnderContractDetailsMessage.ContractDetails.Contract.SecType,
-                        secondUnderContractDetailsMessage.ContractDetails.Contract.ConId
-                        );
-                    var lastTradeDateOrContractMonth = contractDetailsMessage.ContractDetails.Contract.LastTradeDateOrContractMonth;
-                    var secDefOptParamMessageExpirationList = secDefOptParamMessageList
-                        .Where(s => s.Expirations.Contains(lastTradeDateOrContractMonth));
-                    if (secDefOptParamMessageExpirationList.Count() > 1)
-                    {
-                        throw new ApplicationException("Unexpected. Multiple secDefOptParamMessageExpirationList");
-                    }
-                    var secDefOptParamMessage = secDefOptParamMessageExpirationList.First();
-                    return secDefOptParamMessage.Strikes;
-
-                    // TODO
-                    // Price secondUnderContract
-                    // Update trackedSymbol with Strikes
-                }
-                else
-                {
-                    throw new NotImplementedException();
-                }
+                throw new ApplicationException("No UnderContractDetailsMessages");
             }
+            var underContractDetailsMessage = underContractDetailsMessageList
+                .First(c => c.ContractDetails.ContractMonth == contractDetailsMessage.ContractDetails.ContractMonth);
 
-            throw new NotImplementedException();
+            // SecondUnderContractDetailsMessage
+            var secondUnderContract = UnderContractFromContractDetailsMessage(underContractDetailsMessage);
+            var secondUnderContractDetailsMessageList = ContractDetails(secondUnderContract);
+            if (!secondUnderContractDetailsMessageList.Any())
+            {
+                throw new ApplicationException("No SecondUnderContractDetailsMessageList");
+            }
+            if (secondUnderContractDetailsMessageList.Count() > 1)
+            {
+                throw new ApplicationException("Unexpected. Multiple secondUnderContractDetailsMessage");
+            }
+            var secondUnderContractDetailsMessage = secondUnderContractDetailsMessageList.First();
+
+            // SecDefOptParamMessage
+            var secDefOptParamMessageList = _messageCollector.reqSecDefOptParams(
+                secondUnderContractDetailsMessage.ContractDetails.Contract.Symbol,
+                secondUnderContractDetailsMessage.ContractDetails.Contract.Exchange,
+                secondUnderContractDetailsMessage.ContractDetails.Contract.SecType,
+                secondUnderContractDetailsMessage.ContractDetails.Contract.ConId
+                );
+            var lastTradeDateOrContractMonth = contractDetailsMessage.ContractDetails.Contract.LastTradeDateOrContractMonth;
+            var secDefOptParamMessageExpirationList = secDefOptParamMessageList
+                .Where(s => s.Expirations.Contains(lastTradeDateOrContractMonth));
+            if (secDefOptParamMessageExpirationList.Count() > 1)
+            {
+                throw new ApplicationException("Unexpected. Multiple secDefOptParamMessageExpirationList");
+            }
+            var secDefOptParamMessage = secDefOptParamMessageExpirationList.First();
+
+            //
+            return secDefOptParamMessage.Strikes;
         }
 
         private static Contract UnderContractFromContractDetailsMessage(ContractDetailsMessage contractDetailsMessage)
