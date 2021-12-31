@@ -91,16 +91,16 @@ namespace Rollover.UnitTests
                 .Do(c => { });
 
             var configurationManager = Substitute.For<IConfigurationManager>();
-            
+
             var trackedSymbolFactory = new TrackedSymbolFactory();
             var portfolio = new Portfolio();
             var messageProcessor = new MessageProcessor(trackedSymbolFactory, portfolio);
-            
+
             Configuration.Configuration configuration = new Configuration.Configuration
             { Timeout = timeout };
             configurationManager.GetConfiguration().Returns(configuration);
 
-            var sut = new Repository(ibClinet, null, ibClientQueue, configurationManager, null, messageProcessor);
+            var sut = new Repository(ibClinet, null, ibClientQueue, configurationManager, null, messageProcessor, null);
             var resultList = sut.AllPositions();
 
             Assert.Equal(3, resultList.Count);
@@ -127,12 +127,23 @@ namespace Rollover.UnitTests
             var portfolio = new Portfolio();
             var messageProcessor = new MessageProcessor(trackedSymbolFactory, portfolio);
 
-            var sut = new Repository(ibClinet, null, ibClientQueue, configurationManager, null, messageProcessor);
+            var sut = new Repository(ibClinet, null, ibClientQueue, configurationManager, null, messageProcessor, null);
             var trackedSymbol = sut.GetTrackedSymbol(contract);
             Thread.Sleep(timeout);
 
             Assert.Null(trackedSymbol);
         }
+
+        [Theory, AutoNSubstituteData]
+        public void CallMessageCollectorEConnect(
+            [Frozen] IMessageCollector messageCollector,
+            [Frozen] IConfigurationManager configurationManager)
+        {
+            IRepository sut = new Repository(null, null, null, configurationManager, null, null, messageCollector);
+            sut.Connect("localhost", 4001, 1);
+            messageCollector.Received().eConnect("localhost", 4001, 1);
+        }
+
 
         //[Fact]
         //public void ReturnTrackedSymbol()

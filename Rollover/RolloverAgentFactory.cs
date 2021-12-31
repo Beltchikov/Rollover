@@ -27,13 +27,15 @@ namespace Rollover
             IInputQueue inputQueue = new InputQueue();
             IQueryParametersConverter queryParametersConverter = new QueryParametersConverter();
             IMessageProcessor messageProcessor = new MessageProcessor(trackedSymbolFactory, portfolio);
+            IMessageCollector messageCollector = new MessageCollector();
             IRepository repository = new Repository(
                 ibClient,
                 connectedCondition,
                 ibClientQueue,
                 _configurationManager,
                 queryParametersConverter,
-                messageProcessor);
+                messageProcessor,
+                messageCollector);
 
             ITrackedSymbols trackedSymbols = new TrackedSymbols();
             IReducer reducer = new Reducer();

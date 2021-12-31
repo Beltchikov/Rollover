@@ -19,6 +19,7 @@ namespace Rollover.Ib
         private IConfigurationManager _configurationManager;
         private IQueryParametersConverter _queryParametersConverter;
         private IMessageProcessor _messageProcessor;
+        private IMessageCollector _messageCollector;
 
         private List<string> _positions = new List<string>();
         private int _reqIdContractDetails = 0;
@@ -31,7 +32,8 @@ namespace Rollover.Ib
             IIbClientQueue ibClientQueue,
             IConfigurationManager configurationManager,
             IQueryParametersConverter queryParametersConverter,
-            IMessageProcessor messageProcessor)
+            IMessageProcessor messageProcessor, 
+            IMessageCollector messageCollector)
         {
             _ibClient = ibClient;
             _connectedCondition = connectedCondition;
@@ -41,14 +43,24 @@ namespace Rollover.Ib
             _timeout = _configurationManager.GetConfiguration().Timeout;
             _queryParametersConverter = queryParametersConverter;
             _messageProcessor = messageProcessor;
+            _messageCollector = messageCollector;
         }
 
         #region Connect, Disconnect
 
         public Tuple<bool, List<string>> Connect(string host, int port, int clientId)
         {
-            ConnectAndStartConsoleThread(host, port, clientId);
-            return CheckConnectionMessages(_ibClientQueue, _configurationManager.GetConfiguration().Timeout);
+            //ConnectAndStartConsoleThread(host, port, clientId);
+            //return CheckConnectionMessages(_ibClientQueue, _configurationManager.GetConfiguration().Timeout);
+
+            ConnectionMessages connectionMessages = _messageCollector.eConnect(host, port, clientId);
+            return ConnectionMessagesToConnectionTuple(connectionMessages);
+        }
+
+        private Tuple<bool, List<string>> ConnectionMessagesToConnectionTuple(ConnectionMessages connectionMessages)
+        {
+            // TODO
+            return new Tuple<bool, List<string>>(true, null);
         }
 
         private void ConnectAndStartConsoleThread(string host, int port, int clientId)
