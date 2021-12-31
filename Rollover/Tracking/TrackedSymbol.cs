@@ -10,17 +10,32 @@
         public string Exchange { get; set; }
         public double Strike { get; set; }
 
-        // Three last figures are behind the comma figures
+        /// <summary>
+        /// Three last figures are behind the comma figures
+        /// </summary>
         public int NextStrike { get; set; }
 
-        // Three last figures are behind the comma figures
-        public int OverNextStrike { get; set; }
+        /// <summary>
+        /// Three last figures are behind the comma figures
+        /// </summary>
+        public int NextButOneStrike { get; set; }
+
+        /// <summary>
+        /// Three last figures are behind the comma figures
+        /// </summary>
+        public int PreviousStrike { get; set; }
+
+        /// <summary>
+        /// Three last figures are behind the comma figures
+        /// </summary>
+        public int PreviousButOneStrike { get; set; }
+
         public string LocalSymbol { get; set; }
         public int ReqIdSecDefOptParams { get; set; }
 
         public override string ToString()
         {
-            return $"{Symbol} {NextStrike} {OverNextStrike}";
+            return $"{Symbol} {NextStrike} {NextButOneStrike}";
         }
     }
 }

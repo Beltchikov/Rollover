@@ -7,7 +7,7 @@
         string Exchange { get; set; }
         string LocalSymbol { get; set; }
         int NextStrike { get; set; }
-        int OverNextStrike { get; set; }
+        int NextButOneStrike { get; set; }
         int ReqIdContractDetails { get; set; }
         int ReqIdSecDefOptParams { get; set; }
         string SecType { get; set; }

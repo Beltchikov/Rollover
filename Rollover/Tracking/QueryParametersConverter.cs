@@ -25,7 +25,7 @@
             copy.LocalSymbol = trackedSymbol.LocalSymbol;
             copy.NextStrike = trackedSymbol.NextStrike;
 
-            copy.OverNextStrike = trackedSymbol.ConId;
+            copy.NextButOneStrike = trackedSymbol.ConId;
             copy.ReqIdContractDetails = trackedSymbol.ReqIdContractDetails;
             copy.ReqIdSecDefOptParams = trackedSymbol.ReqIdSecDefOptParams;
             copy.SecType = trackedSymbol.SecType;
