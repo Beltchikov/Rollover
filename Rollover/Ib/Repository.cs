@@ -55,10 +55,10 @@ namespace Rollover.Ib
 
         public List<PositionMessage> AllPositions()
         {
-            return _messageCollector.reqPositions();    
+            return _messageCollector.reqPositions();
         }
 
-       public ITrackedSymbol GetTrackedSymbol(Contract contract)
+        public ITrackedSymbol GetTrackedSymbol(Contract contract)
         {
             //var reqId = ++_reqIdContractDetails;
             //_ibClient.reqContractDetails(reqId, contract);
@@ -86,23 +86,23 @@ namespace Rollover.Ib
             //return trackedSymbol;
 
             var contractDetailsMessageList = _messageCollector.reqContractDetails(contract);
-            if(contractDetailsMessageList.Count() > 1)
+            if (contractDetailsMessageList.Count() > 1)
             {
                 throw new ApplicationException("Unexpected. Multiple ContractDetailsMessages");
             }
-            var contractDetailsMessage = contractDetailsMessageList.First();  
+            var contractDetailsMessage = contractDetailsMessageList.First();
 
             var trackedSymbol = _trackedSymbolFactory.InitFromContractDetailsMessage(contractDetailsMessage);
 
             var underContract = UnderContractFromContractDetailsMessage(contractDetailsMessage);
-            if(underContract != null)
+            if (underContract != null)
             {
                 var underContractDetailsMessageList = _messageCollector.reqContractDetails(underContract);
                 var underContractDetailsMessage = underContractDetailsMessageList
                     .First(c => c.ContractDetails.ContractMonth == contractDetailsMessage.ContractDetails.ContractMonth);
 
                 var secondUnderContract = UnderContractFromContractDetailsMessage(underContractDetailsMessage);
-                if(secondUnderContract != null)
+                if (secondUnderContract != null)
                 {
                     var secondUnderContractDetailsMessageList = _messageCollector.reqContractDetails(secondUnderContract);
                     if (secondUnderContractDetailsMessageList.Count() > 1)
@@ -111,31 +111,27 @@ namespace Rollover.Ib
                     }
 
                     var secondUnderContractDetailsMessage = secondUnderContractDetailsMessageList.First();
-                    
-                    var SecDefOptParamMessageList = _messageCollector.reqSecDefOptParams(
+
+                    var secDefOptParamMessageList = _messageCollector.reqSecDefOptParams(
                         secondUnderContractDetailsMessage.ContractDetails.Contract.Symbol,
                         secondUnderContractDetailsMessage.ContractDetails.Contract.Exchange,
                         secondUnderContractDetailsMessage.ContractDetails.Contract.SecType,
                         secondUnderContractDetailsMessage.ContractDetails.Contract.ConId
                         );
+                    var lastTradeDateOrContractMonth = contractDetailsMessage.ContractDetails.Contract.LastTradeDateOrContractMonth;
+                    var secDefOptParamMessageExpirationList = secDefOptParamMessageList
+                        .Where(s => s.Expirations.Contains(lastTradeDateOrContractMonth));
+                    if (secDefOptParamMessageExpirationList.Count() > 1)
+                    {
+                        throw new ApplicationException("Unexpected. Multiple secDefOptParamMessageExpirationList");
+                    }
+                    var secDefOptParamMessage = secDefOptParamMessageExpirationList.First();
                 }
                 else
                 {
 
                 }
             }
-
-            // TODO
-            // var underContract = UnderContractFromContractDetailsMessage(contractDetailsMessage);
-            // if(UnderContract)
-            //      var underContractDetailsMessageList = _messageCollector.reqContractDetails(underContract);
-            //      TrackedSymbol.Update(ContractDetailsMessage)
-            //
-            //      var secondUnderContract = UnderContractFromContractDetailsMessage(underVontractDetailsMessage);
-            //      if(SecondUnderContract)
-            //          var SecondUnderContractDetailsMessageList = _messageCollector.reqContractDetails(secondUnderContract);
-            //          TrackedSymbol.Update(SecondUnderContractDetailsMessageList)
-
 
             return trackedSymbol;
         }
@@ -146,7 +142,7 @@ namespace Rollover.Ib
             {
                 return null;
             }
-            
+
             return new Contract
             {
                 SecType = contractDetailsMessage.ContractDetails.UnderSecType,
@@ -154,18 +150,6 @@ namespace Rollover.Ib
                 Currency = contractDetailsMessage.ContractDetails.Contract.Currency,
                 Exchange = contractDetailsMessage.ContractDetails.Contract.Exchange
             };
-        }
-
-        private ITrackedSymbol TrackedSymbolFromContractDetailsMessage(ContractDetailsMessage contractDetailsMessage)
-        {
-            var input = _messageProcessor.ConvertMessage(contractDetailsMessage);
-            if (input.Any())
-            {
-                var trackedSymbol = JsonSerializer.Deserialize<TrackedSymbol>(input.First());
-                return trackedSymbol;
-            }
-
-            return null;
         }
 
         private Tuple<bool, List<string>> ConnectionMessagesToConnectionTuple(ConnectionMessages connectionMessages)
@@ -180,27 +164,6 @@ namespace Rollover.Ib
             connectionTuple.Item2.AddRange(connectionStatusMessageAsString);
 
             return connectionTuple;
-        }
-
-        private void ReqSecDefOptParams(ITrackedSymbol trackedSymbol)
-        {
-            //_ibClient.ReqSecDefOptParams(
-            //    trackedSymbol.ReqIdSecDefOptParams, 
-            //    trackedSymbol.Symbol, 
-            //    trackedSymbol.Exchange, 
-            //    //trackedSymbol.SecType, 
-            //    "IND",
-            //    //trackedSymbol.ConId
-            //    362687422);
-
-            var trackedSymbolCopy = _queryParametersConverter.TrackedSymbolForReqSecDefOptParams(trackedSymbol);
-
-            _ibClient.reqSecDefOptParams(
-                trackedSymbolCopy.ReqIdSecDefOptParams,
-                trackedSymbolCopy.Symbol,
-                trackedSymbolCopy.Exchange,
-                trackedSymbolCopy.SecType,
-                trackedSymbolCopy.ConId);
         }
     }
 }

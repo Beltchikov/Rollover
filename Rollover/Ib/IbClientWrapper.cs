@@ -110,13 +110,12 @@ namespace Rollover.Ib
 
         public void OnSecurityDefinitionOptionParameter(SecurityDefinitionOptionParameterMessage obj)
         {
-            //throw new NotImplementedException();
+            _ibClientQueue.Enqueue(obj);
         }
 
         public void OnSecurityDefinitionOptionParameterEnd(int obj)
         {
-            // obj = 1;
-            //throw new NotImplementedException();
+            _ibClientQueue.Enqueue(Constants.ON_SECURITY_DEFINITION_OPTION_PARAMETER_END);
         }
 
         #endregion
