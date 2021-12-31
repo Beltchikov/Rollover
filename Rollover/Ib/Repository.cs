@@ -68,7 +68,13 @@ namespace Rollover.Ib
             var contractDetailsMessage = contractDetailsMessageList.First();
 
             var trackedSymbol = _trackedSymbolFactory.InitFromContractDetailsMessage(contractDetailsMessage);
+            var strikes = GetStrikes(contractDetailsMessage);
 
+            return trackedSymbol;
+        }
+
+        private HashSet<double> GetStrikes(ContractDetailsMessage contractDetailsMessage)
+        {
             var underContract = UnderContractFromContractDetailsMessage(contractDetailsMessage);
             if (underContract != null)
             {
@@ -101,6 +107,7 @@ namespace Rollover.Ib
                         throw new ApplicationException("Unexpected. Multiple secDefOptParamMessageExpirationList");
                     }
                     var secDefOptParamMessage = secDefOptParamMessageExpirationList.First();
+                    return secDefOptParamMessage.Strikes;
 
                     // TODO
                     // Price secondUnderContract
@@ -108,11 +115,11 @@ namespace Rollover.Ib
                 }
                 else
                 {
-
+                    throw new NotImplementedException();
                 }
             }
 
-            return trackedSymbol;
+            throw new NotImplementedException();
         }
 
         private static Contract UnderContractFromContractDetailsMessage(ContractDetailsMessage contractDetailsMessage)

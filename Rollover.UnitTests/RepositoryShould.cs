@@ -176,16 +176,24 @@ namespace Rollover.UnitTests
             {
                 Symbol = "MNQ",
                 Currency="USD",
-                Exchange="GLOBEX"
+                Exchange="GLOBEX",
+                LastTradeDateOrContractMonth = "20220318"
             };
             var contractDetails = new ContractDetails 
-            { Contract = contract,
-                UnderSecType = "FUT"
-            };
+                { Contract = contract, UnderSecType = "FUT" };
             contractDetails.Contract = contract;
             var contractDetailsMessage = new ContractDetailsMessage(1, contractDetails);
             var contractDetailsMessageList = new List<ContractDetailsMessage> { contractDetailsMessage };
             messageCollector.reqContractDetails(Arg.Any<Contract>()).Returns(contractDetailsMessageList);
+
+            var expirations = new HashSet<string>{"20220318"};
+            var strikes = new HashSet<double> {980, 90, 100, 110, 120};
+            var secDefOptParamMessageList = new List<SecurityDefinitionOptionParameterMessage> { 
+            new SecurityDefinitionOptionParameterMessage(1,"",123, "", "", expirations, strikes)
+            };
+            messageCollector.reqSecDefOptParams(
+                Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>())
+                .Returns(secDefOptParamMessageList);
 
             IRepository sut = new Repository(null, null, configurationManager, 
                 null, null, messageCollector, trackedSymbolFactory);
