@@ -96,8 +96,7 @@ namespace Rollover.Ib
 
         private void OnContractDetailsEnd(int obj)
         {
-            // TODO
-            //throw new NotImplementedException();
+            _ibClientQueue.Enqueue(Constants.ON_CONTRACT_DETAILS_END);
         }
 
         #endregion

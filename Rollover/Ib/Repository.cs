@@ -20,7 +20,6 @@ namespace Rollover.Ib
         private IMessageCollector _messageCollector;
 
         private List<string> _positions = new List<string>();
-        private int _reqIdContractDetails = 0;
         private int _reqIdSecDefOptParam = 0;
         private int _timeout;
 
@@ -85,11 +84,23 @@ namespace Rollover.Ib
 
             //return trackedSymbol;
 
-            var reqId = ++_reqIdContractDetails;
-            var contractDetailsMessageList = _messageCollector.reqContractDetails(reqId, contract);
+            var contractDetailsMessageList = _messageCollector.reqContractDetails(contract);
+            // TODO Evtl TrackedSymbol.Init(ContractDetailsMessage)
+            var trackedSymbol = TrackedSymbolFromContractDetailsMessage(contractDetailsMessageList.First());
 
             // TODO
-            return null;
+            // var underContract = UnderContractFromContractDetailsMessage(contractDetailsMessage);
+            // if(UnderContract)
+            //      var underContractDetailsMessageList = _messageCollector.reqContractDetails(underContract);
+            //      TrackedSymbol.Update(ContractDetailsMessage)
+            //
+            //      var secondUnderContract = UnderContractFromContractDetailsMessage(underVontractDetailsMessage);
+            //      if(SecondUnderContract)
+            //          var SecondUnderContractDetailsMessageList = _messageCollector.reqContractDetails(secondUnderContract);
+            //          TrackedSymbol.Update(SecondUnderContractDetailsMessageList)
+
+
+            return trackedSymbol;
         }
 
         private static Contract UnderContractFromContractDetailsMessage(ContractDetailsMessage contractDetailsMessage)
@@ -103,34 +114,13 @@ namespace Rollover.Ib
             };
         }
 
-        private ITrackedSymbol TrackedSymbolFromContractDetailsMessage(ContractDetailsMessage contractDetailsMessage, int reqId)
+        private ITrackedSymbol TrackedSymbolFromContractDetailsMessage(ContractDetailsMessage contractDetailsMessage)
         {
             var input = _messageProcessor.ConvertMessage(contractDetailsMessage);
             if (input.Any())
             {
                 var trackedSymbol = JsonSerializer.Deserialize<TrackedSymbol>(input.First());
-                if (trackedSymbol?.ReqIdContractDetails == reqId)
-                {
-                    return trackedSymbol;
-                }
-            }
-
-            return null;
-        }
-
-        private ContractDetailsMessage ReadContractDetails(int reqId)
-        {
-            var stopWatch = new Stopwatch();
-            stopWatch.Start();
-            while (stopWatch.Elapsed.TotalMilliseconds < _timeout)
-            {
-                var message = _ibClientQueue.Dequeue() as ContractDetailsMessage;
-                if (message == null)
-                {
-                    continue;
-                }
-
-                return message;
+                return trackedSymbol;
             }
 
             return null;

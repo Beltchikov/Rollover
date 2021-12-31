@@ -162,7 +162,7 @@ namespace Rollover.UnitTests
         {
             IRepository sut = new Repository(null, null, configurationManager, null, null, messageCollector);
             sut.GetTrackedSymbol(contract);
-            messageCollector.Received().reqContractDetails(Arg.Any<int>(), contract);
+            messageCollector.Received().reqContractDetails(contract);
         }
 
 

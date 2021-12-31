@@ -8,6 +8,6 @@ namespace Rollover.Ib
     {
         ConnectionMessages eConnect(string host, int port, int clientId);
         List<PositionMessage> reqPositions();
-        List<ContractDetailsMessage> reqContractDetails(int reqId, Contract contract);
+        List<ContractDetailsMessage> reqContractDetails(Contract contract);
     }
 }

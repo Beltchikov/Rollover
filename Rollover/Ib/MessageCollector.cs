@@ -15,6 +15,8 @@ namespace Rollover.Ib
         private IIbClientQueue _ibClientQueue;
         private IConfigurationManager _configurationManager;
 
+        private int _reqIdContractDetails = 0;
+
         public MessageCollector(
             IIbClientWrapper ibClient,
             IConnectedCondition connectedCondition,
@@ -123,9 +125,35 @@ namespace Rollover.Ib
             return positionMessages;
         }
 
-        public List<ContractDetailsMessage> reqContractDetails(int reqId, Contract contract)
+        public List<ContractDetailsMessage> reqContractDetails(Contract contract)
         {
-            throw new NotImplementedException();
+            List<ContractDetailsMessage> contractDetailsMessages = new List<ContractDetailsMessage>();
+
+            var reqId = ++_reqIdContractDetails;
+            _ibClient.reqContractDetails(reqId, contract);
+
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            while (stopWatch.Elapsed.TotalMilliseconds < _configurationManager.GetConfiguration().Timeout)
+            {
+                var message = _ibClientQueue.Dequeue();
+
+                if (message is ContractDetailsMessage)
+                {
+                    contractDetailsMessages.Add(message as ContractDetailsMessage);
+                }
+                else if (message is string)
+                {
+                    var messageAsString = message as string;
+                    if (messageAsString == Constants.ON_CONTRACT_DETAILS_END)
+                    {
+                        return contractDetailsMessages;
+                    }
+                }
+            }
+
+            return contractDetailsMessages;
         }
     }
 }
