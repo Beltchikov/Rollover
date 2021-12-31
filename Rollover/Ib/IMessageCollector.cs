@@ -2,6 +2,6 @@
 {
     public interface IMessageCollector
     {
-        ConnectionMessages eConnect(string v1, int v2, int v3);
+        ConnectionMessages eConnect(string host, int port, int clientId);
     }
 }

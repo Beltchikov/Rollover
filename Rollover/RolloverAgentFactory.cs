@@ -27,10 +27,13 @@ namespace Rollover
             IInputQueue inputQueue = new InputQueue();
             IQueryParametersConverter queryParametersConverter = new QueryParametersConverter();
             IMessageProcessor messageProcessor = new MessageProcessor(trackedSymbolFactory, portfolio);
-            IMessageCollector messageCollector = new MessageCollector();
-            IRepository repository = new Repository(
+            IMessageCollector messageCollector = new MessageCollector(
                 ibClient,
                 connectedCondition,
+                ibClientQueue,
+                _configurationManager);
+            IRepository repository = new Repository(
+                ibClient,
                 ibClientQueue,
                 _configurationManager,
                 queryParametersConverter,
@@ -57,6 +60,7 @@ namespace Rollover
                 repository,
                 inputLoop,
                 twsConnector);
+            
             return rolloverAgent;
         }
     }

@@ -7,14 +7,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.Json;
-using System.Threading;
 
 namespace Rollover.Ib
 {
     public class Repository : IRepository
     {
         private IIbClientWrapper _ibClient;
-        private IConnectedCondition _connectedCondition;
         private IIbClientQueue _ibClientQueue;
         private IConfigurationManager _configurationManager;
         private IQueryParametersConverter _queryParametersConverter;
@@ -28,7 +26,6 @@ namespace Rollover.Ib
 
         public Repository(
             IIbClientWrapper ibClient,
-            IConnectedCondition connectedCondition,
             IIbClientQueue ibClientQueue,
             IConfigurationManager configurationManager,
             IQueryParametersConverter queryParametersConverter,
@@ -36,7 +33,6 @@ namespace Rollover.Ib
             IMessageCollector messageCollector)
         {
             _ibClient = ibClient;
-            _connectedCondition = connectedCondition;
             _ibClientQueue = ibClientQueue;
             _configurationManager = configurationManager;
 
@@ -50,63 +46,22 @@ namespace Rollover.Ib
 
         public Tuple<bool, List<string>> Connect(string host, int port, int clientId)
         {
-            //ConnectAndStartConsoleThread(host, port, clientId);
-            //return CheckConnectionMessages(_ibClientQueue, _configurationManager.GetConfiguration().Timeout);
-
             ConnectionMessages connectionMessages = _messageCollector.eConnect(host, port, clientId);
             return ConnectionMessagesToConnectionTuple(connectionMessages);
         }
 
         private Tuple<bool, List<string>> ConnectionMessagesToConnectionTuple(ConnectionMessages connectionMessages)
         {
-            // TODO
-            return new Tuple<bool, List<string>>(true, null);
-        }
+            var connectionTuple = new Tuple<bool, List<string>>(connectionMessages.Connected, new List<string>());
 
-        private void ConnectAndStartConsoleThread(string host, int port, int clientId)
-        {
-            _ibClient.eConnect(host, port, clientId);
+            connectionMessages.OnErrorMessages.ForEach(m => connectionTuple.Item2.Add(m));
+            
+            var managedAccountsMessageAsString = _messageProcessor.ConvertMessage(connectionMessages.ManagedAccountsMessage);
+            connectionTuple.Item2.AddRange(managedAccountsMessageAsString);
+            var connectionStatusMessageAsString = _messageProcessor.ConvertMessage(connectionMessages.ConnectionStatusMessage);
+            connectionTuple.Item2.AddRange(connectionStatusMessageAsString);
 
-            var reader = _ibClient.ReaderFactory();
-            reader.Start();
-
-            new Thread(() =>
-            {
-                while (_ibClient.IsConnected())
-                {
-                    _ibClient.WaitForSignal();
-                    reader.processMsgs();
-                }
-            })
-            { IsBackground = true }
-            .Start();
-        }
-
-        private Tuple<bool, List<string>> CheckConnectionMessages(IIbClientQueue ibClientQueue, int timeout)
-        {
-            var messages = new List<string>();
-            var stopWatch = new Stopwatch();
-            stopWatch.Start();
-
-            while (stopWatch.Elapsed.TotalMilliseconds < timeout)
-            {
-                var message = ibClientQueue.Dequeue();
-                var input = _messageProcessor.ConvertMessage(message);
-                if (!input.Any())
-                {
-                    continue;
-                }
-
-                messages.AddRange(input);
-
-                input.ForEach(i => _connectedCondition.AddInput(i));
-                if (_connectedCondition.IsConnected())
-                {
-                    return new Tuple<bool, List<string>>(true, messages);
-                }
-            }
-
-            return new Tuple<bool, List<string>>(false, messages);
+            return connectionTuple;
         }
 
         public void Disconnect()

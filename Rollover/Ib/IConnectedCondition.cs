@@ -2,7 +2,7 @@
 {
     public interface IConnectedCondition
     {
-        void AddInput(string input);
         bool IsConnected();
+        void AddMessage(object message);
     }
 }

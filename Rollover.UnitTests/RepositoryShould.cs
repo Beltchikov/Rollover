@@ -100,7 +100,7 @@ namespace Rollover.UnitTests
             { Timeout = timeout };
             configurationManager.GetConfiguration().Returns(configuration);
 
-            var sut = new Repository(ibClinet, null, ibClientQueue, configurationManager, null, messageProcessor, null);
+            var sut = new Repository(ibClinet, ibClientQueue, configurationManager, null, messageProcessor, null);
             var resultList = sut.AllPositions();
 
             Assert.Equal(3, resultList.Count);
@@ -127,7 +127,7 @@ namespace Rollover.UnitTests
             var portfolio = new Portfolio();
             var messageProcessor = new MessageProcessor(trackedSymbolFactory, portfolio);
 
-            var sut = new Repository(ibClinet, null, ibClientQueue, configurationManager, null, messageProcessor, null);
+            var sut = new Repository(ibClinet, ibClientQueue, configurationManager, null, messageProcessor, null);
             var trackedSymbol = sut.GetTrackedSymbol(contract);
             Thread.Sleep(timeout);
 
@@ -139,7 +139,7 @@ namespace Rollover.UnitTests
             [Frozen] IMessageCollector messageCollector,
             [Frozen] IConfigurationManager configurationManager)
         {
-            IRepository sut = new Repository(null, null, null, configurationManager, null, null, messageCollector);
+            IRepository sut = new Repository(null, null, configurationManager, null, null, messageCollector);
             sut.Connect("localhost", 4001, 1);
             messageCollector.Received().eConnect("localhost", 4001, 1);
         }

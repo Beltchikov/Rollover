@@ -20,7 +20,7 @@ namespace Rollover.UnitTests
             };
 
             IConnectedCondition sut = new ConnectedCondition();
-            inputList.ForEach(i => sut.AddInput(i));
+            inputList.ForEach(i => sut.AddMessage(i));
 
             var result = sut.IsConnected();
             Assert.False(result);
@@ -36,7 +36,7 @@ namespace Rollover.UnitTests
             };
 
             IConnectedCondition sut = new ConnectedCondition();
-            inputList.ForEach(i => sut.AddInput(i));
+            inputList.ForEach(i => sut.AddMessage(i));
 
             var result = sut.IsConnected();
             Assert.False(result);
@@ -52,7 +52,7 @@ namespace Rollover.UnitTests
             };
 
             IConnectedCondition sut = new ConnectedCondition();
-            inputList.ForEach(i => sut.AddInput(i));
+            inputList.ForEach(i => sut.AddMessage(i));
 
             var result = sut.IsConnected();
             Assert.False(result);
@@ -68,7 +68,7 @@ namespace Rollover.UnitTests
             };
 
             IConnectedCondition sut = new ConnectedCondition();
-            inputList.ForEach(i => sut.AddInput(i));
+            inputList.ForEach(i => sut.AddMessage(i));
 
             var result = sut.IsConnected();
             Assert.False(result);
@@ -84,7 +84,7 @@ namespace Rollover.UnitTests
             };
 
             IConnectedCondition sut = new ConnectedCondition();
-            inputList.ForEach(i => sut.AddInput(i));
+            inputList.ForEach(i => sut.AddMessage(i));
 
             var result = sut.IsConnected();
             Assert.False(result);
@@ -99,7 +99,7 @@ namespace Rollover.UnitTests
             };
 
             IConnectedCondition sut = new ConnectedCondition();
-            inputList.ForEach(i => sut.AddInput(i));
+            inputList.ForEach(i => sut.AddMessage(i));
 
             var result = sut.IsConnected();
             Assert.False(result);
@@ -116,7 +116,7 @@ namespace Rollover.UnitTests
             };
 
             IConnectedCondition sut = new ConnectedCondition();
-            inputList.ForEach(i => sut.AddInput(i));
+            inputList.ForEach(i => sut.AddMessage(i));
 
             var result = sut.IsConnected();
             Assert.False(result);
@@ -133,7 +133,7 @@ namespace Rollover.UnitTests
             };
 
             IConnectedCondition sut = new ConnectedCondition();
-            inputList.ForEach(i => sut.AddInput(i));
+            inputList.ForEach(i => sut.AddMessage(i));
 
             var result = sut.IsConnected();
             Assert.False(result);
@@ -150,7 +150,7 @@ namespace Rollover.UnitTests
             };
 
             IConnectedCondition sut = new ConnectedCondition();
-            inputList.ForEach(i => sut.AddInput(i));
+            inputList.ForEach(i => sut.AddMessage(i));
 
             var result = sut.IsConnected();
             Assert.True(result);
