@@ -1,8 +1,8 @@
 ﻿using Rollover.Configuration;
 using Rollover.Ib;
 using Rollover.Input;
+using Rollover.Tracking;
 using System.Linq;
-using System.Threading;
 
 namespace Rollover
 {
@@ -15,6 +15,7 @@ namespace Rollover
         private IRepository _repository;
         private IInputLoop _inputLoop;
         private ITwsConnector _twsConnector;
+        private IPortfolio _portfolio;
 
         public RolloverAgent(
             IConfigurationManager configurationManager,
@@ -22,8 +23,9 @@ namespace Rollover
             IInputQueue inputQueue,
             IIbClientQueue ibClientQueue,
             IRepository repository,
-            IInputLoop inputLoop, 
-            ITwsConnector twsConnector)
+            IInputLoop inputLoop,
+            ITwsConnector twsConnector,
+            IPortfolio portfolio)
         {
             _configurationManager = configurationManager;
             _consoleWrapper = consoleWrapper;
@@ -32,16 +34,20 @@ namespace Rollover
             _inputLoop = inputLoop;
             _ibClientQueue = ibClientQueue;
             _twsConnector = twsConnector;
+            _portfolio = portfolio;
         }
-
-        public IRepository Repository => _repository;
 
         public void Run()
         {
             _twsConnector.Connect();
 
             var positionMessageList = _repository.AllPositions().OrderBy(p => p.Contract.LocalSymbol).ToList();
-            positionMessageList.ForEach(p => _consoleWrapper.WriteLine(p.Contract.LocalSymbol));
+            positionMessageList.ForEach(p =>
+            {
+                _portfolio.Add(p);
+                _consoleWrapper.WriteLine(p.Contract.LocalSymbol);
+            });
+
             _consoleWrapper.WriteLine(Constants.ENTER_SYMBOL_TO_TRACK);
 
             _inputLoop.Run(_consoleWrapper, _inputQueue, _ibClientQueue);

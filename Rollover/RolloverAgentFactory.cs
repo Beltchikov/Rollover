@@ -59,7 +59,8 @@ namespace Rollover
                 ibClientQueue,
                 repository,
                 inputLoop,
-                twsConnector);
+                twsConnector,
+                portfolio);
             
             return rolloverAgent;
         }
