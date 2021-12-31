@@ -60,7 +60,7 @@ namespace Rollover.Ib
 
         public ITrackedSymbol GetTrackedSymbol(Contract contract)
         {
-            var contractDetailsMessageList = _messageCollector.reqContractDetails(contract);
+            var contractDetailsMessageList = ContractDetails(contract);
             if (contractDetailsMessageList.Count() > 1)
             {
                 throw new ApplicationException("Unexpected. Multiple ContractDetailsMessages");
@@ -73,19 +73,24 @@ namespace Rollover.Ib
             return trackedSymbol;
         }
 
-        private HashSet<double> GetStrikes(ContractDetailsMessage contractDetailsMessage)
+        public List<ContractDetailsMessage> ContractDetails(Contract contract)
+        {
+            return _messageCollector.reqContractDetails(contract);
+        }
+
+        public HashSet<double> GetStrikes(ContractDetailsMessage contractDetailsMessage)
         {
             var underContract = UnderContractFromContractDetailsMessage(contractDetailsMessage);
             if (underContract != null)
             {
-                var underContractDetailsMessageList = _messageCollector.reqContractDetails(underContract);
+                var underContractDetailsMessageList = ContractDetails(underContract);
                 var underContractDetailsMessage = underContractDetailsMessageList
                     .First(c => c.ContractDetails.ContractMonth == contractDetailsMessage.ContractDetails.ContractMonth);
 
                 var secondUnderContract = UnderContractFromContractDetailsMessage(underContractDetailsMessage);
                 if (secondUnderContract != null)
                 {
-                    var secondUnderContractDetailsMessageList = _messageCollector.reqContractDetails(secondUnderContract);
+                    var secondUnderContractDetailsMessageList = ContractDetails(secondUnderContract);
                     if (secondUnderContractDetailsMessageList.Count() > 1)
                     {
                         throw new ApplicationException("Unexpected. Multiple secondUnderContractDetailsMessage");
