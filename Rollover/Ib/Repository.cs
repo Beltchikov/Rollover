@@ -53,48 +53,10 @@ namespace Rollover.Ib
             _ibClient.eDisconnect();
         }
 
-        #region AllPositions
-
         public List<PositionMessage> AllPositions()
         {
-            //ListPositions();
-            //ReadPositions(_ibClientQueue, _configurationManager.GetConfiguration().Timeout);
-
-            //var positionsBuffer = new List<string>(_positions);
-            //_positions.Clear();
-            //return positionsBuffer;
-
             return _messageCollector.reqPositions();    
         }
-
-        //private void ListPositions()
-        //{
-        //    _ibClient.reqPositions();
-        //}
-
-        //private void ReadPositions(IIbClientQueue ibClientQueue, int timeout)
-        //{
-        //    var stopWatch = new Stopwatch();
-        //    stopWatch.Start();
-
-        //    while (stopWatch.Elapsed.TotalMilliseconds < timeout)
-        //    {
-        //        var message = ibClientQueue.Dequeue();
-        //        var input = _messageProcessor.ConvertMessage(message);
-        //        if (!input.Any())
-        //        {
-        //            continue;
-        //        }
-
-        //        if (input.Any(m => m == Constants.ENTER_SYMBOL_TO_TRACK))
-        //        {
-        //            _positions.AddRange(input);
-        //            return;
-        //        }
-        //    }
-        //}
-
-        #endregion
 
         #region GetTrackedSymbol
 

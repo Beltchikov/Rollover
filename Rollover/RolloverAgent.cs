@@ -1,6 +1,7 @@
 ﻿using Rollover.Configuration;
 using Rollover.Ib;
 using Rollover.Input;
+using System.Linq;
 using System.Threading;
 
 namespace Rollover
@@ -39,8 +40,9 @@ namespace Rollover
         {
             _twsConnector.Connect();
 
-            var positionMessageList = _repository.AllPositions();
+            var positionMessageList = _repository.AllPositions().OrderBy(p => p.Contract.LocalSymbol).ToList();
             positionMessageList.ForEach(p => _consoleWrapper.WriteLine(p.Contract.LocalSymbol));
+            _consoleWrapper.WriteLine(Constants.ENTER_SYMBOL_TO_TRACK);
 
             _inputLoop.Run(_consoleWrapper, _inputQueue, _ibClientQueue);
             _repository.Disconnect();
