@@ -1,4 +1,5 @@
 ﻿using IBApi;
+using IBSampleApp.messages;
 using Rollover.Tracking;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace Rollover.Ib
     {
         Tuple<bool, List<string>> Connect(string host, int port, int clientId);
         void Disconnect();
-        List<string> AllPositions();
+        List<PositionMessage> AllPositions();
         ITrackedSymbol GetTrackedSymbol(Contract contract);
     }
 }

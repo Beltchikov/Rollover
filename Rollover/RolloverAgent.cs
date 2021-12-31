@@ -39,8 +39,8 @@ namespace Rollover
         {
             _twsConnector.Connect();
 
-            var positionList = _repository.AllPositions();
-            positionList.ForEach(p => _consoleWrapper.WriteLine(p));
+            var positionMessageList = _repository.AllPositions();
+            positionMessageList.ForEach(p => _consoleWrapper.WriteLine(p.Contract.LocalSymbol));
 
             _inputLoop.Run(_consoleWrapper, _inputQueue, _ibClientQueue);
             _repository.Disconnect();

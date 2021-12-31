@@ -42,26 +42,10 @@ namespace Rollover.Ib
             _messageCollector = messageCollector;
         }
 
-        #region Connect, Disconnect
-
         public Tuple<bool, List<string>> Connect(string host, int port, int clientId)
         {
             ConnectionMessages connectionMessages = _messageCollector.eConnect(host, port, clientId);
             return ConnectionMessagesToConnectionTuple(connectionMessages);
-        }
-
-        private Tuple<bool, List<string>> ConnectionMessagesToConnectionTuple(ConnectionMessages connectionMessages)
-        {
-            var connectionTuple = new Tuple<bool, List<string>>(connectionMessages.Connected, new List<string>());
-
-            connectionMessages.OnErrorMessages.ForEach(m => connectionTuple.Item2.Add(m));
-            
-            var managedAccountsMessageAsString = _messageProcessor.ConvertMessage(connectionMessages.ManagedAccountsMessage);
-            connectionTuple.Item2.AddRange(managedAccountsMessageAsString);
-            var connectionStatusMessageAsString = _messageProcessor.ConvertMessage(connectionMessages.ConnectionStatusMessage);
-            connectionTuple.Item2.AddRange(connectionStatusMessageAsString);
-
-            return connectionTuple;
         }
 
         public void Disconnect()
@@ -69,46 +53,46 @@ namespace Rollover.Ib
             _ibClient.eDisconnect();
         }
 
-        #endregion
-
         #region AllPositions
 
-        public List<string> AllPositions()
+        public List<PositionMessage> AllPositions()
         {
-            ListPositions();
-            ReadPositions(_ibClientQueue, _configurationManager.GetConfiguration().Timeout);
+            //ListPositions();
+            //ReadPositions(_ibClientQueue, _configurationManager.GetConfiguration().Timeout);
 
-            var positionsBuffer = new List<string>(_positions);
-            _positions.Clear();
-            return positionsBuffer;
+            //var positionsBuffer = new List<string>(_positions);
+            //_positions.Clear();
+            //return positionsBuffer;
+
+            return _messageCollector.reqPositions();    
         }
 
-        private void ListPositions()
-        {
-            _ibClient.reqPositions();
-        }
+        //private void ListPositions()
+        //{
+        //    _ibClient.reqPositions();
+        //}
 
-        private void ReadPositions(IIbClientQueue ibClientQueue, int timeout)
-        {
-            var stopWatch = new Stopwatch();
-            stopWatch.Start();
+        //private void ReadPositions(IIbClientQueue ibClientQueue, int timeout)
+        //{
+        //    var stopWatch = new Stopwatch();
+        //    stopWatch.Start();
 
-            while (stopWatch.Elapsed.TotalMilliseconds < timeout)
-            {
-                var message = ibClientQueue.Dequeue();
-                var input = _messageProcessor.ConvertMessage(message);
-                if (!input.Any())
-                {
-                    continue;
-                }
+        //    while (stopWatch.Elapsed.TotalMilliseconds < timeout)
+        //    {
+        //        var message = ibClientQueue.Dequeue();
+        //        var input = _messageProcessor.ConvertMessage(message);
+        //        if (!input.Any())
+        //        {
+        //            continue;
+        //        }
 
-                if (input.Any(m => m == Constants.ENTER_SYMBOL_TO_TRACK))
-                {
-                    _positions.AddRange(input);
-                    return;
-                }
-            }
-        }
+        //        if (input.Any(m => m == Constants.ENTER_SYMBOL_TO_TRACK))
+        //        {
+        //            _positions.AddRange(input);
+        //            return;
+        //        }
+        //    }
+        //}
 
         #endregion
 
@@ -188,6 +172,19 @@ namespace Rollover.Ib
 
         #endregion
 
+        private Tuple<bool, List<string>> ConnectionMessagesToConnectionTuple(ConnectionMessages connectionMessages)
+        {
+            var connectionTuple = new Tuple<bool, List<string>>(connectionMessages.Connected, new List<string>());
+
+            connectionMessages.OnErrorMessages.ForEach(m => connectionTuple.Item2.Add(m));
+
+            var managedAccountsMessageAsString = _messageProcessor.ConvertMessage(connectionMessages.ManagedAccountsMessage);
+            connectionTuple.Item2.AddRange(managedAccountsMessageAsString);
+            var connectionStatusMessageAsString = _messageProcessor.ConvertMessage(connectionMessages.ConnectionStatusMessage);
+            connectionTuple.Item2.AddRange(connectionStatusMessageAsString);
+
+            return connectionTuple;
+        }
 
         private void ReqSecDefOptParams(ITrackedSymbol trackedSymbol)
         {

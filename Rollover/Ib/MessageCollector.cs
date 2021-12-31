@@ -1,6 +1,7 @@
 ﻿using IBSampleApp.messages;
 using Rollover.Configuration;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 
@@ -14,9 +15,9 @@ namespace Rollover.Ib
         private IConfigurationManager _configurationManager;
 
         public MessageCollector(
-            IIbClientWrapper ibClient, 
-            IConnectedCondition connectedCondition, 
-            IIbClientQueue ibClientQueue, 
+            IIbClientWrapper ibClient,
+            IConnectedCondition connectedCondition,
+            IIbClientQueue ibClientQueue,
             IConfigurationManager configurationManager)
         {
             _ibClient = ibClient;
@@ -30,7 +31,7 @@ namespace Rollover.Ib
             ConnectAndStartConsoleThread(host, port, clientId);
             return CheckConnectionMessages(_ibClientQueue, _configurationManager.GetConfiguration().Timeout);
         }
-                
+
         private void ConnectAndStartConsoleThread(string host, int port, int clientId)
         {
             _ibClient.eConnect(host, port, clientId);
@@ -59,13 +60,13 @@ namespace Rollover.Ib
             while (stopWatch.Elapsed.TotalMilliseconds < timeout)
             {
                 var message = ibClientQueue.Dequeue();
-                if(message is string)
+                if (message is string)
                 {
                     connectionMessages.OnErrorMessages.Add(message as string);
                 }
                 else if (message is ConnectionStatusMessage)
                 {
-                    if(connectionMessages.ConnectionStatusMessage != null)
+                    if (connectionMessages.ConnectionStatusMessage != null)
                     {
                         throw new Exception("Unexpected. Multiple ConnectionStatusMessage");
                     }
@@ -89,6 +90,36 @@ namespace Rollover.Ib
             }
 
             return connectionMessages;
+        }
+
+        public List<PositionMessage> reqPositions()
+        {
+            List<PositionMessage> positionMessages = new List<PositionMessage>();
+
+            _ibClient.reqPositions();
+
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            while (stopWatch.Elapsed.TotalMilliseconds < _configurationManager.GetConfiguration().Timeout)
+            {
+                var message = _ibClientQueue.Dequeue();
+
+                if (message is PositionMessage)
+                {
+                    positionMessages.Add(message as PositionMessage);
+                }
+                else if (message is string)
+                {
+                    var messageAsString = message as string;
+                    if (messageAsString == Constants.ON_POSITION_END)
+                    {
+                        return positionMessages;
+                    }
+                }
+            }
+
+            return positionMessages;
         }
     }
 }

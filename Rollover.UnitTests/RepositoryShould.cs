@@ -144,6 +144,16 @@ namespace Rollover.UnitTests
             messageCollector.Received().eConnect("localhost", 4001, 1);
         }
 
+        [Theory, AutoNSubstituteData]
+        public void CallMessageCollectorReqPositions(
+            [Frozen] IMessageCollector messageCollector,
+            [Frozen] IConfigurationManager configurationManager)
+        {
+            IRepository sut = new Repository(null, null, configurationManager, null, null, messageCollector);
+            sut.AllPositions();
+            messageCollector.Received().reqPositions();
+        }
+
 
         //[Fact]
         //public void ReturnTrackedSymbol()
