@@ -87,16 +87,28 @@ namespace Rollover.Ib
             {
                 throw new ApplicationException("No UnderContractDetailsMessages");
             }
+            if (underContractDetailsMessageList.Count() == 1)
+            {
+                // TODO case stocks
+
+                //var message = underContractDetailsMessageList.First();
+                //if (message.ContractDetails.Contract.SecType == "STK")
+                //{
+                //    // SecDefOptParamMessage
+                //    var secDefOptParamMessageList = _messageCollector.reqSecDefOptParams(
+                //        message.ContractDetails.Contract.Symbol,
+                //        message.ContractDetails.Contract.Exchange,
+                //        message.ContractDetails.Contract.SecType,
+                //        message.ContractDetails.Contract.ConId
+                //        );
+                //    return GetStrikes(contractDetailsMessage, secDefOptParamMessageList);
+                //}
+            }
             var underContractDetailsMessage = underContractDetailsMessageList
                 .First(c => c.ContractDetails.ContractMonth == contractDetailsMessage.ContractDetails.ContractMonth);
 
             // SecondUnderContractDetailsMessage
             var secondUnderContract = UnderContractFromContractDetailsMessage(underContractDetailsMessage);
-            if (secondUnderContract != null)
-            {
-                // TODO
-            }
-
             var secondUnderContractDetailsMessageList = ContractDetails(secondUnderContract);
             if (!secondUnderContractDetailsMessageList.Any())
             {
@@ -109,15 +121,13 @@ namespace Rollover.Ib
             var secondUnderContractDetailsMessage = secondUnderContractDetailsMessageList.First();
 
             // SecDefOptParamMessage
-            var secDefOptParamMessageList = _messageCollector.reqSecDefOptParams(
+            var secDefOptParamMessageList2 = _messageCollector.reqSecDefOptParams(
                 secondUnderContractDetailsMessage.ContractDetails.Contract.Symbol,
                 secondUnderContractDetailsMessage.ContractDetails.Contract.Exchange,
                 secondUnderContractDetailsMessage.ContractDetails.Contract.SecType,
                 secondUnderContractDetailsMessage.ContractDetails.Contract.ConId
                 );
-
-            //
-            return GetStrikes(contractDetailsMessage, secDefOptParamMessageList);
+            return GetStrikes(contractDetailsMessage, secDefOptParamMessageList2);
         }
 
         public HashSet<double> GetStrikes(ContractDetailsMessage contractDetailsMessage, List<SecurityDefinitionOptionParameterMessage> secDefOptParamMessageList)
