@@ -51,7 +51,11 @@ namespace Rollover.Ib
             var contractDetailsMessage = contractDetailsMessageList.First();
 
             var trackedSymbol = _trackedSymbolFactory.InitFromContractDetailsMessage(contractDetailsMessage);
+            
+            
             var strikes = GetStrikes(contractDetailsMessage);
+            //var contractUnderlying = GetUnderlying(contract);
+            //var tickSizePriceTuple = _messageCollector.reqMktData(contractUnderlying, "", true, false, null);
 
             return trackedSymbol;
         }

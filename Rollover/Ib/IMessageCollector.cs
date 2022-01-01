@@ -1,5 +1,6 @@
 ﻿using IBApi;
 using IBSampleApp.messages;
+using System;
 using System.Collections.Generic;
 
 namespace Rollover.Ib
@@ -9,6 +10,16 @@ namespace Rollover.Ib
         ConnectionMessages eConnect(string host, int port, int clientId);
         List<PositionMessage> reqPositions();
         List<ContractDetailsMessage> reqContractDetails(Contract contract);
-        List<SecurityDefinitionOptionParameterMessage> reqSecDefOptParams(string symbol, string exchange, string secType, int conId);
+        List<SecurityDefinitionOptionParameterMessage> reqSecDefOptParams(
+            string symbol, 
+            string exchange, 
+            string secType, 
+            int conId);
+        Tuple<TickSizeMessage, TickPriceMessage> reqMktData(
+            Contract contract, 
+            string generickTickList, 
+            bool snapshot, 
+            bool regulatorySnapshot,
+            List<TagValue> mktDataOptions);
     }
 }

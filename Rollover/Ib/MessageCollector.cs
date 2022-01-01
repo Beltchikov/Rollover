@@ -157,7 +157,11 @@ namespace Rollover.Ib
             return contractDetailsMessages;
         }
 
-        public List<SecurityDefinitionOptionParameterMessage> reqSecDefOptParams(string symbol, string exchange, string secType, int conId)
+        public List<SecurityDefinitionOptionParameterMessage> reqSecDefOptParams(
+            string symbol, 
+            string exchange, 
+            string secType, 
+            int conId)
         {
             List<SecurityDefinitionOptionParameterMessage> securityDefinitionOptionParameterMessage 
                 = new List<SecurityDefinitionOptionParameterMessage>();
@@ -187,6 +191,16 @@ namespace Rollover.Ib
             }
 
             return securityDefinitionOptionParameterMessage;
+        }
+
+        public Tuple<TickSizeMessage, TickPriceMessage> reqMktData(
+            Contract contract, 
+            string generickTickList, 
+            bool snapshot, 
+            bool regulatorySnapshot, 
+            List<TagValue> mktDataOptions)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace IBSampleApp.messages
 {
-    class TickSizeMessage : MarketDataMessage
+    public class TickSizeMessage : MarketDataMessage
     {
         private int size;
 

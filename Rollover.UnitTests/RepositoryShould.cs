@@ -66,27 +66,26 @@ namespace Rollover.UnitTests
             messageCollector.Received().reqPositions();
         }
 
-        //[Theory, AutoNSubstituteData]
-        //public void CallMessageCollectorReqContractDetails(
-        //    [Frozen] IMessageCollector messageCollector,
-        //    [Frozen] ITrackedSymbolFactory trackedSymbolFactory,
-        //    [Frozen] Contract contract)
-        //{
-        //    var contractDetails = new ContractDetails();
-        //    var contractDetailsMessageList = new List<ContractDetailsMessage>
-        //    { new ContractDetailsMessage(1, contractDetails)};
-        //    messageCollector.reqContractDetails(Arg.Any<Contract>())
-        //        .Returns(contractDetailsMessageList);
+        [Theory, AutoNSubstituteData]
+        public void CallMessageCollectorReqMktData(
+            [Frozen] IMessageCollector messageCollector,
+            [Frozen] ITrackedSymbolFactory trackedSymbolFactory,
+            [Frozen] Contract contract)
+        {
+            var contractDetails = new ContractDetails();
+            var contractDetailsMessageList = new List<ContractDetailsMessage>
+            { new ContractDetailsMessage(1, contractDetails)};
+            messageCollector.reqContractDetails(Arg.Any<Contract>())
+                .Returns(contractDetailsMessageList);
 
-        //    IRepository sut = new Repository(null, null, messageCollector, trackedSymbolFactory);
-        //    sut.GetTrackedSymbol(contract);
-        //    messageCollector.Received().reqContractDetails(contract);
-        //}
+            IRepository sut = new Repository(null, null, messageCollector, trackedSymbolFactory);
+            sut.GetTrackedSymbol(contract);
+            messageCollector.Received().reqMktData(contract, "", true, false, null);
+        }
 
         [Theory, AutoNSubstituteData]
         public void CallMessageCollectorReqSecDefOptParams(
             [Frozen] IMessageCollector messageCollector,
-            [Frozen] IConfigurationManager configurationManager,
             [Frozen] ITrackedSymbolFactory trackedSymbolFactory)
         {
             var contract = new Contract

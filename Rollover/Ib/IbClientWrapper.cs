@@ -2,6 +2,7 @@
 using IBSampleApp;
 using IBSampleApp.messages;
 using System;
+using System.Collections.Generic;
 
 namespace Rollover.Ib
 {
@@ -120,6 +121,44 @@ namespace Rollover.Ib
 
         #endregion
 
+        #region MktData
+
+        public void reqMktData(
+            int reqId,
+            Contract contract,
+            string generickTickList,
+            bool snapshot,
+            bool regulatorySnapshot,
+            List<TagValue> mktDataOptions)
+        {
+            _ibClient.ClientSocket.reqMktData(
+                reqId,
+                contract,
+                generickTickList,
+                snapshot,
+                regulatorySnapshot,
+                mktDataOptions);
+        }
+
+        public void OnTickSize(TickSizeMessage obj)
+        {
+            throw new NotImplementedException();
+        }
+        public void OnTickPrice(TickPriceMessage obj)
+        {
+            throw new NotImplementedException();
+        }
+        public void OnTickString(int arg1, int arg2, string arg3)
+        {
+            throw new NotImplementedException();
+        }
+        public void OnTickGeneric(int arg1, int arg2, double arg3)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
         #region Private methods
 
         public EReader ReaderFactory()
@@ -143,6 +182,10 @@ namespace Rollover.Ib
             _ibClient.SecurityDefinitionOptionParameterEnd += OnSecurityDefinitionOptionParameterEnd;
             _ibClient.ContractDetails += OnContractDetails;
             _ibClient.ContractDetailsEnd += OnContractDetailsEnd;
+            _ibClient.TickSize += OnTickSize;
+            _ibClient.TickPrice += OnTickPrice;
+            _ibClient.TickString += OnTickString;
+            _ibClient.TickGeneric += OnTickGeneric;
         }
 
         #endregion
