@@ -1,42 +1,25 @@
 ﻿using IBApi;
 using IBSampleApp.messages;
-using Rollover.Configuration;
 using Rollover.Tracking;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text.Json;
 
 namespace Rollover.Ib
 {
     public class Repository : IRepository
     {
         private IIbClientWrapper _ibClient;
-        private IIbClientQueue _ibClientQueue;
-        private IConfigurationManager _configurationManager;
-        private IQueryParametersConverter _queryParametersConverter;
         private IMessageProcessor _messageProcessor;
         private IMessageCollector _messageCollector;
         private ITrackedSymbolFactory _trackedSymbolFactory;
 
-        private List<string> _positions = new List<string>();
-        private int _timeout;
-
         public Repository(
             IIbClientWrapper ibClient,
-            IIbClientQueue ibClientQueue,
-            IConfigurationManager configurationManager,
-            IQueryParametersConverter queryParametersConverter,
             IMessageProcessor messageProcessor,
             IMessageCollector messageCollector, ITrackedSymbolFactory trackedSymbolFactory)
         {
             _ibClient = ibClient;
-            _ibClientQueue = ibClientQueue;
-            _configurationManager = configurationManager;
-
-            _timeout = _configurationManager.GetConfiguration().Timeout;
-            _queryParametersConverter = queryParametersConverter;
             _messageProcessor = messageProcessor;
             _messageCollector = messageCollector;
             _trackedSymbolFactory = trackedSymbolFactory;

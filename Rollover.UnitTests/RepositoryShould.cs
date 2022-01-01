@@ -15,8 +15,8 @@ namespace Rollover.UnitTests
     public class RepositoryShould
     {
         [Theory, AutoNSubstituteData]
-        public void CallIbClientConnectInConnect(
-            [Frozen] IIbClientWrapper ibClient,
+        public void CallMessageCollectorEConnectInConnect(
+            [Frozen] IMessageCollector messageCollector,
             Repository sut)
         {
             string host = "host1";
@@ -24,35 +24,7 @@ namespace Rollover.UnitTests
             int clientId = 29;
 
             sut.Connect(host, port, clientId);
-            ibClient.Received().eConnect(host, port, clientId);
-        }
-
-        [Theory, AutoNSubstituteData]
-        public void CallIbClientReaderFactoryInConnect(
-            [Frozen] IIbClientWrapper ibClient,
-            Repository sut)
-        {
-            sut.Connect("", 0, 0);
-            ibClient.Received().ReaderFactory();
-        }
-
-        [Theory, AutoNSubstituteData]
-        public void CallIbClientIsConnectedInConnect(
-            [Frozen] IIbClientWrapper ibClient,
-            Repository sut)
-        {
-            sut.Connect("", 0, 0);
-            ibClient.Received().IsConnected();
-        }
-
-        [Theory, AutoNSubstituteData]
-        public void CallIbClientWaitForSignalConnect(
-            [Frozen] IIbClientWrapper ibClient,
-            Repository sut)
-        {
-            ibClient.IsConnected().Returns(true);
-            sut.Connect("", 0, 0);
-            ibClient.Received().WaitForSignal();
+            messageCollector.Received().eConnect(host, port, clientId);
         }
 
         [Theory, AutoNSubstituteData]
@@ -101,7 +73,7 @@ namespace Rollover.UnitTests
             { Timeout = timeout };
             configurationManager.GetConfiguration().Returns(configuration);
 
-            var sut = new Repository(ibClinet, ibClientQueue, configurationManager, null, messageProcessor, null, null);
+            var sut = new Repository(ibClinet, messageProcessor, null, null);
             var resultList = sut.AllPositions();
 
             Assert.Equal(3, resultList.Count);
@@ -128,7 +100,7 @@ namespace Rollover.UnitTests
             var portfolio = new Portfolio();
             var messageProcessor = new MessageProcessor(portfolio);
 
-            var sut = new Repository(ibClinet, ibClientQueue, configurationManager, null, messageProcessor, null, null);
+            var sut = new Repository(ibClinet, messageProcessor, null, null);
             var trackedSymbol = sut.GetTrackedSymbol(contract);
             Thread.Sleep(timeout);
 
@@ -140,7 +112,7 @@ namespace Rollover.UnitTests
             [Frozen] IMessageCollector messageCollector,
             [Frozen] IConfigurationManager configurationManager)
         {
-            IRepository sut = new Repository(null, null, configurationManager, null, null, messageCollector, null);
+            IRepository sut = new Repository(null, null, messageCollector, null);
             sut.Connect("localhost", 4001, 1);
             messageCollector.Received().eConnect("localhost", 4001, 1);
         }
@@ -150,7 +122,7 @@ namespace Rollover.UnitTests
             [Frozen] IMessageCollector messageCollector,
             [Frozen] IConfigurationManager configurationManager)
         {
-            IRepository sut = new Repository(null, null, configurationManager, null, null, messageCollector, null);
+            IRepository sut = new Repository(null, null, messageCollector, null);
             sut.AllPositions();
             messageCollector.Received().reqPositions();
         }
@@ -161,7 +133,7 @@ namespace Rollover.UnitTests
             [Frozen] IConfigurationManager configurationManager,
             [Frozen] Contract contract)
         {
-            IRepository sut = new Repository(null, null, configurationManager, null, null, messageCollector, null);
+            IRepository sut = new Repository(null, null, messageCollector, null);
             sut.GetTrackedSymbol(contract);
             messageCollector.Received().reqContractDetails(contract);
         }
@@ -175,28 +147,27 @@ namespace Rollover.UnitTests
             var contract = new Contract
             {
                 Symbol = "MNQ",
-                Currency="USD",
-                Exchange="GLOBEX",
+                Currency = "USD",
+                Exchange = "GLOBEX",
                 LastTradeDateOrContractMonth = "20220318"
             };
-            var contractDetails = new ContractDetails 
-                { Contract = contract, UnderSecType = "FUT" };
+            var contractDetails = new ContractDetails
+            { Contract = contract, UnderSecType = "FUT" };
             contractDetails.Contract = contract;
             var contractDetailsMessage = new ContractDetailsMessage(1, contractDetails);
             var contractDetailsMessageList = new List<ContractDetailsMessage> { contractDetailsMessage };
             messageCollector.reqContractDetails(Arg.Any<Contract>()).Returns(contractDetailsMessageList);
 
-            var expirations = new HashSet<string>{"20220318"};
-            var strikes = new HashSet<double> {980, 90, 100, 110, 120};
-            var secDefOptParamMessageList = new List<SecurityDefinitionOptionParameterMessage> { 
+            var expirations = new HashSet<string> { "20220318" };
+            var strikes = new HashSet<double> { 980, 90, 100, 110, 120 };
+            var secDefOptParamMessageList = new List<SecurityDefinitionOptionParameterMessage> {
             new SecurityDefinitionOptionParameterMessage(1,"",123, "", "", expirations, strikes)
             };
             messageCollector.reqSecDefOptParams(
                 Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>())
                 .Returns(secDefOptParamMessageList);
 
-            IRepository sut = new Repository(null, null, configurationManager, 
-                null, null, messageCollector, trackedSymbolFactory);
+            IRepository sut = new Repository(null, null, messageCollector, trackedSymbolFactory);
             sut.GetTrackedSymbol(contract);
             messageCollector.Received().reqSecDefOptParams(
                 Arg.Any<string>(),
@@ -204,52 +175,5 @@ namespace Rollover.UnitTests
                 Arg.Any<string>(),
                 Arg.Any<int>());
         }
-
-
-        //[Fact]
-        //public void ReturnTrackedSymbol()
-        //{
-        //    var timeout = 1000;
-
-        //    var trackedSymbolString = @"{""Symbol"":""MNQ"",""ReqIdContractDetails"":1,""ConId"":515971877,""SecType"":""FOP"",""Currency"":""USD"",""Exchange"":""GLOBEX"",""Strike"":16300,""NextStrike"":0,""OverNextStrike"":0}";
-        //    var ibClientQueue = Substitute.For<IIbClientQueue>();
-        //    ibClientQueue.Dequeue().Returns(trackedSymbolString);
-
-        //    var ibClinet = Substitute.For<IIbClientWrapper>();
-        //    ibClinet.When(c => c.ContractDetails(Arg.Any<int>(), Arg.Any<Contract>()))
-        //        .Do(c => { });
-
-        //    var configurationManager = Substitute.For<IConfigurationManager>();
-        //    var contract = new Contract();
-
-        //    Configuration.Configuration configuration = new Configuration.Configuration
-        //    { Timeout = timeout };
-        //    configurationManager.GetConfiguration().Returns(configuration);
-
-        //    var trackedSymbolFactory = new TrackedSymbolFactory();
-        //    var portfolio = new Portfolio();
-        //    var messageProcessor = new MessageProcessor(trackedSymbolFactory, portfolio);
-
-        //    var sut = new Repository(ibClinet, null, ibClientQueue, configurationManager, null, messageProcessor);
-        //    var trackedSymbol = sut.GetTrackedSymbol(contract);
-        //    Thread.Sleep(timeout);
-
-        //    Assert.NotNull(trackedSymbol);
-        //}
-
-        //[Theory, AutoNSubstituteData]
-        //public void CallQueryParametersConverter(
-        //    [Frozen] IInputQueue inputQueue,
-        //    [Frozen] IQueryParametersConverter queryParametersConverter,
-        //    Repository sut)
-        //{
-        //    var trackedSymbolString = @"{""Symbol"":""MNQ"",""ReqIdContractDetails"":1,""ConId"":515971877,""SecType"":""FOP"",""Currency"":""USD"",""Exchange"":""GLOBEX"",""Strike"":16300,""NextStrike"":0,""OverNextStrike"":0}";
-        //    inputQueue.Dequeue().Returns(trackedSymbolString);
-        //    var contract = new Contract();
-
-        //    var trackedSymbol = sut.GetTrackedSymbol(contract);
-
-        //    queryParametersConverter.Received().TrackedSymbolForReqSecDefOptParams(Arg.Any<ITrackedSymbol>());
-        //}
     }
 }
