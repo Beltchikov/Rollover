@@ -83,7 +83,7 @@ namespace Rollover.Ib
             // UnderContractDetailsMessage
             var underContract = UnderContractFromContractDetailsMessage(contractDetailsMessage);
             var underContractDetailsMessageList = ContractDetails(underContract);
-            if(!underContractDetailsMessageList.Any())
+            if (!underContractDetailsMessageList.Any())
             {
                 throw new ApplicationException("No UnderContractDetailsMessages");
             }
@@ -92,6 +92,11 @@ namespace Rollover.Ib
 
             // SecondUnderContractDetailsMessage
             var secondUnderContract = UnderContractFromContractDetailsMessage(underContractDetailsMessage);
+            if (secondUnderContract != null)
+            {
+                // TODO
+            }
+
             var secondUnderContractDetailsMessageList = ContractDetails(secondUnderContract);
             if (!secondUnderContractDetailsMessageList.Any())
             {
@@ -110,16 +115,23 @@ namespace Rollover.Ib
                 secondUnderContractDetailsMessage.ContractDetails.Contract.SecType,
                 secondUnderContractDetailsMessage.ContractDetails.Contract.ConId
                 );
+
+            //
+            return GetStrikes(contractDetailsMessage, secDefOptParamMessageList);
+        }
+
+        public HashSet<double> GetStrikes(ContractDetailsMessage contractDetailsMessage, List<SecurityDefinitionOptionParameterMessage> secDefOptParamMessageList)
+        {
             var lastTradeDateOrContractMonth = contractDetailsMessage.ContractDetails.Contract.LastTradeDateOrContractMonth;
             var secDefOptParamMessageExpirationList = secDefOptParamMessageList
                 .Where(s => s.Expirations.Contains(lastTradeDateOrContractMonth));
+
             if (secDefOptParamMessageExpirationList.Count() > 1)
             {
                 throw new ApplicationException("Unexpected. Multiple secDefOptParamMessageExpirationList");
             }
             var secDefOptParamMessage = secDefOptParamMessageExpirationList.First();
 
-            //
             return secDefOptParamMessage.Strikes;
         }
 
