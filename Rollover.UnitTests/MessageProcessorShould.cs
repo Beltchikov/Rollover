@@ -106,24 +106,5 @@ namespace Rollover.UnitTests
             Assert.Equal("STX", resultList[0]);
             Assert.Equal(Constants.ENTER_SYMBOL_TO_TRACK, resultList[1]);
         }
-
-        [Fact]
-        public void ReturnSerializedTrackedSymbolIfTypeContractDetailsMessage()
-        {
-            var contractDetails = new ContractDetails();
-            var message = new ContractDetailsMessage(1001, contractDetails);
-
-            var trackedSymbolFactory = Substitute.For<ITrackedSymbolFactory>();
-            trackedSymbolFactory.InitFromContractDetailsMessage(Arg.Any<ContractDetailsMessage>())
-                .Returns(new TrackedSymbol());
-
-            IPortfolio portfolio = Substitute.For<IPortfolio>();
-            
-            var sut = new MessageProcessor(portfolio);
-            var result = sut.ConvertMessage(message);
-
-            var trackesSymbol = JsonSerializer.Deserialize<TrackedSymbol>(result.First());
-            Assert.IsType<TrackedSymbol>(trackesSymbol);
-        }
     }
 }
