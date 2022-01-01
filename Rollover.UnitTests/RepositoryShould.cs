@@ -4,10 +4,8 @@ using IBSampleApp.messages;
 using NSubstitute;
 using Rollover.Configuration;
 using Rollover.Ib;
-using Rollover.Input;
 using Rollover.Tracking;
 using System.Collections.Generic;
-using System.Threading;
 using Xunit;
 
 namespace Rollover.UnitTests
@@ -37,106 +35,53 @@ namespace Rollover.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
-        public void CallIbClientListPositionsInAllPositions(
-            [Frozen] IIbClientWrapper ibClient,
-            Repository sut)
+        public void CallsMessageCollectorReqPositionsInAllPositions([Frozen] IMessageCollector messageCollector)
         {
+            var sut = new Repository(null, null, messageCollector, null);
             sut.AllPositions();
-            ibClient.Received().reqPositions();
+            messageCollector.Received().reqPositions();
         }
 
-        [Fact]
-        public void ReturnPositionsInAllPositions()
-        {
-            var timeout = 1000;
-
-            var contract1 = new Contract();
-            var positionMessage1 = new PositionMessage("account", contract1, 1, 1000);
-
-            var contract2 = new Contract();
-            var positionMessage2 = new PositionMessage("account", contract2, 2, 2000);
-
-            var ibClientQueue = Substitute.For<IIbClientQueue>();
-            ibClientQueue.Dequeue().Returns(positionMessage1, positionMessage2, Constants.ON_POSITION_END);
-
-            var ibClinet = Substitute.For<IIbClientWrapper>();
-            ibClinet.When(c => c.reqContractDetails(Arg.Any<int>(), Arg.Any<Contract>()))
-                .Do(c => { });
-
-            var configurationManager = Substitute.For<IConfigurationManager>();
-
-            var trackedSymbolFactory = new TrackedSymbolFactory();
-            var portfolio = new Portfolio();
-            var messageProcessor = new MessageProcessor(portfolio);
-
-            Configuration.Configuration configuration = new Configuration.Configuration
-            { Timeout = timeout };
-            configurationManager.GetConfiguration().Returns(configuration);
-
-            var sut = new Repository(ibClinet, messageProcessor, null, null);
-            var resultList = sut.AllPositions();
-
-            Assert.Equal(3, resultList.Count);
-        }
-
-        [Fact]
-        public void ReturnNullIfNoTrackedSymbolAfterTimeout()
-        {
-            var timeout = 1000;
-
-            var ibClientQueue = Substitute.For<IIbClientQueue>();
-            var ibClinet = Substitute.For<IIbClientWrapper>();
-            ibClinet.When(c => c.reqContractDetails(Arg.Any<int>(), Arg.Any<Contract>()))
-                .Do(c => { });
-
-            var configurationManager = Substitute.For<IConfigurationManager>();
-            var contract = new Contract();
-
-            Configuration.Configuration configuration = new Configuration.Configuration
-            { Timeout = timeout };
-            configurationManager.GetConfiguration().Returns(configuration);
-
-            var trackedSymbolFactory = new TrackedSymbolFactory();
-            var portfolio = new Portfolio();
-            var messageProcessor = new MessageProcessor(portfolio);
-
-            var sut = new Repository(ibClinet, messageProcessor, null, null);
-            var trackedSymbol = sut.GetTrackedSymbol(contract);
-            Thread.Sleep(timeout);
-
-            Assert.Null(trackedSymbol);
-        }
+       
 
         [Theory, AutoNSubstituteData]
         public void CallMessageCollectorEConnect(
             [Frozen] IMessageCollector messageCollector,
-            [Frozen] IConfigurationManager configurationManager)
+            [Frozen] IMessageProcessor messageProcessor)
         {
-            IRepository sut = new Repository(null, null, messageCollector, null);
+            messageProcessor.ConvertMessage(Arg.Any<object>())
+                .Returns(new List<string>{"Some message"});
+
+            IRepository sut = new Repository(null, messageProcessor, messageCollector, null);
             sut.Connect("localhost", 4001, 1);
             messageCollector.Received().eConnect("localhost", 4001, 1);
         }
 
         [Theory, AutoNSubstituteData]
         public void CallMessageCollectorReqPositions(
-            [Frozen] IMessageCollector messageCollector,
-            [Frozen] IConfigurationManager configurationManager)
+            [Frozen] IMessageCollector messageCollector)
         {
             IRepository sut = new Repository(null, null, messageCollector, null);
             sut.AllPositions();
             messageCollector.Received().reqPositions();
         }
 
-        [Theory, AutoNSubstituteData]
-        public void CallMessageCollectorReqContractDetails(
-            [Frozen] IMessageCollector messageCollector,
-            [Frozen] IConfigurationManager configurationManager,
-            [Frozen] Contract contract)
-        {
-            IRepository sut = new Repository(null, null, messageCollector, null);
-            sut.GetTrackedSymbol(contract);
-            messageCollector.Received().reqContractDetails(contract);
-        }
+        //[Theory, AutoNSubstituteData]
+        //public void CallMessageCollectorReqContractDetails(
+        //    [Frozen] IMessageCollector messageCollector,
+        //    [Frozen] ITrackedSymbolFactory trackedSymbolFactory,
+        //    [Frozen] Contract contract)
+        //{
+        //    var contractDetails = new ContractDetails();
+        //    var contractDetailsMessageList = new List<ContractDetailsMessage>
+        //    { new ContractDetailsMessage(1, contractDetails)};
+        //    messageCollector.reqContractDetails(Arg.Any<Contract>())
+        //        .Returns(contractDetailsMessageList);
+
+        //    IRepository sut = new Repository(null, null, messageCollector, trackedSymbolFactory);
+        //    sut.GetTrackedSymbol(contract);
+        //    messageCollector.Received().reqContractDetails(contract);
+        //}
 
         [Theory, AutoNSubstituteData]
         public void CallMessageCollectorReqSecDefOptParams(
