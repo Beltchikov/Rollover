@@ -7,32 +7,27 @@ using Rollover.Input;
 using Rollover.Tracking;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using Xunit;
 
 namespace Rollover.UnitTests
 {
     public class InputProcessorShould
     {
-        [Fact]
-        public void ReturnEmptyArrayIfInputNull()
+        [Theory, AutoNSubstituteData]
+        public void ReturnEmptyArrayIfInputNull(InputProcessor sut)
         {
-            var sut = new InputProcessor(null, null, null, null, null);
             var output = sut.Convert(null);
             Assert.Empty(output);
         }
 
-
-        [Fact]
-        public void HaveStateWaitingForSymbolIfFirstRun()
+        [Theory, AutoNSubstituteData]
+        public void HaveStateWaitingForSymbolIfFirstRun(
+            Reducer reducer,
+            [Frozen] IPortfolio portfolio,
+            [Frozen] ITrackedSymbols trackedSymbols,
+            [Frozen] IRepository repository,
+            InputProcessor sut)
         {
-            var reducer = new Reducer();
-            var portfolio = Substitute.For<IPortfolio>();
-            var trackedSymbols = Substitute.For<ITrackedSymbols>();
-            var repository = Substitute.For<IRepository>();
-
-            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository, null);
-
             sut.Convert("Some input");
             Assert.True(sut.State == "WaitingForSymbol");
         }
