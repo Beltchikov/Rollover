@@ -2,7 +2,6 @@
 using IBApi;
 using IBSampleApp.messages;
 using NSubstitute;
-using Rollover.Configuration;
 using Rollover.Ib;
 using Rollover.Tracking;
 using System.Collections.Generic;
@@ -72,15 +71,34 @@ namespace Rollover.UnitTests
             [Frozen] ITrackedSymbolFactory trackedSymbolFactory,
             [Frozen] Contract contract)
         {
-            var contractDetails = new ContractDetails();
+            contract.LastTradeDateOrContractMonth = "02";
+            contract.Symbol = "MNQ";
+            contract.Exchange = "SMART";
+            contract.SecType = "IND";
+
+            var contractDetails = new ContractDetails 
+                { UnderSecType = "FUT", Contract = contract};
             var contractDetailsMessageList = new List<ContractDetailsMessage>
             { new ContractDetailsMessage(1, contractDetails)};
             messageCollector.reqContractDetails(Arg.Any<Contract>())
                 .Returns(contractDetailsMessageList);
 
+            var expirations = new HashSet<string> { "01", "02", "03" };
+            var strikes = new HashSet<double>();
+            var secDefOptParamMessage = new SecurityDefinitionOptionParameterMessage(
+                Arg.Any<int>(),Arg.Any<string>(),Arg.Any<int>(),
+                Arg.Any<string>(),Arg.Any<string>(),expirations, strikes);
+            var secDefOptParamMessageList = new List<SecurityDefinitionOptionParameterMessage>
+            { secDefOptParamMessage};
+            messageCollector.reqSecDefOptParams(
+                "MNQ", 
+                "SMART", 
+                "IND", 
+                Arg.Any<int>()).Returns(secDefOptParamMessageList);   
+
             IRepository sut = new Repository(null, null, messageCollector, trackedSymbolFactory);
             sut.GetTrackedSymbol(contract);
-            messageCollector.Received().reqMktData(contract, "", true, false, null);
+            messageCollector.Received().reqMktData(Arg.Any<Contract>(), "", true, false, null);
         }
 
         [Theory, AutoNSubstituteData]
