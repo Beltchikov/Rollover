@@ -14,6 +14,11 @@ namespace Rollover.Tracking
 
         public bool Add(ITrackedSymbol trackedSymbol)
         {
+            if (_symbols.Any(s => s.LocalSymbol == trackedSymbol.LocalSymbol))
+            {
+                return false;
+            }
+
             return _symbols.Add(trackedSymbol);
         }
 
