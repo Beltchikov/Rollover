@@ -17,6 +17,7 @@ namespace Rollover.Ib
 
         private int _reqIdContractDetails = 0;
         private int _reqIdSecDefOptParam = 0;
+        private int _reqIdMktData = 0;
 
         public MessageCollector(
             IIbClientWrapper ibClient,
@@ -200,7 +201,17 @@ namespace Rollover.Ib
             bool regulatorySnapshot, 
             List<TagValue> mktDataOptions)
         {
-            throw new NotImplementedException();
+            // Mock data
+            var reqId = ++_reqIdMktData;
+            var tickSizeMessage = new TickSizeMessage(reqId, 0, 0);
+            var tickAttributes = new TickAttrib();
+            var tickPriceMessage = new TickPriceMessage(reqId, 0, 16300, tickAttributes);
+            return new Tuple<TickSizeMessage, TickPriceMessage>(tickSizeMessage, tickPriceMessage);
+            
+            // TODO
+            // Implement real code
+            
+            //throw new NotImplementedException();
         }
     }
 }

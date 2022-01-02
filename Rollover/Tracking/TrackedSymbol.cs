@@ -9,27 +9,10 @@
         public string Currency { get; set; }
         public string Exchange { get; set; }
         public double Strike { get; set; }
-
-        /// <summary>
-        /// Three last figures are behind the comma figures
-        /// </summary>
-        public int NextStrike { get; set; }
-
-        /// <summary>
-        /// Three last figures are behind the comma figures
-        /// </summary>
-        public int NextButOneStrike { get; set; }
-
-        /// <summary>
-        /// Three last figures are behind the comma figures
-        /// </summary>
-        public int PreviousStrike { get; set; }
-
-        /// <summary>
-        /// Three last figures are behind the comma figures
-        /// </summary>
-        public int PreviousButOneStrike { get; set; }
-
+        public double NextStrike { get; set; }
+        public double NextButOneStrike { get; set; }
+        public double PreviousStrike { get; set; }
+        public double PreviousButOneStrike { get; set; }
         public string LocalSymbol { get; set; }
         public int ReqIdSecDefOptParams { get; set; }
 

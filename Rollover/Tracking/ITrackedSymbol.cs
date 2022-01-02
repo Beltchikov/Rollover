@@ -6,8 +6,10 @@
         string Currency { get; set; }
         string Exchange { get; set; }
         string LocalSymbol { get; set; }
-        int NextStrike { get; set; }
-        int NextButOneStrike { get; set; }
+        double NextStrike { get; set; }
+        double NextButOneStrike { get; set; }
+        public double PreviousStrike { get; set; }
+        public double PreviousButOneStrike { get; set; }
         int ReqIdContractDetails { get; set; }
         int ReqIdSecDefOptParams { get; set; }
         string SecType { get; set; }

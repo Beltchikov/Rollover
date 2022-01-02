@@ -49,6 +49,10 @@ namespace Rollover.Ib
             {
                 var secondUnderLyingContract = GetUnderlyingContract(underLyingContract, contract.LastTradeDateOrContractMonth);
                 strikes = GetStrikes(secondUnderLyingContract, contract.LastTradeDateOrContractMonth);
+                var tickSizePriceTuple = _messageCollector.reqMktData(secondUnderLyingContract, "", true, false, null);
+                var currentPrice = tickSizePriceTuple.Item2.Price;
+                var trackedSymbol = _trackedSymbolFactory.Create(contract, strikes, currentPrice);
+                return trackedSymbol;
             }
             else if (underLyingContract.SecType == "STK")
             {
@@ -60,9 +64,6 @@ namespace Rollover.Ib
             {
                 throw new NotImplementedException();
             }
-
-            var trackedSymbol = _trackedSymbolFactory.InitFromContract(contract);
-            return trackedSymbol;
         }
 
         public List<ContractDetailsMessage> ContractDetails(Contract contract)
