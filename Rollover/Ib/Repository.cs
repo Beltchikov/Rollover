@@ -68,7 +68,7 @@ namespace Rollover.Ib
         public HashSet<double> GetStrikes(ContractDetailsMessage contractDetailsMessage)
         {
             // UnderContractDetailsMessage
-            var underContract = UnderContractFromContractDetailsMessage(contractDetailsMessage);
+            var underContract = GetUnderlyingContract(contractDetailsMessage);
             var underContractDetailsMessageList = ContractDetails(underContract);
             if (!underContractDetailsMessageList.Any())
             {
@@ -95,7 +95,7 @@ namespace Rollover.Ib
                 .First(c => c.ContractDetails.ContractMonth == contractDetailsMessage.ContractDetails.ContractMonth);
 
             // SecondUnderContractDetailsMessage
-            var secondUnderContract = UnderContractFromContractDetailsMessage(underContractDetailsMessage);
+            var secondUnderContract = GetUnderlyingContract(underContractDetailsMessage);
             var secondUnderContractDetailsMessageList = ContractDetails(secondUnderContract);
             if (!secondUnderContractDetailsMessageList.Any())
             {
@@ -132,7 +132,7 @@ namespace Rollover.Ib
             return secDefOptParamMessage.Strikes;
         }
 
-        private static Contract UnderContractFromContractDetailsMessage(ContractDetailsMessage contractDetailsMessage)
+        private static Contract GetUnderlyingContract(ContractDetailsMessage contractDetailsMessage)
         {
             if (string.IsNullOrWhiteSpace(contractDetailsMessage.ContractDetails.UnderSecType))
             {
