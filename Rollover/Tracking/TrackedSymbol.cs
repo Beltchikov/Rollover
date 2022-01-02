@@ -16,7 +16,7 @@
 
         public override string ToString()
         {
-            return $"{Symbol} {NextStrike} {NextButOneStrike}";
+            return $"{LocalSymbol} {NextStrike} {NextButOneStrike}";
         }
     }
 }
