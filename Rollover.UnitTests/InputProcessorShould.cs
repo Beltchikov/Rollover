@@ -22,27 +22,17 @@ namespace Rollover.UnitTests
 
         [Theory, AutoNSubstituteData]
         public void HaveStateWaitingForSymbolIfFirstRun(
-            Reducer reducer,
-            [Frozen] IPortfolio portfolio,
-            [Frozen] ITrackedSymbols trackedSymbols,
-            [Frozen] IRepository repository,
             InputProcessor sut)
         {
             sut.Convert("Some input");
             Assert.True(sut.State == "WaitingForSymbol");
         }
 
-        [Fact]
-        public void ReturnSymbolNotValid()
+        [Theory, AutoNSubstituteData]
+        public void ReturnSymbolNotValid([Frozen] IPortfolio portfolio, InputProcessor sut)
         {
             string testInput = "Invalid Symbol";
-
-            var reducer = Substitute.For<IReducer>();
-            var portfolio = Substitute.For<IPortfolio>();
-            var trackedSymbols = Substitute.For<ITrackedSymbols>();
-            var repository = Substitute.For<IRepository>();
-
-            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository, null);
+            portfolio.PositionBySymbol(Arg.Any<string>()).Returns((PositionMessage)null);
 
             var resultList = sut.Convert(testInput);
             Assert.True(resultList.Any());
