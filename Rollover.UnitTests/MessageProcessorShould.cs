@@ -1,19 +1,16 @@
 ﻿using IBApi;
 using IBSampleApp.messages;
-using NSubstitute;
 using Rollover.Ib;
-using Rollover.Tracking;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
 using Xunit;
 
 namespace Rollover.UnitTests
 {
     public class MessageProcessorShould
     {
-        [Fact]
-        public void ReturnLocalSymbolsAndEnterSymbolToTrackIfTypePositionMessage()
+        [Theory, AutoNSubstituteData]
+        public void ReturnLocalSymbolsAndEnterSymbolToTrackIfTypePositionMessage(
+            MessageProcessor sut)
         {
             List<Contract> contracts = new List<Contract>
             {
@@ -27,20 +24,17 @@ namespace Rollover.UnitTests
                 new PositionMessage("account", contracts[1], 2, 2000),
             };
 
-            IPortfolio portfolio = Substitute.For<IPortfolio>();
-
-            var sut = new MessageProcessor(portfolio);
-            var resultList = sut.ConvertMessage(positionMessages[0]);
-            resultList = sut.ConvertMessage(positionMessages[1]);
-            resultList = sut.ConvertMessage(Constants.ON_POSITION_END);
+            sut.ConvertMessage(positionMessages[0]);
+            sut.ConvertMessage(positionMessages[1]);
+            var resultList = sut.ConvertMessage(Constants.ON_POSITION_END);
 
             Assert.Equal("PRDO", resultList[0]);
             Assert.Equal("STX", resultList[1]);
             Assert.Equal(Constants.ENTER_SYMBOL_TO_TRACK, resultList[2]);
         }
 
-        [Fact]
-        public void NotReturnOldLocalSymbolsIfTypePositionMessage()
+        [Theory, AutoNSubstituteData]
+        public void NotReturnOldLocalSymbolsIfTypePositionMessage(MessageProcessor sut)
         {
             List<Contract> contracts = new List<Contract>
             {
@@ -53,9 +47,6 @@ namespace Rollover.UnitTests
                 new PositionMessage("account", contracts[1], 2, 2000),
             };
 
-            IPortfolio portfolio = Substitute.For<IPortfolio>();
-
-            var sut = new MessageProcessor(portfolio);
             sut.ConvertMessage(positionMessages[0]);
             sut.ConvertMessage(positionMessages[1]);
             sut.ConvertMessage(Constants.ON_POSITION_END);
@@ -81,8 +72,8 @@ namespace Rollover.UnitTests
             Assert.Equal(Constants.ENTER_SYMBOL_TO_TRACK, resultList[2]);
         }
 
-        [Fact]
-        public void IgnorePositionZeroIfTypePositionMessage()
+        [Theory, AutoNSubstituteData]
+        public void IgnorePositionZeroIfTypePositionMessage(MessageProcessor sut)
         {
             List<Contract> contracts = new List<Contract>
             {
@@ -96,9 +87,6 @@ namespace Rollover.UnitTests
                 new PositionMessage("account", contracts[1], 0, 2000),
             };
 
-            IPortfolio portfolio = Substitute.For<IPortfolio>();
-
-            var sut = new MessageProcessor(portfolio);
             sut.ConvertMessage(positionMessages[0]);
             sut.ConvertMessage(positionMessages[1]);
             var resultList = sut.ConvertMessage(Constants.ON_POSITION_END);
