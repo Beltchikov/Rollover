@@ -1,4 +1,5 @@
-﻿using IBSampleApp.messages;
+﻿using IBApi;
+using IBSampleApp.messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,21 @@ namespace Rollover.Tracking
                 Currency = contractDetailsMessage.ContractDetails.Contract.Currency,
                 Exchange = contractDetailsMessage.ContractDetails.Contract.Exchange,
                 Strike = contractDetailsMessage.ContractDetails.Contract.Strike
+            };
+            return trackedSymbol;
+        }
+
+        public TrackedSymbol InitFromContract(Contract contract)
+        {
+            var trackedSymbol = new TrackedSymbol
+            {
+                LocalSymbol = contract.LocalSymbol,
+                Symbol = contract.Symbol,
+                ConId = contract.ConId,
+                SecType = contract.SecType,
+                Currency = contract.Currency,
+                Exchange = contract.Exchange,
+                Strike = contract.Strike
             };
             return trackedSymbol;
         }

@@ -1,4 +1,5 @@
-﻿using IBSampleApp.messages;
+﻿using IBApi;
+using IBSampleApp.messages;
 
 namespace Rollover.Tracking
 {
@@ -6,5 +7,6 @@ namespace Rollover.Tracking
     {
         TrackedSymbol Create(string symbol);
         TrackedSymbol InitFromContractDetailsMessage(ContractDetailsMessage contractDetailsMessage);
+        TrackedSymbol InitFromContract(Contract contract);
     }
 }
