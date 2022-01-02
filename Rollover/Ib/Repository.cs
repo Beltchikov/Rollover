@@ -45,10 +45,20 @@ namespace Rollover.Ib
         {
             var underLyingContract = GetUnderlyingContract(contract, null);
             HashSet<double> strikes = null;
-            if (underLyingContract != null)
+            if (underLyingContract.SecType == "FUT")
             {
                 var secondUnderLyingContract = GetUnderlyingContract(underLyingContract, contract.LastTradeDateOrContractMonth);
                 strikes = GetStrikes(secondUnderLyingContract, contract.LastTradeDateOrContractMonth);
+            }
+            else if (underLyingContract.SecType == "STK")
+            {
+                // TODO
+                // strikes = GetStrikes(underLyingContract, contract.LastTradeDateOrContractMonth);
+                throw new NotImplementedException();
+            }
+            else
+            {
+                throw new NotImplementedException();
             }
 
             var trackedSymbol = _trackedSymbolFactory.InitFromContract(contract);
@@ -60,7 +70,7 @@ namespace Rollover.Ib
             return _messageCollector.reqContractDetails(contract);
         }
 
-        public HashSet<double> GetStrikes(Contract contract, string lastTradeDateOrContractMonth)
+        private HashSet<double> GetStrikes(Contract contract, string lastTradeDateOrContractMonth)
         {
             var contractDetailsMessageList = ContractDetails(contract);
             if (contractDetailsMessageList.Count() > 1)
@@ -87,7 +97,7 @@ namespace Rollover.Ib
             return secDefOptParamMessage.Strikes;
         }
 
-        public Contract GetUnderlyingContract(Contract contract, string lastTradeDateOrContractMonth)
+        private Contract GetUnderlyingContract(Contract contract, string lastTradeDateOrContractMonth)
         {
             var contractDetailsMessageList = ContractDetails(contract);
             if (!contractDetailsMessageList.Any())
