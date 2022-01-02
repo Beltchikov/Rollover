@@ -10,8 +10,6 @@
         double NextButOneStrike { get; set; }
         public double PreviousStrike { get; set; }
         public double PreviousButOneStrike { get; set; }
-        int ReqIdContractDetails { get; set; }
-        int ReqIdSecDefOptParams { get; set; }
         string SecType { get; set; }
         double Strike { get; set; }
         string Symbol { get; set; }
