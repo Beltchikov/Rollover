@@ -1,5 +1,4 @@
-﻿using Rollover.Ib;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Rollover.Tracking
@@ -18,7 +17,7 @@ namespace Rollover.Tracking
             return _symbols.Add(trackedSymbol);
         }
 
-        public IEnumerable<string> AllAsString()
+        public IEnumerable<string> List()
         {
             var allAsString = _symbols.Select(s => s.ToString()).ToList();
             allAsString.Sort();

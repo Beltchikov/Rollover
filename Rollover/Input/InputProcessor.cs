@@ -65,8 +65,10 @@ namespace Rollover.Input
                         {
                             return new List<string> { "Symbol is tracked already." };
                         }
-                        var serialized = JsonSerializer.Serialize(trackedSymbol);
-                        return new List<string> { serialized };
+                        //var serialized = JsonSerializer.Serialize(trackedSymbol);
+                        var output = new List<string> { Constants.SYMBOL_ADDED };
+                        output.AddRange(_trackedSymbols.List());
+                        return output;
                     }
                     else
                     {

@@ -6,5 +6,6 @@
         public const string ENTER_SYMBOL_TO_TRACK = "Enter a symbol to track:";
         public static string ON_CONTRACT_DETAILS_END = "OnContractDetailsEnd";
         public static string ON_SECURITY_DEFINITION_OPTION_PARAMETER_END = "OnSecurityDefinitionOptionParameterEnd";
+        public static string SYMBOL_ADDED = "Symbol added";
     }
 }
