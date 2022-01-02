@@ -1,11 +1,9 @@
 using AutoFixture.Xunit2;
+using IBSampleApp.messages;
 using NSubstitute;
-using Rollover.Configuration;
 using Rollover.Ib;
 using Rollover.Input;
-using System;
-using System.Collections.Generic;
-using System.Threading;
+using Rollover.Tracking;
 using Xunit;
 
 namespace Rollover.UnitTests
@@ -13,39 +11,40 @@ namespace Rollover.UnitTests
     public class RolloverAgentShould
     {
         [Theory, AutoNSubstituteData]
-        public void CallConfigurationManagerGetConfiguration(
-            [Frozen] IConfigurationManager configurationManager,
+        public void CallTwsConnector(
+            [Frozen] ITwsConnector twsConnector,
             [Frozen] IInputQueue inputQueue,
             RolloverAgent sut)
         {
             inputQueue.Dequeue().Returns("Q");
             sut.Run();
-            configurationManager.Received().GetConfiguration();
+            twsConnector.Received().Connect();
         }
 
         [Theory, AutoNSubstituteData]
-        public void CallInputQueue(
+        public void CallRepositoryAllPositions(
             [Frozen] IInputQueue inputQueue,
+            [Frozen] IRepository repository,
             RolloverAgent sut)
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
             sut.Run();
-            inputQueue.Received().Enqueue(Arg.Any<string>());
+            repository.Received().AllPositions();
         }
 
         [Theory, AutoNSubstituteData]
-        public void CallConsoleWrapperReadLine(
-            [Frozen] IConsoleWrapper consoleWrapper,
+        public void CallPortfolioAdd(
             [Frozen] IInputQueue inputQueue,
+            [Frozen] IPortfolio portfolio,
             RolloverAgent sut)
         {
             inputQueue.Dequeue().Returns("SomeInput", "q");
             sut.Run();
-            consoleWrapper.Received().ReadLine();
+            portfolio.Received().Add(Arg.Any<PositionMessage>());
         }
 
         [Theory, AutoNSubstituteData]
-        public void CallConsoleWrapperWriteLineWithConfiguration(
+        public void CallConsoleWrapperWriteLine(
             [Frozen] IConsoleWrapper consoleWrapper,
             [Frozen] IInputQueue inputQueue,
             RolloverAgent sut)
@@ -56,26 +55,14 @@ namespace Rollover.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
-        public void CallrepositoryConnect(
+        public void CallConsoleWrapperWriteLineEnterSymbolToTrack(
+            [Frozen] IConsoleWrapper consoleWrapper,
             [Frozen] IInputQueue inputQueue,
-            [Frozen] IRepository repository,
             RolloverAgent sut)
         {
-            inputQueue.Dequeue().Returns("SomeInput", "q");
+            inputQueue.Dequeue().Returns("Q");
             sut.Run();
-            repository.Received().Connect(Arg.Any<string>(), Arg.Any<int>(), Arg.Any<int>());
-        }
-
-
-        [Theory, AutoNSubstituteData]
-        public void CallrepositoryDisconnect(
-            [Frozen] IInputQueue inputQueue,
-            [Frozen] IRepository repository,
-            RolloverAgent sut)
-        {
-            inputQueue.Dequeue().Returns("SomeInput", "q");
-            sut.Run();
-            repository.Received().Disconnect();
+            consoleWrapper.Received().WriteLine(Constants.ENTER_SYMBOL_TO_TRACK);
         }
 
         [Theory, AutoNSubstituteData]
@@ -92,19 +79,14 @@ namespace Rollover.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
-        public void CallConsoleWrapperWriteCanNotConnect(
-            [Frozen] IConsoleWrapper consoleWrapper,
+        public void CallRepositoryDisconnect(
             [Frozen] IInputQueue inputQueue,
             [Frozen] IRepository repository,
             RolloverAgent sut)
         {
-            inputQueue.Dequeue().Returns("Q");
-            var connectedTupel = new Tuple<bool, List<string>>(false, new List<string>());
-            repository.Connect(Arg.Any<string>(), Arg.Any<int>(), Arg.Any<int>())
-                .Returns(connectedTupel);
-
+            inputQueue.Dequeue().Returns("SomeInput", "q");
             sut.Run();
-            consoleWrapper.Received().WriteLine("Can not connect!");
+            repository.Received().Disconnect();
         }
     }
 }
