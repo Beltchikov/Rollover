@@ -60,6 +60,18 @@ namespace Rollover.Ib
                 // strikes = GetStrikes(underLyingContract, contract.LastTradeDateOrContractMonth);
                 throw new NotImplementedException();
             }
+            else if (underLyingContract.SecType == "IND")
+            {
+                // TODO
+
+                //strikes = GetStrikes(underLyingContract, contract.LastTradeDateOrContractMonth);
+                //var tickSizePriceTuple = _messageCollector.reqMktData(underLyingContract, "", true, false, null);
+                //var currentPrice = tickSizePriceTuple.Item2.Price;
+                //var trackedSymbol = _trackedSymbolFactory.Create(contract, strikes, currentPrice);
+                //return trackedSymbol;
+
+                throw new NotImplementedException();
+            }
             else
             {
                 throw new NotImplementedException();
