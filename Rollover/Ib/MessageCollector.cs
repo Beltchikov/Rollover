@@ -194,28 +194,13 @@ namespace Rollover.Ib
             return securityDefinitionOptionParameterMessage;
         }
 
-        public Tuple<TickSizeMessage, TickPriceMessage> reqMktData(
+        public TickPriceMessage reqMktData(
             Contract contract,
             string generickTickList,
             bool snapshot,
             bool regulatorySnapshot,
             List<TagValue> mktDataOptions)
         {
-            // Mock data
-            //var reqId = ++_reqIdMktData;
-            //var tickSizeMessage = new TickSizeMessage(reqId, 0, 0);
-            //var tickAttributes = new TickAttrib();
-            //var tickPriceMessage = new TickPriceMessage(reqId, 0, 16300, tickAttributes);
-            //return new Tuple<TickSizeMessage, TickPriceMessage>(tickSizeMessage, tickPriceMessage);
-
-            // TODO
-            // Implement real code
-
-            //Tuple<TickSizeMessage, TickPriceMessage> sizePriceTuple = new Tuple<TickSizeMessage, TickPriceMessage>(null, null);
-
-            TickSizeMessage tickSizeMessage = null;
-            TickPriceMessage tickPriceMessage = null;
-
             var reqId = ++_reqIdMktData;
             _ibClient.reqMktData(reqId, contract, generickTickList, snapshot, regulatorySnapshot, mktDataOptions);
 
@@ -225,24 +210,12 @@ namespace Rollover.Ib
             {
                 var message = _ibClientQueue.Dequeue();
 
-                //if (message is TickSizeMessage)
-                //{
-                //    if ((message as TickSizeMessage).RequestId == reqId)
-                //    {
-                //        tickSizeMessage = message as TickSizeMessage;
-                //    }
-                //}
                 if (message is TickPriceMessage)
                 {
                     if ((message as TickPriceMessage).RequestId == reqId)
                     {
-                        tickPriceMessage = message as TickPriceMessage;
+                        return message as TickPriceMessage;
                     }
-                }
-
-                if(tickPriceMessage != null)
-                {
-                    return new Tuple<TickSizeMessage, TickPriceMessage>(tickSizeMessage, tickPriceMessage);
                 }
             }
 
