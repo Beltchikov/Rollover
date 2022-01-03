@@ -99,47 +99,42 @@ namespace Rollover.UnitTests
             Assert.Equal(testInput, result.First());
         }
 
-        [Fact]
-        public void ReturnEmptyIfInputContainsErrorCodeAndIdMinusOne()
+        [Theory, AutoNSubstituteData]
+        public void ReturnEmptyIfInputContainsErrorCodeAndIdMinusOne(InputProcessor sut)
         {
             var testInput = "id=-1 errorCode=321 msg=Error validating request.-'cw' : cause - Invalid";
-            var sut = new InputProcessor(null, null, null, null, null);
             var result = sut.Convert(testInput);
             Assert.Empty(result);
         }
 
-        [Fact]
-        public void ReturnMessageIfTypeString()
+        [Theory, AutoNSubstituteData]
+        public void ReturnMessageIfTypeString(MessageProcessor sut)
         {
             var testMessage = "id=-1 errorCode=321 msg=Error validating request.-'cw' : cause - Invalid";
-            var sut = new MessageProcessor(null);
             var result = sut.ConvertMessage(testMessage);
             Assert.Equal(testMessage, result.First());
         }
 
-        [Fact]
-        public void ReturnConnectedIfTypeConnectionStatusMessage()
+        [Theory, AutoNSubstituteData]
+        public void ReturnConnectedIfTypeConnectionStatusMessage(MessageProcessor sut)
         {
             var testMessage = new ConnectionStatusMessage(true);
-            var sut = new MessageProcessor(null);
             var result = sut.ConvertMessage(testMessage);
             Assert.Equal("Connected.", result.First());
         }
 
-        [Fact]
-        public void ReturnDisconnectedIfTypeConnectionStatusMessage()
+        [Theory, AutoNSubstituteData]
+        public void ReturnDisconnectedIfTypeConnectionStatusMessage(MessageProcessor sut)
         {
             var testMessage = new ConnectionStatusMessage(false);
-            var sut = new MessageProcessor(null);
             var result = sut.ConvertMessage(testMessage);
             Assert.Equal("Disconnected.", result.First());
         }
 
-        [Fact]
-        public void ReturnAccountsIfTypeManagedAccountsMessage()
+        [Theory, AutoNSubstituteData]
+        public void ReturnAccountsIfTypeManagedAccountsMessage(MessageProcessor sut)
         {
             var testMessage = new ManagedAccountsMessage("GOOG\r\nMSFT");
-            var sut = new MessageProcessor(null);
             var result = sut.ConvertMessage(testMessage);
             Assert.Contains("GOOG", result.First());
             Assert.Contains("MSFT", result.First());
