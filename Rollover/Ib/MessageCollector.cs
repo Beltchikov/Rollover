@@ -202,16 +202,17 @@ namespace Rollover.Ib
             List<TagValue> mktDataOptions)
         {
             // Mock data
-            var reqId = ++_reqIdMktData;
-            var tickSizeMessage = new TickSizeMessage(reqId, 0, 0);
-            var tickAttributes = new TickAttrib();
-            var tickPriceMessage = new TickPriceMessage(reqId, 0, 16300, tickAttributes);
-            return new Tuple<TickSizeMessage, TickPriceMessage>(tickSizeMessage, tickPriceMessage);
-            
+            //var reqId = ++_reqIdMktData;
+            //var tickSizeMessage = new TickSizeMessage(reqId, 0, 0);
+            //var tickAttributes = new TickAttrib();
+            //var tickPriceMessage = new TickPriceMessage(reqId, 0, 16300, tickAttributes);
+            //return new Tuple<TickSizeMessage, TickPriceMessage>(tickSizeMessage, tickPriceMessage);
+
             // TODO
             // Implement real code
-            
-            //throw new NotImplementedException();
+
+            var reqId = ++_reqIdMktData;
+            _ibClient.reqMktData(reqId, contract, generickTickList, snapshot, regulatorySnapshot, mktDataOptions);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using IBApi;
 using IBSampleApp.messages;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace Rollover.Ib
@@ -17,6 +18,13 @@ namespace Rollover.Ib
         void reqPositions();
         void reqSecDefOptParams(int reqId, string symbol, string exchange, string secType, int conId);
         void reqContractDetails(int reqId, Contract contract);
+        void reqMktData(
+                    int reqId,
+                    Contract contract,
+                    string generickTickList,
+                    bool snapshot,
+                    bool regulatorySnapshot,
+                    List<TagValue> mktDataOptions);
         EReader ReaderFactory();
         void WaitForSignal();
     }

@@ -142,19 +142,19 @@ namespace Rollover.Ib
 
         public void OnTickSize(TickSizeMessage obj)
         {
-            throw new NotImplementedException();
+            _ibClientQueue.Enqueue(obj);
         }
         public void OnTickPrice(TickPriceMessage obj)
         {
-            throw new NotImplementedException();
+            _ibClientQueue.Enqueue(obj);
         }
         public void OnTickString(int arg1, int arg2, string arg3)
         {
-            throw new NotImplementedException();
+            _ibClientQueue.Enqueue($"{arg1},{arg2},{arg3}");
         }
         public void OnTickGeneric(int arg1, int arg2, double arg3)
         {
-            throw new NotImplementedException();
+            _ibClientQueue.Enqueue($"{arg1},{arg2},{arg3}");
         }
 
         #endregion
