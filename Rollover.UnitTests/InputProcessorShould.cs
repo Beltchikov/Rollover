@@ -140,22 +140,21 @@ namespace Rollover.UnitTests
             Assert.Contains("MSFT", result.First());
         }
 
-        [Fact]
-        public void ReturnNullIfTypePositionMessageAndNoOnPositionEndString()
+        [Theory, AutoNSubstituteData]
+        public void ReturnNullIfTypePositionMessageAndNoOnPositionEndString(MessageProcessor sut)
         {
             List<Contract> contracts = new List<Contract>
             {
-                new Contract {LocalSymbol = "STX"},
-                new Contract {LocalSymbol = "PRDO"}
+                new() {LocalSymbol = "STX"},
+                new() {LocalSymbol = "PRDO"}
             };
 
             List<PositionMessage> positionMessages = new List<PositionMessage>
             {
-                new PositionMessage("account", contracts[0], 1, 1000),
-                new PositionMessage("account", contracts[1], 2, 2000),
+                new("account", contracts[0], 1, 1000),
+                new("account", contracts[1], 2, 2000),
             };
 
-            var sut = new MessageProcessor(null);
             var result1 = sut.ConvertMessage(positionMessages[0]);
             var result2 = sut.ConvertMessage(positionMessages[1]);
 
