@@ -80,6 +80,15 @@ namespace Rollover.Ib
                     return resultList;
 
                 default:
+                    if(obj.Contains(Constants.ON_TICK_STRING))
+                    {
+                        return new List<string>();
+                    }
+                    else if (obj.Contains(Constants.ON_TICK_GENERIC))
+                    {
+                        return new List<string>();
+                    }
+                    
                     return new List<string> { obj as string };
             }
         }

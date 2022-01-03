@@ -150,11 +150,11 @@ namespace Rollover.Ib
         }
         public void OnTickString(int arg1, int arg2, string arg3)
         {
-            _ibClientQueue.Enqueue($"{arg1},{arg2},{arg3}");
+            _ibClientQueue.Enqueue($"{Constants.ON_TICK_STRING} {arg1},{arg2},{arg3}");
         }
         public void OnTickGeneric(int arg1, int arg2, double arg3)
         {
-            _ibClientQueue.Enqueue($"{arg1},{arg2},{arg3}");
+            _ibClientQueue.Enqueue($"{Constants.ON_TICK_GENERIC} {arg1},{arg2},{arg3}");
         }
 
         #endregion
