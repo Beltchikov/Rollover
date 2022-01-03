@@ -39,17 +39,10 @@ namespace Rollover.UnitTests
             Assert.Equal("Symbol is not valid.", resultList.First());
         }
 
-        [Fact]
-        public void CallsPortfolioPositionBySymbol()
+        [Theory, AutoNSubstituteData]
+        public void CallsPortfolioPositionBySymbol([Frozen] IPortfolio portfolio, InputProcessor sut)
         {
             var testSymbol = "Some input";
-
-            var reducer = new Reducer();
-            var portfolio = Substitute.For<IPortfolio>();
-            var trackedSymbols = Substitute.For<ITrackedSymbols>();
-            var repository = Substitute.For<IRepository>();
-
-            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository, null);
 
             var contract = new Contract() { Symbol = testSymbol };
             var positionMessage = new PositionMessage("account", contract, 1, 1000);
@@ -60,19 +53,14 @@ namespace Rollover.UnitTests
             portfolio.Received().PositionBySymbol(testSymbol);
         }
 
-        [Fact]
-        public void ReturnSymbolDetailsCouldNotBeQueried()
+        [Theory, AutoNSubstituteData]
+        public void ReturnSymbolDetailsCouldNotBeQueried(
+            [Frozen] IPortfolio portfolio, 
+            [Frozen] IRepository repository, 
+            InputProcessor sut)
         {
             var testSymbol = "MNQ";
-
-            var reducer = new Reducer();
-            var portfolio = Substitute.For<IPortfolio>();
-            var trackedSymbols = Substitute.For<ITrackedSymbols>();
-            var repository = Substitute.For<IRepository>();
-
             repository.GetTrackedSymbol(Arg.Any<Contract>()).Returns(null as ITrackedSymbol);
-
-            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository, null);
 
             var contract = new Contract() { Symbol = testSymbol };
             var positionMessage = new PositionMessage("account", contract, 1, 1000);
@@ -84,16 +72,13 @@ namespace Rollover.UnitTests
             Assert.Equal("Symbol details could not be queried.", resultList.First());
         }
 
-        [Fact]
-        public void CallsRepositoryGetTrackedSymbol()
+        [Theory, AutoNSubstituteData]
+        public void CallsRepositoryGetTrackedSymbol(
+            [Frozen] IPortfolio portfolio,
+            [Frozen] IRepository repository,
+            [Frozen] ITrackedSymbols trackedSymbols,
+            InputProcessor sut)
         {
-            var reducer = new Reducer();
-            var portfolio = Substitute.For<IPortfolio>();
-            var trackedSymbols = Substitute.For<ITrackedSymbols>();
-            var repository = Substitute.For<IRepository>();
-
-            var sut = new InputProcessor(reducer, portfolio, trackedSymbols, repository, null);
-
             var testSymbol = "MNQ";
             var contract = new Contract() { Symbol = testSymbol };
             var positionMessage = new PositionMessage("account", contract, 1, 1000);
@@ -106,11 +91,10 @@ namespace Rollover.UnitTests
             repository.Received().GetTrackedSymbol(Arg.Any<Contract>());
         }
 
-        [Fact]
-        public void ReturnInputIfInputContainsErrorCode()
+        [Theory, AutoNSubstituteData]
+        public void ReturnInputIfInputContainsErrorCode(InputProcessor sut)
         {
             var testInput = "id=1 errorCode=321 msg=Error validating request.-'cw' : cause - Invalid";
-            var sut = new InputProcessor(null, null, null, null, null);
             var result = sut.Convert(testInput);
             Assert.Equal(testInput, result.First());
         }
