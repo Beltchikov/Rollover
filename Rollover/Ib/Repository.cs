@@ -49,7 +49,7 @@ namespace Rollover.Ib
             {
                 var secondUnderLyingContract = GetUnderlyingContract(underLyingContract, contract.LastTradeDateOrContractMonth);
                 strikes = GetStrikes(secondUnderLyingContract, contract.LastTradeDateOrContractMonth);
-                var tickSizePriceTuple = _messageCollector.reqMktData(secondUnderLyingContract, "", true, false, null);
+                var tickSizePriceTuple = _messageCollector.reqMktData(underLyingContract, "", true, false, null);
                 var currentPrice = tickSizePriceTuple.Item2.Price;
                 var trackedSymbol = _trackedSymbolFactory.Create(contract, strikes, currentPrice);
                 return trackedSymbol;
@@ -135,7 +135,9 @@ namespace Rollover.Ib
                 SecType = contractDetailsMessage.ContractDetails.UnderSecType,
                 Symbol = contractDetailsMessage.ContractDetails.Contract.Symbol,
                 Currency = contractDetailsMessage.ContractDetails.Contract.Currency,
-                Exchange = contractDetailsMessage.ContractDetails.Contract.Exchange
+                Exchange = contractDetailsMessage.ContractDetails.Contract.Exchange,
+                LastTradeDateOrContractMonth = contractDetailsMessage.ContractDetails.Contract.LastTradeDateOrContractMonth
+
             };
         }
 

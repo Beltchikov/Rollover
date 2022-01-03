@@ -20,7 +20,7 @@ namespace Rollover.Ib
 
         public List<string> ConvertMessage(object obj)
         {
-            if(obj == null)
+            if (obj == null)
             {
                 return new List<string>();
             }
@@ -54,7 +54,17 @@ namespace Rollover.Ib
 
                 return new List<string>();
             }
-            
+            else if (obj is TickPriceMessage)
+            {
+                var price = (obj as TickPriceMessage).Price;
+                return new List<string> { $"Current price:{price}" };
+            }
+            else if (obj is TickSizeMessage)
+            {
+                var size = (obj as TickSizeMessage).Size;
+                return new List<string> { $"Current tick size:{size}" };
+            }
+
             throw new NotImplementedException();
         }
 
@@ -64,13 +74,13 @@ namespace Rollover.Ib
             {
                 case Constants.ON_POSITION_END:
                     _positionMessageList.ForEach(p => _portfolio.Add(p));
-                    
+
                     List<string> resultList = _positionMessageList.Select(x => x.Contract.LocalSymbol)
                         .OrderBy(x => x).ToList();
                     resultList.Add(Constants.ENTER_SYMBOL_TO_TRACK);
                     _positionMessageList = new List<PositionMessage>();
                     return resultList;
-               
+
                 default:
                     return new List<string> { obj as string };
             }

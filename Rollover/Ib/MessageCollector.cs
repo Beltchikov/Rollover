@@ -159,12 +159,12 @@ namespace Rollover.Ib
         }
 
         public List<SecurityDefinitionOptionParameterMessage> reqSecDefOptParams(
-            string symbol, 
-            string exchange, 
-            string secType, 
+            string symbol,
+            string exchange,
+            string secType,
             int conId)
         {
-            List<SecurityDefinitionOptionParameterMessage> securityDefinitionOptionParameterMessage 
+            List<SecurityDefinitionOptionParameterMessage> securityDefinitionOptionParameterMessage
                 = new List<SecurityDefinitionOptionParameterMessage>();
 
             var reqId = ++_reqIdSecDefOptParam;
@@ -195,10 +195,10 @@ namespace Rollover.Ib
         }
 
         public Tuple<TickSizeMessage, TickPriceMessage> reqMktData(
-            Contract contract, 
-            string generickTickList, 
-            bool snapshot, 
-            bool regulatorySnapshot, 
+            Contract contract,
+            string generickTickList,
+            bool snapshot,
+            bool regulatorySnapshot,
             List<TagValue> mktDataOptions)
         {
             // Mock data
@@ -211,8 +211,42 @@ namespace Rollover.Ib
             // TODO
             // Implement real code
 
+            //Tuple<TickSizeMessage, TickPriceMessage> sizePriceTuple = new Tuple<TickSizeMessage, TickPriceMessage>(null, null);
+
+            TickSizeMessage tickSizeMessage = null;
+            TickPriceMessage tickPriceMessage = null;
+
             var reqId = ++_reqIdMktData;
             _ibClient.reqMktData(reqId, contract, generickTickList, snapshot, regulatorySnapshot, mktDataOptions);
+
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+            while (stopWatch.Elapsed.TotalMilliseconds < _configurationManager.GetConfiguration().Timeout)
+            {
+                var message = _ibClientQueue.Dequeue();
+
+                //if (message is TickSizeMessage)
+                //{
+                //    if ((message as TickSizeMessage).RequestId == reqId)
+                //    {
+                //        tickSizeMessage = message as TickSizeMessage;
+                //    }
+                //}
+                if (message is TickPriceMessage)
+                {
+                    if ((message as TickPriceMessage).RequestId == reqId)
+                    {
+                        tickPriceMessage = message as TickPriceMessage;
+                    }
+                }
+
+                if(tickPriceMessage != null)
+                {
+                    return new Tuple<TickSizeMessage, TickPriceMessage>(tickSizeMessage, tickPriceMessage);
+                }
+            }
+
+            return null;
         }
     }
 }
