@@ -56,13 +56,11 @@ namespace Rollover.Ib
             }
             else if (obj is TickPriceMessage)
             {
-                var price = (obj as TickPriceMessage).Price;
-                return new List<string> { $"Current price:{price}" };
+                return new List<string>();
             }
             else if (obj is TickSizeMessage)
             {
-                var size = (obj as TickSizeMessage).Size;
-                return new List<string> { $"Current tick size:{size}" };
+                return new List<string>();
             }
 
             throw new NotImplementedException();
