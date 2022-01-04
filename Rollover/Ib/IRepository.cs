@@ -11,6 +11,11 @@ namespace Rollover.Ib
         Tuple<bool, List<string>> Connect(string host, int port, int clientId);
         void Disconnect();
         List<PositionMessage> AllPositions();
+        List<SecurityDefinitionOptionParameterMessage> OptionParameters(
+           string symbol,
+           string exchange,
+           string secType,
+           int conId);
         ITrackedSymbol GetTrackedSymbol(Contract contract);
     }
 }

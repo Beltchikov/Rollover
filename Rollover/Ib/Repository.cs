@@ -50,14 +50,14 @@ namespace Rollover.Ib
                 var secondUnderLyingContract = GetUnderlyingContract(underLyingContract, contract.LastTradeDateOrContractMonth);
                 strikes = GetStrikes(secondUnderLyingContract, contract.LastTradeDateOrContractMonth);
                 var currentPrice = GetCurrentPrice(underLyingContract);
-                
+
                 return _trackedSymbolFactory.Create(contract, strikes, currentPrice);
             }
             else if (underLyingContract.SecType == "STK")
             {
-                // TODO
-                // strikes = GetStrikes(underLyingContract, contract.LastTradeDateOrContractMonth);
-                throw new NotImplementedException();
+                strikes = GetStrikes(underLyingContract, contract.LastTradeDateOrContractMonth);
+                var currentPrice = GetCurrentPrice(underLyingContract);
+                return _trackedSymbolFactory.Create(contract, strikes, currentPrice);
             }
             else if (underLyingContract.SecType == "IND")
             {
@@ -88,6 +88,15 @@ namespace Rollover.Ib
             return _messageCollector.reqContractDetails(contract);
         }
 
+        public List<SecurityDefinitionOptionParameterMessage> OptionParameters(
+            string symbol, 
+            string exchange, 
+            string secType, 
+            int conId)
+        {
+            return _messageCollector.reqSecDefOptParams(symbol, exchange, secType, conId);
+        }
+
         private HashSet<double> GetStrikes(Contract contract, string lastTradeDateOrContractMonth)
         {
             var contractDetailsMessageList = ContractDetails(contract);
@@ -97,7 +106,7 @@ namespace Rollover.Ib
             }
             var contractDetailsMessage = contractDetailsMessageList.First();
 
-            var secDefOptParamMessageList = _messageCollector.reqSecDefOptParams(
+            var secDefOptParamMessageList = OptionParameters(
                 contractDetailsMessage.ContractDetails.Contract.Symbol,
                 contractDetailsMessage.ContractDetails.Contract.Exchange,
                 contractDetailsMessage.ContractDetails.Contract.SecType,
@@ -107,6 +116,10 @@ namespace Rollover.Ib
             var secDefOptParamMessageExpirationList = secDefOptParamMessageList
                 .Where(s => s.Expirations.Contains(lastTradeDateOrContractMonth));
 
+            if (!secDefOptParamMessageExpirationList.Any())
+            {
+                return new HashSet<double>();
+            }
             if (secDefOptParamMessageExpirationList.Count() > 1)
             {
                 throw new ApplicationException("Unexpected. Multiple secDefOptParamMessageExpirationList");
