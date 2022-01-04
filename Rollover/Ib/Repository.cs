@@ -89,6 +89,22 @@ namespace Rollover.Ib
         }
 
         public List<SecurityDefinitionOptionParameterMessage> OptionParameters(
+            string symbol,
+            string exchange,
+            string secType,
+            int conId)
+        {
+            var secDefOptParamMessageList = OptionParametersTryOnce(symbol, exchange, secType, conId);
+            if(secDefOptParamMessageList.Any())
+            {
+                return secDefOptParamMessageList;
+            }
+
+            exchange = "";
+            return OptionParametersTryOnce(symbol, exchange, secType, conId);
+        }
+
+        private List<SecurityDefinitionOptionParameterMessage> OptionParametersTryOnce(
             string symbol, 
             string exchange, 
             string secType, 
@@ -122,7 +138,11 @@ namespace Rollover.Ib
             }
             if (secDefOptParamMessageExpirationList.Count() > 1)
             {
-                throw new ApplicationException("Unexpected. Multiple secDefOptParamMessageExpirationList");
+                secDefOptParamMessageExpirationList = secDefOptParamMessageExpirationList.Where(e => e.Exchange == Constants.SMART).ToList();
+                if (secDefOptParamMessageExpirationList.Count() > 1)
+                {
+                    throw new ApplicationException("Unexpected. Multiple secDefOptParamMessageExpirationList");
+                }
             }
             var secDefOptParamMessage = secDefOptParamMessageExpirationList.First();
             return secDefOptParamMessage.Strikes;
