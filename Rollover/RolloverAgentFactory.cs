@@ -1,4 +1,5 @@
 ﻿using Rollover.Configuration;
+using Rollover.Helper;
 using Rollover.Ib;
 using Rollover.Input;
 using Rollover.Tracking;
@@ -37,7 +38,8 @@ namespace Rollover
                 messageCollector,
                 trackedSymbolFactory);
 
-            ITrackedSymbols trackedSymbols = new TrackedSymbols();
+            IFileHelper fileHelper = new FileHelper();
+            ITrackedSymbols trackedSymbols = new TrackedSymbols(fileHelper);
             IReducer reducer = new Reducer();
             IInputProcessor inputProcessor = new InputProcessor(
                 reducer,

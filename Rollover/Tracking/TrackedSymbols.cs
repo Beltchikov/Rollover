@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Rollover.Helper;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Rollover.Tracking
@@ -6,9 +7,18 @@ namespace Rollover.Tracking
     public class TrackedSymbols : ITrackedSymbols
     {
         private readonly HashSet<ITrackedSymbol> _symbols;
+        private IFileHelper _fileHelper;
+        private string TRACKED_SYMBOLS_FILE = "TrackedSymbols.json";
 
-        public TrackedSymbols()
+        public TrackedSymbols(IFileHelper fileHelper)
         {
+            _fileHelper = fileHelper;
+
+            if(_fileHelper.FileExists(TRACKED_SYMBOLS_FILE))
+            {
+                // TODO
+            }
+            
             _symbols = new HashSet<ITrackedSymbol>();
         }
 
