@@ -15,5 +15,14 @@ namespace Rollover.UnitTests
             sut.eConnect(Arg.Any<string>(), Arg.Any<int>(), Arg.Any<int>());
             ibClient.Received().eConnect(Arg.Any<string>(), Arg.Any<int>(), Arg.Any<int>());
         }
+
+        [Theory, AutoNSubstituteData]
+        public void CallIbClientReqPositions(
+            [Frozen] IIbClientWrapper ibClient,
+            MessageCollector sut)
+        {
+            sut.reqPositions();
+            ibClient.Received().reqPositions();
+        }
     }
 }
