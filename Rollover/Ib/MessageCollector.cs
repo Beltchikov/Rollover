@@ -4,6 +4,7 @@ using Rollover.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 
 namespace Rollover.Ib
@@ -198,6 +199,54 @@ namespace Rollover.Ib
             bool regulatorySnapshot,
             List<TagValue> mktDataOptions)
         {
+            var tickPriceMessageList = reqMktDataAsList(
+                contract,
+                generickTickList,
+                snapshot,
+                regulatorySnapshot,
+                mktDataOptions);
+
+            if (tickPriceMessageList.Any())
+            {
+                return null;
+            }
+
+            return tickPriceMessageList.OrderByDescending(m => m.Price).First();
+        }
+
+        public List<TickPriceMessage> reqMktDataAsList(
+            Contract contract,
+            string generickTickList,
+            bool snapshot,
+            bool regulatorySnapshot,
+            List<TagValue> mktDataOptions)
+        {
+            var mktDataAsTuple = reqMktDataAsTuple(
+                contract,
+                generickTickList,
+                snapshot,
+                regulatorySnapshot,
+                mktDataOptions);
+
+            if (mktDataAsTuple.Item1.All(t => t.Size == -1)
+                && mktDataAsTuple.Item2.All(t => (int)Math.Round(t.Price, 0) == -1))
+            {
+                return new List<TickPriceMessage>();
+            }
+
+            return mktDataAsTuple.Item2;
+        }
+
+        public Tuple<List<TickSizeMessage>, List<TickPriceMessage>> reqMktDataAsTuple(
+            Contract contract,
+            string generickTickList,
+            bool snapshot,
+            bool regulatorySnapshot,
+            List<TagValue> mktDataOptions)
+        {
+            var tickSizeMessageList = new List<TickSizeMessage>();
+            var tickPriceMessageList = new List<TickPriceMessage>();
+
             var reqId = ++_reqIdMktData;
             _ibClient.reqMktData(reqId, contract, generickTickList, snapshot, regulatorySnapshot, mktDataOptions);
 
@@ -207,16 +256,26 @@ namespace Rollover.Ib
             {
                 var message = _ibClientQueue.Dequeue();
 
+                if (message is TickSizeMessage sizeMessage)
+                {
+                    tickSizeMessageList.Add(sizeMessage);
+                }
                 if (message is TickPriceMessage priceMessage)
                 {
-                    if (priceMessage.RequestId == reqId)
+                    tickPriceMessageList.Add(priceMessage);
+                }
+                if (message is string messageAsString)
+                {
+                    if (messageAsString == Constants.ON_TICK_SNAPSHOT_END)
                     {
-                        return priceMessage;
+                        return new Tuple<List<TickSizeMessage>, List<TickPriceMessage>>(
+                            tickSizeMessageList, tickPriceMessageList);
                     }
                 }
             }
 
-            return null;
+            return new Tuple<List<TickSizeMessage>, List<TickPriceMessage>>(
+                new List<TickSizeMessage>(), new List<TickPriceMessage>());
         }
     }
 }
