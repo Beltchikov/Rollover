@@ -156,6 +156,10 @@ namespace Rollover.Ib
         {
             _ibClientQueue.Enqueue($"{Constants.ON_TICK_GENERIC} {arg1},{arg2},{arg3}");
         }
+        private void OnTickSnapshotEnd(int obj)
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion
 
@@ -186,6 +190,7 @@ namespace Rollover.Ib
             _ibClient.TickPrice += OnTickPrice;
             _ibClient.TickString += OnTickString;
             _ibClient.TickGeneric += OnTickGeneric;
+            _ibClient.TickSnapshotEnd += OnTickSnapshotEnd;
         }
 
         #endregion
