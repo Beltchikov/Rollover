@@ -177,13 +177,12 @@ namespace Rollover.Ib
             {
                 var message = _ibClientQueue.Dequeue();
 
-                if (message is SecurityDefinitionOptionParameterMessage)
+                if (message is SecurityDefinitionOptionParameterMessage parameterMessage)
                 {
-                    securityDefinitionOptionParameterMessage.Add(message as SecurityDefinitionOptionParameterMessage);
+                    securityDefinitionOptionParameterMessage.Add(parameterMessage);
                 }
-                else if (message is string)
+                else if (message is string messageAsString)
                 {
-                    var messageAsString = message as string;
                     if (messageAsString == Constants.ON_SECURITY_DEFINITION_OPTION_PARAMETER_END)
                     {
                         return securityDefinitionOptionParameterMessage;

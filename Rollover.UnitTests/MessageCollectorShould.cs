@@ -35,5 +35,24 @@ namespace Rollover.UnitTests
             sut.reqContractDetails(contract);
             ibClient.Received().reqContractDetails(Arg.Any<int>(), contract);
         }
+
+        //[Theory, AutoNSubstituteData]
+        //public void CallIbClientReqSecDefOptParams(
+        //    [Frozen] IIbClientWrapper ibClient,
+        //    MessageCollector sut)
+        //{
+        //    sut.reqSecDefOptParams(
+        //        Arg.Any<string>(),
+        //        Arg.Any<string>(),
+        //        Arg.Any<string>(),
+        //        Arg.Any<int>());
+        //    ibClient.ReceivedWithAnyArgs().reqSecDefOptParams(
+        //       default,
+        //       default,
+        //       default,
+        //       default,
+        //       default
+        //       );
+        //}
     }
 }
