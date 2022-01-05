@@ -1,4 +1,5 @@
-﻿using System.Security.Authentication;
+﻿using System.Collections.Generic;
+using System.Security.Authentication;
 using AutoFixture.Xunit2;
 using IBApi;
 using NSubstitute;
@@ -53,6 +54,31 @@ namespace Rollover.UnitTests
                 exchange,
                 secType, 
                 conId);
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallIbClientReqMktData(
+            Contract contract,
+            string generickTickList,
+            bool snapshot,
+            bool regulatorySnapshot,
+            List<TagValue> mktDataOptions,
+            [Frozen] IIbClientWrapper ibClient,
+            MessageCollector sut)
+        {
+            sut.reqMktData(
+                contract,
+                generickTickList,
+                snapshot,
+                regulatorySnapshot,
+                mktDataOptions);
+            ibClient.Received().reqMktData(
+                Arg.Any<int>(),
+                contract,
+                generickTickList,
+                snapshot,
+                regulatorySnapshot,
+                mktDataOptions);
         }
     }
 }
