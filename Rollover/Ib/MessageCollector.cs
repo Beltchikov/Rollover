@@ -206,7 +206,7 @@ namespace Rollover.Ib
                 regulatorySnapshot,
                 mktDataOptions);
 
-            if (tickPriceMessageList.Any())
+            if (!tickPriceMessageList.Any())
             {
                 return null;
             }
