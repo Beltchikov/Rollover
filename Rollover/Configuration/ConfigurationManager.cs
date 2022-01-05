@@ -1,4 +1,6 @@
-﻿namespace Rollover.Configuration
+﻿using Rollover.Helper;
+
+namespace Rollover.Configuration
 {
     public class ConfigurationManager : IConfigurationManager
     {

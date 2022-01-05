@@ -1,4 +1,4 @@
-﻿namespace Rollover.Configuration
+﻿namespace Rollover.Helper
 {
     public interface ISerializer
     {

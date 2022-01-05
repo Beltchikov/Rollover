@@ -1,6 +1,7 @@
 ﻿using AutoFixture.Xunit2;
 using NSubstitute;
 using Rollover.Configuration;
+using Rollover.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;

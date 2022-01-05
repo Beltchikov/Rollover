@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Rollover.Configuration
+namespace Rollover.Helper
 {
     public class Serializer : ISerializer
     {
