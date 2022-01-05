@@ -50,14 +50,23 @@ namespace Rollover.Ib
                 var secondUnderLyingContract = GetUnderlyingContract(underLyingContract, contract.LastTradeDateOrContractMonth);
                 strikes = GetStrikes(secondUnderLyingContract, contract.LastTradeDateOrContractMonth);
                 var currentPrice = GetCurrentPrice(underLyingContract);
+                if (!currentPrice.Item1)
+                {
+                    return null;
+                }
 
-                return _trackedSymbolFactory.Create(contract, strikes, currentPrice);
+                return _trackedSymbolFactory.Create(contract, strikes, currentPrice.Item2);
             }
             else if (underLyingContract.SecType == "STK")
             {
                 strikes = GetStrikes(underLyingContract, contract.LastTradeDateOrContractMonth);
                 var currentPrice = GetCurrentPrice(underLyingContract);
-                return _trackedSymbolFactory.Create(contract, strikes, currentPrice);
+                if (!currentPrice.Item1)
+                {
+                    return null;
+                }
+
+                return _trackedSymbolFactory.Create(contract, strikes, currentPrice.Item2);
             }
             else if (underLyingContract.SecType == "IND")
             {
@@ -77,10 +86,14 @@ namespace Rollover.Ib
             }
         }
 
-        private double GetCurrentPrice(Contract underLyingContract)
+        private Tuple<bool, double> GetCurrentPrice(Contract underLyingContract)
         {
             var tickPriceMessage = _messageCollector.reqMktData(underLyingContract, "", true, false, null);
-            return tickPriceMessage.Price;
+            if (tickPriceMessage == null)
+            {
+                return new Tuple<bool, double>(false, -1);
+            }
+            return new Tuple<bool, double>(true, tickPriceMessage.Price);
         }
 
         public List<ContractDetailsMessage> ContractDetails(Contract contract)
