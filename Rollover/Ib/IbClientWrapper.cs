@@ -158,7 +158,7 @@ namespace Rollover.Ib
         }
         private void OnTickSnapshotEnd(int obj)
         {
-            throw new NotImplementedException();
+            _ibClientQueue.Enqueue(Constants.ON_TICK_SNAPSHOT_END);
         }
 
         #endregion
