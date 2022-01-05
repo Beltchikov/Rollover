@@ -10,10 +10,10 @@ namespace Rollover.Ib
 {
     public class MessageCollector : IMessageCollector
     {
-        private IIbClientWrapper _ibClient;
-        private IConnectedCondition _connectedCondition;
-        private IIbClientQueue _ibClientQueue;
-        private IConfigurationManager _configurationManager;
+        private readonly IIbClientWrapper _ibClient;
+        private readonly IConnectedCondition _connectedCondition;
+        private readonly IIbClientQueue _ibClientQueue;
+        private readonly IConfigurationManager _configurationManager;
 
         private int _reqIdContractDetails = 0;
         private int _reqIdSecDefOptParam = 0;
@@ -65,25 +65,25 @@ namespace Rollover.Ib
             while (stopWatch.Elapsed.TotalMilliseconds < timeout)
             {
                 var message = ibClientQueue.Dequeue();
-                if (message is string)
+                if (message is string messageAsString)
                 {
-                    connectionMessages.OnErrorMessages.Add(message as string);
+                    connectionMessages.OnErrorMessages.Add(messageAsString);
                 }
-                else if (message is ConnectionStatusMessage)
+                else if (message is ConnectionStatusMessage statusMessage)
                 {
                     if (connectionMessages.ConnectionStatusMessage != null)
                     {
                         throw new Exception("Unexpected. Multiple ConnectionStatusMessage");
                     }
-                    connectionMessages.ConnectionStatusMessage = message as ConnectionStatusMessage;
+                    connectionMessages.ConnectionStatusMessage = statusMessage;
                 }
-                else if (message is ManagedAccountsMessage)
+                else if (message is ManagedAccountsMessage accountsMessage)
                 {
                     if (connectionMessages.ManagedAccountsMessage != null)
                     {
                         throw new Exception("Unexpected. Multiple ManagedAccountsMessage");
                     }
-                    connectionMessages.ManagedAccountsMessage = message as ManagedAccountsMessage;
+                    connectionMessages.ManagedAccountsMessage = accountsMessage;
                 }
 
                 _connectedCondition.AddMessage(message);
@@ -110,13 +110,12 @@ namespace Rollover.Ib
             {
                 var message = _ibClientQueue.Dequeue();
 
-                if (message is PositionMessage)
+                if (message is PositionMessage positionMessage)
                 {
-                    positionMessages.Add(message as PositionMessage);
+                    positionMessages.Add(positionMessage);
                 }
-                else if (message is string)
+                else if (message is string messageAsString)
                 {
-                    var messageAsString = message as string;
                     if (messageAsString == Constants.ON_POSITION_END)
                     {
                         return positionMessages;
@@ -141,13 +140,12 @@ namespace Rollover.Ib
             {
                 var message = _ibClientQueue.Dequeue();
 
-                if (message is ContractDetailsMessage)
+                if (message is ContractDetailsMessage detailsMessage)
                 {
-                    contractDetailsMessages.Add(message as ContractDetailsMessage);
+                    contractDetailsMessages.Add(detailsMessage);
                 }
-                else if (message is string)
+                else if (message is string messageAsString)
                 {
-                    var messageAsString = message as string;
                     if (messageAsString == Constants.ON_CONTRACT_DETAILS_END)
                     {
                         return contractDetailsMessages;
@@ -164,7 +162,7 @@ namespace Rollover.Ib
             string secType,
             int conId)
         {
-            List<SecurityDefinitionOptionParameterMessage> securityDefinitionOptionParameterMessage
+            var securityDefinitionOptionParameterMessage
                 = new List<SecurityDefinitionOptionParameterMessage>();
 
             var reqId = ++_reqIdSecDefOptParam;
@@ -209,11 +207,11 @@ namespace Rollover.Ib
             {
                 var message = _ibClientQueue.Dequeue();
 
-                if (message is TickPriceMessage)
+                if (message is TickPriceMessage priceMessage)
                 {
-                    if ((message as TickPriceMessage).RequestId == reqId)
+                    if (priceMessage.RequestId == reqId)
                     {
-                        return message as TickPriceMessage;
+                        return priceMessage;
                     }
                 }
             }
