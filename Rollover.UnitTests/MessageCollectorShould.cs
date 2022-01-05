@@ -1,4 +1,5 @@
-﻿using AutoFixture.Xunit2;
+﻿using System.Security.Authentication;
+using AutoFixture.Xunit2;
 using IBApi;
 using NSubstitute;
 using Rollover.Ib;
@@ -36,23 +37,22 @@ namespace Rollover.UnitTests
             ibClient.Received().reqContractDetails(Arg.Any<int>(), contract);
         }
 
-        //[Theory, AutoNSubstituteData]
-        //public void CallIbClientReqSecDefOptParams(
-        //    [Frozen] IIbClientWrapper ibClient,
-        //    MessageCollector sut)
-        //{
-        //    sut.reqSecDefOptParams(
-        //        Arg.Any<string>(),
-        //        Arg.Any<string>(),
-        //        Arg.Any<string>(),
-        //        Arg.Any<int>());
-        //    ibClient.ReceivedWithAnyArgs().reqSecDefOptParams(
-        //       default,
-        //       default,
-        //       default,
-        //       default,
-        //       default
-        //       );
-        //}
+        [Theory, AutoNSubstituteData]
+        public void CallIbClientReqSecDefOptParams(
+            string symbol,
+            string exchange,
+            string secType,
+            int conId,
+            [Frozen] IIbClientWrapper ibClient,
+            MessageCollector sut)
+        {
+            sut.reqSecDefOptParams(symbol, exchange, secType, conId);
+            ibClient.Received().reqSecDefOptParams(
+                Arg.Any<int>(),
+                symbol,
+                exchange,
+                secType, 
+                conId);
+        }
     }
 }
