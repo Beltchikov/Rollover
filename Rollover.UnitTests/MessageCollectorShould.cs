@@ -1,4 +1,5 @@
 ﻿using AutoFixture.Xunit2;
+using IBApi;
 using NSubstitute;
 using Rollover.Ib;
 using Xunit;
@@ -23,6 +24,16 @@ namespace Rollover.UnitTests
         {
             sut.reqPositions();
             ibClient.Received().reqPositions();
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallIbClientReqContractDetails(
+            [Frozen] IIbClientWrapper ibClient,
+            Contract contract,
+            MessageCollector sut)
+        {
+            sut.reqContractDetails(contract);
+            ibClient.Received().reqContractDetails(Arg.Any<int>(), contract);
         }
     }
 }
