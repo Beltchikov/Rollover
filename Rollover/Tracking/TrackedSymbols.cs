@@ -16,14 +16,16 @@ namespace Rollover.Tracking
             _fileHelper = fileHelper;
             _serializer = serializer;
 
+            _symbols = new HashSet<ITrackedSymbol>();
+
             if (_fileHelper.FileExists(TRACKED_SYMBOLS_FILE))
             {
                 var trackedSymbolsAsText = _fileHelper.ReadAllText(TRACKED_SYMBOLS_FILE);
-                _symbols = _serializer.Deserialize<HashSet<ITrackedSymbol>>(trackedSymbolsAsText);
-            }
-            else
-            {
-                _symbols = new HashSet<ITrackedSymbol>();
+                var symbols = _serializer.Deserialize<HashSet<TrackedSymbol>>(trackedSymbolsAsText).ToList();
+                if (symbols.Any())
+                {
+                    symbols.ForEach(s => _symbols.Add(s));
+                }
             }
         }
 
@@ -33,7 +35,7 @@ namespace Rollover.Tracking
             {
                 return false;
             }
-            
+
             bool addResult = _symbols.Add(trackedSymbol);
             string trackedSymbolsAsText = _serializer.Serialize(_symbols);
             _fileHelper.WriteAllText(TRACKED_SYMBOLS_FILE, trackedSymbolsAsText);
