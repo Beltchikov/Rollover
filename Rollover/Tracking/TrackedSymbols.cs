@@ -8,16 +8,18 @@ namespace Rollover.Tracking
     {
         private readonly HashSet<ITrackedSymbol> _symbols;
         private IFileHelper _fileHelper;
+        private ISerializer _serializer;
         private string TRACKED_SYMBOLS_FILE = "TrackedSymbols.json";
 
-        public TrackedSymbols(IFileHelper fileHelper)
+        public TrackedSymbols(IFileHelper fileHelper, ISerializer serializer)
         {
             _fileHelper = fileHelper;
+            _serializer = serializer;
 
             if (_fileHelper.FileExists(TRACKED_SYMBOLS_FILE))
             {
                 var trackedSymbolsAsText = _fileHelper.ReadAllText(TRACKED_SYMBOLS_FILE);
-                //_symbols = _serializer.Deserialize<HashSet<ITrackedSymbol>>(trackedSymbolsAsText);
+                _symbols = _serializer.Deserialize<HashSet<ITrackedSymbol>>(trackedSymbolsAsText);
             }
             else
             {

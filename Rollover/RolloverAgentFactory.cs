@@ -39,7 +39,8 @@ namespace Rollover
                 trackedSymbolFactory);
 
             IFileHelper fileHelper = new FileHelper();
-            ITrackedSymbols trackedSymbols = new TrackedSymbols(fileHelper);
+            ISerializer serializer = new Serializer();
+            ITrackedSymbols trackedSymbols = new TrackedSymbols(fileHelper, serializer);
             IReducer reducer = new Reducer();
             IInputProcessor inputProcessor = new InputProcessor(
                 reducer,
