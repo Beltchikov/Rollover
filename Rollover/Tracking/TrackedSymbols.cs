@@ -14,12 +14,15 @@ namespace Rollover.Tracking
         {
             _fileHelper = fileHelper;
 
-            if(_fileHelper.FileExists(TRACKED_SYMBOLS_FILE))
+            if (_fileHelper.FileExists(TRACKED_SYMBOLS_FILE))
             {
-                // TODO
+                var trackedSymbolsAsText = _fileHelper.ReadAllText(TRACKED_SYMBOLS_FILE);
+                //_symbols = _serializer.Deserialize<HashSet<ITrackedSymbol>>(trackedSymbolsAsText);
             }
-            
-            _symbols = new HashSet<ITrackedSymbol>();
+            else
+            {
+                _symbols = new HashSet<ITrackedSymbol>();
+            }
         }
 
         public bool Add(ITrackedSymbol trackedSymbol)

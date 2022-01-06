@@ -14,5 +14,12 @@ namespace Rollover.UnitTests
             sut = new TrackedSymbols(fileHelper);
             fileHelper.Received().FileExists(Arg.Any<string>());
         }
+
+        [Theory, AutoNSubstituteData]
+        public void CallReadAllText([Frozen] IFileHelper fileHelper, TrackedSymbols sut)
+        {
+            sut = new TrackedSymbols(fileHelper);
+            fileHelper.Received().ReadAllText(Arg.Any<string>());
+        }
     }
 }
