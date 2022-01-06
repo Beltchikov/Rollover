@@ -8,5 +8,10 @@ namespace Rollover.Helper
         {
             return JsonSerializer.Deserialize<T>(configurationAsText);
         }
+
+        public void Serialize(object objectToSerialize)
+        {
+            JsonSerializer.Serialize(objectToSerialize);
+        }
     }
 }

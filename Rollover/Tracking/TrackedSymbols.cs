@@ -33,8 +33,11 @@ namespace Rollover.Tracking
             {
                 return false;
             }
+            
+            bool addResult = _symbols.Add(trackedSymbol);
+            _serializer.Serialize(_symbols);
 
-            return _symbols.Add(trackedSymbol);
+            return addResult;
         }
 
         public IEnumerable<string> List()
