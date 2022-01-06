@@ -15,5 +15,10 @@ namespace Rollover.Helper
         {
             return File.ReadAllText(path);
         }
+
+        public void WriteAllText(string path,string text)
+        {
+            File.WriteAllText(path, text);
+        }
     }
 }

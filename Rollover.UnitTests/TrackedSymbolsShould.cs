@@ -42,5 +42,15 @@ namespace Rollover.UnitTests
             sut.Add(trackedSymbol);
             serializer.Received().Serialize(Arg.Any<HashSet<ITrackedSymbol>>());
         }
+
+        [Theory, AutoNSubstituteData]
+        public void CallWriteAllText(
+            TrackedSymbol trackedSymbol,
+            [Frozen] IFileHelper fileHelper,
+            TrackedSymbols sut)
+        {
+            sut.Add(trackedSymbol);
+            fileHelper.Received().WriteAllText(Arg.Any<string>(), Arg.Any<string>());
+        }
     }
 }

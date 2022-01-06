@@ -35,7 +35,8 @@ namespace Rollover.Tracking
             }
             
             bool addResult = _symbols.Add(trackedSymbol);
-            _serializer.Serialize(_symbols);
+            string trackedSymbolsAsText = _serializer.Serialize(_symbols);
+            _fileHelper.WriteAllText(TRACKED_SYMBOLS_FILE, trackedSymbolsAsText);
 
             return addResult;
         }
