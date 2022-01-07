@@ -65,10 +65,7 @@ namespace Rollover.Input
                         {
                             return new List<string> { "Symbol is tracked already." };
                         }
-                        var output = new List<string> { Constants.SYMBOL_ADDED, Environment.NewLine, "TRACKED SYMBOLS:" };
-                        output.AddRange(_trackedSymbols.List());
-                        output.Add(Environment.NewLine);
-                        return output;
+                        return TrackedSymbolSummary(_trackedSymbols);
                     }
                     else
                     {
@@ -78,6 +75,14 @@ namespace Rollover.Input
                 default:
                     throw new NotImplementedException();
             }
+        }
+
+        private List<string> TrackedSymbolSummary(ITrackedSymbols trackedSymbols)
+        {
+            var output = new List<string> { Constants.SYMBOL_ADDED, Environment.NewLine, "TRACKED SYMBOLS:" };
+            output.AddRange(trackedSymbols.List());
+            output.Add(Environment.NewLine);
+            return output;
         }
     }
 }
