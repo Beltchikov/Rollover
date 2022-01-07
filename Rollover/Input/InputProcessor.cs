@@ -1,4 +1,5 @@
-﻿using IBSampleApp.messages;
+﻿using IBApi;
+using IBSampleApp.messages;
 using Rollover.Ib;
 using Rollover.Tracking;
 using System;
@@ -58,30 +59,37 @@ namespace Rollover.Input
                         return new List<string> { "Symbol is not valid." };
                     }
 
-                    ITrackedSymbol trackedSymbol = null;
-                    try
-                    {
-                        trackedSymbol = _repository.GetTrackedSymbol(position.Contract);
-                    }
-                    catch (Exception ex)
-                    {
-                        return new List<string> { ex.Message, "Please try again." };
-                    }
-                    if (trackedSymbol != null)
-                    {
-                        if (!_trackedSymbols.Add(trackedSymbol))
-                        {
-                            return new List<string> { "Symbol is tracked already." };
-                        }
-                        return _trackedSymbols.Summary();
-                    }
-                    else
-                    {
-                        return new List<string> { "Symbol details could not be queried." };
-                    }
+                    Tuple<ITrackedSymbol, List<string>> trackedSymbolTuple = AddTrackedSymbol(position?.Contract, _trackedSymbols);
+                    return trackedSymbolTuple.Item2;
 
                 default:
                     throw new NotImplementedException();
+            }
+        }
+
+        private Tuple<ITrackedSymbol, List<string>> AddTrackedSymbol(Contract contract, ITrackedSymbols trackedSymbols)
+        {
+            ITrackedSymbol trackedSymbol = null;
+            try
+            {
+                trackedSymbol = _repository.GetTrackedSymbol(contract);
+            }
+            catch (Exception ex)
+            {
+                return new Tuple<ITrackedSymbol, List<string>>(trackedSymbol, new List<string> { ex.Message, "Please try again." });
+            }
+
+            if (trackedSymbol != null)
+            {
+                if (!_trackedSymbols.Add(trackedSymbol))
+                {
+                    return new Tuple<ITrackedSymbol, List<string>>(null, new List<string> { "Symbol is tracked already." });
+                }
+                return new Tuple<ITrackedSymbol, List<string>>(trackedSymbol, _trackedSymbols.Summary());
+            }
+            else
+            {
+                return new Tuple<ITrackedSymbol, List<string>>(null, new List<string> { "Symbol details could not be queried. trackedSymbol is null." });
             }
         }
     }
