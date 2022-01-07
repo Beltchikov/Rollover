@@ -58,7 +58,15 @@ namespace Rollover.Input
                         return new List<string> { "Symbol is not valid." };
                     }
 
-                    var trackedSymbol = _repository.GetTrackedSymbol(position.Contract);
+                    ITrackedSymbol trackedSymbol = null;
+                    try
+                    {
+                        trackedSymbol = _repository.GetTrackedSymbol(position.Contract);
+                    }
+                    catch (Exception ex)
+                    {
+                        return new List<string> { ex.Message, "Please try again." };
+                    }
                     if (trackedSymbol != null)
                     {
                         if (!_trackedSymbols.Add(trackedSymbol))
