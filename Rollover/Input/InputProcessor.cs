@@ -59,15 +59,15 @@ namespace Rollover.Input
                         return new List<string> { "Symbol is not valid." };
                     }
 
-                    Tuple<ITrackedSymbol, List<string>> trackedSymbolTuple = AddTrackedSymbol(position?.Contract, _trackedSymbols);
-                    return trackedSymbolTuple.Item2;
+                    List<string> messages = AddTrackedSymbol(position?.Contract, _trackedSymbols);
+                    return messages;
 
                 default:
                     throw new NotImplementedException();
             }
         }
 
-        private Tuple<ITrackedSymbol, List<string>> AddTrackedSymbol(Contract contract, ITrackedSymbols trackedSymbols)
+        private List<string> AddTrackedSymbol(Contract contract, ITrackedSymbols trackedSymbols)
         {
             ITrackedSymbol trackedSymbol = null;
             try
@@ -76,20 +76,20 @@ namespace Rollover.Input
             }
             catch (Exception ex)
             {
-                return new Tuple<ITrackedSymbol, List<string>>(trackedSymbol, new List<string> { ex.Message, "Please try again." });
+                return new List<string> { ex.Message, "Please try again." };
             }
 
             if (trackedSymbol != null)
             {
                 if (!_trackedSymbols.Add(trackedSymbol))
                 {
-                    return new Tuple<ITrackedSymbol, List<string>>(null, new List<string> { "Symbol is tracked already." });
+                    return new List<string> { "Symbol is tracked already." };
                 }
-                return new Tuple<ITrackedSymbol, List<string>>(trackedSymbol, _trackedSymbols.Summary());
+                return _trackedSymbols.Summary();
             }
             else
             {
-                return new Tuple<ITrackedSymbol, List<string>>(null, new List<string> { "Symbol details could not be queried. trackedSymbol is null." });
+                return new List<string> { "Symbol details could not be queried. trackedSymbol is null." };
             }
         }
     }
