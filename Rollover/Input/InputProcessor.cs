@@ -31,11 +31,11 @@ namespace Rollover.Input
 
         public List<string> Convert(string input)
         {
-            if(input == null)
+            if (input == null)
             {
                 return new List<string>();
             }
-            
+
             if (string.IsNullOrWhiteSpace(State))
             {
                 State = "WaitingForSymbol";
@@ -44,13 +44,13 @@ namespace Rollover.Input
             switch (State)
             {
                 case "WaitingForSymbol":
-                    if(input.Contains("errorCode"))
+                    if (input.Contains("errorCode"))
                     {
                         return input.Contains("id=-1")
-                            ? new List<string> ()
+                            ? new List<string>()
                             : new List<string> { input };
                     }
-                    
+
                     var position = _portfolio.PositionBySymbol(input);
                     var symbol = position?.Contract?.Symbol;
                     if (position == null || symbol == null)
@@ -65,7 +65,7 @@ namespace Rollover.Input
                         {
                             return new List<string> { "Symbol is tracked already." };
                         }
-                        return TrackedSymbolSummary(_trackedSymbols);
+                        return _trackedSymbols.Summary();
                     }
                     else
                     {
@@ -75,14 +75,6 @@ namespace Rollover.Input
                 default:
                     throw new NotImplementedException();
             }
-        }
-
-        private List<string> TrackedSymbolSummary(ITrackedSymbols trackedSymbols)
-        {
-            var output = new List<string> { Constants.SYMBOL_ADDED, Environment.NewLine, "TRACKED SYMBOLS:" };
-            output.AddRange(trackedSymbols.List());
-            output.Add(Environment.NewLine);
-            return output;
         }
     }
 }

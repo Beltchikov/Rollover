@@ -16,6 +16,7 @@ namespace Rollover
         private IInputLoop _inputLoop;
         private ITwsConnector _twsConnector;
         private IPortfolio _portfolio;
+        private ITrackedSymbols _trackedSymbols;
 
         public RolloverAgent(
             IConfigurationManager configurationManager,
@@ -25,7 +26,8 @@ namespace Rollover
             IRepository repository,
             IInputLoop inputLoop,
             ITwsConnector twsConnector,
-            IPortfolio portfolio)
+            IPortfolio portfolio, 
+            ITrackedSymbols trackedSymbols)
         {
             _configurationManager = configurationManager;
             _consoleWrapper = consoleWrapper;
@@ -35,6 +37,7 @@ namespace Rollover
             _ibClientQueue = ibClientQueue;
             _twsConnector = twsConnector;
             _portfolio = portfolio;
+            _trackedSymbols = trackedSymbols;
         }
 
         public void Run()
@@ -48,6 +51,7 @@ namespace Rollover
                 _consoleWrapper.WriteLine(p.Contract.LocalSymbol);
             });
 
+            _trackedSymbols.Summary().ForEach(l => _consoleWrapper.WriteLine(l));
             _consoleWrapper.WriteLine(Constants.ENTER_SYMBOL_TO_TRACK);
 
             _inputLoop.Run(_consoleWrapper, _inputQueue, _ibClientQueue);

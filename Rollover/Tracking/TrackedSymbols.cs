@@ -1,4 +1,5 @@
 ﻿using Rollover.Helper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -53,6 +54,14 @@ namespace Rollover.Tracking
         public bool SymbolExists(string symbol)
         {
             return _symbols.Any(s => s.Symbol == symbol);
+        }
+
+        public List<string> Summary()
+        {
+            var output = new List<string> { Constants.SYMBOL_ADDED, Environment.NewLine, "TRACKED SYMBOLS:" };
+            output.AddRange(_symbols.Select(s => s.ToString() ));
+            output.Add(Environment.NewLine);
+            return output;
         }
     }
 }

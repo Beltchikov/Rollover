@@ -56,7 +56,8 @@ namespace Rollover
                 repository,
                 inputLoop,
                 twsConnector,
-                portfolio);
+                portfolio,
+                trackedSymbols);
 
             rolloverAgent.Run();
         }
