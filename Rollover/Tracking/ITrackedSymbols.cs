@@ -8,5 +8,6 @@ namespace Rollover.Tracking
         bool Add(ITrackedSymbol trackedSymbol);
         IEnumerable<string> List();
         List<string> Summary();
+        bool Any();
     }
 }

@@ -45,6 +45,17 @@ namespace Rollover.Input
             switch (State)
             {
                 case "WaitingForSymbol":
+                case "Active":
+                    if (_trackedSymbols.Any())
+                    {
+                        State = "Active";
+                    }
+
+                    if(State == "Active")
+                    {
+                        //_orderManager.RolloverIfNextStrike(_trackedSymbols);
+                    }
+                    
                     if (input.Contains("errorCode"))
                     {
                         return input.Contains("id=-1")

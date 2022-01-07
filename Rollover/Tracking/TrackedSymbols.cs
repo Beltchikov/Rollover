@@ -63,5 +63,10 @@ namespace Rollover.Tracking
             output.Add(Environment.NewLine);
             return output;
         }
+
+        public bool Any()
+        {
+            return _symbols.Any();
+        }
     }
 }
