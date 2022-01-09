@@ -77,6 +77,21 @@ namespace Rollover.Ib
             {
                 throw new NotImplementedException();
             }
+
+            ////////////////////////////////////////////////////////////////////////////////////
+            if(contract.SecType == "FOP")
+            {
+                // var underlyingContract = GetUnderlyingContract(contract).Where()
+                //  .GetUnderlyingContract(contract).Where()
+                // var strikes = GetStrikes(underlyingContract).Where()
+                // var price = GetCurrentPrice(underlyingContract)
+                //return _trackedSymbolFactory.Create(contract, strikes, currentPrice.Item2);
+            }
+            else if (contract.SecType == "OPT")
+            {
+
+            }
+            throw new NotImplementedException();
         }
 
         private Tuple<bool, double> GetCurrentPrice(Contract underLyingContract)
