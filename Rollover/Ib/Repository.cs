@@ -85,11 +85,13 @@ namespace Rollover.Ib
                 //  .GetUnderlyingContract(contract).Where()
                 // var strikes = GetStrikes(underlyingContract).Where()
                 // var price = GetCurrentPrice(underlyingContract)
-                //return _trackedSymbolFactory.Create(contract, strikes, currentPrice.Item2);
+                //return _trackedSymbolFactory.Create(contract, strikes, price);
             }
             else if (contract.SecType == "OPT")
             {
-
+                // var strikes = GetStrikes(underlyingContract).Where()
+                // var price = GetCurrentPrice(underlyingContract)
+                //return _trackedSymbolFactory.Create(contract, strikes, price);
             }
             throw new NotImplementedException();
         }
