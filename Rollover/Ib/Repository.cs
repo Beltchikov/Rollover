@@ -43,6 +43,9 @@ namespace Rollover.Ib
 
         public ITrackedSymbol GetTrackedSymbol(Contract contract)
         {
+            var contractDetails = ContractDetails(contract);
+            var underLyingContracts = GetUnderlyingContracts(contractDetails);
+
             var underLyingContract = GetUnderlyingContract(contract, null);
             HashSet<double> strikes = null;
             if (underLyingContract.SecType == "FUT")
@@ -167,6 +170,17 @@ namespace Rollover.Ib
             }
             var secDefOptParamMessage = secDefOptParamMessageExpirationList.First();
             return secDefOptParamMessage.Strikes;
+        }
+
+        private List<Contract> GetUnderlyingContracts(List<ContractDetailsMessage> contractDetails)
+        {
+            return contractDetails.Select(d => new Contract
+            {
+                SecType = d.ContractDetails.UnderSecType,
+                Symbol = d.ContractDetails.Contract.Symbol,
+                Currency = d.ContractDetails.Contract.Currency,
+                Exchange = d.ContractDetails.Contract.Exchange
+            }).ToList();
         }
 
         private Contract GetUnderlyingContract(Contract contract, string lastTradeDateOrContractMonth)
