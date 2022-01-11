@@ -50,8 +50,8 @@ namespace Rollover.Ib
                 throw new ApplicationException($"Multiple underlyings for the contract {contract}");
             }
 
-            //var underLyingContract = underLyingContracts.First();
-            var underLyingContract = GetUnderlyingContract(contract, null);
+            var underLyingContract = underLyingContracts.First();
+            
             HashSet<double> strikes = null;
             if (underLyingContract.SecType == "FUT")
             {
@@ -184,7 +184,8 @@ namespace Rollover.Ib
                 SecType = d.ContractDetails.UnderSecType,
                 Symbol = d.ContractDetails.Contract.Symbol,
                 Currency = d.ContractDetails.Contract.Currency,
-                Exchange = d.ContractDetails.Contract.Exchange
+                Exchange = d.ContractDetails.Contract.Exchange,
+                LastTradeDateOrContractMonth = d.ContractDetails.Contract.LastTradeDateOrContractMonth
             }).ToList();
         }
 
