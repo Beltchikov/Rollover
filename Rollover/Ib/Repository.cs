@@ -56,15 +56,26 @@ namespace Rollover.Ib
 
         public ITrackedSymbol GetTrackedSymbolFop(Contract contract)
         {
+            // Underlying
             var contractDetails = ContractDetails(contract);
-            var underLyingContracts = GetUnderlyingContracts(contractDetails);
-            if (underLyingContracts.Count() > 1)
+            var underlyingContracts = GetUnderlyingContracts(contractDetails);
+            if (underlyingContracts.Count() > 1)
             {
                 throw new ApplicationException($"Multiple underlyings for the contract {contract}");
             }
+            var underLyingContract = underlyingContracts.First();
 
-            var underLyingContract = underLyingContracts.First();
-            var secondUnderLyingContract = GetUnderlyingContract(underLyingContract, contract.LastTradeDateOrContractMonth);
+            // Second underlying
+            var secondContractDetails = ContractDetails(underLyingContract)
+                .First(d => d.ContractDetails.Contract.LastTradeDateOrContractMonth == contract.LastTradeDateOrContractMonth);
+            var secondUnderlyingContracts = GetUnderlyingContracts(contractDetails);
+            if (secondUnderlyingContracts.Count() > 1)
+            {
+                throw new ApplicationException($"Multiple underlyings for the contract {underLyingContract}");
+            }
+            var secondUnderLyingContract = secondUnderlyingContracts.First();
+
+            // Strikes & price
             var strikes = GetStrikes(secondUnderLyingContract, contract.LastTradeDateOrContractMonth);
             var currentPrice = GetCurrentPrice(underLyingContract);
             if (!currentPrice.Item1)
@@ -186,37 +197,6 @@ namespace Rollover.Ib
                 Exchange = d.ContractDetails.Contract.Exchange,
                 LastTradeDateOrContractMonth = d.ContractDetails.Contract.LastTradeDateOrContractMonth
             }).ToList();
-        }
-
-        private Contract GetUnderlyingContract(Contract contract, string lastTradeDateOrContractMonth)
-        {
-            var contractDetailsMessageList = ContractDetails(contract);
-            if (!contractDetailsMessageList.Any())
-            {
-                return null;
-            }
-            if (contractDetailsMessageList.Count() > 1 && string.IsNullOrWhiteSpace(lastTradeDateOrContractMonth))
-            {
-                throw new ApplicationException("Unexpected. Multiple ContractDetailsMessages");
-            }
-            var contractDetailsMessage = contractDetailsMessageList.Count() > 1
-                ? contractDetailsMessageList.First(c => c.ContractDetails.RealExpirationDate == lastTradeDateOrContractMonth)
-                : contractDetailsMessageList.First();
-
-            if (string.IsNullOrWhiteSpace(contractDetailsMessage.ContractDetails.UnderSecType))
-            {
-                return null;
-            }
-
-            return new Contract
-            {
-                SecType = contractDetailsMessage.ContractDetails.UnderSecType,
-                Symbol = contractDetailsMessage.ContractDetails.Contract.Symbol,
-                Currency = contractDetailsMessage.ContractDetails.Contract.Currency,
-                Exchange = contractDetailsMessage.ContractDetails.Contract.Exchange,
-                LastTradeDateOrContractMonth = contractDetailsMessage.ContractDetails.Contract.LastTradeDateOrContractMonth
-
-            };
         }
 
         private Tuple<bool, List<string>> ConnectionMessagesToConnectionTuple(ConnectionMessages connectionMessages)
