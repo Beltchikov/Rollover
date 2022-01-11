@@ -58,66 +58,47 @@ namespace Rollover.Ib
         {
             var contractDetails = ContractDetails(contract);
             var underLyingContracts = GetUnderlyingContracts(contractDetails);
-            if(underLyingContracts.Count() >1)
+            if (underLyingContracts.Count() > 1)
             {
                 throw new ApplicationException($"Multiple underlyings for the contract {contract}");
             }
 
             var underLyingContract = underLyingContracts.First();
-            
-            HashSet<double> strikes = null;
-            if (underLyingContract.SecType == "FUT")
+            var secondUnderLyingContract = GetUnderlyingContract(underLyingContract, contract.LastTradeDateOrContractMonth);
+            var strikes = GetStrikes(secondUnderLyingContract, contract.LastTradeDateOrContractMonth);
+            var currentPrice = GetCurrentPrice(underLyingContract);
+            if (!currentPrice.Item1)
             {
-                var secondUnderLyingContract = GetUnderlyingContract(underLyingContract, contract.LastTradeDateOrContractMonth);
-                strikes = GetStrikes(secondUnderLyingContract, contract.LastTradeDateOrContractMonth);
-                var currentPrice = GetCurrentPrice(underLyingContract);
-                if (!currentPrice.Item1)
-                {
-                    return null;
-                }
-
-                return _trackedSymbolFactory.Create(contract, strikes, currentPrice.Item2);
-            }
-            else if (underLyingContract.SecType == "STK")
-            {
-                strikes = GetStrikes(underLyingContract, contract.LastTradeDateOrContractMonth);
-                var currentPrice = GetCurrentPrice(underLyingContract);
-                if (!currentPrice.Item1)
-                {
-                    return null;
-                }
-
-                return _trackedSymbolFactory.Create(contract, strikes, currentPrice.Item2);
-            }
-            else if (underLyingContract.SecType == "IND")
-            {
-                // TODO
-                throw new NotImplementedException();
-            }
-            else
-            {
-                throw new NotImplementedException();
+                return null;
             }
 
-            ////////////////////////////////////////////////////////////////////////////////////
-            if(contract.SecType == "FOP")
-            {
-                // var underlyingContract = GetUnderlyingContract(contract).Where()
-                //  .GetUnderlyingContract(contract).Where()
-                // var strikes = GetStrikes(underlyingContract).Where()
-                // var price = GetCurrentPrice(underlyingContract)
-                //return _trackedSymbolFactory.Create(contract, strikes, currentPrice.Item2);
-            }
-            else if (contract.SecType == "OPT")
-            {
-
-            }
-            throw new NotImplementedException();
+            return _trackedSymbolFactory.Create(contract, strikes, currentPrice.Item2);
         }
 
         public ITrackedSymbol GetTrackedSymbolOpt(Contract contract)
         {
             throw new NotImplementedException();
+
+            // else if (underLyingContract.SecType == "STK")
+            //{
+            //    strikes = GetStrikes(underLyingContract, contract.LastTradeDateOrContractMonth);
+            //    var currentPrice = GetCurrentPrice(underLyingContract);
+            //    if (!currentPrice.Item1)
+            //    {
+            //        return null;
+            //    }
+
+            //    return _trackedSymbolFactory.Create(contract, strikes, currentPrice.Item2);
+            //}
+            //else if (underLyingContract.SecType == "IND")
+            //{
+            //    // TODO
+            //    throw new NotImplementedException();
+            //}
+            //else
+            //{
+            //    throw new NotImplementedException();
+            //}
         }
 
         private Tuple<bool, double> GetCurrentPrice(Contract underLyingContract)
@@ -142,7 +123,7 @@ namespace Rollover.Ib
             int conId)
         {
             var secDefOptParamMessageList = OptionParametersTryOnce(symbol, exchange, secType, conId);
-            if(secDefOptParamMessageList.Any())
+            if (secDefOptParamMessageList.Any())
             {
                 return secDefOptParamMessageList;
             }
@@ -152,9 +133,9 @@ namespace Rollover.Ib
         }
 
         private List<SecurityDefinitionOptionParameterMessage> OptionParametersTryOnce(
-            string symbol, 
-            string exchange, 
-            string secType, 
+            string symbol,
+            string exchange,
+            string secType,
             int conId)
         {
             return _messageCollector.reqSecDefOptParams(symbol, exchange, secType, conId);
