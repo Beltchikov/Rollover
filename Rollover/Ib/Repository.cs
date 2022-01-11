@@ -166,24 +166,22 @@ namespace Rollover.Ib
                 contractDetailsMessage.ContractDetails.Contract.Exchange,
                 contractDetailsMessage.ContractDetails.Contract.SecType,
                 contractDetailsMessage.ContractDetails.Contract.ConId
-                );
-
-            var secDefOptParamMessageExpirationList = secDefOptParamMessageList
+                )
                 .Where(s => s.Expirations.Contains(lastTradeDateOrContractMonth));
 
-            if (!secDefOptParamMessageExpirationList.Any())
+            if (!secDefOptParamMessageList.Any())
             {
                 return new HashSet<double>();
             }
-            if (secDefOptParamMessageExpirationList.Count() > 1)
+            if (secDefOptParamMessageList.Count() > 1)
             {
-                secDefOptParamMessageExpirationList = secDefOptParamMessageExpirationList.Where(e => e.Exchange == Constants.SMART).ToList();
-                if (secDefOptParamMessageExpirationList.Count() > 1)
+                secDefOptParamMessageList = secDefOptParamMessageList.Where(e => e.Exchange == Constants.SMART).ToList();
+                if (secDefOptParamMessageList.Count() > 1)
                 {
                     throw new ApplicationException("Unexpected. Multiple secDefOptParamMessageExpirationList");
                 }
             }
-            var secDefOptParamMessage = secDefOptParamMessageExpirationList.First();
+            var secDefOptParamMessage = secDefOptParamMessageList.First();
             return secDefOptParamMessage.Strikes;
         }
 
