@@ -173,16 +173,9 @@ namespace Rollover.Ib
             {
                 return new HashSet<double>();
             }
-            if (secDefOptParamMessageList.Count() > 1)
-            {
-                secDefOptParamMessageList = secDefOptParamMessageList.Where(e => e.Exchange == Constants.SMART).ToList();
-                if (secDefOptParamMessageList.Count() > 1)
-                {
-                    throw new ApplicationException("Unexpected. Multiple secDefOptParamMessageExpirationList");
-                }
-            }
-            var secDefOptParamMessage = secDefOptParamMessageList.First();
-            return secDefOptParamMessage.Strikes;
+
+            // Evtl exchange SMART should be used to get a single secDefOptParamMessage
+            return secDefOptParamMessageList.First().Strikes;
         }
 
         private List<Contract> GetUnderlyingContracts(List<ContractDetailsMessage> contractDetails)
