@@ -43,6 +43,19 @@ namespace Rollover.Ib
 
         public ITrackedSymbol GetTrackedSymbol(Contract contract)
         {
+            switch (contract.SecType)
+            {
+                case "FOP":
+                    return GetTrackedSymbolFop(contract);
+                case "OPT":
+                    return GetTrackedSymbolOpt(contract);
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        public ITrackedSymbol GetTrackedSymbolFop(Contract contract)
+        {
             var contractDetails = ContractDetails(contract);
             var underLyingContracts = GetUnderlyingContracts(contractDetails);
             if(underLyingContracts.Count() >1)
@@ -99,6 +112,11 @@ namespace Rollover.Ib
             {
 
             }
+            throw new NotImplementedException();
+        }
+
+        public ITrackedSymbol GetTrackedSymbolOpt(Contract contract)
+        {
             throw new NotImplementedException();
         }
 
