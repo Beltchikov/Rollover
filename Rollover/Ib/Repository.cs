@@ -45,8 +45,12 @@ namespace Rollover.Ib
         {
             var contractDetails = ContractDetails(contract);
             var underLyingContracts = GetUnderlyingContracts(contractDetails);
+            if(underLyingContracts.Count() >1)
+            {
+                throw new ApplicationException($"Multiple underlyings for the contract {contract}");
+            }
 
-            var underLyingContract = GetUnderlyingContract(contract, null);
+            var underLyingContract = underLyingContracts.First();
             HashSet<double> strikes = null;
             if (underLyingContract.SecType == "FUT")
             {
