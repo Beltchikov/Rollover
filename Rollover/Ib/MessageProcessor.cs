@@ -62,6 +62,10 @@ namespace Rollover.Ib
             {
                 return new List<string>();
             }
+            else if (obj is ContractDetailsMessage)
+            {
+                return new List<string>();
+            }
 
             throw new NotImplementedException();
         }

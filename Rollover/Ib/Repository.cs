@@ -88,28 +88,24 @@ namespace Rollover.Ib
 
         public ITrackedSymbol GetTrackedSymbolOpt(Contract contract)
         {
-            throw new NotImplementedException();
+            // Underlying
+            var contractDetails = ContractDetails(contract);
+            var underlyingContracts = GetUnderlyingContracts(contractDetails);
+            if (underlyingContracts.Count() > 1)
+            {
+                throw new ApplicationException($"Multiple underlyings for the contract {contract}");
+            }
+            var underLyingContract = underlyingContracts.First();
 
-            // else if (underLyingContract.SecType == "STK")
-            //{
-            //    strikes = GetStrikes(underLyingContract, contract.LastTradeDateOrContractMonth);
-            //    var currentPrice = GetCurrentPrice(underLyingContract);
-            //    if (!currentPrice.Item1)
-            //    {
-            //        return null;
-            //    }
+            // Strikes & price
+            var strikes = GetStrikes(underLyingContract, contract.LastTradeDateOrContractMonth);
+            var currentPrice = GetCurrentPrice(underLyingContract);
+            if (!currentPrice.Item1)
+            {
+                return null;
+            }
 
-            //    return _trackedSymbolFactory.Create(contract, strikes, currentPrice.Item2);
-            //}
-            //else if (underLyingContract.SecType == "IND")
-            //{
-            //    // TODO
-            //    throw new NotImplementedException();
-            //}
-            //else
-            //{
-            //    throw new NotImplementedException();
-            //}
+            return _trackedSymbolFactory.Create(contract, strikes, currentPrice.Item2);
         }
 
         private Tuple<bool, double> GetCurrentPrice(Contract underLyingContract)
