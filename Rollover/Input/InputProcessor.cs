@@ -87,7 +87,7 @@ namespace Rollover.Input
             }
             catch (Exception ex)
             {
-                return new List<string> { ex.Message, "Please try again." };
+                return new List<string> { ex.ToString(), "Please try again." };
             }
 
             if (trackedSymbol != null)
