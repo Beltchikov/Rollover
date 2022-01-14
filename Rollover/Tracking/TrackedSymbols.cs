@@ -58,6 +58,11 @@ namespace Rollover.Tracking
 
         public List<string> Summary()
         {
+            if (!_symbols.Any())
+            {
+                new List<string>();
+            };
+
             var output = new List<string> { Constants.SYMBOL_ADDED, Environment.NewLine, "TRACKED SYMBOLS:" };
             output.AddRange(_symbols.Select(s => s.ToString() ));
             output.Add(Environment.NewLine);
