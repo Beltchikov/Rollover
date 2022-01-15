@@ -284,6 +284,15 @@ namespace Prototype
 
         private void btReqRealTime_Click(object sender, EventArgs e)
         {
+            // The API can request Live, Frozen, Delayed and Delayed Frozen market data from Trader Workstation
+            // by switching market data type via the
+            // IBApi.EClient.reqMarketDataType
+            // before making a market data request with reqMktData.
+
+            // https://interactivebrokers.github.io/tws-api/market_data_type.html
+
+            // client.reqMarketDataType(2);
+
             int nextReqId = Convert.ToInt32(txtReqId.Text);
             Contract contract = new Contract
             {
