@@ -32,14 +32,27 @@ namespace Rollover.Tracking
         private double NextStrike(HashSet<double> strikes, double currentPrice)
         {
             var allStrikesOverPrice = strikes.Where(s => s > currentPrice).ToList();
+            if (!allStrikesOverPrice.Any())
+            {
+                return 0;
+            }
             return allStrikesOverPrice.Min();
         }
         private double NextButOneStrike(HashSet<double> strikes, double currentPrice)
         {
             var allStrikesOverPrice = strikes.Where(s => s > currentPrice).ToList();
+            if (!allStrikesOverPrice.Any())
+            {
+                return 0;
+            }
+
             var firstMin = allStrikesOverPrice.Min();
             if (allStrikesOverPrice.Remove(firstMin))
             {
+                if (!allStrikesOverPrice.Any())
+                {
+                    return 0;
+                }
                 return allStrikesOverPrice.Min();
             }
 
@@ -48,14 +61,27 @@ namespace Rollover.Tracking
         private double PreviousStrike(HashSet<double> strikes, double currentPrice)
         {
             var allStrikesBelowPrice = strikes.Where(s => s < currentPrice).ToList();
+            if (!allStrikesBelowPrice.Any())
+            {
+                return 0;
+            }
             return allStrikesBelowPrice.Max();
         }
         private double PreviousButOneStrike(HashSet<double> strikes, double currentPrice)
         {
             var allStrikesBelowPrice = strikes.Where(s => s < currentPrice).ToList();
+            if (!allStrikesBelowPrice.Any())
+            {
+                return 0;
+            }
+
             var firstMax = allStrikesBelowPrice.Max();
             if (allStrikesBelowPrice.Remove(firstMax))
             {
+                if(!allStrikesBelowPrice.Any())
+                {
+                    return 0;
+                }
                 return allStrikesBelowPrice.Max();
             }
 

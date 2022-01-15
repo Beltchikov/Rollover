@@ -92,6 +92,14 @@ namespace Rollover.Input
 
             if (trackedSymbol != null)
             {
+                if(trackedSymbol.NextStrike == 0)
+                {
+                    return new List<string> { "Did not receive next strike. Please try again." };
+                }
+                if (trackedSymbol.PreviousStrike == 0)
+                {
+                    return new List<string> { "Did not receive previous strike. Please try again." };
+                }
                 if (!_trackedSymbols.Add(trackedSymbol))
                 {
                     return new List<string> { "Symbol is tracked already." };

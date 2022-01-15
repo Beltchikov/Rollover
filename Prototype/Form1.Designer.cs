@@ -72,6 +72,17 @@
             this.txtExchangeCheckSymbol = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.btPlaceOrder = new System.Windows.Forms.Button();
+            this.lblId = new System.Windows.Forms.Label();
+            this.txtIdOrder = new System.Windows.Forms.TextBox();
+            this.lblSymbolOrder = new System.Windows.Forms.Label();
+            this.txtSymbolOrder = new System.Windows.Forms.TextBox();
+            this.txtSecTypeOrder = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtCurrencyOrder = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtExchangeOrder = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // txtHost
@@ -141,12 +152,12 @@
             // 
             // txtMessage
             // 
-            this.txtMessage.Location = new System.Drawing.Point(22, 281);
+            this.txtMessage.Location = new System.Drawing.Point(22, 309);
             this.txtMessage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtMessage.Multiline = true;
             this.txtMessage.Name = "txtMessage";
             this.txtMessage.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtMessage.Size = new System.Drawing.Size(1030, 217);
+            this.txtMessage.Size = new System.Drawing.Size(1030, 265);
             this.txtMessage.TabIndex = 7;
             // 
             // lblSymbol
@@ -435,7 +446,7 @@
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(22, 506);
+            this.btnClear.Location = new System.Drawing.Point(22, 599);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(75, 23);
             this.btnClear.TabIndex = 14;
@@ -479,11 +490,116 @@
             this.label2.TabIndex = 9;
             this.label2.Text = "Exchange";
             // 
+            // btPlaceOrder
+            // 
+            this.btPlaceOrder.Location = new System.Drawing.Point(962, 271);
+            this.btPlaceOrder.Name = "btPlaceOrder";
+            this.btPlaceOrder.Size = new System.Drawing.Size(90, 23);
+            this.btPlaceOrder.TabIndex = 15;
+            this.btPlaceOrder.Text = "Place Order";
+            this.btPlaceOrder.UseVisualStyleBackColor = true;
+            this.btPlaceOrder.Click += new System.EventHandler(this.btPlaceOrder_Click);
+            // 
+            // lblId
+            // 
+            this.lblId.AutoSize = true;
+            this.lblId.Location = new System.Drawing.Point(22, 271);
+            this.lblId.Name = "lblId";
+            this.lblId.Size = new System.Drawing.Size(18, 15);
+            this.lblId.TabIndex = 16;
+            this.lblId.Text = "ID";
+            // 
+            // txtIdOrder
+            // 
+            this.txtIdOrder.Location = new System.Drawing.Point(46, 268);
+            this.txtIdOrder.Name = "txtIdOrder";
+            this.txtIdOrder.Size = new System.Drawing.Size(35, 23);
+            this.txtIdOrder.TabIndex = 17;
+            this.txtIdOrder.Text = "1";
+            // 
+            // lblSymbolOrder
+            // 
+            this.lblSymbolOrder.AutoSize = true;
+            this.lblSymbolOrder.Location = new System.Drawing.Point(108, 271);
+            this.lblSymbolOrder.Name = "lblSymbolOrder";
+            this.lblSymbolOrder.Size = new System.Drawing.Size(47, 15);
+            this.lblSymbolOrder.TabIndex = 18;
+            this.lblSymbolOrder.Text = "Symbol";
+            // 
+            // txtSymbolOrder
+            // 
+            this.txtSymbolOrder.Location = new System.Drawing.Point(163, 267);
+            this.txtSymbolOrder.Name = "txtSymbolOrder";
+            this.txtSymbolOrder.Size = new System.Drawing.Size(60, 23);
+            this.txtSymbolOrder.TabIndex = 19;
+            this.txtSymbolOrder.Text = "DAX";
+            // 
+            // txtSecTypeOrder
+            // 
+            this.txtSecTypeOrder.Location = new System.Drawing.Point(314, 267);
+            this.txtSecTypeOrder.Name = "txtSecTypeOrder";
+            this.txtSecTypeOrder.Size = new System.Drawing.Size(60, 23);
+            this.txtSecTypeOrder.TabIndex = 21;
+            this.txtSecTypeOrder.Text = "OPT";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(261, 271);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(49, 15);
+            this.label3.TabIndex = 20;
+            this.label3.Text = "SecType";
+            // 
+            // txtCurrencyOrder
+            // 
+            this.txtCurrencyOrder.Location = new System.Drawing.Point(477, 268);
+            this.txtCurrencyOrder.Name = "txtCurrencyOrder";
+            this.txtCurrencyOrder.Size = new System.Drawing.Size(60, 23);
+            this.txtCurrencyOrder.TabIndex = 23;
+            this.txtCurrencyOrder.Text = "EUR";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(416, 271);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(55, 15);
+            this.label4.TabIndex = 22;
+            this.label4.Text = "Currency";
+            // 
+            // txtExchangeOrder
+            // 
+            this.txtExchangeOrder.Location = new System.Drawing.Point(639, 268);
+            this.txtExchangeOrder.Name = "txtExchangeOrder";
+            this.txtExchangeOrder.Size = new System.Drawing.Size(60, 23);
+            this.txtExchangeOrder.TabIndex = 25;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(575, 271);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(58, 15);
+            this.label5.TabIndex = 24;
+            this.label5.Text = "Exchange";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1075, 541);
+            this.ClientSize = new System.Drawing.Size(1075, 634);
+            this.Controls.Add(this.txtExchangeOrder);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.txtCurrencyOrder);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.txtSecTypeOrder);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.txtSymbolOrder);
+            this.Controls.Add(this.lblSymbolOrder);
+            this.Controls.Add(this.txtIdOrder);
+            this.Controls.Add(this.lblId);
+            this.Controls.Add(this.btPlaceOrder);
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.btCancelRealTime);
             this.Controls.Add(this.btReqRealTime);
@@ -583,5 +699,16 @@
         private System.Windows.Forms.TextBox txtExchangeCheckSymbol;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btPlaceOrder;
+        private System.Windows.Forms.Label lblId;
+        private System.Windows.Forms.TextBox txtIdOrder;
+        private System.Windows.Forms.Label lblSymbolOrder;
+        private System.Windows.Forms.TextBox txtSymbolOrder;
+        private System.Windows.Forms.TextBox txtSecTypeOrder;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtCurrencyOrder;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtExchangeOrder;
+        private System.Windows.Forms.Label label5;
     }
 }

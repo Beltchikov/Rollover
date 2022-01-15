@@ -314,5 +314,45 @@ namespace Prototype
         {
 
         }
+
+        private void btPlaceOrder_Click(object sender, EventArgs e)
+        {
+            int id = Convert.ToInt32(txtIdOrder.Text);
+
+            Contract contract = new Contract
+            {
+                Symbol = txtIdOrder.Text,
+                SecType = txtSecTypeOrder.Text,
+                Currency = txtCurrencyOrder.Text,
+                Exchange = string.IsNullOrWhiteSpace(txtExchangeOrder.Text)
+                    ? null
+                    : txtExchangeOrder.Text
+            };
+
+            // OrderSamples.TrailingStopLimit("BUY", 1, 5, 5, 110)
+            //Order order = new Order();
+            //order.Action = action;
+            //order.OrderType = "LMT";
+            //order.TotalQuantity = quantity;
+            //order.LmtPrice = limitPrice;
+            //if (nonGuaranteed)
+            //{
+            //    order.SmartComboRoutingParams = new List<TagValue>();
+            //    order.SmartComboRoutingParams.Add(new TagValue("NonGuaranteed", "1"));
+            //}
+            Order order = new Order
+            {
+                Action = "BUY",
+                OrderType = "LMT",
+                TotalQuantity = 1,
+                LmtPrice = 1 // TODO
+            };
+
+            order.SmartComboRoutingParams = new List<TagValue>();
+            order.SmartComboRoutingParams.Add(new TagValue("NonGuaranteed", "1"));
+
+         
+            //ibClient.ClientSocket.placeOrder(id, contract, order);
+        }
     }
 }
