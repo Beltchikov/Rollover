@@ -15,7 +15,7 @@ namespace Prototype
         private EReaderMonitorSignal signal;
         private IBClient ibClient;
         int activeReqId = 0;
-        int _orderId = 320;
+        int _orderId = 330;
 
         public const int RT_BARS_ID_BASE = 40000000;
 
@@ -392,9 +392,7 @@ namespace Prototype
                 LmtPrice = Double.Parse(txtLimitPriceBasicOrder.Text)
             };
 
-            //order.SmartComboRoutingParams = new List<TagValue>();
-            //order.SmartComboRoutingParams.Add(new TagValue("NonGuaranteed", "1"));
-
+            _orderId++;
             ibClient.ClientSocket.placeOrder(++_orderId, contract, order);
         }
 
@@ -402,6 +400,49 @@ namespace Prototype
         {
             _formContractId ??= new FormContractId();
             _formContractId.Show();
+        }
+
+        private void btComboOrder_Click(object sender, EventArgs e)
+        {
+            var exchange = string.IsNullOrWhiteSpace(txtExchageComboOrder.Text)
+                    ? null
+                    : txtExchageComboOrder.Text;
+
+            Contract contract = new Contract
+            {
+                Symbol = txtSymbolComboOrder.Text,
+                SecType = txtSecTypeComboOrder.Text,
+                Exchange = txtExchageComboOrder.Text,
+                Currency = txtCurrencyComboBox.Text
+                //ConId = string.IsNullOrWhiteSpace(txtConIdOrder.Text)
+                //    ? 0
+                //    : Convert.ToInt32(txtConIdOrder.Text)
+            };
+
+            // Add legs
+            var sellLeg = new ComboLeg() { 
+                Action = "SELL", 
+                ConId = Convert.ToInt32(txtSellLegConId.Text), 
+                Ratio = 1, 
+                Exchange = exchange };
+            var buyLeg = new ComboLeg() { 
+                Action = "BUY", 
+                ConId = Convert.ToInt32(txtBuyLegConId.Text),
+                Ratio = 1, 
+                Exchange = exchange };
+            contract.ComboLegs = new List<ComboLeg>();
+            contract.ComboLegs.AddRange(new List<ComboLeg> { sellLeg, buyLeg });
+
+            Order order = new Order
+            {
+                Action = txtActionComboBox.Text,
+                OrderType = "LMT",
+                TotalQuantity = Convert.ToInt32(txtQuantityComboOrder.Text),
+                LmtPrice = Double.Parse(txtLimitPriceComboOrder.Text)
+            };
+
+            _orderId++;
+            ibClient.ClientSocket.placeOrder(_orderId, contract, order);
         }
     }
 }

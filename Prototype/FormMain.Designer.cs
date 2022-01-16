@@ -74,7 +74,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btPlaceBasicOrder = new System.Windows.Forms.Button();
             this.lblSymbolOrder = new System.Windows.Forms.Label();
-            this.txtSymbolBasicOrder = new System.Windows.Forms.TextBox();
+            this.txtSymbolComboOrder = new System.Windows.Forms.TextBox();
             this.txtExchangeBasicOrder = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.txtLimitPriceBasicOrder = new System.Windows.Forms.TextBox();
@@ -97,9 +97,28 @@
             this.label15 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.txtLimitPriceComboOrder = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.txtQuantityComboOrder = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.txtActionComboBox = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.txtBuyLegConId = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.txtSellLegConId = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.txtCurrencyComboBox = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtSecTypeComboOrder = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtExchageComboOrder = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.btComboOrder = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtHost
@@ -169,12 +188,12 @@
             // 
             // txtMessage
             // 
-            this.txtMessage.Location = new System.Drawing.Point(8, 391);
+            this.txtMessage.Location = new System.Drawing.Point(8, 395);
             this.txtMessage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtMessage.Multiline = true;
             this.txtMessage.Name = "txtMessage";
             this.txtMessage.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtMessage.Size = new System.Drawing.Size(1092, 214);
+            this.txtMessage.Size = new System.Drawing.Size(1092, 210);
             this.txtMessage.TabIndex = 7;
             // 
             // lblSymbol
@@ -520,19 +539,19 @@
             // lblSymbolOrder
             // 
             this.lblSymbolOrder.AutoSize = true;
-            this.lblSymbolOrder.Location = new System.Drawing.Point(564, 311);
+            this.lblSymbolOrder.Location = new System.Drawing.Point(142, 26);
             this.lblSymbolOrder.Name = "lblSymbolOrder";
             this.lblSymbolOrder.Size = new System.Drawing.Size(47, 15);
             this.lblSymbolOrder.TabIndex = 18;
             this.lblSymbolOrder.Text = "Symbol";
             // 
-            // txtSymbolBasicOrder
+            // txtSymbolComboOrder
             // 
-            this.txtSymbolBasicOrder.Location = new System.Drawing.Point(619, 307);
-            this.txtSymbolBasicOrder.Name = "txtSymbolBasicOrder";
-            this.txtSymbolBasicOrder.Size = new System.Drawing.Size(60, 23);
-            this.txtSymbolBasicOrder.TabIndex = 19;
-            this.txtSymbolBasicOrder.Text = "DAX";
+            this.txtSymbolComboOrder.Location = new System.Drawing.Point(192, 22);
+            this.txtSymbolComboOrder.Name = "txtSymbolComboOrder";
+            this.txtSymbolComboOrder.Size = new System.Drawing.Size(60, 23);
+            this.txtSymbolComboOrder.TabIndex = 19;
+            this.txtSymbolComboOrder.Text = "DAX";
             // 
             // txtExchangeBasicOrder
             // 
@@ -759,16 +778,189 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Basic Order";
             // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.txtLimitPriceComboOrder);
+            this.groupBox4.Controls.Add(this.label17);
+            this.groupBox4.Controls.Add(this.txtQuantityComboOrder);
+            this.groupBox4.Controls.Add(this.label18);
+            this.groupBox4.Controls.Add(this.txtActionComboBox);
+            this.groupBox4.Controls.Add(this.label11);
+            this.groupBox4.Controls.Add(this.txtBuyLegConId);
+            this.groupBox4.Controls.Add(this.label10);
+            this.groupBox4.Controls.Add(this.txtSellLegConId);
+            this.groupBox4.Controls.Add(this.label9);
+            this.groupBox4.Controls.Add(this.txtCurrencyComboBox);
+            this.groupBox4.Controls.Add(this.label7);
+            this.groupBox4.Controls.Add(this.txtSecTypeComboOrder);
+            this.groupBox4.Controls.Add(this.label4);
+            this.groupBox4.Controls.Add(this.txtExchageComboOrder);
+            this.groupBox4.Controls.Add(this.label3);
+            this.groupBox4.Controls.Add(this.btComboOrder);
+            this.groupBox4.Controls.Add(this.txtSymbolComboOrder);
+            this.groupBox4.Controls.Add(this.lblSymbolOrder);
+            this.groupBox4.Location = new System.Drawing.Point(445, 271);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(655, 119);
+            this.groupBox4.TabIndex = 35;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Combo Order";
+            // 
+            // txtLimitPriceComboOrder
+            // 
+            this.txtLimitPriceComboOrder.Location = new System.Drawing.Point(329, 89);
+            this.txtLimitPriceComboOrder.Name = "txtLimitPriceComboOrder";
+            this.txtLimitPriceComboOrder.Size = new System.Drawing.Size(60, 23);
+            this.txtLimitPriceComboOrder.TabIndex = 41;
+            this.txtLimitPriceComboOrder.Text = "16300";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(265, 92);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(63, 15);
+            this.label17.TabIndex = 40;
+            this.label17.Text = "Limit Price";
+            // 
+            // txtQuantityComboOrder
+            // 
+            this.txtQuantityComboOrder.Location = new System.Drawing.Point(192, 88);
+            this.txtQuantityComboOrder.Name = "txtQuantityComboOrder";
+            this.txtQuantityComboOrder.Size = new System.Drawing.Size(60, 23);
+            this.txtQuantityComboOrder.TabIndex = 39;
+            this.txtQuantityComboOrder.Text = "1";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(139, 92);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(53, 15);
+            this.label18.TabIndex = 38;
+            this.label18.Text = "Quantity";
+            // 
+            // txtActionComboBox
+            // 
+            this.txtActionComboBox.Location = new System.Drawing.Point(69, 88);
+            this.txtActionComboBox.Name = "txtActionComboBox";
+            this.txtActionComboBox.Size = new System.Drawing.Size(60, 23);
+            this.txtActionComboBox.TabIndex = 37;
+            this.txtActionComboBox.Text = "BUY";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(9, 91);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(42, 15);
+            this.label11.TabIndex = 36;
+            this.label11.Text = "Action";
+            // 
+            // txtBuyLegConId
+            // 
+            this.txtBuyLegConId.Location = new System.Drawing.Point(283, 57);
+            this.txtBuyLegConId.Name = "txtBuyLegConId";
+            this.txtBuyLegConId.Size = new System.Drawing.Size(70, 23);
+            this.txtBuyLegConId.TabIndex = 35;
+            this.txtBuyLegConId.Text = "534020675";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(192, 60);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(87, 15);
+            this.label10.TabIndex = 34;
+            this.label10.Text = "Buy Leg Con Id";
+            // 
+            // txtSellLegConId
+            // 
+            this.txtSellLegConId.Location = new System.Drawing.Point(100, 56);
+            this.txtSellLegConId.Name = "txtSellLegConId";
+            this.txtSellLegConId.Size = new System.Drawing.Size(70, 23);
+            this.txtSellLegConId.TabIndex = 33;
+            this.txtSellLegConId.Text = "483046924";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(9, 59);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(85, 15);
+            this.label9.TabIndex = 32;
+            this.label9.Text = "Sell Leg Con Id";
+            // 
+            // txtCurrencyComboBox
+            // 
+            this.txtCurrencyComboBox.Location = new System.Drawing.Point(454, 22);
+            this.txtCurrencyComboBox.Name = "txtCurrencyComboBox";
+            this.txtCurrencyComboBox.Size = new System.Drawing.Size(60, 23);
+            this.txtCurrencyComboBox.TabIndex = 31;
+            this.txtCurrencyComboBox.Text = "EUR";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(398, 26);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(55, 15);
+            this.label7.TabIndex = 30;
+            this.label7.Text = "Currency";
+            // 
+            // txtSecTypeComboOrder
+            // 
+            this.txtSecTypeComboOrder.Location = new System.Drawing.Point(322, 22);
+            this.txtSecTypeComboOrder.Name = "txtSecTypeComboOrder";
+            this.txtSecTypeComboOrder.Size = new System.Drawing.Size(60, 23);
+            this.txtSecTypeComboOrder.TabIndex = 29;
+            this.txtSecTypeComboOrder.Text = "BAG";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(266, 26);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(55, 15);
+            this.label4.TabIndex = 28;
+            this.label4.Text = "Sec. Type";
+            // 
+            // txtExchageComboOrder
+            // 
+            this.txtExchageComboOrder.Location = new System.Drawing.Point(69, 22);
+            this.txtExchageComboOrder.Name = "txtExchageComboOrder";
+            this.txtExchageComboOrder.Size = new System.Drawing.Size(60, 23);
+            this.txtExchageComboOrder.TabIndex = 27;
+            this.txtExchageComboOrder.Text = "DTB";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(9, 25);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(58, 15);
+            this.label3.TabIndex = 26;
+            this.label3.Text = "Exchange";
+            // 
+            // btComboOrder
+            // 
+            this.btComboOrder.Location = new System.Drawing.Point(537, 21);
+            this.btComboOrder.Name = "btComboOrder";
+            this.btComboOrder.Size = new System.Drawing.Size(94, 23);
+            this.btComboOrder.TabIndex = 0;
+            this.btComboOrder.Text = "Place Order";
+            this.btComboOrder.UseVisualStyleBackColor = true;
+            this.btComboOrder.Click += new System.EventHandler(this.btComboOrder_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1118, 662);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.txtSymbolBasicOrder);
-            this.Controls.Add(this.lblSymbolOrder);
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.btCancelRealTime);
             this.Controls.Add(this.btReqRealTime);
@@ -809,6 +1001,8 @@
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -862,7 +1056,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btPlaceBasicOrder;
         private System.Windows.Forms.Label lblSymbolOrder;
-        private System.Windows.Forms.TextBox txtSymbolBasicOrder;
+        private System.Windows.Forms.TextBox txtSymbolComboOrder;
         private System.Windows.Forms.TextBox txtExchangeBasicOrder;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtLimitPriceBasicOrder;
@@ -885,5 +1079,23 @@
         private System.Windows.Forms.Button btDocumentationCheckSymbol;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Button btComboOrder;
+        private System.Windows.Forms.TextBox txtExchageComboOrder;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtSecTypeComboOrder;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtCurrencyComboBox;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox txtSellLegConId;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox txtBuyLegConId;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox txtActionComboBox;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox txtLimitPriceComboOrder;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TextBox txtQuantityComboOrder;
+        private System.Windows.Forms.Label label18;
     }
 }
