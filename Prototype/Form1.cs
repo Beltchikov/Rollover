@@ -285,12 +285,11 @@ namespace Prototype
 
         private void btCheckSymbol_Click(object sender, EventArgs e)
         {
-            //ibClient.ClientSocket.reqMatchingSymbols(++activeReqId, symbol);
             var contract = new Contract()
             {
                 Symbol = txtSymbolCheckSymbol.Text,
                 SecType = txtSecTypeCheckSymbol.Text,
-                Currency = "USD",
+                Currency = txtCurrencyCheckSymbol.Text,
                 Exchange = txtExchangeCheckSymbol.Text
             };
             ibClient.ClientSocket.reqContractDetails(60000001, contract);

@@ -106,6 +106,8 @@
             this.label14 = new System.Windows.Forms.Label();
             this.txtRightCheckSymbol = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
+            this.txtCurrencyCheckSymbol = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -148,7 +150,7 @@
             // lblClientId
             // 
             this.lblClientId.AutoSize = true;
-            this.lblClientId.Location = new System.Drawing.Point(246, 14);
+            this.lblClientId.Location = new System.Drawing.Point(234, 14);
             this.lblClientId.Name = "lblClientId";
             this.lblClientId.Size = new System.Drawing.Size(52, 15);
             this.lblClientId.TabIndex = 5;
@@ -156,7 +158,7 @@
             // 
             // txtClientId
             // 
-            this.txtClientId.Location = new System.Drawing.Point(316, 6);
+            this.txtClientId.Location = new System.Drawing.Point(295, 6);
             this.txtClientId.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtClientId.Name = "txtClientId";
             this.txtClientId.Size = new System.Drawing.Size(26, 23);
@@ -165,10 +167,10 @@
             // 
             // btnConnect
             // 
-            this.btnConnect.Location = new System.Drawing.Point(357, 6);
+            this.btnConnect.Location = new System.Drawing.Point(333, 6);
             this.btnConnect.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(136, 24);
+            this.btnConnect.Size = new System.Drawing.Size(75, 24);
             this.btnConnect.TabIndex = 0;
             this.btnConnect.Text = "Connect";
             this.btnConnect.UseVisualStyleBackColor = true;
@@ -204,12 +206,12 @@
             // 
             // btGetConnId
             // 
-            this.btGetConnId.Location = new System.Drawing.Point(442, 30);
+            this.btGetConnId.Location = new System.Drawing.Point(579, 21);
             this.btGetConnId.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btGetConnId.Name = "btGetConnId";
-            this.btGetConnId.Size = new System.Drawing.Size(100, 41);
+            this.btGetConnId.Size = new System.Drawing.Size(100, 50);
             this.btGetConnId.TabIndex = 10;
-            this.btGetConnId.Text = "Match Symbol and get ConnId";
+            this.btGetConnId.Text = "Match Symbol and get ConId";
             this.btGetConnId.UseVisualStyleBackColor = true;
             this.btGetConnId.Click += new System.EventHandler(this.btCheckSymbol_Click);
             // 
@@ -217,7 +219,7 @@
             // 
             this.btListPositions.Location = new System.Drawing.Point(9, 35);
             this.btListPositions.Name = "btListPositions";
-            this.btListPositions.Size = new System.Drawing.Size(484, 25);
+            this.btListPositions.Size = new System.Drawing.Size(399, 25);
             this.btListPositions.TabIndex = 11;
             this.btListPositions.Text = "List positions";
             this.btListPositions.UseVisualStyleBackColor = true;
@@ -480,7 +482,7 @@
             // 
             // txtSecTypeCheckSymbol
             // 
-            this.txtSecTypeCheckSymbol.Location = new System.Drawing.Point(225, 21);
+            this.txtSecTypeCheckSymbol.Location = new System.Drawing.Point(360, 21);
             this.txtSecTypeCheckSymbol.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtSecTypeCheckSymbol.Name = "txtSecTypeCheckSymbol";
             this.txtSecTypeCheckSymbol.Size = new System.Drawing.Size(54, 23);
@@ -489,7 +491,7 @@
             // 
             // txtExchangeCheckSymbol
             // 
-            this.txtExchangeCheckSymbol.Location = new System.Drawing.Point(359, 21);
+            this.txtExchangeCheckSymbol.Location = new System.Drawing.Point(494, 21);
             this.txtExchangeCheckSymbol.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtExchangeCheckSymbol.Name = "txtExchangeCheckSymbol";
             this.txtExchangeCheckSymbol.Size = new System.Drawing.Size(70, 23);
@@ -499,7 +501,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(163, 29);
+            this.label1.Location = new System.Drawing.Point(298, 29);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(54, 15);
             this.label1.TabIndex = 9;
@@ -508,7 +510,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(295, 29);
+            this.label2.Location = new System.Drawing.Point(430, 29);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(58, 15);
             this.label2.TabIndex = 9;
@@ -747,6 +749,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.txtCurrencyCheckSymbol);
+            this.groupBox1.Controls.Add(this.label16);
             this.groupBox1.Controls.Add(this.txtLastTradeCheckSymbol);
             this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.txtStrikeCheckSymbol);
@@ -760,9 +764,9 @@
             this.groupBox1.Controls.Add(this.txtExchangeCheckSymbol);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.btGetConnId);
-            this.groupBox1.Location = new System.Drawing.Point(509, 9);
+            this.groupBox1.Location = new System.Drawing.Point(416, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(554, 83);
+            this.groupBox1.Size = new System.Drawing.Size(690, 86);
             this.groupBox1.TabIndex = 32;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Contract ID";
@@ -818,11 +822,29 @@
             this.label15.TabIndex = 16;
             this.label15.Text = "Right";
             // 
+            // txtCurrencyCheckSymbol
+            // 
+            this.txtCurrencyCheckSymbol.Location = new System.Drawing.Point(225, 21);
+            this.txtCurrencyCheckSymbol.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtCurrencyCheckSymbol.Name = "txtCurrencyCheckSymbol";
+            this.txtCurrencyCheckSymbol.Size = new System.Drawing.Size(54, 23);
+            this.txtCurrencyCheckSymbol.TabIndex = 17;
+            this.txtCurrencyCheckSymbol.Text = "USD";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(163, 29);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(55, 15);
+            this.label16.TabIndex = 18;
+            this.label16.Text = "Currency";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1075, 710);
+            this.ClientSize = new System.Drawing.Size(1118, 710);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.txtOrderLimitPrice);
             this.Controls.Add(this.label6);
@@ -979,5 +1001,7 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox txtRightCheckSymbol;
         private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox txtCurrencyCheckSymbol;
+        private System.Windows.Forms.Label label16;
     }
 }
