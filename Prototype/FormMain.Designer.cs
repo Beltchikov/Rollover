@@ -108,6 +108,7 @@
             this.label14 = new System.Windows.Forms.Label();
             this.txtRightCheckSymbol = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
+            this.btDocumentationCheckSymbol = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -206,10 +207,10 @@
             // 
             // btGetConnId
             // 
-            this.btGetConnId.Location = new System.Drawing.Point(579, 21);
+            this.btGetConnId.Location = new System.Drawing.Point(584, 11);
             this.btGetConnId.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btGetConnId.Name = "btGetConnId";
-            this.btGetConnId.Size = new System.Drawing.Size(100, 50);
+            this.btGetConnId.Size = new System.Drawing.Size(100, 61);
             this.btGetConnId.TabIndex = 10;
             this.btGetConnId.Text = "Match Symbol and get ConId";
             this.btGetConnId.UseVisualStyleBackColor = true;
@@ -749,6 +750,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btDocumentationCheckSymbol);
             this.groupBox1.Controls.Add(this.txtCurrencyCheckSymbol);
             this.groupBox1.Controls.Add(this.label16);
             this.groupBox1.Controls.Add(this.txtLastTradeCheckSymbol);
@@ -840,7 +842,16 @@
             this.label15.TabIndex = 16;
             this.label15.Text = "Right";
             // 
-            // Form1
+            // btDocumentationCheckSymbol
+            // 
+            this.btDocumentationCheckSymbol.Location = new System.Drawing.Point(430, 49);
+            this.btDocumentationCheckSymbol.Name = "btDocumentationCheckSymbol";
+            this.btDocumentationCheckSymbol.Size = new System.Drawing.Size(134, 23);
+            this.btDocumentationCheckSymbol.TabIndex = 19;
+            this.btDocumentationCheckSymbol.Text = "Documentation";
+            this.btDocumentationCheckSymbol.UseVisualStyleBackColor = true;
+            // 
+            // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -911,7 +922,7 @@
             this.Controls.Add(this.lblHost);
             this.Controls.Add(this.txtHost);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Name = "Form1";
+            this.Name = "FormMain";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
@@ -1003,5 +1014,6 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TextBox txtCurrencyCheckSymbol;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Button btDocumentationCheckSymbol;
     }
 }
