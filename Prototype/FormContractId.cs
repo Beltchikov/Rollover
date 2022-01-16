@@ -21,7 +21,10 @@ namespace Prototype
         {
             txtDocumentation.Text = "DAX: \r\n" +
                 "DAX EUR OPT DTB\r\n" +
-                "20220318 16300 C\r\n";
+                "20220318 16300 C\r\n" +
+                "\r\n" +
+                "DAX: \r\n" +
+                "DAX EUR IND DTB\r\n";
         }
     }
 }
