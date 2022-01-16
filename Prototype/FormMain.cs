@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace Prototype
 {
-    public partial class Form1 : Form
+    public partial class FormMain : Form
     {
         private EReaderMonitorSignal signal;
         private IBClient ibClient;
@@ -18,7 +18,7 @@ namespace Prototype
 
         public const int RT_BARS_ID_BASE = 40000000;
 
-        public Form1()
+        public FormMain()
         {
             InitializeComponent();
 
