@@ -44,6 +44,7 @@ namespace Rollover
         {
             _twsConnector.Connect();
 
+            _consoleWrapper.WriteLine("Retrieving positions... Please wait.");
             var positionMessageList = _repository.AllPositions().OrderBy(p => p.Contract.LocalSymbol).ToList();
             positionMessageList.ForEach(p =>
             {

@@ -117,7 +117,7 @@ namespace Rollover.Ib
                 }
                 else if (message is string messageAsString)
                 {
-                    if (messageAsString == Constants.ON_POSITION_END)
+                    if (messageAsString == Constants.ON_POSITION_END && positionMessages.Any())
                     {
                         return positionMessages;
                     }
