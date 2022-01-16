@@ -40,6 +40,36 @@ namespace Prototype
             ibClient.TickString += TickString;
             ibClient.TickGeneric += OnTickGeneric;
             ibClient.ContractDetails += HandleContractDataMessage;
+            ibClient.OpenOrder += OnOpenOrder;
+            ibClient.OpenOrderEnd += OnOpenOrderEnd;
+            ibClient.OrderStatus += OnOrderStatus;
+            ibClient.ExecDetails += OnExecDetails;
+            ibClient.ExecDetailsEnd += OnExecDetailsEnd;
+        }
+
+        private void OnExecDetailsEnd(int obj)
+        {
+            //throw new NotImplementedException();
+        }
+
+        private void OnExecDetails(ExecutionMessage obj)
+        {
+            //throw new NotImplementedException();
+        }
+
+        private void OnOrderStatus(OrderStatusMessage obj)
+        {
+            //throw new NotImplementedException();
+        }
+
+        private void OnOpenOrderEnd()
+        {
+            //throw new NotImplementedException();
+        }
+
+        private void OnOpenOrder(OpenOrderMessage obj)
+        {
+            //throw new NotImplementedException();
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
@@ -335,33 +365,23 @@ namespace Prototype
                 Currency = txtCurrencyOrder.Text,
                 Exchange = string.IsNullOrWhiteSpace(txtExchangeOrder.Text)
                     ? null
-                    : txtExchangeOrder.Text
+                    : txtExchangeOrder.Text,
+                LastTradeDateOrContractMonth = txtLastTradeDateOrContractMonth.Text,
+                Strike = Convert.ToDouble(txtOrderStrike.Text)
             };
 
-            // OrderSamples.TrailingStopLimit("BUY", 1, 5, 5, 110)
-            //Order order = new Order();
-            //order.Action = action;
-            //order.OrderType = "LMT";
-            //order.TotalQuantity = quantity;
-            //order.LmtPrice = limitPrice;
-            //if (nonGuaranteed)
-            //{
-            //    order.SmartComboRoutingParams = new List<TagValue>();
-            //    order.SmartComboRoutingParams.Add(new TagValue("NonGuaranteed", "1"));
-            //}
             Order order = new Order
             {
-                Action = "BUY",
+                Action = txtOrderAction.Text,
                 OrderType = "LMT",
-                TotalQuantity = 1,
-                LmtPrice = 1 // TODO
+                TotalQuantity = Convert.ToInt32(txtQuantityOrder.Text),
+                LmtPrice = Double.Parse(txtOrderLimitPrice.Text)
             };
 
-            order.SmartComboRoutingParams = new List<TagValue>();
-            order.SmartComboRoutingParams.Add(new TagValue("NonGuaranteed", "1"));
+            //order.SmartComboRoutingParams = new List<TagValue>();
+            //order.SmartComboRoutingParams.Add(new TagValue("NonGuaranteed", "1"));
 
-         
-            //ibClient.ClientSocket.placeOrder(id, contract, order);
+            ibClient.ClientSocket.placeOrder(id, contract, order);
         }
     }
 }
