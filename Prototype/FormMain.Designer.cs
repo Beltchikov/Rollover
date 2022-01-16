@@ -95,12 +95,14 @@
             this.label14 = new System.Windows.Forms.Label();
             this.txtRightCheckSymbol = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtHost
             // 
-            this.txtHost.Location = new System.Drawing.Point(46, 6);
+            this.txtHost.Location = new System.Drawing.Point(41, 21);
             this.txtHost.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtHost.Name = "txtHost";
             this.txtHost.Size = new System.Drawing.Size(64, 23);
@@ -110,7 +112,7 @@
             // lblHost
             // 
             this.lblHost.AutoSize = true;
-            this.lblHost.Location = new System.Drawing.Point(8, 14);
+            this.lblHost.Location = new System.Drawing.Point(3, 29);
             this.lblHost.Name = "lblHost";
             this.lblHost.Size = new System.Drawing.Size(32, 15);
             this.lblHost.TabIndex = 1;
@@ -119,7 +121,7 @@
             // lblPort
             // 
             this.lblPort.AutoSize = true;
-            this.lblPort.Location = new System.Drawing.Point(124, 14);
+            this.lblPort.Location = new System.Drawing.Point(119, 29);
             this.lblPort.Name = "lblPort";
             this.lblPort.Size = new System.Drawing.Size(29, 15);
             this.lblPort.TabIndex = 3;
@@ -127,7 +129,7 @@
             // 
             // txtPort
             // 
-            this.txtPort.Location = new System.Drawing.Point(163, 6);
+            this.txtPort.Location = new System.Drawing.Point(158, 21);
             this.txtPort.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtPort.Name = "txtPort";
             this.txtPort.Size = new System.Drawing.Size(54, 23);
@@ -137,7 +139,7 @@
             // lblClientId
             // 
             this.lblClientId.AutoSize = true;
-            this.lblClientId.Location = new System.Drawing.Point(234, 14);
+            this.lblClientId.Location = new System.Drawing.Point(229, 29);
             this.lblClientId.Name = "lblClientId";
             this.lblClientId.Size = new System.Drawing.Size(52, 15);
             this.lblClientId.TabIndex = 5;
@@ -145,7 +147,7 @@
             // 
             // txtClientId
             // 
-            this.txtClientId.Location = new System.Drawing.Point(295, 6);
+            this.txtClientId.Location = new System.Drawing.Point(290, 21);
             this.txtClientId.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtClientId.Name = "txtClientId";
             this.txtClientId.Size = new System.Drawing.Size(26, 23);
@@ -154,10 +156,10 @@
             // 
             // btnConnect
             // 
-            this.btnConnect.Location = new System.Drawing.Point(333, 6);
+            this.btnConnect.Location = new System.Drawing.Point(328, 20);
             this.btnConnect.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(75, 24);
+            this.btnConnect.Size = new System.Drawing.Size(68, 24);
             this.btnConnect.TabIndex = 0;
             this.btnConnect.Text = "Connect";
             this.btnConnect.UseVisualStyleBackColor = true;
@@ -204,9 +206,9 @@
             // 
             // btListPositions
             // 
-            this.btListPositions.Location = new System.Drawing.Point(9, 35);
+            this.btListPositions.Location = new System.Drawing.Point(8, 67);
             this.btListPositions.Name = "btListPositions";
-            this.btListPositions.Size = new System.Drawing.Size(399, 25);
+            this.btListPositions.Size = new System.Drawing.Size(402, 25);
             this.btListPositions.TabIndex = 11;
             this.btListPositions.Text = "List positions";
             this.btListPositions.UseVisualStyleBackColor = true;
@@ -719,11 +721,28 @@
             this.label15.TabIndex = 16;
             this.label15.Text = "Right";
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.txtPort);
+            this.groupBox2.Controls.Add(this.txtHost);
+            this.groupBox2.Controls.Add(this.lblHost);
+            this.groupBox2.Controls.Add(this.lblPort);
+            this.groupBox2.Controls.Add(this.txtClientId);
+            this.groupBox2.Controls.Add(this.lblClientId);
+            this.groupBox2.Controls.Add(this.btnConnect);
+            this.groupBox2.Location = new System.Drawing.Point(8, 6);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(402, 60);
+            this.groupBox2.TabIndex = 33;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Connection";
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1118, 662);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.txtOrderLimitPrice);
             this.Controls.Add(this.label6);
@@ -768,19 +787,14 @@
             this.Controls.Add(this.txtSymbolRealTime);
             this.Controls.Add(this.txtConId);
             this.Controls.Add(this.txtMessage);
-            this.Controls.Add(this.btnConnect);
-            this.Controls.Add(this.lblClientId);
-            this.Controls.Add(this.txtClientId);
-            this.Controls.Add(this.lblPort);
-            this.Controls.Add(this.txtPort);
-            this.Controls.Add(this.lblHost);
-            this.Controls.Add(this.txtHost);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "FormMain";
-            this.Text = "Form1";
+            this.Text = "Main";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -855,5 +869,6 @@
         private System.Windows.Forms.TextBox txtCurrencyCheckSymbol;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Button btDocumentationCheckSymbol;
+        private System.Windows.Forms.GroupBox groupBox2;
     }
 }
