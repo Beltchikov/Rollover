@@ -93,6 +93,12 @@
             this.txtLastTradeDateOrContractMonth = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.txtOrderStrike = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.txtRightOrder = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.txtLocalSymbolOrder = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.txtConIdOrder = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // txtHost
@@ -162,7 +168,7 @@
             // 
             // txtMessage
             // 
-            this.txtMessage.Location = new System.Drawing.Point(22, 358);
+            this.txtMessage.Location = new System.Drawing.Point(22, 389);
             this.txtMessage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtMessage.Multiline = true;
             this.txtMessage.Name = "txtMessage";
@@ -456,7 +462,7 @@
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(22, 599);
+            this.btnClear.Location = new System.Drawing.Point(22, 610);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(75, 23);
             this.btnClear.TabIndex = 14;
@@ -584,6 +590,7 @@
             this.txtExchangeOrder.Name = "txtExchangeOrder";
             this.txtExchangeOrder.Size = new System.Drawing.Size(60, 23);
             this.txtExchangeOrder.TabIndex = 25;
+            this.txtExchangeOrder.Text = "DTB";
             // 
             // label5
             // 
@@ -596,15 +603,16 @@
             // 
             // txtOrderLimitPrice
             // 
-            this.txtOrderLimitPrice.Location = new System.Drawing.Point(477, 327);
+            this.txtOrderLimitPrice.Location = new System.Drawing.Point(477, 353);
             this.txtOrderLimitPrice.Name = "txtOrderLimitPrice";
             this.txtOrderLimitPrice.Size = new System.Drawing.Size(60, 23);
             this.txtOrderLimitPrice.TabIndex = 31;
+            this.txtOrderLimitPrice.Text = "16300";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(413, 330);
+            this.label6.Location = new System.Drawing.Point(413, 356);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(63, 15);
             this.label6.TabIndex = 30;
@@ -612,7 +620,7 @@
             // 
             // txtQuantityOrder
             // 
-            this.txtQuantityOrder.Location = new System.Drawing.Point(314, 326);
+            this.txtQuantityOrder.Location = new System.Drawing.Point(314, 352);
             this.txtQuantityOrder.Name = "txtQuantityOrder";
             this.txtQuantityOrder.Size = new System.Drawing.Size(60, 23);
             this.txtQuantityOrder.TabIndex = 29;
@@ -621,7 +629,7 @@
             // txtOrderQuantity
             // 
             this.txtOrderQuantity.AutoSize = true;
-            this.txtOrderQuantity.Location = new System.Drawing.Point(261, 330);
+            this.txtOrderQuantity.Location = new System.Drawing.Point(261, 356);
             this.txtOrderQuantity.Name = "txtOrderQuantity";
             this.txtOrderQuantity.Size = new System.Drawing.Size(53, 15);
             this.txtOrderQuantity.TabIndex = 28;
@@ -629,7 +637,7 @@
             // 
             // txtOrderAction
             // 
-            this.txtOrderAction.Location = new System.Drawing.Point(163, 326);
+            this.txtOrderAction.Location = new System.Drawing.Point(163, 352);
             this.txtOrderAction.Name = "txtOrderAction";
             this.txtOrderAction.Size = new System.Drawing.Size(60, 23);
             this.txtOrderAction.TabIndex = 27;
@@ -638,7 +646,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(82, 329);
+            this.label8.Location = new System.Drawing.Point(82, 355);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(75, 15);
             this.label8.TabIndex = 26;
@@ -647,7 +655,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(82, 299);
+            this.label7.Location = new System.Drawing.Point(82, 325);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(188, 15);
             this.label7.TabIndex = 26;
@@ -655,7 +663,7 @@
             // 
             // txtLastTradeDateOrContractMonth
             // 
-            this.txtLastTradeDateOrContractMonth.Location = new System.Drawing.Point(314, 296);
+            this.txtLastTradeDateOrContractMonth.Location = new System.Drawing.Point(314, 322);
             this.txtLastTradeDateOrContractMonth.Name = "txtLastTradeDateOrContractMonth";
             this.txtLastTradeDateOrContractMonth.Size = new System.Drawing.Size(60, 23);
             this.txtLastTradeDateOrContractMonth.TabIndex = 27;
@@ -664,7 +672,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(416, 299);
+            this.label9.Location = new System.Drawing.Point(416, 325);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(36, 15);
             this.label9.TabIndex = 22;
@@ -672,17 +680,68 @@
             // 
             // txtOrderStrike
             // 
-            this.txtOrderStrike.Location = new System.Drawing.Point(477, 296);
+            this.txtOrderStrike.Location = new System.Drawing.Point(477, 322);
             this.txtOrderStrike.Name = "txtOrderStrike";
             this.txtOrderStrike.Size = new System.Drawing.Size(60, 23);
             this.txtOrderStrike.TabIndex = 23;
             this.txtOrderStrike.Text = "15950";
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(578, 326);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(35, 15);
+            this.label10.TabIndex = 22;
+            this.label10.Text = "Right";
+            // 
+            // txtRightOrder
+            // 
+            this.txtRightOrder.Location = new System.Drawing.Point(639, 323);
+            this.txtRightOrder.Name = "txtRightOrder";
+            this.txtRightOrder.Size = new System.Drawing.Size(60, 23);
+            this.txtRightOrder.TabIndex = 23;
+            this.txtRightOrder.Text = "C";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(75, 299);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(78, 15);
+            this.label11.TabIndex = 18;
+            this.label11.Text = "Local Symbol";
+            // 
+            // txtLocalSymbolOrder
+            // 
+            this.txtLocalSymbolOrder.Location = new System.Drawing.Point(163, 296);
+            this.txtLocalSymbolOrder.Name = "txtLocalSymbolOrder";
+            this.txtLocalSymbolOrder.Size = new System.Drawing.Size(211, 23);
+            this.txtLocalSymbolOrder.TabIndex = 19;
+            this.txtLocalSymbolOrder.Text = "C ODAX MAR 221630000";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(416, 299);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(43, 15);
+            this.label12.TabIndex = 22;
+            this.label12.Text = "Con ID";
+            // 
+            // txtConIdOrder
+            // 
+            this.txtConIdOrder.Location = new System.Drawing.Point(477, 296);
+            this.txtConIdOrder.Name = "txtConIdOrder";
+            this.txtConIdOrder.Size = new System.Drawing.Size(60, 23);
+            this.txtConIdOrder.TabIndex = 23;
+            this.txtConIdOrder.Text = "483046924";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1075, 634);
+            this.ClientSize = new System.Drawing.Size(1075, 710);
             this.Controls.Add(this.txtOrderLimitPrice);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.txtQuantityOrder);
@@ -693,12 +752,18 @@
             this.Controls.Add(this.label8);
             this.Controls.Add(this.txtExchangeOrder);
             this.Controls.Add(this.label5);
+            this.Controls.Add(this.txtRightOrder);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.txtOrderStrike);
             this.Controls.Add(this.label9);
+            this.Controls.Add(this.txtConIdOrder);
+            this.Controls.Add(this.label12);
             this.Controls.Add(this.txtCurrencyOrder);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.txtSecTypeOrder);
             this.Controls.Add(this.label3);
+            this.Controls.Add(this.txtLocalSymbolOrder);
+            this.Controls.Add(this.label11);
             this.Controls.Add(this.txtSymbolOrder);
             this.Controls.Add(this.lblSymbolOrder);
             this.Controls.Add(this.txtIdOrder);
@@ -824,5 +889,11 @@
         private System.Windows.Forms.TextBox txtLastTradeDateOrContractMonth;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox txtOrderStrike;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox txtRightOrder;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox txtLocalSymbolOrder;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox txtConIdOrder;
     }
 }

@@ -360,14 +360,19 @@ namespace Prototype
 
             Contract contract = new Contract
             {
-                Symbol = txtIdOrder.Text,
-                SecType = txtSecTypeOrder.Text,
-                Currency = txtCurrencyOrder.Text,
+                //Symbol = txtIdOrder.Text,
+                //SecType = txtSecTypeOrder.Text,
+                //Currency = txtCurrencyOrder.Text,
                 Exchange = string.IsNullOrWhiteSpace(txtExchangeOrder.Text)
                     ? null
                     : txtExchangeOrder.Text,
-                LastTradeDateOrContractMonth = txtLastTradeDateOrContractMonth.Text,
-                Strike = Convert.ToDouble(txtOrderStrike.Text)
+                //LastTradeDateOrContractMonth = txtLastTradeDateOrContractMonth.Text,
+                //Strike = Convert.ToDouble(txtOrderStrike.Text),
+                //Right = txtRightOrder.Text,
+                //LocalSymbol = txtLocalSymbolOrder.Text,
+                ConId = string.IsNullOrWhiteSpace(txtConIdOrder.Text)
+                    ? 0
+                    : Convert.ToInt32(txtConIdOrder.Text)
             };
 
             Order order = new Order
