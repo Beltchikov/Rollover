@@ -15,7 +15,7 @@ namespace Prototype
         private EReaderMonitorSignal signal;
         private IBClient ibClient;
         int activeReqId = 0;
-        int _orderId = 310;
+        int _orderId = 320;
 
         public const int RT_BARS_ID_BASE = 40000000;
 

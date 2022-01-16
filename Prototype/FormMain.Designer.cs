@@ -72,7 +72,7 @@
             this.txtExchangeCheckSymbol = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.btPlaceOrder = new System.Windows.Forms.Button();
+            this.btPlaceBasicOrder = new System.Windows.Forms.Button();
             this.lblSymbolOrder = new System.Windows.Forms.Label();
             this.txtSymbolBasicOrder = new System.Windows.Forms.TextBox();
             this.txtExchangeBasicOrder = new System.Windows.Forms.TextBox();
@@ -96,8 +96,10 @@
             this.txtRightCheckSymbol = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtHost
@@ -167,12 +169,12 @@
             // 
             // txtMessage
             // 
-            this.txtMessage.Location = new System.Drawing.Point(22, 337);
+            this.txtMessage.Location = new System.Drawing.Point(8, 391);
             this.txtMessage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtMessage.Multiline = true;
             this.txtMessage.Name = "txtMessage";
             this.txtMessage.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtMessage.Size = new System.Drawing.Size(1030, 268);
+            this.txtMessage.Size = new System.Drawing.Size(1092, 214);
             this.txtMessage.TabIndex = 7;
             // 
             // lblSymbol
@@ -461,7 +463,7 @@
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(22, 610);
+            this.btnClear.Location = new System.Drawing.Point(8, 610);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(75, 23);
             this.btnClear.TabIndex = 14;
@@ -505,20 +507,20 @@
             this.label2.TabIndex = 9;
             this.label2.Text = "Exchange";
             // 
-            // btPlaceOrder
+            // btPlaceBasicOrder
             // 
-            this.btPlaceOrder.Location = new System.Drawing.Point(962, 271);
-            this.btPlaceOrder.Name = "btPlaceOrder";
-            this.btPlaceOrder.Size = new System.Drawing.Size(90, 23);
-            this.btPlaceOrder.TabIndex = 15;
-            this.btPlaceOrder.Text = "Place Order";
-            this.btPlaceOrder.UseVisualStyleBackColor = true;
-            this.btPlaceOrder.Click += new System.EventHandler(this.btPlaceOrder_Click);
+            this.btPlaceBasicOrder.Location = new System.Drawing.Point(281, 21);
+            this.btPlaceBasicOrder.Name = "btPlaceBasicOrder";
+            this.btPlaceBasicOrder.Size = new System.Drawing.Size(118, 23);
+            this.btPlaceBasicOrder.TabIndex = 15;
+            this.btPlaceBasicOrder.Text = "Place Order";
+            this.btPlaceBasicOrder.UseVisualStyleBackColor = true;
+            this.btPlaceBasicOrder.Click += new System.EventHandler(this.btPlaceOrder_Click);
             // 
             // lblSymbolOrder
             // 
             this.lblSymbolOrder.AutoSize = true;
-            this.lblSymbolOrder.Location = new System.Drawing.Point(108, 271);
+            this.lblSymbolOrder.Location = new System.Drawing.Point(564, 311);
             this.lblSymbolOrder.Name = "lblSymbolOrder";
             this.lblSymbolOrder.Size = new System.Drawing.Size(47, 15);
             this.lblSymbolOrder.TabIndex = 18;
@@ -526,7 +528,7 @@
             // 
             // txtSymbolBasicOrder
             // 
-            this.txtSymbolBasicOrder.Location = new System.Drawing.Point(163, 267);
+            this.txtSymbolBasicOrder.Location = new System.Drawing.Point(619, 307);
             this.txtSymbolBasicOrder.Name = "txtSymbolBasicOrder";
             this.txtSymbolBasicOrder.Size = new System.Drawing.Size(60, 23);
             this.txtSymbolBasicOrder.TabIndex = 19;
@@ -534,7 +536,7 @@
             // 
             // txtExchangeBasicOrder
             // 
-            this.txtExchangeBasicOrder.Location = new System.Drawing.Point(298, 268);
+            this.txtExchangeBasicOrder.Location = new System.Drawing.Point(202, 22);
             this.txtExchangeBasicOrder.Name = "txtExchangeBasicOrder";
             this.txtExchangeBasicOrder.Size = new System.Drawing.Size(60, 23);
             this.txtExchangeBasicOrder.TabIndex = 25;
@@ -543,7 +545,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(234, 271);
+            this.label5.Location = new System.Drawing.Point(142, 25);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(58, 15);
             this.label5.TabIndex = 24;
@@ -551,7 +553,7 @@
             // 
             // txtLimitPriceBasicOrder
             // 
-            this.txtLimitPriceBasicOrder.Location = new System.Drawing.Point(473, 298);
+            this.txtLimitPriceBasicOrder.Location = new System.Drawing.Point(339, 52);
             this.txtLimitPriceBasicOrder.Name = "txtLimitPriceBasicOrder";
             this.txtLimitPriceBasicOrder.Size = new System.Drawing.Size(60, 23);
             this.txtLimitPriceBasicOrder.TabIndex = 31;
@@ -560,7 +562,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(409, 301);
+            this.label6.Location = new System.Drawing.Point(275, 55);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(63, 15);
             this.label6.TabIndex = 30;
@@ -568,7 +570,7 @@
             // 
             // txtQuantityBasicOrder
             // 
-            this.txtQuantityBasicOrder.Location = new System.Drawing.Point(310, 297);
+            this.txtQuantityBasicOrder.Location = new System.Drawing.Point(202, 51);
             this.txtQuantityBasicOrder.Name = "txtQuantityBasicOrder";
             this.txtQuantityBasicOrder.Size = new System.Drawing.Size(60, 23);
             this.txtQuantityBasicOrder.TabIndex = 29;
@@ -577,7 +579,7 @@
             // txtOrderQuantity
             // 
             this.txtOrderQuantity.AutoSize = true;
-            this.txtOrderQuantity.Location = new System.Drawing.Point(257, 301);
+            this.txtOrderQuantity.Location = new System.Drawing.Point(149, 55);
             this.txtOrderQuantity.Name = "txtOrderQuantity";
             this.txtOrderQuantity.Size = new System.Drawing.Size(53, 15);
             this.txtOrderQuantity.TabIndex = 28;
@@ -585,7 +587,7 @@
             // 
             // txtActionBasicOrder
             // 
-            this.txtActionBasicOrder.Location = new System.Drawing.Point(159, 297);
+            this.txtActionBasicOrder.Location = new System.Drawing.Point(64, 51);
             this.txtActionBasicOrder.Name = "txtActionBasicOrder";
             this.txtActionBasicOrder.Size = new System.Drawing.Size(60, 23);
             this.txtActionBasicOrder.TabIndex = 27;
@@ -594,16 +596,16 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(78, 300);
+            this.label8.Location = new System.Drawing.Point(18, 54);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(75, 15);
+            this.label8.Size = new System.Drawing.Size(42, 15);
             this.label8.TabIndex = 26;
-            this.label8.Text = "Order Action";
+            this.label8.Text = "Action";
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(390, 275);
+            this.label12.Location = new System.Drawing.Point(15, 25);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(43, 15);
             this.label12.TabIndex = 22;
@@ -611,7 +613,7 @@
             // 
             // txtConIdBasicOrder
             // 
-            this.txtConIdBasicOrder.Location = new System.Drawing.Point(439, 272);
+            this.txtConIdBasicOrder.Location = new System.Drawing.Point(64, 22);
             this.txtConIdBasicOrder.Name = "txtConIdBasicOrder";
             this.txtConIdBasicOrder.Size = new System.Drawing.Size(60, 23);
             this.txtConIdBasicOrder.TabIndex = 23;
@@ -737,26 +739,36 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Connection";
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.txtConIdBasicOrder);
+            this.groupBox3.Controls.Add(this.label12);
+            this.groupBox3.Controls.Add(this.txtExchangeBasicOrder);
+            this.groupBox3.Controls.Add(this.txtLimitPriceBasicOrder);
+            this.groupBox3.Controls.Add(this.label6);
+            this.groupBox3.Controls.Add(this.btPlaceBasicOrder);
+            this.groupBox3.Controls.Add(this.label5);
+            this.groupBox3.Controls.Add(this.txtActionBasicOrder);
+            this.groupBox3.Controls.Add(this.txtQuantityBasicOrder);
+            this.groupBox3.Controls.Add(this.txtOrderQuantity);
+            this.groupBox3.Controls.Add(this.label8);
+            this.groupBox3.Location = new System.Drawing.Point(11, 271);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(422, 100);
+            this.groupBox3.TabIndex = 34;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Basic Order";
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1118, 662);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.txtLimitPriceBasicOrder);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.txtQuantityBasicOrder);
-            this.Controls.Add(this.txtOrderQuantity);
-            this.Controls.Add(this.txtActionBasicOrder);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.txtExchangeBasicOrder);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.txtConIdBasicOrder);
-            this.Controls.Add(this.label12);
             this.Controls.Add(this.txtSymbolBasicOrder);
             this.Controls.Add(this.lblSymbolOrder);
-            this.Controls.Add(this.btPlaceOrder);
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.btCancelRealTime);
             this.Controls.Add(this.btReqRealTime);
@@ -795,6 +807,8 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -846,7 +860,7 @@
         private System.Windows.Forms.TextBox txtExchangeCheckSymbol;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btPlaceOrder;
+        private System.Windows.Forms.Button btPlaceBasicOrder;
         private System.Windows.Forms.Label lblSymbolOrder;
         private System.Windows.Forms.TextBox txtSymbolBasicOrder;
         private System.Windows.Forms.TextBox txtExchangeBasicOrder;
@@ -870,5 +884,6 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Button btDocumentationCheckSymbol;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox groupBox3;
     }
 }
