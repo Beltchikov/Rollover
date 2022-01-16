@@ -74,17 +74,17 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btPlaceOrder = new System.Windows.Forms.Button();
             this.lblSymbolOrder = new System.Windows.Forms.Label();
-            this.txtSymbolOrder = new System.Windows.Forms.TextBox();
-            this.txtExchangeOrder = new System.Windows.Forms.TextBox();
+            this.txtSymbolBasicOrder = new System.Windows.Forms.TextBox();
+            this.txtExchangeBasicOrder = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.txtOrderLimitPrice = new System.Windows.Forms.TextBox();
+            this.txtLimitPriceBasicOrder = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.txtQuantityOrder = new System.Windows.Forms.TextBox();
+            this.txtQuantityBasicOrder = new System.Windows.Forms.TextBox();
             this.txtOrderQuantity = new System.Windows.Forms.Label();
-            this.txtOrderAction = new System.Windows.Forms.TextBox();
+            this.txtActionBasicOrder = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.txtConIdOrder = new System.Windows.Forms.TextBox();
+            this.txtConIdBasicOrder = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btDocumentationCheckSymbol = new System.Windows.Forms.Button();
             this.txtCurrencyCheckSymbol = new System.Windows.Forms.TextBox();
@@ -524,21 +524,21 @@
             this.lblSymbolOrder.TabIndex = 18;
             this.lblSymbolOrder.Text = "Symbol";
             // 
-            // txtSymbolOrder
+            // txtSymbolBasicOrder
             // 
-            this.txtSymbolOrder.Location = new System.Drawing.Point(163, 267);
-            this.txtSymbolOrder.Name = "txtSymbolOrder";
-            this.txtSymbolOrder.Size = new System.Drawing.Size(60, 23);
-            this.txtSymbolOrder.TabIndex = 19;
-            this.txtSymbolOrder.Text = "DAX";
+            this.txtSymbolBasicOrder.Location = new System.Drawing.Point(163, 267);
+            this.txtSymbolBasicOrder.Name = "txtSymbolBasicOrder";
+            this.txtSymbolBasicOrder.Size = new System.Drawing.Size(60, 23);
+            this.txtSymbolBasicOrder.TabIndex = 19;
+            this.txtSymbolBasicOrder.Text = "DAX";
             // 
-            // txtExchangeOrder
+            // txtExchangeBasicOrder
             // 
-            this.txtExchangeOrder.Location = new System.Drawing.Point(298, 268);
-            this.txtExchangeOrder.Name = "txtExchangeOrder";
-            this.txtExchangeOrder.Size = new System.Drawing.Size(60, 23);
-            this.txtExchangeOrder.TabIndex = 25;
-            this.txtExchangeOrder.Text = "DTB";
+            this.txtExchangeBasicOrder.Location = new System.Drawing.Point(298, 268);
+            this.txtExchangeBasicOrder.Name = "txtExchangeBasicOrder";
+            this.txtExchangeBasicOrder.Size = new System.Drawing.Size(60, 23);
+            this.txtExchangeBasicOrder.TabIndex = 25;
+            this.txtExchangeBasicOrder.Text = "DTB";
             // 
             // label5
             // 
@@ -549,13 +549,13 @@
             this.label5.TabIndex = 24;
             this.label5.Text = "Exchange";
             // 
-            // txtOrderLimitPrice
+            // txtLimitPriceBasicOrder
             // 
-            this.txtOrderLimitPrice.Location = new System.Drawing.Point(473, 298);
-            this.txtOrderLimitPrice.Name = "txtOrderLimitPrice";
-            this.txtOrderLimitPrice.Size = new System.Drawing.Size(60, 23);
-            this.txtOrderLimitPrice.TabIndex = 31;
-            this.txtOrderLimitPrice.Text = "16300";
+            this.txtLimitPriceBasicOrder.Location = new System.Drawing.Point(473, 298);
+            this.txtLimitPriceBasicOrder.Name = "txtLimitPriceBasicOrder";
+            this.txtLimitPriceBasicOrder.Size = new System.Drawing.Size(60, 23);
+            this.txtLimitPriceBasicOrder.TabIndex = 31;
+            this.txtLimitPriceBasicOrder.Text = "16300";
             // 
             // label6
             // 
@@ -566,13 +566,13 @@
             this.label6.TabIndex = 30;
             this.label6.Text = "Limit Price";
             // 
-            // txtQuantityOrder
+            // txtQuantityBasicOrder
             // 
-            this.txtQuantityOrder.Location = new System.Drawing.Point(310, 297);
-            this.txtQuantityOrder.Name = "txtQuantityOrder";
-            this.txtQuantityOrder.Size = new System.Drawing.Size(60, 23);
-            this.txtQuantityOrder.TabIndex = 29;
-            this.txtQuantityOrder.Text = "1";
+            this.txtQuantityBasicOrder.Location = new System.Drawing.Point(310, 297);
+            this.txtQuantityBasicOrder.Name = "txtQuantityBasicOrder";
+            this.txtQuantityBasicOrder.Size = new System.Drawing.Size(60, 23);
+            this.txtQuantityBasicOrder.TabIndex = 29;
+            this.txtQuantityBasicOrder.Text = "1";
             // 
             // txtOrderQuantity
             // 
@@ -583,13 +583,13 @@
             this.txtOrderQuantity.TabIndex = 28;
             this.txtOrderQuantity.Text = "Quantity";
             // 
-            // txtOrderAction
+            // txtActionBasicOrder
             // 
-            this.txtOrderAction.Location = new System.Drawing.Point(159, 297);
-            this.txtOrderAction.Name = "txtOrderAction";
-            this.txtOrderAction.Size = new System.Drawing.Size(60, 23);
-            this.txtOrderAction.TabIndex = 27;
-            this.txtOrderAction.Text = "BUY";
+            this.txtActionBasicOrder.Location = new System.Drawing.Point(159, 297);
+            this.txtActionBasicOrder.Name = "txtActionBasicOrder";
+            this.txtActionBasicOrder.Size = new System.Drawing.Size(60, 23);
+            this.txtActionBasicOrder.TabIndex = 27;
+            this.txtActionBasicOrder.Text = "BUY";
             // 
             // label8
             // 
@@ -609,13 +609,13 @@
             this.label12.TabIndex = 22;
             this.label12.Text = "Con ID";
             // 
-            // txtConIdOrder
+            // txtConIdBasicOrder
             // 
-            this.txtConIdOrder.Location = new System.Drawing.Point(439, 272);
-            this.txtConIdOrder.Name = "txtConIdOrder";
-            this.txtConIdOrder.Size = new System.Drawing.Size(60, 23);
-            this.txtConIdOrder.TabIndex = 23;
-            this.txtConIdOrder.Text = "483046924";
+            this.txtConIdBasicOrder.Location = new System.Drawing.Point(439, 272);
+            this.txtConIdBasicOrder.Name = "txtConIdBasicOrder";
+            this.txtConIdBasicOrder.Size = new System.Drawing.Size(60, 23);
+            this.txtConIdBasicOrder.TabIndex = 23;
+            this.txtConIdBasicOrder.Text = "483046924";
             // 
             // groupBox1
             // 
@@ -744,17 +744,17 @@
             this.ClientSize = new System.Drawing.Size(1118, 662);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.txtOrderLimitPrice);
+            this.Controls.Add(this.txtLimitPriceBasicOrder);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.txtQuantityOrder);
+            this.Controls.Add(this.txtQuantityBasicOrder);
             this.Controls.Add(this.txtOrderQuantity);
-            this.Controls.Add(this.txtOrderAction);
+            this.Controls.Add(this.txtActionBasicOrder);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.txtExchangeOrder);
+            this.Controls.Add(this.txtExchangeBasicOrder);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.txtConIdOrder);
+            this.Controls.Add(this.txtConIdBasicOrder);
             this.Controls.Add(this.label12);
-            this.Controls.Add(this.txtSymbolOrder);
+            this.Controls.Add(this.txtSymbolBasicOrder);
             this.Controls.Add(this.lblSymbolOrder);
             this.Controls.Add(this.btPlaceOrder);
             this.Controls.Add(this.btnClear);
@@ -848,17 +848,17 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btPlaceOrder;
         private System.Windows.Forms.Label lblSymbolOrder;
-        private System.Windows.Forms.TextBox txtSymbolOrder;
-        private System.Windows.Forms.TextBox txtExchangeOrder;
+        private System.Windows.Forms.TextBox txtSymbolBasicOrder;
+        private System.Windows.Forms.TextBox txtExchangeBasicOrder;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox txtOrderLimitPrice;
+        private System.Windows.Forms.TextBox txtLimitPriceBasicOrder;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox txtQuantityOrder;
+        private System.Windows.Forms.TextBox txtQuantityBasicOrder;
         private System.Windows.Forms.Label txtOrderQuantity;
-        private System.Windows.Forms.TextBox txtOrderAction;
+        private System.Windows.Forms.TextBox txtActionBasicOrder;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox txtConIdOrder;
+        private System.Windows.Forms.TextBox txtConIdBasicOrder;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox txtLastTradeCheckSymbol;
         private System.Windows.Forms.Label label13;

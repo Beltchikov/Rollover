@@ -15,7 +15,7 @@ namespace Prototype
         private EReaderMonitorSignal signal;
         private IBClient ibClient;
         int activeReqId = 0;
-        int _orderId = 100;
+        int _orderId = 310;
 
         public const int RT_BARS_ID_BASE = 40000000;
 
@@ -376,20 +376,20 @@ namespace Prototype
         {
             Contract contract = new Contract
             {
-                Exchange = string.IsNullOrWhiteSpace(txtExchangeOrder.Text)
+                Exchange = string.IsNullOrWhiteSpace(txtExchangeBasicOrder.Text)
                     ? null
-                    : txtExchangeOrder.Text,
-                ConId = string.IsNullOrWhiteSpace(txtConIdOrder.Text)
+                    : txtExchangeBasicOrder.Text,
+                ConId = string.IsNullOrWhiteSpace(txtConIdBasicOrder.Text)
                     ? 0
-                    : Convert.ToInt32(txtConIdOrder.Text)
+                    : Convert.ToInt32(txtConIdBasicOrder.Text)
             };
 
             Order order = new Order
             {
-                Action = txtOrderAction.Text,
+                Action = txtActionBasicOrder.Text,
                 OrderType = "LMT",
-                TotalQuantity = Convert.ToInt32(txtQuantityOrder.Text),
-                LmtPrice = Double.Parse(txtOrderLimitPrice.Text)
+                TotalQuantity = Convert.ToInt32(txtQuantityBasicOrder.Text),
+                LmtPrice = Double.Parse(txtLimitPriceBasicOrder.Text)
             };
 
             //order.SmartComboRoutingParams = new List<TagValue>();
