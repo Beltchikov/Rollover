@@ -37,7 +37,7 @@
             this.btnConnect = new System.Windows.Forms.Button();
             this.txtMessage = new System.Windows.Forms.TextBox();
             this.lblSymbol = new System.Windows.Forms.Label();
-            this.txtSymbol = new System.Windows.Forms.TextBox();
+            this.txtSymbolCheckSymbol = new System.Windows.Forms.TextBox();
             this.btGetConnId = new System.Windows.Forms.Button();
             this.btListPositions = new System.Windows.Forms.Button();
             this.btStrikes = new System.Windows.Forms.Button();
@@ -185,14 +185,14 @@
             this.lblSymbol.TabIndex = 9;
             this.lblSymbol.Text = "Symbol";
             // 
-            // txtSymbol
+            // txtSymbolCheckSymbol
             // 
-            this.txtSymbol.Location = new System.Drawing.Point(75, 96);
-            this.txtSymbol.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.txtSymbol.Name = "txtSymbol";
-            this.txtSymbol.Size = new System.Drawing.Size(54, 23);
-            this.txtSymbol.TabIndex = 8;
-            this.txtSymbol.Text = "MNQ";
+            this.txtSymbolCheckSymbol.Location = new System.Drawing.Point(75, 96);
+            this.txtSymbolCheckSymbol.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtSymbolCheckSymbol.Name = "txtSymbolCheckSymbol";
+            this.txtSymbolCheckSymbol.Size = new System.Drawing.Size(54, 23);
+            this.txtSymbolCheckSymbol.TabIndex = 8;
+            this.txtSymbolCheckSymbol.Text = "MNQ";
             // 
             // btGetConnId
             // 
@@ -207,7 +207,7 @@
             // 
             // btListPositions
             // 
-            this.btListPositions.Location = new System.Drawing.Point(75, 54);
+            this.btListPositions.Location = new System.Drawing.Point(75, 47);
             this.btListPositions.Name = "btListPositions";
             this.btListPositions.Size = new System.Drawing.Size(528, 25);
             this.btListPositions.TabIndex = 11;
@@ -481,7 +481,7 @@
             // 
             // txtExchangeCheckSymbol
             // 
-            this.txtExchangeCheckSymbol.Location = new System.Drawing.Point(533, 98);
+            this.txtExchangeCheckSymbol.Location = new System.Drawing.Point(395, 98);
             this.txtExchangeCheckSymbol.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtExchangeCheckSymbol.Name = "txtExchangeCheckSymbol";
             this.txtExchangeCheckSymbol.Size = new System.Drawing.Size(70, 23);
@@ -500,7 +500,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(469, 102);
+            this.label2.Location = new System.Drawing.Point(316, 101);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(58, 15);
             this.label2.TabIndex = 9;
@@ -804,7 +804,7 @@
             this.Controls.Add(this.txtGenericTickList);
             this.Controls.Add(this.txtSymbolRealTime);
             this.Controls.Add(this.txtConId);
-            this.Controls.Add(this.txtSymbol);
+            this.Controls.Add(this.txtSymbolCheckSymbol);
             this.Controls.Add(this.txtMessage);
             this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.lblClientId);
@@ -833,7 +833,7 @@
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.TextBox txtMessage;
         private System.Windows.Forms.Label lblSymbol;
-        private System.Windows.Forms.TextBox txtSymbol;
+        private System.Windows.Forms.TextBox txtSymbolCheckSymbol;
         private System.Windows.Forms.Button btGetConnId;
         private System.Windows.Forms.Button btListPositions;
         private System.Windows.Forms.Button btStrikes;

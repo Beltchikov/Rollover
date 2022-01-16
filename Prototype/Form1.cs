@@ -108,7 +108,7 @@ namespace Prototype
         {
             btListPositions.Enabled = enable;
 
-            txtSymbol.Enabled = enable;
+            txtSymbolCheckSymbol.Enabled = enable;
             btGetConnId.Enabled = enable;
 
             txtReqId.Enabled = enable;
@@ -288,7 +288,7 @@ namespace Prototype
             //ibClient.ClientSocket.reqMatchingSymbols(++activeReqId, symbol);
             var contract = new Contract()
             {
-                Symbol = txtSymbol.Text,
+                Symbol = txtSymbolCheckSymbol.Text,
                 SecType = txtSecTypeCheckSymbol.Text,
                 Currency = "USD",
                 Exchange = txtExchangeCheckSymbol.Text
