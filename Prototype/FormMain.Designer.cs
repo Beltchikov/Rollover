@@ -100,6 +100,7 @@
             this.label12 = new System.Windows.Forms.Label();
             this.txtConIdOrder = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btDocumentationCheckSymbol = new System.Windows.Forms.Button();
             this.txtCurrencyCheckSymbol = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.txtLastTradeCheckSymbol = new System.Windows.Forms.TextBox();
@@ -108,7 +109,6 @@
             this.label14 = new System.Windows.Forms.Label();
             this.txtRightCheckSymbol = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
-            this.btDocumentationCheckSymbol = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -773,6 +773,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Contract ID";
             // 
+            // btDocumentationCheckSymbol
+            // 
+            this.btDocumentationCheckSymbol.Location = new System.Drawing.Point(430, 49);
+            this.btDocumentationCheckSymbol.Name = "btDocumentationCheckSymbol";
+            this.btDocumentationCheckSymbol.Size = new System.Drawing.Size(134, 23);
+            this.btDocumentationCheckSymbol.TabIndex = 19;
+            this.btDocumentationCheckSymbol.Text = "Documentation";
+            this.btDocumentationCheckSymbol.UseVisualStyleBackColor = true;
+            this.btDocumentationCheckSymbol.Click += new System.EventHandler(this.btDocumentationCheckSymbol_Click);
+            // 
             // txtCurrencyCheckSymbol
             // 
             this.txtCurrencyCheckSymbol.Location = new System.Drawing.Point(225, 21);
@@ -841,15 +851,6 @@
             this.label15.Size = new System.Drawing.Size(35, 15);
             this.label15.TabIndex = 16;
             this.label15.Text = "Right";
-            // 
-            // btDocumentationCheckSymbol
-            // 
-            this.btDocumentationCheckSymbol.Location = new System.Drawing.Point(430, 49);
-            this.btDocumentationCheckSymbol.Name = "btDocumentationCheckSymbol";
-            this.btDocumentationCheckSymbol.Size = new System.Drawing.Size(134, 23);
-            this.btDocumentationCheckSymbol.TabIndex = 19;
-            this.btDocumentationCheckSymbol.Text = "Documentation";
-            this.btDocumentationCheckSymbol.UseVisualStyleBackColor = true;
             // 
             // FormMain
             // 

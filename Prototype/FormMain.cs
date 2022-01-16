@@ -18,6 +18,8 @@ namespace Prototype
 
         public const int RT_BARS_ID_BASE = 40000000;
 
+        FormContractId _formContractId;
+
         public FormMain()
         {
             InitializeComponent();
@@ -402,6 +404,12 @@ namespace Prototype
             //order.SmartComboRoutingParams.Add(new TagValue("NonGuaranteed", "1"));
 
             ibClient.ClientSocket.placeOrder(id, contract, order);
+        }
+
+        private void btDocumentationCheckSymbol_Click(object sender, EventArgs e)
+        {
+            _formContractId ??= new FormContractId();
+            _formContractId.Show();
         }
     }
 }
