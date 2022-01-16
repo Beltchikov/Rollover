@@ -100,14 +100,14 @@
             this.label12 = new System.Windows.Forms.Label();
             this.txtConIdOrder = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txtCurrencyCheckSymbol = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
             this.txtLastTradeCheckSymbol = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.txtStrikeCheckSymbol = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.txtRightCheckSymbol = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
-            this.txtCurrencyCheckSymbol = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -501,7 +501,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(298, 29);
+            this.label1.Location = new System.Drawing.Point(295, 29);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(54, 15);
             this.label1.TabIndex = 9;
@@ -771,6 +771,24 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Contract ID";
             // 
+            // txtCurrencyCheckSymbol
+            // 
+            this.txtCurrencyCheckSymbol.Location = new System.Drawing.Point(225, 21);
+            this.txtCurrencyCheckSymbol.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtCurrencyCheckSymbol.Name = "txtCurrencyCheckSymbol";
+            this.txtCurrencyCheckSymbol.Size = new System.Drawing.Size(54, 23);
+            this.txtCurrencyCheckSymbol.TabIndex = 17;
+            this.txtCurrencyCheckSymbol.Text = "USD";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(163, 29);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(55, 15);
+            this.label16.TabIndex = 18;
+            this.label16.Text = "Currency";
+            // 
             // txtLastTradeCheckSymbol
             // 
             this.txtLastTradeCheckSymbol.Location = new System.Drawing.Point(98, 48);
@@ -810,7 +828,7 @@
             this.txtRightCheckSymbol.Location = new System.Drawing.Point(359, 48);
             this.txtRightCheckSymbol.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtRightCheckSymbol.Name = "txtRightCheckSymbol";
-            this.txtRightCheckSymbol.Size = new System.Drawing.Size(70, 23);
+            this.txtRightCheckSymbol.Size = new System.Drawing.Size(55, 23);
             this.txtRightCheckSymbol.TabIndex = 13;
             // 
             // label15
@@ -821,24 +839,6 @@
             this.label15.Size = new System.Drawing.Size(35, 15);
             this.label15.TabIndex = 16;
             this.label15.Text = "Right";
-            // 
-            // txtCurrencyCheckSymbol
-            // 
-            this.txtCurrencyCheckSymbol.Location = new System.Drawing.Point(225, 21);
-            this.txtCurrencyCheckSymbol.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.txtCurrencyCheckSymbol.Name = "txtCurrencyCheckSymbol";
-            this.txtCurrencyCheckSymbol.Size = new System.Drawing.Size(54, 23);
-            this.txtCurrencyCheckSymbol.TabIndex = 17;
-            this.txtCurrencyCheckSymbol.Text = "USD";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(163, 29);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(55, 15);
-            this.label16.TabIndex = 18;
-            this.label16.Text = "Currency";
             // 
             // Form1
             // 

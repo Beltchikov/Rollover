@@ -292,6 +292,22 @@ namespace Prototype
                 Currency = txtCurrencyCheckSymbol.Text,
                 Exchange = txtExchangeCheckSymbol.Text
             };
+
+            contract.LastTradeDateOrContractMonth =
+                !string.IsNullOrWhiteSpace(txtLastTradeCheckSymbol.Text) ?
+                txtLastTradeDateOrContractMonth.Text: 
+                null;
+
+            contract.Strike =
+                !string.IsNullOrWhiteSpace(txtStrikeCheckSymbol.Text) ?
+                Convert.ToDouble(txtStrikeCheckSymbol.Text) : 
+                default(double);
+
+            contract.Right =
+                !string.IsNullOrWhiteSpace(txtRightCheckSymbol.Text) ?
+                txtRightCheckSymbol.Text :
+                null;
+
             ibClient.ClientSocket.reqContractDetails(60000001, contract);
         }
 
