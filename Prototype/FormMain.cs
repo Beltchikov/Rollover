@@ -15,6 +15,7 @@ namespace Prototype
         private EReaderMonitorSignal signal;
         private IBClient ibClient;
         int activeReqId = 0;
+        int _orderId = 100;
 
         public const int RT_BARS_ID_BASE = 40000000;
 
@@ -297,7 +298,7 @@ namespace Prototype
 
             contract.LastTradeDateOrContractMonth =
                 !string.IsNullOrWhiteSpace(txtLastTradeCheckSymbol.Text) ?
-                txtLastTradeDateOrContractMonth.Text: 
+                txtLastTradeCheckSymbol.Text: 
                 null;
 
             contract.Strike =
@@ -373,20 +374,11 @@ namespace Prototype
 
         private void btPlaceOrder_Click(object sender, EventArgs e)
         {
-            int id = Convert.ToInt32(txtIdOrder.Text);
-
             Contract contract = new Contract
             {
-                //Symbol = txtIdOrder.Text,
-                //SecType = txtSecTypeOrder.Text,
-                //Currency = txtCurrencyOrder.Text,
                 Exchange = string.IsNullOrWhiteSpace(txtExchangeOrder.Text)
                     ? null
                     : txtExchangeOrder.Text,
-                //LastTradeDateOrContractMonth = txtLastTradeDateOrContractMonth.Text,
-                //Strike = Convert.ToDouble(txtOrderStrike.Text),
-                //Right = txtRightOrder.Text,
-                //LocalSymbol = txtLocalSymbolOrder.Text,
                 ConId = string.IsNullOrWhiteSpace(txtConIdOrder.Text)
                     ? 0
                     : Convert.ToInt32(txtConIdOrder.Text)
@@ -403,7 +395,7 @@ namespace Prototype
             //order.SmartComboRoutingParams = new List<TagValue>();
             //order.SmartComboRoutingParams.Add(new TagValue("NonGuaranteed", "1"));
 
-            ibClient.ClientSocket.placeOrder(id, contract, order);
+            ibClient.ClientSocket.placeOrder(++_orderId, contract, order);
         }
 
         private void btDocumentationCheckSymbol_Click(object sender, EventArgs e)
