@@ -115,10 +115,12 @@
             this.txtExchageComboOrder = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.btComboOrder = new System.Windows.Forms.Button();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtHost
@@ -237,7 +239,7 @@
             // 
             // btStrikes
             // 
-            this.btStrikes.Location = new System.Drawing.Point(819, 133);
+            this.btStrikes.Location = new System.Drawing.Point(811, 13);
             this.btStrikes.Name = "btStrikes";
             this.btStrikes.Size = new System.Drawing.Size(75, 23);
             this.btStrikes.TabIndex = 12;
@@ -247,7 +249,7 @@
             // 
             // txtReqId
             // 
-            this.txtReqId.Location = new System.Drawing.Point(75, 135);
+            this.txtReqId.Location = new System.Drawing.Point(62, 17);
             this.txtReqId.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtReqId.Name = "txtReqId";
             this.txtReqId.Size = new System.Drawing.Size(54, 23);
@@ -257,7 +259,7 @@
             // lblReqId
             // 
             this.lblReqId.AutoSize = true;
-            this.lblReqId.Location = new System.Drawing.Point(22, 139);
+            this.lblReqId.Location = new System.Drawing.Point(8, 21);
             this.lblReqId.Name = "lblReqId";
             this.lblReqId.Size = new System.Drawing.Size(41, 15);
             this.lblReqId.TabIndex = 9;
@@ -265,7 +267,7 @@
             // 
             // txtSymbolStrike
             // 
-            this.txtSymbolStrike.Location = new System.Drawing.Point(395, 138);
+            this.txtSymbolStrike.Location = new System.Drawing.Point(387, 18);
             this.txtSymbolStrike.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtSymbolStrike.Name = "txtSymbolStrike";
             this.txtSymbolStrike.Size = new System.Drawing.Size(54, 23);
@@ -275,7 +277,7 @@
             // lblSymbolStrike
             // 
             this.lblSymbolStrike.AutoSize = true;
-            this.lblSymbolStrike.Location = new System.Drawing.Point(310, 141);
+            this.lblSymbolStrike.Location = new System.Drawing.Point(302, 21);
             this.lblSymbolStrike.Name = "lblSymbolStrike";
             this.lblSymbolStrike.Size = new System.Drawing.Size(79, 15);
             this.lblSymbolStrike.TabIndex = 9;
@@ -283,7 +285,7 @@
             // 
             // txtExchange
             // 
-            this.txtExchange.Location = new System.Drawing.Point(533, 137);
+            this.txtExchange.Location = new System.Drawing.Point(525, 17);
             this.txtExchange.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtExchange.Name = "txtExchange";
             this.txtExchange.Size = new System.Drawing.Size(70, 23);
@@ -293,7 +295,7 @@
             // lblExchange
             // 
             this.lblExchange.AutoSize = true;
-            this.lblExchange.Location = new System.Drawing.Point(469, 141);
+            this.lblExchange.Location = new System.Drawing.Point(461, 21);
             this.lblExchange.Name = "lblExchange";
             this.lblExchange.Size = new System.Drawing.Size(58, 15);
             this.lblExchange.TabIndex = 9;
@@ -301,7 +303,7 @@
             // 
             // txtSecType
             // 
-            this.txtSecType.Location = new System.Drawing.Point(229, 136);
+            this.txtSecType.Location = new System.Drawing.Point(216, 18);
             this.txtSecType.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtSecType.Name = "txtSecType";
             this.txtSecType.Size = new System.Drawing.Size(54, 23);
@@ -311,7 +313,7 @@
             // lblSecType
             // 
             this.lblSecType.AutoSize = true;
-            this.lblSecType.Location = new System.Drawing.Point(167, 140);
+            this.lblSecType.Location = new System.Drawing.Point(154, 22);
             this.lblSecType.Name = "lblSecType";
             this.lblSecType.Size = new System.Drawing.Size(54, 15);
             this.lblSecType.TabIndex = 9;
@@ -319,7 +321,7 @@
             // 
             // txtConId
             // 
-            this.txtConId.Location = new System.Drawing.Point(701, 136);
+            this.txtConId.Location = new System.Drawing.Point(693, 16);
             this.txtConId.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtConId.Name = "txtConId";
             this.txtConId.Size = new System.Drawing.Size(100, 23);
@@ -329,7 +331,7 @@
             // lblConId
             // 
             this.lblConId.AutoSize = true;
-            this.lblConId.Location = new System.Drawing.Point(619, 139);
+            this.lblConId.Location = new System.Drawing.Point(611, 19);
             this.lblConId.Name = "lblConId";
             this.lblConId.Size = new System.Drawing.Size(43, 15);
             this.lblConId.TabIndex = 9;
@@ -952,11 +954,32 @@
             this.btComboOrder.UseVisualStyleBackColor = true;
             this.btComboOrder.Click += new System.EventHandler(this.btComboOrder_Click);
             // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.txtReqId);
+            this.groupBox5.Controls.Add(this.txtSecType);
+            this.groupBox5.Controls.Add(this.lblSecType);
+            this.groupBox5.Controls.Add(this.lblReqId);
+            this.groupBox5.Controls.Add(this.txtSymbolStrike);
+            this.groupBox5.Controls.Add(this.txtConId);
+            this.groupBox5.Controls.Add(this.txtExchange);
+            this.groupBox5.Controls.Add(this.lblConId);
+            this.groupBox5.Controls.Add(this.btStrikes);
+            this.groupBox5.Controls.Add(this.lblExchange);
+            this.groupBox5.Controls.Add(this.lblSymbolStrike);
+            this.groupBox5.Location = new System.Drawing.Point(8, 98);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(1098, 45);
+            this.groupBox5.TabIndex = 36;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Strikes";
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1118, 662);
+            this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -964,32 +987,21 @@
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.btCancelRealTime);
             this.Controls.Add(this.btReqRealTime);
-            this.Controls.Add(this.btStrikes);
             this.Controls.Add(this.btListPositions);
-            this.Controls.Add(this.lblReqId);
-            this.Controls.Add(this.lblSymbolStrike);
             this.Controls.Add(this.lblExchangeRealTime);
-            this.Controls.Add(this.lblExchange);
             this.Controls.Add(this.lblSecTypeRealTime);
-            this.Controls.Add(this.lblSecType);
-            this.Controls.Add(this.lblConId);
             this.Controls.Add(this.lblCurrencyRealTime);
             this.Controls.Add(this.lblFopSample);
             this.Controls.Add(this.lblLocalSymbolSample);
             this.Controls.Add(this.lblLocalSymbol);
             this.Controls.Add(this.lblGenericTicksList);
             this.Controls.Add(this.lblSymbolRealTime);
-            this.Controls.Add(this.txtSymbolStrike);
             this.Controls.Add(this.txtExchangeRealTime);
-            this.Controls.Add(this.txtReqId);
-            this.Controls.Add(this.txtExchange);
             this.Controls.Add(this.txtSecTypeRealTime);
-            this.Controls.Add(this.txtSecType);
             this.Controls.Add(this.txtCurrencyRealTime);
             this.Controls.Add(this.txtLocalSymbolRealTime);
             this.Controls.Add(this.txtGenericTickList);
             this.Controls.Add(this.txtSymbolRealTime);
-            this.Controls.Add(this.txtConId);
             this.Controls.Add(this.txtMessage);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "FormMain";
@@ -1003,6 +1015,8 @@
             this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1097,5 +1111,6 @@
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.TextBox txtQuantityComboOrder;
         private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.GroupBox groupBox5;
     }
 }
