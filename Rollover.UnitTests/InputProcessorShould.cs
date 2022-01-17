@@ -22,8 +22,10 @@ namespace Rollover.UnitTests
 
         [Theory, AutoNSubstituteData]
         public void HaveStateWaitingForSymbolIfFirstRun(
+            [Frozen] ITrackedSymbols trackedSymbols,
             InputProcessor sut)
         {
+            trackedSymbols.Any().Returns(false); 
             sut.Convert("Some input");
             Assert.True(sut.State == "WaitingForSymbol");
         }
