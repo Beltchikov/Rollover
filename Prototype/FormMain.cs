@@ -14,9 +14,8 @@ namespace Prototype
     {
         private EReaderMonitorSignal signal;
         private IBClient ibClient;
-        int _activeReqId = 0;
+        int _activeReqId = 700;
         int _nextOrderId = 0;
-        int _orderId = 330;
 
         public const int RT_BARS_ID_BASE = 40000000;
 
@@ -115,7 +114,6 @@ namespace Prototype
             txtSymbolCheckSymbol.Enabled = enable;
             btGetConnId.Enabled = enable;
 
-            txtReqId.Enabled = enable;
             txtSymbolStrike.Enabled = enable;
             txtExchange.Enabled = enable;
             txtSecType.Enabled = enable;
@@ -323,13 +321,13 @@ namespace Prototype
 
         private void btStrikes_Click(object sender, EventArgs e)
         {
-            int reqId = Convert.ToInt32(txtReqId.Text);
             string symbol = txtSymbolStrike.Text;
             string exchange = txtExchange.Text;
             string secType = txtSecType.Text;
             int conId = Convert.ToInt32(txtConId.Text);
 
-            ibClient.ClientSocket.reqSecDefOptParams(reqId, symbol, exchange, secType, conId);
+            ibClient.ClientSocket.reqSecDefOptParams(_activeReqId, symbol, exchange, secType, conId);
+            _activeReqId++;
         }
 
         private void btReqRealTime_Click(object sender, EventArgs e)
@@ -343,7 +341,6 @@ namespace Prototype
 
             // client.reqMarketDataType(2);
 
-            int nextReqId = Convert.ToInt32(txtReqId.Text);
             Contract contract = new Contract
             {
                 Symbol = txtSymbolRealTime.Text,
@@ -355,7 +352,7 @@ namespace Prototype
             string genericTickList = this.txtGenericTickList.Text;
             bool snapshot = true; // set it to false to receive permanent stream of data
 
-            ibClient.ClientSocket.reqMktData(nextReqId, contract, genericTickList, snapshot, false, new List<TagValue>());
+            ibClient.ClientSocket.reqMktData(_activeReqId, contract, genericTickList, snapshot, false, new List<TagValue>());
         }
 
         private void btCancelRealTime_Click(object sender, EventArgs e)

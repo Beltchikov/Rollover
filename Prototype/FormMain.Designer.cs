@@ -41,8 +41,6 @@
             this.btGetConnId = new System.Windows.Forms.Button();
             this.btListPositions = new System.Windows.Forms.Button();
             this.btStrikes = new System.Windows.Forms.Button();
-            this.txtReqId = new System.Windows.Forms.TextBox();
-            this.lblReqId = new System.Windows.Forms.Label();
             this.txtSymbolStrike = new System.Windows.Forms.TextBox();
             this.lblSymbolStrike = new System.Windows.Forms.Label();
             this.txtExchange = new System.Windows.Forms.TextBox();
@@ -246,24 +244,6 @@
             this.btStrikes.Text = "Strikes";
             this.btStrikes.UseVisualStyleBackColor = true;
             this.btStrikes.Click += new System.EventHandler(this.btStrikes_Click);
-            // 
-            // txtReqId
-            // 
-            this.txtReqId.Location = new System.Drawing.Point(62, 17);
-            this.txtReqId.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.txtReqId.Name = "txtReqId";
-            this.txtReqId.Size = new System.Drawing.Size(54, 23);
-            this.txtReqId.TabIndex = 8;
-            this.txtReqId.Text = "70100001";
-            // 
-            // lblReqId
-            // 
-            this.lblReqId.AutoSize = true;
-            this.lblReqId.Location = new System.Drawing.Point(8, 21);
-            this.lblReqId.Name = "lblReqId";
-            this.lblReqId.Size = new System.Drawing.Size(41, 15);
-            this.lblReqId.TabIndex = 9;
-            this.lblReqId.Text = "Req ID";
             // 
             // txtSymbolStrike
             // 
@@ -956,10 +936,8 @@
             // 
             // groupBox5
             // 
-            this.groupBox5.Controls.Add(this.txtReqId);
             this.groupBox5.Controls.Add(this.txtSecType);
             this.groupBox5.Controls.Add(this.lblSecType);
-            this.groupBox5.Controls.Add(this.lblReqId);
             this.groupBox5.Controls.Add(this.txtSymbolStrike);
             this.groupBox5.Controls.Add(this.txtConId);
             this.groupBox5.Controls.Add(this.txtExchange);
@@ -1037,8 +1015,6 @@
         private System.Windows.Forms.Button btGetConnId;
         private System.Windows.Forms.Button btListPositions;
         private System.Windows.Forms.Button btStrikes;
-        private System.Windows.Forms.TextBox txtReqId;
-        private System.Windows.Forms.Label lblReqId;
         private System.Windows.Forms.TextBox txtSymbolStrike;
         private System.Windows.Forms.Label lblSymbolStrike;
         private System.Windows.Forms.TextBox txtExchange;
