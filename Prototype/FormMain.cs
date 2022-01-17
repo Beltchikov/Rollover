@@ -413,22 +413,23 @@ namespace Prototype
                 SecType = txtSecTypeComboOrder.Text,
                 Exchange = txtExchageComboOrder.Text,
                 Currency = txtCurrencyComboBox.Text
-                //ConId = string.IsNullOrWhiteSpace(txtConIdOrder.Text)
-                //    ? 0
-                //    : Convert.ToInt32(txtConIdOrder.Text)
             };
 
             // Add legs
-            var sellLeg = new ComboLeg() { 
-                Action = "SELL", 
-                ConId = Convert.ToInt32(txtSellLegConId.Text), 
-                Ratio = 1, 
-                Exchange = exchange };
-            var buyLeg = new ComboLeg() { 
-                Action = "BUY", 
+            var sellLeg = new ComboLeg()
+            {
+                Action = "SELL",
+                ConId = Convert.ToInt32(txtSellLegConId.Text),
+                Ratio = 1,
+                Exchange = exchange
+            };
+            var buyLeg = new ComboLeg()
+            {
+                Action = "BUY",
                 ConId = Convert.ToInt32(txtBuyLegConId.Text),
-                Ratio = 1, 
-                Exchange = exchange };
+                Ratio = 1,
+                Exchange = exchange
+            };
             contract.ComboLegs = new List<ComboLeg>();
             contract.ComboLegs.AddRange(new List<ComboLeg> { sellLeg, buyLeg });
 
