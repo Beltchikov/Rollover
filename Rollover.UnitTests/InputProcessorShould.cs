@@ -71,7 +71,7 @@ namespace Rollover.UnitTests
             var resultList = sut.Convert(testSymbol);
 
             Assert.Single(resultList);
-            Assert.Equal("Symbol details could not be queried.", resultList.First());
+            Assert.Equal("Symbol details could not be queried. trackedSymbol is null.", resultList.First());
         }
 
         [Theory, AutoNSubstituteData]
