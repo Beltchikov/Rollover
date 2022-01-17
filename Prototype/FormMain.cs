@@ -157,7 +157,7 @@ namespace Prototype
         private void OnNextValidId(ConnectionStatusMessage statusMessage)
         {
             string msg = statusMessage.IsConnected
-                ? "Connected! Your client Id: " + ibClient.ClientId
+                ? $"Connected! Your client Id: {ibClient.ClientId}  NextOrderId: {ibClient.NextOrderId}"
                 : "Disconnected...";
 
             AddLineToTextbox(txtMessage, msg);
