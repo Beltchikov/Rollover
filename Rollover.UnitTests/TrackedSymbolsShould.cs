@@ -10,16 +10,22 @@ namespace Rollover.UnitTests
     public class TrackedSymbolsShould
     {
         [Theory, AutoNSubstituteData]
-        public void CallFileExist([Frozen] IFileHelper fileHelper, TrackedSymbols sut)
+        public void CallFileExist(
+            [Frozen] IFileHelper fileHelper,
+            [Frozen] ISerializer serializer,
+            TrackedSymbols sut)
         {
-            sut = new TrackedSymbols(fileHelper, null);
+            sut = new TrackedSymbols(fileHelper, serializer);
             fileHelper.Received().FileExists(Arg.Any<string>());
         }
 
         [Theory, AutoNSubstituteData]
-        public void CallReadAllText([Frozen] IFileHelper fileHelper, TrackedSymbols sut)
+        public void CallReadAllText(
+            [Frozen] IFileHelper fileHelper,
+            [Frozen] ISerializer serializer,
+            TrackedSymbols sut)
         {
-            sut = new TrackedSymbols(fileHelper, null);
+            sut = new TrackedSymbols(fileHelper, serializer);
             fileHelper.Received().ReadAllText(Arg.Any<string>());
         }
 
@@ -29,8 +35,9 @@ namespace Rollover.UnitTests
             [Frozen] ISerializer serializer, 
             TrackedSymbols sut)
         {
+            fileHelper.FileExists(Arg.Any<string>()).Returns(true);
             sut = new TrackedSymbols(fileHelper, serializer);
-            serializer.Received().Deserialize<HashSet<ITrackedSymbol>>(Arg.Any<string>());
+            serializer.Received().Deserialize<HashSet<TrackedSymbol>>(Arg.Any<string>());
         }
 
         [Theory, AutoNSubstituteData]
