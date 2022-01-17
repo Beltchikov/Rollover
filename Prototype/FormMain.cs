@@ -394,8 +394,8 @@ namespace Prototype
                 LmtPrice = Double.Parse(txtLimitPriceBasicOrder.Text)
             };
 
-            _orderId++;
-            ibClient.ClientSocket.placeOrder(++_orderId, contract, order);
+            ibClient.ClientSocket.placeOrder(_nextOrderId, contract, order);
+            ibClient.ClientSocket.reqIds(-1);
         }
 
         private void btDocumentationCheckSymbol_Click(object sender, EventArgs e)
@@ -443,8 +443,8 @@ namespace Prototype
                 LmtPrice = Double.Parse(txtLimitPriceComboOrder.Text)
             };
 
-            _orderId++;
-            ibClient.ClientSocket.placeOrder(_orderId, contract, order);
+            ibClient.ClientSocket.placeOrder(_nextOrderId, contract, order);
+            ibClient.ClientSocket.reqIds(-1);
         }
     }
 }
