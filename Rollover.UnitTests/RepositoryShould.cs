@@ -74,7 +74,7 @@ namespace Rollover.UnitTests
             contract.LastTradeDateOrContractMonth = "02";
             contract.Symbol = "MNQ";
             contract.Exchange = "SMART";
-            contract.SecType = "IND";
+            contract.SecType = "OPT";
 
             var contractDetails = new ContractDetails 
                 { UnderSecType = "FUT", Contract = contract};
@@ -111,7 +111,8 @@ namespace Rollover.UnitTests
                 Symbol = "MNQ",
                 Currency = "USD",
                 Exchange = "GLOBEX",
-                LastTradeDateOrContractMonth = "20220318"
+                LastTradeDateOrContractMonth = "20220318",
+                SecType ="OPT"
             };
             var contractDetails = new ContractDetails
             { Contract = contract, UnderSecType = "FUT" };
