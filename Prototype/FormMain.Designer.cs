@@ -947,7 +947,7 @@
             this.groupBox5.Controls.Add(this.lblSymbolStrike);
             this.groupBox5.Location = new System.Drawing.Point(8, 98);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(265, 134);
+            this.groupBox5.Size = new System.Drawing.Size(240, 138);
             this.groupBox5.TabIndex = 36;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Strikes";
