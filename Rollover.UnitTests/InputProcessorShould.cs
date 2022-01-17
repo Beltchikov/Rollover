@@ -55,8 +55,8 @@ namespace Rollover.UnitTests
 
         [Theory, AutoNSubstituteData]
         public void ReturnSymbolDetailsCouldNotBeQueried(
-            [Frozen] IPortfolio portfolio, 
-            [Frozen] IRepository repository, 
+            [Frozen] IPortfolio portfolio,
+            [Frozen] IRepository repository,
             InputProcessor sut)
         {
             var testSymbol = "MNQ";
@@ -105,61 +105,6 @@ namespace Rollover.UnitTests
             var testInput = "id=-1 errorCode=321 msg=Error validating request.-'cw' : cause - Invalid";
             var result = sut.Convert(testInput);
             Assert.Empty(result);
-        }
-
-        [Theory, AutoNSubstituteData]
-        public void ReturnMessageIfTypeString(MessageProcessor sut)
-        {
-            var testMessage = "id=-1 errorCode=321 msg=Error validating request.-'cw' : cause - Invalid";
-            var result = sut.ConvertMessage(testMessage);
-            Assert.Equal(testMessage, result.First());
-        }
-
-        [Theory, AutoNSubstituteData]
-        public void ReturnConnectedIfTypeConnectionStatusMessage(MessageProcessor sut)
-        {
-            var testMessage = new ConnectionStatusMessage(true);
-            var result = sut.ConvertMessage(testMessage);
-            Assert.Equal("Connected.", result.First());
-        }
-
-        [Theory, AutoNSubstituteData]
-        public void ReturnDisconnectedIfTypeConnectionStatusMessage(MessageProcessor sut)
-        {
-            var testMessage = new ConnectionStatusMessage(false);
-            var result = sut.ConvertMessage(testMessage);
-            Assert.Equal("Disconnected.", result.First());
-        }
-
-        [Theory, AutoNSubstituteData]
-        public void ReturnAccountsIfTypeManagedAccountsMessage(MessageProcessor sut)
-        {
-            var testMessage = new ManagedAccountsMessage("GOOG\r\nMSFT");
-            var result = sut.ConvertMessage(testMessage);
-            Assert.Contains("GOOG", result.First());
-            Assert.Contains("MSFT", result.First());
-        }
-
-        [Theory, AutoNSubstituteData]
-        public void ReturnNullIfTypePositionMessageAndNoOnPositionEndString(MessageProcessor sut)
-        {
-            List<Contract> contracts = new List<Contract>
-            {
-                new() {LocalSymbol = "STX"},
-                new() {LocalSymbol = "PRDO"}
-            };
-
-            List<PositionMessage> positionMessages = new List<PositionMessage>
-            {
-                new("account", contracts[0], 1, 1000),
-                new("account", contracts[1], 2, 2000),
-            };
-
-            var result1 = sut.ConvertMessage(positionMessages[0]);
-            var result2 = sut.ConvertMessage(positionMessages[1]);
-
-            Assert.Empty(result1);
-            Assert.Empty(result2);
         }
     }
 }
