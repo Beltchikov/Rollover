@@ -14,7 +14,8 @@ namespace Prototype
     {
         private EReaderMonitorSignal signal;
         private IBClient ibClient;
-        int activeReqId = 0;
+        int _activeReqId = 0;
+        int _nextOrderId = 0;
         int _orderId = 330;
 
         public const int RT_BARS_ID_BASE = 40000000;
@@ -156,8 +157,9 @@ namespace Prototype
 
         private void OnNextValidId(ConnectionStatusMessage statusMessage)
         {
+            _nextOrderId = ibClient.NextOrderId;
             string msg = statusMessage.IsConnected
-                ? $"Connected! Your client Id: {ibClient.ClientId}  NextOrderId: {ibClient.NextOrderId}"
+                ? $"Connected! Your client Id: {ibClient.ClientId}  NextOrderId: {_nextOrderId}"
                 : "Disconnected...";
 
             AddLineToTextbox(txtMessage, msg);
