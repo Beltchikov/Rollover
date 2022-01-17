@@ -15,6 +15,7 @@ namespace Rollover.Input
         private readonly IPortfolio _portfolio;
         private readonly ITrackedSymbols _trackedSymbols;
         private readonly IRepository _repository;
+        private readonly IOrderManager _orderManager;
 
         public string State { get; private set; }
 
@@ -22,12 +23,14 @@ namespace Rollover.Input
             IReducer reducer,
             IPortfolio portfolio,
             ITrackedSymbols trackedSymbols,
-            IRepository repository, ITrackedSymbolFactory trackedSymbolFactory)
+            IRepository repository, 
+            IOrderManager orderManager)
         {
             _reducer = reducer;
             _portfolio = portfolio;
             _trackedSymbols = trackedSymbols;
             _repository = repository;
+            _orderManager = orderManager;
         }
 
         public List<string> Convert(string input)
@@ -53,7 +56,7 @@ namespace Rollover.Input
 
                     if(State == "Active")
                     {
-                        //_orderManager.RolloverIfNextStrike(_trackedSymbols);
+                        _orderManager.RolloverIfNextStrike(_trackedSymbols);
                     }
                     
                     if (input.Contains("errorCode"))

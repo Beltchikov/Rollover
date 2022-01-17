@@ -25,7 +25,7 @@ namespace Rollover.UnitTests
             [Frozen] ITrackedSymbols trackedSymbols,
             InputProcessor sut)
         {
-            trackedSymbols.Any().Returns(false); 
+            trackedSymbols.Any().Returns(false);
             sut.Convert("Some input");
             Assert.True(sut.State == "WaitingForSymbol");
         }
@@ -107,6 +107,15 @@ namespace Rollover.UnitTests
             var testInput = "id=-1 errorCode=321 msg=Error validating request.-'cw' : cause - Invalid";
             var result = sut.Convert(testInput);
             Assert.Empty(result);
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallRolloverIfNextStrike(
+            [Frozen] IOrderManager orderManager,
+            InputProcessor sut)
+        {
+            sut.Convert("MNQ");
+            orderManager.Received().RolloverIfNextStrike(Arg.Any<ITrackedSymbols>());
         }
     }
 }
