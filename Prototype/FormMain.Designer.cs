@@ -188,7 +188,7 @@
             // 
             // txtMessage
             // 
-            this.txtMessage.Location = new System.Drawing.Point(8, 395);
+            this.txtMessage.Location = new System.Drawing.Point(8, 489);
             this.txtMessage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtMessage.Multiline = true;
             this.txtMessage.Name = "txtMessage";
@@ -237,7 +237,7 @@
             // 
             // btStrikes
             // 
-            this.btStrikes.Location = new System.Drawing.Point(811, 13);
+            this.btStrikes.Location = new System.Drawing.Point(158, 24);
             this.btStrikes.Name = "btStrikes";
             this.btStrikes.Size = new System.Drawing.Size(75, 23);
             this.btStrikes.TabIndex = 12;
@@ -247,35 +247,35 @@
             // 
             // txtSymbolStrike
             // 
-            this.txtSymbolStrike.Location = new System.Drawing.Point(387, 18);
+            this.txtSymbolStrike.Location = new System.Drawing.Point(67, 21);
             this.txtSymbolStrike.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtSymbolStrike.Name = "txtSymbolStrike";
-            this.txtSymbolStrike.Size = new System.Drawing.Size(54, 23);
+            this.txtSymbolStrike.Size = new System.Drawing.Size(81, 23);
             this.txtSymbolStrike.TabIndex = 8;
             this.txtSymbolStrike.Text = "MNQ";
             // 
             // lblSymbolStrike
             // 
             this.lblSymbolStrike.AutoSize = true;
-            this.lblSymbolStrike.Location = new System.Drawing.Point(302, 21);
+            this.lblSymbolStrike.Location = new System.Drawing.Point(9, 24);
             this.lblSymbolStrike.Name = "lblSymbolStrike";
-            this.lblSymbolStrike.Size = new System.Drawing.Size(79, 15);
+            this.lblSymbolStrike.Size = new System.Drawing.Size(47, 15);
             this.lblSymbolStrike.TabIndex = 9;
-            this.lblSymbolStrike.Text = "Symbol Strike";
+            this.lblSymbolStrike.Text = "Symbol";
             // 
             // txtExchange
             // 
-            this.txtExchange.Location = new System.Drawing.Point(525, 17);
+            this.txtExchange.Location = new System.Drawing.Point(67, 76);
             this.txtExchange.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtExchange.Name = "txtExchange";
-            this.txtExchange.Size = new System.Drawing.Size(70, 23);
+            this.txtExchange.Size = new System.Drawing.Size(81, 23);
             this.txtExchange.TabIndex = 8;
             this.txtExchange.Text = "GLOBEX";
             // 
             // lblExchange
             // 
             this.lblExchange.AutoSize = true;
-            this.lblExchange.Location = new System.Drawing.Point(461, 21);
+            this.lblExchange.Location = new System.Drawing.Point(3, 80);
             this.lblExchange.Name = "lblExchange";
             this.lblExchange.Size = new System.Drawing.Size(58, 15);
             this.lblExchange.TabIndex = 9;
@@ -283,17 +283,17 @@
             // 
             // txtSecType
             // 
-            this.txtSecType.Location = new System.Drawing.Point(216, 18);
+            this.txtSecType.Location = new System.Drawing.Point(67, 48);
             this.txtSecType.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtSecType.Name = "txtSecType";
-            this.txtSecType.Size = new System.Drawing.Size(54, 23);
+            this.txtSecType.Size = new System.Drawing.Size(81, 23);
             this.txtSecType.TabIndex = 8;
             this.txtSecType.Text = "IND";
             // 
             // lblSecType
             // 
             this.lblSecType.AutoSize = true;
-            this.lblSecType.Location = new System.Drawing.Point(154, 22);
+            this.lblSecType.Location = new System.Drawing.Point(2, 52);
             this.lblSecType.Name = "lblSecType";
             this.lblSecType.Size = new System.Drawing.Size(54, 15);
             this.lblSecType.TabIndex = 9;
@@ -301,17 +301,17 @@
             // 
             // txtConId
             // 
-            this.txtConId.Location = new System.Drawing.Point(693, 16);
+            this.txtConId.Location = new System.Drawing.Point(67, 106);
             this.txtConId.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtConId.Name = "txtConId";
-            this.txtConId.Size = new System.Drawing.Size(100, 23);
+            this.txtConId.Size = new System.Drawing.Size(81, 23);
             this.txtConId.TabIndex = 8;
             this.txtConId.Text = "362687422";
             // 
             // lblConId
             // 
             this.lblConId.AutoSize = true;
-            this.lblConId.Location = new System.Drawing.Point(611, 19);
+            this.lblConId.Location = new System.Drawing.Point(18, 107);
             this.lblConId.Name = "lblConId";
             this.lblConId.Size = new System.Drawing.Size(43, 15);
             this.lblConId.TabIndex = 9;
@@ -319,7 +319,7 @@
             // 
             // txtSymbolRealTime
             // 
-            this.txtSymbolRealTime.Location = new System.Drawing.Point(75, 223);
+            this.txtSymbolRealTime.Location = new System.Drawing.Point(75, 317);
             this.txtSymbolRealTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtSymbolRealTime.Name = "txtSymbolRealTime";
             this.txtSymbolRealTime.Size = new System.Drawing.Size(54, 23);
@@ -329,7 +329,7 @@
             // lblSymbolRealTime
             // 
             this.lblSymbolRealTime.AutoSize = true;
-            this.lblSymbolRealTime.Location = new System.Drawing.Point(22, 227);
+            this.lblSymbolRealTime.Location = new System.Drawing.Point(22, 321);
             this.lblSymbolRealTime.Name = "lblSymbolRealTime";
             this.lblSymbolRealTime.Size = new System.Drawing.Size(47, 15);
             this.lblSymbolRealTime.TabIndex = 9;
@@ -337,7 +337,7 @@
             // 
             // txtCurrencyRealTime
             // 
-            this.txtCurrencyRealTime.Location = new System.Drawing.Point(395, 223);
+            this.txtCurrencyRealTime.Location = new System.Drawing.Point(395, 317);
             this.txtCurrencyRealTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtCurrencyRealTime.Name = "txtCurrencyRealTime";
             this.txtCurrencyRealTime.Size = new System.Drawing.Size(54, 23);
@@ -347,7 +347,7 @@
             // lblCurrencyRealTime
             // 
             this.lblCurrencyRealTime.AutoSize = true;
-            this.lblCurrencyRealTime.Location = new System.Drawing.Point(334, 226);
+            this.lblCurrencyRealTime.Location = new System.Drawing.Point(334, 320);
             this.lblCurrencyRealTime.Name = "lblCurrencyRealTime";
             this.lblCurrencyRealTime.Size = new System.Drawing.Size(55, 15);
             this.lblCurrencyRealTime.TabIndex = 9;
@@ -355,7 +355,7 @@
             // 
             // txtExchangeRealTime
             // 
-            this.txtExchangeRealTime.Location = new System.Drawing.Point(533, 223);
+            this.txtExchangeRealTime.Location = new System.Drawing.Point(533, 317);
             this.txtExchangeRealTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtExchangeRealTime.Name = "txtExchangeRealTime";
             this.txtExchangeRealTime.Size = new System.Drawing.Size(70, 23);
@@ -365,7 +365,7 @@
             // lblExchangeRealTime
             // 
             this.lblExchangeRealTime.AutoSize = true;
-            this.lblExchangeRealTime.Location = new System.Drawing.Point(467, 228);
+            this.lblExchangeRealTime.Location = new System.Drawing.Point(467, 322);
             this.lblExchangeRealTime.Name = "lblExchangeRealTime";
             this.lblExchangeRealTime.Size = new System.Drawing.Size(58, 15);
             this.lblExchangeRealTime.TabIndex = 9;
@@ -373,7 +373,7 @@
             // 
             // txtSecTypeRealTime
             // 
-            this.txtSecTypeRealTime.Location = new System.Drawing.Point(229, 223);
+            this.txtSecTypeRealTime.Location = new System.Drawing.Point(229, 317);
             this.txtSecTypeRealTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtSecTypeRealTime.Name = "txtSecTypeRealTime";
             this.txtSecTypeRealTime.Size = new System.Drawing.Size(54, 23);
@@ -383,7 +383,7 @@
             // lblSecTypeRealTime
             // 
             this.lblSecTypeRealTime.AutoSize = true;
-            this.lblSecTypeRealTime.Location = new System.Drawing.Point(169, 226);
+            this.lblSecTypeRealTime.Location = new System.Drawing.Point(169, 320);
             this.lblSecTypeRealTime.Name = "lblSecTypeRealTime";
             this.lblSecTypeRealTime.Size = new System.Drawing.Size(54, 15);
             this.lblSecTypeRealTime.TabIndex = 9;
@@ -391,7 +391,7 @@
             // 
             // btReqRealTime
             // 
-            this.btReqRealTime.Location = new System.Drawing.Point(819, 223);
+            this.btReqRealTime.Location = new System.Drawing.Point(819, 317);
             this.btReqRealTime.Name = "btReqRealTime";
             this.btReqRealTime.Size = new System.Drawing.Size(102, 23);
             this.btReqRealTime.TabIndex = 12;
@@ -401,7 +401,7 @@
             // 
             // btCancelRealTime
             // 
-            this.btCancelRealTime.Location = new System.Drawing.Point(939, 223);
+            this.btCancelRealTime.Location = new System.Drawing.Point(939, 317);
             this.btCancelRealTime.Name = "btCancelRealTime";
             this.btCancelRealTime.Size = new System.Drawing.Size(113, 23);
             this.btCancelRealTime.TabIndex = 13;
@@ -411,7 +411,7 @@
             // 
             // txtLocalSymbolRealTime
             // 
-            this.txtLocalSymbolRealTime.Location = new System.Drawing.Point(701, 224);
+            this.txtLocalSymbolRealTime.Location = new System.Drawing.Point(701, 318);
             this.txtLocalSymbolRealTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtLocalSymbolRealTime.Name = "txtLocalSymbolRealTime";
             this.txtLocalSymbolRealTime.Size = new System.Drawing.Size(100, 23);
@@ -421,7 +421,7 @@
             // lblLocalSymbol
             // 
             this.lblLocalSymbol.AutoSize = true;
-            this.lblLocalSymbol.Location = new System.Drawing.Point(619, 229);
+            this.lblLocalSymbol.Location = new System.Drawing.Point(619, 323);
             this.lblLocalSymbol.Name = "lblLocalSymbol";
             this.lblLocalSymbol.Size = new System.Drawing.Size(78, 15);
             this.lblLocalSymbol.TabIndex = 9;
@@ -430,7 +430,7 @@
             // lblLocalSymbolSample
             // 
             this.lblLocalSymbolSample.AutoSize = true;
-            this.lblLocalSymbolSample.Location = new System.Drawing.Point(701, 207);
+            this.lblLocalSymbolSample.Location = new System.Drawing.Point(701, 301);
             this.lblLocalSymbolSample.Name = "lblLocalSymbolSample";
             this.lblLocalSymbolSample.Size = new System.Drawing.Size(84, 15);
             this.lblLocalSymbolSample.TabIndex = 9;
@@ -439,7 +439,7 @@
             // lblFopSample
             // 
             this.lblFopSample.AutoSize = true;
-            this.lblFopSample.Location = new System.Drawing.Point(229, 207);
+            this.lblFopSample.Location = new System.Drawing.Point(229, 301);
             this.lblFopSample.Name = "lblFopSample";
             this.lblFopSample.Size = new System.Drawing.Size(29, 15);
             this.lblFopSample.TabIndex = 9;
@@ -447,7 +447,7 @@
             // 
             // txtGenericTickList
             // 
-            this.txtGenericTickList.Location = new System.Drawing.Point(395, 186);
+            this.txtGenericTickList.Location = new System.Drawing.Point(395, 280);
             this.txtGenericTickList.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtGenericTickList.Name = "txtGenericTickList";
             this.txtGenericTickList.Size = new System.Drawing.Size(54, 23);
@@ -456,7 +456,7 @@
             // lblGenericTicksList
             // 
             this.lblGenericTicksList.AutoSize = true;
-            this.lblGenericTicksList.Location = new System.Drawing.Point(292, 189);
+            this.lblGenericTicksList.Location = new System.Drawing.Point(292, 283);
             this.lblGenericTicksList.Name = "lblGenericTicksList";
             this.lblGenericTicksList.Size = new System.Drawing.Size(92, 15);
             this.lblGenericTicksList.TabIndex = 9;
@@ -464,7 +464,7 @@
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(8, 610);
+            this.btnClear.Location = new System.Drawing.Point(8, 704);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(75, 23);
             this.btnClear.TabIndex = 14;
@@ -753,7 +753,7 @@
             this.groupBox3.Controls.Add(this.txtQuantityBasicOrder);
             this.groupBox3.Controls.Add(this.txtOrderQuantity);
             this.groupBox3.Controls.Add(this.label8);
-            this.groupBox3.Location = new System.Drawing.Point(11, 271);
+            this.groupBox3.Location = new System.Drawing.Point(11, 365);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(422, 100);
             this.groupBox3.TabIndex = 34;
@@ -781,7 +781,7 @@
             this.groupBox4.Controls.Add(this.btComboOrder);
             this.groupBox4.Controls.Add(this.txtSymbolComboOrder);
             this.groupBox4.Controls.Add(this.lblSymbolOrder);
-            this.groupBox4.Location = new System.Drawing.Point(445, 271);
+            this.groupBox4.Location = new System.Drawing.Point(445, 365);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(655, 119);
             this.groupBox4.TabIndex = 35;
@@ -947,7 +947,7 @@
             this.groupBox5.Controls.Add(this.lblSymbolStrike);
             this.groupBox5.Location = new System.Drawing.Point(8, 98);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(1098, 45);
+            this.groupBox5.Size = new System.Drawing.Size(265, 134);
             this.groupBox5.TabIndex = 36;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Strikes";
@@ -956,7 +956,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1118, 662);
+            this.ClientSize = new System.Drawing.Size(1118, 738);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
