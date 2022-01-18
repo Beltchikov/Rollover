@@ -121,7 +121,6 @@ namespace Prototype
             btStrikes.Enabled = enable;
 
             txtGenericTickList.Enabled = enable;
-            txtExchangeRealTime.Enabled = enable;
             btReqRealTime.Enabled = enable;
             btCancelRealTime.Enabled = enable;
         }

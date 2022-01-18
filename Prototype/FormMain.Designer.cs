@@ -318,7 +318,7 @@
             this.txtExchangeRealTime.Name = "txtExchangeRealTime";
             this.txtExchangeRealTime.Size = new System.Drawing.Size(70, 23);
             this.txtExchangeRealTime.TabIndex = 8;
-            this.txtExchangeRealTime.Text = "GLOBEX";
+            this.txtExchangeRealTime.Text = "DTB";
             // 
             // lblExchangeRealTime
             // 
@@ -889,7 +889,7 @@
             this.txtConItMarketData.Name = "txtConItMarketData";
             this.txtConItMarketData.Size = new System.Drawing.Size(70, 23);
             this.txtConItMarketData.TabIndex = 14;
-            this.txtConItMarketData.Text = "362687422";
+            this.txtConItMarketData.Text = "825711 ";
             // 
             // FormMain
             // 
