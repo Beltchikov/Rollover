@@ -49,20 +49,10 @@
             this.lblSecType = new System.Windows.Forms.Label();
             this.txtConId = new System.Windows.Forms.TextBox();
             this.lblConId = new System.Windows.Forms.Label();
-            this.txtSymbolRealTime = new System.Windows.Forms.TextBox();
-            this.lblSymbolRealTime = new System.Windows.Forms.Label();
-            this.txtCurrencyRealTime = new System.Windows.Forms.TextBox();
-            this.lblCurrencyRealTime = new System.Windows.Forms.Label();
             this.txtExchangeRealTime = new System.Windows.Forms.TextBox();
             this.lblExchangeRealTime = new System.Windows.Forms.Label();
-            this.txtSecTypeRealTime = new System.Windows.Forms.TextBox();
-            this.lblSecTypeRealTime = new System.Windows.Forms.Label();
             this.btReqRealTime = new System.Windows.Forms.Button();
             this.btCancelRealTime = new System.Windows.Forms.Button();
-            this.txtLocalSymbolRealTime = new System.Windows.Forms.TextBox();
-            this.lblLocalSymbol = new System.Windows.Forms.Label();
-            this.lblLocalSymbolSample = new System.Windows.Forms.Label();
-            this.lblFopSample = new System.Windows.Forms.Label();
             this.txtGenericTickList = new System.Windows.Forms.TextBox();
             this.lblGenericTicksList = new System.Windows.Forms.Label();
             this.btnClear = new System.Windows.Forms.Button();
@@ -115,6 +105,8 @@
             this.btComboOrder = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.txtConItMarketData = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -319,45 +311,9 @@
             this.lblConId.TabIndex = 9;
             this.lblConId.Text = "Con ID";
             // 
-            // txtSymbolRealTime
-            // 
-            this.txtSymbolRealTime.Location = new System.Drawing.Point(72, 21);
-            this.txtSymbolRealTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.txtSymbolRealTime.Name = "txtSymbolRealTime";
-            this.txtSymbolRealTime.Size = new System.Drawing.Size(54, 23);
-            this.txtSymbolRealTime.TabIndex = 8;
-            this.txtSymbolRealTime.Text = "MNQ";
-            // 
-            // lblSymbolRealTime
-            // 
-            this.lblSymbolRealTime.AutoSize = true;
-            this.lblSymbolRealTime.Location = new System.Drawing.Point(6, 24);
-            this.lblSymbolRealTime.Name = "lblSymbolRealTime";
-            this.lblSymbolRealTime.Size = new System.Drawing.Size(47, 15);
-            this.lblSymbolRealTime.TabIndex = 9;
-            this.lblSymbolRealTime.Text = "Symbol";
-            // 
-            // txtCurrencyRealTime
-            // 
-            this.txtCurrencyRealTime.Location = new System.Drawing.Point(72, 104);
-            this.txtCurrencyRealTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.txtCurrencyRealTime.Name = "txtCurrencyRealTime";
-            this.txtCurrencyRealTime.Size = new System.Drawing.Size(70, 23);
-            this.txtCurrencyRealTime.TabIndex = 8;
-            this.txtCurrencyRealTime.Text = "USD";
-            // 
-            // lblCurrencyRealTime
-            // 
-            this.lblCurrencyRealTime.AutoSize = true;
-            this.lblCurrencyRealTime.Location = new System.Drawing.Point(6, 109);
-            this.lblCurrencyRealTime.Name = "lblCurrencyRealTime";
-            this.lblCurrencyRealTime.Size = new System.Drawing.Size(55, 15);
-            this.lblCurrencyRealTime.TabIndex = 9;
-            this.lblCurrencyRealTime.Text = "Currency";
-            // 
             // txtExchangeRealTime
             // 
-            this.txtExchangeRealTime.Location = new System.Drawing.Point(72, 77);
+            this.txtExchangeRealTime.Location = new System.Drawing.Point(109, 49);
             this.txtExchangeRealTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtExchangeRealTime.Name = "txtExchangeRealTime";
             this.txtExchangeRealTime.Size = new System.Drawing.Size(70, 23);
@@ -367,33 +323,15 @@
             // lblExchangeRealTime
             // 
             this.lblExchangeRealTime.AutoSize = true;
-            this.lblExchangeRealTime.Location = new System.Drawing.Point(6, 82);
+            this.lblExchangeRealTime.Location = new System.Drawing.Point(6, 54);
             this.lblExchangeRealTime.Name = "lblExchangeRealTime";
             this.lblExchangeRealTime.Size = new System.Drawing.Size(58, 15);
             this.lblExchangeRealTime.TabIndex = 9;
             this.lblExchangeRealTime.Text = "Exchange";
             // 
-            // txtSecTypeRealTime
-            // 
-            this.txtSecTypeRealTime.Location = new System.Drawing.Point(72, 49);
-            this.txtSecTypeRealTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.txtSecTypeRealTime.Name = "txtSecTypeRealTime";
-            this.txtSecTypeRealTime.Size = new System.Drawing.Size(54, 23);
-            this.txtSecTypeRealTime.TabIndex = 8;
-            this.txtSecTypeRealTime.Text = "IND";
-            // 
-            // lblSecTypeRealTime
-            // 
-            this.lblSecTypeRealTime.AutoSize = true;
-            this.lblSecTypeRealTime.Location = new System.Drawing.Point(6, 52);
-            this.lblSecTypeRealTime.Name = "lblSecTypeRealTime";
-            this.lblSecTypeRealTime.Size = new System.Drawing.Size(54, 15);
-            this.lblSecTypeRealTime.TabIndex = 9;
-            this.lblSecTypeRealTime.Text = "Sec. type";
-            // 
             // btReqRealTime
             // 
-            this.btReqRealTime.Location = new System.Drawing.Point(191, 104);
+            this.btReqRealTime.Location = new System.Drawing.Point(6, 108);
             this.btReqRealTime.Name = "btReqRealTime";
             this.btReqRealTime.Size = new System.Drawing.Size(97, 23);
             this.btReqRealTime.TabIndex = 12;
@@ -403,62 +341,26 @@
             // 
             // btCancelRealTime
             // 
-            this.btCancelRealTime.Location = new System.Drawing.Point(294, 103);
+            this.btCancelRealTime.Location = new System.Drawing.Point(109, 107);
             this.btCancelRealTime.Name = "btCancelRealTime";
-            this.btCancelRealTime.Size = new System.Drawing.Size(100, 23);
+            this.btCancelRealTime.Size = new System.Drawing.Size(70, 23);
             this.btCancelRealTime.TabIndex = 13;
             this.btCancelRealTime.Text = "Cancel";
             this.btCancelRealTime.UseVisualStyleBackColor = true;
             this.btCancelRealTime.Click += new System.EventHandler(this.btCancelRealTime_Click);
             // 
-            // txtLocalSymbolRealTime
-            // 
-            this.txtLocalSymbolRealTime.Location = new System.Drawing.Point(294, 72);
-            this.txtLocalSymbolRealTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.txtLocalSymbolRealTime.Name = "txtLocalSymbolRealTime";
-            this.txtLocalSymbolRealTime.Size = new System.Drawing.Size(100, 23);
-            this.txtLocalSymbolRealTime.TabIndex = 8;
-            this.txtLocalSymbolRealTime.Text = "MNQ";
-            // 
-            // lblLocalSymbol
-            // 
-            this.lblLocalSymbol.AutoSize = true;
-            this.lblLocalSymbol.Location = new System.Drawing.Point(191, 79);
-            this.lblLocalSymbol.Name = "lblLocalSymbol";
-            this.lblLocalSymbol.Size = new System.Drawing.Size(78, 15);
-            this.lblLocalSymbol.TabIndex = 9;
-            this.lblLocalSymbol.Text = "Local Symbol";
-            // 
-            // lblLocalSymbolSample
-            // 
-            this.lblLocalSymbolSample.AutoSize = true;
-            this.lblLocalSymbolSample.Location = new System.Drawing.Point(294, 55);
-            this.lblLocalSymbolSample.Name = "lblLocalSymbolSample";
-            this.lblLocalSymbolSample.Size = new System.Drawing.Size(84, 15);
-            this.lblLocalSymbolSample.TabIndex = 9;
-            this.lblLocalSymbolSample.Text = "MNQZ1 C1658";
-            // 
-            // lblFopSample
-            // 
-            this.lblFopSample.AutoSize = true;
-            this.lblFopSample.Location = new System.Drawing.Point(127, 52);
-            this.lblFopSample.Name = "lblFopSample";
-            this.lblFopSample.Size = new System.Drawing.Size(29, 15);
-            this.lblFopSample.TabIndex = 9;
-            this.lblFopSample.Text = "FOP";
-            // 
             // txtGenericTickList
             // 
-            this.txtGenericTickList.Location = new System.Drawing.Point(294, 21);
+            this.txtGenericTickList.Location = new System.Drawing.Point(109, 76);
             this.txtGenericTickList.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtGenericTickList.Name = "txtGenericTickList";
-            this.txtGenericTickList.Size = new System.Drawing.Size(100, 23);
+            this.txtGenericTickList.Size = new System.Drawing.Size(70, 23);
             this.txtGenericTickList.TabIndex = 8;
             // 
             // lblGenericTicksList
             // 
             this.lblGenericTicksList.AutoSize = true;
-            this.lblGenericTicksList.Location = new System.Drawing.Point(191, 24);
+            this.lblGenericTicksList.Location = new System.Drawing.Point(6, 79);
             this.lblGenericTicksList.Name = "lblGenericTicksList";
             this.lblGenericTicksList.Size = new System.Drawing.Size(92, 15);
             this.lblGenericTicksList.TabIndex = 9;
@@ -956,28 +858,38 @@
             // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.lblSymbolRealTime);
-            this.groupBox6.Controls.Add(this.txtSymbolRealTime);
-            this.groupBox6.Controls.Add(this.lblSecTypeRealTime);
-            this.groupBox6.Controls.Add(this.txtSecTypeRealTime);
-            this.groupBox6.Controls.Add(this.lblFopSample);
+            this.groupBox6.Controls.Add(this.label19);
+            this.groupBox6.Controls.Add(this.txtConItMarketData);
             this.groupBox6.Controls.Add(this.lblExchangeRealTime);
             this.groupBox6.Controls.Add(this.txtExchangeRealTime);
             this.groupBox6.Controls.Add(this.btCancelRealTime);
-            this.groupBox6.Controls.Add(this.lblCurrencyRealTime);
             this.groupBox6.Controls.Add(this.btReqRealTime);
-            this.groupBox6.Controls.Add(this.txtCurrencyRealTime);
             this.groupBox6.Controls.Add(this.lblGenericTicksList);
-            this.groupBox6.Controls.Add(this.lblLocalSymbolSample);
             this.groupBox6.Controls.Add(this.txtGenericTickList);
-            this.groupBox6.Controls.Add(this.lblLocalSymbol);
-            this.groupBox6.Controls.Add(this.txtLocalSymbolRealTime);
             this.groupBox6.Location = new System.Drawing.Point(254, 98);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(411, 138);
+            this.groupBox6.Size = new System.Drawing.Size(202, 138);
             this.groupBox6.TabIndex = 37;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Market Data";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(6, 26);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(43, 15);
+            this.label19.TabIndex = 15;
+            this.label19.Text = "Con ID";
+            // 
+            // txtConItMarketData
+            // 
+            this.txtConItMarketData.Location = new System.Drawing.Point(109, 23);
+            this.txtConItMarketData.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtConItMarketData.Name = "txtConItMarketData";
+            this.txtConItMarketData.Size = new System.Drawing.Size(70, 23);
+            this.txtConItMarketData.TabIndex = 14;
+            this.txtConItMarketData.Text = "362687422";
             // 
             // FormMain
             // 
@@ -1037,20 +949,10 @@
         private System.Windows.Forms.Label lblSecType;
         private System.Windows.Forms.TextBox txtConId;
         private System.Windows.Forms.Label lblConId;
-        private System.Windows.Forms.TextBox txtSymbolRealTime;
-        private System.Windows.Forms.Label lblSymbolRealTime;
-        private System.Windows.Forms.TextBox txtCurrencyRealTime;
-        private System.Windows.Forms.Label lblCurrencyRealTime;
         private System.Windows.Forms.TextBox txtExchangeRealTime;
         private System.Windows.Forms.Label lblExchangeRealTime;
-        private System.Windows.Forms.TextBox txtSecTypeRealTime;
-        private System.Windows.Forms.Label lblSecTypeRealTime;
         private System.Windows.Forms.Button btReqRealTime;
         private System.Windows.Forms.Button btCancelRealTime;
-        private System.Windows.Forms.TextBox txtLocalSymbolRealTime;
-        private System.Windows.Forms.Label lblLocalSymbol;
-        private System.Windows.Forms.Label lblLocalSymbolSample;
-        private System.Windows.Forms.Label lblFopSample;
         private System.Windows.Forms.TextBox txtGenericTickList;
         private System.Windows.Forms.Label lblGenericTicksList;
         private System.Windows.Forms.Button btnClear;
@@ -1103,5 +1005,7 @@
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.TextBox txtConItMarketData;
     }
 }

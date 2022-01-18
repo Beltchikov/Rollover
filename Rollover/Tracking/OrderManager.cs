@@ -20,7 +20,7 @@ namespace Rollover.Tracking
                 // _repository.PlaceBearSpread(contract, sellConId, buyConId)
 
 
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
 
         //    var exchange = string.IsNullOrWhiteSpace(txtExchageComboOrder.Text)
         //? null

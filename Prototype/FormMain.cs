@@ -121,11 +121,7 @@ namespace Prototype
             btStrikes.Enabled = enable;
 
             txtGenericTickList.Enabled = enable;
-            txtSymbolRealTime.Enabled = enable;
-            txtSecTypeRealTime.Enabled = enable;
-            txtCurrencyRealTime.Enabled = enable;
             txtExchangeRealTime.Enabled = enable;
-            txtLocalSymbolRealTime.Enabled = enable;
             btReqRealTime.Enabled = enable;
             btCancelRealTime.Enabled = enable;
         }
@@ -343,11 +339,8 @@ namespace Prototype
 
             Contract contract = new Contract  // ConId and Exchange is enough
             {
-                Symbol = txtSymbolRealTime.Text,
-                Currency = txtCurrencyRealTime.Text,
                 Exchange = txtExchangeRealTime.Text,
-                SecType = txtSecTypeRealTime.Text,
-                LocalSymbol = txtLocalSymbolRealTime.Text,
+                ConId = Convert.ToInt32(txtConItMarketData.Text)
             };
             string genericTickList = this.txtGenericTickList.Text;
             bool snapshot = true; // set it to false to receive permanent stream of data
