@@ -341,7 +341,7 @@ namespace Prototype
 
             // client.reqMarketDataType(2);
 
-            Contract contract = new Contract
+            Contract contract = new Contract  // ConId and Exchange is enough
             {
                 Symbol = txtSymbolRealTime.Text,
                 Currency = txtCurrencyRealTime.Text,
