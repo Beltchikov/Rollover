@@ -120,7 +120,7 @@ namespace Prototype
             txtConId.Enabled = enable;
             btStrikes.Enabled = enable;
 
-            txtGenericTickList.Enabled = enable;
+            txtGenericTickListMarketData.Enabled = enable;
             btReqRealTime.Enabled = enable;
             btCancelRealTime.Enabled = enable;
         }
@@ -338,10 +338,10 @@ namespace Prototype
 
             Contract contract = new Contract  // ConId and Exchange is enough
             {
-                Exchange = txtExchangeRealTime.Text,
+                Exchange = txtExchangeMarketData.Text,
                 ConId = Convert.ToInt32(txtConItMarketData.Text)
             };
-            string genericTickList = this.txtGenericTickList.Text;
+            string genericTickList = this.txtGenericTickListMarketData.Text;
             bool snapshot = true; // set it to false to receive permanent stream of data
 
             ibClient.ClientSocket.reqMktData(_activeReqId, contract, genericTickList, snapshot, false, new List<TagValue>());

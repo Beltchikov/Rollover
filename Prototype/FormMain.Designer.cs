@@ -49,11 +49,11 @@
             this.lblSecType = new System.Windows.Forms.Label();
             this.txtConId = new System.Windows.Forms.TextBox();
             this.lblConId = new System.Windows.Forms.Label();
-            this.txtExchangeRealTime = new System.Windows.Forms.TextBox();
+            this.txtExchangeMarketData = new System.Windows.Forms.TextBox();
             this.lblExchangeRealTime = new System.Windows.Forms.Label();
             this.btReqRealTime = new System.Windows.Forms.Button();
             this.btCancelRealTime = new System.Windows.Forms.Button();
-            this.txtGenericTickList = new System.Windows.Forms.TextBox();
+            this.txtGenericTickListMarketData = new System.Windows.Forms.TextBox();
             this.lblGenericTicksList = new System.Windows.Forms.Label();
             this.btnClear = new System.Windows.Forms.Button();
             this.txtSecTypeCheckSymbol = new System.Windows.Forms.TextBox();
@@ -311,14 +311,14 @@
             this.lblConId.TabIndex = 9;
             this.lblConId.Text = "Con ID";
             // 
-            // txtExchangeRealTime
+            // txtExchangeMarketData
             // 
-            this.txtExchangeRealTime.Location = new System.Drawing.Point(109, 49);
-            this.txtExchangeRealTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.txtExchangeRealTime.Name = "txtExchangeRealTime";
-            this.txtExchangeRealTime.Size = new System.Drawing.Size(70, 23);
-            this.txtExchangeRealTime.TabIndex = 8;
-            this.txtExchangeRealTime.Text = "DTB";
+            this.txtExchangeMarketData.Location = new System.Drawing.Point(109, 49);
+            this.txtExchangeMarketData.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtExchangeMarketData.Name = "txtExchangeMarketData";
+            this.txtExchangeMarketData.Size = new System.Drawing.Size(70, 23);
+            this.txtExchangeMarketData.TabIndex = 8;
+            this.txtExchangeMarketData.Text = "DTB";
             // 
             // lblExchangeRealTime
             // 
@@ -349,13 +349,13 @@
             this.btCancelRealTime.UseVisualStyleBackColor = true;
             this.btCancelRealTime.Click += new System.EventHandler(this.btCancelRealTime_Click);
             // 
-            // txtGenericTickList
+            // txtGenericTickListMarketData
             // 
-            this.txtGenericTickList.Location = new System.Drawing.Point(109, 76);
-            this.txtGenericTickList.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.txtGenericTickList.Name = "txtGenericTickList";
-            this.txtGenericTickList.Size = new System.Drawing.Size(70, 23);
-            this.txtGenericTickList.TabIndex = 8;
+            this.txtGenericTickListMarketData.Location = new System.Drawing.Point(109, 76);
+            this.txtGenericTickListMarketData.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtGenericTickListMarketData.Name = "txtGenericTickListMarketData";
+            this.txtGenericTickListMarketData.Size = new System.Drawing.Size(70, 23);
+            this.txtGenericTickListMarketData.TabIndex = 8;
             // 
             // lblGenericTicksList
             // 
@@ -861,11 +861,11 @@
             this.groupBox6.Controls.Add(this.label19);
             this.groupBox6.Controls.Add(this.txtConItMarketData);
             this.groupBox6.Controls.Add(this.lblExchangeRealTime);
-            this.groupBox6.Controls.Add(this.txtExchangeRealTime);
+            this.groupBox6.Controls.Add(this.txtExchangeMarketData);
             this.groupBox6.Controls.Add(this.btCancelRealTime);
             this.groupBox6.Controls.Add(this.btReqRealTime);
             this.groupBox6.Controls.Add(this.lblGenericTicksList);
-            this.groupBox6.Controls.Add(this.txtGenericTickList);
+            this.groupBox6.Controls.Add(this.txtGenericTickListMarketData);
             this.groupBox6.Location = new System.Drawing.Point(254, 98);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(202, 138);
@@ -949,11 +949,11 @@
         private System.Windows.Forms.Label lblSecType;
         private System.Windows.Forms.TextBox txtConId;
         private System.Windows.Forms.Label lblConId;
-        private System.Windows.Forms.TextBox txtExchangeRealTime;
+        private System.Windows.Forms.TextBox txtExchangeMarketData;
         private System.Windows.Forms.Label lblExchangeRealTime;
         private System.Windows.Forms.Button btReqRealTime;
         private System.Windows.Forms.Button btCancelRealTime;
-        private System.Windows.Forms.TextBox txtGenericTickList;
+        private System.Windows.Forms.TextBox txtGenericTickListMarketData;
         private System.Windows.Forms.Label lblGenericTicksList;
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.TextBox txtSecTypeCheckSymbol;
