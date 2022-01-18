@@ -123,6 +123,9 @@ namespace Prototype
             txtGenericTickListMarketData.Enabled = enable;
             btReqRealTime.Enabled = enable;
             btCancelRealTime.Enabled = enable;
+
+            btPlaceBasicOrder.Enabled = enable;
+            btComboOrder.Enabled = enable;
         }
 
         private void OnError(int id, int errorCode, string msg, Exception ex)
