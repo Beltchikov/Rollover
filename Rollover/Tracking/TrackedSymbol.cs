@@ -13,6 +13,8 @@
         public double PreviousStrike { get; set; }
         public double PreviousButOneStrike { get; set; }
         public string LocalSymbol { get; set; }
+        public int SellConId { get; internal set; }
+        public int BuyConId { get; internal set; }
 
         public override string ToString()
         {

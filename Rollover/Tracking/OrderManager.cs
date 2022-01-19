@@ -36,7 +36,7 @@ namespace Rollover.Tracking
                         Exchange = trackedSymbol.Exchange
                     };
 
-                    //_repository.PlaceBearSpread(contract, sellConId, buyConId);
+                    //_repository.PlaceBearSpread(contract, trackedSymbol.SellConId, trackedSymbol.BuyConId);
                 }
             }
 
