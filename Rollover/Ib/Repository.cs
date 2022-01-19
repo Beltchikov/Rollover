@@ -83,6 +83,9 @@ namespace Rollover.Ib
                 return null;
             }
 
+            // TODO
+            //int buyConId = GetBuyConIdForBearSpread(contract, strikes, currentPrice.Item2);
+
             return _trackedSymbolFactory.Create(contract, strikes, currentPrice.Item2);
         }
 
@@ -104,6 +107,9 @@ namespace Rollover.Ib
             {
                 return null;
             }
+
+            // TODO
+            //int buyConId = GetBuyConIdForBearSpread(contract, strikes, currentPrice.Item2);
 
             return _trackedSymbolFactory.Create(contract, strikes, currentPrice.Item2);
         }
