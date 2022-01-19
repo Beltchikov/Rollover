@@ -38,7 +38,7 @@ namespace Rollover
 
             ITrackedSymbols trackedSymbols = new TrackedSymbols(fileHelper, serializer);
             IReducer reducer = new Reducer();
-            IOrderManager orderManager = new OrderManager();
+            IOrderManager orderManager = new OrderManager(repository);
             IInputProcessor inputProcessor = new InputProcessor(
                 reducer,
                 portfolio,

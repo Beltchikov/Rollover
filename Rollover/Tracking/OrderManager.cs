@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rollover.Ib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,18 @@ namespace Rollover.Tracking
 {
     public class OrderManager : IOrderManager
     {
+        private IRepository _repository;
+
+        public OrderManager(IRepository repository)
+        {
+            _repository = repository;
+        }
+
         public void RolloverIfNextStrike(ITrackedSymbols trackedSymbols)
         {
             foreach (var trackedSymbol in trackedSymbols)
-            { 
+            {
+                var priceUnderlying = _repository.GetCurrentPrice(trackedSymbol.ConId, trackedSymbol.Exchange);
             }
             
             // var conId = trackedSymbol.ConId

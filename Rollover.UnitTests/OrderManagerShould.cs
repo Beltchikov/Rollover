@@ -15,10 +15,11 @@ namespace Rollover.UnitTests
     {
         [Theory, AutoNSubstituteData]
         public void CallGetCurrentPrice(
+            TrackedSymbols trackedSymbols,
             [Frozen] IRepository repository,
             OrderManager sut)
         {
-            sut.RolloverIfNextStrike(Arg.Any<ITrackedSymbols>());
+            sut.RolloverIfNextStrike(trackedSymbols);
             repository.Received().GetCurrentPrice(Arg.Any<int>(), (Arg.Any<string>()));
         }
     }
