@@ -1,5 +1,6 @@
 ﻿using Rollover.Helper;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -72,6 +73,16 @@ namespace Rollover.Tracking
         public bool Any()
         {
             return _symbols.Any();
+        }
+
+        public IEnumerator<ITrackedSymbol> GetEnumerator()
+        {
+            return _symbols.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
         }
     }
 }

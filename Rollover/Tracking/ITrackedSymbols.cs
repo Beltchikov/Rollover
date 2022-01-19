@@ -2,7 +2,7 @@
 
 namespace Rollover.Tracking
 {
-    public interface ITrackedSymbols
+    public interface ITrackedSymbols : IEnumerable<ITrackedSymbol>
     {
         bool SymbolExists(string input);
         bool Add(ITrackedSymbol trackedSymbol);

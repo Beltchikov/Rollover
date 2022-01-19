@@ -10,7 +10,9 @@ namespace Rollover.Tracking
     {
         public void RolloverIfNextStrike(ITrackedSymbols trackedSymbols)
         {
-            // foreach
+            foreach (var trackedSymbol in trackedSymbols)
+            { 
+            }
             
             // var conId = trackedSymbol.ConId
             // var conIdUnderlying = trackedSymbol.ConIdUnderlying 
