@@ -108,7 +108,7 @@ namespace Rollover.Ib
             return _trackedSymbolFactory.Create(contract, strikes, currentPrice.Item2);
         }
 
-        private Tuple<bool, double> GetCurrentPrice(int conId, string exchange)
+        public Tuple<bool, double> GetCurrentPrice(int conId, string exchange)
         {
             var contract = new Contract {ConId = conId, Exchange=exchange };
             var tickPriceMessage = _messageCollector.reqMktData(contract, "", true, false, null);

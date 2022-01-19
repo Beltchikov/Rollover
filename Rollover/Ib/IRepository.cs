@@ -17,5 +17,7 @@ namespace Rollover.Ib
            string secType,
            int conId);
         ITrackedSymbol GetTrackedSymbol(Contract contract);
+
+        Tuple<bool, double> GetCurrentPrice(int conId, string exchange);
     }
 }
