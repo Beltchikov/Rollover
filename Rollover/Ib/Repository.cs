@@ -77,7 +77,7 @@ namespace Rollover.Ib
 
             // Strikes & price
             var strikes = GetStrikes(secondUnderLyingContract, contract.LastTradeDateOrContractMonth);
-            var currentPrice = GetCurrentPrice(underLyingContract);
+            var currentPrice = GetCurrentPrice(underLyingContract.ConId, underLyingContract.Exchange);
             if (!currentPrice.Item1)
             {
                 return null;
@@ -99,7 +99,7 @@ namespace Rollover.Ib
 
             // Strikes & price
             var strikes = GetStrikes(underLyingContract, contract.LastTradeDateOrContractMonth);
-            var currentPrice = GetCurrentPrice(underLyingContract);
+            var currentPrice = GetCurrentPrice(underLyingContract. ConId,underLyingContract.Exchange);
             if (!currentPrice.Item1)
             {
                 return null;
@@ -108,9 +108,10 @@ namespace Rollover.Ib
             return _trackedSymbolFactory.Create(contract, strikes, currentPrice.Item2);
         }
 
-        private Tuple<bool, double> GetCurrentPrice(Contract underLyingContract)
+        private Tuple<bool, double> GetCurrentPrice(int conId, string exchange)
         {
-            var tickPriceMessage = _messageCollector.reqMktData(underLyingContract, "", true, false, null);
+            var contract = new Contract {ConId = conId, Exchange=exchange };
+            var tickPriceMessage = _messageCollector.reqMktData(contract, "", true, false, null);
             if (tickPriceMessage == null)
             {
                 return new Tuple<bool, double>(false, -1);
@@ -178,6 +179,7 @@ namespace Rollover.Ib
         {
             return contractDetails.Select(d => new Contract
             {
+                ConId = d.ContractDetails.UnderConId,
                 SecType = d.ContractDetails.UnderSecType,
                 Symbol = d.ContractDetails.Contract.Symbol,
                 Currency = d.ContractDetails.Contract.Currency,
