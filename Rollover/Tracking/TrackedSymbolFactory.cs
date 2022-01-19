@@ -10,17 +10,17 @@ namespace Rollover.Tracking
 {
     public class TrackedSymbolFactory : ITrackedSymbolFactory
     {
-        public TrackedSymbol Create(Contract contract, HashSet<double> strikes, double currentPrice)
+        public TrackedSymbol Create(Contract underlyingContract, HashSet<double> strikes, double currentPrice)
         {
             var trackedSymbol = new TrackedSymbol
             {
-                UnderlyingLocalSymbol = contract.LocalSymbol,
-                UnderlyingSymbol = contract.Symbol,
-                UnderlyingConId = contract.ConId,
-                UnderlyingSecType = contract.SecType,
-                UnderlyingCurrency = contract.Currency,
-                UnderlyingExchange = contract.Exchange,
-                Strike = contract.Strike,
+                UnderlyingLocalSymbol = underlyingContract.LocalSymbol,
+                UnderlyingSymbol = underlyingContract.Symbol,
+                UnderlyingConId = underlyingContract.ConId,
+                UnderlyingSecType = underlyingContract.SecType,
+                UnderlyingCurrency = underlyingContract.Currency,
+                UnderlyingExchange = underlyingContract.Exchange,
+                Strike = underlyingContract.Strike,
                 NextStrike = NextStrike(strikes, currentPrice),
                 NextButOneStrike = NextButOneStrike(strikes, currentPrice),
                 PreviousStrike = PreviousStrike(strikes, currentPrice),

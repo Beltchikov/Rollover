@@ -6,6 +6,6 @@ namespace Rollover.Tracking
 {
     public interface ITrackedSymbolFactory
     {
-        TrackedSymbol Create(Contract contract, HashSet<double> strikes, double currentPrice);
+        TrackedSymbol Create(Contract underlyingContract, HashSet<double> strikes, double currentPrice);
     }
 }
