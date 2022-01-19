@@ -1,6 +1,6 @@
 ﻿namespace Rollover.Tracking
 {
-    public class TrackedSymbol : ITrackedSymbol
+    public class TrackedSymbol
     {
         public string Symbol { get; set; }
         public int ConId { get; set; }

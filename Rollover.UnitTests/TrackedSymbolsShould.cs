@@ -47,7 +47,7 @@ namespace Rollover.UnitTests
             TrackedSymbols sut)
         {
             sut.Add(trackedSymbol);
-            serializer.Received().Serialize(Arg.Any<HashSet<ITrackedSymbol>>());
+            serializer.Received().Serialize(Arg.Any<HashSet<TrackedSymbol>>());
         }
 
         [Theory, AutoNSubstituteData]

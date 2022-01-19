@@ -8,7 +8,7 @@ namespace Rollover.Tracking
 {
     public class TrackedSymbols : ITrackedSymbols
     {
-        private readonly HashSet<ITrackedSymbol> _symbols;
+        private readonly HashSet<TrackedSymbol> _symbols;
         private IFileHelper _fileHelper;
         private ISerializer _serializer;
         private string TRACKED_SYMBOLS_FILE = "TrackedSymbols.json";
@@ -18,7 +18,7 @@ namespace Rollover.Tracking
             _fileHelper = fileHelper;
             _serializer = serializer;
 
-            _symbols = new HashSet<ITrackedSymbol>();
+            _symbols = new HashSet<TrackedSymbol>();
 
             if (_fileHelper.FileExists(TRACKED_SYMBOLS_FILE))
             {
@@ -31,7 +31,7 @@ namespace Rollover.Tracking
             }
         }
 
-        public bool Add(ITrackedSymbol trackedSymbol)
+        public bool Add(TrackedSymbol trackedSymbol)
         {
             if (_symbols.Any(s => s.LocalSymbol == trackedSymbol.LocalSymbol))
             {
@@ -75,7 +75,7 @@ namespace Rollover.Tracking
             return _symbols.Any();
         }
 
-        public IEnumerator<ITrackedSymbol> GetEnumerator()
+        public IEnumerator<TrackedSymbol> GetEnumerator()
         {
             return _symbols.GetEnumerator();
         }

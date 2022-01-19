@@ -62,7 +62,7 @@ namespace Rollover.UnitTests
             InputProcessor sut)
         {
             var testSymbol = "MNQ";
-            repository.GetTrackedSymbol(Arg.Any<Contract>()).Returns(null as ITrackedSymbol);
+            repository.GetTrackedSymbol(Arg.Any<Contract>()).Returns(null as TrackedSymbol);
 
             var contract = new Contract() { Symbol = testSymbol };
             var positionMessage = new PositionMessage("account", contract, 1, 1000);

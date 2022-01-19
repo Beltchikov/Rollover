@@ -41,7 +41,7 @@ namespace Rollover.Ib
             return _messageCollector.reqPositions();
         }
 
-        public ITrackedSymbol GetTrackedSymbol(Contract contract)
+        public TrackedSymbol GetTrackedSymbol(Contract contract)
         {
             switch (contract.SecType)
             {
@@ -54,7 +54,7 @@ namespace Rollover.Ib
             }
         }
 
-        public ITrackedSymbol GetTrackedSymbolFop(Contract contract)
+        public TrackedSymbol GetTrackedSymbolFop(Contract contract)
         {
             // Underlying
             var contractDetails = ContractDetails(contract);
@@ -86,7 +86,7 @@ namespace Rollover.Ib
             return _trackedSymbolFactory.Create(contract, strikes, currentPrice.Item2);
         }
 
-        public ITrackedSymbol GetTrackedSymbolOpt(Contract contract)
+        public TrackedSymbol GetTrackedSymbolOpt(Contract contract)
         {
             // Underlying
             var contractDetails = ContractDetails(contract);

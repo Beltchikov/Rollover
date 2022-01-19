@@ -16,7 +16,7 @@ namespace Rollover.Ib
            string exchange,
            string secType,
            int conId);
-        ITrackedSymbol GetTrackedSymbol(Contract contract);
+        TrackedSymbol GetTrackedSymbol(Contract contract);
 
         Tuple<bool, double> GetCurrentPrice(int conId, string exchange);
         void PlaceBearSpread(Contract contract, int v1, int v2);

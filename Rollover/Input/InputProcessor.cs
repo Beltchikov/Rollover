@@ -56,7 +56,8 @@ namespace Rollover.Input
 
                     if(State == "Active")
                     {
-                        _orderManager.RolloverIfNextStrike(_trackedSymbols);
+                        // TODO
+                        //_orderManager.RolloverIfNextStrike(_trackedSymbols);
                     }
                     
                     if (input.Contains("errorCode"))
@@ -83,7 +84,7 @@ namespace Rollover.Input
 
         private List<string> AddTrackedSymbol(Contract contract, ITrackedSymbols trackedSymbols)
         {
-            ITrackedSymbol trackedSymbol = null;
+            TrackedSymbol trackedSymbol = null;
             try
             {
                 trackedSymbol = _repository.GetTrackedSymbol(contract);
