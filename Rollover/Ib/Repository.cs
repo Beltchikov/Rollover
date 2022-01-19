@@ -201,5 +201,10 @@ namespace Rollover.Ib
 
             return connectionTuple;
         }
+
+        public void PlaceBearSpread(Contract contract, int v1, int v2)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoFixture.Xunit2;
+using IBApi;
 using NSubstitute;
 using Rollover.Ib;
 using Rollover.Tracking;
@@ -21,6 +22,20 @@ namespace Rollover.UnitTests
         {
             sut.RolloverIfNextStrike(trackedSymbols);
             repository.Received().GetCurrentPrice(Arg.Any<int>(), (Arg.Any<string>()));
+        }
+
+
+        [Theory, AutoNSubstituteData]
+        public void NotCallPlaceBearSpread(
+            TrackedSymbols trackedSymbols,
+            [Frozen] IRepository repository,
+            OrderManager sut)
+        {
+            sut.RolloverIfNextStrike(trackedSymbols);
+            repository.DidNotReceive().PlaceBearSpread(
+                Arg.Any<Contract>(),
+                Arg.Any<int>(),
+                Arg.Any<int>());
         }
     }
 }
