@@ -14,12 +14,12 @@ namespace Rollover.Tracking
         {
             var trackedSymbol = new TrackedSymbol
             {
-                LocalSymbol = contract.LocalSymbol,
-                Symbol = contract.Symbol,
-                ConId = contract.ConId,
-                SecType = contract.SecType,
-                Currency = contract.Currency,
-                Exchange = contract.Exchange,
+                UnderlyingLocalSymbol = contract.LocalSymbol,
+                UnderlyingSymbol = contract.Symbol,
+                UnderlyingConId = contract.ConId,
+                UnderlyingSecType = contract.SecType,
+                UnderlyingCurrency = contract.Currency,
+                UnderlyingExchange = contract.Exchange,
                 Strike = contract.Strike,
                 NextStrike = NextStrike(strikes, currentPrice),
                 NextButOneStrike = NextButOneStrike(strikes, currentPrice),

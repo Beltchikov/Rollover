@@ -20,22 +20,24 @@ namespace Rollover.UnitTests
             [Frozen] IRepository repository,
             OrderManager sut)
         {
+            Tuple<bool, double> priceTuple = new Tuple<bool, double>(true, 100);
+            repository.GetCurrentPrice(Arg.Any<int>(), Arg.Any<string>()).Returns(priceTuple);
             sut.RolloverIfNextStrike(trackedSymbols);
-            repository.Received().GetCurrentPrice(Arg.Any<int>(), (Arg.Any<string>()));
+            repository.Received().GetCurrentPrice(Arg.Any<int>(), Arg.Any<string>());
         }
 
 
-        [Theory, AutoNSubstituteData]
-        public void NotCallPlaceBearSpread(
-            TrackedSymbols trackedSymbols,
-            [Frozen] IRepository repository,
-            OrderManager sut)
-        {
-            sut.RolloverIfNextStrike(trackedSymbols);
-            repository.DidNotReceive().PlaceBearSpread(
-                Arg.Any<Contract>(),
-                Arg.Any<int>(),
-                Arg.Any<int>());
-        }
+        //[Theory, AutoNSubstituteData]
+        //public void NotCallPlaceBearSpread(
+        //    TrackedSymbols trackedSymbols,
+        //    [Frozen] IRepository repository,
+        //    OrderManager sut)
+        //{
+        //    sut.RolloverIfNextStrike(trackedSymbols);
+        //    repository.DidNotReceive().PlaceBearSpread(
+        //        Arg.Any<Contract>(),
+        //        Arg.Any<int>(),
+        //        Arg.Any<int>());
+        //}
     }
 }

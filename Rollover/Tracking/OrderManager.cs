@@ -21,19 +21,19 @@ namespace Rollover.Tracking
         {
             foreach (var trackedSymbol in trackedSymbols)
             {
-                var priceUnderlying = _repository.GetCurrentPrice(trackedSymbol.ConId, trackedSymbol.Exchange);
+                var priceUnderlying = _repository.GetCurrentPrice(trackedSymbol.UnderlyingConId, trackedSymbol.UnderlyingExchange);
                 if (!priceUnderlying.Item1)
                 {
-                    throw new ApplicationException($"Was not able to get a price for {trackedSymbol.ConId} and {trackedSymbol.Exchange}");
+                    throw new ApplicationException($"Was not able to get a price for {trackedSymbol.UnderlyingConId} and {trackedSymbol.UnderlyingExchange}");
                 }
                 if (priceUnderlying.Item2 > trackedSymbol.NextStrike)
                 {
                     var contract = new Contract()
                     {
-                        Symbol = trackedSymbol.Exchange,
-                        SecType = trackedSymbol.SecType,    
-                        Currency = trackedSymbol.Currency,
-                        Exchange = trackedSymbol.Exchange
+                        Symbol = trackedSymbol.UnderlyingExchange,
+                        SecType = trackedSymbol.UnderlyingSecType,    
+                        Currency = trackedSymbol.UnderlyingCurrency,
+                        Exchange = trackedSymbol.UnderlyingExchange
                     };
 
                     //_repository.PlaceBearSpread(contract, trackedSymbol.SellConId, trackedSymbol.BuyConId);

@@ -2,23 +2,23 @@
 {
     public class TrackedSymbol
     {
-        public string Symbol { get; set; }
-        public int ConId { get; set; }
-        public string SecType { get; set; }
-        public string Currency { get; set; }
-        public string Exchange { get; set; }
+        public string UnderlyingSymbol { get; set; }
+        public int UnderlyingConId { get; set; }
+        public string UnderlyingSecType { get; set; }
+        public string UnderlyingCurrency { get; set; }
+        public string UnderlyingExchange { get; set; }
         public double Strike { get; set; }
         public double NextStrike { get; set; }
         public double NextButOneStrike { get; set; }
         public double PreviousStrike { get; set; }
         public double PreviousButOneStrike { get; set; }
-        public string LocalSymbol { get; set; }
+        public string UnderlyingLocalSymbol { get; set; }
         public int SellConId { get; internal set; }
         public int BuyConId { get; internal set; }
 
         public override string ToString()
         {
-            return $"{LocalSymbol} {NextStrike} {NextButOneStrike}";
+            return $"{UnderlyingLocalSymbol} {NextStrike} {NextButOneStrike}";
         }
     }
 }

@@ -26,11 +26,11 @@ namespace Rollover.UnitTests
             var sut = new TrackedSymbolFactory();
             var trackedSymbol = sut.Create(contract, strikes, price);
 
-            Assert.Equal(contract.Symbol, trackedSymbol.Symbol);
-            Assert.Equal(contract.ConId, trackedSymbol.ConId);
-            Assert.Equal(contract.SecType, trackedSymbol.SecType);
-            Assert.Equal(contract.Currency, trackedSymbol.Currency);
-            Assert.Equal(contract.Exchange, trackedSymbol.Exchange);
+            Assert.Equal(contract.Symbol, trackedSymbol.UnderlyingSymbol);
+            Assert.Equal(contract.ConId, trackedSymbol.UnderlyingConId);
+            Assert.Equal(contract.SecType, trackedSymbol.UnderlyingSecType);
+            Assert.Equal(contract.Currency, trackedSymbol.UnderlyingCurrency);
+            Assert.Equal(contract.Exchange, trackedSymbol.UnderlyingExchange);
             Assert.Equal(contract.Strike, trackedSymbol.Strike);
 
             Assert.Equal(60, trackedSymbol.NextStrike);
