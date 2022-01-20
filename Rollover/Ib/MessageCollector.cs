@@ -141,34 +141,9 @@ namespace Rollover.Ib
 
         public List<ContractDetailsMessage> reqContractDetails(Contract contract)
         {
-            List<ContractDetailsMessage> contractDetailsMessages = new List<ContractDetailsMessage>();
-
             var reqId = ++_reqIdContractDetails;
             _ibClient.reqContractDetails(reqId, contract);
-
-            var stopWatch = new Stopwatch();
-            stopWatch.Start();
-
-            while (stopWatch.Elapsed.TotalMilliseconds < _configurationManager.GetConfiguration().Timeout)
-            {
-                var message = _ibClientQueue.Dequeue();
-
-                if (message is ContractDetailsMessage detailsMessage)
-                {
-                    contractDetailsMessages.Add(detailsMessage);
-                }
-                else if (message is string messageAsString)
-                {
-                    if (messageAsString == Constants.ON_CONTRACT_DETAILS_END)
-                    {
-                        return contractDetailsMessages;
-                    }
-                }
-            }
-
-            return contractDetailsMessages;
-
-            //return GetIbData<ContractDetailsMessage>(_ibClientQueue, Constants.ON_CONTRACT_DETAILS_END, _timeout);
+            return CollectIbResponses<ContractDetailsMessage>(_ibClientQueue, Constants.ON_CONTRACT_DETAILS_END, _timeout);
         }
 
         public List<SecurityDefinitionOptionParameterMessage> reqSecDefOptParams(
