@@ -19,8 +19,8 @@ namespace Rollover.Ib
         private int _reqIdContractDetails = 0;
         private int _reqIdSecDefOptParam = 0;
         private int _reqIdMktData = 0;
-        
-        private int _timeout= 0;
+
+        private int _timeout = 0;
 
         public MessageCollector(
             IIbClientWrapper ibClient,
@@ -104,15 +104,18 @@ namespace Rollover.Ib
 
         public List<PositionMessage> reqPositions()
         {
-            return GetIbData<PositionMessage>(_ibClient.reqPositions,_ibClientQueue, Constants.ON_POSITION_END, _timeout);
+            return GetIbData<PositionMessage>(_ibClient.reqPositions, _ibClientQueue, Constants.ON_POSITION_END, _timeout);
         }
 
         public List<TMessage> GetIbData<TMessage>(Action request, IIbClientQueue queue, string endToken, int timeout)
         {
-            List<TMessage> positionMessages = new List<TMessage>();
-
-            
             request();
+            return CollectIbResponces<TMessage>(queue, endToken, timeout);
+        }
+
+        public List<TMessage> CollectIbResponces<TMessage>(IIbClientQueue queue, string endToken, int timeout)
+        {
+            List<TMessage> positionMessages = new List<TMessage>();
             var stopWatch = new Stopwatch();
             stopWatch.Start();
 
