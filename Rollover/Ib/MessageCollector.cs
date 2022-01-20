@@ -107,6 +107,8 @@ namespace Rollover.Ib
             var stopWatch = new Stopwatch();
             stopWatch.Start();
 
+            int msgCountBefore = 0;
+            bool endMessageReceived = false;
             while (stopWatch.Elapsed.TotalMilliseconds < _configurationManager.GetConfiguration().Timeout)
             {
                 var message = _ibClientQueue.Dequeue();
@@ -115,13 +117,16 @@ namespace Rollover.Ib
                 {
                     positionMessages.Add(positionMessage);
                 }
-                else if (message is string messageAsString)
+                if (message is string messageAsString && messageAsString == Constants.ON_POSITION_END)
                 {
-                    if (messageAsString == Constants.ON_POSITION_END && positionMessages.Any())
-                    {
-                        return positionMessages;
-                    }
+                    endMessageReceived = true;
                 }
+
+                if (endMessageReceived && msgCountBefore > 0 && positionMessages.Count() == msgCountBefore)
+                {
+                    return positionMessages;
+                }
+                msgCountBefore = positionMessages.Count();
             }
 
             return positionMessages;
