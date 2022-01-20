@@ -58,7 +58,7 @@ namespace Rollover.Tracking
 
             throw new ApplicationException("Unexpected");
         }
-        private double PreviousStrike(HashSet<double> strikes, double currentPrice)
+        public double PreviousStrike(HashSet<double> strikes, double currentPrice)
         {
             var allStrikesBelowPrice = strikes.Where(s => s < currentPrice).ToList();
             if (!allStrikesBelowPrice.Any())
