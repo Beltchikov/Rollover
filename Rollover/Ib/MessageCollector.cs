@@ -104,14 +104,15 @@ namespace Rollover.Ib
 
         public List<PositionMessage> reqPositions()
         {
-            return GetIbData<PositionMessage>(_ibClientQueue, Constants.ON_POSITION_END, _timeout);
+            return GetIbData<PositionMessage>(_ibClient.reqPositions,_ibClientQueue, Constants.ON_POSITION_END, _timeout);
         }
 
-        public List<TMessage> GetIbData<TMessage>(IIbClientQueue queue, string endToken, int timeout)
+        public List<TMessage> GetIbData<TMessage>(Action request, IIbClientQueue queue, string endToken, int timeout)
         {
             List<TMessage> positionMessages = new List<TMessage>();
 
-            _ibClient.reqPositions();
+            
+            request();
             var stopWatch = new Stopwatch();
             stopWatch.Start();
 
@@ -168,6 +169,8 @@ namespace Rollover.Ib
             }
 
             return contractDetailsMessages;
+
+            //return GetIbData<ContractDetailsMessage>(_ibClientQueue, Constants.ON_CONTRACT_DETAILS_END, _timeout);
         }
 
         public List<SecurityDefinitionOptionParameterMessage> reqSecDefOptParams(
