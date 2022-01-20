@@ -104,16 +104,11 @@ namespace Rollover.Ib
 
         public List<PositionMessage> reqPositions()
         {
-            return GetIbData<PositionMessage>(_ibClient.reqPositions, _ibClientQueue, Constants.ON_POSITION_END, _timeout);
+            _ibClient.reqPositions();
+            return CollectIbResponses<PositionMessage>(_ibClientQueue, Constants.ON_POSITION_END, _timeout);
         }
 
-        public List<TMessage> GetIbData<TMessage>(Action request, IIbClientQueue queue, string endToken, int timeout)
-        {
-            request();
-            return CollectIbResponces<TMessage>(queue, endToken, timeout);
-        }
-
-        public List<TMessage> CollectIbResponces<TMessage>(IIbClientQueue queue, string endToken, int timeout)
+        public List<TMessage> CollectIbResponses<TMessage>(IIbClientQueue queue, string endToken, int timeout)
         {
             List<TMessage> positionMessages = new List<TMessage>();
             var stopWatch = new Stopwatch();
