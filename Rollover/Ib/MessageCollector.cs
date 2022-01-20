@@ -108,6 +108,56 @@ namespace Rollover.Ib
             return CollectIbResponses<PositionMessage>(_ibClientQueue, Constants.ON_POSITION_END, _timeout);
         }
 
+        public List<ContractDetailsMessage> reqContractDetails(Contract contract)
+        {
+            var reqId = ++_reqIdContractDetails;
+            _ibClient.reqContractDetails(reqId, contract);
+            return CollectIbResponses<ContractDetailsMessage>(_ibClientQueue, Constants.ON_CONTRACT_DETAILS_END, _timeout);
+        }
+
+        public List<SecurityDefinitionOptionParameterMessage> reqSecDefOptParams(
+            string symbol,
+            string exchange,
+            string secType,
+            int conId)
+        {
+            //var securityDefinitionOptionParameterMessage
+            //    = new List<SecurityDefinitionOptionParameterMessage>();
+
+            //var reqId = ++_reqIdSecDefOptParam;
+            //_ibClient.reqSecDefOptParams(reqId, symbol, exchange, secType, conId);
+
+            //var stopWatch = new Stopwatch();
+            //stopWatch.Start();
+
+            //while (stopWatch.Elapsed.TotalMilliseconds < _configurationManager.GetConfiguration().Timeout)
+            //{
+            //    var message = _ibClientQueue.Dequeue();
+
+            //    if (message is SecurityDefinitionOptionParameterMessage parameterMessage)
+            //    {
+            //        securityDefinitionOptionParameterMessage.Add(parameterMessage);
+            //    }
+            //    else if (message is string messageAsString)
+            //    {
+            //        if (messageAsString == Constants.ON_SECURITY_DEFINITION_OPTION_PARAMETER_END)
+            //        {
+            //            return securityDefinitionOptionParameterMessage;
+            //        }
+            //    }
+            //}
+
+            //return securityDefinitionOptionParameterMessage;
+
+
+            var reqId = ++_reqIdSecDefOptParam;
+            _ibClient.reqSecDefOptParams(reqId, symbol, exchange, secType, conId);
+            return CollectIbResponses<SecurityDefinitionOptionParameterMessage>(
+                _ibClientQueue,
+                Constants.ON_SECURITY_DEFINITION_OPTION_PARAMETER_END,
+                _timeout);
+        }
+
         public List<TMessage> CollectIbResponses<TMessage>(IIbClientQueue queue, string endToken, int timeout)
         {
             List<TMessage> positionMessages = new List<TMessage>();
@@ -137,48 +187,6 @@ namespace Rollover.Ib
             }
 
             return positionMessages;
-        }
-
-        public List<ContractDetailsMessage> reqContractDetails(Contract contract)
-        {
-            var reqId = ++_reqIdContractDetails;
-            _ibClient.reqContractDetails(reqId, contract);
-            return CollectIbResponses<ContractDetailsMessage>(_ibClientQueue, Constants.ON_CONTRACT_DETAILS_END, _timeout);
-        }
-
-        public List<SecurityDefinitionOptionParameterMessage> reqSecDefOptParams(
-            string symbol,
-            string exchange,
-            string secType,
-            int conId)
-        {
-            var securityDefinitionOptionParameterMessage
-                = new List<SecurityDefinitionOptionParameterMessage>();
-
-            var reqId = ++_reqIdSecDefOptParam;
-            _ibClient.reqSecDefOptParams(reqId, symbol, exchange, secType, conId);
-
-            var stopWatch = new Stopwatch();
-            stopWatch.Start();
-
-            while (stopWatch.Elapsed.TotalMilliseconds < _configurationManager.GetConfiguration().Timeout)
-            {
-                var message = _ibClientQueue.Dequeue();
-
-                if (message is SecurityDefinitionOptionParameterMessage parameterMessage)
-                {
-                    securityDefinitionOptionParameterMessage.Add(parameterMessage);
-                }
-                else if (message is string messageAsString)
-                {
-                    if (messageAsString == Constants.ON_SECURITY_DEFINITION_OPTION_PARAMETER_END)
-                    {
-                        return securityDefinitionOptionParameterMessage;
-                    }
-                }
-            }
-
-            return securityDefinitionOptionParameterMessage;
         }
 
         public TickPriceMessage reqMktData(
