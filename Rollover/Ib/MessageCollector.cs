@@ -19,6 +19,8 @@ namespace Rollover.Ib
         private int _reqIdContractDetails = 0;
         private int _reqIdSecDefOptParam = 0;
         private int _reqIdMktData = 0;
+        
+        private int _timeout= 0;
 
         public MessageCollector(
             IIbClientWrapper ibClient,
@@ -30,6 +32,8 @@ namespace Rollover.Ib
             _connectedCondition = connectedCondition;
             _ibClientQueue = ibClientQueue;
             _configurationManager = configurationManager;
+
+            _timeout = _configurationManager.GetConfiguration().Timeout;
         }
 
         public ConnectionMessages eConnect(string host, int port, int clientId)
@@ -100,24 +104,28 @@ namespace Rollover.Ib
 
         public List<PositionMessage> reqPositions()
         {
-            List<PositionMessage> positionMessages = new List<PositionMessage>();
+            return GetIbData<PositionMessage>(_ibClientQueue, Constants.ON_POSITION_END, _timeout);
+        }
+
+        public List<TMessage> GetIbData<TMessage>(IIbClientQueue queue, string endToken, int timeout)
+        {
+            List<TMessage> positionMessages = new List<TMessage>();
 
             _ibClient.reqPositions();
-
             var stopWatch = new Stopwatch();
             stopWatch.Start();
 
             int msgCountBefore = 0;
             bool endMessageReceived = false;
-            while (stopWatch.Elapsed.TotalMilliseconds < _configurationManager.GetConfiguration().Timeout)
+            while (stopWatch.Elapsed.TotalMilliseconds < timeout)
             {
-                var message = _ibClientQueue.Dequeue();
+                var message = queue.Dequeue();
 
-                if (message is PositionMessage positionMessage)
+                if (message is TMessage positionMessage)
                 {
                     positionMessages.Add(positionMessage);
                 }
-                if (message is string messageAsString && messageAsString == Constants.ON_POSITION_END)
+                if (message is string messageAsString && messageAsString == endToken)
                 {
                     endMessageReceived = true;
                 }
