@@ -121,35 +121,6 @@ namespace Rollover.Ib
             string secType,
             int conId)
         {
-            //var securityDefinitionOptionParameterMessage
-            //    = new List<SecurityDefinitionOptionParameterMessage>();
-
-            //var reqId = ++_reqIdSecDefOptParam;
-            //_ibClient.reqSecDefOptParams(reqId, symbol, exchange, secType, conId);
-
-            //var stopWatch = new Stopwatch();
-            //stopWatch.Start();
-
-            //while (stopWatch.Elapsed.TotalMilliseconds < _configurationManager.GetConfiguration().Timeout)
-            //{
-            //    var message = _ibClientQueue.Dequeue();
-
-            //    if (message is SecurityDefinitionOptionParameterMessage parameterMessage)
-            //    {
-            //        securityDefinitionOptionParameterMessage.Add(parameterMessage);
-            //    }
-            //    else if (message is string messageAsString)
-            //    {
-            //        if (messageAsString == Constants.ON_SECURITY_DEFINITION_OPTION_PARAMETER_END)
-            //        {
-            //            return securityDefinitionOptionParameterMessage;
-            //        }
-            //    }
-            //}
-
-            //return securityDefinitionOptionParameterMessage;
-
-
             var reqId = ++_reqIdSecDefOptParam;
             _ibClient.reqSecDefOptParams(reqId, symbol, exchange, secType, conId);
             return CollectIbResponses<SecurityDefinitionOptionParameterMessage>(
