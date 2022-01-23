@@ -81,9 +81,9 @@ namespace Rollover.Tracking
             return GetContractPropety(repository, m => m?.ContractDetails?.Contract?.Strike);
         }
 
-        public double NextStrike(IRepository repository, double currentPrice)
+        public double NextStrike(IRepository repository, double currentStrike)
         {
-            var allStrikesOverPrice = Strikes(repository).Where(s => s > currentPrice).ToList();
+            var allStrikesOverPrice = Strikes(repository).Where(s => s > currentStrike).ToList();
             if (!allStrikesOverPrice.Any())
             {
                 return 0;
@@ -91,9 +91,9 @@ namespace Rollover.Tracking
             return allStrikesOverPrice.Min();
         }
 
-        public double NextButOneStrike(IRepository repository, double currentPrice)
+        public double NextButOneStrike(IRepository repository, double currentStrike)
         {
-            var allStrikesOverPrice = Strikes(repository).Where(s => s > currentPrice).ToList();
+            var allStrikesOverPrice = Strikes(repository).Where(s => s > currentStrike).ToList();
             if (!allStrikesOverPrice.Any())
             {
                 return 0;
@@ -112,9 +112,9 @@ namespace Rollover.Tracking
             throw new ApplicationException("Unexpected");
         }
 
-        public double PreviousStrike(IRepository repository, double currentPrice)
+        public double PreviousStrike(IRepository repository, double currentStrike)
         {
-            var allStrikesBelowPrice = Strikes(repository).Where(s => s < currentPrice).ToList();
+            var allStrikesBelowPrice = Strikes(repository).Where(s => s < currentStrike).ToList();
             if (!allStrikesBelowPrice.Any())
             {
                 return 0;
@@ -122,9 +122,9 @@ namespace Rollover.Tracking
             return allStrikesBelowPrice.Max();
         }
 
-        public double PreviousButOneStrike(IRepository repository, double currentPrice)
+        public double PreviousButOneStrike(IRepository repository, double currentStrike)
         {
-            var allStrikesBelowPrice = Strikes(repository).Where(s => s < currentPrice).ToList();
+            var allStrikesBelowPrice = Strikes(repository).Where(s => s < currentStrike).ToList();
             if (!allStrikesBelowPrice.Any())
             {
                 return 0;

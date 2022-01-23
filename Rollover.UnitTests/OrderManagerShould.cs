@@ -6,9 +6,6 @@ using Rollover.Ib;
 using Rollover.Tracking;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Rollover.UnitTests
@@ -67,6 +64,71 @@ namespace Rollover.UnitTests
 
             sut.RolloverIfNextStrike(trackedSymbols);
             repository.DidNotReceive().PlaceBearSpread(
+                Arg.Any<int>(),
+                Arg.Any<string>());
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void NotCallPlaceBearSpreadPriceAboveNextStrikeAndCurrentStrike(
+            TrackedSymbol trackedSymbol,
+            TrackedSymbols trackedSymbols,
+            [Frozen] IRepository repository,
+            OrderManager sut)
+        {
+            double currentPrice = 101;
+            double nextStrike = 100;
+            double currentStrike = 100;
+
+            Tuple<bool, double> priceTuple = new Tuple<bool, double>(true, currentPrice);
+            repository.GetCurrentPrice(Arg.Any<int>(), Arg.Any<string>()).Returns(priceTuple);
+
+            var strikes = new HashSet<double> { 90, currentStrike, nextStrike };
+            repository.GetStrikes(Arg.Any<Contract>(), Arg.Any<string>()).Returns(strikes);
+
+            var contract = new Contract { Strike = currentStrike };
+            var contractDetails = new ContractDetails { Contract = contract };
+            var contractDetailsMessages = new List<ContractDetailsMessage>
+            { new ContractDetailsMessage(1, contractDetails)};
+            repository.ContractDetails(Arg.Any<Contract>())
+                .Returns(contractDetailsMessages);
+
+            trackedSymbols.Add(trackedSymbol);
+
+            sut.RolloverIfNextStrike(trackedSymbols);
+            repository.DidNotReceive().PlaceBearSpread(
+                Arg.Any<int>(),
+                Arg.Any<string>());
+        }
+
+
+        [Theory, AutoNSubstituteData]
+        public void CallPlaceBearSpreadPrice(
+            TrackedSymbol trackedSymbol,
+            TrackedSymbols trackedSymbols,
+            [Frozen] IRepository repository,
+            OrderManager sut)
+        {
+            double currentPrice = 111;
+            double nextStrike = 110;
+            double currentStrike = 100;
+
+            Tuple<bool, double> priceTuple = new Tuple<bool, double>(true, currentPrice);
+            repository.GetCurrentPrice(Arg.Any<int>(), Arg.Any<string>()).Returns(priceTuple);
+
+            var strikes = new HashSet<double> { 90, currentStrike, nextStrike };
+            repository.GetStrikes(Arg.Any<Contract>(), Arg.Any<string>()).Returns(strikes);
+
+            var contract = new Contract { Strike = currentStrike };
+            var contractDetails = new ContractDetails { Contract = contract };
+            var contractDetailsMessages = new List<ContractDetailsMessage>
+            { new ContractDetailsMessage(1, contractDetails)};
+            repository.ContractDetails(Arg.Any<Contract>())
+                .Returns(contractDetailsMessages);
+
+            trackedSymbols.Add(trackedSymbol);
+
+            sut.RolloverIfNextStrike(trackedSymbols);
+            repository.Received().PlaceBearSpread(
                 Arg.Any<int>(),
                 Arg.Any<string>());
         }
