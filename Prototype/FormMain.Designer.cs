@@ -107,12 +107,19 @@
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.label19 = new System.Windows.Forms.Label();
             this.txtConItMarketData = new System.Windows.Forms.TextBox();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.txtConIdContractDetails = new System.Windows.Forms.TextBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.txtExchangeContractDetails = new System.Windows.Forms.TextBox();
+            this.btReqContractDetails = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtHost
@@ -871,7 +878,7 @@
             this.groupBox6.Size = new System.Drawing.Size(202, 138);
             this.groupBox6.TabIndex = 37;
             this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Market Data";
+            this.groupBox6.Text = "Market Data (reqMktData)";
             // 
             // label19
             // 
@@ -891,11 +898,72 @@
             this.txtConItMarketData.TabIndex = 14;
             this.txtConItMarketData.Text = "825711 ";
             // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.label20);
+            this.groupBox7.Controls.Add(this.txtConIdContractDetails);
+            this.groupBox7.Controls.Add(this.label21);
+            this.groupBox7.Controls.Add(this.txtExchangeContractDetails);
+            this.groupBox7.Controls.Add(this.btReqContractDetails);
+            this.groupBox7.Location = new System.Drawing.Point(462, 98);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(216, 138);
+            this.groupBox7.TabIndex = 38;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Contract Details (reqContractDetails)";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(6, 26);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(43, 15);
+            this.label20.TabIndex = 15;
+            this.label20.Text = "Con ID";
+            // 
+            // txtConIdContractDetails
+            // 
+            this.txtConIdContractDetails.Location = new System.Drawing.Point(109, 23);
+            this.txtConIdContractDetails.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtConIdContractDetails.Name = "txtConIdContractDetails";
+            this.txtConIdContractDetails.Size = new System.Drawing.Size(70, 23);
+            this.txtConIdContractDetails.TabIndex = 14;
+            this.txtConIdContractDetails.Text = "825711 ";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(6, 54);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(58, 15);
+            this.label21.TabIndex = 9;
+            this.label21.Text = "Exchange";
+            // 
+            // txtExchangeContractDetails
+            // 
+            this.txtExchangeContractDetails.Location = new System.Drawing.Point(109, 49);
+            this.txtExchangeContractDetails.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtExchangeContractDetails.Name = "txtExchangeContractDetails";
+            this.txtExchangeContractDetails.Size = new System.Drawing.Size(70, 23);
+            this.txtExchangeContractDetails.TabIndex = 8;
+            this.txtExchangeContractDetails.Text = "DTB";
+            // 
+            // btReqContractDetails
+            // 
+            this.btReqContractDetails.Location = new System.Drawing.Point(6, 108);
+            this.btReqContractDetails.Name = "btReqContractDetails";
+            this.btReqContractDetails.Size = new System.Drawing.Size(173, 23);
+            this.btReqContractDetails.TabIndex = 12;
+            this.btReqContractDetails.Text = "Req. Contract Details";
+            this.btReqContractDetails.UseVisualStyleBackColor = true;
+            this.btReqContractDetails.Click += new System.EventHandler(this.btReqContractDetails_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1118, 738);
+            this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
@@ -921,6 +989,8 @@
             this.groupBox5.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1007,5 +1077,11 @@
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.TextBox txtConItMarketData;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TextBox txtConIdContractDetails;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.TextBox txtExchangeContractDetails;
+        private System.Windows.Forms.Button btReqContractDetails;
     }
 }

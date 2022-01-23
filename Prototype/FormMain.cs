@@ -42,7 +42,7 @@ namespace Prototype
             ibClient.TickSize += OnTickSize;
             ibClient.TickString += TickString;
             ibClient.TickGeneric += OnTickGeneric;
-            ibClient.ContractDetails += HandleContractDataMessage;
+            ibClient.ContractDetails += OnContractDetails;
             ibClient.OpenOrder += OnOpenOrder;
             ibClient.OpenOrderEnd += OnOpenOrderEnd;
             ibClient.OrderStatus += OnOrderStatus;
@@ -126,6 +126,7 @@ namespace Prototype
 
             btPlaceBasicOrder.Enabled = enable;
             btComboOrder.Enabled = enable;
+            btReqContractDetails.Enabled = enable;
         }
 
         private void OnError(int id, int errorCode, string msg, Exception ex)
@@ -207,9 +208,21 @@ namespace Prototype
             AddLineToTextbox(txtMessage, msg);
         }
 
-        private void HandleContractDataMessage(ContractDetailsMessage obj)
+        private void OnContractDetails(ContractDetailsMessage obj)
         {
-            string msg = $"ConId:{obj.ContractDetails.Contract.ConId} ";
+            string msg = $"ConId:{obj.ContractDetails.Contract.ConId} " +
+                $"LocalSymbol:{obj.ContractDetails.Contract.LocalSymbol} " +
+                
+                $"Symbol:{obj.ContractDetails.Contract.Symbol} " +
+                $"SecType:{obj.ContractDetails.Contract.SecType} " +
+                $"Currency:{obj.ContractDetails.Contract.Currency} " +
+                $"Exchange:{obj.ContractDetails.Contract.Exchange} " +
+
+                $"Right:{obj.ContractDetails.Contract.Right} " +
+                $"LastTradeDate:{obj.ContractDetails.Contract.LastTradeDateOrContractMonth} " +
+                $"Strike:{obj.ContractDetails.Contract.Strike} " +
+                $"";
+                
             AddLineToTextbox(txtMessage, msg);
         }
 
@@ -438,6 +451,17 @@ namespace Prototype
 
             ibClient.ClientSocket.placeOrder(_nextOrderId, contract, order);
             ibClient.ClientSocket.reqIds(-1);
+        }
+
+        private void btReqContractDetails_Click(object sender, EventArgs e)
+        {
+            var contract = new Contract()
+            {
+                ConId = Convert.ToInt32(txtConIdContractDetails.Text),
+                Exchange = txtExchangeContractDetails.Text
+            };
+
+            ibClient.ClientSocket.reqContractDetails(60000001, contract);
         }
     }
 }
