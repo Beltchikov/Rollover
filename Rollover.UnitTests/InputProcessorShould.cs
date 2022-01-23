@@ -56,44 +56,6 @@ namespace Rollover.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
-        public void ReturnSymbolDetailsCouldNotBeQueried(
-            [Frozen] IPortfolio portfolio,
-            [Frozen] IRepository repository,
-            InputProcessor sut)
-        {
-            var testSymbol = "MNQ";
-            repository.GetTrackedSymbol(Arg.Any<Contract>()).Returns(null as TrackedSymbol);
-
-            var contract = new Contract() { Symbol = testSymbol };
-            var positionMessage = new PositionMessage("account", contract, 1, 1000);
-            portfolio.PositionBySymbol(Arg.Any<string>()).Returns(positionMessage);
-
-            var resultList = sut.Convert(testSymbol);
-
-            Assert.Single(resultList);
-            Assert.Equal("Symbol details could not be queried. trackedSymbol is null.", resultList.First());
-        }
-
-        [Theory, AutoNSubstituteData]
-        public void CallsRepositoryGetTrackedSymbol(
-            [Frozen] IPortfolio portfolio,
-            [Frozen] IRepository repository,
-            [Frozen] ITrackedSymbols trackedSymbols,
-            InputProcessor sut)
-        {
-            var testSymbol = "MNQ";
-            var contract = new Contract() { Symbol = testSymbol };
-            var positionMessage = new PositionMessage("account", contract, 1, 1000);
-            portfolio.PositionBySymbol(Arg.Any<string>()).Returns(positionMessage);
-            trackedSymbols.SymbolExists(Arg.Any<string>()).Returns(false);
-
-            sut.Convert("Enter a symbol to track:");
-            sut.Convert(testSymbol);
-
-            repository.Received().GetTrackedSymbol(Arg.Any<Contract>());
-        }
-
-        [Theory, AutoNSubstituteData]
         public void ReturnInputIfInputContainsErrorCode(InputProcessor sut)
         {
             var testInput = "id=1 errorCode=321 msg=Error validating request.-'cw' : cause - Invalid";
