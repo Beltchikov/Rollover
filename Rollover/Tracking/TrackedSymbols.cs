@@ -33,7 +33,7 @@ namespace Rollover.Tracking
 
         public bool Add(TrackedSymbol trackedSymbol)
         {
-            if (_symbols.Any(s => s.UnderlyingLocalSymbol == trackedSymbol.UnderlyingLocalSymbol))
+            if (_symbols.Any(s => s.Equals(trackedSymbol)))
             {
                 return false;
             }
@@ -54,7 +54,7 @@ namespace Rollover.Tracking
 
         public bool SymbolExists(string symbol)
         {
-            return _symbols.Any(s => s.UnderlyingSymbol == symbol);
+            return _symbols.Any(s => s.Equals(symbol));
         }
 
         public List<string> Summary()

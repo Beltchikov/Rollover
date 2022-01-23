@@ -19,7 +19,6 @@ namespace Rollover
             IIbClientQueue ibClientQueue = new IbClientQueue();
             IPortfolio portfolio = new Portfolio();
 
-            ITrackedSymbolFactory trackedSymbolFactory = new TrackedSymbolFactory();
             IIbClientWrapper ibClient = new IbClientWrapper(ibClientQueue);
 
             IConnectedCondition connectedCondition = new ConnectedCondition();
@@ -33,8 +32,7 @@ namespace Rollover
             IRepository repository = new Repository(
                 ibClient,
                 messageProcessor,
-                messageCollector,
-                trackedSymbolFactory);
+                messageCollector);
 
             ITrackedSymbols trackedSymbols = new TrackedSymbols(fileHelper, serializer);
             IReducer reducer = new Reducer();

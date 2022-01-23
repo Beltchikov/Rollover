@@ -36,7 +36,7 @@ namespace Rollover.UnitTests
         [Theory, AutoNSubstituteData]
         public void CallsMessageCollectorReqPositionsInAllPositions([Frozen] IMessageCollector messageCollector)
         {
-            var sut = new Repository(null, null, messageCollector, null);
+            var sut = new Repository(null, null, messageCollector);
             sut.AllPositions();
             messageCollector.Received().reqPositions();
         }
@@ -51,7 +51,7 @@ namespace Rollover.UnitTests
             messageProcessor.ConvertMessage(Arg.Any<object>())
                 .Returns(new List<string>{"Some message"});
 
-            IRepository sut = new Repository(null, messageProcessor, messageCollector, null);
+            IRepository sut = new Repository(null, messageProcessor, messageCollector);
             sut.Connect("localhost", 4001, 1);
             messageCollector.Received().eConnect("localhost", 4001, 1);
         }
@@ -60,7 +60,7 @@ namespace Rollover.UnitTests
         public void CallMessageCollectorReqPositions(
             [Frozen] IMessageCollector messageCollector)
         {
-            IRepository sut = new Repository(null, null, messageCollector, null);
+            IRepository sut = new Repository(null, null, messageCollector);
             sut.AllPositions();
             messageCollector.Received().reqPositions();
         }
@@ -96,7 +96,7 @@ namespace Rollover.UnitTests
                 "IND", 
                 Arg.Any<int>()).Returns(secDefOptParamMessageList);   
 
-            IRepository sut = new Repository(null, null, messageCollector, trackedSymbolFactory);
+            IRepository sut = new Repository(null, null, messageCollector);
             sut.GetTrackedSymbol(contract);
             messageCollector.Received().reqMktData(Arg.Any<Contract>(), "", true, false, null);
         }
@@ -130,7 +130,7 @@ namespace Rollover.UnitTests
                 Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>())
                 .Returns(secDefOptParamMessageList);
 
-            IRepository sut = new Repository(null, null, messageCollector, trackedSymbolFactory);
+            IRepository sut = new Repository(null, null, messageCollector);
             sut.GetTrackedSymbol(contract);
             messageCollector.Received().reqSecDefOptParams(
                 Arg.Any<string>(),

@@ -23,7 +23,7 @@ namespace Rollover.Input
             IReducer reducer,
             IPortfolio portfolio,
             ITrackedSymbols trackedSymbols,
-            IRepository repository, 
+            IRepository repository,
             IOrderManager orderManager)
         {
             _reducer = reducer;
@@ -54,12 +54,12 @@ namespace Rollover.Input
                         State = "Active";
                     }
 
-                    if(State == "Active")
+                    if (State == "Active")
                     {
                         // TODO
                         //_orderManager.RolloverIfNextStrike(_trackedSymbols);
                     }
-                    
+
                     if (input.Contains("errorCode"))
                     {
                         return input.Contains("id=-1")
@@ -84,36 +84,12 @@ namespace Rollover.Input
 
         private List<string> AddTrackedSymbol(Contract contract, ITrackedSymbols trackedSymbols)
         {
-            TrackedSymbol trackedSymbol = null;
-            try
+            var trackedSymbol = new TrackedSymbol(contract.ConId, contract.Exchange);
+            if (!_trackedSymbols.Add(trackedSymbol))
             {
-                trackedSymbol = _repository.GetTrackedSymbol(contract);
+                return new List<string> { "Symbol is tracked already." };
             }
-            catch (Exception ex)
-            {
-                return new List<string> { ex.ToString(), "Please try again." };
-            }
-
-            if (trackedSymbol != null)
-            {
-                if(trackedSymbol.NextStrike == 0)
-                {
-                    return new List<string> { "Did not receive next strike. Please try again." };
-                }
-                if (trackedSymbol.PreviousStrike == 0)
-                {
-                    return new List<string> { "Did not receive previous strike. Please try again." };
-                }
-                if (!_trackedSymbols.Add(trackedSymbol))
-                {
-                    return new List<string> { "Symbol is tracked already." };
-                }
-                return _trackedSymbols.Summary();
-            }
-            else
-            {
-                return new List<string> { "Symbol details could not be queried. trackedSymbol is null." };
-            }
+            return _trackedSymbols.Summary();
         }
     }
 }

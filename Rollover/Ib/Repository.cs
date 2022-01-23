@@ -10,19 +10,19 @@ namespace Rollover.Ib
     public class Repository : IRepository
     {
         private IIbClientWrapper _ibClient;
+
+
         private IMessageProcessor _messageProcessor;
         private IMessageCollector _messageCollector;
-        private ITrackedSymbolFactory _trackedSymbolFactory;
 
         public Repository(
             IIbClientWrapper ibClient,
             IMessageProcessor messageProcessor,
-            IMessageCollector messageCollector, ITrackedSymbolFactory trackedSymbolFactory)
+            IMessageCollector messageCollector)
         {
             _ibClient = ibClient;
             _messageProcessor = messageProcessor;
             _messageCollector = messageCollector;
-            _trackedSymbolFactory = trackedSymbolFactory;
         }
 
         public Tuple<bool, List<string>> Connect(string host, int port, int clientId)
@@ -84,31 +84,31 @@ namespace Rollover.Ib
             }
 
             // TODO
-            int buyConId = GetBuyConIdForBearSpread(contract, strikes, currentPrice.Item2);
+            //int buyConId = GetBuyConIdForBearSpread(contract, strikes, currentPrice.Item2);
 
-            return _trackedSymbolFactory.Create(contract, strikes, currentPrice.Item2);
+            return new TrackedSymbol(contract.ConId, contract.Exchange);
         }
 
-        private int GetBuyConIdForBearSpread(Contract callContract, HashSet<double> strikes, double price)
-        {
-            var putContract = new Contract
-            {
-                Symbol = callContract.Symbol,
-                Currency = callContract.Currency,
-                SecType = callContract.SecType,
-                Exchange = callContract.Exchange,
-                LastTradeDateOrContractMonth = callContract.LastTradeDateOrContractMonth,
-                Strike = _trackedSymbolFactory.PreviousStrike(strikes, price),
-                Right = "P"
-            };
+        //private int GetBuyConIdForBearSpread(Contract callContract, HashSet<double> strikes, double price)
+        //{
+        //    var putContract = new Contract
+        //    {
+        //        Symbol = callContract.Symbol,
+        //        Currency = callContract.Currency,
+        //        SecType = callContract.SecType,
+        //        Exchange = callContract.Exchange,
+        //        LastTradeDateOrContractMonth = callContract.LastTradeDateOrContractMonth,
+        //        Strike = _trackedSymbolFactory.PreviousStrike(strikes, price),
+        //        Right = "P"
+        //    };
 
-            var contractDetails = ContractDetails(putContract);
-            if (contractDetails.Count() > 1)
-            {
-                throw new ApplicationException($"Multiple contract details for the contract {putContract}");
-            }
-            return contractDetails.First().ContractDetails.Contract.ConId;
-        }
+        //    var contractDetails = ContractDetails(putContract);
+        //    if (contractDetails.Count() > 1)
+        //    {
+        //        throw new ApplicationException($"Multiple contract details for the contract {putContract}");
+        //    }
+        //    return contractDetails.First().ContractDetails.Contract.ConId;
+        //}
 
         public TrackedSymbol GetTrackedSymbolOpt(Contract contract)
         {
@@ -130,9 +130,9 @@ namespace Rollover.Ib
             }
 
             // TODO
-            int buyConId = GetBuyConIdForBearSpread(contract, strikes, currentPrice.Item2);
+            //int buyConId = GetBuyConIdForBearSpread(contract, strikes, currentPrice.Item2);
 
-            return _trackedSymbolFactory.Create(contract, strikes, currentPrice.Item2);
+            return new TrackedSymbol(contract.ConId, contract.Exchange);
         }
 
         public Tuple<bool, double> GetCurrentPrice(int conId, string exchange)
@@ -176,7 +176,7 @@ namespace Rollover.Ib
             return _messageCollector.reqSecDefOptParams(symbol, exchange, secType, conId);
         }
 
-        private HashSet<double> GetStrikes(Contract contract, string lastTradeDateOrContractMonth)
+        public HashSet<double> GetStrikes(Contract contract, string lastTradeDateOrContractMonth)
         {
             var contractDetailsMessageList = ContractDetails(contract);
             if (contractDetailsMessageList.Count() > 1)
