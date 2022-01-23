@@ -26,7 +26,10 @@ namespace Rollover.Tracking
                 {
                     throw new NoMarketDataException($"Was not able to get a price for {trackedSymbol.ConId} and {trackedSymbol.Exchange}");
                 }
-                if (priceUnderlying.Item2 > trackedSymbol.NextStrike(_repository, priceUnderlying.Item2))
+                
+                var currentStrike = trackedSymbol.Strike(_repository);
+                var nextStrike = trackedSymbol.NextStrike(_repository, priceUnderlying.Item2);
+                if (priceUnderlying.Item2 > nextStrike && nextStrike > currentStrike)
                 {
                     var contract = new Contract()
                     {
@@ -36,7 +39,7 @@ namespace Rollover.Tracking
                         Exchange = trackedSymbol.Exchange
                     };
 
-                    //_repository.PlaceBearSpread(contract, trackedSymbol.SellConId, trackedSymbol.BuyConId);
+                    _repository.PlaceBearSpread(trackedSymbol.ConId, trackedSymbol.Exchange);
                 }
             }
 

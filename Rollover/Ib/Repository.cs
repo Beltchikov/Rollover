@@ -229,7 +229,7 @@ namespace Rollover.Ib
             return connectionTuple;
         }
 
-        public void PlaceBearSpread(Contract contract, int v1, int v2)
+        public void PlaceBearSpread(int conId, string exchange)
         {
             throw new NotImplementedException();
         }

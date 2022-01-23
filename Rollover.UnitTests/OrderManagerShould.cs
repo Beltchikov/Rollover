@@ -1,5 +1,6 @@
 ﻿using AutoFixture.Xunit2;
 using IBApi;
+using IBSampleApp.messages;
 using NSubstitute;
 using Rollover.Ib;
 using Rollover.Tracking;
@@ -38,18 +39,36 @@ namespace Rollover.UnitTests
             Assert.Throws<NoMarketDataException>(() => sut.RolloverIfNextStrike(trackedSymbols));
         }
 
+        [Theory, AutoNSubstituteData]
+        public void NotCallPlaceBearSpread(
+            TrackedSymbol trackedSymbol,
+            TrackedSymbols trackedSymbols,
+            [Frozen] IRepository repository,
+            OrderManager sut)
+        {
+            double currentStrike = 100;
+            double nextStrike = 110;
+            double currentPrice = 100;
+            
+            Tuple<bool, double> priceTuple = new Tuple<bool, double>(true, currentPrice);
+            repository.GetCurrentPrice(Arg.Any<int>(), Arg.Any<string>()).Returns(priceTuple);
+            
+            var strikes = new HashSet<double> { 90, currentStrike, nextStrike };
+            repository.GetStrikes(Arg.Any<Contract>(), Arg.Any<string>()).Returns(strikes);
 
-        //[Theory, AutoNSubstituteData]
-        //public void NotCallPlaceBearSpread(
-        //    TrackedSymbols trackedSymbols,
-        //    [Frozen] IRepository repository,
-        //    OrderManager sut)
-        //{
-        //    sut.RolloverIfNextStrike(trackedSymbols);
-        //    repository.DidNotReceive().PlaceBearSpread(
-        //        Arg.Any<Contract>(),
-        //        Arg.Any<int>(),
-        //        Arg.Any<int>());
-        //}
+            var contract = new Contract { Strike = currentStrike };
+            var contractDetails = new ContractDetails { Contract = contract };
+            var contractDetailsMessages = new List<ContractDetailsMessage>
+            { new ContractDetailsMessage(1, contractDetails)};
+            repository.ContractDetails(Arg.Any<Contract>())
+                .Returns(contractDetailsMessages);
+
+            trackedSymbols.Add(trackedSymbol);
+
+            sut.RolloverIfNextStrike(trackedSymbols);
+            repository.DidNotReceive().PlaceBearSpread(
+                Arg.Any<int>(),
+                Arg.Any<string>());
+        }
     }
 }
