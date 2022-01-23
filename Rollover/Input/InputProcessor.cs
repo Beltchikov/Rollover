@@ -56,8 +56,7 @@ namespace Rollover.Input
 
                     if (State == "Active")
                     {
-                        // TODO
-                        //_orderManager.RolloverIfNextStrike(_trackedSymbols);
+                        _orderManager.RolloverIfNextStrike(_trackedSymbols);
                     }
 
                     if (input.Contains("errorCode"))

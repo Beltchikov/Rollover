@@ -71,13 +71,13 @@ namespace Rollover.UnitTests
             Assert.Empty(result);
         }
 
-        //[Theory, AutoNSubstituteData]
-        //public void CallRolloverIfNextStrike(
-        //    [Frozen] IOrderManager orderManager,
-        //    InputProcessor sut)
-        //{
-        //    sut.Convert("MNQ");
-        //    orderManager.Received().RolloverIfNextStrike(Arg.Any<ITrackedSymbols>());
-        //}
+        [Theory, AutoNSubstituteData]
+        public void CallRolloverIfNextStrike(
+            [Frozen] IOrderManager orderManager,
+            InputProcessor sut)
+        {
+            sut.Convert("MNQ");
+            orderManager.Received().RolloverIfNextStrike(Arg.Any<ITrackedSymbols>());
+        }
     }
 }
