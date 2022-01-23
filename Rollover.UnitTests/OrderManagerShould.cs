@@ -40,15 +40,15 @@ namespace Rollover.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
-        public void NotCallPlaceBearSpread(
+        public void NotCallPlaceBearSpreadPriceBelowOrEqualNextStrike(
             TrackedSymbol trackedSymbol,
             TrackedSymbols trackedSymbols,
             [Frozen] IRepository repository,
             OrderManager sut)
         {
-            double currentStrike = 100;
             double nextStrike = 110;
-            double currentPrice = 100;
+            double currentPrice = 110;
+            double currentStrike = 100;
             
             Tuple<bool, double> priceTuple = new Tuple<bool, double>(true, currentPrice);
             repository.GetCurrentPrice(Arg.Any<int>(), Arg.Any<string>()).Returns(priceTuple);
