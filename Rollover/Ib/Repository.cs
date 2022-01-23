@@ -86,7 +86,7 @@ namespace Rollover.Ib
             // TODO
             //int buyConId = GetBuyConIdForBearSpread(contract, strikes, currentPrice.Item2);
 
-            return new TrackedSymbol(contract.ConId, contract.Exchange);
+            return new TrackedSymbol(contract.LocalSymbol, contract.ConId, contract.Exchange);
         }
 
         //private int GetBuyConIdForBearSpread(Contract callContract, HashSet<double> strikes, double price)
@@ -132,7 +132,7 @@ namespace Rollover.Ib
             // TODO
             //int buyConId = GetBuyConIdForBearSpread(contract, strikes, currentPrice.Item2);
 
-            return new TrackedSymbol(contract.ConId, contract.Exchange);
+            return new TrackedSymbol(contract.LocalSymbol, contract.ConId, contract.Exchange);
         }
 
         public Tuple<bool, double> GetCurrentPrice(int conId, string exchange)

@@ -9,15 +9,25 @@ namespace Rollover.Tracking
 {
     public class TrackedSymbol : ITrackedSymbol
     {
+        private readonly string _localSymbol;
         private readonly int _conId;
         private readonly string _exchange;
 
         private ContractDetailsMessage _contractDetailsMessage;
 
-        public TrackedSymbol(int conId, string exchange)
+        public TrackedSymbol(string localSymbol, int conId, string exchange)
         {
+            _localSymbol = localSymbol;
             _conId = conId;
             _exchange = exchange;
+}
+
+        public string LocalSymbol
+        {
+            get
+            {
+                return _localSymbol;
+            }
         }
 
         public int ConId
@@ -39,11 +49,6 @@ namespace Rollover.Tracking
         public void ResetCache()
         {
             _contractDetailsMessage = null;
-        }
-
-        public string LocalSymbol(IRepository repository)
-        {
-            return GetContractPropety(repository, m => m?.ContractDetails?.Contract?.LocalSymbol);
         }
 
         public string Symbol(IRepository repository)
@@ -147,7 +152,7 @@ namespace Rollover.Tracking
 
         public override string ToString()
         {
-            return $"ConId: {ConId} Exchange:{Exchange}";
+            return $"LocalSymbol: {LocalSymbol}  ConId: {ConId}  Exchange:{Exchange}";
         }
 
         public bool Equals(ITrackedSymbol otherSymbol)

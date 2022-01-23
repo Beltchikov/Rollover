@@ -5,12 +5,12 @@ namespace Rollover.Tracking
 {
     public interface ITrackedSymbol
     {
+        string LocalSymbol { get; }
         int ConId { get; }
         string Exchange { get; }
 
         string Currency(IRepository repository);
         string LastTradeDateOrContractMonth(IRepository repository);
-        string LocalSymbol(IRepository repository);
         double NextButOneStrike(IRepository repository, double currentPrice);
         double NextStrike(IRepository repository, double currentPrice);
         double PreviousButOneStrike(IRepository repository, double currentPrice);

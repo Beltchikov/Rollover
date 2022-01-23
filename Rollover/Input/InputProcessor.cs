@@ -85,11 +85,16 @@ namespace Rollover.Input
         private List<string> AddTrackedSymbol(Contract contract, ITrackedSymbols trackedSymbols)
         {
             var contractDetails = _repository.ContractDetails(contract).FirstOrDefault();
-            var trackedSymbol = new TrackedSymbol(contract.ConId, contractDetails?.ContractDetails?.Contract?.Exchange);
+            var trackedSymbol = new TrackedSymbol(
+                contractDetails?.ContractDetails?.Contract?.LocalSymbol,
+                contract.ConId,
+                contractDetails?.ContractDetails?.Contract?.Exchange);
+            
             if (!_trackedSymbols.Add(trackedSymbol))
             {
                 return new List<string> { "Symbol is tracked already." };
             }
+            
             return _trackedSymbols.Summary();
         }
     }
