@@ -24,7 +24,7 @@ namespace Rollover.Tracking
                 var priceUnderlying = _repository.GetCurrentPrice(trackedSymbol.ConId, trackedSymbol.Exchange);
                 if (!priceUnderlying.Item1)
                 {
-                    throw new ApplicationException($"Was not able to get a price for {trackedSymbol.ConId} and {trackedSymbol.Exchange}");
+                    throw new NoMarketDataException($"Was not able to get a price for {trackedSymbol.ConId} and {trackedSymbol.Exchange}");
                 }
                 if (priceUnderlying.Item2 > trackedSymbol.NextStrike(_repository, priceUnderlying.Item2))
                 {
