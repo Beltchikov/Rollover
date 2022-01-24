@@ -63,9 +63,7 @@ namespace Rollover.UnitTests
             trackedSymbols.Add(trackedSymbol);
 
             sut.RolloverIfNextStrike(trackedSymbols);
-            repository.DidNotReceive().PlaceBearSpread(
-                Arg.Any<int>(),
-                Arg.Any<string>());
+            repository.DidNotReceive().PlaceBearSpread(Arg.Any<ITrackedSymbol>());
         }
 
         [Theory, AutoNSubstituteData]
@@ -95,9 +93,7 @@ namespace Rollover.UnitTests
             trackedSymbols.Add(trackedSymbol);
 
             sut.RolloverIfNextStrike(trackedSymbols);
-            repository.DidNotReceive().PlaceBearSpread(
-                Arg.Any<int>(),
-                Arg.Any<string>());
+            repository.DidNotReceive().PlaceBearSpread(Arg.Any<ITrackedSymbol>());
         }
 
 
@@ -128,9 +124,7 @@ namespace Rollover.UnitTests
             trackedSymbols.Add(trackedSymbol);
 
             sut.RolloverIfNextStrike(trackedSymbols);
-            repository.Received().PlaceBearSpread(
-                Arg.Any<int>(),
-                Arg.Any<string>());
+            repository.Received().PlaceBearSpread(Arg.Any<ITrackedSymbol>());
         }
     }
 }

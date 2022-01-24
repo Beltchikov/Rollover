@@ -110,6 +110,28 @@ namespace Rollover.Ib
         //    return contractDetails.First().ContractDetails.Contract.ConId;
         //}
 
+        private int GetBuyConIdForBearSpread(ITrackedSymbol trackedSymbol)
+        {
+            var priceUnderlying = GetCurrentPrice(trackedSymbol.ConId, trackedSymbol.Exchange);
+            var putContract = new Contract
+            {
+                Symbol = trackedSymbol.Symbol(this),
+                Currency = trackedSymbol.Currency(this),
+                SecType = trackedSymbol.SecType(this),
+                Exchange = trackedSymbol.Exchange,
+                LastTradeDateOrContractMonth = trackedSymbol.LastTradeDateOrContractMonth(this),
+                Strike = trackedSymbol.PreviousStrike(this, priceUnderlying.Item2),
+                Right = "P"
+            };
+
+            var contractDetails = ContractDetails(putContract);
+            if (contractDetails.Count() > 1)
+            {
+                throw new MultipleContractDetailsMessage($"Multiple contract details for the contract {putContract}");
+            }
+            return contractDetails.First().ContractDetails.Contract.ConId;
+        }
+
         public TrackedSymbol GetTrackedSymbolOpt(Contract contract)
         {
             // Underlying
@@ -123,7 +145,7 @@ namespace Rollover.Ib
 
             // Strikes & price
             var strikes = GetStrikes(underLyingContract, contract.LastTradeDateOrContractMonth);
-            var currentPrice = GetCurrentPrice(underLyingContract. ConId,underLyingContract.Exchange);
+            var currentPrice = GetCurrentPrice(underLyingContract.ConId, underLyingContract.Exchange);
             if (!currentPrice.Item1)
             {
                 return null;
@@ -137,7 +159,7 @@ namespace Rollover.Ib
 
         public Tuple<bool, double> GetCurrentPrice(int conId, string exchange)
         {
-            var contract = new Contract {ConId = conId, Exchange=exchange };
+            var contract = new Contract { ConId = conId, Exchange = exchange };
             var tickPriceMessage = _messageCollector.reqMktData(contract, "", true, false, null);
             if (tickPriceMessage == null)
             {
@@ -181,7 +203,7 @@ namespace Rollover.Ib
             var contractDetailsMessageList = ContractDetails(contract);
             if (contractDetailsMessageList.Count() > 1)
             {
-                throw new ApplicationException("Unexpected. Multiple ContractDetailsMessageList");
+                throw new MultipleContractDetailsMessage("Unexpected. Multiple ContractDetailsMessageList");
             }
             var contractDetailsMessage = contractDetailsMessageList.First();
 
@@ -229,9 +251,51 @@ namespace Rollover.Ib
             return connectionTuple;
         }
 
-        public void PlaceBearSpread(int conId, string exchange)
+        public void PlaceBearSpread(ITrackedSymbol trackedSymbol)
         {
-            throw new NotImplementedException();
+            Contract contract = new Contract
+            {
+                ConId = trackedSymbol.ConId,
+                Exchange = trackedSymbol.Exchange
+            };
+
+            var contractDetailsMessageList = ContractDetails(contract);
+            if (contractDetailsMessageList.Count() > 1)
+            {
+                throw new MultipleContractDetailsMessage("Unexpected. Multiple ContractDetailsMessageList");
+            }
+            var contractDetailsMessage = contractDetailsMessageList.First();
+
+            Contract bagContract = new Contract
+            {
+                Symbol = contractDetailsMessage.ContractDetails.Contract.Symbol,
+                SecType = contractDetailsMessage.ContractDetails.Contract.SecType,
+                Exchange = trackedSymbol.Exchange,
+                Currency = contractDetailsMessage.ContractDetails.Contract.Currency
+            };
+            var sellLeg = new ComboLeg()
+            {
+                Action = "SELL",
+                ConId = trackedSymbol.ConId,
+                Ratio = 1,
+                Exchange = trackedSymbol.Exchange
+            };
+            var buyLegConId = GetBuyConIdForBearSpread(trackedSymbol);
+            var buyLeg = new ComboLeg()
+            {
+                Action = "BUY",
+                ConId = buyLegConId,
+                Ratio = 1,
+                Exchange = trackedSymbol.Exchange
+            };
+
+            // TODO in  MessageCollector
+            //    ibClient.ClientSocket.placeOrder(_nextOrderId, contract, order);
+            //    ibClient.ClientSocket.reqIds(-1);
+
+            //****************************************
+
+            //throw new NotImplementedException();
 
             //    var exchange = string.IsNullOrWhiteSpace(txtExchageComboOrder.Text)
             //? null

@@ -34,7 +34,7 @@ namespace Rollover.Tracking
                         Exchange = trackedSymbol.Exchange
                     };
 
-                    _repository.PlaceBearSpread(trackedSymbol.ConId, trackedSymbol.Exchange);
+                    _repository.PlaceBearSpread(trackedSymbol);
                 }
             }
         }

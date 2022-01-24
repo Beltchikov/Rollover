@@ -41,7 +41,7 @@ namespace Rollover.UnitTests
             messageCollector.Received().reqPositions();
         }
 
-       
+
 
         [Theory, AutoNSubstituteData]
         public void CallMessageCollectorEConnect(
@@ -49,7 +49,7 @@ namespace Rollover.UnitTests
             [Frozen] IMessageProcessor messageProcessor)
         {
             messageProcessor.ConvertMessage(Arg.Any<object>())
-                .Returns(new List<string>{"Some message"});
+                .Returns(new List<string> { "Some message" });
 
             IRepository sut = new Repository(null, messageProcessor, messageCollector);
             sut.Connect("localhost", 4001, 1);
@@ -76,8 +76,8 @@ namespace Rollover.UnitTests
             contract.Exchange = "SMART";
             contract.SecType = "OPT";
 
-            var contractDetails = new ContractDetails 
-                { UnderSecType = "FUT", Contract = contract};
+            var contractDetails = new ContractDetails
+            { UnderSecType = "FUT", Contract = contract };
             var contractDetailsMessageList = new List<ContractDetailsMessage>
             { new ContractDetailsMessage(1, contractDetails)};
             messageCollector.reqContractDetails(Arg.Any<Contract>())
@@ -86,15 +86,15 @@ namespace Rollover.UnitTests
             var expirations = new HashSet<string> { "01", "02", "03" };
             var strikes = new HashSet<double>();
             var secDefOptParamMessage = new SecurityDefinitionOptionParameterMessage(
-                Arg.Any<int>(),Arg.Any<string>(),Arg.Any<int>(),
-                Arg.Any<string>(),Arg.Any<string>(),expirations, strikes);
+                Arg.Any<int>(), Arg.Any<string>(), Arg.Any<int>(),
+                Arg.Any<string>(), Arg.Any<string>(), expirations, strikes);
             var secDefOptParamMessageList = new List<SecurityDefinitionOptionParameterMessage>
             { secDefOptParamMessage};
             messageCollector.reqSecDefOptParams(
-                "MNQ", 
-                "SMART", 
-                "IND", 
-                Arg.Any<int>()).Returns(secDefOptParamMessageList);   
+                "MNQ",
+                "SMART",
+                "IND",
+                Arg.Any<int>()).Returns(secDefOptParamMessageList);
 
             IRepository sut = new Repository(null, null, messageCollector);
             sut.GetTrackedSymbol(contract);
@@ -112,7 +112,7 @@ namespace Rollover.UnitTests
                 Currency = "USD",
                 Exchange = "GLOBEX",
                 LastTradeDateOrContractMonth = "20220318",
-                SecType ="OPT"
+                SecType = "OPT"
             };
             var contractDetails = new ContractDetails
             { Contract = contract, UnderSecType = "FUT" };
@@ -137,6 +137,32 @@ namespace Rollover.UnitTests
                 Arg.Any<string>(),
                 Arg.Any<string>(),
                 Arg.Any<int>());
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void ThrowMultipleContractDetailsMessage(
+            [Frozen] IMessageCollector messageCollector,
+            Repository sut)
+        {
+            var contract = new Contract
+            {
+                Symbol = "MNQ",
+                Currency = "USD",
+                Exchange = "GLOBEX",
+                LastTradeDateOrContractMonth = "20220318",
+                SecType = "OPT"
+            };
+
+            var contractDetails = new ContractDetails
+            { Contract = contract, UnderSecType = "FUT" };
+            contractDetails.Contract = contract;
+            var contractDetailsMessage = new ContractDetailsMessage(1, contractDetails);
+            var contractDetailsMessageList = new List<ContractDetailsMessage>
+            { contractDetailsMessage, contractDetailsMessage };
+            messageCollector.reqContractDetails(Arg.Any<Contract>()).Returns(contractDetailsMessageList);
+
+            Assert.Throws<MultipleContractDetailsMessage>(
+                () => sut.PlaceBearSpread(Arg.Any<ITrackedSymbol>()));
         }
     }
 }

@@ -21,6 +21,6 @@ namespace Rollover.Ib
         HashSet<double> GetStrikes(Contract contract, string lastTradeDateOrContractMonth);
 
         Tuple<bool, double> GetCurrentPrice(int conId, string exchange);
-        void PlaceBearSpread(int conId, string exchange);
+        void PlaceBearSpread(ITrackedSymbol trackedSymbol);
     }
 }
