@@ -14,6 +14,7 @@ namespace Rollover.Tracking
         private readonly string _exchange;
 
         private ContractDetailsMessage _contractDetailsMessage;
+        private HashSet<double> _strikes;
 
         public TrackedSymbol(string localSymbol, int conId, string exchange)
         {
@@ -49,6 +50,7 @@ namespace Rollover.Tracking
         public void ResetCache()
         {
             _contractDetailsMessage = null;
+            _strikes = null;
         }
 
         public string Symbol(IRepository repository)
@@ -145,9 +147,14 @@ namespace Rollover.Tracking
 
         public HashSet<double> Strikes(IRepository repository)
         {
-            return repository.GetStrikes(
+            if(_strikes == null)
+            {
+                _strikes = repository.GetStrikes(
                  new Contract { ConId = _conId, Exchange = _exchange },
                  LastTradeDateOrContractMonth(repository));
+            }
+
+            return _strikes;
         }
 
         public override string ToString()
