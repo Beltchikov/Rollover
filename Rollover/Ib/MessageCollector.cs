@@ -220,6 +220,9 @@ namespace Rollover.Ib
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
+
+            int msgCountBefore = 0;
+            bool endMessageReceived = false;
             while (stopWatch.Elapsed.TotalMilliseconds < _configurationManager.GetConfiguration().Timeout)
             {
                 var message = _ibClientQueue.Dequeue();
@@ -232,14 +235,16 @@ namespace Rollover.Ib
                 {
                     tickPriceMessageList.Add(priceMessage);
                 }
-                if (message is string messageAsString)
+                if (message is string messageAsString && messageAsString == Constants.ON_TICK_SNAPSHOT_END)
                 {
-                    if (messageAsString == Constants.ON_TICK_SNAPSHOT_END)
-                    {
-                        return new Tuple<List<TickSizeMessage>, List<TickPriceMessage>>(
-                            tickSizeMessageList, tickPriceMessageList);
-                    }
+                    endMessageReceived = true;
                 }
+                if (endMessageReceived && msgCountBefore > 0 && (tickSizeMessageList.Count() + tickPriceMessageList.Count()) == msgCountBefore)
+                {
+                    return new Tuple<List<TickSizeMessage>, List<TickPriceMessage>>(
+                        tickSizeMessageList, tickPriceMessageList);
+                }
+                msgCountBefore = tickSizeMessageList.Count() + tickPriceMessageList.Count();
             }
 
             return new Tuple<List<TickSizeMessage>, List<TickPriceMessage>>(
