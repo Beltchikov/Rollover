@@ -11,26 +11,21 @@ namespace Rollover.Input
 {
     public class InputProcessor : IInputProcessor
     {
-        private readonly IReducer _reducer;
         private readonly IPortfolio _portfolio;
         private readonly ITrackedSymbols _trackedSymbols;
         private readonly IRepository _repository;
-        private readonly IOrderManager _orderManager;
 
         public string State { get; private set; }
 
         public InputProcessor(
-            IReducer reducer,
             IPortfolio portfolio,
             ITrackedSymbols trackedSymbols,
             IRepository repository,
             IOrderManager orderManager)
         {
-            _reducer = reducer;
             _portfolio = portfolio;
             _trackedSymbols = trackedSymbols;
             _repository = repository;
-            _orderManager = orderManager;
         }
 
         public List<string> Convert(string input)
