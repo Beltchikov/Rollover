@@ -2,5 +2,6 @@
   "Host": "localhost",
   "Port": 4001,
   "ClientId": 1,
-  "Timeout":  15000
+  "Timeout": 15000,
+  "PriceRequestIntervalInMinutes": 1
 }
