@@ -20,8 +20,7 @@ namespace Rollover.Input
         public InputProcessor(
             IPortfolio portfolio,
             ITrackedSymbols trackedSymbols,
-            IRepository repository,
-            IOrderManager orderManager)
+            IRepository repository)
         {
             _portfolio = portfolio;
             _trackedSymbols = trackedSymbols;

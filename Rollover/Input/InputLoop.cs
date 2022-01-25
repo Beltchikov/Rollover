@@ -1,17 +1,26 @@
 ﻿using Rollover.Ib;
+using Rollover.Tracking;
 using System;
 
 namespace Rollover.Input
 {
     public class InputLoop : IInputLoop
     {
-        private IInputProcessor _inputProcessor;
-        private IMessageProcessor _messageProcessor;
+        private readonly IInputProcessor _inputProcessor;
+        private readonly IMessageProcessor _messageProcessor;
+        private readonly IRepository _repository;
+        private readonly IOrderManager _orderManager;
 
-        public InputLoop(IInputProcessor inputProcessor, IMessageProcessor messageProcessor)
+        public InputLoop(
+            IInputProcessor inputProcessor,
+            IMessageProcessor messageProcessor,
+            IRepository repository,
+            IOrderManager orderManager)
         {
             _inputProcessor = inputProcessor;
             _messageProcessor = messageProcessor;
+            _repository = repository;
+            _orderManager = orderManager;
         }
 
         public void Run(IConsoleWrapper consoleWrapper, IInputQueue inputQueue, IIbClientQueue ibClientQueue)

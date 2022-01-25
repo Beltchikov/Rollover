@@ -39,10 +39,9 @@ namespace Rollover
             IInputProcessor inputProcessor = new InputProcessor(
                 portfolio,
                 trackedSymbols,
-                repository,
-                orderManager);
+                repository);
 
-            IInputLoop inputLoop = new InputLoop(inputProcessor, messageProcessor);
+            IInputLoop inputLoop = new InputLoop(inputProcessor, messageProcessor, repository, orderManager);
 
             ITwsConnector twsConnector = new TwsConnector(configurationManager, consoleWrapper, inputQueue, repository);
             IRolloverAgent rolloverAgent = new RolloverAgent(
