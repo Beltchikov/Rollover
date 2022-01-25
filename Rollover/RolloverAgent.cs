@@ -63,7 +63,7 @@ namespace Rollover
                 e => _orderManager.RolloverIfNextStrike(_trackedSymbols),
                 null,
                 TimeSpan.Zero,
-                TimeSpan.FromMinutes(_configurationManager.GetConfiguration().PriceRequestIntervalInMinutes));
+                TimeSpan.FromSeconds(_configurationManager.GetConfiguration().PriceRequestIntervalInSeconds));
 
             _inputLoop.Run(_consoleWrapper, _inputQueue, _ibClientQueue);
             _repository.Disconnect();
