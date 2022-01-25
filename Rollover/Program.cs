@@ -41,7 +41,7 @@ namespace Rollover
                 trackedSymbols,
                 repository);
 
-            IInputLoop inputLoop = new InputLoop(inputProcessor, messageProcessor, repository, orderManager);
+            IInputLoop inputLoop = new InputLoop(inputProcessor, messageProcessor);
 
             ITwsConnector twsConnector = new TwsConnector(configurationManager, consoleWrapper, inputQueue, repository);
             IRolloverAgent rolloverAgent = new RolloverAgent(
@@ -53,7 +53,8 @@ namespace Rollover
                 inputLoop,
                 twsConnector,
                 portfolio,
-                trackedSymbols);
+                trackedSymbols,
+                orderManager);
 
             rolloverAgent.Run();
         }

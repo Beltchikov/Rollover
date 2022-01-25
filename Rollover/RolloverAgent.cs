@@ -2,7 +2,9 @@
 using Rollover.Ib;
 using Rollover.Input;
 using Rollover.Tracking;
+using System;
 using System.Linq;
+using System.Threading;
 
 namespace Rollover
 {
@@ -17,6 +19,7 @@ namespace Rollover
         private ITwsConnector _twsConnector;
         private IPortfolio _portfolio;
         private ITrackedSymbols _trackedSymbols;
+        private readonly IOrderManager _orderManager;
 
         public RolloverAgent(
             IConfigurationManager configurationManager,
@@ -26,8 +29,8 @@ namespace Rollover
             IRepository repository,
             IInputLoop inputLoop,
             ITwsConnector twsConnector,
-            IPortfolio portfolio, 
-            ITrackedSymbols trackedSymbols)
+            IPortfolio portfolio,
+            ITrackedSymbols trackedSymbols, IOrderManager orderManager)
         {
             _configurationManager = configurationManager;
             _consoleWrapper = consoleWrapper;
@@ -38,6 +41,7 @@ namespace Rollover
             _twsConnector = twsConnector;
             _portfolio = portfolio;
             _trackedSymbols = trackedSymbols;
+            _orderManager = orderManager;
         }
 
         public void Run()
@@ -54,6 +58,12 @@ namespace Rollover
 
             _trackedSymbols.Summary().ForEach(l => _consoleWrapper.WriteLine(l));
             _consoleWrapper.WriteLine(Constants.ENTER_SYMBOL_TO_TRACK);
+
+            var timer = new Timer(
+                e => _orderManager.RolloverIfNextStrike(_trackedSymbols),
+                null,
+                TimeSpan.Zero,
+                TimeSpan.FromMinutes(_configurationManager.GetConfiguration().PriceRequestIntervalInMinutes));
 
             _inputLoop.Run(_consoleWrapper, _inputQueue, _ibClientQueue);
             _repository.Disconnect();
