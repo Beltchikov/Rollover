@@ -1,32 +1,54 @@
+using IBApi;
 using NSubstitute;
 using Rollover.Configuration;
 using Rollover.Ib;
 using Rollover.Tracking;
 using System;
+using System.Linq;
 using Xunit;
 
 namespace Rollover.IntegrationTests
 {
     public class RepositoryShould
     {
-        private readonly string HOST = "localhost";
-        private readonly int PORT = 4001;
-        private readonly int CLIENT_ID = 1;
-        private readonly int TIMEOUT = 10000;
-        private readonly int PRICE_REQUEST_INTERVAL_IN_SECONDS = 10;
+        private static readonly string HOST = "localhost";
+        private static readonly int PORT = 4001;
+        private static readonly int CLIENT_ID = 1;
+        private static readonly int TIMEOUT = 10000;
+        private static readonly int PRICE_REQUEST_INTERVAL_IN_SECONDS = 10;
+
+        //private static readonly IRepository _repository = RepositoryFactory();
+
+        [Fact]
+        public void ConnectFast()
+        {
+            var repository = RepositoryFactory();
+            var connnectionTuple = repository.Connect(HOST, PORT, CLIENT_ID);
+            Assert.True(connnectionTuple.Item1);
+        }
 
         //[Fact]
-        //public void ConnectFast()
+        //public void ReceiveContractDetaillForDaxOptions()
         //{
-        //    var repository = RepositoryFactory();
-        //    repository.Disconnect();
-        //    var connected = repository.IsConnected();
-        //    var connnectionTuple = repository.Connect(HOST, PORT, CLIENT_ID);
+        //    var contract = new Contract
+        //    {
+        //        Symbol = "DAX",
+        //        SecType = "OPT",
+        //        Currency = "EUR",
+        //        Exchange = "DTB"
+        //    };
 
-        //    Assert.True(connnectionTuple.Item1);
+        //    var repository = RepositoryFactory();
+        //    if (repository.IsConnected())
+        //    {
+        //        repository.Connect(HOST, PORT, CLIENT_ID);
+        //    }
+        //    var contractDetails = repository.ContractDetails(contract);
+        //    Assert.True(contractDetails.Any());
         //}
 
-        private IRepository RepositoryFactory()
+
+        private static IRepository RepositoryFactory()
         {
             IConfigurationManager configurationManager = ConfigurationManagerFactory();
 
@@ -50,7 +72,7 @@ namespace Rollover.IntegrationTests
             return repository;
         }
 
-        private IConfigurationManager ConfigurationManagerFactory()
+        private static IConfigurationManager ConfigurationManagerFactory()
         {
             var configuration = new Configuration.Configuration
             {

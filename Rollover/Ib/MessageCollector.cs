@@ -250,5 +250,10 @@ namespace Rollover.Ib
             return new Tuple<List<TickSizeMessage>, List<TickPriceMessage>>(
                 new List<TickSizeMessage>(), new List<TickPriceMessage>());
         }
+
+        public bool IsConnected()
+        {
+            return _ibClient.IsConnected();
+        }
     }
 }

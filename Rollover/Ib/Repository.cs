@@ -338,5 +338,10 @@ namespace Rollover.Ib
             //    ibClient.ClientSocket.placeOrder(_nextOrderId, contract, order);
             //    ibClient.ClientSocket.reqIds(-1);
         }
+
+        public bool IsConnected()
+        {
+            return _messageCollector.IsConnected();
+        }
     }
 }

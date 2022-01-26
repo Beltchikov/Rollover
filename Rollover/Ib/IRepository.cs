@@ -22,5 +22,6 @@ namespace Rollover.Ib
 
         Tuple<bool, double> GetCurrentPrice(int conId, string exchange);
         void PlaceBearSpread(ITrackedSymbol trackedSymbol);
+        bool IsConnected();
     }
 }

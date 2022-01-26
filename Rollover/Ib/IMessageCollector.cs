@@ -21,5 +21,6 @@ namespace Rollover.Ib
             bool snapshot, 
             bool regulatorySnapshot,
             List<TagValue> mktDataOptions);
+        bool IsConnected();
     }
 }
