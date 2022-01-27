@@ -89,6 +89,33 @@ namespace Rollover.IntegrationTests
             Assert.True(contractDetails.Any());
         }
 
+        [Fact]
+        public void ReceiveCurrentPriceDax()
+        {
+            var contract = new Contract
+            {
+                Symbol = "DAX",
+                SecType = "IND",
+                Currency = "EUR",
+                Exchange = "DTB",
+            };
+
+            var repository = RepositoryFactory();
+            if (!repository.IsConnected())
+            {
+                repository.Connect(HOST, PORT, RandomClientId());
+            }
+            var contractDetails = repository.ContractDetails(contract);
+            Assert.True(contractDetails.Any());
+
+            var conId = contractDetails.First().ContractDetails.Contract.ConId;
+            var priceTuple = repository.GetCurrentPrice(conId, "DTB");
+            Assert.True(priceTuple.Item1);
+
+            repository.Disconnect();
+
+        }
+
 
         private IRepository RepositoryFactory()
         {
