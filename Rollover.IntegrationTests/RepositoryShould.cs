@@ -1,10 +1,8 @@
-using IBApi;
 using NSubstitute;
 using Rollover.Configuration;
 using Rollover.Ib;
 using Rollover.Tracking;
 using System;
-using System.Linq;
 using Xunit;
 
 namespace Rollover.IntegrationTests
@@ -13,18 +11,21 @@ namespace Rollover.IntegrationTests
     {
         private static readonly string HOST = "localhost";
         private static readonly int PORT = 4001;
-        private static readonly int CLIENT_ID = 1;
         private static readonly int TIMEOUT = 10000;
         private static readonly int PRICE_REQUEST_INTERVAL_IN_SECONDS = 10;
-
-        //private static readonly IRepository _repository = RepositoryFactory();
 
         [Fact]
         public void ConnectFast()
         {
             var repository = RepositoryFactory();
-            var connnectionTuple = repository.Connect(HOST, PORT, CLIENT_ID);
+            var connnectionTuple = repository.Connect(HOST, PORT, RandomClientId());
             Assert.True(connnectionTuple.Item1);
+        }
+
+        private int RandomClientId()
+        {
+            Random rnd = new Random();
+            return rnd.Next();
         }
 
         //[Fact]
@@ -48,7 +49,7 @@ namespace Rollover.IntegrationTests
         //}
 
 
-        private static IRepository RepositoryFactory()
+        private IRepository RepositoryFactory()
         {
             IConfigurationManager configurationManager = ConfigurationManagerFactory();
 
@@ -72,13 +73,13 @@ namespace Rollover.IntegrationTests
             return repository;
         }
 
-        private static IConfigurationManager ConfigurationManagerFactory()
+        private IConfigurationManager ConfigurationManagerFactory()
         {
             var configuration = new Configuration.Configuration
             {
                 Host = HOST,
                 Port = PORT,
-                ClientId = CLIENT_ID,
+                ClientId = RandomClientId(),
                 Timeout = TIMEOUT,
                 PriceRequestIntervalInSeconds = PRICE_REQUEST_INTERVAL_IN_SECONDS
             };
