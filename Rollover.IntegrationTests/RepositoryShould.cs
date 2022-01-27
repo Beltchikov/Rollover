@@ -41,12 +41,20 @@ namespace Rollover.IntegrationTests
         [Fact]
         public void ReceiveContractDetailsForDaxOptions()
         {
+            //Due to the potentially high amount of data resulting from such queries this request is subject to pacing.
+            //Although a request such as the above one will be answered immediately, 
+            //a similar subsequent one will be kept on hold for one minute. 
+            //This amount of time will increase if more such requests are performed. 
+            //To prevent this, narrow down the amount of eligible contracts by providing an expiration date 
+            //specifying at least the year(i.e. 2016) or the year and the month(i.e. 201603 for March 2016).
+
             var contract = new Contract
             {
                 Symbol = "DAX",
                 SecType = "OPT",
                 Currency = "EUR",
-                Exchange = "DTB"
+                Exchange = "DTB",
+                LastTradeDateOrContractMonth = DateTime.Now.Year.ToString() + "03"
             };
 
             var repository = RepositoryFactory();
