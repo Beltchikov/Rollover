@@ -67,6 +67,28 @@ namespace Rollover.IntegrationTests
             Assert.True(contractDetails.Any());
         }
 
+        [Fact]
+        public void ReceiveContractDetailsForMnqOptions()
+        {
+            var contract = new Contract
+            {
+                Symbol = "MNQ",
+                SecType = "FOP",
+                Currency = "USD",
+                Exchange = "GLOBEX",
+                LastTradeDateOrContractMonth = DateTime.Now.Year.ToString() + "03"
+            };
+
+            var repository = RepositoryFactory();
+            if (!repository.IsConnected())
+            {
+                repository.Connect(HOST, PORT, RandomClientId());
+            }
+            var contractDetails = repository.ContractDetails(contract);
+            repository.Disconnect();
+            Assert.True(contractDetails.Any());
+        }
+
 
         private IRepository RepositoryFactory()
         {
