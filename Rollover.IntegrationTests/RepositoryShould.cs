@@ -3,6 +3,7 @@ using Rollover.Configuration;
 using Rollover.Ib;
 using Rollover.Tracking;
 using System;
+using System.Diagnostics;
 using Xunit;
 
 namespace Rollover.IntegrationTests
@@ -18,8 +19,13 @@ namespace Rollover.IntegrationTests
         public void ConnectFast()
         {
             var repository = RepositoryFactory();
+
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
             var connnectionTuple = repository.Connect(HOST, PORT, RandomClientId());
+            
             Assert.True(connnectionTuple.Item1);
+            Assert.InRange(stopwatch.Elapsed.TotalMilliseconds, 0, 3000);
         }
 
         private int RandomClientId()
