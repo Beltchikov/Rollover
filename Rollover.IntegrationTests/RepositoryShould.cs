@@ -1,9 +1,11 @@
+using IBApi;
 using NSubstitute;
 using Rollover.Configuration;
 using Rollover.Ib;
 using Rollover.Tracking;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using Xunit;
 
 namespace Rollover.IntegrationTests
@@ -23,7 +25,9 @@ namespace Rollover.IntegrationTests
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             var connnectionTuple = repository.Connect(HOST, PORT, RandomClientId());
-            
+            repository.Disconnect();
+
+
             Assert.True(connnectionTuple.Item1);
             Assert.InRange(stopwatch.Elapsed.TotalMilliseconds, 0, 3000);
         }
@@ -34,25 +38,26 @@ namespace Rollover.IntegrationTests
             return rnd.Next();
         }
 
-        //[Fact]
-        //public void ReceiveContractDetaillForDaxOptions()
-        //{
-        //    var contract = new Contract
-        //    {
-        //        Symbol = "DAX",
-        //        SecType = "OPT",
-        //        Currency = "EUR",
-        //        Exchange = "DTB"
-        //    };
+        [Fact]
+        public void ReceiveContractDetailsForDaxOptions()
+        {
+            var contract = new Contract
+            {
+                Symbol = "DAX",
+                SecType = "OPT",
+                Currency = "EUR",
+                Exchange = "DTB"
+            };
 
-        //    var repository = RepositoryFactory();
-        //    if (repository.IsConnected())
-        //    {
-        //        repository.Connect(HOST, PORT, CLIENT_ID);
-        //    }
-        //    var contractDetails = repository.ContractDetails(contract);
-        //    Assert.True(contractDetails.Any());
-        //}
+            var repository = RepositoryFactory();
+            if (!repository.IsConnected())
+            {
+                repository.Connect(HOST, PORT, RandomClientId());
+            }
+            var contractDetails = repository.ContractDetails(contract);
+            repository.Disconnect();
+            Assert.True(contractDetails.Any());
+        }
 
 
         private IRepository RepositoryFactory()
