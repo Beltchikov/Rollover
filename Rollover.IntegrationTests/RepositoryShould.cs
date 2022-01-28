@@ -114,9 +114,7 @@ namespace Rollover.IntegrationTests
             Assert.True(priceTuple.Item1);
 
             repository.Disconnect();
-
         }
-
 
         private IRepository RepositoryFactory()
         {

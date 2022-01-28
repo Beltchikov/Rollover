@@ -15,7 +15,7 @@ namespace Rollover.Ib
             string exchange, 
             string secType, 
             int conId);
-        TickPriceMessage reqMktData(
+        Tuple<List<TickSizeMessage>, List<TickPriceMessage>> reqMktData(
             Contract contract, 
             string generickTickList, 
             bool snapshot, 

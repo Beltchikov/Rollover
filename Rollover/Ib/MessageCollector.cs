@@ -160,27 +160,27 @@ namespace Rollover.Ib
             return positionMessages;
         }
 
-        public TickPriceMessage reqMktData(
-            Contract contract,
-            string generickTickList,
-            bool snapshot,
-            bool regulatorySnapshot,
-            List<TagValue> mktDataOptions)
-        {
-            Tuple<List<TickSizeMessage>, List<TickPriceMessage>> mktDataAsTuple = reqMktDataAsTuple(
-                contract,
-                generickTickList,
-                snapshot,
-                regulatorySnapshot,
-                mktDataOptions);
-            var tickPriceMessageList = mktDataAsTuple.Item2;
+        //public TickPriceMessage reqMktData(
+        //    Contract contract,
+        //    string generickTickList,
+        //    bool snapshot,
+        //    bool regulatorySnapshot,
+        //    List<TagValue> mktDataOptions)
+        //{
+        //    Tuple<List<TickSizeMessage>, List<TickPriceMessage>> mktDataAsTuple = reqMktDataAsTuple(
+        //        contract,
+        //        generickTickList,
+        //        snapshot,
+        //        regulatorySnapshot,
+        //        mktDataOptions);
+        //    var tickPriceMessageList = mktDataAsTuple.Item2;
 
-            // Last Price	4	Last price at which the contract traded (does not include some trades in RTVolume).
-            // https://interactivebrokers.github.io/tws-api/tick_types.html
-            return tickPriceMessageList.FirstOrDefault(m => m.Field == 4);
-        }
+        //    // Last Price	4	Last price at which the contract traded (does not include some trades in RTVolume).
+        //    // https://interactivebrokers.github.io/tws-api/tick_types.html
+        //    return tickPriceMessageList.FirstOrDefault(m => m.Field == 4);
+        //}
 
-        public Tuple<List<TickSizeMessage>, List<TickPriceMessage>> reqMktDataAsTuple(
+        public Tuple<List<TickSizeMessage>, List<TickPriceMessage>> reqMktData(
             Contract contract,
             string generickTickList,
             bool snapshot,

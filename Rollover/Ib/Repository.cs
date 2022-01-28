@@ -160,11 +160,16 @@ namespace Rollover.Ib
         public Tuple<bool, double> LastPrice(int conId, string exchange)
         {
             var contract = new Contract { ConId = conId, Exchange = exchange };
-            var tickPriceMessage = _messageCollector.reqMktData(contract, "", true, false, null);
+            var mktDataTuple = _messageCollector.reqMktData(contract, "", true, false, null);
+
+            //    // Last Price	4	Last price at which the contract traded (does not include some trades in RTVolume).
+            //    // https://interactivebrokers.github.io/tws-api/tick_types.html
+            var tickPriceMessage = mktDataTuple.Item2.FirstOrDefault(m => m.Field == 4);
             if (tickPriceMessage == null)
             {
-                return new Tuple<bool, double>(false, -1);
+                return new Tuple<bool, double>(false, 0);
             }
+
             return new Tuple<bool, double>(true, tickPriceMessage.Price);
         }
 
