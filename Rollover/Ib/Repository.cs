@@ -159,28 +159,21 @@ namespace Rollover.Ib
 
         public Tuple<bool, double> LastPrice(int conId, string exchange)
         {
-            var contract = new Contract { ConId = conId, Exchange = exchange };
-            var mktDataTuple = _messageCollector.reqMktData(contract, "", true, false, null);
-
-            //    // Last Price	4	Last price at which the contract traded (does not include some trades in RTVolume).
-            //    // https://interactivebrokers.github.io/tws-api/tick_types.html
-            var tickPriceMessage = mktDataTuple.Item2.FirstOrDefault(m => m.Field == 4);
-            if (tickPriceMessage == null)
-            {
-                return new Tuple<bool, double>(false, 0);
-            }
-
-            return new Tuple<bool, double>(true, tickPriceMessage.Price);
+            return GetPrice(conId, exchange, m => m.Field == 4);
         }
 
         public Tuple<bool, double> ClosePrice(int conId, string exchange)
         {
+            return GetPrice(conId, exchange, m => m.Field == 9);
+        }
+
+        private Tuple<bool, double> GetPrice(int conId, string exchange, Func<TickPriceMessage, bool> predicate)
+        {
             var contract = new Contract { ConId = conId, Exchange = exchange };
             var mktDataTuple = _messageCollector.reqMktData(contract, "", true, false, null);
 
-            //    // Last Price	4	Last price at which the contract traded (does not include some trades in RTVolume).
-            //    // https://interactivebrokers.github.io/tws-api/tick_types.html
-            var tickPriceMessage = mktDataTuple.Item2.FirstOrDefault(m => m.Field == 9);
+            // https://interactivebrokers.github.io/tws-api/tick_types.html
+            var tickPriceMessage = mktDataTuple.Item2.FirstOrDefault(predicate);
             if (tickPriceMessage == null)
             {
                 return new Tuple<bool, double>(false, 0);
