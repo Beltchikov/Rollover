@@ -116,6 +116,40 @@ namespace Rollover.IntegrationTests
             repository.Disconnect();
         }
 
+        [Fact]
+        public void ReceiveLastPriceMnqFuture()
+        {
+            var exchange = "GLOBEX";
+            var lastTradeDateOrContractMonth = DateTime.Now.Year.ToString() 
+                + (Math.Ceiling((double)DateTime.Now.Month / 3) * 3).ToString();
+            lastTradeDateOrContractMonth = lastTradeDateOrContractMonth.Length == 5
+                ? lastTradeDateOrContractMonth.Insert(4, "0")
+                : lastTradeDateOrContractMonth;
+
+            var contract = new Contract
+            {
+                Symbol = "MNQ",
+                SecType = "FUT",
+                Currency = "USD",
+                Exchange = exchange,
+                LastTradeDateOrContractMonth = lastTradeDateOrContractMonth
+            };
+
+            var repository = RepositoryFactory();
+            if (!repository.IsConnected())
+            {
+                repository.Connect(HOST, PORT, RandomClientId());
+            }
+            var contractDetails = repository.ContractDetails(contract);
+            Assert.True(contractDetails.Any());
+
+            var conId = contractDetails.First().ContractDetails.Contract.ConId;
+            var priceTuple = repository.LastPrice(conId, exchange);
+            Assert.True(priceTuple.Item1);
+
+            repository.Disconnect();
+        }
+
         private IRepository RepositoryFactory()
         {
             IConfigurationManager configurationManager = ConfigurationManagerFactory();
