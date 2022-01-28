@@ -92,12 +92,13 @@ namespace Rollover.IntegrationTests
         [Fact]
         public void ReceiveCurrentPriceDax()
         {
+            var exchange = "DTB";
             var contract = new Contract
             {
                 Symbol = "DAX",
                 SecType = "IND",
                 Currency = "EUR",
-                Exchange = "DTB",
+                Exchange = exchange,
             };
 
             var repository = RepositoryFactory();
@@ -109,7 +110,7 @@ namespace Rollover.IntegrationTests
             Assert.True(contractDetails.Any());
 
             var conId = contractDetails.First().ContractDetails.Contract.ConId;
-            var priceTuple = repository.GetCurrentPrice(conId, "DTB");
+            var priceTuple = repository.GetCurrentPrice(conId, exchange);
             Assert.True(priceTuple.Item1);
 
             repository.Disconnect();
