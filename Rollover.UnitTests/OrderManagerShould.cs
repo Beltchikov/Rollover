@@ -19,9 +19,9 @@ namespace Rollover.UnitTests
             OrderManager sut)
         {
             Tuple<bool, double> priceTuple = new Tuple<bool, double>(true, 100);
-            repository.GetCurrentPrice(Arg.Any<int>(), Arg.Any<string>()).Returns(priceTuple);
+            repository.LastPrice(Arg.Any<int>(), Arg.Any<string>()).Returns(priceTuple);
             sut.RolloverIfNextStrike(trackedSymbols);
-            repository.Received().GetCurrentPrice(Arg.Any<int>(), Arg.Any<string>());
+            repository.Received().LastPrice(Arg.Any<int>(), Arg.Any<string>());
         }
 
         [Theory, AutoNSubstituteData]
@@ -31,7 +31,7 @@ namespace Rollover.UnitTests
             OrderManager sut)
         {
             Tuple<bool, double> priceTuple = new Tuple<bool, double>(false, 100);
-            repository.GetCurrentPrice(Arg.Any<int>(), Arg.Any<string>()).Returns(priceTuple);
+            repository.LastPrice(Arg.Any<int>(), Arg.Any<string>()).Returns(priceTuple);
 
             Assert.Throws<NoMarketDataException>(() => sut.RolloverIfNextStrike(trackedSymbols));
         }
@@ -48,7 +48,7 @@ namespace Rollover.UnitTests
             double currentStrike = 100;
             
             Tuple<bool, double> priceTuple = new Tuple<bool, double>(true, currentPrice);
-            repository.GetCurrentPrice(Arg.Any<int>(), Arg.Any<string>()).Returns(priceTuple);
+            repository.LastPrice(Arg.Any<int>(), Arg.Any<string>()).Returns(priceTuple);
             
             var strikes = new HashSet<double> { 90, currentStrike, nextStrike };
             repository.GetStrikes(Arg.Any<Contract>(), Arg.Any<string>()).Returns(strikes);
@@ -78,7 +78,7 @@ namespace Rollover.UnitTests
             double currentStrike = 100;
 
             Tuple<bool, double> priceTuple = new Tuple<bool, double>(true, currentPrice);
-            repository.GetCurrentPrice(Arg.Any<int>(), Arg.Any<string>()).Returns(priceTuple);
+            repository.LastPrice(Arg.Any<int>(), Arg.Any<string>()).Returns(priceTuple);
 
             var strikes = new HashSet<double> { 90, currentStrike, nextStrike };
             repository.GetStrikes(Arg.Any<Contract>(), Arg.Any<string>()).Returns(strikes);
@@ -109,7 +109,7 @@ namespace Rollover.UnitTests
             double currentStrike = 100;
 
             Tuple<bool, double> priceTuple = new Tuple<bool, double>(true, currentPrice);
-            repository.GetCurrentPrice(Arg.Any<int>(), Arg.Any<string>()).Returns(priceTuple);
+            repository.LastPrice(Arg.Any<int>(), Arg.Any<string>()).Returns(priceTuple);
 
             var strikes = new HashSet<double> { 90, currentStrike, nextStrike };
             repository.GetStrikes(Arg.Any<Contract>(), Arg.Any<string>()).Returns(strikes);

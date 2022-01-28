@@ -77,7 +77,7 @@ namespace Rollover.Ib
 
             // Strikes & price
             var strikes = GetStrikes(secondUnderLyingContract, contract.LastTradeDateOrContractMonth);
-            var currentPrice = GetCurrentPrice(underLyingContract.ConId, underLyingContract.Exchange);
+            var currentPrice = LastPrice(underLyingContract.ConId, underLyingContract.Exchange);
             if (!currentPrice.Item1)
             {
                 return null;
@@ -112,7 +112,7 @@ namespace Rollover.Ib
 
         private int GetBuyConIdForBearSpread(ITrackedSymbol trackedSymbol)
         {
-            var priceUnderlying = GetCurrentPrice(trackedSymbol.ConId, trackedSymbol.Exchange);
+            var priceUnderlying = LastPrice(trackedSymbol.ConId, trackedSymbol.Exchange);
             var putContract = new Contract
             {
                 Symbol = trackedSymbol.Symbol(this),
@@ -145,7 +145,7 @@ namespace Rollover.Ib
 
             // Strikes & price
             var strikes = GetStrikes(underLyingContract, contract.LastTradeDateOrContractMonth);
-            var currentPrice = GetCurrentPrice(underLyingContract.ConId, underLyingContract.Exchange);
+            var currentPrice = LastPrice(underLyingContract.ConId, underLyingContract.Exchange);
             if (!currentPrice.Item1)
             {
                 return null;
@@ -157,7 +157,7 @@ namespace Rollover.Ib
             return new TrackedSymbol(contract.LocalSymbol, contract.ConId, contract.Exchange);
         }
 
-        public Tuple<bool, double> GetCurrentPrice(int conId, string exchange)
+        public Tuple<bool, double> LastPrice(int conId, string exchange)
         {
             var contract = new Contract { ConId = conId, Exchange = exchange };
             var tickPriceMessage = _messageCollector.reqMktData(contract, "", true, false, null);

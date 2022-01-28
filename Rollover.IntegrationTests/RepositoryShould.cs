@@ -110,7 +110,7 @@ namespace Rollover.IntegrationTests
             Assert.True(contractDetails.Any());
 
             var conId = contractDetails.First().ContractDetails.Contract.ConId;
-            var priceTuple = repository.GetCurrentPrice(conId, exchange);
+            var priceTuple = repository.LastPrice(conId, exchange);
             Assert.True(priceTuple.Item1);
 
             repository.Disconnect();

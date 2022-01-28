@@ -16,7 +16,7 @@ namespace Rollover.Tracking
         {
             foreach (var trackedSymbol in trackedSymbols)
             {
-                var priceUnderlying = _repository.GetCurrentPrice(trackedSymbol.ConId, trackedSymbol.Exchange);
+                var priceUnderlying = _repository.LastPrice(trackedSymbol.ConId, trackedSymbol.Exchange);
                 if (!priceUnderlying.Item1)
                 {
                     throw new NoMarketDataException($"Was not able to get a price for {trackedSymbol.ConId} and {trackedSymbol.Exchange}");

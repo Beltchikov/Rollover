@@ -20,7 +20,7 @@ namespace Rollover.Ib
         TrackedSymbol GetTrackedSymbol(Contract contract);
         HashSet<double> GetStrikes(Contract contract, string lastTradeDateOrContractMonth);
 
-        Tuple<bool, double> GetCurrentPrice(int conId, string exchange);
+        Tuple<bool, double> LastPrice(int conId, string exchange);
         void PlaceBearSpread(ITrackedSymbol trackedSymbol);
         bool IsConnected();
     }
