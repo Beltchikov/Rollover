@@ -196,12 +196,6 @@ namespace Rollover.Ib
                 regulatorySnapshot,
                 mktDataOptions);
 
-            if (mktDataAsTuple.Item1.All(t => t.Size == -1)
-                && mktDataAsTuple.Item2.All(t => (int)Math.Round(t.Price, 0) == -1))
-            {
-                return new List<TickPriceMessage>();
-            }
-
             return mktDataAsTuple.Item2;
         }
 
