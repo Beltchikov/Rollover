@@ -173,6 +173,22 @@ namespace Rollover.Ib
             return new Tuple<bool, double>(true, tickPriceMessage.Price);
         }
 
+        public Tuple<bool, double> ClosePrice(int conId, string exchange)
+        {
+            var contract = new Contract { ConId = conId, Exchange = exchange };
+            var mktDataTuple = _messageCollector.reqMktData(contract, "", true, false, null);
+
+            //    // Last Price	4	Last price at which the contract traded (does not include some trades in RTVolume).
+            //    // https://interactivebrokers.github.io/tws-api/tick_types.html
+            var tickPriceMessage = mktDataTuple.Item2.FirstOrDefault(m => m.Field == 9);
+            if (tickPriceMessage == null)
+            {
+                return new Tuple<bool, double>(false, 0);
+            }
+
+            return new Tuple<bool, double>(true, tickPriceMessage.Price);
+        }
+
         public List<ContractDetailsMessage> ContractDetails(Contract contract)
         {
             return _messageCollector.reqContractDetails(contract);
