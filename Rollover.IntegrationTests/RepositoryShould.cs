@@ -90,7 +90,7 @@ namespace Rollover.IntegrationTests
         }
 
         [Fact]
-        public void ReceiveCurrentPriceDax()
+        public void ReceiveLastPriceDaxIndex()
         {
             var exchange = "DTB";
             var contract = new Contract
