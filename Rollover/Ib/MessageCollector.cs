@@ -167,36 +167,17 @@ namespace Rollover.Ib
             bool regulatorySnapshot,
             List<TagValue> mktDataOptions)
         {
-            var tickPriceMessageList = reqMktDataAsList(
+            Tuple<List<TickSizeMessage>, List<TickPriceMessage>> mktDataAsTuple = reqMktDataAsTuple(
                 contract,
                 generickTickList,
                 snapshot,
                 regulatorySnapshot,
                 mktDataOptions);
+            var tickPriceMessageList = mktDataAsTuple.Item2;
 
-            if (!tickPriceMessageList.Any())
-            {
-                return null;
-            }
-
-            return tickPriceMessageList.OrderByDescending(m => m.Price).First();
-        }
-
-        public List<TickPriceMessage> reqMktDataAsList(
-            Contract contract,
-            string generickTickList,
-            bool snapshot,
-            bool regulatorySnapshot,
-            List<TagValue> mktDataOptions)
-        {
-            var mktDataAsTuple = reqMktDataAsTuple(
-                contract,
-                generickTickList,
-                snapshot,
-                regulatorySnapshot,
-                mktDataOptions);
-
-            return mktDataAsTuple.Item2;
+            // Last Price	4	Last price at which the contract traded (does not include some trades in RTVolume).
+            // https://interactivebrokers.github.io/tws-api/tick_types.html
+            return tickPriceMessageList.FirstOrDefault(m => m.Field == 4);
         }
 
         public Tuple<List<TickSizeMessage>, List<TickPriceMessage>> reqMktDataAsTuple(

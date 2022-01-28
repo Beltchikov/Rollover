@@ -273,7 +273,7 @@ namespace Prototype
 
         private void OnTickPrice(TickPriceMessage obj)
         {
-            var msg = $"OnTickPrice: obj.RequestId:{obj.RequestId} obj.Field:{obj.Field} obj.Price:{obj.Price}";
+            var msg = $"OnTickPrice: obj.RequestId:{obj.RequestId} obj.Field:{obj.Field} obj.Price:{obj.Price} obj.Attribs:{obj.Attribs.toString()}";
             AddLineToTextbox(txtMessage, msg.ToString());
         }
 
