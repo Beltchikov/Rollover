@@ -193,6 +193,44 @@ namespace Rollover.IntegrationTests
             repository.Disconnect();
         }
 
+        [Fact]
+        public void ReceiveOptionParametersMnq()
+        {
+            var exchange = "GLOBEX";
+            var lastTradeDateOrContractMonth = DateTime.Now.Year.ToString()
+                + (Math.Ceiling((double)DateTime.Now.Month / 3) * 3).ToString();
+            lastTradeDateOrContractMonth = lastTradeDateOrContractMonth.Length == 5
+                ? lastTradeDateOrContractMonth.Insert(4, "0")
+                : lastTradeDateOrContractMonth;
+
+            var contract = new Contract
+            {
+                Symbol = "MNQ",
+                SecType = "FUT",
+                Currency = "USD",
+                Exchange = exchange,
+                LastTradeDateOrContractMonth = lastTradeDateOrContractMonth
+            };
+
+            var repository = RepositoryFactory();
+            if (!repository.IsConnected())
+            {
+                repository.Connect(HOST, PORT, RandomClientId());
+            }
+
+            var contractDetailsList = repository.ContractDetails(contract);
+            Assert.Single(contractDetailsList);
+
+            var optionParameterMessageList = repository.OptionParameters(
+                contract.Symbol,
+                contract.Exchange,
+                contract.SecType,
+                contractDetailsList.First().ContractDetails.Contract.ConId);
+            Assert.True(optionParameterMessageList.Any());
+
+            repository.Disconnect();
+        }
+
         private IRepository RepositoryFactory()
         {
             IConfigurationManager configurationManager = ConfigurationManagerFactory();
