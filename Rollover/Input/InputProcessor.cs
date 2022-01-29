@@ -57,6 +57,10 @@ namespace Rollover.Input
             {
                 return _portfolio.Summary();
             }
+            if (input.Equals("t", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return _trackedSymbols.Summary();
+            }
 
             var position = _portfolio.PositionBySymbol(input);
             var symbol = position?.Contract?.Symbol;
@@ -74,6 +78,7 @@ namespace Rollover.Input
             var help = new List<string> { "" };
             help.Add("Enter symbol from position list to track the position.");
             help.Add("Enter 'p' to list portfolio positions.");
+            help.Add("Enter 't' to list tracked symbols.");
             help.Add("Enter 'q' to quit.");
 
             return help;
