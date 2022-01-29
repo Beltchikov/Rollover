@@ -162,6 +162,37 @@ namespace Rollover.IntegrationTests
             repository.Disconnect();
         }
 
+        [Fact]
+        public void ReceiveOptionParametersDax()
+        {
+            var exchange = "DTB";
+            var contract = new Contract
+            {
+                Symbol = "DAX",
+                SecType = "IND",
+                Currency = "EUR",
+                Exchange = exchange,
+            };
+
+            var repository = RepositoryFactory();
+            if (!repository.IsConnected())
+            {
+                repository.Connect(HOST, PORT, RandomClientId());
+            }
+
+            var contractDetailsList = repository.ContractDetails(contract);
+            Assert.Single(contractDetailsList);
+
+            var optionParameterMessageList = repository.OptionParameters(
+                contract.Symbol,
+                contract.Exchange,
+                contract.SecType,
+                contractDetailsList.First().ContractDetails.Contract.ConId);
+            Assert.True(optionParameterMessageList.Any());
+
+            repository.Disconnect();
+        }
+
         private IRepository RepositoryFactory()
         {
             IConfigurationManager configurationManager = ConfigurationManagerFactory();
