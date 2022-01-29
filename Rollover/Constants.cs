@@ -11,5 +11,6 @@
         public static string ON_TICK_GENERIC = "OnTickGeneric";
         public static string SMART = "SMART";
         public static string ON_TICK_SNAPSHOT_END = "OnTickSnapshotEnd";
+        public static string POSITIONS = "POSITIONS:";
     }
 }

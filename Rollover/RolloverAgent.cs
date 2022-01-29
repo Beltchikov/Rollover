@@ -61,24 +61,28 @@ namespace Rollover
             // Connect
             _twsConnector.Connect(configuration.Host, configuration.Port, configuration.ClientId);
 
+            // Retrieve positions
             _consoleWrapper.WriteLine("Retrieving positions... Please wait.");
             var positionMessageList = _repository.AllPositions().OrderBy(p => p.Contract.LocalSymbol).ToList();
-            positionMessageList.ForEach(p =>
-            {
-                _portfolio.Add(p);
-                _consoleWrapper.WriteLine(p.Contract.LocalSymbol);
-            });
+            positionMessageList.ForEach(p =>{ _portfolio.Add(p); });
+            _consoleWrapper.WriteLine(Environment.NewLine);
+            _portfolio.Summary().ForEach(p => _consoleWrapper.WriteLine(p));
 
+            // Print symbol summary
             _trackedSymbols.Summary().ForEach(l => _consoleWrapper.WriteLine(l));
             _consoleWrapper.WriteLine(Constants.ENTER_SYMBOL_TO_TRACK);
 
+            // Start timer for Rollover function
             var timer = new Timer(
                 e => _orderManager.RolloverIfNextStrike(_trackedSymbols),
                 null,
                 TimeSpan.Zero,
                 TimeSpan.FromSeconds(_configurationManager.GetConfiguration().PriceRequestIntervalInSeconds));
 
+            // Start input loop
             _inputLoop.Run(_consoleWrapper, _inputQueue, _ibClientQueue);
+            
+            // Disconnect
             _repository.Disconnect();
         }
     }

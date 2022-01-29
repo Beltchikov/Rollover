@@ -1,4 +1,5 @@
 ﻿using IBSampleApp.messages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -32,8 +33,16 @@ namespace Rollover.Tracking
 
         public PositionMessage PositionBySymbol(string symbol)
         {
-
             return _posisionList.FirstOrDefault(p => p.Contract.LocalSymbol == symbol);
+        }
+
+        public List<string> Summary()
+        {
+            var summary = new List<string>();
+            summary.Add(Constants.POSITIONS);
+            summary.AddRange(_posisionList.Select(p => p.Contract.LocalSymbol));
+
+            return summary;
         }
     }
 }
