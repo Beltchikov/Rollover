@@ -21,6 +21,12 @@ namespace Rollover.IntegrationTests
         [Fact]
         public void ConnectFast()
         {
+            if (DateTime.Now.DayOfWeek == DayOfWeek.Sunday
+                || DateTime.Now.DayOfWeek == DayOfWeek.Saturday)
+            {
+                return;
+            }
+
             var repository = RepositoryFactory();
 
             var stopwatch = new Stopwatch();

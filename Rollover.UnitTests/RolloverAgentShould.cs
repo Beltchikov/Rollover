@@ -55,17 +55,6 @@ namespace Rollover.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
-        public void CallConsoleWrapperWriteLineEnterSymbolToTrack(
-            [Frozen] IConsoleWrapper consoleWrapper,
-            [Frozen] IInputQueue inputQueue,
-            RolloverAgent sut)
-        {
-            inputQueue.Dequeue().Returns("Q");
-            sut.Run();
-            consoleWrapper.Received().WriteLine(Constants.ENTER_SYMBOL_TO_TRACK);
-        }
-
-        [Theory, AutoNSubstituteData]
         public void CallInputLoopRun(
            [Frozen] IInputQueue inputQueue,
            [Frozen] IIbClientQueue ibClientQueue,
