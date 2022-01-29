@@ -92,6 +92,12 @@ namespace Rollover.IntegrationTests
         [Fact]
         public void ReceiveLastPriceDaxIndex()
         {
+            if(DateTime.Now.DayOfWeek == DayOfWeek.Sunday
+                || DateTime.Now.DayOfWeek == DayOfWeek.Saturday)
+            {
+                return;
+            }
+            
             var exchange = "DTB";
             var contract = new Contract
             {
@@ -119,6 +125,12 @@ namespace Rollover.IntegrationTests
         [Fact]
         public void ReceiveLastPriceMnqFuture()
         {
+            if (DateTime.Now.DayOfWeek == DayOfWeek.Sunday
+                || DateTime.Now.DayOfWeek == DayOfWeek.Saturday)
+            {
+                return;
+            }
+
             var exchange = "GLOBEX";
             var lastTradeDateOrContractMonth = DateTime.Now.Year.ToString() 
                 + (Math.Ceiling((double)DateTime.Now.Month / 3) * 3).ToString();
