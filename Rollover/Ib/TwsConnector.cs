@@ -23,7 +23,7 @@ namespace Rollover
             if (!connectedTuple.Item1)
             {
                 connectedTuple.Item2.ForEach(m => _inputQueue.Enqueue(m));
-                _inputQueue.Enqueue("Can not connect!");
+                _inputQueue.Enqueue(Constants.CAN_NOT_CONNECT);
                 return;
             }
             connectedTuple.Item2.ForEach(m => _inputQueue.Enqueue(m));
