@@ -15,8 +15,6 @@ namespace Rollover.Input
         private readonly ITrackedSymbols _trackedSymbols;
         private readonly IRepository _repository;
 
-        public string State { get; private set; }
-
         public InputProcessor(
             IPortfolio portfolio,
             ITrackedSymbols trackedSymbols,
@@ -29,50 +27,34 @@ namespace Rollover.Input
 
         public List<string> Convert(string input)
         {
-            if (input == null)
+            if (string.IsNullOrWhiteSpace(input))
             {
                 return new List<string>();
             }
-
-            if (string.IsNullOrWhiteSpace(State))
+            if (input.Contains("errorCode"))
             {
-                State = "WaitingForSymbol";
+                return input.Contains("id=-1")
+                    ? new List<string>()
+                    : new List<string> { input };
+            }
+            if (input.Contains("Accounts found"))
+            {
+                return new List<string> { input };
+            }
+            if (input.Contains("Connected"))
+            {
+                return new List<string> { input };
             }
 
-            switch (State)
+            var position = _portfolio.PositionBySymbol(input);
+            var symbol = position?.Contract?.Symbol;
+            if (position == null || symbol == null)
             {
-                case "WaitingForSymbol":
-                case "Active":
-                    if (_trackedSymbols.Any())
-                    {
-                        State = "Active";
-                    }
-
-                    if (State == "Active")
-                    {
-                        //_orderManager.RolloverIfNextStrike(_trackedSymbols);
-                    }
-
-                    if (input.Contains("errorCode"))
-                    {
-                        return input.Contains("id=-1")
-                            ? new List<string>()
-                            : new List<string> { input };
-                    }
-
-                    var position = _portfolio.PositionBySymbol(input);
-                    var symbol = position?.Contract?.Symbol;
-                    if (position == null || symbol == null)
-                    {
-                        return new List<string> { "Symbol is not valid." };
-                    }
-
-                    List<string> messages = AddTrackedSymbol(position?.Contract, _trackedSymbols);
-                    return messages;
-
-                default:
-                    throw new NotImplementedException();
+                return new List<string> { "Symbol is not valid." };
             }
+
+            List<string> messages = AddTrackedSymbol(position?.Contract, _trackedSymbols);
+            return messages;
         }
 
         private List<string> AddTrackedSymbol(Contract contract, ITrackedSymbols trackedSymbols)
@@ -82,12 +64,12 @@ namespace Rollover.Input
                 contractDetails?.ContractDetails?.Contract?.LocalSymbol,
                 contract.ConId,
                 contractDetails?.ContractDetails?.Contract?.Exchange);
-            
+
             if (!_trackedSymbols.Add(trackedSymbol))
             {
                 return new List<string> { "Symbol is tracked already." };
             }
-            
+
             return _trackedSymbols.Summary();
         }
     }
