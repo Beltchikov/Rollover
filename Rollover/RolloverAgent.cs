@@ -65,11 +65,13 @@ namespace Rollover
             _consoleWrapper.WriteLine("Retrieving positions... Please wait.");
             var positionMessageList = _repository.AllPositions().OrderBy(p => p.Contract.LocalSymbol).ToList();
             positionMessageList.ForEach(p =>{ _portfolio.Add(p); });
-            _consoleWrapper.WriteLine(Environment.NewLine);
             _portfolio.Summary().ForEach(p => _consoleWrapper.WriteLine(p));
 
             // Print symbol summary
             _trackedSymbols.Summary().ForEach(l => _consoleWrapper.WriteLine(l));
+
+            // Enter symbol to track
+            _consoleWrapper.WriteLine("");
             _consoleWrapper.WriteLine(Constants.ENTER_SYMBOL_TO_TRACK);
 
             // Start timer for Rollover function

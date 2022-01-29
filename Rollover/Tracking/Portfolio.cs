@@ -38,7 +38,7 @@ namespace Rollover.Tracking
 
         public List<string> Summary()
         {
-            var summary = new List<string>();
+            var summary = new List<string>{ String.Empty};
             summary.Add(Constants.POSITIONS);
             summary.AddRange(_posisionList.Select(p => p.Contract.LocalSymbol));
 

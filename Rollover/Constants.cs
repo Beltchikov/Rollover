@@ -13,5 +13,6 @@
         public static string ON_TICK_SNAPSHOT_END = "OnTickSnapshotEnd";
         public static string POSITIONS = "POSITIONS:";
         public static string CAN_NOT_CONNECT = "Can not connect!";
+        public static string TRACKED_SYMBOLS = "TRACKED SYMBOLS:";
     }
 }

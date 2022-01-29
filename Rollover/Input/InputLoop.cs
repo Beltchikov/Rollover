@@ -22,7 +22,7 @@ namespace Rollover.Input
             {
                 var input = inputQueue.Dequeue();
                 var message = ibClientQueue.Dequeue();
-                if (input == null && message == null)
+                if (string.IsNullOrWhiteSpace(input) && message == null)
                 {
                     continue;
                 }
