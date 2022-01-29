@@ -2,6 +2,6 @@
 {
     public interface ITwsConnector
     {
-        void Connect();
+        void Connect(string host, int port, int clientId);
     }
 }

@@ -18,7 +18,7 @@ namespace Rollover.UnitTests
         {
             inputQueue.Dequeue().Returns("Q");
             sut.Run();
-            twsConnector.Received().Connect();
+            twsConnector.Received().Connect(Arg.Any<string>(), Arg.Any<int>(), Arg.Any<int>());
         }
 
         [Theory, AutoNSubstituteData]

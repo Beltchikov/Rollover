@@ -46,7 +46,20 @@ namespace Rollover
 
         public void Run()
         {
-            _twsConnector.Connect();
+            // Start input thread
+            new Thread(() => {
+                while (true) { _inputQueue.Enqueue(_consoleWrapper.ReadLine()); }
+            })
+            { IsBackground = true }
+            .Start();
+
+            // Read configuration
+            var configuration = _configurationManager.GetConfiguration();
+            var msg = $"Rollover tries to connect. Host:{configuration.Host} Port:{configuration.Port} ClientId:{configuration.ClientId} Input Q to quit.";
+            _consoleWrapper.WriteLine(msg);
+            
+            // Connect
+            _twsConnector.Connect(configuration.Host, configuration.Port, configuration.ClientId);
 
             _consoleWrapper.WriteLine("Retrieving positions... Please wait.");
             var positionMessageList = _repository.AllPositions().OrderBy(p => p.Contract.LocalSymbol).ToList();

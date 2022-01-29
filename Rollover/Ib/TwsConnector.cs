@@ -24,22 +24,10 @@ namespace Rollover
             _repository = repository;
         }
 
-        public void Connect()
+        public void Connect(string host, int port, int clientId)
         {
-            // Read configuration
-            var configuration = _configurationManager.GetConfiguration();
-            var msg = $"Rollover: Host:{configuration.Host} Port:{configuration.Port} ClientId:{configuration.ClientId} Input Q to quit.";
-            _consoleWrapper.WriteLine(msg);
-
-            // Start input thread
-            new Thread(() => {
-                while (true) { _inputQueue.Enqueue(_consoleWrapper.ReadLine()); }
-            })
-            { IsBackground = true }
-            .Start();
-
             // Connect
-            var connectedTuple = _repository.Connect(configuration.Host, configuration.Port, configuration.ClientId);
+            var connectedTuple = _repository.Connect(host, port, clientId);
             if (!connectedTuple.Item1)
             {
                 connectedTuple.Item2.ForEach(m => _consoleWrapper.WriteLine(m));
