@@ -1,6 +1,7 @@
 using IBApi;
 using NSubstitute;
 using Rollover.Configuration;
+using Rollover.Helper;
 using Rollover.Ib;
 using Rollover.Tracking;
 using System;
@@ -132,11 +133,8 @@ namespace Rollover.IntegrationTests
             }
 
             var exchange = "GLOBEX";
-            var lastTradeDateOrContractMonth = DateTime.Now.Year.ToString() 
-                + (Math.Ceiling((double)DateTime.Now.Month / 3) * 3).ToString();
-            lastTradeDateOrContractMonth = lastTradeDateOrContractMonth.Length == 5
-                ? lastTradeDateOrContractMonth.Insert(4, "0")
-                : lastTradeDateOrContractMonth;
+            var lastTradeDateOrContractMonth
+                = IbHelper.NextContractYearAndMonth(DateTime.Now.Year, DateTime.Now.Month, 3);
 
             var contract = new Contract
             {
@@ -197,11 +195,8 @@ namespace Rollover.IntegrationTests
         public void ReceiveOptionParametersMnq()
         {
             var exchange = "GLOBEX";
-            var lastTradeDateOrContractMonth = DateTime.Now.Year.ToString()
-                + (Math.Ceiling((double)DateTime.Now.Month / 3) * 3).ToString();
-            lastTradeDateOrContractMonth = lastTradeDateOrContractMonth.Length == 5
-                ? lastTradeDateOrContractMonth.Insert(4, "0")
-                : lastTradeDateOrContractMonth;
+            var lastTradeDateOrContractMonth
+                = IbHelper.NextContractYearAndMonth(DateTime.Now.Year, DateTime.Now.Month, 3);
 
             var contract = new Contract
             {
