@@ -45,6 +45,14 @@ namespace Rollover.Input
             {
                 return new List<string> { input };
             }
+            if(input.Equals("q", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return new List<string> { input };
+            }
+            if (input.Equals("h", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return PrintHelp();
+            }
 
             var position = _portfolio.PositionBySymbol(input);
             var symbol = position?.Contract?.Symbol;
@@ -55,6 +63,15 @@ namespace Rollover.Input
 
             List<string> messages = AddTrackedSymbol(position?.Contract, _trackedSymbols);
             return messages;
+        }
+
+        private List<string> PrintHelp()
+        {
+            var help = new List<string> { "" };
+            help.Add("Enter symbol from position list to track the position.");
+            help.Add("Enter 'q' to quit.");
+
+            return help;
         }
 
         private List<string> AddTrackedSymbol(Contract contract, ITrackedSymbols trackedSymbols)
