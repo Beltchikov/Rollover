@@ -14,5 +14,6 @@
         public static string POSITIONS = "POSITIONS:";
         public static string CAN_NOT_CONNECT = "Can not connect!";
         public static string TRACKED_SYMBOLS = "TRACKED SYMBOLS:";
+        public static string NO_TRACKED_SYMBOLS = "NO TRACKED SYMBOLS!";
     }
 }

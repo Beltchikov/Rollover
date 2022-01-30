@@ -16,17 +16,17 @@ namespace Rollover.Tracking
         {
             foreach (var trackedSymbol in trackedSymbols)
             {
-                var priceUnderlying = _repository.LastPrice(trackedSymbol.ConId, trackedSymbol.Exchange);
-                if (!priceUnderlying.Item1)
+                var priceUnderlying = trackedSymbol.LastUnderlyingPrice(_repository);
+                if(priceUnderlying == 0) // Market closed
                 {
-                    // TODO
-                    //throw new NoMarketDataException($"Was not able to get a price for {trackedSymbol.ConId} and {trackedSymbol.Exchange}");
+                    continue;
                 }
 
                 var currentStrike = trackedSymbol.Strike(_repository);
                 var nextStrike = trackedSymbol.NextStrike(_repository, currentStrike.Value);
-                if (priceUnderlying.Item2 > nextStrike && nextStrike > currentStrike)
+                if (priceUnderlying > nextStrike && nextStrike > currentStrike)
                 {
+                    // TODO
                     var contract = new Contract()
                     {
                         Symbol = trackedSymbol.Symbol(_repository),

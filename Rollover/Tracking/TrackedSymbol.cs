@@ -159,7 +159,14 @@ namespace Rollover.Tracking
 
         public override string ToString()
         {
-            return $"LocalSymbol: {LocalSymbol}  ConId: {ConId}  Exchange:{Exchange}";
+            var toString = $"LocalSymbol: {LocalSymbol}  ConId: {ConId}  Exchange:{Exchange}";
+            
+            // TODO inject repository after deriving new class?
+            // PROBLEM - constructor for serialization
+            //var lastUnderlyingPrice = LastUnderlyingPrice()
+            //if()
+
+            return toString;    
         }
 
         public bool Equals(ITrackedSymbol otherSymbol)

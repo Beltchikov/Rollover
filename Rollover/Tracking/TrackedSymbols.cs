@@ -61,11 +61,12 @@ namespace Rollover.Tracking
         {
             if (!_symbols.Any())
             {
-                return new List<string>();
+                return new List<string> { string.Empty, Constants.NO_TRACKED_SYMBOLS, string.Empty };
             };
 
             var output = new List<string> { string.Empty, Constants.TRACKED_SYMBOLS };
             output.AddRange(_symbols.Select(s => s.ToString() ));
+            output.Add("");
             return output;
         }
 

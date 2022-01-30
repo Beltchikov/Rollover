@@ -24,18 +24,6 @@ namespace Rollover.UnitTests
             repository.Received().LastPrice(Arg.Any<int>(), Arg.Any<string>());
         }
 
-        //[Theory, AutoNSubstituteData]
-        //public void ThrowsNoMarketDataException(
-        //    TrackedSymbols trackedSymbols,
-        //    [Frozen] IRepository repository,
-        //    OrderManager sut)
-        //{
-        //    Tuple<bool, double> priceTuple = new Tuple<bool, double>(false, 100);
-        //    repository.LastPrice(Arg.Any<int>(), Arg.Any<string>()).Returns(priceTuple);
-
-        //    Assert.Throws<NoMarketDataException>(() => sut.RolloverIfNextStrike(trackedSymbols));
-        //}
-
         [Theory, AutoNSubstituteData]
         public void NotCallPlaceBearSpreadPriceBelowOrEqualNextStrike(
             TrackedSymbol trackedSymbol,
