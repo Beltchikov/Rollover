@@ -88,6 +88,9 @@ namespace Rollover.Tracking
         {
             var itemToRemove = _symbols.FirstOrDefault(l => l.LocalSymbol == localSymbol);
             _symbols.Remove(itemToRemove);
+
+            string trackedSymbolsAsText = _serializer.Serialize(_symbols);
+            _fileHelper.WriteAllText(TRACKED_SYMBOLS_FILE, trackedSymbolsAsText);
         }
     }
 }
