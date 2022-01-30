@@ -178,5 +178,13 @@ namespace Rollover.Tracking
 
             return selector(_contractDetailsMessage);
         }
+
+        public double LastUnderlyingPrice(IRepository repository)
+        {
+            var lastPriceTuple = repository.LastPrice(_conId, _exchange);
+            return lastPriceTuple.Item1
+                ? lastPriceTuple.Item2
+                : 0;
+        }
     }
 }

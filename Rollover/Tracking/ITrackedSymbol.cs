@@ -23,5 +23,6 @@ namespace Rollover.Tracking
         string Symbol(IRepository repository);
         string ToString();
         bool Equals(ITrackedSymbol otherSymbol);
+        double LastUnderlyingPrice(IRepository repository);
     }
 }
