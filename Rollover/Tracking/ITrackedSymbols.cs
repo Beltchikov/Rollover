@@ -9,5 +9,6 @@ namespace Rollover.Tracking
         IEnumerable<string> List();
         List<string> Summary();
         bool Any();
+        void Remove(string localSymbol);
     }
 }

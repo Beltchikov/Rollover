@@ -13,10 +13,10 @@ namespace Rollover.Tracking
         {
             _posisionList = new List<PositionMessage>();
         }
-        
+
         public void Add(PositionMessage positionMessage)
         {
-            if(positionMessage == null)
+            if (positionMessage == null)
             {
                 return;
             }
@@ -26,9 +26,9 @@ namespace Rollover.Tracking
 
         public bool SymbolExists(string symbol)
         {
-            return _posisionList.Any() 
+            return _posisionList.Any()
                 ? _posisionList.Any(p => p.Contract.LocalSymbol == symbol)
-                : false;    
+                : false;
         }
 
         public PositionMessage PositionBySymbol(string symbol)
@@ -38,7 +38,7 @@ namespace Rollover.Tracking
 
         public List<string> Summary()
         {
-            var summary = new List<string>{ String.Empty};
+            var summary = new List<string> { String.Empty };
             summary.Add(Constants.POSITIONS);
             summary.AddRange(_posisionList.Select(p => p.Contract.LocalSymbol));
 

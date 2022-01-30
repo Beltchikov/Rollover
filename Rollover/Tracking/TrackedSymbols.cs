@@ -83,5 +83,11 @@ namespace Rollover.Tracking
         {
             return this.GetEnumerator();
         }
+
+        public void Remove(string localSymbol)
+        {
+            var itemToRemove = _symbols.FirstOrDefault(l => l.LocalSymbol == localSymbol);
+            _symbols.Remove(itemToRemove);
+        }
     }
 }

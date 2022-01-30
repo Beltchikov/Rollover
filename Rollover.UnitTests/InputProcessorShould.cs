@@ -4,6 +4,7 @@ using AutoFixture.Xunit2;
 using IBApi;
 using IBSampleApp.messages;
 using NSubstitute;
+using Rollover.Helper;
 using Rollover.Ib;
 using Rollover.Input;
 using Rollover.Tracking;
@@ -108,6 +109,33 @@ namespace Rollover.UnitTests
 
             sut.Convert("T");
             trackedSymbols.Received().Summary();
+        }
+
+        [Theory]
+        [InlineData("r AAA")]
+        [InlineData("R AAA")]
+        [InlineData("r  AAA")]
+        [InlineData("R   AAA")]
+        public void RemovesTrackedSymbolsIfR(string input)
+        {
+            var symbol = "AAA";
+            
+            IFileHelper fileHelper = Substitute.For<IFileHelper>();
+            ISerializer serializer = Substitute.For<ISerializer>();
+            IPortfolio portfolio = Substitute.For<IPortfolio>();
+
+            var positionMessage = new PositionMessage("", null, 0, 0);
+            portfolio.PositionBySymbol(symbol).Returns(positionMessage);
+
+            var trackedSymbols = new TrackedSymbols(fileHelper, serializer);
+            var trackedSymbol = new TrackedSymbol(symbol, 1, "DTB");
+            trackedSymbols.Add(trackedSymbol);
+            var countBefore = trackedSymbols.Count();
+
+            var sut = new InputProcessor(portfolio, trackedSymbols, null);
+            sut.Convert(input);
+            
+            Assert.Equal(countBefore - 1, trackedSymbols.Count());
         }
     }
 }

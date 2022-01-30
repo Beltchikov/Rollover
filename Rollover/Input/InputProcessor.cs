@@ -31,6 +31,7 @@ namespace Rollover.Input
             {
                 return new List<string>();
             }
+            input = input.Trim();
             if (input.Contains("errorCode"))
             {
                 return input.Contains("id=-1")
@@ -45,7 +46,7 @@ namespace Rollover.Input
             {
                 return new List<string> { input };
             }
-            if(input.Equals("q", StringComparison.InvariantCultureIgnoreCase))
+            if (input.Equals("q", StringComparison.InvariantCultureIgnoreCase))
             {
                 return new List<string> { input };
             }
@@ -61,16 +62,30 @@ namespace Rollover.Input
             {
                 return _trackedSymbols.Summary();
             }
+            if (input.StartsWith("r ", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var localSymbol = input[2..].Trim();
+                if (_portfolio.PositionBySymbol(localSymbol) == null)
+                {
+                    return new List<string> { "Symbol is not valid." };
+                }
+                RemoveTrackedSymbol(localSymbol);
+                return new List<string> { $"Symbol {localSymbol} has been  not valid." };
+            }
 
             var position = _portfolio.PositionBySymbol(input);
-            var symbol = position?.Contract?.Symbol;
-            if (position == null || symbol == null)
+            if (position == null)
             {
                 return new List<string> { "Symbol is not valid." };
             }
 
             List<string> messages = AddTrackedSymbol(position?.Contract, _trackedSymbols);
             return messages;
+        }
+
+        private void RemoveTrackedSymbol(string localSymbol)
+        {
+            _trackedSymbols.Remove(localSymbol);
         }
 
         private List<string> PrintHelp()
