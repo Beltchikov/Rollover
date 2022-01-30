@@ -70,7 +70,7 @@ namespace Rollover.Input
                     return new List<string> { "Symbol is not valid." };
                 }
                 RemoveTrackedSymbol(localSymbol);
-                return new List<string> { $"Symbol {localSymbol} has been  not valid." };
+                return new List<string> { $"Symbol {localSymbol} has been removed." };
             }
 
             var position = _portfolio.PositionBySymbol(input);
