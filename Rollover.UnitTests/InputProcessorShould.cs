@@ -89,5 +89,25 @@ namespace Rollover.UnitTests
             var result = sut.Convert(input);
             Assert.Equal(input, result.First());
         }
+
+        [Theory, AutoNSubstituteData]
+        public void CallsPortfolioSummary([Frozen] IPortfolio portfolio, InputProcessor sut)
+        {
+            sut.Convert("p");
+            portfolio.Received().Summary();
+
+            sut.Convert("P");
+            portfolio.Received().Summary();
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallsTrackedSymbolsSummary([Frozen] ITrackedSymbols trackedSymbols, InputProcessor sut)
+        {
+            sut.Convert("t");
+            trackedSymbols.Received().Summary();
+
+            sut.Convert("T");
+            trackedSymbols.Received().Summary();
+        }
     }
 }
