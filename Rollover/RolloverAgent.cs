@@ -70,10 +70,6 @@ namespace Rollover
             // Print symbol summary
             _trackedSymbols.Summary().ForEach(l => _consoleWrapper.WriteLine(l));
 
-            // Enter symbol to track
-            //_consoleWrapper.WriteLine("");
-            //_consoleWrapper.WriteLine(Constants.ENTER_SYMBOL_TO_TRACK);
-
             // Start timer for Rollover function
             var timer = new Timer(
                 e => _orderManager.RolloverIfNextStrike(_trackedSymbols),
