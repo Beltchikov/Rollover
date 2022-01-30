@@ -1,4 +1,6 @@
-﻿using AutoFixture.Xunit2;
+﻿using AutoFixture;
+using AutoFixture.AutoNSubstitute;
+using AutoFixture.Xunit2;
 using IBApi;
 using IBSampleApp.messages;
 using NSubstitute;
@@ -61,13 +63,31 @@ namespace Rollover.UnitTests
             Assert.Empty(result);
         }
 
-        //[Theory, AutoNSubstituteData]
-        //public void CallRolloverIfNextStrike(
-        //    [Frozen] IOrderManager orderManager,
-        //    InputProcessor sut)
-        //{
-        //    sut.Convert("MNQ");
-        //    orderManager.Received().RolloverIfNextStrike(Arg.Any<ITrackedSymbols>());
-        //}
+        [Theory, AutoNSubstituteData]
+        public void ReturnInputIfInputContainsAccountsFound(InputProcessor sut)
+        {
+            var testInput = "Accounts found: xxxxxxxx";
+            var result = sut.Convert(testInput);
+            Assert.Equal(testInput, result.First());
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void ReturnInputIfInputContainsConnected(InputProcessor sut)
+        {
+            var testInput = "Connected xxxxxxxx";
+            var result = sut.Convert(testInput);
+            Assert.Equal(testInput, result.First());
+        }
+
+        [Theory]
+        [InlineData("q")]
+        [InlineData("Q")]
+        public void ReturnInputIfInputIsQ(string input)
+        {
+            var fixture = new Fixture().Customize(new AutoNSubstituteCustomization { ConfigureMembers = true });
+            var sut = fixture.Create<InputProcessor>();
+            var result = sut.Convert(input);
+            Assert.Equal(input, result.First());
+        }
     }
 }
