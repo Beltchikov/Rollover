@@ -167,6 +167,16 @@ namespace Rollover.Ib
             return GetPrice(conId, exchange, m => m.Field == 9);
         }
 
+        public Tuple<bool, double> BidPrice(int conId, string exchange)
+        {
+            return GetPrice(conId, exchange, m => m.Field == 1);
+        }
+
+        public Tuple<bool, double> AskPrice(int conId, string exchange)
+        {
+            return GetPrice(conId, exchange, m => m.Field == 2);
+        }
+
         private Tuple<bool, double> GetPrice(int conId, string exchange, Func<TickPriceMessage, bool> predicate)
         {
             var contract = new Contract { ConId = conId, Exchange = exchange };
@@ -302,6 +312,20 @@ namespace Rollover.Ib
                 Ratio = 1,
                 Exchange = trackedSymbol.Exchange
             };
+
+            bagContract.ComboLegs = new List<ComboLeg>();
+            bagContract.ComboLegs.AddRange(new List<ComboLeg> { sellLeg, buyLeg });
+
+            // TODO price for bag contract
+            // var price = BidPrice(bagContract);
+
+            //Order order = new Order
+            //{
+            //    Action = "BUY",
+            //    OrderType = "LMT",
+            //    TotalQuantity = Convert.ToInt32(txtQuantityComboOrder.Text),
+            //    LmtPrice = Double.Parse(txtLimitPriceComboOrder.Text)
+            //};
 
             // TODO in  MessageCollector
             //    ibClient.ClientSocket.placeOrder(_nextOrderId, contract, order);

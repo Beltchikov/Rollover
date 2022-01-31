@@ -22,6 +22,8 @@ namespace Rollover.Ib
 
         Tuple<bool, double> LastPrice(int conId, string exchange);
         Tuple<bool, double> ClosePrice(int conId, string exchange);
+        Tuple<bool, double> BidPrice(int conId, string exchange);
+        Tuple<bool, double> AskPrice(int conId, string exchange);
         void PlaceBearSpread(ITrackedSymbol trackedSymbol);
         bool IsConnected();
     }
