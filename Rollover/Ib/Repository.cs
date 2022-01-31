@@ -177,9 +177,33 @@ namespace Rollover.Ib
             return GetPrice(conId, exchange, m => m.Field == 2);
         }
 
+        public Tuple<bool, double> BidPrice(Contract contract)
+        {
+            return GetPrice(contract, m => m.Field == 1);
+        }
+
+        public Tuple<bool, double> AskPrice(Contract contract)
+        {
+            return GetPrice(contract, m => m.Field == 2);
+        }
+
         private Tuple<bool, double> GetPrice(int conId, string exchange, Func<TickPriceMessage, bool> predicate)
         {
             var contract = new Contract { ConId = conId, Exchange = exchange };
+            var mktDataTuple = _messageCollector.reqMktData(contract, "", true, false, null);
+
+            // https://interactivebrokers.github.io/tws-api/tick_types.html
+            var tickPriceMessage = mktDataTuple.Item2.FirstOrDefault(predicate);
+            if (tickPriceMessage == null)
+            {
+                return new Tuple<bool, double>(false, 0);
+            }
+
+            return new Tuple<bool, double>(true, tickPriceMessage.Price);
+        }
+
+        private Tuple<bool, double> GetPrice(Contract contract, Func<TickPriceMessage, bool> predicate)
+        {
             var mktDataTuple = _messageCollector.reqMktData(contract, "", true, false, null);
 
             // https://interactivebrokers.github.io/tws-api/tick_types.html
@@ -316,15 +340,14 @@ namespace Rollover.Ib
             bagContract.ComboLegs = new List<ComboLeg>();
             bagContract.ComboLegs.AddRange(new List<ComboLeg> { sellLeg, buyLeg });
 
-            // TODO price for bag contract
-            // var price = BidPrice(bagContract);
+            var limitPrice = BidPrice(bagContract);
 
             //Order order = new Order
             //{
             //    Action = "BUY",
             //    OrderType = "LMT",
-            //    TotalQuantity = Convert.ToInt32(txtQuantityComboOrder.Text),
-            //    LmtPrice = Double.Parse(txtLimitPriceComboOrder.Text)
+            //    TotalQuantity = trackedSymbol.Quantity,
+            //    LmtPrice = limitPrice.Item2
             //};
 
             // TODO in  MessageCollector
