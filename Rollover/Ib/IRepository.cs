@@ -17,7 +17,6 @@ namespace Rollover.Ib
            string exchange,
            string secType,
            int conId);
-        TrackedSymbol GetTrackedSymbol(Contract contract);
         HashSet<double> GetStrikes(Contract contract, string lastTradeDateOrContractMonth);
 
         Tuple<bool, double> LastPrice(int conId, string exchange);

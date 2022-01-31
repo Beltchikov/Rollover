@@ -8,6 +8,7 @@ namespace Rollover.Tracking
         string LocalSymbol { get; }
         int ConId { get; }
         string Exchange { get; }
+        double Quantity { get; }
 
         string Currency(IRepository repository);
         string LastTradeDateOrContractMonth(IRepository repository);

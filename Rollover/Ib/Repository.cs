@@ -41,53 +41,53 @@ namespace Rollover.Ib
             return _messageCollector.reqPositions();
         }
 
-        public TrackedSymbol GetTrackedSymbol(Contract contract)
-        {
-            switch (contract.SecType)
-            {
-                case "FOP":
-                    return GetTrackedSymbolFop(contract);
-                case "OPT":
-                    return GetTrackedSymbolOpt(contract);
-                default:
-                    throw new NotImplementedException();
-            }
-        }
+        //public TrackedSymbol GetTrackedSymbol(Contract contract)
+        //{
+        //    switch (contract.SecType)
+        //    {
+        //        case "FOP":
+        //            return GetTrackedSymbolFop(contract);
+        //        case "OPT":
+        //            return GetTrackedSymbolOpt(contract);
+        //        default:
+        //            throw new NotImplementedException();
+        //    }
+        //}
 
-        public TrackedSymbol GetTrackedSymbolFop(Contract contract)
-        {
-            // Underlying
-            var contractDetails = ContractDetails(contract);
-            var underlyingContracts = GetUnderlyingContracts(contractDetails);
-            if (underlyingContracts.Count() > 1)
-            {
-                throw new ApplicationException($"Multiple underlyings for the contract {contract}");
-            }
-            var underLyingContract = underlyingContracts.First();
+        //public TrackedSymbol GetTrackedSymbolFop(Contract contract)
+        //{
+        //    // Underlying
+        //    var contractDetails = ContractDetails(contract);
+        //    var underlyingContracts = GetUnderlyingContracts(contractDetails);
+        //    if (underlyingContracts.Count() > 1)
+        //    {
+        //        throw new ApplicationException($"Multiple underlyings for the contract {contract}");
+        //    }
+        //    var underLyingContract = underlyingContracts.First();
 
-            // Second underlying
-            var secondContractDetails = ContractDetails(underLyingContract)
-                .First(d => d.ContractDetails.Contract.LastTradeDateOrContractMonth == contract.LastTradeDateOrContractMonth);
-            var secondUnderlyingContracts = GetUnderlyingContracts(contractDetails);
-            if (secondUnderlyingContracts.Count() > 1)
-            {
-                throw new ApplicationException($"Multiple underlyings for the contract {underLyingContract}");
-            }
-            var secondUnderLyingContract = secondUnderlyingContracts.First();
+        //    // Second underlying
+        //    var secondContractDetails = ContractDetails(underLyingContract)
+        //        .First(d => d.ContractDetails.Contract.LastTradeDateOrContractMonth == contract.LastTradeDateOrContractMonth);
+        //    var secondUnderlyingContracts = GetUnderlyingContracts(contractDetails);
+        //    if (secondUnderlyingContracts.Count() > 1)
+        //    {
+        //        throw new ApplicationException($"Multiple underlyings for the contract {underLyingContract}");
+        //    }
+        //    var secondUnderLyingContract = secondUnderlyingContracts.First();
 
-            // Strikes & price
-            var strikes = GetStrikes(secondUnderLyingContract, contract.LastTradeDateOrContractMonth);
-            var currentPrice = LastPrice(underLyingContract.ConId, underLyingContract.Exchange);
-            if (!currentPrice.Item1)
-            {
-                return null;
-            }
+        //    // Strikes & price
+        //    var strikes = GetStrikes(secondUnderLyingContract, contract.LastTradeDateOrContractMonth);
+        //    var currentPrice = LastPrice(underLyingContract.ConId, underLyingContract.Exchange);
+        //    if (!currentPrice.Item1)
+        //    {
+        //        return null;
+        //    }
 
-            // TODO
-            //int buyConId = GetBuyConIdForBearSpread(contract, strikes, currentPrice.Item2);
+        //    // TODO
+        //    //int buyConId = GetBuyConIdForBearSpread(contract, strikes, currentPrice.Item2);
 
-            return new TrackedSymbol(contract.LocalSymbol, contract.ConId, contract.Exchange);
-        }
+        //    return new TrackedSymbol(contract.LocalSymbol, contract.ConId, contract.Exchange);
+        //}
 
         //private int GetBuyConIdForBearSpread(Contract callContract, HashSet<double> strikes, double price)
         //{
@@ -132,30 +132,30 @@ namespace Rollover.Ib
             return contractDetails.First().ContractDetails.Contract.ConId;
         }
 
-        public TrackedSymbol GetTrackedSymbolOpt(Contract contract)
-        {
-            // Underlying
-            var contractDetails = ContractDetails(contract);
-            var underlyingContracts = GetUnderlyingContracts(contractDetails);
-            if (underlyingContracts.Count() > 1)
-            {
-                throw new ApplicationException($"Multiple underlyings for the contract {contract}");
-            }
-            var underLyingContract = underlyingContracts.First();
+        //public TrackedSymbol GetTrackedSymbolOpt(Contract contract)
+        //{
+        //    // Underlying
+        //    var contractDetails = ContractDetails(contract);
+        //    var underlyingContracts = GetUnderlyingContracts(contractDetails);
+        //    if (underlyingContracts.Count() > 1)
+        //    {
+        //        throw new ApplicationException($"Multiple underlyings for the contract {contract}");
+        //    }
+        //    var underLyingContract = underlyingContracts.First();
 
-            // Strikes & price
-            var strikes = GetStrikes(underLyingContract, contract.LastTradeDateOrContractMonth);
-            var currentPrice = LastPrice(underLyingContract.ConId, underLyingContract.Exchange);
-            if (!currentPrice.Item1)
-            {
-                return null;
-            }
+        //    // Strikes & price
+        //    var strikes = GetStrikes(underLyingContract, contract.LastTradeDateOrContractMonth);
+        //    var currentPrice = LastPrice(underLyingContract.ConId, underLyingContract.Exchange);
+        //    if (!currentPrice.Item1)
+        //    {
+        //        return null;
+        //    }
 
-            // TODO
-            //int buyConId = GetBuyConIdForBearSpread(contract, strikes, currentPrice.Item2);
+        //    // TODO
+        //    //int buyConId = GetBuyConIdForBearSpread(contract, strikes, currentPrice.Item2);
 
-            return new TrackedSymbol(contract.LocalSymbol, contract.ConId, contract.Exchange);
-        }
+        //    return new TrackedSymbol(contract.LocalSymbol, contract.ConId, contract.Exchange);
+        //}
 
         public Tuple<bool, double> LastPrice(int conId, string exchange)
         {

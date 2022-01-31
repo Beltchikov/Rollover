@@ -128,7 +128,7 @@ namespace Rollover.UnitTests
             portfolio.PositionBySymbol(symbol).Returns(positionMessage);
 
             var trackedSymbols = new TrackedSymbols(fileHelper, serializer);
-            var trackedSymbol = new TrackedSymbol(symbol, 1, "DTB");
+            var trackedSymbol = new TrackedSymbol(symbol, 1, "DTB", 1);
             trackedSymbols.Add(trackedSymbol);
             var countBefore = trackedSymbols.Count();
 

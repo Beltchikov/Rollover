@@ -79,7 +79,7 @@ namespace Rollover.Input
                 return new List<string> { "Symbol is not valid." };
             }
 
-            List<string> messages = AddTrackedSymbol(position?.Contract, _trackedSymbols);
+            List<string> messages = AddTrackedSymbol(position, _trackedSymbols);
             return messages;
         }
 
@@ -99,13 +99,14 @@ namespace Rollover.Input
             return help;
         }
 
-        private List<string> AddTrackedSymbol(Contract contract, ITrackedSymbols trackedSymbols)
+        private List<string> AddTrackedSymbol(PositionMessage positionMessage, ITrackedSymbols trackedSymbols)
         {
-            var contractDetails = _repository.ContractDetails(contract).FirstOrDefault();
+            var contractDetails = _repository.ContractDetails(positionMessage.Contract).FirstOrDefault();
             var trackedSymbol = new TrackedSymbol(
                 contractDetails?.ContractDetails?.Contract?.LocalSymbol,
-                contract.ConId,
-                contractDetails?.ContractDetails?.Contract?.Exchange);
+                positionMessage.Contract.ConId,
+                contractDetails?.ContractDetails?.Contract?.Exchange,
+                positionMessage.Position);
 
             if (!_trackedSymbols.Add(trackedSymbol))
             {

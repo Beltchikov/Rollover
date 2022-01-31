@@ -12,15 +12,17 @@ namespace Rollover.Tracking
         private readonly string _localSymbol;
         private readonly int _conId;
         private readonly string _exchange;
+        private readonly double _quantity;
 
         private ContractDetailsMessage _contractDetailsMessage;
         private HashSet<double> _strikes;
 
-        public TrackedSymbol(string localSymbol, int conId, string exchange)
+        public TrackedSymbol(string localSymbol, int conId, string exchange, double quantity)
         {
             _localSymbol = localSymbol;
             _conId = conId;
             _exchange = exchange;
+            _quantity = quantity;
 }
 
         public string LocalSymbol
@@ -44,6 +46,14 @@ namespace Rollover.Tracking
             get
             {
                 return _exchange;
+            }
+        }
+
+        public double Quantity
+        {
+            get
+            {
+                return _quantity;
             }
         }
 
