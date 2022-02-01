@@ -232,6 +232,66 @@ namespace Rollover.IntegrationTests
             repository.Disconnect();
         }
 
+        [Fact]
+        public void PlaceBearSpreadAndCancelPlaceBearSpreadDax()
+        {
+            var exchange = "DTB";
+            var month = DateTime.Now.Month + 3;
+            var lastTradeDateOrContractMonth
+                = IbHelper.NextContractYearAndMonth(DateTime.Now.Year, month, 3);
+
+            // Get underlying price
+            var contractUnderlying = new Contract
+            {
+                Symbol = "DAX",
+                SecType = "IND",
+                Currency = "EUR",
+                Exchange = exchange
+            };
+
+            var repository = RepositoryFactory();
+            if (!repository.IsConnected())
+            {
+                repository.Connect(HOST, PORT, RandomClientId());
+            }
+            var contractDetailsUnderlying = repository.ContractDetails(contractUnderlying);
+            Assert.True(contractDetailsUnderlying.Any());
+
+            var conId = contractDetailsUnderlying.First().ContractDetails.Contract.ConId;
+            var priceTuple = repository.LastPrice(conId, exchange);
+            Assert.True(priceTuple.Item1);
+
+            //
+            var contractCall = new Contract
+            {
+                Symbol = "DAX",
+                SecType = "OPT",
+                Currency = "EUR",
+                Exchange = exchange,
+                TradingClass = "ODAX",
+                LastTradeDateOrContractMonth=lastTradeDateOrContractMonth,
+                Right = "C"
+            };
+
+            if (!repository.IsConnected())
+            {
+                repository.Connect(HOST, PORT, RandomClientId());
+            }
+
+            var contractDetailsList = repository.ContractDetails(contractCall)
+                .Where(c =>c.ContractDetails.Contract.Strike > priceTuple.Item2)
+                .OrderBy(d => d.ContractDetails.Contract.Strike);
+            Assert.NotEmpty(contractDetailsList);
+            var contractDetailsCall = contractDetailsList.First();
+
+            // TODO check Portfolio position
+            throw new NotImplementedException();
+
+
+            //
+            repository.Disconnect();
+        }
+
         private IRepository RepositoryFactory()
         {
             IConfigurationManager configurationManager = ConfigurationManagerFactory();
