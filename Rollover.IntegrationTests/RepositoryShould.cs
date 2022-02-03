@@ -278,15 +278,17 @@ namespace Rollover.IntegrationTests
                 repository.Connect(HOST, PORT, RandomClientId());
             }
 
-            var contractDetailsList = repository.ContractDetails(contractCall)
+            var contractDetailsListCall = repository.ContractDetails(contractCall)
                 .Where(c =>c.ContractDetails.Contract.Strike > priceTuple.Item2)
                 .OrderBy(d => d.ContractDetails.Contract.Strike);
-            Assert.NotEmpty(contractDetailsList);
-            var contractDetailsCall = contractDetailsList.First();
+            Assert.NotEmpty(contractDetailsListCall);
+            var contractDetailsCall = contractDetailsListCall.First();
 
             // TODO check Portfolio position
-            throw new NotImplementedException();
-
+            var allPositions = repository.AllPositions();
+            Assert.Empty(allPositions.Where(p
+                => p.Contract.LocalSymbol 
+                == contractDetailsCall.ContractDetails.Contract.LocalSymbol));
 
             //
             repository.Disconnect();
