@@ -261,7 +261,7 @@ namespace Rollover.IntegrationTests
             var priceTuple = repository.LastPrice(conId, exchange);
             Assert.True(priceTuple.Item1);
 
-            //
+            // Create call contract
             var contractCall = new Contract
             {
                 Symbol = "DAX",
@@ -284,11 +284,24 @@ namespace Rollover.IntegrationTests
             Assert.NotEmpty(contractDetailsListCall);
             var contractDetailsCall = contractDetailsListCall.First();
 
+            Order orderCall = new Order
+            {
+                Action = "BUY",
+                OrderType = "MKT",
+                TotalQuantity = 1
+            };
+
+            // TODO
+            //repository.PlaceOrder(contractCall, orderCall);
+
+            //ibClient.ClientSocket.placeOrder(_nextOrderId, contract, order);
+            //ibClient.ClientSocket.reqIds(-1);
+
             // TODO check Portfolio position
-            var allPositions = repository.AllPositions();
-            Assert.Empty(allPositions.Where(p
-                => p.Contract.LocalSymbol 
-                == contractDetailsCall.ContractDetails.Contract.LocalSymbol));
+            //var allPositions = repository.AllPositions();
+            //Assert.Empty(allPositions.Where(p
+            //    => p.Contract.LocalSymbol 
+            //    == contractDetailsCall.ContractDetails.Contract.LocalSymbol));
 
             //
             repository.Disconnect();
