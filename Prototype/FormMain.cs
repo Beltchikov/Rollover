@@ -50,29 +50,37 @@ namespace Prototype
             ibClient.ExecDetailsEnd += OnExecDetailsEnd;
         }
 
-        private void OnExecDetailsEnd(int obj)
+        private void OnOpenOrder(OpenOrderMessage obj)
         {
-            //throw new NotImplementedException();
-        }
-
-        private void OnExecDetails(ExecutionMessage obj)
-        {
-            //throw new NotImplementedException();
-        }
-
-        private void OnOrderStatus(OrderStatusMessage obj)
-        {
-            //throw new NotImplementedException();
+            var msg = $"OnOpenOrder: MaintMarginChange:{obj.OrderState.MaintMarginChange} " +
+                $"Commission:{obj.OrderState.Commission}";
+            AddLineToTextbox(txtMessage, msg);
         }
 
         private void OnOpenOrderEnd()
         {
-            //throw new NotImplementedException();
+            var msg = $"OnOpenOrderEnd: ";
+            AddLineToTextbox(txtMessage, msg);
         }
 
-        private void OnOpenOrder(OpenOrderMessage obj)
+        private void OnOrderStatus(OrderStatusMessage obj)
         {
-            //throw new NotImplementedException();
+            var msg = $"OnOrderStatus: Status:{obj.Status} " +
+               $"Filled:{obj.Filled} Remaining:{obj.Remaining}";
+            AddLineToTextbox(txtMessage, msg);
+        }
+
+        private void OnExecDetailsEnd(int obj)
+        {
+            var msg = $"OnExecDetailsEnd: ";
+            AddLineToTextbox(txtMessage, msg);
+        }
+
+        private void OnExecDetails(ExecutionMessage obj)
+        {
+            var msg = $"OnExecDetails: Price:{obj.Execution.Price} " +
+               $"AvgPrice:{obj.Execution.AvgPrice} ";
+            AddLineToTextbox(txtMessage, msg);
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
@@ -131,7 +139,7 @@ namespace Prototype
 
         private void OnError(int id, int errorCode, string msg, Exception ex)
         {
-            AddLineToTextbox(txtMessage, msg);
+            AddLineToTextbox(txtMessage, "OnError: " + msg);
 
             //if (ex != null)
             //{
@@ -156,8 +164,8 @@ namespace Prototype
         {
             _nextOrderId = ibClient.NextOrderId;
             string msg = statusMessage.IsConnected
-                ? $"Connected! Your client Id: {ibClient.ClientId}  NextOrderId: {_nextOrderId}"
-                : "Disconnected...";
+                ? $"OnNextValidId: Connected! Your client Id: {ibClient.ClientId}  NextOrderId: {_nextOrderId}"
+                : "nNextValidId: Disconnected...";
 
             AddLineToTextbox(txtMessage, msg);
 
@@ -179,10 +187,10 @@ namespace Prototype
         {
             if (!message.ManagedAccounts.Any())
             {
-                throw new Exception("Unexpected");
+                throw new Exception("OnManagedAccounts: Unexpected");
             }
 
-            string msg = Environment.NewLine + "Acounts found: " + message.ManagedAccounts.Aggregate((r, n) => r + ", " + n);
+            string msg = Environment.NewLine + "OnManagedAccounts: Acounts found: " + message.ManagedAccounts.Aggregate((r, n) => r + ", " + n);
             AddLineToTextbox(txtMessage, msg);
 
             //orderManager.ManagedAccounts = message.ManagedAccounts;
@@ -192,7 +200,7 @@ namespace Prototype
 
         private void OnPosition(PositionMessage obj)
         {
-            string msg = $"Local Symbol:{obj.Contract.LocalSymbol} " +
+            string msg = $"OnPosition: Local Symbol:{obj.Contract.LocalSymbol} " +
                 $"ConId:{obj.Contract.ConId} " +
                 $"Avg.price:{obj.AverageCost} " +
                 $"Symbol:{obj.Contract.Symbol} " +
@@ -204,15 +212,15 @@ namespace Prototype
 
         private void OnPositionEnd()
         {
-            string msg = "End of all positions";
+            string msg = "OnPositionEnd: End of all positions";
             AddLineToTextbox(txtMessage, msg);
         }
 
         private void OnContractDetails(ContractDetailsMessage obj)
         {
-            string msg = $"ConId:{obj.ContractDetails.Contract.ConId} " +
+            string msg = $"OnContractDetails :ConId:{obj.ContractDetails.Contract.ConId} " +
                 $"LocalSymbol:{obj.ContractDetails.Contract.LocalSymbol} " +
-                
+
                 $"Symbol:{obj.ContractDetails.Contract.Symbol} " +
                 $"SecType:{obj.ContractDetails.Contract.SecType} " +
                 $"Currency:{obj.ContractDetails.Contract.Currency} " +
@@ -222,13 +230,13 @@ namespace Prototype
                 $"LastTradeDate:{obj.ContractDetails.Contract.LastTradeDateOrContractMonth} " +
                 $"Strike:{obj.ContractDetails.Contract.Strike} " +
                 $"";
-                
+
             AddLineToTextbox(txtMessage, msg);
         }
 
         private void OnSymbolSamples(SymbolSamplesMessage obj)
         {
-            var msg = new StringBuilder();
+            var msg = new StringBuilder("OnSymbolSamples: ");
 
             var contracts = obj.ContractDescriptions.Select(d => d.Contract).ToList();
             foreach (var contract in contracts)
@@ -243,7 +251,7 @@ namespace Prototype
         {
             var expirations = obj.Expirations.Aggregate((r, n) => r + "," + n);
             var strikes = obj.Strikes.Select(s => s.ToString()).Aggregate((r, n) => r + "," + n);
-            string msg = $"ReqId:{obj.ReqId} expirations:{expirations} strikes:{strikes}";
+            string msg = $"OnSecurityDefinitionOptionParameter: ReqId:{obj.ReqId} expirations:{expirations} strikes:{strikes}";
 
             AddLineToTextbox(txtMessage, msg);
         }
@@ -309,12 +317,12 @@ namespace Prototype
 
             contract.LastTradeDateOrContractMonth =
                 !string.IsNullOrWhiteSpace(txtLastTradeCheckSymbol.Text) ?
-                txtLastTradeCheckSymbol.Text: 
+                txtLastTradeCheckSymbol.Text :
                 null;
 
             contract.Strike =
                 !string.IsNullOrWhiteSpace(txtStrikeCheckSymbol.Text) ?
-                Convert.ToDouble(txtStrikeCheckSymbol.Text) : 
+                Convert.ToDouble(txtStrikeCheckSymbol.Text) :
                 default(double);
 
             contract.Right =
