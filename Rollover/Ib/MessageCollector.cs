@@ -234,6 +234,39 @@ namespace Rollover.Ib
         public void placeOrder(Contract contract, Order order)
         {
             _ibClient.PlaceOrder(contract, order);
+
+            // TODO
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+            while (stopWatch.Elapsed.TotalMilliseconds < _configurationManager.GetConfiguration().Timeout)
+            {
+                var message = _ibClientQueue.Dequeue();
+
+                if (message is string errorMessage)
+                {
+                    
+                }
+                if (message is ConnectionStatusMessage connectionStatusMessage)
+                {
+               
+                }
+                if (message is OpenOrderMessage openOrderMessage)
+                {
+                   
+                }
+                if (message is OrderStatusMessage orderStatusMessage)
+                {
+
+                }
+                if (message is ExecutionMessage executionMessage)
+                {
+
+                }
+                if (message is int)
+                {
+
+                }
+            }
         }
 
         public void reqId()

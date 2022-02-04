@@ -163,6 +163,41 @@ namespace Rollover.Ib
 
         #endregion
 
+        #region PlaceOrder
+        public void PlaceOrder(Contract contract, Order order)
+        {
+            _ibClient.ClientSocket.placeOrder(_ibClient.NextOrderId, contract, order);
+        }
+
+        public void reqIds()
+        {
+            _ibClient.ClientSocket.reqIds(-1);
+        }
+        private void OnOpenOrder(OpenOrderMessage obj)
+        {
+            _ibClientQueue.Enqueue(obj);
+        }
+        private void OnOpenOrderEnd()
+        {
+            _ibClientQueue.Enqueue("OnOpenOrderEnd");
+        }
+        private void OnOrderStatus(OrderStatusMessage obj)
+        {
+            _ibClientQueue.Enqueue(obj);
+        }
+
+        private void OnExecDetails(ExecutionMessage obj)
+        {
+            _ibClientQueue.Enqueue(obj);
+        }
+
+        private void OnExecDetailsEnd(int obj)
+        {
+            _ibClientQueue.Enqueue(obj);
+        }
+
+        #endregion
+
         #region Private methods
 
         public EReader ReaderFactory()
@@ -191,16 +226,11 @@ namespace Rollover.Ib
             _ibClient.TickString += OnTickString;
             _ibClient.TickGeneric += OnTickGeneric;
             _ibClient.TickSnapshotEnd += OnTickSnapshotEnd;
-        }
-
-        public void PlaceOrder(Contract contract, Order order)
-        {
-            _ibClient.ClientSocket.placeOrder(_ibClient.NextOrderId, contract, order);
-        }
-
-        public void reqIds()
-        {
-            _ibClient.ClientSocket.reqIds(-1);
+            _ibClient.OpenOrder += OnOpenOrder;
+            _ibClient.OpenOrderEnd += OnOpenOrderEnd;
+            _ibClient.OrderStatus += OnOrderStatus;
+            _ibClient.ExecDetails += OnExecDetails;
+            _ibClient.ExecDetailsEnd += OnExecDetailsEnd;
         }
 
         #endregion
