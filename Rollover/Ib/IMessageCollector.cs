@@ -22,5 +22,7 @@ namespace Rollover.Ib
             bool regulatorySnapshot,
             List<TagValue> mktDataOptions);
         bool IsConnected();
+        void placeOrder(Contract contract, Order order);
+        void reqId();
     }
 }

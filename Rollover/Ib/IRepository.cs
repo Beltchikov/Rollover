@@ -27,5 +27,6 @@ namespace Rollover.Ib
         Tuple<bool, double> AskPrice(Contract contract);
         void PlaceBearSpread(ITrackedSymbol trackedSymbol);
         bool IsConnected();
+        void PlaceOrder(Contract contractCall, Order orderCall);
     }
 }

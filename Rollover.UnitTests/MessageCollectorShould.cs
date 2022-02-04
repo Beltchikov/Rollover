@@ -80,5 +80,25 @@ namespace Rollover.UnitTests
                 regulatorySnapshot,
                 mktDataOptions);
         }
+
+        [Theory, AutoNSubstituteData]
+        public void CallIbClientPlaceOrder(
+            Contract contract,
+            Order order,
+            [Frozen] IIbClientWrapper ibClient,
+            MessageCollector sut)
+        {
+            sut.placeOrder(contract,order);
+            ibClient.Received().PlaceOrder(contract, order);
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallIbClientReqId(
+            [Frozen] IIbClientWrapper ibClient,
+            MessageCollector sut)
+        {
+            sut.reqId();
+            ibClient.Received().reqIds();
+        }
     }
 }

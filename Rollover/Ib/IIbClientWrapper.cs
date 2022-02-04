@@ -27,5 +27,7 @@ namespace Rollover.Ib
                     List<TagValue> mktDataOptions);
         EReader ReaderFactory();
         void WaitForSignal();
+        void PlaceOrder(Contract contract, Order order);
+        void reqIds();
     }
 }

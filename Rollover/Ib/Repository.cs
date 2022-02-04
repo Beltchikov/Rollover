@@ -404,5 +404,11 @@ namespace Rollover.Ib
         {
             return _messageCollector.IsConnected();
         }
+
+        public void PlaceOrder(Contract contractCall, Order orderCall)
+        {
+            _messageCollector.placeOrder(contractCall, orderCall);
+            _messageCollector.reqId();
+        }
     }
 }

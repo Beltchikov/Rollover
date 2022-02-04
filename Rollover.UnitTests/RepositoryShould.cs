@@ -65,30 +65,26 @@ namespace Rollover.UnitTests
             messageCollector.Received().reqPositions();
         }
 
-        //[Theory, AutoNSubstituteData]
-        //public void ThrowMultipleContractDetailsMessage(
-        //    [Frozen] IMessageCollector messageCollector,
-        //    Repository sut)
-        //{
-        //    var contract = new Contract
-        //    {
-        //        Symbol = "MNQ",
-        //        Currency = "USD",
-        //        Exchange = "GLOBEX",
-        //        LastTradeDateOrContractMonth = "20220318",
-        //        SecType = "OPT"
-        //    };
+        [Theory, AutoNSubstituteData]
+        public void CallMessageCollectorPlaceOrder(
+            Contract contract,
+            Order order,
+            [Frozen] IMessageCollector messageCollector,
+            Repository sut)
+        {
+            sut.PlaceOrder(contract, order);
+            messageCollector.Received().placeOrder(contract, order);
+        }
 
-        //    var contractDetails = new ContractDetails
-        //    { Contract = contract, UnderSecType = "FUT" };
-        //    contractDetails.Contract = contract;
-        //    var contractDetailsMessage = new ContractDetailsMessage(1, contractDetails);
-        //    var contractDetailsMessageList = new List<ContractDetailsMessage>
-        //    { contractDetailsMessage, contractDetailsMessage };
-        //    messageCollector.reqContractDetails(Arg.Any<Contract>()).Returns(contractDetailsMessageList);
-
-        //    Assert.Throws<MultipleContractDetailsMessage>(
-        //        () => sut.PlaceBearSpread(Arg.Any<ITrackedSymbol>()));
-        //}
+        [Theory, AutoNSubstituteData]
+        public void CallMessageCollectorReqIds(
+            Contract contract,
+            Order order,
+            [Frozen] IMessageCollector messageCollector,
+            Repository sut)
+        {
+            sut.PlaceOrder(contract, order);
+            messageCollector.Received().reqId();
+        }
     }
 }

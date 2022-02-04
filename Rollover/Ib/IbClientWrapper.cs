@@ -193,6 +193,16 @@ namespace Rollover.Ib
             _ibClient.TickSnapshotEnd += OnTickSnapshotEnd;
         }
 
+        public void PlaceOrder(Contract contract, Order order)
+        {
+            _ibClient.ClientSocket.placeOrder(_ibClient.NextOrderId, contract, order);
+        }
+
+        public void reqIds()
+        {
+            _ibClient.ClientSocket.reqIds(-1);
+        }
+
         #endregion
     }
 }

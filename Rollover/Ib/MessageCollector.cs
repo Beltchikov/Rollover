@@ -230,5 +230,15 @@ namespace Rollover.Ib
         {
             return _ibClient.IsConnected();
         }
+
+        public void placeOrder(Contract contract, Order order)
+        {
+            _ibClient.PlaceOrder(contract, order);
+        }
+
+        public void reqId()
+        {
+            _ibClient.reqIds(); 
+        }
     }
 }
