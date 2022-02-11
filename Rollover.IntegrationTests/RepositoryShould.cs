@@ -295,9 +295,11 @@ namespace Rollover.IntegrationTests
             var conIdCall = contractDetailsCallWithStrike.First().ContractDetails.Contract.ConId;
             var priceTupleCall = repository.AskPrice(conIdCall, exchange);
             Assert.True(priceTupleCall.Item1);
+            var minTick = contractDetailsCallWithStrike.First().ContractDetails.MinTick;
 
             // Decrease price by 5% to prevent execution
-            var orderPrice = Math.Round(priceTupleCall.Item2 * 0.95, 1);
+            var orderPrice = Math.Round(priceTupleCall.Item2 * 0.95, 2);
+            orderPrice = ((int)(orderPrice * 100) / (int)(minTick * 100)) / 100;
 
             // Place Order
             Order orderCall = new Order
