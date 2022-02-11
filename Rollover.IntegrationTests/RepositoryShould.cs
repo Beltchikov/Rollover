@@ -99,12 +99,12 @@ namespace Rollover.IntegrationTests
         [Fact]
         public void ReceiveLastPriceDaxIndex()
         {
-            if(DateTime.Now.DayOfWeek == DayOfWeek.Sunday
+            if (DateTime.Now.DayOfWeek == DayOfWeek.Sunday
                 || DateTime.Now.DayOfWeek == DayOfWeek.Saturday)
             {
                 return;
             }
-            
+
             var exchange = "DTB";
             var contract = new Contract
             {
@@ -233,20 +233,21 @@ namespace Rollover.IntegrationTests
         }
 
         [Fact]
-        public void PlaceBearSpreadAndCancelPlaceBearSpreadDax()
+        public void CreateAndDeleteOptionOrderDax()
         {
-            var exchange = "DTB";
-            var month = DateTime.Now.Month + 3;
-            var lastTradeDateOrContractMonth
-                = IbHelper.NextContractYearAndMonth(DateTime.Now.Year, month, 3);
+            if (DateTime.Now.DayOfWeek == DayOfWeek.Sunday
+                || DateTime.Now.DayOfWeek == DayOfWeek.Saturday)
+            {
+                return;
+            }
 
-            // Get underlying price
+            var exchange = "DTB";
             var contractUnderlying = new Contract
             {
                 Symbol = "DAX",
                 SecType = "IND",
                 Currency = "EUR",
-                Exchange = exchange
+                Exchange = exchange,
             };
 
             var repository = RepositoryFactory();
@@ -262,6 +263,121 @@ namespace Rollover.IntegrationTests
             Assert.True(priceTuple.Item1);
 
             // Create call contract
+            var month = DateTime.Now.Month + 3;
+            var lastTradeDateOrContractMonth
+                = IbHelper.NextContractYearAndMonth(DateTime.Now.Year, month, 3);
+            var contractCall = new Contract
+            {
+                Symbol = "DAX",
+                SecType = "OPT",
+                Currency = "EUR",
+                Exchange = exchange,
+                LastTradeDateOrContractMonth = lastTradeDateOrContractMonth,
+                Right = "C"
+            };
+            var contractDetailsCall= repository.ContractDetails(contractCall);
+            Assert.True(contractDetailsCall.Any());
+
+            // Strikes
+            var strikes = contractDetailsCall.Select(c => c.ContractDetails.Contract.Strike).ToList();
+            Assert.NotEmpty(strikes);
+            var strikesAbovePrice = strikes.Where(s => s > priceTuple.Item2).ToList();
+            Assert.NotEmpty(strikesAbovePrice);
+            strikes.Remove(strikesAbovePrice.Min());
+            strikes.Remove(strikesAbovePrice.Min());
+            var strike = strikesAbovePrice.Min();
+
+            // Place Order
+            contractCall.Strike = strike;
+            Order orderCall = new Order
+            {
+                Action = "BUY",
+                OrderType = "MKT",
+                TotalQuantity = 1
+            };
+            //repository.PlaceOrder(contractCall, orderCall);
+
+            repository.Disconnect();
+
+
+            
+
+            //var contractCall = new Contract
+            //{
+            //    Symbol = "DAX",
+            //    SecType = "OPT",
+            //    Currency = "EUR",
+            //    Exchange = exchange,
+            //    TradingClass = "ODAX",
+            //    LastTradeDateOrContractMonth = lastTradeDateOrContractMonth,
+            //    Strike = strike,
+            //    Right = "C"
+            //};
+
+            //var contractDetailsListCall = repository.ContractDetails(contractCall)
+            //    .Where(c => c.ContractDetails.Contract.Strike > priceTuple.Item2)
+            //    .OrderBy(d => d.ContractDetails.Contract.Strike);
+            //Assert.NotEmpty(contractDetailsListCall);
+            //var contractDetailsCall = contractDetailsListCall.First();
+
+            //Order orderCall = new Order
+            //{
+            //    Action = "BUY",
+            //    OrderType = "MKT",
+            //    TotalQuantity = 1
+            //};
+
+            //// Place order
+            //repository.PlaceOrder(contractCall, orderCall);
+
+            //// Assert
+            //var optionPosition = repository.AllPositions().FirstOrDefault(p
+            //    => p.Contract.Symbol == contractCall.Symbol
+            //    && p.Contract.SecType == contractCall.SecType
+            //    && p.Contract.Currency == contractCall.Currency
+            //    && p.Contract.Exchange == contractCall.Exchange
+            //    && p.Contract.TradingClass == contractCall.TradingClass
+            //    && p.Contract.LastTradeDateOrContractMonth == contractCall.LastTradeDateOrContractMonth
+            //    && p.Contract.Right == contractCall.Right);
+
+            //Assert.NotNull(optionPosition);
+
+            //repository.Disconnect();
+
+        }
+
+        [Fact]
+        public void PlaceBearSpreadAndCancelPlaceBearSpreadDax()
+        {
+            var exchange = "DTB";
+            var month = DateTime.Now.Month + 3;
+            var lastTradeDateOrContractMonth
+                = IbHelper.NextContractYearAndMonth(DateTime.Now.Year, month, 3);
+
+            // Connect to repository
+            var repository = RepositoryFactory();
+            if (!repository.IsConnected())
+            {
+                repository.Connect(HOST, PORT, RandomClientId());
+            }
+
+            // Get underlying price
+            var contractUnderlying = new Contract
+            {
+                Symbol = "DAX",
+                SecType = "IND",
+                Currency = "EUR",
+                Exchange = exchange
+            };
+
+            var contractDetailsUnderlying = repository.ContractDetails(contractUnderlying);
+            Assert.True(contractDetailsUnderlying.Any());
+
+            var conId = contractDetailsUnderlying.First().ContractDetails.Contract.ConId;
+            var priceTuple = repository.LastPrice(conId, exchange);
+            Assert.True(priceTuple.Item1);
+
+            // Create call contract
             var contractCall = new Contract
             {
                 Symbol = "DAX",
@@ -269,17 +385,12 @@ namespace Rollover.IntegrationTests
                 Currency = "EUR",
                 Exchange = exchange,
                 TradingClass = "ODAX",
-                LastTradeDateOrContractMonth=lastTradeDateOrContractMonth,
+                LastTradeDateOrContractMonth = lastTradeDateOrContractMonth,
                 Right = "C"
             };
 
-            if (!repository.IsConnected())
-            {
-                repository.Connect(HOST, PORT, RandomClientId());
-            }
-
             var contractDetailsListCall = repository.ContractDetails(contractCall)
-                .Where(c =>c.ContractDetails.Contract.Strike > priceTuple.Item2)
+                .Where(c => c.ContractDetails.Contract.Strike > priceTuple.Item2)
                 .OrderBy(d => d.ContractDetails.Contract.Strike);
             Assert.NotEmpty(contractDetailsListCall);
             var contractDetailsCall = contractDetailsListCall.First();
