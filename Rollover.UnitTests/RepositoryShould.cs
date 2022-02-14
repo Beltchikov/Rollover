@@ -39,7 +39,7 @@ namespace Rollover.UnitTests
         [Theory, AutoNSubstituteData]
         public void CallsMessageCollectorReqPositionsInAllPositions([Frozen] IMessageCollector messageCollector)
         {
-            var sut = new Repository(null, null, messageCollector);
+            var sut = new Repository(null, null, messageCollector, null);
             sut.AllPositions();
             messageCollector.Received().reqPositions();
         }
@@ -54,7 +54,7 @@ namespace Rollover.UnitTests
             messageProcessor.ConvertMessage(Arg.Any<object>())
                 .Returns(new List<string> { "Some message" });
 
-            IRepository sut = new Repository(null, messageProcessor, messageCollector);
+            IRepository sut = new Repository(null, messageProcessor, messageCollector, null);
             sut.Connect("localhost", 4001, 1);
             messageCollector.Received().eConnect("localhost", 4001, 1);
         }
@@ -63,7 +63,7 @@ namespace Rollover.UnitTests
         public void CallMessageCollectorReqPositions(
             [Frozen] IMessageCollector messageCollector)
         {
-            IRepository sut = new Repository(null, null, messageCollector);
+            IRepository sut = new Repository(null, null, messageCollector, null);
             sut.AllPositions();
             messageCollector.Received().reqPositions();
         }
@@ -88,6 +88,19 @@ namespace Rollover.UnitTests
         {
             sut.PlaceOrder(contract, order);
             messageCollector.Received().reqId();
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallRepositoryHelper(
+            ContractDetailsMessage contractDetailsMessage,
+            DateTime dateTime,
+            [Frozen] IRepositoryHelper repositoryHelper,
+            Repository sut)
+        {
+            sut.MarketIsOpen(contractDetailsMessage, dateTime);
+            repositoryHelper.Received().IsInTradingHours(
+                contractDetailsMessage.ContractDetails.TradingHours,
+                dateTime);
         }
 
         [Theory, AutoNSubstituteData]

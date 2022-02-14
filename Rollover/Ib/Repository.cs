@@ -11,18 +11,20 @@ namespace Rollover.Ib
     {
         private IIbClientWrapper _ibClient;
 
-
         private IMessageProcessor _messageProcessor;
         private IMessageCollector _messageCollector;
+        private IRepositoryHelper _repositoryHelper;
 
         public Repository(
             IIbClientWrapper ibClient,
             IMessageProcessor messageProcessor,
-            IMessageCollector messageCollector)
+            IMessageCollector messageCollector, 
+            IRepositoryHelper repositoryHelper)
         {
             _ibClient = ibClient;
             _messageProcessor = messageProcessor;
             _messageCollector = messageCollector;
+            _repositoryHelper = repositoryHelper;
         }
 
         public Tuple<bool, List<string>> Connect(string host, int port, int clientId)
@@ -39,6 +41,11 @@ namespace Rollover.Ib
         public List<PositionMessage> AllPositions()
         {
             return _messageCollector.reqPositions();
+        }
+
+        public bool MarketIsOpen(ContractDetailsMessage contractDetailsMessage, DateTime dateTime)
+        {
+            return _repositoryHelper.IsInTradingHours(contractDetailsMessage.ContractDetails.TradingHours, dateTime);
         }
 
         //public TrackedSymbol GetTrackedSymbol(Contract contract)

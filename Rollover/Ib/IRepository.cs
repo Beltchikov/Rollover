@@ -28,5 +28,6 @@ namespace Rollover.Ib
         void PlaceBearSpread(ITrackedSymbol trackedSymbol);
         bool IsConnected();
         void PlaceOrder(Contract contractCall, Order orderCall);
+        bool MarketIsOpen(ContractDetailsMessage contractDetailsMessage, DateTime dateTime);
     }
 }

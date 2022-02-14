@@ -29,10 +29,12 @@ namespace Rollover
                 connectedCondition,
                 ibClientQueue,
                 configurationManager);
+            IRepositoryHelper repositoryHelper = new RepositoryHelper();
             IRepository repository = new Repository(
                 ibClient,
                 messageProcessor,
-                messageCollector);
+                messageCollector,
+                repositoryHelper);
 
             ITrackedSymbols trackedSymbols = new TrackedSymbols(fileHelper, serializer);
             IOrderManager orderManager = new OrderManager(repository);
