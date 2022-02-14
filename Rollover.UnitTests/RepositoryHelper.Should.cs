@@ -13,7 +13,12 @@ namespace Rollover.UnitTests
     public class RepositoryHelperShould
     {
         [Theory]
+        [InlineData("11.01.2022 11:02", false)]
+        [InlineData("13.02.2022 11:02", false)]
         [InlineData("14.02.2022 11:02", true)]
+        [InlineData("15.02.2022 08:02", false)]
+        [InlineData("18.02.2022 17:15", true)]
+        [InlineData("19.02.2022 08:02", false)]
         public void CheckTradingHours(string dateString, bool expectedResult)
         {
             var tradingHoursString = "20220214:0900-20220214:1730;" +

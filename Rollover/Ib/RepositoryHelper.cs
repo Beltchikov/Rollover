@@ -1,9 +1,5 @@
-﻿using IBSampleApp.messages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using System.Globalization;
 
 namespace Rollover.Ib
 {
@@ -11,7 +7,23 @@ namespace Rollover.Ib
     {
         public bool IsInTradingHours(string tradingHoursString, DateTime dateTime)
         {
-            throw new NotImplementedException();
+            var periods = tradingHoursString.Split(";");
+            foreach(var period in periods)
+            {
+                var fromToArray = period.Split("-");
+                var from = fromToArray[0];
+                var to = fromToArray[1];
+                var fromTime = DateTime.ParseExact(from, "yyyyMMdd:HHmm", CultureInfo.InvariantCulture);
+                var toTime = DateTime.ParseExact(to, "yyyyMMdd:HHmm", CultureInfo.InvariantCulture);
+
+                if (fromTime < dateTime && dateTime < toTime)
+                {
+                    return true;
+                }
+
+            }
+
+            return false;
         }
     }
 }
