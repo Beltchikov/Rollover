@@ -102,19 +102,5 @@ namespace Rollover.UnitTests
                 contractDetailsMessage.ContractDetails.TradingHours,
                 dateTime);
         }
-
-        [Theory, AutoNSubstituteData]
-        public void CheckTradingHours(Repository sut)
-        {
-            //var tradingHoursString = "20220214:0900-20220214:1730;" +
-            //    "20220215:0900-20220215:1730;20220216:0900-20220216:1730;" +
-            //    "20220217:0900-20220217:1730;20220218:0900-20220218:1730";
-
-            //var monday10 = DateTime.Parse("14.02.2022 11:02", new CultureInfo("DE-de"));
-            //bool result = sut.IsInTradingHours(Helper.DaxIndContract, monday10);
-            //Assert.True(result);
-
-
-        }
     }
 }

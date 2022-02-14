@@ -44,7 +44,8 @@ namespace Rollover.Tests.Shared
             IRepository repository = new Repository(
                 ibClient,
                 messageProcessor,
-                messageCollector);
+                messageCollector,
+                null);
 
             return repository;
         }
