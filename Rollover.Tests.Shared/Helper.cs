@@ -14,6 +14,30 @@ namespace Rollover.Tests.Shared
         public const int TIMEOUT = 10000;
         public const int PRICE_REQUEST_INTERVAL_IN_SECONDS = 10;
 
+        public static DateTime TimeNowFrankfurt
+        {
+            get
+            {
+                return TimeNow("Central Europe Standard Time");
+            }
+        }
+
+        public static DateTime TimeNowChicago
+        {
+            get
+            {
+                return TimeNow("Central America Standard Time");
+            }
+        }
+
+        public static DateTime TimeNow(string zoneId)
+        {
+            DateTime utcNow = DateTime.UtcNow;
+            TimeZoneInfo tz = TimeZoneInfo.FindSystemTimeZoneById(zoneId);
+            TimeSpan offset = tz.GetUtcOffset(utcNow);
+            return utcNow.Add(offset);
+        }
+
         public static Contract DaxIndContract()
         {
             return new Contract
@@ -41,11 +65,12 @@ namespace Rollover.Tests.Shared
                 connectedCondition,
                 ibClientQueue,
                 configurationManager);
+            IRepositoryHelper repositoryHelper = new RepositoryHelper();    
             IRepository repository = new Repository(
                 ibClient,
                 messageProcessor,
                 messageCollector,
-                null);
+                repositoryHelper);
 
             return repository;
         }
