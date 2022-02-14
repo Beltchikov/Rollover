@@ -101,87 +101,87 @@ namespace Rollover.IntegrationTests
             repository.Disconnect();
         }
 
-        [Fact]
-        public void CreateAndDeleteOptionOrderDax()
-        {
-            if (DateTime.Now.DayOfWeek == DayOfWeek.Sunday
-                || DateTime.Now.DayOfWeek == DayOfWeek.Saturday)
-            {
-                return;
-            }
+        //[Fact]
+        //public void CreateAndDeleteOptionOrderDax()
+        //{
+        //    if (DateTime.Now.DayOfWeek == DayOfWeek.Sunday
+        //        || DateTime.Now.DayOfWeek == DayOfWeek.Saturday)
+        //    {
+        //        return;
+        //    }
 
-            var exchange = "DTB";
-            var contractUnderlying = new Contract
-            {
-                Symbol = "DAX",
-                SecType = "IND",
-                Currency = "EUR",
-                Exchange = exchange,
-            };
+        //    var exchange = "DTB";
+        //    var contractUnderlying = new Contract
+        //    {
+        //        Symbol = "DAX",
+        //        SecType = "IND",
+        //        Currency = "EUR",
+        //        Exchange = exchange,
+        //    };
 
-            var repository = Helper.RepositoryFactory();
-            if (!repository.IsConnected())
-            {
-                repository.Connect(Helper.HOST, Helper.PORT, Helper.RandomClientId());
-            }
-            var contractDetailsUnderlying = repository.ContractDetails(contractUnderlying);
-            Assert.True(contractDetailsUnderlying.Any());
+        //    var repository = Helper.RepositoryFactory();
+        //    if (!repository.IsConnected())
+        //    {
+        //        repository.Connect(Helper.HOST, Helper.PORT, Helper.RandomClientId());
+        //    }
+        //    var contractDetailsUnderlying = repository.ContractDetails(contractUnderlying);
+        //    Assert.True(contractDetailsUnderlying.Any());
 
-            var conIdUnderlying = contractDetailsUnderlying.First().ContractDetails.Contract.ConId;
-            var priceTupleUnderlying = repository.LastPrice(conIdUnderlying, exchange);
-            Assert.True(priceTupleUnderlying.Item1);
+        //    var conIdUnderlying = contractDetailsUnderlying.First().ContractDetails.Contract.ConId;
+        //    var priceTupleUnderlying = repository.LastPrice(conIdUnderlying, exchange);
+        //    Assert.True(priceTupleUnderlying.Item1);
 
-            // Get call contracts for expiration in 3 months
-            var month = DateTime.Now.Month + 3;
-            var lastTradeDateOrContractMonth
-                = IbHelper.NextContractYearAndMonth(DateTime.Now.Year, month, 3);
-            var contractCall = new Contract
-            {
-                Symbol = "DAX",
-                SecType = "OPT",
-                Currency = "EUR",
-                Exchange = exchange,
-                LastTradeDateOrContractMonth = lastTradeDateOrContractMonth,
-                Right = "C"
-            };
-            var contractDetailsCallList = repository.ContractDetails(contractCall);
-            Assert.True(contractDetailsCallList.Any());
+        //    // Get call contracts for expiration in 3 months
+        //    var month = DateTime.Now.Month + 3;
+        //    var lastTradeDateOrContractMonth
+        //        = IbHelper.NextContractYearAndMonth(DateTime.Now.Year, month, 3);
+        //    var contractCall = new Contract
+        //    {
+        //        Symbol = "DAX",
+        //        SecType = "OPT",
+        //        Currency = "EUR",
+        //        Exchange = exchange,
+        //        LastTradeDateOrContractMonth = lastTradeDateOrContractMonth,
+        //        Right = "C"
+        //    };
+        //    var contractDetailsCallList = repository.ContractDetails(contractCall);
+        //    Assert.True(contractDetailsCallList.Any());
 
-            // Get strike next but one to the price
-            var strikes = contractDetailsCallList.Select(c => c.ContractDetails.Contract.Strike).ToList();
-            Assert.NotEmpty(strikes);
-            var strikesAbovePrice = strikes.Where(s => s > priceTupleUnderlying.Item2).ToList();
-            Assert.NotEmpty(strikesAbovePrice);
-            strikes.Remove(strikesAbovePrice.Min());
-            var strike = strikesAbovePrice.Min();
+        //    // Get strike next but one to the price
+        //    var strikes = contractDetailsCallList.Select(c => c.ContractDetails.Contract.Strike).ToList();
+        //    Assert.NotEmpty(strikes);
+        //    var strikesAbovePrice = strikes.Where(s => s > priceTupleUnderlying.Item2).ToList();
+        //    Assert.NotEmpty(strikesAbovePrice);
+        //    strikes.Remove(strikesAbovePrice.Min());
+        //    var strike = strikesAbovePrice.Min();
 
-            // Update call contract with price
-            contractCall.Strike = strike;
+        //    // Update call contract with price
+        //    contractCall.Strike = strike;
 
-            // Get price for the call contract
-            var contractDetailsCallWithStrike = repository.ContractDetails(contractCall);
-            Assert.Single(contractDetailsCallWithStrike);
-            var conIdCall = contractDetailsCallWithStrike.First().ContractDetails.Contract.ConId;
-            var priceTupleCall = repository.AskPrice(conIdCall, exchange);
-            Assert.True(priceTupleCall.Item1);
-            var minTick = contractDetailsCallWithStrike.First().ContractDetails.MinTick;
+        //    // Get price for the call contract
+        //    var contractDetailsCallWithStrike = repository.ContractDetails(contractCall);
+        //    Assert.Single(contractDetailsCallWithStrike);
+        //    var conIdCall = contractDetailsCallWithStrike.First().ContractDetails.Contract.ConId;
+        //    var priceTupleCall = repository.AskPrice(conIdCall, exchange);
+        //    Assert.True(priceTupleCall.Item1);
+        //    var minTick = contractDetailsCallWithStrike.First().ContractDetails.MinTick;
 
-            // Decrease price by 5% to prevent execution
-            var orderPrice = Math.Round(priceTupleCall.Item2 * 0.95, 2);
-            orderPrice = ((int)(orderPrice * 100) / (int)(minTick * 100)) / 100;
+        //    // Decrease price by 5% to prevent execution
+        //    var orderPrice = Math.Round(priceTupleCall.Item2 * 0.95, 2);
+        //    orderPrice = ((int)(orderPrice * 100) / (int)(minTick * 100)) / 100;
 
-            // Place Order
-            Order orderCall = new Order
-            {
-                Action = "BUY",
-                OrderType = "LMT",
-                TotalQuantity = 1,
-                LmtPrice = orderPrice
-            };
-            repository.PlaceOrder(contractCall, orderCall);
+        //    // Place Order
+        //    Order orderCall = new Order
+        //    {
+        //        Action = "BUY",
+        //        OrderType = "LMT",
+        //        TotalQuantity = 1,
+        //        LmtPrice = orderPrice
+        //    };
+        //    repository.PlaceOrder(contractCall, orderCall);
 
-            repository.Disconnect();
-        }
+        //    repository.Disconnect();
+        //}
 
         //[Fact]
         //public void PlaceBearSpreadAndCancelPlaceBearSpreadDax()
