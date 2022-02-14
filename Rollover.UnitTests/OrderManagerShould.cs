@@ -7,6 +7,7 @@ using Rollover.Tracking;
 using System;
 using System.Collections.Generic;
 using Xunit;
+using Rollover.Tests.Shared;
 
 namespace Rollover.UnitTests
 {

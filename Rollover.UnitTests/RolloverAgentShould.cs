@@ -5,6 +5,7 @@ using Rollover.Ib;
 using Rollover.Input;
 using Rollover.Tracking;
 using Xunit;
+using Rollover.Tests.Shared;
 
 namespace Rollover.UnitTests
 {

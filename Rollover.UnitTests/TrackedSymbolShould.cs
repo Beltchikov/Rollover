@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using Rollover.Tests.Shared;
 
 namespace Rollover.UnitTests
 {

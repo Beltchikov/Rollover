@@ -11,6 +11,7 @@ using Rollover.Tracking;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
+using Rollover.Tests.Shared;
 
 namespace Rollover.UnitTests
 {

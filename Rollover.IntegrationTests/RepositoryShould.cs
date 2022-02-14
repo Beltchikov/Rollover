@@ -15,11 +15,14 @@ namespace Rollover.IntegrationTests
                 return;
             }
 
-            var repository = Helper.RepositoryFactory();
+            var repository = Tests.Shared.Helper.RepositoryFactory();
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            var connnectionTuple = repository.Connect(Helper.HOST, Helper.PORT, Helper.RandomClientId());
+            var connnectionTuple = repository.Connect(
+                Tests.Shared.Helper.HOST, 
+                Tests.Shared.Helper.PORT, 
+                Tests.Shared.Helper.RandomClientId());
             repository.Disconnect();
 
 

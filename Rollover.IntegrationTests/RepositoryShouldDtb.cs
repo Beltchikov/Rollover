@@ -1,8 +1,11 @@
 ﻿using IBApi;
 using Rollover.Helper;
+using Rollover.Ib;
 using System;
+using System.Globalization;
 using System.Linq;
 using Xunit;
+using Rollover.Tests.Shared;
 
 namespace Rollover.IntegrationTests
 {
@@ -18,19 +21,15 @@ namespace Rollover.IntegrationTests
             //To prevent this, narrow down the amount of eligible contracts by providing an expiration date 
             //specifying at least the year(i.e. 2016) or the year and the month(i.e. 201603 for March 2016).
 
-            var contract = new Contract
-            {
-                Symbol = "DAX",
-                SecType = "OPT",
-                Currency = "EUR",
-                Exchange = "DTB",
-                LastTradeDateOrContractMonth = DateTime.Now.Year.ToString() + "03"
-            };
+            var contract = Tests.Shared.Helper.DaxOptContract(DateTime.Now.Year.ToString() + "03");
 
-            var repository = Helper.RepositoryFactory();
+            var repository = Tests.Shared.Helper.RepositoryFactory();
             if (!repository.IsConnected())
             {
-                repository.Connect(Helper.HOST, Helper.PORT, Helper.RandomClientId());
+                repository.Connect(
+                    Tests.Shared.Helper.HOST, 
+                    Tests.Shared.Helper.PORT, 
+                    Tests.Shared.Helper.RandomClientId());
             }
             var contractDetails = repository.ContractDetails(contract);
             repository.Disconnect();
@@ -40,19 +39,15 @@ namespace Rollover.IntegrationTests
         [Fact]
         public void ReceiveOptionParametersDax()
         {
-            var exchange = "DTB";
-            var contract = new Contract
-            {
-                Symbol = "DAX",
-                SecType = "IND",
-                Currency = "EUR",
-                Exchange = exchange,
-            };
+            var contract = Tests.Shared.Helper.DaxIndContract();
 
-            var repository = Helper.RepositoryFactory();
+            var repository = Tests.Shared.Helper.RepositoryFactory();
             if (!repository.IsConnected())
             {
-                repository.Connect(Helper.HOST, Helper.PORT, Helper.RandomClientId());
+                repository.Connect(
+                    Tests.Shared.Helper.HOST, 
+                    Tests.Shared.Helper.PORT, 
+                    Tests.Shared.Helper.RandomClientId());
             }
 
             var contractDetailsList = repository.ContractDetails(contract);
@@ -67,6 +62,7 @@ namespace Rollover.IntegrationTests
 
             repository.Disconnect();
         }
+
 
         //[Fact]
         //public void ReceiveLastPriceDaxIndex()

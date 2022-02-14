@@ -2,6 +2,7 @@
 using NSubstitute;
 using Rollover.Configuration;
 using Rollover.Helper;
+using Rollover.Tests.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;

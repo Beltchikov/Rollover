@@ -20,10 +20,13 @@ namespace Rollover.IntegrationTests
                 LastTradeDateOrContractMonth = DateTime.Now.Year.ToString() + "03"
             };
 
-            var repository = Helper.RepositoryFactory();
+            var repository = Tests.Shared.Helper.RepositoryFactory();
             if (!repository.IsConnected())
             {
-                repository.Connect(Helper.HOST, Helper.PORT, Helper.RandomClientId());
+                repository.Connect(
+                    Tests.Shared.Helper.HOST, 
+                    Tests.Shared.Helper.PORT, 
+                    Tests.Shared.Helper.RandomClientId());
             }
             var contractDetails = repository.ContractDetails(contract);
             repository.Disconnect();
@@ -46,10 +49,13 @@ namespace Rollover.IntegrationTests
                 LastTradeDateOrContractMonth = lastTradeDateOrContractMonth
             };
 
-            var repository = Helper.RepositoryFactory();
+            var repository = Tests.Shared.Helper.RepositoryFactory();
             if (!repository.IsConnected())
             {
-                repository.Connect(Helper.HOST, Helper.PORT, Helper.RandomClientId());
+                repository.Connect(
+                    Tests.Shared.Helper.HOST, 
+                    Tests.Shared.Helper.PORT, 
+                    Tests.Shared.Helper.RandomClientId());
             }
 
             var contractDetailsList = repository.ContractDetails(contract);

@@ -3,6 +3,7 @@ using IBApi;
 using IBSampleApp.messages;
 using NSubstitute;
 using Rollover.Ib;
+using Rollover.Tests.Shared;
 using Xunit;
 
 namespace Rollover.UnitTests

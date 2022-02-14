@@ -1,6 +1,7 @@
 ﻿using AutoFixture.Xunit2;
 using NSubstitute;
 using Rollover.Helper;
+using Rollover.Tests.Shared;
 using Rollover.Tracking;
 using System.Collections.Generic;
 using Xunit;

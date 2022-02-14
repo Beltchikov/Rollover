@@ -1,10 +1,11 @@
-﻿using NSubstitute;
+﻿using IBApi;
+using NSubstitute;
 using Rollover.Configuration;
 using Rollover.Ib;
 using Rollover.Tracking;
 using System;
 
-namespace Rollover.IntegrationTests
+namespace Rollover.Tests.Shared
 {
     public class Helper
     {
@@ -12,7 +13,18 @@ namespace Rollover.IntegrationTests
         public const int PORT = 4001;
         public const int TIMEOUT = 10000;
         public const int PRICE_REQUEST_INTERVAL_IN_SECONDS = 10;
-        
+
+        public static Contract DaxIndContract()
+        {
+            return new Contract
+            {
+                Symbol = "DAX",
+                SecType = "IND",
+                Currency = "EUR",
+                Exchange = "DTB",
+            };
+        }
+
         public static IRepository RepositoryFactory()
         {
             IConfigurationManager configurationManager = ConfigurationManagerFactory();
@@ -35,6 +47,18 @@ namespace Rollover.IntegrationTests
                 messageCollector);
 
             return repository;
+        }
+
+        public static Contract DaxOptContract(string lastTradeDateOrContractMonth)
+        {
+            return new Contract
+            {
+                Symbol = "DAX",
+                SecType = "OPT",
+                Currency = "EUR",
+                Exchange = "DTB",
+                LastTradeDateOrContractMonth = lastTradeDateOrContractMonth
+            };
         }
 
         public static IConfigurationManager ConfigurationManagerFactory()

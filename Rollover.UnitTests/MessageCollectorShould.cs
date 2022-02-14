@@ -5,6 +5,7 @@ using IBApi;
 using NSubstitute;
 using Rollover.Ib;
 using Xunit;
+using Rollover.Tests.Shared;
 
 namespace Rollover.UnitTests
 {
