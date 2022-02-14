@@ -38,39 +38,6 @@ namespace Rollover.IntegrationTests
         }
 
         [Fact]
-        public void ReceiveLastPriceDaxIndex()
-        {
-            if (DateTime.Now.DayOfWeek == DayOfWeek.Sunday
-                || DateTime.Now.DayOfWeek == DayOfWeek.Saturday)
-            {
-                return;
-            }
-
-            var exchange = "DTB";
-            var contract = new Contract
-            {
-                Symbol = "DAX",
-                SecType = "IND",
-                Currency = "EUR",
-                Exchange = exchange,
-            };
-
-            var repository = Helper.RepositoryFactory();
-            if (!repository.IsConnected())
-            {
-                repository.Connect(Helper.HOST, Helper.PORT, Helper.RandomClientId());
-            }
-            var contractDetails = repository.ContractDetails(contract);
-            Assert.True(contractDetails.Any());
-
-            var conId = contractDetails.First().ContractDetails.Contract.ConId;
-            var priceTuple = repository.LastPrice(conId, exchange);
-            Assert.True(priceTuple.Item1);
-
-            repository.Disconnect();
-        }
-
-        [Fact]
         public void ReceiveOptionParametersDax()
         {
             var exchange = "DTB";
@@ -100,6 +67,39 @@ namespace Rollover.IntegrationTests
 
             repository.Disconnect();
         }
+
+        //[Fact]
+        //public void ReceiveLastPriceDaxIndex()
+        //{
+        //    if (DateTime.Now.DayOfWeek == DayOfWeek.Sunday
+        //        || DateTime.Now.DayOfWeek == DayOfWeek.Saturday)
+        //    {
+        //        return;
+        //    }
+
+        //    var exchange = "DTB";
+        //    var contract = new Contract
+        //    {
+        //        Symbol = "DAX",
+        //        SecType = "IND",
+        //        Currency = "EUR",
+        //        Exchange = exchange,
+        //    };
+
+        //    var repository = Helper.RepositoryFactory();
+        //    if (!repository.IsConnected())
+        //    {
+        //        repository.Connect(Helper.HOST, Helper.PORT, Helper.RandomClientId());
+        //    }
+        //    var contractDetails = repository.ContractDetails(contract);
+        //    Assert.True(contractDetails.Any());
+
+        //    var conId = contractDetails.First().ContractDetails.Contract.ConId;
+        //    var priceTuple = repository.LastPrice(conId, exchange);
+        //    Assert.True(priceTuple.Item1);
+
+        //    repository.Disconnect();
+        //}
 
         //[Fact]
         //public void CreateAndDeleteOptionOrderDax()
