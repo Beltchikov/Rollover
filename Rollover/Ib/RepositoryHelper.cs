@@ -11,6 +11,11 @@ namespace Rollover.Ib
             foreach(var period in periods)
             {
                 var fromToArray = period.Split("-");
+                if(fromToArray.Length < 2)
+                {
+                    continue;
+                }
+
                 var from = fromToArray[0];
                 var to = fromToArray[1];
                 var fromTime = DateTime.ParseExact(from, "yyyyMMdd:HHmm", CultureInfo.InvariantCulture);
