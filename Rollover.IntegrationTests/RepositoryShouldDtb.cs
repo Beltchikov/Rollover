@@ -82,16 +82,16 @@ namespace Rollover.IntegrationTests
                     Tests.Shared.Helper.PORT, 
                     Tests.Shared.Helper.RandomClientId());
             }
-            var contractDetails = repository.ContractDetails(contract);
-            Assert.NotEmpty(contractDetails);
-            Assert.Single(contractDetails);
+            var contractDetailsList = repository.ContractDetails(contract);
+            Assert.NotEmpty(contractDetailsList);
+            Assert.Single(contractDetailsList);
 
-            if(!repository.MarketIsOpen(contractDetails.First(), Tests.Shared.Helper.TimeNowFrankfurt))
+            if(!repository.MarketIsOpen(contractDetailsList.First(), Tests.Shared.Helper.TimeNowFrankfurt))
             {
                 return;
             }
            
-            var conId = contractDetails.First().ContractDetails.Contract.ConId;
+            var conId = contractDetailsList.First().ContractDetails.Contract.ConId;
             var priceTuple = repository.LastPrice(conId, contract.Exchange);
             Assert.True(priceTuple.Item1);
 

@@ -87,6 +87,18 @@ namespace Rollover.Tests.Shared
             };
         }
 
+        public static Contract MnqFutContract(string lastTradeDateOrContractMonth)
+        {
+            return new Contract
+            {
+                Symbol = "MNQ",
+                SecType = "FUT",
+                Currency = "USD",
+                Exchange = "GLOBEX",
+                LastTradeDateOrContractMonth = lastTradeDateOrContractMonth
+            };
+        }
+
         public static IConfigurationManager ConfigurationManagerFactory()
         {
             var configuration = new Configuration.Configuration

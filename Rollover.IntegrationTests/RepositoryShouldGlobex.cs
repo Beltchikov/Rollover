@@ -71,42 +71,36 @@ namespace Rollover.IntegrationTests
             repository.Disconnect();
         }
 
-        //[Fact]
-        //public void ReceiveLastPriceMnqFuture()
-        //{
-        //    if (DateTime.Now.DayOfWeek == DayOfWeek.Sunday
-        //        || DateTime.Now.DayOfWeek == DayOfWeek.Saturday)
-        //    {
-        //        return;
-        //    }
+        [Fact]
+        public void ReceiveLastPriceMnqFuture()
+        {
+            var lastTradeDateOrContractMonth
+                = IbHelper.NextContractYearAndMonth(DateTime.Now.Year, DateTime.Now.Month, 3);
 
-        //    var exchange = "GLOBEX";
-        //    var lastTradeDateOrContractMonth
-        //        = IbHelper.NextContractYearAndMonth(DateTime.Now.Year, DateTime.Now.Month, 3);
+            var contract = Tests.Shared.Helper.MnqFutContract(lastTradeDateOrContractMonth);
 
-        //    var contract = new Contract
-        //    {
-        //        Symbol = "MNQ",
-        //        SecType = "FUT",
-        //        Currency = "USD",
-        //        Exchange = exchange,
-        //        LastTradeDateOrContractMonth = lastTradeDateOrContractMonth
-        //    };
+            var repository = Tests.Shared.Helper.RepositoryFactory();
+            if (!repository.IsConnected())
+            {
+                repository.Connect(Tests.Shared.Helper.HOST, 
+                    Tests.Shared.Helper.PORT, 
+                    Tests.Shared.Helper.RandomClientId());
+            }
+            var contractDetailsList = repository.ContractDetails(contract);
+            Assert.NotEmpty(contractDetailsList);
+            Assert.Single(contractDetailsList);
 
-        //    var repository = Helper.RepositoryFactory();
-        //    if (!repository.IsConnected())
-        //    {
-        //        repository.Connect(Helper.HOST, Helper.PORT, Helper.RandomClientId());
-        //    }
-        //    var contractDetails = repository.ContractDetails(contract);
-        //    Assert.True(contractDetails.Any());
+            if (!repository.MarketIsOpen(contractDetailsList.First(), Tests.Shared.Helper.TimeNowChicago))
+            {
+                return;
+            }
 
-        //    var conId = contractDetails.First().ContractDetails.Contract.ConId;
-        //    var priceTuple = repository.LastPrice(conId, exchange);
-        //    Assert.True(priceTuple.Item1);
+            var conId = contractDetailsList.First().ContractDetails.Contract.ConId;
+            var priceTuple = repository.LastPrice(conId, contract.Exchange);
+            Assert.True(priceTuple.Item1);
 
-        //    repository.Disconnect();
-        //}
+            repository.Disconnect();
+        }
 
     }
 }
