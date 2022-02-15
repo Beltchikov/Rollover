@@ -71,36 +71,36 @@ namespace Rollover.IntegrationTests
             repository.Disconnect();
         }
 
-        [Fact]
-        public void ReceiveLastPriceMnqFuture()
-        {
-            var lastTradeDateOrContractMonth
-                = IbHelper.NextContractYearAndMonth(DateTime.Now.Year, DateTime.Now.Month, 3);
+        //[Fact]
+        //public void ReceiveLastPriceMnqFuture()
+        //{
+        //    var lastTradeDateOrContractMonth
+        //        = IbHelper.NextContractYearAndMonth(DateTime.Now.Year, DateTime.Now.Month, 3);
 
-            var contract = Tests.Shared.Helper.MnqFutContract(lastTradeDateOrContractMonth);
+        //    var contract = Tests.Shared.Helper.MnqFutContract(lastTradeDateOrContractMonth);
 
-            var repository = Tests.Shared.Helper.RepositoryFactory();
-            if (!repository.IsConnected())
-            {
-                repository.Connect(Tests.Shared.Helper.HOST, 
-                    Tests.Shared.Helper.PORT, 
-                    Tests.Shared.Helper.RandomClientId());
-            }
-            var contractDetailsList = repository.ContractDetails(contract);
-            Assert.NotEmpty(contractDetailsList);
-            Assert.Single(contractDetailsList);
+        //    var repository = Tests.Shared.Helper.RepositoryFactory();
+        //    if (!repository.IsConnected())
+        //    {
+        //        repository.Connect(Tests.Shared.Helper.HOST, 
+        //            Tests.Shared.Helper.PORT, 
+        //            Tests.Shared.Helper.RandomClientId());
+        //    }
+        //    var contractDetailsList = repository.ContractDetails(contract);
+        //    Assert.NotEmpty(contractDetailsList);
+        //    Assert.Single(contractDetailsList);
 
-            if (!repository.MarketIsOpen(contractDetailsList.First(), Tests.Shared.Helper.TimeNowChicago))
-            {
-                return;
-            }
+        //    if (!repository.MarketIsOpen(contractDetailsList.First(), Tests.Shared.Helper.TimeNowChicago))
+        //    {
+        //        return;
+        //    }
 
-            var conId = contractDetailsList.First().ContractDetails.Contract.ConId;
-            var priceResult = repository.LastPrice(conId, contract.Exchange);
-            Assert.True(priceResult.Success);
+        //    var conId = contractDetailsList.First().ContractDetails.Contract.ConId;
+        //    var priceResult = repository.LastPrice(conId, contract.Exchange);
+        //    Assert.True(priceResult.Success);
 
-            repository.Disconnect();
-        }
+        //    repository.Disconnect();
+        //}
 
     }
 }
