@@ -114,12 +114,11 @@ namespace Rollover.UnitTests
         [Theory, AutoNSubstituteData]
         public void ReturnLastUnderlyingPrice(TrackedSymbol sut)
         {
-            double lastPrice = 100;
-            var lastPriceTuple = new Tuple<bool, double>(true, lastPrice);
-            
+            Result<double> priceResult = new Result<double> { Value = 100, Success = true };
+
             var repository = Substitute.For<IRepository>();
             repository.LastPrice(Arg.Any<int>(), Arg.Any<string>())
-                .Returns(lastPriceTuple);
+                .Returns(priceResult);
             
             var lastPriceReceived = sut.LastUnderlyingPrice(repository);
             Assert.Equal(100, lastPriceReceived);
