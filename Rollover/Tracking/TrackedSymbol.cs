@@ -198,10 +198,19 @@ namespace Rollover.Tracking
 
         public double LastUnderlyingPrice(IRepository repository)
         {
-            var lastPriceTuple = repository.LastPrice(_conId, _exchange);
-            return lastPriceTuple.Item1
-                ? lastPriceTuple.Item2
-                : 0;
+            var lastPriceResult = repository.LastPrice(_conId, _exchange);
+            if(lastPriceResult.Success)
+            {
+                return lastPriceResult.Value;
+            }
+
+            var closePriceResult = repository.ClosePrice(_conId, _exchange);
+            if (closePriceResult.Success)
+            {
+                return closePriceResult.Value;
+            }
+
+            throw new LastUnderlyingPriceException();
         }
     }
 }

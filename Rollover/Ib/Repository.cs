@@ -119,7 +119,9 @@ namespace Rollover.Ib
 
         private int GetBuyConIdForBearSpread(ITrackedSymbol trackedSymbol)
         {
-            var priceUnderlying = LastPrice(trackedSymbol.ConId, trackedSymbol.Exchange);
+            var priceUnderlyingResult = LastPrice(trackedSymbol.ConId, trackedSymbol.Exchange);
+            // TODO consider non success
+
             var putContract = new Contract
             {
                 Symbol = trackedSymbol.Symbol(this),
@@ -127,7 +129,7 @@ namespace Rollover.Ib
                 SecType = trackedSymbol.SecType(this),
                 Exchange = trackedSymbol.Exchange,
                 LastTradeDateOrContractMonth = trackedSymbol.LastTradeDateOrContractMonth(this),
-                Strike = trackedSymbol.PreviousStrike(this, priceUnderlying.Item2),
+                Strike = trackedSymbol.PreviousStrike(this, priceUnderlyingResult.Value),
                 Right = "P"
             };
 
@@ -164,43 +166,43 @@ namespace Rollover.Ib
         //    return new TrackedSymbol(contract.LocalSymbol, contract.ConId, contract.Exchange);
         //}
 
-        public Tuple<bool, double> LastPrice(int conId, string exchange)
+        public Result<double> LastPrice(int conId, string exchange)
         {
             return GetPrice(conId, exchange, m => m.Field == 4);
         }
 
-        public Tuple<bool, double> ClosePrice(int conId, string exchange)
+        public Result<double> ClosePrice(int conId, string exchange)
         {
             return GetPrice(conId, exchange, m => m.Field == 9);
         }
 
-        public Tuple<bool, double> BidPrice(int conId, string exchange)
+        public Result<double> BidPrice(int conId, string exchange)
         {
             return GetPrice(conId, exchange, m => m.Field == 1);
         }
 
-        public Tuple<bool, double> AskPrice(int conId, string exchange)
+        public Result<double> AskPrice(int conId, string exchange)
         {
             return GetPrice(conId, exchange, m => m.Field == 2);
         }
 
-        public Tuple<bool, double> BidPrice(Contract contract)
+        public Result<double> BidPrice(Contract contract)
         {
             return GetPrice(contract, m => m.Field == 1);
         }
 
-        public Tuple<bool, double> AskPrice(Contract contract)
+        public Result<double> AskPrice(Contract contract)
         {
             return GetPrice(contract, m => m.Field == 2);
         }
 
-        private Tuple<bool, double> GetPrice(int conId, string exchange, Func<TickPriceMessage, bool> predicate)
+        private Result<double> GetPrice(int conId, string exchange, Func<TickPriceMessage, bool> predicate)
         {
             var contract = new Contract { ConId = conId, Exchange = exchange };
             return GetPrice(contract, predicate);
         }
 
-        private Tuple<bool, double> GetPrice(Contract contract, Func<TickPriceMessage, bool> predicate)
+        private Result<double> GetPrice(Contract contract, Func<TickPriceMessage, bool> predicate)
         {
             var mktDataTuple = _messageCollector.reqMktData(contract, "", true, false, null);
 
@@ -208,10 +210,10 @@ namespace Rollover.Ib
             var tickPriceMessage = mktDataTuple.Item2.FirstOrDefault(predicate);
             if (tickPriceMessage == null)
             {
-                return new Tuple<bool, double>(false, 0);
+                return new Result<double> { Value = 0, Success = false };
             }
 
-            return new Tuple<bool, double>(true, tickPriceMessage.Price);
+            return new Result<double> { Value = tickPriceMessage.Price, Success = true };
         }
 
         public List<ContractDetailsMessage> ContractDetails(Contract contract)

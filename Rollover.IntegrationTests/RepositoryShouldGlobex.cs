@@ -96,8 +96,8 @@ namespace Rollover.IntegrationTests
             }
 
             var conId = contractDetailsList.First().ContractDetails.Contract.ConId;
-            var priceTuple = repository.LastPrice(conId, contract.Exchange);
-            Assert.True(priceTuple.Item1);
+            var priceResult = repository.LastPrice(conId, contract.Exchange);
+            Assert.True(priceResult.Success);
 
             repository.Disconnect();
         }

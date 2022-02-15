@@ -19,12 +19,12 @@ namespace Rollover.Ib
            int conId);
         HashSet<double> GetStrikes(Contract contract, string lastTradeDateOrContractMonth);
 
-        Tuple<bool, double> LastPrice(int conId, string exchange);
-        Tuple<bool, double> ClosePrice(int conId, string exchange);
-        Tuple<bool, double> BidPrice(int conId, string exchange);
-        Tuple<bool, double> AskPrice(int conId, string exchange);
-        Tuple<bool, double> BidPrice(Contract contract);
-        Tuple<bool, double> AskPrice(Contract contract);
+        Result<double> LastPrice(int conId, string exchange);
+        Result<double> ClosePrice(int conId, string exchange);
+        Result<double> BidPrice(int conId, string exchange);
+        Result<double> AskPrice(int conId, string exchange);
+        Result<double> BidPrice(Contract contract);
+        Result<double> AskPrice(Contract contract);
         void PlaceBearSpread(ITrackedSymbol trackedSymbol);
         bool IsConnected();
         void PlaceOrder(Contract contractCall, Order orderCall);
