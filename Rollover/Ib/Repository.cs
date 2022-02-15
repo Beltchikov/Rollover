@@ -197,16 +197,7 @@ namespace Rollover.Ib
         private Tuple<bool, double> GetPrice(int conId, string exchange, Func<TickPriceMessage, bool> predicate)
         {
             var contract = new Contract { ConId = conId, Exchange = exchange };
-            var mktDataTuple = _messageCollector.reqMktData(contract, "", true, false, null);
-
-            // https://interactivebrokers.github.io/tws-api/tick_types.html
-            var tickPriceMessage = mktDataTuple.Item2.FirstOrDefault(predicate);
-            if (tickPriceMessage == null)
-            {
-                return new Tuple<bool, double>(false, 0);
-            }
-
-            return new Tuple<bool, double>(true, tickPriceMessage.Price);
+            return GetPrice(contract, predicate);
         }
 
         private Tuple<bool, double> GetPrice(Contract contract, Func<TickPriceMessage, bool> predicate)
