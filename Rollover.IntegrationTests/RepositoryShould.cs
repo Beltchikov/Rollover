@@ -7,7 +7,7 @@ namespace Rollover.IntegrationTests
     public class RepositoryShould
     {
         [Fact]
-        public void ConnectFast()
+        public void ConnectFastToTestAccount()
         {
             if (DateTime.Now.DayOfWeek == DayOfWeek.Sunday
                 || DateTime.Now.DayOfWeek == DayOfWeek.Saturday)
@@ -27,6 +27,7 @@ namespace Rollover.IntegrationTests
 
 
             Assert.True(connnectionTuple.Item1);
+            Assert.Contains(connnectionTuple.Item2, m => m.Contains("DU4798064"));
             Assert.InRange(stopwatch.Elapsed.TotalMilliseconds, 0, 3000);
         }
     }
