@@ -19,14 +19,14 @@ namespace Rollover
         public void Connect(string host, int port, int clientId)
         {
             // Connect
-            var connectedTuple = _repository.Connect(host, port, clientId);
-            if (!connectedTuple.Item1)
+            var connectedResult = _repository.Connect(host, port, clientId);
+            if (!connectedResult.Success)
             {
-                connectedTuple.Item2.ForEach(m => _inputQueue.Enqueue(m));
+                connectedResult.Value.ForEach(m => _inputQueue.Enqueue(m));
                 _inputQueue.Enqueue(Constants.CAN_NOT_CONNECT);
                 return;
             }
-            connectedTuple.Item2.ForEach(m => _inputQueue.Enqueue(m));
+            connectedResult.Value.ForEach(m => _inputQueue.Enqueue(m));
         }
     }
 }

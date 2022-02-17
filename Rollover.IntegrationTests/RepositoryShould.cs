@@ -19,15 +19,15 @@ namespace Rollover.IntegrationTests
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            var connnectionTuple = repository.Connect(
+            var connnectionResult = repository.Connect(
                 Tests.Shared.Helper.HOST, 
                 Tests.Shared.Helper.PORT, 
                 Tests.Shared.Helper.RandomClientId());
             repository.Disconnect();
 
 
-            Assert.True(connnectionTuple.Item1);
-            Assert.Contains(connnectionTuple.Item2, m => m.Contains("DU4798064"));
+            Assert.True(connnectionResult.Success);
+            Assert.Contains(connnectionResult.Value, m => m.Contains("DU4798064"));
             Assert.InRange(stopwatch.Elapsed.TotalMilliseconds, 0, 3000);
         }
     }

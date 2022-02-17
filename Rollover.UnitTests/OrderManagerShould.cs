@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 using Rollover.Tests.Shared;
+using System.Linq;
 
 namespace Rollover.UnitTests
 {
@@ -19,7 +20,7 @@ namespace Rollover.UnitTests
             [Frozen] IRepository repository,
             OrderManager sut)
         {
-            Result<double> priceResult = new Result<double> { Value = 100, Success = true };
+            Result<double> priceResult = new Result<double>(true, 100, Enumerable.Empty<string>());
             repository.LastPrice(Arg.Any<int>(), Arg.Any<string>()).Returns(priceResult);
             sut.RolloverIfNextStrike(trackedSymbols);
             repository.Received().LastPrice(Arg.Any<int>(), Arg.Any<string>());
@@ -36,7 +37,7 @@ namespace Rollover.UnitTests
             double currentPrice = 110;
             double currentStrike = 100;
 
-            Result<double> priceResult = new Result<double> { Value = 100, Success = true };
+            Result<double> priceResult = new Result<double>(true, 100, Enumerable.Empty<string>());
             repository.LastPrice(Arg.Any<int>(), Arg.Any<string>()).Returns(priceResult);
             
             var strikes = new HashSet<double> { 90, currentStrike, nextStrike };
@@ -66,7 +67,7 @@ namespace Rollover.UnitTests
             double nextStrike = 100;
             double currentStrike = 100;
 
-            Result<double> priceResult = new Result<double> { Value = 100, Success = true };
+            Result<double> priceResult = new Result<double>(true, 100, Enumerable.Empty<string>());
             repository.LastPrice(Arg.Any<int>(), Arg.Any<string>()).Returns(priceResult);
 
             var strikes = new HashSet<double> { 90, currentStrike, nextStrike };
@@ -97,7 +98,7 @@ namespace Rollover.UnitTests
             double nextStrike = 110;
             double currentStrike = 100;
 
-            Result<double> priceResult = new Result<double> { Value = currentPrice, Success = true };
+            Result<double> priceResult = new Result<double>(true, currentPrice, Enumerable.Empty<string>());
             repository.LastPrice(Arg.Any<int>(), Arg.Any<string>()).Returns(priceResult);
 
             var strikes = new HashSet<double> { 90, currentStrike, nextStrike };

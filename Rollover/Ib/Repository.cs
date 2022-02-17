@@ -27,10 +27,10 @@ namespace Rollover.Ib
             _repositoryHelper = repositoryHelper;
         }
 
-        public Tuple<bool, List<string>> Connect(string host, int port, int clientId)
+        public Result<List<string>> Connect(string host, int port, int clientId)
         {
             ConnectionMessages connectionMessages = _messageCollector.eConnect(host, port, clientId);
-            return ConnectionMessagesToConnectionTuple(connectionMessages);
+            return ConnectionMessagesToResult(connectionMessages);
         }
 
         public void Disconnect()
@@ -210,10 +210,10 @@ namespace Rollover.Ib
             var tickPriceMessage = mktDataTuple.Item2.FirstOrDefault(predicate);
             if (tickPriceMessage == null)
             {
-                return new Result<double> { Value = 0, Success = false };
+                return new Result<double>(false, 0, Enumerable.Empty<string>());
             }
 
-            return new Result<double> { Value = tickPriceMessage.Price, Success = true };
+            return new Result<double>(true, tickPriceMessage.Price, Enumerable.Empty<string>());
         }
 
         public List<ContractDetailsMessage> ContractDetails(Contract contract)
@@ -285,18 +285,18 @@ namespace Rollover.Ib
             }).ToList();
         }
 
-        private Tuple<bool, List<string>> ConnectionMessagesToConnectionTuple(ConnectionMessages connectionMessages)
+        private Result<List<string>> ConnectionMessagesToResult(ConnectionMessages connectionMessages)
         {
-            var connectionTuple = new Tuple<bool, List<string>>(connectionMessages.Connected, new List<string>());
+            var result = new Result<List<string>>(connectionMessages.Connected, new List<string>(), Enumerable.Empty<string>());
 
-            connectionMessages.OnErrorMessages.ForEach(m => connectionTuple.Item2.Add(m));
+            connectionMessages.OnErrorMessages.ForEach(m => result.Value.Add(m));
 
             var managedAccountsMessageAsString = _messageProcessor.ConvertMessage(connectionMessages.ManagedAccountsMessage);
-            connectionTuple.Item2.AddRange(managedAccountsMessageAsString);
+            result.Value.AddRange(managedAccountsMessageAsString);
             var connectionStatusMessageAsString = _messageProcessor.ConvertMessage(connectionMessages.ConnectionStatusMessage);
-            connectionTuple.Item2.AddRange(connectionStatusMessageAsString);
+            result.Value.AddRange(connectionStatusMessageAsString);
 
-            return connectionTuple;
+            return result;
         }
 
         public void PlaceBearSpread(ITrackedSymbol trackedSymbol)

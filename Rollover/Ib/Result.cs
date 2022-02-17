@@ -2,15 +2,5 @@
 
 namespace Rollover.Ib
 {
-    public record Result<T>
-    {
-        public Result()
-        {
-            Errors = new List<string>();
-        }
-
-        public T Value { get; init; }
-        public bool Success { get; init; }
-        public List<string> Errors { get; init; }
-    }
+    public record Result<T>(bool Success, T Value, IEnumerable<string> Messages);
 }

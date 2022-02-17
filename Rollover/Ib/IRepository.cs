@@ -8,7 +8,7 @@ namespace Rollover.Ib
 {
     public interface IRepository
     {
-        Tuple<bool, List<string>> Connect(string host, int port, int clientId);
+        Result<List<string>> Connect(string host, int port, int clientId);
         void Disconnect();
         List<PositionMessage> AllPositions();
         List<ContractDetailsMessage> ContractDetails(Contract contract);
