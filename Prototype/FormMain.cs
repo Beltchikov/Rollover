@@ -471,5 +471,10 @@ namespace Prototype
 
             ibClient.ClientSocket.reqContractDetails(60000001, contract);
         }
+
+        private void btReqScannerSubscription_Click(object sender, EventArgs e)
+        {
+            //ibClient.ClientSocket.reqScannerSubscription(7001, ScannerSubscriptionSamples.HighOptVolumePCRatioUSIndexes(), "", null);
+        }
     }
 }

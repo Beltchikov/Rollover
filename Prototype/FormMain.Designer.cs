@@ -113,6 +113,9 @@
             this.label21 = new System.Windows.Forms.Label();
             this.txtExchangeContractDetails = new System.Windows.Forms.TextBox();
             this.btReqContractDetails = new System.Windows.Forms.Button();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.btReqScannerSubscription = new System.Windows.Forms.Button();
+            this.btCancelScannerSubscription = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -120,6 +123,7 @@
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox7.SuspendLayout();
+            this.groupBox8.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtHost
@@ -189,12 +193,12 @@
             // 
             // txtMessage
             // 
-            this.txtMessage.Location = new System.Drawing.Point(5, 366);
+            this.txtMessage.Location = new System.Drawing.Point(8, 439);
             this.txtMessage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtMessage.Multiline = true;
             this.txtMessage.Name = "txtMessage";
             this.txtMessage.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtMessage.Size = new System.Drawing.Size(1095, 332);
+            this.txtMessage.Size = new System.Drawing.Size(1092, 259);
             this.txtMessage.TabIndex = 7;
             // 
             // lblSymbol
@@ -666,7 +670,7 @@
             this.groupBox3.Controls.Add(this.label8);
             this.groupBox3.Location = new System.Drawing.Point(8, 242);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(422, 100);
+            this.groupBox3.Size = new System.Drawing.Size(422, 119);
             this.groupBox3.TabIndex = 34;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Basic Order";
@@ -958,11 +962,42 @@
             this.btReqContractDetails.UseVisualStyleBackColor = true;
             this.btReqContractDetails.Click += new System.EventHandler(this.btReqContractDetails_Click);
             // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.btCancelScannerSubscription);
+            this.groupBox8.Controls.Add(this.btReqScannerSubscription);
+            this.groupBox8.Location = new System.Drawing.Point(8, 367);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(347, 57);
+            this.groupBox8.TabIndex = 39;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Scanner";
+            // 
+            // btReqScannerSubscription
+            // 
+            this.btReqScannerSubscription.Location = new System.Drawing.Point(7, 22);
+            this.btReqScannerSubscription.Name = "btReqScannerSubscription";
+            this.btReqScannerSubscription.Size = new System.Drawing.Size(150, 23);
+            this.btReqScannerSubscription.TabIndex = 0;
+            this.btReqScannerSubscription.Text = "reqScannerSubscription";
+            this.btReqScannerSubscription.UseVisualStyleBackColor = true;
+            this.btReqScannerSubscription.Click += new System.EventHandler(this.btReqScannerSubscription_Click);
+            // 
+            // btCancelScannerSubscription
+            // 
+            this.btCancelScannerSubscription.Location = new System.Drawing.Point(163, 22);
+            this.btCancelScannerSubscription.Name = "btCancelScannerSubscription";
+            this.btCancelScannerSubscription.Size = new System.Drawing.Size(173, 23);
+            this.btCancelScannerSubscription.TabIndex = 1;
+            this.btCancelScannerSubscription.Text = "cancelScannerSubscription";
+            this.btCancelScannerSubscription.UseVisualStyleBackColor = true;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1118, 738);
+            this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);
@@ -991,6 +1026,7 @@
             this.groupBox6.PerformLayout();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
+            this.groupBox8.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1083,5 +1119,8 @@
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.TextBox txtExchangeContractDetails;
         private System.Windows.Forms.Button btReqContractDetails;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.Button btCancelScannerSubscription;
+        private System.Windows.Forms.Button btReqScannerSubscription;
     }
 }
