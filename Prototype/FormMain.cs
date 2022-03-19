@@ -513,10 +513,12 @@ namespace Prototype
             
             List<TagValue> scannerSubscriptionOptions = new List<TagValue> 
             {
-                 //new TagValue{Tag = "Exchange", Value="NYSE"},
-                 //new TagValue{Tag = "Exchange", Value="AMEX"},
-                 //new TagValue{Tag = "Exchange", Value="ARCA"},
-                 //new TagValue{Tag = "Exchange", Value="NQ.NM"}
+                // TODO LocationCode? 
+
+                //new TagValue{Tag = "LocationCode", Value="NYSE"},
+                //new TagValue{Tag = "LocationCode", Value="AMEX"},
+                //new TagValue{Tag = "LocationCode", Value="ARCA"},
+                //new TagValue{Tag = "LocationCode", Value="NQ.NM"}
             };
 
             ibClient.ClientSocket.reqScannerSubscription(reqScannerSubscription, scannerSubscription, scannerSubscriptionOptions, filterOptions);
