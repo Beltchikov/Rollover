@@ -114,8 +114,8 @@
             this.txtExchangeContractDetails = new System.Windows.Forms.TextBox();
             this.btReqContractDetails = new System.Windows.Forms.Button();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.btReqScannerSubscription = new System.Windows.Forms.Button();
             this.btCancelScannerSubscription = new System.Windows.Forms.Button();
+            this.btReqScannerSubscription = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -973,6 +973,16 @@
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Scanner";
             // 
+            // btCancelScannerSubscription
+            // 
+            this.btCancelScannerSubscription.Location = new System.Drawing.Point(163, 22);
+            this.btCancelScannerSubscription.Name = "btCancelScannerSubscription";
+            this.btCancelScannerSubscription.Size = new System.Drawing.Size(173, 23);
+            this.btCancelScannerSubscription.TabIndex = 1;
+            this.btCancelScannerSubscription.Text = "cancelScannerSubscription";
+            this.btCancelScannerSubscription.UseVisualStyleBackColor = true;
+            this.btCancelScannerSubscription.Click += new System.EventHandler(this.btCancelScannerSubscription_Click);
+            // 
             // btReqScannerSubscription
             // 
             this.btReqScannerSubscription.Location = new System.Drawing.Point(7, 22);
@@ -982,15 +992,6 @@
             this.btReqScannerSubscription.Text = "reqScannerSubscription";
             this.btReqScannerSubscription.UseVisualStyleBackColor = true;
             this.btReqScannerSubscription.Click += new System.EventHandler(this.btReqScannerSubscription_Click);
-            // 
-            // btCancelScannerSubscription
-            // 
-            this.btCancelScannerSubscription.Location = new System.Drawing.Point(163, 22);
-            this.btCancelScannerSubscription.Name = "btCancelScannerSubscription";
-            this.btCancelScannerSubscription.Size = new System.Drawing.Size(173, 23);
-            this.btCancelScannerSubscription.TabIndex = 1;
-            this.btCancelScannerSubscription.Text = "cancelScannerSubscription";
-            this.btCancelScannerSubscription.UseVisualStyleBackColor = true;
             // 
             // FormMain
             // 

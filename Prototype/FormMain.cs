@@ -20,6 +20,7 @@ namespace Prototype
         public const int RT_BARS_ID_BASE = 40000000;
 
         FormContractId _formContractId;
+        private int reqScannerSubscription;
 
         public FormMain()
         {
@@ -48,6 +49,9 @@ namespace Prototype
             ibClient.OrderStatus += OnOrderStatus;
             ibClient.ExecDetails += OnExecDetails;
             ibClient.ExecDetailsEnd += OnExecDetailsEnd;
+            ibClient.ScannerData += OnScannerData;
+            ibClient.ScannerDataEnd += OnScannerDataEnd;
+            ibClient.ScannerParameters += OnScannerParameters;
         }
 
         private void OnOpenOrder(OpenOrderMessage obj)
@@ -285,6 +289,24 @@ namespace Prototype
             AddLineToTextbox(txtMessage, msg.ToString());
         }
 
+        private void OnScannerParameters(string obj)
+        {
+            var msg = $"OnScannerParameters: {obj}";
+            AddLineToTextbox(txtMessage, msg.ToString());
+        }
+
+        private void OnScannerDataEnd(int obj)
+        {
+            var msg = $"OnScannerDataEnd: {obj}";
+            AddLineToTextbox(txtMessage, msg.ToString());
+        }
+
+        private void OnScannerData(ScannerMessage obj)
+        {
+            var msg = $"OnScannerData: Rank={obj.Rank}, Symbol={obj.ContractDetails.Contract.Symbol}";
+            AddLineToTextbox(txtMessage, msg.ToString());
+        }
+
         private void AddLineToTextbox(TextBox textBox, string msg)
         {
             if (string.IsNullOrWhiteSpace(msg))
@@ -474,7 +496,19 @@ namespace Prototype
 
         private void btReqScannerSubscription_Click(object sender, EventArgs e)
         {
-            //ibClient.ClientSocket.reqScannerSubscription(7001, ScannerSubscriptionSamples.HighOptVolumePCRatioUSIndexes(), "", null);
+            ScannerSubscription scannerSubscription = new ScannerSubscription
+            {
+                ScanCode = "TOP_OPEN_PERC_GAIN",
+                Instrument = "STK",
+                LocationCode = "STK.US"
+            };
+            
+            ibClient.ClientSocket.reqScannerSubscription(reqScannerSubscription, scannerSubscription, "", null);
+        }
+
+        private void btCancelScannerSubscription_Click(object sender, EventArgs e)
+        {
+            ibClient.ClientSocket.cancelScannerSubscription(reqScannerSubscription);
         }
     }
 }
