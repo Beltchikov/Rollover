@@ -502,8 +502,11 @@ namespace Prototype
                 Instrument = "STK",
                 LocationCode = "STK.US"
             };
-            
-            ibClient.ClientSocket.reqScannerSubscription(reqScannerSubscription, scannerSubscription, "", null);
+
+            List<TagValue> filterOptions = new List<TagValue> { };
+            List<TagValue> scannerSubscriptionOptions = new List<TagValue> { };
+
+            ibClient.ClientSocket.reqScannerSubscription(reqScannerSubscription, scannerSubscription, scannerSubscriptionOptions, filterOptions);
         }
 
         private void btCancelScannerSubscription_Click(object sender, EventArgs e)
