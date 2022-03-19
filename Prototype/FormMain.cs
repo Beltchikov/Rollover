@@ -139,6 +139,9 @@ namespace Prototype
             btPlaceBasicOrder.Enabled = enable;
             btComboOrder.Enabled = enable;
             btReqContractDetails.Enabled = enable;
+
+            btReqScannerSubscription.Enabled = enable;  
+            btCancelScannerSubscription.Enabled = enable;  
         }
 
         private void OnError(int id, int errorCode, string msg, Exception ex)
@@ -503,8 +506,18 @@ namespace Prototype
                 LocationCode = "STK.US"
             };
 
-            List<TagValue> filterOptions = new List<TagValue> { };
-            List<TagValue> scannerSubscriptionOptions = new List<TagValue> { };
+            List<TagValue> filterOptions = new List<TagValue> 
+            {
+                new TagValue{Tag = "avgVolumeAbove", Value="500000"}
+            };
+            
+            List<TagValue> scannerSubscriptionOptions = new List<TagValue> 
+            {
+                 //new TagValue{Tag = "Exchange", Value="NYSE"},
+                 //new TagValue{Tag = "Exchange", Value="AMEX"},
+                 //new TagValue{Tag = "Exchange", Value="ARCA"},
+                 //new TagValue{Tag = "Exchange", Value="NQ.NM"}
+            };
 
             ibClient.ClientSocket.reqScannerSubscription(reqScannerSubscription, scannerSubscription, scannerSubscriptionOptions, filterOptions);
         }
