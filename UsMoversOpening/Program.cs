@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using UsMoversOpening.Configuration;
+using UsMoversOpening.Helper;
 
 namespace UsMoversOpening
 {
@@ -8,9 +10,16 @@ namespace UsMoversOpening
     {
         static void Main(string[] args)
         {
-            IUmoAgent umoAgent = new UmoAgent();
+
+            IFileHelper fileHelper = new FileHelper();
+            ISerializer serializer = new Serializer();
+            IConfigurationManager configurationManager = new ConfigurationManager(
+                fileHelper, serializer);
+
+            IUmoAgent umoAgent = new UmoAgent(configurationManager);
             umoAgent.Run();
-            Console.WriteLine("Hello World!");
+            
+            Console.WriteLine("UsMoversOpening - finished!");
         }
     }
 }
