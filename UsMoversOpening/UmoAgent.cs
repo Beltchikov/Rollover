@@ -71,7 +71,7 @@ namespace UsMoversOpening
                 minuteToBuy,
                 0);
 
-            return timeToBuy > DateTime.Now;
+            return DateTime.Now > timeToBuy;
         }
     }
 }

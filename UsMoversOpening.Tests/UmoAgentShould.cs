@@ -31,13 +31,22 @@ namespace UsMoversOpening.Tests
         {
             var configuration = new Configuration.Configuration
             {
-                TimeToBuy = $"{DateTime.Now.AddHours(-1).Hour}:{DateTime.Now.AddHours(-1).Minute}"
+                TimeToBuy = $"{DateTime.Now.AddHours(1).Hour}:{DateTime.Now.AddHours(1).Minute}"
             };
             configurationManager.GetConfiguration().Returns(configuration);
 
             sut.Run();
             stocksBuyer.DidNotReceive().SendOrders();
         }
+
+        //[Theory, AutoNSubstituteData]
+        //public void NotCallSendOrdersMultipleTimes(
+        //  [Frozen] IConfigurationManager configurationManager,
+        //  [Frozen] IStocksBuyer stocksBuyer,
+        //  UmoAgent sut)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         //[Theory, AutoNSubstituteData]
         //public void CallSendOrdersAtConfiguredTime(
@@ -57,13 +66,6 @@ namespace UsMoversOpening.Tests
 
 
 
-        //[Theory, AutoNSubstituteData]
-        //public void NotCallSendOrdersMultipleTimes(
-        //  [Frozen] IConfigurationManager configurationManager,
-        //  [Frozen] IStocksBuyer stocksBuyer,
-        //  UmoAgent sut)
-        //{
-        //    throw new NotImplementedException();
-        //}
+
     }
 }
