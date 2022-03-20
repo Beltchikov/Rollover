@@ -503,7 +503,7 @@ namespace Prototype
             {
                 ScanCode = "TOP_OPEN_PERC_GAIN",
                 Instrument = "STK",
-                LocationCode = "STK.US"
+                LocationCode = "STK.US, STK.NYSE, STK.AMEX, STK.ARCA, STK.NASDAQ.NMS"
             };
 
             List<TagValue> filterOptions = new List<TagValue> 
@@ -511,16 +511,9 @@ namespace Prototype
                 new TagValue{Tag = "avgVolumeAbove", Value="500000"}
             };
             
-            List<TagValue> scannerSubscriptionOptions = new List<TagValue> 
-            {
-                // TODO LocationCode? 
+            List<TagValue> scannerSubscriptionOptions = new List<TagValue> {};
 
-                //new TagValue{Tag = "LocationCode", Value="NYSE"},
-                //new TagValue{Tag = "LocationCode", Value="AMEX"},
-                //new TagValue{Tag = "LocationCode", Value="ARCA"},
-                //new TagValue{Tag = "LocationCode", Value="NQ.NM"}
-            };
-
+            reqScannerSubscription++;
             ibClient.ClientSocket.reqScannerSubscription(reqScannerSubscription, scannerSubscription, scannerSubscriptionOptions, filterOptions);
         }
 
