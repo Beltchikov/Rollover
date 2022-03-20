@@ -13,7 +13,7 @@ namespace UsMoversOpening.Tests
             UmoAgent sut)
         {
             sut.Run();
-            configurationManager.Received().GetConfiguration();
+            var configuration = configurationManager.Received().GetConfiguration();
         }
     }
 }
