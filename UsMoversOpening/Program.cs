@@ -10,15 +10,16 @@ namespace UsMoversOpening
     {
         static void Main(string[] args)
         {
-
             IFileHelper fileHelper = new FileHelper();
             ISerializer serializer = new Serializer();
             IConfigurationManager configurationManager = new ConfigurationManager(
                 fileHelper, serializer);
 
-            IUmoAgent umoAgent = new UmoAgent(configurationManager);
+            IStocksBuyer stocksBuyer = new StocksBuyer();
+
+            IUmoAgent umoAgent = new UmoAgent(configurationManager, stocksBuyer);
             umoAgent.Run();
-            
+
             Console.WriteLine("UsMoversOpening - finished!");
         }
     }
