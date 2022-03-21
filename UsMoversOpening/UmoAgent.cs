@@ -10,7 +10,6 @@ namespace UsMoversOpening
     {
         private IConfigurationManager _configurationManager;
         private IStocksBuyer _stocksBuyer;
-        private IUmoTimer _iUmoTimer;
         private IConsoleWrapper _consoleWrapper;
         private bool _ordersSent;
         private bool _exitFlag;
@@ -18,12 +17,10 @@ namespace UsMoversOpening
         public UmoAgent(
             IConfigurationManager configurationManager,
             IStocksBuyer stocksBuyer,
-            IUmoTimer iUmoTimer, 
             IConsoleWrapper consoleWrapper)
         {
             _configurationManager = configurationManager;
             _stocksBuyer = stocksBuyer;
-            _iUmoTimer = iUmoTimer;
             _consoleWrapper = consoleWrapper;
         }
 
@@ -48,7 +45,7 @@ namespace UsMoversOpening
             // Working loop
             while (!_exitFlag)
             {
-                if (_iUmoTimer.Triggered(configuration.TimeToBuy) && !_ordersSent)
+                if (_stocksBuyer.Triggered(configuration.TimeToBuy) && !_ordersSent)
                 {
                     _ordersSent = _stocksBuyer.SendOrders();
                 }
