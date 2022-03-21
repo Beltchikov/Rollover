@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace UsMoversOpening.Tests
@@ -19,29 +15,14 @@ namespace UsMoversOpening.Tests
             Assert.False (result);  
         }
 
-        //[Theory, AutoNSubstituteData]
-        //public void NotCallSendOrdersMultipleTimes(
-        //  [Frozen] IConfigurationManager configurationManager,
-        //  [Frozen] IStocksBuyer stocksBuyer,
-        //  UmoAgent sut)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        [Fact]
+        public void ReturnTriggeredTrueAfterConfiguredTime()
+        {
+            var sut = new StocksBuyer();
+            string timeToBuy = $"{DateTime.Now.Hour}:{DateTime.Now.Minute}";
 
-        //[Theory, AutoNSubstituteData]
-        //public void CallSendOrdersAtConfiguredTime(
-        //   [Frozen] IConfigurationManager configurationManager,
-        //   [Frozen] IStocksBuyer stocksBuyer,
-        //   UmoAgent sut)
-        //{
-        //    var configuration = new Configuration.Configuration
-        //    {
-        //        TimeToBuy = $"{DateTime.Now.Hour}:{DateTime.Now.Minute}"
-        //    };
-        //    configurationManager.GetConfiguration().Returns(configuration);
-
-        //    sut.Run();
-        //    stocksBuyer.Received().Buy();
-        //}
+            var result = sut.Triggered(timeToBuy);
+            Assert.True(result);
+        }
     }
 }

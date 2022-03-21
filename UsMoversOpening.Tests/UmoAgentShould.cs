@@ -26,5 +26,14 @@ namespace UsMoversOpening.Tests
             sut.Run();
             configurationManager.Received().GetConfiguration();
         }
+
+        //[Theory, AutoNSubstituteData]
+        //public void NotCallSendOrdersMultipleTimes(
+        //  [Frozen] IConfigurationManager configurationManager,
+        //  [Frozen] IStocksBuyer stocksBuyer,
+        //  UmoAgent sut)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
