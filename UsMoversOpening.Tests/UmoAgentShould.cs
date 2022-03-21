@@ -10,6 +10,15 @@ namespace UsMoversOpening.Tests
     public class UmoAgentShould
     {
         [Theory, AutoNSubstituteData]
+        public void CallThreadWrapperStart(
+            [Frozen] IThreadWrapper threadWrapper,
+            UmoAgent sut)
+        {
+            sut.Run();
+            threadWrapper.Received().Start();
+        }
+
+        [Theory, AutoNSubstituteData]
         public void CallCofigurationManager(
             [Frozen] IConfigurationManager configurationManager,
             [Frozen] IConsoleWrapper consoleWrapper,
@@ -26,6 +35,8 @@ namespace UsMoversOpening.Tests
             sut.Run();
             configurationManager.Received().GetConfiguration();
         }
+
+
 
         //[Theory, AutoNSubstituteData]
         //public void NotCallSendOrdersMultipleTimes(
