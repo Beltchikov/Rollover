@@ -8,68 +8,68 @@ namespace Rollover.IntegrationTests
 {
     public class RepositoryShouldGlobex
     {
-        [Fact]
-        public void ReceiveContractDetailsForMnqOptions()
-        {
-            var contract = new Contract
-            {
-                Symbol = "MNQ",
-                SecType = "FOP",
-                Currency = "USD",
-                Exchange = "GLOBEX",
-                LastTradeDateOrContractMonth = DateTime.Now.Year.ToString() + "03"
-            };
+        //[Fact]
+        //public void ReceiveContractDetailsForMnqOptions()
+        //{
+        //    var contract = new Contract
+        //    {
+        //        Symbol = "MNQ",
+        //        SecType = "FOP",
+        //        Currency = "USD",
+        //        Exchange = "GLOBEX",
+        //        LastTradeDateOrContractMonth = DateTime.Now.Year.ToString() + "03"
+        //    };
 
-            var repository = Tests.Shared.Helper.RepositoryFactory();
-            if (!repository.IsConnected())
-            {
-                repository.Connect(
-                    Tests.Shared.Helper.HOST, 
-                    Tests.Shared.Helper.PORT, 
-                    Tests.Shared.Helper.RandomClientId());
-            }
-            var contractDetails = repository.ContractDetails(contract);
-            repository.Disconnect();
-            Assert.True(contractDetails.Any());
-        }
+        //    var repository = Tests.Shared.Helper.RepositoryFactory();
+        //    if (!repository.IsConnected())
+        //    {
+        //        repository.Connect(
+        //            Tests.Shared.Helper.HOST, 
+        //            Tests.Shared.Helper.PORT, 
+        //            Tests.Shared.Helper.RandomClientId());
+        //    }
+        //    var contractDetails = repository.ContractDetails(contract);
+        //    repository.Disconnect();
+        //    Assert.True(contractDetails.Any());
+        //}
 
-        [Fact]
-        public void ReceiveOptionParametersMnq()
-        {
-            var exchange = "GLOBEX";
-            var lastTradeDateOrContractMonth
-                = IbHelper.NextContractYearAndMonth(DateTime.Now.Year, DateTime.Now.Month, 3);
+        //[Fact]
+        //public void ReceiveOptionParametersMnq()
+        //{
+        //    var exchange = "GLOBEX";
+        //    var lastTradeDateOrContractMonth
+        //        = IbHelper.NextContractYearAndMonth(DateTime.Now.Year, DateTime.Now.Month, 3);
 
-            var contract = new Contract
-            {
-                Symbol = "MNQ",
-                SecType = "FUT",
-                Currency = "USD",
-                Exchange = exchange,
-                LastTradeDateOrContractMonth = lastTradeDateOrContractMonth
-            };
+        //    var contract = new Contract
+        //    {
+        //        Symbol = "MNQ",
+        //        SecType = "FUT",
+        //        Currency = "USD",
+        //        Exchange = exchange,
+        //        LastTradeDateOrContractMonth = lastTradeDateOrContractMonth
+        //    };
 
-            var repository = Tests.Shared.Helper.RepositoryFactory();
-            if (!repository.IsConnected())
-            {
-                repository.Connect(
-                    Tests.Shared.Helper.HOST, 
-                    Tests.Shared.Helper.PORT, 
-                    Tests.Shared.Helper.RandomClientId());
-            }
+        //    var repository = Tests.Shared.Helper.RepositoryFactory();
+        //    if (!repository.IsConnected())
+        //    {
+        //        repository.Connect(
+        //            Tests.Shared.Helper.HOST, 
+        //            Tests.Shared.Helper.PORT, 
+        //            Tests.Shared.Helper.RandomClientId());
+        //    }
 
-            var contractDetailsList = repository.ContractDetails(contract);
-            Assert.Single(contractDetailsList);
+        //    var contractDetailsList = repository.ContractDetails(contract);
+        //    Assert.Single(contractDetailsList);
 
-            var optionParameterMessageList = repository.OptionParameters(
-                contract.Symbol,
-                contract.Exchange,
-                contract.SecType,
-                contractDetailsList.First().ContractDetails.Contract.ConId);
-            Assert.True(optionParameterMessageList.Any());
+        //    var optionParameterMessageList = repository.OptionParameters(
+        //        contract.Symbol,
+        //        contract.Exchange,
+        //        contract.SecType,
+        //        contractDetailsList.First().ContractDetails.Contract.ConId);
+        //    Assert.True(optionParameterMessageList.Any());
 
-            repository.Disconnect();
-        }
+        //    repository.Disconnect();
+        //}
 
         //[Fact]
         //public void ReceiveLastPriceMnqFuture()
