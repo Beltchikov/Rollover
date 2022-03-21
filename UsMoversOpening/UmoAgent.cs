@@ -19,8 +19,6 @@ namespace UsMoversOpening
         public void Run(IThreadSpawner threadSpawner, IThreadWrapper inputThread)
         {
             inputThread.Start();
-
-            // Read configuration
             var configuration = _configurationManager.GetConfiguration();
 
             // Working loop
