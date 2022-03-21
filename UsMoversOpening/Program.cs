@@ -16,14 +16,16 @@ namespace UsMoversOpening
                 fileHelper, serializer);
 
             IStocksBuyer stocksBuyer = new StocksBuyer();
-            IConsoleWrapper consoleWrapper = new ConsoleWrapper();
+            //IConsoleWrapper consoleWrapper = new ConsoleWrapper();
 
             IUmoAgent umoAgent = new UmoAgent(
                 configurationManager,
-                stocksBuyer,
-                consoleWrapper);
-            
-            umoAgent.Run();
+                stocksBuyer);
+
+            //umoAgent.Run();
+
+            IThreadSpawner threadSpawner = new ThreadSpawner(umoAgent);
+            threadSpawner.Run();
 
             Console.WriteLine("UsMoversOpening - finished!");
         }

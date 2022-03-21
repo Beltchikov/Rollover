@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using UsMoversOpening.Configuration;
-using UsMoversOpening.Helper;
+﻿using UsMoversOpening.Configuration;
 
 namespace UsMoversOpening
 {
@@ -10,40 +6,25 @@ namespace UsMoversOpening
     {
         private IConfigurationManager _configurationManager;
         private IStocksBuyer _stocksBuyer;
-        private IConsoleWrapper _consoleWrapper;
         private bool _ordersSent;
-        private bool _exitFlag;
 
         public UmoAgent(
             IConfigurationManager configurationManager,
-            IStocksBuyer stocksBuyer,
-            IConsoleWrapper consoleWrapper)
+            IStocksBuyer stocksBuyer)
         {
             _configurationManager = configurationManager;
             _stocksBuyer = stocksBuyer;
-            _consoleWrapper = consoleWrapper;
         }
 
-        public void Run()
+        public void Run(IThreadSpawner threadSpawner, IThreadWrapper inputThread)
         {
-            // Start input thread
-            new Thread(() => {
-                while (true) 
-                { 
-                    if(_consoleWrapper.ReadLine() == "q")
-                    {
-                        _exitFlag = true;
-                    }
-                }
-            })
-            { IsBackground = true }
-            .Start();
+            inputThread.Start();
 
             // Read configuration
             var configuration = _configurationManager.GetConfiguration();
 
             // Working loop
-            while (!_exitFlag)
+            while (!threadSpawner.ExitFlagInputThread)
             {
                 if (_stocksBuyer.Triggered(configuration.TimeToBuy) && !_ordersSent)
                 {
@@ -51,35 +32,6 @@ namespace UsMoversOpening
                 }
                 //_consoleWrapper.WriteLine("In loop");
             }
-
-            //try
-            //{
-            //    string host = txtHost.Text;
-            //    int port = Int32.Parse(txtPort.Text);
-            //    int clientId = Int32.Parse(txtClientId.Text);
-
-            //    ibClient.ClientSocket.eConnect(host, port, ibClient.ClientId);
-
-            //    // The EReader Thread
-            //    var reader = new EReader(ibClient.ClientSocket, signal);
-            //    reader.Start();
-            //    new Thread(() =>
-            //    {
-            //        while (ibClient.ClientSocket.IsConnected())
-            //        {
-            //            signal.waitForSignal();
-            //            reader.processMsgs();
-            //        }
-            //    })
-            //    { IsBackground = true }
-            //    .Start();
-
-            //    EnableControls(true);
-            //}
-            //catch (Exception ex)
-            //{
-            //    txtMessage.Text += Environment.NewLine + ex.ToString();
-            //}
         }
     }
 }

@@ -2,6 +2,6 @@
 {
     public interface IUmoAgent
     {
-        void Run();
+        void Run(IThreadSpawner threadSpawner, IThreadWrapper inputThread);
     }
 }

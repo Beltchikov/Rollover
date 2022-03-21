@@ -10,18 +10,20 @@ namespace UsMoversOpening.Tests
     public class UmoAgentShould
     {
         [Theory, AutoNSubstituteData]
-        public void CallThreadWrapperStart(
-            [Frozen] IThreadWrapper threadWrapper,
+        public void CallInputThreadStart(
+            IThreadSpawner threadSpawner,
+            IThreadWrapper inputThread,
             UmoAgent sut)
         {
-            sut.Run();
-            threadWrapper.Received().Start();
+            sut.Run(threadSpawner, inputThread);
+            inputThread.Received().Start();
         }
 
         [Theory, AutoNSubstituteData]
         public void CallCofigurationManager(
+            IThreadSpawner threadSpawner, 
+            IThreadWrapper inputThread,
             [Frozen] IConfigurationManager configurationManager,
-            [Frozen] IConsoleWrapper consoleWrapper,
             UmoAgent sut)
         {
             var configuration = new Configuration.Configuration
@@ -30,9 +32,7 @@ namespace UsMoversOpening.Tests
             };
             configurationManager.GetConfiguration().Returns(configuration);
 
-            consoleWrapper.ReadLine().Returns("Some input", "q");
-
-            sut.Run();
+            sut.Run(threadSpawner, inputThread);
             configurationManager.Received().GetConfiguration();
         }
 
