@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace UsMoversOpening
 {
@@ -15,9 +16,15 @@ namespace UsMoversOpening
 
         public void Run()
         {
-            // Create input thread
-            var inputThread = new ThreadWrapper(
-                () => 
+            var inputThread = InputThreadFactory();
+            _umoAgent.Run(this, inputThread);
+        }
+
+        [ExcludeFromCodeCoverage]
+        private ThreadWrapper InputThreadFactory()
+        {
+            return new ThreadWrapper(
+                () =>
                 {
                     while (true)
                     {
@@ -26,11 +33,8 @@ namespace UsMoversOpening
                             ExitFlagInputThread = true;
                         }
                     }
-                }, 
-                true) ;
-
-
-            _umoAgent.Run(this, inputThread);
+                },
+                true);
         }
     }
 }
