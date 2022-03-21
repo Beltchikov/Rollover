@@ -26,53 +26,5 @@ namespace UsMoversOpening.Tests
             sut.Run();
             configurationManager.Received().GetConfiguration();
         }
-
-        //[Theory, AutoNSubstituteData]
-        //public void NotCallSendOrdersBeforeConfiguredTime(
-        //  [Frozen] IConfigurationManager configurationManager,
-        //  [Frozen] IStocksBuyer stocksBuyer,
-        //  [Frozen] IConsoleWrapper consoleWrapper,
-        //  UmoAgent sut)
-        //{
-        //    var configuration = new Configuration.Configuration
-        //    {
-        //        TimeToBuy = $"{DateTime.Now.AddHours(1).Hour}:{DateTime.Now.AddHours(1).Minute}"
-        //    };
-        //    configurationManager.GetConfiguration().Returns(configuration);
-
-        //    consoleWrapper.ReadLine().Returns("Some input", "q");
-
-        //    sut.Run();
-        //    stocksBuyer.DidNotReceive().SendOrders();
-        //}
-
-        //[Theory, AutoNSubstituteData]
-        //public void NotCallSendOrdersMultipleTimes(
-        //  [Frozen] IConfigurationManager configurationManager,
-        //  [Frozen] IStocksBuyer stocksBuyer,
-        //  UmoAgent sut)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //[Theory, AutoNSubstituteData]
-        //public void CallSendOrdersAtConfiguredTime(
-        //   [Frozen] IConfigurationManager configurationManager,
-        //   [Frozen] IStocksBuyer stocksBuyer,
-        //   UmoAgent sut)
-        //{
-        //    var configuration = new Configuration.Configuration
-        //    {
-        //        TimeToBuy = $"{DateTime.Now.Hour}:{DateTime.Now.Minute}"
-        //    };
-        //    configurationManager.GetConfiguration().Returns(configuration);
-
-        //    sut.Run();
-        //    stocksBuyer.Received().Buy();
-        //}
-
-
-
-
     }
 }
