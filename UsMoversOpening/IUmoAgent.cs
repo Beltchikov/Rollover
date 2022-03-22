@@ -1,4 +1,6 @@
-﻿namespace UsMoversOpening
+﻿using UsMoversOpening.Threading;
+
+namespace UsMoversOpening
 {
     public interface IUmoAgent
     {

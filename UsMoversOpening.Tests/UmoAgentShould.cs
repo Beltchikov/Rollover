@@ -3,6 +3,7 @@ using NSubstitute;
 using System;
 using UsMoversOpening.Configuration;
 using UsMoversOpening.Helper;
+using UsMoversOpening.Threading;
 using Xunit;
 
 namespace UsMoversOpening.Tests

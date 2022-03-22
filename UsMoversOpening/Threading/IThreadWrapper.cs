@@ -1,4 +1,4 @@
-﻿namespace UsMoversOpening
+﻿namespace UsMoversOpening.Threading
 {
     public interface IThreadWrapper
     {

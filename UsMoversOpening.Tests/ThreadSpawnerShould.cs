@@ -1,6 +1,7 @@
 ﻿using AutoFixture.Xunit2;
 using NSubstitute;
 using UsMoversOpening.Configuration;
+using UsMoversOpening.Threading;
 using Xunit;
 
 namespace UsMoversOpening.Tests

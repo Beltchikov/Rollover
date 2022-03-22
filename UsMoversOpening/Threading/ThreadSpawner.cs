@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using UsMoversOpening.Configuration;
 
-namespace UsMoversOpening
+namespace UsMoversOpening.Threading
 {
     public class ThreadSpawner : IThreadSpawner
     {
@@ -25,7 +25,7 @@ namespace UsMoversOpening
         public void Run()
         {
             var configuration = _configurationManager.GetConfiguration();
-            
+
             _ibClientWrapper.eConnect(configuration.Host, configuration.Port, configuration.ClientId);
 
             //try

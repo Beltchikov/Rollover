@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 
-namespace UsMoversOpening
+namespace UsMoversOpening.Threading
 {
     public class ThreadWrapper : IThreadWrapper
     {
@@ -11,7 +11,7 @@ namespace UsMoversOpening
             _thread = new Thread(threadStart);
             _thread.IsBackground = isBackground;
         }
-        
+
         public void Start()
         {
             _thread.Start();
