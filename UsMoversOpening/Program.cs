@@ -24,7 +24,7 @@ namespace UsMoversOpening
 
             //umoAgent.Run();
 
-            IThreadSpawner threadSpawner = new ThreadSpawner(umoAgent);
+            IThreadSpawner threadSpawner = new ThreadSpawner(umoAgent, configurationManager);
             threadSpawner.Run();
 
             Console.WriteLine("UsMoversOpening - finished!");

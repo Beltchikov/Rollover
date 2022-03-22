@@ -1,5 +1,6 @@
 ﻿using AutoFixture.Xunit2;
 using NSubstitute;
+using UsMoversOpening.Configuration;
 using Xunit;
 
 namespace UsMoversOpening.Tests
@@ -13,6 +14,15 @@ namespace UsMoversOpening.Tests
         {
             sut.Run();
             umoAgent.Received().Run(sut, Arg.Any<IThreadWrapper>());
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallCofigurationManager(
+            [Frozen] IConfigurationManager configurationManager,
+            ThreadSpawner sut)
+        {
+            sut.Run();
+            configurationManager.Received().GetConfiguration();
         }
     }
 }
