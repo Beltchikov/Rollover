@@ -24,5 +24,29 @@ namespace UsMoversOpening.Tests
             sut.Run();
             configurationManager.Received().GetConfiguration();
         }
+
+        [Theory, AutoNSubstituteData]
+        public void CallIbClientEConnect(
+            string host,
+            int port,
+            int clientId,
+            [Frozen] IConfigurationManager configurationManager,
+            [Frozen] IIbClientWrapper ibClientWrapper,
+            ThreadSpawner sut)
+        {
+            var configuration = new Configuration.Configuration
+            {
+                Host = host,
+                Port = port,
+                ClientId = clientId
+            };
+            configurationManager.GetConfiguration().Returns(configuration);
+
+            sut.Run();
+            ibClientWrapper.Received().eConnect(
+                configuration.Host, 
+                configuration.Port,
+                configuration.ClientId);
+        }
     }
 }

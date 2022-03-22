@@ -8,11 +8,16 @@ namespace UsMoversOpening
     {
         private IUmoAgent _umoAgent;
         private IConfigurationManager _configurationManager;
+        private IIbClientWrapper _ibClientWrapper;
 
-        public ThreadSpawner(IUmoAgent umoAgent, IConfigurationManager configurationManager)
+        public ThreadSpawner(
+            IUmoAgent umoAgent,
+            IConfigurationManager configurationManager,
+            IIbClientWrapper ibClientWrapper)
         {
             _umoAgent = umoAgent;
             _configurationManager = configurationManager;
+            _ibClientWrapper = ibClientWrapper;
         }
 
         public bool ExitFlagInputThread { get; set; }
@@ -20,9 +25,8 @@ namespace UsMoversOpening
         public void Run()
         {
             var configuration = _configurationManager.GetConfiguration();
-            string host = configuration.Host;
-            int port = configuration.Port;
-            int clientId = configuration.ClientId;
+            
+            _ibClientWrapper.eConnect(configuration.Host, configuration.Port, configuration.ClientId);
 
             //try
             //{
