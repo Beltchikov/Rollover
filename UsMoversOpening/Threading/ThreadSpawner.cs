@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using UsMoversOpening.Configuration;
+using UsMoversOpening.IBApi;
 
 namespace UsMoversOpening.Threading
 {
@@ -9,6 +10,7 @@ namespace UsMoversOpening.Threading
         private IUmoAgent _umoAgent;
         private IConfigurationManager _configurationManager;
         private IIbClientWrapper _ibClientWrapper;
+        private IEReaderMonitorSignalWrapper _eReaderMonitorSignal;
 
         public ThreadSpawner(
             IUmoAgent umoAgent,

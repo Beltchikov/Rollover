@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using UsMoversOpening.Configuration;
 using UsMoversOpening.Helper;
+using UsMoversOpening.IBApi;
 using UsMoversOpening.Threading;
 
 namespace UsMoversOpening
@@ -21,7 +22,8 @@ namespace UsMoversOpening
                 configurationManager,
                 stocksBuyer);
 
-            IIbClientWrapper ibClientWrapper = new IbClientWrapper();
+            IEReaderMonitorSignalWrapper eReaderMonitorSignalWrapper = new EReaderMonitorSignalWrapper();
+            IIbClientWrapper ibClientWrapper = new IbClientWrapper(eReaderMonitorSignalWrapper);
 
             IThreadSpawner threadSpawner 
                 = new ThreadSpawner(umoAgent, configurationManager, ibClientWrapper);

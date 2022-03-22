@@ -1,4 +1,4 @@
-﻿namespace UsMoversOpening
+﻿namespace UsMoversOpening.IBApi
 {
     public interface IIbClientWrapper
     {
