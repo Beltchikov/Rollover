@@ -21,7 +21,7 @@ namespace UsMoversOpening.Tests
 
         [Theory, AutoNSubstituteData]
         public void CallCofigurationManager(
-            IThreadSpawner threadSpawner, 
+            IThreadSpawner threadSpawner,
             IThreadWrapper inputThread,
             [Frozen] IConfigurationManager configurationManager,
             UmoAgent sut)
@@ -36,15 +36,27 @@ namespace UsMoversOpening.Tests
             configurationManager.Received().GetConfiguration();
         }
 
+        [Theory, AutoNSubstituteData]
+        public void NotCallSendOrdersMultipleTimes(
+            IThreadSpawner threadSpawner,
+            IThreadWrapper inputThread,
+            [Frozen] IConfigurationManager configurationManager,
+            [Frozen] IStocksBuyer stocksBuyer,
+            UmoAgent sut)
+        {
+            var configuration = new Configuration.Configuration
+            {
+                TimeToBuy = $"00:00"
+            };
+            configurationManager.GetConfiguration().Returns(configuration);
 
+            stocksBuyer.Triggered(Arg.Any<string>()).Returns(true, true);
 
-        //[Theory, AutoNSubstituteData]
-        //public void NotCallSendOrdersMultipleTimes(
-        //  [Frozen] IConfigurationManager configurationManager,
-        //  [Frozen] IStocksBuyer stocksBuyer,
-        //  UmoAgent sut)
-        //{
-        //    throw new NotImplementedException();
-        //}
+            threadSpawner.ExitFlagInputThread.Returns(false, true);
+
+            sut.Run(threadSpawner, inputThread);
+
+            stocksBuyer.Received().SendOrders();
+        }
     }
 }
