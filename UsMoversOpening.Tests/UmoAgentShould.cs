@@ -40,18 +40,10 @@ namespace UsMoversOpening.Tests
         public void NotCallSendOrdersMultipleTimes(
             IThreadSpawner threadSpawner,
             IThreadWrapper inputThread,
-            [Frozen] IConfigurationManager configurationManager,
             [Frozen] IStocksBuyer stocksBuyer,
             UmoAgent sut)
         {
-            var configuration = new Configuration.Configuration
-            {
-                TimeToBuy = $"00:00"
-            };
-            configurationManager.GetConfiguration().Returns(configuration);
-
             stocksBuyer.Triggered(Arg.Any<string>()).Returns(true, true);
-
             threadSpawner.ExitFlagInputThread.Returns(false, true);
 
             sut.Run(threadSpawner, inputThread);
