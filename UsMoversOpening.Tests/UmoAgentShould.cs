@@ -60,6 +60,17 @@ namespace UsMoversOpening.Tests
         }
 
         [Theory, AutoNSubstituteData]
+        public void CallIbThreadStart(
+            IThreadSpawner threadSpawner,
+            IThreadWrapper inputThread,
+            IThreadWrapper ibThread,
+            UmoAgent sut)
+        {
+            sut.Run(threadSpawner, inputThread, ibThread);
+            ibThread.Received().Start();
+        }
+
+        [Theory, AutoNSubstituteData]
         public void NotCallSendOrdersMultipleTimes(
             IThreadSpawner threadSpawner,
             IThreadWrapper inputThread,

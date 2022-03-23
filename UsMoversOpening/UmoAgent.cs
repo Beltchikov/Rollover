@@ -25,8 +25,8 @@ namespace UsMoversOpening
         {
             inputThread.Start();
             var configuration = _configurationManager.GetConfiguration();
-
             _ibClientWrapper.eConnect(configuration.Host, configuration.Port, configuration.ClientId);
+            ibThread.Start();
 
             //try
             //{
