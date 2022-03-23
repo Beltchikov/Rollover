@@ -14,5 +14,10 @@ namespace UsMoversOpening.IBApi
         }
 
         public EReaderMonitorSignal EReaderMonitorSignal => _signal;
+
+        public void waitForSignal()
+        {
+            _signal.waitForSignal();
+        }
     }
 }

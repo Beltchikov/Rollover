@@ -5,5 +5,7 @@ namespace UsMoversOpening.IBApi
     public interface IEReaderMonitorSignalWrapper
     {
         public EReaderMonitorSignal EReaderMonitorSignal { get; }
+
+        void waitForSignal();
     }
 }

@@ -1,19 +1,27 @@
-﻿using IBSampleApp;
+﻿using IBApi;
+using IBSampleApp;
+using System.Diagnostics.CodeAnalysis;
 
 namespace UsMoversOpening.IBApi
 {
+    [ExcludeFromCodeCoverage]
     public class IbClientWrapper : IIbClientWrapper
     {
-        private IBClient ibClient;
+        private IBClient _ibClient;
+        private EReaderMonitorSignalWrapper _signal;
 
-        public IbClientWrapper(IEReaderMonitorSignalWrapper eReaderMonitorSignalWrapper)
+        public IbClientWrapper(EReaderMonitorSignalWrapper eReaderMonitorSignalWrapper)
 {
-            ibClient = new IBClient(eReaderMonitorSignalWrapper.EReaderMonitorSignal);
+            _signal = eReaderMonitorSignalWrapper;
+            _ibClient = new IBClient(eReaderMonitorSignalWrapper.EReaderMonitorSignal);
         }
 
         public void eConnect(string host, int port, int clientId)
         {
-            ibClient.ClientSocket.eConnect(host, port, clientId);
+            _ibClient.ClientSocket.eConnect(host, port, clientId);
         }
+
+        public EReaderMonitorSignalWrapper Signal => _signal;
+        public EClientSocket ClientSocket => _ibClient.ClientSocket;
     }
 }

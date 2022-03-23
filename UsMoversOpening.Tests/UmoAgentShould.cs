@@ -14,9 +14,10 @@ namespace UsMoversOpening.Tests
         public void CallInputThreadStart(
             IThreadSpawner threadSpawner,
             IThreadWrapper inputThread,
+            IThreadWrapper ibThread,
             UmoAgent sut)
         {
-            sut.Run(threadSpawner, inputThread);
+            sut.Run(threadSpawner, inputThread, ibThread);
             inputThread.Received().Start();
         }
 
@@ -24,6 +25,7 @@ namespace UsMoversOpening.Tests
         public void CallCofigurationManager(
             IThreadSpawner threadSpawner,
             IThreadWrapper inputThread,
+            IThreadWrapper ibThread,
             [Frozen] IConfigurationManager configurationManager,
             UmoAgent sut)
         {
@@ -33,7 +35,7 @@ namespace UsMoversOpening.Tests
             };
             configurationManager.GetConfiguration().Returns(configuration);
 
-            sut.Run(threadSpawner, inputThread);
+            sut.Run(threadSpawner, inputThread, ibThread);
             configurationManager.Received().GetConfiguration();
         }
 
@@ -41,13 +43,14 @@ namespace UsMoversOpening.Tests
         public void NotCallSendOrdersMultipleTimes(
             IThreadSpawner threadSpawner,
             IThreadWrapper inputThread,
+            IThreadWrapper ibThread,
             [Frozen] IStocksBuyer stocksBuyer,
             UmoAgent sut)
         {
             stocksBuyer.Triggered(Arg.Any<string>()).Returns(true, true);
             threadSpawner.ExitFlagInputThread.Returns(false, true);
 
-            sut.Run(threadSpawner, inputThread);
+            sut.Run(threadSpawner, inputThread, ibThread);
 
             stocksBuyer.Received().SendOrders();
         }

@@ -22,11 +22,11 @@ namespace UsMoversOpening
                 configurationManager,
                 stocksBuyer);
 
-            IEReaderMonitorSignalWrapper eReaderMonitorSignalWrapper = new EReaderMonitorSignalWrapper();
+            EReaderMonitorSignalWrapper eReaderMonitorSignalWrapper = new EReaderMonitorSignalWrapper();
             IIbClientWrapper ibClientWrapper = new IbClientWrapper(eReaderMonitorSignalWrapper);
+            EReaderWrapper eReaderWrapper = new EReaderWrapper(ibClientWrapper.ClientSocket, ibClientWrapper.Signal);
 
-            IThreadSpawner threadSpawner 
-                = new ThreadSpawner(umoAgent, configurationManager, ibClientWrapper);
+            IThreadSpawner threadSpawner = new ThreadSpawner(umoAgent, ibClientWrapper, eReaderWrapper);
             threadSpawner.Run();
 
             Console.WriteLine("UsMoversOpening - finished!");

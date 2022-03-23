@@ -4,6 +4,6 @@ namespace UsMoversOpening
 {
     public interface IUmoAgent
     {
-        void Run(IThreadSpawner threadSpawner, IThreadWrapper inputThread);
+        void Run(IThreadSpawner threadSpawner, IThreadWrapper inputThread, IThreadWrapper ibThread);
     }
 }
