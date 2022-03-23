@@ -17,14 +17,15 @@ namespace UsMoversOpening
             IConfigurationManager configurationManager = new ConfigurationManager(
                 fileHelper, serializer);
 
-            IStocksBuyer stocksBuyer = new StocksBuyer();
-            IUmoAgent umoAgent = new UmoAgent(
-                configurationManager,
-                stocksBuyer);
-
             EReaderMonitorSignalWrapper eReaderMonitorSignalWrapper = new EReaderMonitorSignalWrapper();
             IIbClientWrapper ibClientWrapper = new IbClientWrapper(eReaderMonitorSignalWrapper);
             EReaderWrapper eReaderWrapper = new EReaderWrapper(ibClientWrapper.ClientSocket, ibClientWrapper.Signal);
+
+            IStocksBuyer stocksBuyer = new StocksBuyer();
+            IUmoAgent umoAgent = new UmoAgent(
+                configurationManager,
+                ibClientWrapper,
+                stocksBuyer);
 
             IThreadSpawner threadSpawner = new ThreadSpawner(umoAgent, ibClientWrapper, eReaderWrapper);
             threadSpawner.Run();

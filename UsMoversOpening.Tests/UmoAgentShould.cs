@@ -3,6 +3,7 @@ using NSubstitute;
 using System;
 using UsMoversOpening.Configuration;
 using UsMoversOpening.Helper;
+using UsMoversOpening.IBApi;
 using UsMoversOpening.Threading;
 using Xunit;
 
@@ -37,6 +38,25 @@ namespace UsMoversOpening.Tests
 
             sut.Run(threadSpawner, inputThread, ibThread);
             configurationManager.Received().GetConfiguration();
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallIbClientEConnect(
+            IThreadSpawner threadSpawner,
+            IThreadWrapper inputThread,
+            IThreadWrapper ibThread,
+            [Frozen] IConfigurationManager configurationManager,
+            [Frozen] IIbClientWrapper iIbClientWrapper,
+            UmoAgent sut)
+        {
+            var configuration = new Configuration.Configuration{};
+            configurationManager.GetConfiguration().Returns(configuration);
+
+            sut.Run(threadSpawner, inputThread, ibThread);
+            iIbClientWrapper.Received().eConnect(
+                configuration.Host,
+                configuration.Port,
+                configuration.ClientId);
         }
 
         [Theory, AutoNSubstituteData]
