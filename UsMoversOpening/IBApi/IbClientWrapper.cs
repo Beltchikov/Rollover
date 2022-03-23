@@ -1,24 +1,19 @@
-﻿using IBApi;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using IBSampleApp;
 
 namespace UsMoversOpening.IBApi
 {
     public class IbClientWrapper : IIbClientWrapper
     {
-        //private IBClient ibClient;
+        private IBClient ibClient;
 
         public IbClientWrapper(IEReaderMonitorSignalWrapper eReaderMonitorSignalWrapper)
-        {
-            //ibClient = new EClient(eReaderMonitorSignalWrapper.EReaderMonitorSignal);
+{
+            ibClient = new IBClient(eReaderMonitorSignalWrapper.EReaderMonitorSignal);
         }
 
         public void eConnect(string host, int port, int clientId)
         {
-            throw new NotImplementedException();
+            ibClient.ClientSocket.eConnect(host, port, clientId);
         }
     }
 }
