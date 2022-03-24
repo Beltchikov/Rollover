@@ -1,4 +1,5 @@
 ﻿using IBApi;
+using System;
 
 namespace UsMoversOpening.IBApi
 {
@@ -7,5 +8,6 @@ namespace UsMoversOpening.IBApi
         public EReaderMonitorSignalWrapper Signal { get; }
         public EClientSocket ClientSocket { get; }
         void eConnect(string host, int port, int clientId);
+        public Action<int, int, string, Exception> OnErrorFunction { set; }
     }
 }

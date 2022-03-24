@@ -1,5 +1,6 @@
 ﻿using IBApi;
 using IBSampleApp;
+using System;
 using System.Diagnostics.CodeAnalysis;
 
 namespace UsMoversOpening.IBApi
@@ -11,7 +12,7 @@ namespace UsMoversOpening.IBApi
         private EReaderMonitorSignalWrapper _signal;
 
         public IbClientWrapper(EReaderMonitorSignalWrapper eReaderMonitorSignalWrapper)
-{
+        {
             _signal = eReaderMonitorSignalWrapper;
             _ibClient = new IBClient(eReaderMonitorSignalWrapper.EReaderMonitorSignal);
         }
@@ -23,5 +24,13 @@ namespace UsMoversOpening.IBApi
 
         public EReaderMonitorSignalWrapper Signal => _signal;
         public EClientSocket ClientSocket => _ibClient.ClientSocket;
+
+        public Action<int, int, string, Exception> OnErrorFunction
+        { 
+            set
+            {
+                _ibClient.Error += value;
+            }
+        }
     }
 }

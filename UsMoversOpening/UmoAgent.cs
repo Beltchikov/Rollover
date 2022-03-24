@@ -1,4 +1,5 @@
-﻿using UsMoversOpening.Configuration;
+﻿using System;
+using UsMoversOpening.Configuration;
 using UsMoversOpening.IBApi;
 using UsMoversOpening.Threading;
 
@@ -19,6 +20,13 @@ namespace UsMoversOpening
             _configurationManager = configurationManager;
             _ibClientWrapper = ibClientWrapper;
             _stocksBuyer = stocksBuyer;
+
+            _ibClientWrapper.OnErrorFunction = OnError;
+        }
+
+        private void OnError(int arg1, int arg2, string arg3, Exception arg4)
+        {
+            throw new NotImplementedException();
         }
 
         public void Run(IThreadSpawner threadSpawner, IThreadWrapper inputThread, IThreadWrapper ibThread)
