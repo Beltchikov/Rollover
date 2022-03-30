@@ -501,14 +501,14 @@ namespace Prototype
         {
             ScannerSubscription scannerSubscription = new ScannerSubscription
             {
-                ScanCode = "TOP_OPEN_PERC_GAIN",
+                ScanCode = "TOP_PERC_GAIN",
                 Instrument = "STK",
-                LocationCode = "STK.US, STK.NYSE, STK.AMEX, STK.ARCA, STK.NASDAQ.NMS"
+                LocationCode = "STK.US, STK.NYSE, STK.AMEX, STK.ARCA, STK.NASDAQ.NMS, STK.NASDAQ.SC"
             };
 
             List<TagValue> filterOptions = new List<TagValue> 
             {
-                new TagValue{Tag = "avgVolumeAbove", Value="500000"}
+                new TagValue{Tag = "avgVolumeAbove", Value="2000000"}
             };
             
             List<TagValue> scannerSubscriptionOptions = new List<TagValue> {};
