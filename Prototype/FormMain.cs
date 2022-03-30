@@ -503,7 +503,8 @@ namespace Prototype
             {
                 ScanCode = "TOP_PERC_GAIN",
                 Instrument = "STK",
-                LocationCode = "STK.US, STK.NYSE, STK.AMEX, STK.ARCA, STK.NASDAQ.NMS, STK.NASDAQ.SC"
+                LocationCode = "STK.US, STK.NYSE, STK.AMEX, STK.ARCA, STK.NASDAQ.NMS, STK.NASDAQ.SC",
+                NumberOfRows = 50  // Number of rows is capped to 50
             };
 
             List<TagValue> filterOptions = new List<TagValue> 
