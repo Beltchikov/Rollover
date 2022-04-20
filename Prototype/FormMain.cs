@@ -232,6 +232,7 @@ namespace Prototype
                 $"SecType:{obj.ContractDetails.Contract.SecType} " +
                 $"Currency:{obj.ContractDetails.Contract.Currency} " +
                 $"Exchange:{obj.ContractDetails.Contract.Exchange} " +
+                $"PrimaryExch:{obj.ContractDetails.Contract.PrimaryExch} " +
 
                 $"Right:{obj.ContractDetails.Contract.Right} " +
                 $"LastTradeDate:{obj.ContractDetails.Contract.LastTradeDateOrContractMonth} " +
