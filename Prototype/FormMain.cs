@@ -146,7 +146,7 @@ namespace Prototype
 
         private void OnError(int id, int errorCode, string msg, Exception ex)
         {
-            AddLineToTextbox(txtMessage, "OnError: " + msg);
+            AddLineToTextbox(txtMessage, $"OnError: id={id} errorCode={errorCode} msg={msg} exception={ex}");
 
             //if (ex != null)
             //{
