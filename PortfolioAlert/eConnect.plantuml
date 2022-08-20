@@ -1,0 +1,30 @@
+@startuml eConnect
+
+autonumber
+
+participant "Client" as c
+participant "IBClient" as ibc
+participant "EReader Thread" as ert
+
+c -> c : signal = new EReaderMonitorSignal()
+c-> ibc : ibClient = new IbClient(signal)
+activate ibc
+ibc -> ibc : ClientSocket = new EClientSocket(this, signal);
+ibc -> c : ibClient
+
+c -> ibc : ibClient.ClientSocket.eConnect(host, port, clientId)
+
+c -> c : reader = new EReader(ibClient.ClientSocket, signal);
+c -> c : reader.Start();
+
+c-> ert : Start()
+activate ert
+note right
+while (ibClient.ClientSocket.IsConnected())
+{
+    signal.waitForSignal();
+    reader.processMsgs();
+}
+endnote                        
+
+@enduml
