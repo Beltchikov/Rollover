@@ -5,10 +5,15 @@ start
 var eWrapperImpl = new EWrapperImpl(signal);
 
 :eWrapperImpl.ClientSocket.eConnect(host, port, cClientId);
+note left
+eWrapperImpl 
+alias IbClient
+endnote
 :var reader = new EReader(ibClient.ClientSocket, signal);
 
 fork
     :main thread;
+    :eWrapperImpl.ClientSocket.reqContractDetails(reqId, contract);
 fork again
   :eReader thread;
     while (eWrapperImpl.ClientSocket.IsConnected())
