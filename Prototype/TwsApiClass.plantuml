@@ -1,0 +1,28 @@
+@startuml TwsApi
+
+note top of EWrapper : Receives messages from TWS
+class EWrapper <<interface>>
+EWrapper : error
+EWrapper : nextValidId
+
+class EClient
+EClient : reqContractDetails(int reqId, Contract contract)
+
+note top of EClientSocket : Sends messages to TWS
+class EClientSocket
+EClientSocket --|> EClient
+EClientSocket : eConnect(string host, int port, int clientId)
+
+note top of EReader : processMsgs() is called \n in separate thread \n (EReaderThread)
+class EReader
+EReader : Start()
+EReader : processMsgs();
+EReader --> "1" EClientSocket
+EReader --> "1" EReaderSignal
+
+EWrapper <|-- EWrapperImpl
+EWrapperImpl : ClientSocket
+EWrapperImpl "clientSocket" --> "1" EClientSocket
+EWrapperImpl --> "1" EReaderSignal
+
+@enduml

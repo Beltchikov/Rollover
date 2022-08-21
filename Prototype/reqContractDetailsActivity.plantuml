@@ -1,0 +1,21 @@
+@startuml reqContractDetails
+
+start
+:var signal = new EReaderMonitorSignal()
+var eWrapperImpl = new EWrapperImpl(signal);
+
+:eWrapperImpl.ClientSocket.eConnect(host, port, cClientId);
+:var reader = new EReader(ibClient.ClientSocket, signal);
+
+fork
+    :main thread;
+fork again
+  :eReader thread;
+    while (eWrapperImpl.ClientSocket.IsConnected())
+        :signal.waitForSignal();
+        : reader.processMsgs();
+    endwhile
+end fork
+stop
+
+@enduml
