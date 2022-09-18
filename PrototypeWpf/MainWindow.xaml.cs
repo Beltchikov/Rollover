@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows;
-//using TwsApi;
+using TwsApi;
 
 namespace PrototypeWpf
 {
@@ -9,11 +9,11 @@ namespace PrototypeWpf
     /// </summary>
     public partial class MainWindow : Window
     {
-        //private IbClient _ibClient;
+        private IBClient _ibClient;
         
         public MainWindow()
         {
-            //_ibClient = new IbClient();
+            //_ibClient = new IBClient();
 
             InitializeComponent();
         }

@@ -7,7 +7,7 @@ using System.Text;
 using IBApi;
 using System.Threading;
 using System.Threading.Tasks;
-using IBSampleApp.messages;
+using TwsApi.messages;
 
 namespace TwsApi
 {

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace IBSampleApp.messages
+namespace TwsApi.messages
 {
     public class HistoricalDataEndMessage
     {
