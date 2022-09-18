@@ -1,5 +1,6 @@
-﻿using System.Windows;
-using TwsApi;
+﻿using System;
+using System.Windows;
+//using TwsApi;
 
 namespace PrototypeWpf
 {
@@ -8,17 +9,23 @@ namespace PrototypeWpf
     /// </summary>
     public partial class MainWindow : Window
     {
-        private TwsClient _twsClient;
+        //private IbClient _ibClient;
         
         public MainWindow()
         {
-            _twsClient = new TwsClient();
+            //_ibClient = new IbClient();
 
             InitializeComponent();
         }
 
         private void btConnect_Click(object sender, RoutedEventArgs e)
         {
+            string host = tbHost.Text;
+            int port = Int32.Parse(tbPort.Text);
+            int clientId = Int32.Parse(tbClientId.Text);
+
+            //_ibClient.ClientSocket.eConnect(host, port, clientId);
+
             //try
             //{
             //    string host = txtHost.Text;
