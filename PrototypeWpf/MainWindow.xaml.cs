@@ -24,5 +24,10 @@ namespace PrototypeWpf
         {
             InitializeComponent();
         }
+
+        private void btConnect_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

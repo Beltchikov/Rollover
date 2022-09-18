@@ -6,26 +6,33 @@
         xmlns:local="clr-namespace:PrototypeWpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10"></ColumnDefinition>
-            <ColumnDefinition Width="100"></ColumnDefinition>
-            <ColumnDefinition Width="100"></ColumnDefinition>
-            
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="10"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="10"></RowDefinition>
-            <RowDefinition Height="40"></RowDefinition>
-            <RowDefinition Height="25"></RowDefinition>
-            <RowDefinition Height="25"></RowDefinition>
-            
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="10"></RowDefinition>
-        </Grid.RowDefinitions>
+    <Canvas>
+        <Label x:Name="label" Content="TWS API" Canvas.Left="10" Canvas.Top="10"
+               FontSize="16" FontWeight="Bold" HorizontalAlignment="Left" 
+               VerticalAlignment="Center" RenderTransformOrigin="0.558,2.559"/>
 
-        <Label Content="TWS API" Grid.Row ="1" Grid.Column ="1" FontSize="16" FontWeight="Bold">
-        </Label>
-    </Grid>
+        <Label x:Name="label1" Content="Host:" Canvas.Left="10" Canvas.Top="46"/>
+        <TextBox x:Name="tbHost" Canvas.Left="48" TextWrapping="Wrap" Text="localhost" 
+                 Canvas.Top="50" Width="70" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+        <Label x:Name="label2" Content="Port:" Canvas.Left="141" Canvas.Top="46" 
+               HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <TextBox x:Name="tbPort" Canvas.Left="180" TextWrapping="Wrap" Text="4001" 
+                 Canvas.Top="50" Width="70" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+        <Label x:Name="labe2" Content="Client ID:" Canvas.Left="273" Canvas.Top="46" 
+               HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <TextBox x:Name="tbClientId" Canvas.Left="336" TextWrapping="Wrap" Text="1" 
+                 Canvas.Top="50" Width="34" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+        <Button x:Name="btConnect" Content="Connect" Canvas.Left="391" Canvas.Top="49" HorizontalAlignment="Left" VerticalAlignment="Center" Width="57" Click="btConnect_Click"/>
+
+        <Label x:Name="label52" Content="Messages:" Canvas.Left="10" Canvas.Top="256" 
+               HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbMessages" Canvas.Left="10" TextWrapping="Wrap" Text="" 
+                 Canvas.Top="282" Width="770" Height="122"
+                 AcceptsReturn="True" VerticalScrollBarVisibility="Visible" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+
+    </Canvas>
 </Window>
