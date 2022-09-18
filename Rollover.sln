@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UsMoversOpening", "UsMovers
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UsMoversOpening.Tests", "UsMoversOpening.Tests\UsMoversOpening.Tests.csproj", "{C5BBB543-F6D1-469E-B464-C96692B3225B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioAlert", "PortfolioAlert\PortfolioAlert.csproj", "{64F6279B-6FBA-4FAD-A3D9-DD9DB7F73302}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioAlert", "PortfolioAlert\PortfolioAlert.csproj", "{64F6279B-6FBA-4FAD-A3D9-DD9DB7F73302}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwsApi", "TwsApi\TwsApi.csproj", "{142E18AC-0D5B-4B58-B9B3-58F523B91911}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{64F6279B-6FBA-4FAD-A3D9-DD9DB7F73302}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64F6279B-6FBA-4FAD-A3D9-DD9DB7F73302}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64F6279B-6FBA-4FAD-A3D9-DD9DB7F73302}.Release|Any CPU.Build.0 = Release|Any CPU
+		{142E18AC-0D5B-4B58-B9B3-58F523B91911}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{142E18AC-0D5B-4B58-B9B3-58F523B91911}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{142E18AC-0D5B-4B58-B9B3-58F523B91911}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{142E18AC-0D5B-4B58-B9B3-58F523B91911}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
