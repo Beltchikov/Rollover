@@ -1,4 +1,6 @@
-﻿using System;
+﻿using IBApi;
+using System;
+using System.Threading;
 using System.Windows;
 using TwsApi;
 
@@ -10,50 +12,46 @@ namespace PrototypeWpf
     public partial class MainWindow : Window
     {
         private IBClient _ibClient;
-        
+        private EReaderMonitorSignal _signal;
+
         public MainWindow()
         {
-            //_ibClient = new IBClient();
+            _signal = new EReaderMonitorSignal();
+            _ibClient = new IBClient(_signal);
 
             InitializeComponent();
         }
 
         private void btConnect_Click(object sender, RoutedEventArgs e)
         {
-            string host = tbHost.Text;
-            int port = Int32.Parse(tbPort.Text);
-            int clientId = Int32.Parse(tbClientId.Text);
+            try
+            {
+                _ibClient.ClientSocket.eConnect(
+                       tbHost.Text,
+                       Int32.Parse(tbPort.Text),
+                       Int32.Parse(tbClientId.Text));
 
-            //_ibClient.ClientSocket.eConnect(host, port, clientId);
-
-            //try
-            //{
-            //    string host = txtHost.Text;
-            //    int port = Int32.Parse(txtPort.Text);
-            //    int clientId = Int32.Parse(txtClientId.Text);
-
-            //    ibClient.ClientSocket.eConnect(host, port, ibClient.ClientId);
-
-            //    // The EReader Thread
-            //    var reader = new EReader(ibClient.ClientSocket, signal);
-            //    reader.Start();
-            //    new Thread(() =>
-            //    {
-            //        while (ibClient.ClientSocket.IsConnected())
-            //        {
-            //            signal.waitForSignal();
-            //            reader.processMsgs();
-            //        }
-            //    })
-            //    { IsBackground = true }
-            //    .Start();
-
-            //    EnableControls(true);
-            //}
-            //catch (Exception ex)
-            //{
-            //    txtMessage.Text += Environment.NewLine + ex.ToString();
-            //}
+                // The EReader Thread
+                var reader = new EReader(_ibClient.ClientSocket, _signal);
+                reader.Start();
+                new Thread(() =>
+                {
+                    while (_ibClient.ClientSocket.IsConnected())
+                    {
+                        _signal.waitForSignal();
+                        reader.processMsgs();
+                    }
+                })
+                { IsBackground = true }
+                .Start();
+            }
+            catch (Exception ex)
+            {
+                tbMessages.Text = ex.ToString() 
+                    + (String.IsNullOrWhiteSpace(tbMessages.Text)
+                        ? String.Empty
+                        : Environment.NewLine + tbMessages.Text);
+            }
         }
     }
 }
