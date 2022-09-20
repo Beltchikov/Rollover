@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using IBApi;
 
-namespace TwsApi.messages
+namespace IbClient.messages
 {
     public class TickByTickBidAskMessage
     {

@@ -7,9 +7,9 @@ using System.Text;
 using IBApi;
 using System.Threading;
 using System.Threading.Tasks;
-using TwsApi.messages;
+using IbClient.messages;
 
-namespace TwsApi
+namespace IbClient
 {
     public class IBClient : EWrapper
     {
