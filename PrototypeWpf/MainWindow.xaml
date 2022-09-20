@@ -52,7 +52,7 @@
         <TextBox x:Name="tbCurrency" Canvas.Left="548" TextWrapping="Wrap" Text="USD" 
             Canvas.Top="81" Width="74" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
-        <Button x:Name="btMarketData" Content="Market Data" Canvas.Left="638" Canvas.Top="80" Width="80" Click="btMarketData_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <Button x:Name="btContractDetails" Content="Contract Details" Canvas.Left="638" Canvas.Top="80" Width="95" Click="btContractDetails_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
     </Canvas>
 </Window>

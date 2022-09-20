@@ -63,8 +63,7 @@ namespace PrototypeWpf
                         : Environment.NewLine + tbMessages.Text);
             }
         }
-
-        private void btMarketData_Click(object sender, RoutedEventArgs e)
+        private void btContractDetails_Click(object sender, RoutedEventArgs e)
         {
             var contract = new Contract()
             {
