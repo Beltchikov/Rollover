@@ -16,6 +16,7 @@ namespace PrototypeWpf
         private IBClient _ibClient;
         private EReaderMonitorSignal _signal;
         private int _nextOrderId;
+        private int _requestId;
 
         public MainWindow()
         {
@@ -25,9 +26,11 @@ namespace PrototypeWpf
             _ibClient.NextValidId += _ibClient_NextValidId;
             _ibClient.Error += _ibClient_Error;
             _ibClient.ManagedAccounts += _ibClient_ManagedAccounts;
+            _ibClient.ContractDetails += _ibClient_ContractDetails;
 
             InitializeComponent();
         }
+
 
         private void btConnect_Click(object sender, RoutedEventArgs e)
         {
@@ -71,7 +74,8 @@ namespace PrototypeWpf
                 Currency = tbCurrency.Text
             };
 
-            _ibClient.ClientSocket.reqContractDetails(60000001, contract);
+            _requestId++;
+            _ibClient.ClientSocket.reqContractDetails(_requestId, contract);
         }
 
         private void _ibClient_NextValidId(TwsApi.messages.ConnectionStatusMessage statusMessage)
@@ -97,6 +101,25 @@ namespace PrototypeWpf
             }
 
             string msg = Environment.NewLine + "OnManagedAccounts: Acounts found: " + message.ManagedAccounts.Aggregate((r, n) => r + ", " + n);
+            AddLineToTextbox(tbMessages, msg);
+        }
+
+        private void _ibClient_ContractDetails(TwsApi.messages.ContractDetailsMessage obj)
+        {
+            string msg = $"OnContractDetails :ConId:{obj.ContractDetails.Contract.ConId} " +
+                $"LocalSymbol:{obj.ContractDetails.Contract.LocalSymbol} " +
+
+                $"Symbol:{obj.ContractDetails.Contract.Symbol} " +
+                $"SecType:{obj.ContractDetails.Contract.SecType} " +
+                $"Currency:{obj.ContractDetails.Contract.Currency} " +
+                $"Exchange:{obj.ContractDetails.Contract.Exchange} " +
+                $"PrimaryExch:{obj.ContractDetails.Contract.PrimaryExch} " +
+
+                $"Right:{obj.ContractDetails.Contract.Right} " +
+                $"LastTradeDate:{obj.ContractDetails.Contract.LastTradeDateOrContractMonth} " +
+                $"Strike:{obj.ContractDetails.Contract.Strike} " +
+                $"";
+
             AddLineToTextbox(tbMessages, msg);
         }
 
