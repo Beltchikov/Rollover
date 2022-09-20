@@ -61,6 +61,19 @@ namespace PrototypeWpf
             }
         }
 
+        private void btMarketData_Click(object sender, RoutedEventArgs e)
+        {
+            var contract = new Contract()
+            {
+                Symbol = tbSymbol.Text,
+                SecType = tbSecType.Text,
+                Exchange = tbExchange.Text,
+                Currency = tbCurrency.Text
+            };
+
+            _ibClient.ClientSocket.reqContractDetails(60000001, contract);
+        }
+
         private void _ibClient_NextValidId(TwsApi.messages.ConnectionStatusMessage statusMessage)
         {
             _nextOrderId = _ibClient.NextOrderId;

@@ -49,10 +49,10 @@
 
         <Label x:Name="labe2_Copy1" Content="Currency:" Canvas.Left="483" Canvas.Top="77" 
                HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <TextBox x:Name="tbExchange_Copy" Canvas.Left="548" TextWrapping="Wrap" Text="USD" 
+        <TextBox x:Name="tbCurrency" Canvas.Left="548" TextWrapping="Wrap" Text="USD" 
             Canvas.Top="81" Width="74" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
-        <Button x:Name="btMarketData" Content="Market Data" Canvas.Left="638" Canvas.Top="80" Width="80" Click="btConnect_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <Button x:Name="btMarketData" Content="Market Data" Canvas.Left="638" Canvas.Top="80" Width="80" Click="btMarketData_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
     </Canvas>
 </Window>
