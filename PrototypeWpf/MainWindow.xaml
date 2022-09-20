@@ -18,7 +18,7 @@
         <Label x:Name="label2" Content="Port:" Canvas.Left="157" Canvas.Top="46" 
                HorizontalAlignment="Left" VerticalAlignment="Center"/>
         <TextBox x:Name="tbPort" Canvas.Left="230" TextWrapping="Wrap" Text="4001" 
-                 Canvas.Top="50" Width="70" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                 Canvas.Top="50" Width="74" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
         <Label x:Name="labe2" Content="Client ID:" Canvas.Left="323" Canvas.Top="46" 
                HorizontalAlignment="Left" VerticalAlignment="Center"/>
@@ -40,7 +40,7 @@
         <Label x:Name="label2_Copy" Content="Sec. Type:" Canvas.Left="157" Canvas.Top="77" 
                HorizontalAlignment="Left" VerticalAlignment="Center"/>
         <TextBox x:Name="tbSecType" Canvas.Left="230" TextWrapping="Wrap" Text="STK" 
-            Canvas.Top="81" Width="70" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            Canvas.Top="81" Width="74" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
         <Label x:Name="labe2_Copy" Content="Exchange:" Canvas.Left="323" Canvas.Top="77" 
                HorizontalAlignment="Left" VerticalAlignment="Center"/>
@@ -53,6 +53,17 @@
             Canvas.Top="81" Width="74" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
         <Button x:Name="btContractDetails" Content="Contract Details" Canvas.Left="638" Canvas.Top="80" Width="95" Click="btContractDetails_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+        <Label x:Name="label10_Copy" Content="Con. ID:" Canvas.Left="10" Canvas.Top="108" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <TextBox x:Name="tbConId" Canvas.Left="71" TextWrapping="Wrap" Text="756733" 
+            Canvas.Top="112" Width="70" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+
+        <Label x:Name="labe2_Copy2" Content="Exchange:" Canvas.Left="156" Canvas.Top="108" 
+               HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbExchangeMarketData" Canvas.Left="230" TextWrapping="Wrap" Text="ARCA" 
+            Canvas.Top="112" Width="74" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+        <Button x:Name="btMarketData" Content="Market Data" Canvas.Left="328" Canvas.Top="111" Width="95" Click="btMarketData_Click" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
     </Canvas>
 </Window>

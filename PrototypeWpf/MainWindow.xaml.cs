@@ -1,5 +1,6 @@
 ﻿using IBApi;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -27,10 +28,12 @@ namespace PrototypeWpf
             _ibClient.Error += _ibClient_Error;
             _ibClient.ManagedAccounts += _ibClient_ManagedAccounts;
             _ibClient.ContractDetails += _ibClient_ContractDetails;
+            _ibClient.TickPrice += _ibClient_TickPrice;
+            _ibClient.TickSize += _ibClient_TickSize;
+            _ibClient.TickString += _ibClient_TickString;
 
             InitializeComponent();
         }
-
 
         private void btConnect_Click(object sender, RoutedEventArgs e)
         {
@@ -77,6 +80,20 @@ namespace PrototypeWpf
             _ibClient.ClientSocket.reqContractDetails(_requestId, contract);
         }
 
+        private void btMarketData_Click(object sender, RoutedEventArgs e)
+        {
+            Contract contract = new Contract  
+            {
+                Exchange = tbExchangeMarketData.Text,
+                ConId = Convert.ToInt32(tbConId.Text)
+            };
+            string genericTickList = string.Empty;
+            bool snapshot = true; // set it to false to receive permanent stream of data
+
+            _requestId++;
+            _ibClient.ClientSocket.reqMktData(_requestId, contract, genericTickList, snapshot, false, new List<TagValue>());
+        }
+
         private void _ibClient_NextValidId(TwsApi.messages.ConnectionStatusMessage statusMessage)
         {
             _nextOrderId = _ibClient.NextOrderId;
@@ -120,6 +137,24 @@ namespace PrototypeWpf
                 $"";
 
             AddLineToTextbox(tbMessages, msg);
+        }
+
+        private void _ibClient_TickString(int arg1, int arg2, string arg3)
+        {
+            var msg = $"TickString: arg1:{arg1} arg2:{arg2} arg3:{arg3}";
+            AddLineToTextbox(tbMessages, msg.ToString());
+        }
+
+        private void _ibClient_TickSize(TwsApi.messages.TickSizeMessage obj)
+        {
+            var msg = $"OnTickSize: obj.RequestId:{obj.RequestId} obj.Field:{obj.Field} obj.Size:{obj.Size}";
+            AddLineToTextbox(tbMessages, msg.ToString());
+        }
+
+        private void _ibClient_TickPrice(TwsApi.messages.TickPriceMessage obj)
+        {
+            var msg = $"OnTickPrice: obj.RequestId:{obj.RequestId} obj.Field:{obj.Field} obj.Price:{obj.Price} obj.Attribs:{obj.Attribs.toString()}";
+            AddLineToTextbox(tbMessages, msg.ToString());
         }
 
         private void AddLineToTextbox(TextBox textBox, string msg)
