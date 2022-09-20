@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\TWSAPI\source\CSharpClient\client\CSharpAPI.csproj" />
-    <ProjectReference Include="..\TwsApi\IbClient.csproj" />
+    <ProjectReference Include="..\IbClient\IbClient.csproj" />
   </ItemGroup>
 
 </Project>
