@@ -115,7 +115,7 @@ namespace IbClient
         public IBClient(EReaderSignal signal)
         {
             clientSocket = new EClientSocket(this, signal);
-            sc = SynchronizationContext.Current;
+            sc = SynchronizationContext.Current ?? new SynchronizationContext();
         }
 
         public EClientSocket ClientSocket
