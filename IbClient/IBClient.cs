@@ -16,6 +16,34 @@ namespace IbClient
         private EClientSocket clientSocket;
         private int nextOrderId;
         private int clientId;
+        SynchronizationContext sc;
+        EReaderSignal eReaderSignal;
+
+        public IBClient(EReaderSignal signal)
+        {
+            eReaderSignal = signal;
+            clientSocket = new EClientSocket(this, signal);
+            sc = SynchronizationContext.Current ?? new SynchronizationContext();
+        }
+
+        public void ConnectAndStartReaderThread(string host, int port, int clientId)
+        {
+            ClientSocket.eConnect(host ,port, clientId);
+
+            // The EReader Thread
+            var reader = new EReader(ClientSocket, eReaderSignal);
+            reader.Start();
+            new Thread(() =>
+            {
+                while (ClientSocket.IsConnected())
+                {
+                    eReaderSignal.waitForSignal();
+                    reader.processMsgs();
+                }
+            })
+            { IsBackground = true }
+            .Start();
+        }
 
         public Task<Contract> ResolveContractAsync(int conId, string refExch)
         {
@@ -108,14 +136,6 @@ namespace IbClient
         {
             get { return clientId; }
             set { clientId = value; }
-        }
-
-        SynchronizationContext sc;
-
-        public IBClient(EReaderSignal signal)
-        {
-            clientSocket = new EClientSocket(this, signal);
-            sc = SynchronizationContext.Current ?? new SynchronizationContext();
         }
 
         public EClientSocket ClientSocket

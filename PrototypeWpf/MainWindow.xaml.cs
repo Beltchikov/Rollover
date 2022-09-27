@@ -37,34 +37,11 @@ namespace PrototypeWpf
 
         private void btConnect_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                _ibClient.ClientSocket.eConnect(
+            _ibClient.ConnectAndStartReaderThread(            
                        tbHost.Text,
                        Int32.Parse(tbPort.Text),
                        Int32.Parse(tbClientId.Text));
 
-                // The EReader Thread
-                var reader = new EReader(_ibClient.ClientSocket, _signal);
-                reader.Start();
-                new Thread(() =>
-                {
-                    while (_ibClient.ClientSocket.IsConnected())
-                    {
-                        _signal.waitForSignal();
-                        reader.processMsgs();
-                    }
-                })
-                { IsBackground = true }
-                .Start();
-            }
-            catch (Exception ex)
-            {
-                tbMessages.Text = ex.ToString() 
-                    + (String.IsNullOrWhiteSpace(tbMessages.Text)
-                        ? String.Empty
-                        : Environment.NewLine + tbMessages.Text);
-            }
         }
         private void btContractDetails_Click(object sender, RoutedEventArgs e)
         {
