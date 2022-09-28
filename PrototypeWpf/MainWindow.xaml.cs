@@ -21,8 +21,8 @@ namespace PrototypeWpf
 
         public MainWindow()
         {
-            _signal = new EReaderMonitorSignal();
-            _ibClient = new IBClient(_signal);
+            _signal = IBClient.CreateSignal();
+            _ibClient = IBClient.CreateClient();
 
             _ibClient.NextValidId += _ibClient_NextValidId;
             _ibClient.Error += _ibClient_Error;

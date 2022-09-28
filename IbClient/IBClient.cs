@@ -17,9 +17,43 @@ namespace IbClient
         private int nextOrderId;
         private int clientId;
         SynchronizationContext sc;
-        EReaderSignal eReaderSignal;
+        
+        private static EReaderSignal eReaderSignal;
+        private static IBClient ibClient;
 
-        public IBClient(EReaderSignal signal)
+        private static readonly object signalLock = new object();
+        private static readonly object clientLock = new object();
+
+        public static EReaderMonitorSignal CreateSignal()
+        {
+            lock (signalLock)
+            {
+                if (eReaderSignal == null)
+                {
+                    eReaderSignal = new EReaderMonitorSignal();
+                }
+                return eReaderSignal as EReaderMonitorSignal;
+            }
+        }
+
+        public static IBClient CreateClient()
+        {
+            if(eReaderSignal == null)
+            {
+                throw new InvalidOperationException("IBClient.CreateSignal() must be called first!");
+            }
+            
+            lock (clientLock)
+            {
+                if (ibClient == null)
+                {
+                    ibClient = new IBClient(eReaderSignal);
+                }
+                return ibClient;
+            }
+        }
+
+        private IBClient(EReaderSignal signal)
         {
             eReaderSignal = signal;
             clientSocket = new EClientSocket(this, signal);
@@ -28,7 +62,7 @@ namespace IbClient
 
         public void ConnectAndStartReaderThread(string host, int port, int clientId)
         {
-            ClientSocket.eConnect(host ,port, clientId);
+            ClientSocket.eConnect(host, port, clientId);
 
             // The EReader Thread
             var reader = new EReader(ClientSocket, eReaderSignal);
@@ -933,7 +967,7 @@ namespace IbClient
             var tmp = historicalTickLast;
 
             if (tmp != null)
-                ticks.ToList().ForEach(tick => sc.Post((t) => 
+                ticks.ToList().ForEach(tick => sc.Post((t) =>
                     tmp(new HistoricalTickLastMessage(reqId, tick.Time, tick.TickAttribLast, tick.Price, tick.Size, tick.Exchange, tick.SpecialConditions)), null));
         }
 
