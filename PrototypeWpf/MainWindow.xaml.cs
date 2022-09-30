@@ -62,7 +62,8 @@ namespace PrototypeWpf
             Contract contract = new Contract  
             {
                 Exchange = tbExchangeMarketData.Text,
-                ConId = Convert.ToInt32(tbConId.Text)
+                ConId = Convert.ToInt32(tbConId.Text),
+                LocalSymbol = tbLocalSymbol.Text
             };
             string genericTickList = string.Empty;
             bool snapshot = true; // set it to false to receive permanent stream of data

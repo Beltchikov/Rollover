@@ -22,10 +22,10 @@
 
         <Label x:Name="labe2" Content="Client ID:" Canvas.Left="323" Canvas.Top="46" 
                HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <TextBox x:Name="tbClientId" Canvas.Left="386" TextWrapping="Wrap" Text="1" 
-                 Canvas.Top="50" Width="34" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <TextBox x:Name="tbClientId" Canvas.Left="411" TextWrapping="Wrap" Text="1" 
+                 Canvas.Top="51" Width="34" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-        <Button x:Name="btConnect" Content="Connect" Canvas.Left="441" Canvas.Top="49" HorizontalAlignment="Left" VerticalAlignment="Center" Width="57" Click="btConnect_Click"/>
+        <Button x:Name="btConnect" Content="Connect" Canvas.Left="466" Canvas.Top="50" HorizontalAlignment="Left" VerticalAlignment="Top" Width="57" Click="btConnect_Click"/>
 
         <Label x:Name="label52" Content="Messages:" Canvas.Left="10" Canvas.Top="256" 
                HorizontalAlignment="Left" VerticalAlignment="Top"/>
@@ -44,15 +44,15 @@
 
         <Label x:Name="labe2_Copy" Content="Exchange:" Canvas.Left="323" Canvas.Top="77" 
                HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <TextBox x:Name="tbExchange" Canvas.Left="386" TextWrapping="Wrap" Text="ARCA" 
-            Canvas.Top="81" Width="74" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <TextBox x:Name="tbExchange" Canvas.Left="411" TextWrapping="Wrap" Text="ARCA" 
+            Canvas.Top="82" Width="74" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-        <Label x:Name="labe2_Copy1" Content="Currency:" Canvas.Left="483" Canvas.Top="77" 
-               HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <TextBox x:Name="tbCurrency" Canvas.Left="548" TextWrapping="Wrap" Text="USD" 
-            Canvas.Top="81" Width="74" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <Label x:Name="labe2_Copy1" Content="Currency:" Canvas.Left="508" Canvas.Top="78" 
+               HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbCurrency" Canvas.Left="573" TextWrapping="Wrap" Text="USD" 
+            Canvas.Top="82" Width="74" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-        <Button x:Name="btContractDetails" Content="Contract Details" Canvas.Left="638" Canvas.Top="80" Width="95" Click="btContractDetails_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <Button x:Name="btContractDetails" Content="Contract Details" Canvas.Left="663" Canvas.Top="81" Width="95" Click="btContractDetails_Click" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
         <Label x:Name="label10_Copy" Content="Con. ID:" Canvas.Left="10" Canvas.Top="108" HorizontalAlignment="Left" VerticalAlignment="Center"/>
         <TextBox x:Name="tbConId" Canvas.Left="71" TextWrapping="Wrap" Text="756733" 
@@ -63,7 +63,11 @@
         <TextBox x:Name="tbExchangeMarketData" Canvas.Left="230" TextWrapping="Wrap" Text="ARCA" 
             Canvas.Top="112" Width="74" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-        <Button x:Name="btMarketData" Content="Market Data" Canvas.Left="328" Canvas.Top="111" Width="95" Click="btMarketData_Click" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Button x:Name="btMarketData" Content="Market Data" Canvas.Left="575" Canvas.Top="111" Width="95" Click="btMarketData_Click" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <Label x:Name="labe2_Copy3" Content="Local Symbol:" Canvas.Left="323" Canvas.Top="108" 
+               HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <TextBox x:Name="tbLocalSymbol" Canvas.Left="410" TextWrapping="Wrap" Text="" 
+            Canvas.Top="112" Width="150" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
     </Canvas>
 </Window>
