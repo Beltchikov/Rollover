@@ -31,6 +31,7 @@ namespace PrototypeWpf
             _ibClient.TickPrice += _ibClient_TickPrice;
             _ibClient.TickSize += _ibClient_TickSize;
             _ibClient.TickString += _ibClient_TickString;
+            _ibClient.TickOptionCommunication += _ibClient_TickOptionCommunication;
 
             InitializeComponent();
         }
@@ -132,6 +133,15 @@ namespace PrototypeWpf
         private void _ibClient_TickPrice(IbClient.messages.TickPriceMessage obj)
         {
             var msg = $"OnTickPrice: obj.RequestId:{obj.RequestId} obj.Field:{obj.Field} obj.Price:{obj.Price} obj.Attribs:{obj.Attribs.toString()}";
+            AddLineToTextbox(tbMessages, msg.ToString());
+        }
+
+        private void _ibClient_TickOptionCommunication(IbClient.messages.TickOptionMessage obj)
+        {
+            var msg = $"OnTickOptionCommunication: obj.RequestId:{obj.RequestId} " +
+                $"obj.Field:{obj.Field} " +
+                $"obj.ImpliedVolatility:{obj.ImpliedVolatility} obj.Delta:{obj.Delta} obj.OptPrice:{obj.OptPrice} obj.PvDividend:{obj.PvDividend} " +
+                $"obj.Gamma:{obj.Gamma} obj.Vega:{obj.Vega} obj.Theta:{obj.Theta} obj.UndPrice:{obj.UndPrice}";
             AddLineToTextbox(tbMessages, msg.ToString());
         }
 
