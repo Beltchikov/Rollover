@@ -11,7 +11,7 @@ _ibClient = IBClient.CreateClient();
 _ibClient.Error -= _ibClient_Error;
 _ibClient.Error += _ibClient_Error;
 
-_ibClient.NextValidId -= _ibClient_NextValidId;
+_ibClient.NextValidId -= _ibClient_NextValidId; 
 _ibClient.NextValidId += _ibClient_NextValidId;
 
 _ibClient.ConnectAndStartReaderThread(HOST, PORT, CLIENT_ID);
@@ -30,6 +30,6 @@ void _ibClient_NextValidId(IbClient.messages.ConnectionStatusMessage statusMessa
     Console.WriteLine(msgNextValidId);
 }
 
-Console.ReadLine();
+while (Console.ReadKey().KeyChar.ToString().ToUpper() != "Q") { };
 
 
