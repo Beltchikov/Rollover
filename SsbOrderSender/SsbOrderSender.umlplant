@@ -1,0 +1,4 @@
+@startuml
+Program -> OrderSender: Run
+
+@enduml
