@@ -11,6 +11,11 @@ namespace OptionHelper
             _blackScholes = blackScholes;
         }
 
+        public IBlackScholes BlackScholes
+        {
+            get { return _blackScholes; }
+        }
+
         public double NextHigherStrike(
             double underlying,
             double stepUnderlying,

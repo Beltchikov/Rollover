@@ -2,6 +2,8 @@
 {
     public interface IOptionHelper
     {
+        IBlackScholes BlackScholes { get;}
+  
         double NextHigherStrike(double underlying, double step, double stepStrike, int precision);
         double NextLowerStrike(double underlying, double step, double stepStrike, int precision);
         double FirstCallStrikeByDelta(
