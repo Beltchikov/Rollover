@@ -29,7 +29,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptionHelper", "OptionHelpe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OptionHelper.Tests", "OptionHelper.Tests\OptionHelper.Tests.csproj", "{BF4E1821-7578-4C05-A227-ED8A1ED1E1B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SsbOrderSender", "SsbOrderSender\SsbOrderSender.csproj", "{2FEBF3AD-2AC0-4816-9649-C17DF3E28167}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SsbOrderSender", "SsbOrderSender\SsbOrderSender.csproj", "{2FEBF3AD-2AC0-4816-9649-C17DF3E28167}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SsbHedger", "SsbHedger\SsbHedger.csproj", "{BD85ADDB-76AE-4AB2-8B3E-2CA291159BA1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,6 +95,10 @@ Global
 		{2FEBF3AD-2AC0-4816-9649-C17DF3E28167}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FEBF3AD-2AC0-4816-9649-C17DF3E28167}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FEBF3AD-2AC0-4816-9649-C17DF3E28167}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD85ADDB-76AE-4AB2-8B3E-2CA291159BA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD85ADDB-76AE-4AB2-8B3E-2CA291159BA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD85ADDB-76AE-4AB2-8B3E-2CA291159BA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD85ADDB-76AE-4AB2-8B3E-2CA291159BA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
