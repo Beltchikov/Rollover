@@ -1,5 +1,6 @@
 using AutoFixture.Xunit2;
 using IbClient;
+using IbClient.messages;
 using NSubstitute;
 using System.Reflection;
 
@@ -38,6 +39,38 @@ namespace SsbHedger.UnitTests
                 Arg.Any<int>(),
                 Arg.Any<int>());
         }
+
+        [Theory, AutoNSubstituteData]
+        public void CallNextValidIdHandler(
+            ConnectionStatusMessage connectionStatusMessage,
+            [Frozen] IIBClient ibClient)
+        {
+            var wasCalled = false;
+            ibClient.NextValidId += (m) =>wasCalled = true;
+
+            ibClient.NextValidId += Raise.Event<Action<ConnectionStatusMessage>>(
+                connectionStatusMessage);
+            
+            Assert.True(wasCalled);
+        }
+
+        //[Theory, AutoNSubstituteData]
+        //public void CallResponseQueueOnNextValidId(
+        //   ConnectionStatusMessage connectionStatusMessage,
+        //   [Frozen] IIBClient ibClient,
+        //   Logic sut)
+        //{
+        //    var wasCalled = false;
+        //    ibClient.NextValidId += (m) =>
+        //    {
+        //        wasCalled = true;
+        //    };
+
+        //    ibClient.NextValidId += Raise.Event<Action<ConnectionStatusMessage>>(
+        //        connectionStatusMessage);
+        //    Assert.True(wasCalled);
+
+        //}
 
         private void VerifyDelegateAttachedTo(object objectWithEvent, string eventName)
         {

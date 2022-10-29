@@ -1,4 +1,5 @@
 ﻿using IbClient;
+using IbClient.messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -111,7 +112,7 @@ namespace SsbHedger
             throw new NotImplementedException();
         }
 
-        private void _ibClient_NextValidId(IbClient.messages.ConnectionStatusMessage obj)
+        private void _ibClient_NextValidId(ConnectionStatusMessage obj)
         {
             throw new NotImplementedException();
         }
