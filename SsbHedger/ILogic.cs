@@ -1,6 +1,6 @@
 ﻿namespace SsbHedger
 {
-    internal interface ILogic
+    public interface ILogic
     {
         void Execute();
     }

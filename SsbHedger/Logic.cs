@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SsbHedger
 {
-    internal class Logic : ILogic
+    public class Logic : ILogic
     {
         public void Execute()
         {

@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SsbOrderSender", "SsbOrderS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SsbHedger", "SsbHedger\SsbHedger.csproj", "{BD85ADDB-76AE-4AB2-8B3E-2CA291159BA1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SsbHedger.UnitTests", "SsbHedger.UnitTests\SsbHedger.UnitTests.csproj", "{E67DDEE3-AC4F-460B-A177-2A849AE47049}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,10 @@ Global
 		{BD85ADDB-76AE-4AB2-8B3E-2CA291159BA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD85ADDB-76AE-4AB2-8B3E-2CA291159BA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD85ADDB-76AE-4AB2-8B3E-2CA291159BA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E67DDEE3-AC4F-460B-A177-2A849AE47049}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E67DDEE3-AC4F-460B-A177-2A849AE47049}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E67DDEE3-AC4F-460B-A177-2A849AE47049}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E67DDEE3-AC4F-460B-A177-2A849AE47049}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
