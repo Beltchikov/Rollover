@@ -26,12 +26,54 @@ namespace SsbHedger
             _ibClient.TickSize += _ibClient_TickSize;
             _ibClient.TickString += _ibClient_TickString;
             _ibClient.TickOptionCommunication += _ibClient_TickOptionCommunication;
+            _ibClient.OpenOrder += _ibClient_OpenOrder;
+            _ibClient.OpenOrderEnd += _ibClient_OpenOrderEnd;
+            _ibClient.OrderStatus += _ibClient_OrderStatus;
 
 
             _ibClient.ConnectAndStartReaderThread(
                        "localhost",
                        4001,
                        1);
+
+            //private void btPlaceOrder_Click(object sender, EventArgs e)
+            //{
+            //    Contract contract = new Contract
+            //    {
+            //        Exchange = string.IsNullOrWhiteSpace(txtExchangeBasicOrder.Text)
+            //            ? null
+            //            : txtExchangeBasicOrder.Text,
+            //        ConId = string.IsNullOrWhiteSpace(txtConIdBasicOrder.Text)
+            //            ? 0
+            //            : Convert.ToInt32(txtConIdBasicOrder.Text)
+            //    };
+
+            //    Order order = new Order
+            //    {
+            //        Action = txtActionBasicOrder.Text,
+            //        OrderType = "LMT",
+            //        TotalQuantity = Convert.ToInt32(txtQuantityBasicOrder.Text),
+            //        LmtPrice = Double.Parse(txtLimitPriceBasicOrder.Text)
+            //    };
+
+            //    ibClient.ClientSocket.placeOrder(_nextOrderId, contract, order);
+            //    ibClient.ClientSocket.reqIds(-1);
+            //}
+        }
+
+        private void _ibClient_OrderStatus(IbClient.messages.OrderStatusMessage obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void _ibClient_OpenOrderEnd()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void _ibClient_OpenOrder(IbClient.messages.OpenOrderMessage obj)
+        {
+            throw new NotImplementedException();
         }
 
         private void _ibClient_TickOptionCommunication(IbClient.messages.TickOptionMessage obj)

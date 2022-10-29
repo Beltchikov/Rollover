@@ -16,6 +16,9 @@ namespace SsbHedger.UnitTests
         [InlineData("TickSize")]
         [InlineData("TickString")]
         [InlineData("TickOptionCommunication")]
+        [InlineData("OpenOrder")]
+        [InlineData("OpenOrderEnd")]
+        [InlineData("OrderStatus")]
         public void AttachEventHandlers(string eventName)
         {
             var ibClient = IBClient.CreateClient();
