@@ -15,13 +15,11 @@ namespace PrototypeWpf
     public partial class MainWindow : Window
     {
         private IBClient _ibClient;
-        private EReaderMonitorSignal _signal;
         private int _nextOrderId;
         private int _requestId;
 
         public MainWindow()
         {
-            _signal = IBClient.CreateSignal();
             _ibClient = IBClient.CreateClient();
 
             _ibClient.NextValidId += _ibClient_NextValidId;

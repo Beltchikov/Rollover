@@ -24,7 +24,7 @@ namespace IbClient
         private static readonly object signalLock = new object();
         private static readonly object clientLock = new object();
 
-        public static EReaderMonitorSignal CreateSignal()
+        private static EReaderMonitorSignal CreateSignal()
         {
             lock (signalLock)
             {
@@ -38,7 +38,10 @@ namespace IbClient
 
         public static IBClient CreateClient()
         {
-            if(eReaderSignal == null)
+            CreateSignal();
+
+
+            if (eReaderSignal == null)
             {
                 throw new InvalidOperationException("IBClient.CreateSignal() must be called first!");
             }

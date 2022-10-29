@@ -11,7 +11,6 @@ namespace SsbOrderSender
 
         public void Run()
         {
-            IBClient.CreateSignal();
             _ibClient = IBClient.CreateClient();
 
             _ibClient.Error -= _ibClient_Error;
