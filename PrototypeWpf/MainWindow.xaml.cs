@@ -14,7 +14,7 @@ namespace PrototypeWpf
     /// </summary>
     public partial class MainWindow : Window
     {
-        private IBClient _ibClient;
+        private IIBClient _ibClient;
         private int _nextOrderId;
         private int _requestId;
 

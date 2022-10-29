@@ -7,7 +7,7 @@ namespace SsbOrderSender
         const string HOST = "localhost";
         const int PORT = 4001;
         const int CLIENT_ID = 1;
-        IBClient _ibClient = null!;
+        IIBClient _ibClient = null!;
 
         public void Run()
         {

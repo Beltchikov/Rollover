@@ -11,13 +11,13 @@ using IbClient.messages;
 
 namespace IbClient
 {
-    public class IBClient : EWrapper
+    public class IBClient : EWrapper, IIBClient
     {
         private EClientSocket clientSocket;
         private int nextOrderId;
         private int clientId;
         SynchronizationContext sc;
-        
+
         private static EReaderSignal eReaderSignal;
         private static IBClient ibClient;
 
@@ -36,7 +36,7 @@ namespace IbClient
             }
         }
 
-        public static IBClient CreateClient()
+        public static IIBClient CreateClient()
         {
             CreateSignal();
 
@@ -45,7 +45,7 @@ namespace IbClient
             {
                 throw new InvalidOperationException("IBClient.CreateSignal() must be called first!");
             }
-            
+
             lock (clientLock)
             {
                 if (ibClient == null)
