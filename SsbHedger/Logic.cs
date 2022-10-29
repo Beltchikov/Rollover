@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IbClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,19 @@ namespace SsbHedger
 {
     public class Logic : ILogic
     {
+        IIBClient _ibClient;
+
+        public Logic(IIBClient ibClient)
+        {
+            _ibClient = ibClient;
+        }
+
         public void Execute()
         {
-            throw new NotImplementedException();
+           _ibClient.ConnectAndStartReaderThread(
+                       "localhost",
+                       4001,
+                       1);
         }
     }
 }

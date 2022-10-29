@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IbClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,7 +27,7 @@ namespace SsbHedger
         {
             InitializeComponent();
 
-            _logic = new Logic();
+            _logic = new Logic(IBClient.CreateClient());
             _logic.Execute();
         }
     }

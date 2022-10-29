@@ -1,11 +1,22 @@
+using AutoFixture.Xunit2;
+using IbClient;
+using NSubstitute;
+
 namespace SsbHedger.UnitTests
 {
     public class LogicShould
     {
-        [Fact]
-        public void CallIbClientConnectAndStartReaderThread()
+        [Theory, AutoNSubstituteData]
+        public void CallIbClientConnectAndStartReaderThread(
+            [Frozen] IIBClient ibClient,
+            Logic sut)
         {
-            throw new NotImplementedException();
+            sut.Execute();
+            ibClient.Received().ConnectAndStartReaderThread(
+                Arg.Any<string>(),
+                Arg.Any<int>(),
+                Arg.Any<int>());
         }
+
     }
 }
