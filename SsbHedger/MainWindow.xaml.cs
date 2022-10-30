@@ -27,7 +27,9 @@ namespace SsbHedger
         {
             InitializeComponent();
 
-            _logic = new Logic(IBClient.CreateClient());
+            _logic = new Logic(
+                IBClient.CreateClient(),
+                new ResponseLoop());
             _logic.Execute();
         }
     }

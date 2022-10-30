@@ -23,8 +23,12 @@ namespace SsbHedger.UnitTests
         public void AttachEventHandlers(string eventName)
         {
             var ibClient = IBClient.CreateClient();
-            var sut = new Logic(ibClient);
+            var responseLoop = Substitute.For<IResponseLoop>();
+            responseLoop.When(l => l.Start()).Do(x => { });
+            var sut = new Logic(ibClient, responseLoop);
+            
             sut.Execute();
+            
             VerifyDelegateAttachedTo(ibClient, eventName);
         }
 
@@ -55,23 +59,14 @@ namespace SsbHedger.UnitTests
         }
 
 
-        //[Theory, AutoNSubstituteData]
-        //public void CallResponseQueueOnNextValidId(
-        //   ConnectionStatusMessage connectionStatusMessage,
-        //   [Frozen] IIBClient ibClient,
-        //   Logic sut)
-        //{
-        //    var wasCalled = false;
-        //    ibClient.NextValidId += (m) =>
-        //    {
-        //        wasCalled = true;
-        //    };
-
-        //    ibClient.NextValidId += Raise.Event<Action<ConnectionStatusMessage>>(
-        //        connectionStatusMessage);
-        //    Assert.True(wasCalled);
-
-        //}
+        [Theory, AutoNSubstituteData]
+        public void CallResponseLoopStart(
+           [Frozen] IResponseLoop responseLoop,
+           Logic sut)
+        {
+            sut.Execute();
+            responseLoop.Received().Start();
+        }
 
         private void VerifyDelegateAttachedTo(object objectWithEvent, string eventName)
         {

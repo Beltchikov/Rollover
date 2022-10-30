@@ -11,10 +11,12 @@ namespace SsbHedger
     public class Logic : ILogic
     {
         IIBClient _ibClient;
+        IResponseLoop _responseLoop;
 
-        public Logic(IIBClient ibClient)
+        public Logic(IIBClient ibClient, IResponseLoop responseLoop)
         {
             _ibClient = ibClient;
+            _responseLoop = responseLoop;
         }
 
         public void Execute()
@@ -36,6 +38,8 @@ namespace SsbHedger
                        "localhost",
                        4001,
                        1);
+
+            _responseLoop.Start();
 
             //private void btPlaceOrder_Click(object sender, EventArgs e)
             //{
