@@ -1,5 +1,5 @@
 @startuml
-title ConnectAndStartReaderThread
+title Connect and Start Reader Thread
 
 participant Logic as l
 participant IbClient as ib

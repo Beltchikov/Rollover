@@ -3,6 +3,7 @@ title Process Responses
 
 participant Logic as l
 participant ResponseLoop as rl
+participant StrategyBuilder as sb
 participant ResponseStrategy as rs
 participant ResponseMapper as rm
 participant ReaderThreadQueue as rtq
@@ -14,7 +15,8 @@ rl <- rtq: Dequeue
 rl -> rm : AddResponse(reqId)
 rl <- rm : GetCompletedResponses
 loop foreach response
-    rl -> rs: new
+    rl -> sb : Create(response)
+    sb -> rs : new
     activate rs
     rl -> rs: Execute
 end
