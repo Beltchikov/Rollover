@@ -64,57 +64,57 @@ namespace SsbHedger
 
         private void _ibClient_OrderStatus(IbClient.messages.OrderStatusMessage obj)
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         private void _ibClient_OpenOrderEnd()
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         private void _ibClient_OpenOrder(IbClient.messages.OpenOrderMessage obj)
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         private void _ibClient_TickOptionCommunication(IbClient.messages.TickOptionMessage obj)
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         private void _ibClient_TickString(int arg1, int arg2, string arg3)
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         private void _ibClient_TickSize(IbClient.messages.TickSizeMessage obj)
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         private void _ibClient_TickPrice(IbClient.messages.TickPriceMessage obj)
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         private void _ibClient_ContractDetails(IbClient.messages.ContractDetailsMessage obj)
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         private void _ibClient_ManagedAccounts(IbClient.messages.ManagedAccountsMessage obj)
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         private void _ibClient_Error(int arg1, int arg2, string arg3, Exception arg4)
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         private void _ibClient_NextValidId(ConnectionStatusMessage obj)
         {
-            throw new NotImplementedException();
+            // TODO
         }
     }
 }
