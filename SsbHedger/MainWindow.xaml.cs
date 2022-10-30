@@ -29,7 +29,9 @@ namespace SsbHedger
 
             _logic = new Logic(
                 IBClient.CreateClient(),
-                new ResponseLoop());
+                new ResponseLoop(
+                    () => { }, 
+                    () => Console.ReadKey().KeyChar.ToString().ToUpper() == "Q"));
             _logic.Execute();
         }
     }

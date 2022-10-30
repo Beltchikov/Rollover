@@ -8,9 +8,21 @@ namespace SsbHedger
 {
     public class ResponseLoop : IResponseLoop
     {
+        Action _action;
+        Func<bool> _breakCondition;
+
+        public ResponseLoop(Action action, Func<bool> breakCondition)
+        {
+            _breakCondition = breakCondition;
+            _action = action;
+        }
+
         public void Start()
         {
-            throw new NotImplementedException();
+            while(!_breakCondition())
+            { 
+                _action(); 
+            }
         }
     }
 }
