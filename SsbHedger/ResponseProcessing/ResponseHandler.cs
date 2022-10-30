@@ -1,17 +1,20 @@
 ﻿using IbClient.messages;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SsbHedger
+namespace SsbHedger.ResponseProcessing
 {
     public class ResponseHandler : IResponseHandler
     {
-        public void OnError(int refId, int code, string message, Exception exception)
+        IReaderThreadQueue _queue;
+
+        public ResponseHandler(IReaderThreadQueue queue)
         {
-            throw new NotImplementedException();
+            _queue = queue;
+        }
+
+        public void OnError(int reqId, int code, string message, Exception exception)
+        {
+            _queue.Enqueue(new ErrorMessage(reqId, code, message, exception));
         }
 
         public void OnManagedAccounts(ManagedAccountsMessage managedAccountsMessage)

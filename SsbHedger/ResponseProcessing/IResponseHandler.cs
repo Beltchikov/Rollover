@@ -1,7 +1,7 @@
 ﻿using IbClient.messages;
 using System;
 
-namespace SsbHedger
+namespace SsbHedger.ResponseProcessing
 {
     public interface IResponseHandler
     {

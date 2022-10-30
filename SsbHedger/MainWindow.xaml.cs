@@ -1,5 +1,7 @@
 ﻿using IbClient;
+using SsbHedger.ResponseProcessing;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,7 +34,7 @@ namespace SsbHedger
                 new ResponseLoop(
                     () => { }, 
                     () => Console.ReadKey().KeyChar.ToString().ToUpper() == "Q"),
-                new ResponseHandler());
+                new ResponseHandler(new ReaderThreadQueue()));
             _logic.Execute();
         }
     }

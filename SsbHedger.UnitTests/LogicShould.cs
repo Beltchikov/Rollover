@@ -2,6 +2,7 @@ using AutoFixture.Xunit2;
 using IbClient;
 using IbClient.messages;
 using NSubstitute;
+using SsbHedger.ResponseProcessing;
 using System.Reflection;
 
 namespace SsbHedger.UnitTests
@@ -15,11 +16,6 @@ namespace SsbHedger.UnitTests
         [InlineData("OpenOrder")]
         [InlineData("OpenOrderEnd")]
         [InlineData("OrderStatus")]
-        //[InlineData("ContractDetails")]
-        //[InlineData("TickPrice")]
-        //[InlineData("TickSize")]
-        //[InlineData("TickString")]
-        //[InlineData("TickOptionCommunication")]
         public void AttachEventHandlers(string eventName)
         {
             var ibClient = IBClient.CreateClient();
