@@ -1,0 +1,22 @@
+@startuml
+title Process Responses
+
+participant Logic as l
+participant ResponseLoop as rl
+participant ResponseStrategy as rs
+participant ResponseMapper as rm
+participant ReaderThreadQueue as rtq
+participant ReaderThread as rt
+
+rt -> l: Response
+l -> rtq: Enqueue
+rl <- rtq: Dequeue
+rl -> rm : AddResponse(reqId)
+rl <- rm : GetCompletedResponses
+loop foreach response
+    rl -> rs: new
+    activate rs
+    rl -> rs: Execute
+end
+rl -> rl: CheckExitKey
+@enduml

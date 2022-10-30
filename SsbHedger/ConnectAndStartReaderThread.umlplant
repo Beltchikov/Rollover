@@ -1,0 +1,11 @@
+@startuml
+title ConnectAndStartReaderThread
+
+participant Logic as l
+participant IbClient as ib
+participant ResponseLoop as rl
+
+l -> ib: ConnectAndStartReaderThread
+l -> rl: Start
+
+@enduml
