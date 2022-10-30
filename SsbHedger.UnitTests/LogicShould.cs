@@ -54,6 +54,7 @@ namespace SsbHedger.UnitTests
             Assert.True(wasCalled);
         }
 
+
         //[Theory, AutoNSubstituteData]
         //public void CallResponseQueueOnNextValidId(
         //   ConnectionStatusMessage connectionStatusMessage,
