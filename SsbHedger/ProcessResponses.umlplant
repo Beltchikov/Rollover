@@ -1,16 +1,17 @@
 @startuml
 title Process Responses
 
-participant Logic as l
+participant ResponceHandler as rh
 participant ResponseLoop as rl
 participant StrategyBuilder as sb
 participant ResponseStrategy as rs
+participant DispatcherWrapper as dw
 participant ResponseMapper as rm
 participant ReaderThreadQueue as rtq
 participant ReaderThread as rt
 
-rt -> l: Response
-l -> rtq: Enqueue
+rt -> rh: Response
+rh -> rtq: Enqueue
 rl <- rtq: Dequeue
 rl -> rm : AddResponse(reqId)
 rl <- rm : GetCompletedResponses
@@ -19,6 +20,7 @@ loop foreach response
     sb -> rs : new
     activate rs
     rl -> rs: Execute
+    rs -> dr: Invoke
 end
 rl -> rl: CheckExitKey
 @enduml

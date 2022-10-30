@@ -12,26 +12,32 @@ namespace SsbHedger
     {
         IIBClient _ibClient;
         IResponseLoop _responseLoop;
+        IResponseHandler _responseHandler;
 
-        public Logic(IIBClient ibClient, IResponseLoop responseLoop)
+        public Logic(
+            IIBClient ibClient,
+            IResponseLoop responseLoop,
+            IResponseHandler responseHandler)
         {
             _ibClient = ibClient;
             _responseLoop = responseLoop;
+            _responseHandler = responseHandler;
         }
 
         public void Execute()
         {
-            _ibClient.NextValidId += _ibClient_NextValidId;
-            _ibClient.Error += _ibClient_Error;
-            _ibClient.ManagedAccounts += _ibClient_ManagedAccounts;
-            _ibClient.ContractDetails += _ibClient_ContractDetails;
-            _ibClient.TickPrice += _ibClient_TickPrice;
-            _ibClient.TickSize += _ibClient_TickSize;
-            _ibClient.TickString += _ibClient_TickString;
-            _ibClient.TickOptionCommunication += _ibClient_TickOptionCommunication;
-            _ibClient.OpenOrder += _ibClient_OpenOrder;
-            _ibClient.OpenOrderEnd += _ibClient_OpenOrderEnd;
-            _ibClient.OrderStatus += _ibClient_OrderStatus;
+            _ibClient.NextValidId += _responseHandler.OnNextValidId;
+            _ibClient.Error += _responseHandler.OnError;
+            _ibClient.ManagedAccounts += _responseHandler.OnManagedAccounts;
+            _ibClient.OpenOrder += _responseHandler.OnOpenOrder;
+            _ibClient.OpenOrderEnd += _responseHandler.OnOpenOrderEnd;
+            _ibClient.OrderStatus += _responseHandler.OnOrderStatus;
+            //_ibClient.ContractDetails += _ibClient_ContractDetails;
+            //_ibClient.TickPrice += _ibClient_TickPrice;
+            //_ibClient.TickSize += _ibClient_TickSize;
+            //_ibClient.TickString += _ibClient_TickString;
+            //_ibClient.TickOptionCommunication += _ibClient_TickOptionCommunication;
+
 
 
             _ibClient.ConnectAndStartReaderThread(
@@ -113,12 +119,8 @@ namespace SsbHedger
 
         private void _ibClient_Error(int arg1, int arg2, string arg3, Exception arg4)
         {
-            // TODO
+            
         }
 
-        private void _ibClient_NextValidId(ConnectionStatusMessage obj)
-        {
-            // TODO
-        }
     }
 }

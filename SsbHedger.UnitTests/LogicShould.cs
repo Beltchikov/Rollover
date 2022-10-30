@@ -12,20 +12,21 @@ namespace SsbHedger.UnitTests
         [InlineData("NextValidId")]
         [InlineData("Error")]
         [InlineData("ManagedAccounts")]
-        [InlineData("ContractDetails")]
-        [InlineData("TickPrice")]
-        [InlineData("TickSize")]
-        [InlineData("TickString")]
-        [InlineData("TickOptionCommunication")]
         [InlineData("OpenOrder")]
         [InlineData("OpenOrderEnd")]
         [InlineData("OrderStatus")]
+        //[InlineData("ContractDetails")]
+        //[InlineData("TickPrice")]
+        //[InlineData("TickSize")]
+        //[InlineData("TickString")]
+        //[InlineData("TickOptionCommunication")]
         public void AttachEventHandlers(string eventName)
         {
             var ibClient = IBClient.CreateClient();
             var responseLoop = Substitute.For<IResponseLoop>();
+            var responseHandler= Substitute.For<IResponseHandler>();
             responseLoop.When(l => l.Start()).Do(x => { });
-            var sut = new Logic(ibClient, responseLoop);
+            var sut = new Logic(ibClient, responseLoop, responseHandler);
             
             sut.Execute();
             
