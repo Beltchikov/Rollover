@@ -33,6 +33,7 @@ namespace SsbHedger
             var readerQueue = new ReaderThreadQueue();
             _logic = new Logic(
                 IBClient.CreateClient(),
+                new ConsoleWrapper(),
                 new ResponseLoop(),
                 new ResponseHandler(readerQueue));
             _logic.Execute();

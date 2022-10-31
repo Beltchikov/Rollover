@@ -19,10 +19,15 @@ namespace SsbHedger.UnitTests
         public void AttachEventHandlers(string eventName)
         {
             var ibClient = IBClient.CreateClient();
+            var consoleWrapper = Substitute.For<IConsoleWrapper>();
             var responseLoop = Substitute.For<IResponseLoop>();
             var responseHandler= Substitute.For<IResponseHandler>();
             responseLoop.When(l => l.Start()).Do(x => { });
-            var sut = new Logic(ibClient, responseLoop, responseHandler);
+            var sut = new Logic(
+                ibClient,
+                consoleWrapper,
+                responseLoop,
+                responseHandler);
             
             sut.Execute();
             
@@ -63,6 +68,29 @@ namespace SsbHedger.UnitTests
         {
             sut.Execute();
             responseLoop.Received().Start();
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallDequeue(
+            IIBClient ibClient,
+            IConsoleWrapper console,
+            IReaderThreadQueue readerQueueMock)
+        {
+            var responseHeandler = new ResponseHandler(readerQueueMock);
+            var responseLoop = new ResponseLoop();
+            console.ReadKey().Returns(
+                new ConsoleKeyInfo('a', ConsoleKey.A, false, false, false),
+                new ConsoleKeyInfo('q', ConsoleKey.Q, false, false, false)
+                );
+
+            var sut = new Logic(
+                ibClient,
+                console,
+                responseLoop,
+                responseHeandler);
+
+            sut.Execute();
+            readerQueueMock.Received().Dequeue();
         }
 
         private void VerifyDelegateAttachedTo(object objectWithEvent, string eventName)
