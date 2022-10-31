@@ -14,12 +14,12 @@ namespace SsbHedger.ResponseProcessing
 
         public void OnError(int reqId, int code, string message, Exception exception)
         {
-            _queue.Enqueue(new ErrorMessage(reqId, code, message, exception));
+            _queue.Enqueue(new ErrorInfo(reqId, code, message, exception));
         }
 
         public void OnManagedAccounts(ManagedAccountsMessage managedAccountsMessage)
         {
-            throw new NotImplementedException();
+            _queue.Enqueue(managedAccountsMessage);
         }
 
         public void OnNextValidId(ConnectionStatusMessage connectionStatusMessage)

@@ -1,4 +1,5 @@
 ﻿using AutoFixture.Xunit2;
+using IbClient.messages;
 using NSubstitute;
 using SsbHedger.ResponseProcessing;
 
@@ -15,10 +16,24 @@ namespace SsbHedger.UnitTests
         {
             sut.OnError(reqId, code, message, exception);
             queue.Received().Enqueue(Arg.Is<object>(a => 
-                a.GetType() == typeof(ErrorMessage)
-                && ((ErrorMessage)a).ReqId == reqId
-                && ((ErrorMessage)a).Code == code
-                && ((ErrorMessage)a).Message == message
+                a.GetType() == typeof(ErrorInfo)
+                && ((ErrorInfo)a).ReqId == reqId
+                && ((ErrorInfo)a).Code == code
+                && ((ErrorInfo)a).Message == message
+            ));
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallEnqueueOnManagedAccounts(
+            ManagedAccountsMessage managedAccountsMessage,
+            [Frozen] IReaderThreadQueue queue,
+            ResponseHandler sut)
+        {
+            sut.OnManagedAccounts(managedAccountsMessage);
+            queue.Received().Enqueue(Arg.Is<object>(a =>
+                a.GetType() == typeof(ManagedAccountsMessage)
+                && ((ManagedAccountsMessage)a).ManagedAccounts.Count() 
+                    == managedAccountsMessage.ManagedAccounts.Count()
             ));
         }
     }

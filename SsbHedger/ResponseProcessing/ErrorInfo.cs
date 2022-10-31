@@ -2,7 +2,7 @@
 
 namespace SsbHedger.ResponseProcessing
 {
-    public record ErrorMessage(
+    public record ErrorInfo(
         int ReqId,
         int Code,
         string Message,
