@@ -36,5 +36,19 @@ namespace SsbHedger.UnitTests
                     == managedAccountsMessage.ManagedAccounts.Count()
             ));
         }
+
+        [Theory, AutoNSubstituteData]
+        public void CallEnqueueOnNextValidId(
+            ConnectionStatusMessage connectionStatusMessage,
+            [Frozen] IReaderThreadQueue queue,
+            ResponseHandler sut)
+        {
+            sut.OnNextValidId(connectionStatusMessage);
+            queue.Received().Enqueue(Arg.Is<object>(a =>
+                a.GetType() == typeof(ConnectionStatusMessage)
+                && ((ConnectionStatusMessage)a).IsConnected
+                    == connectionStatusMessage.IsConnected
+            ));
+        }
     }
 }

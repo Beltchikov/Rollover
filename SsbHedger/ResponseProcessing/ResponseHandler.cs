@@ -24,7 +24,7 @@ namespace SsbHedger.ResponseProcessing
 
         public void OnNextValidId(ConnectionStatusMessage connectionStatusMessage)
         {
-            throw new NotImplementedException();
+            _queue.Enqueue(connectionStatusMessage);
         }
 
         public void OnOpenOrder(OpenOrderMessage obj)
