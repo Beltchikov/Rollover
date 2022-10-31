@@ -5,6 +5,7 @@ namespace SsbHedger.ResponseProcessing
 {
     public class ResponseHandler : IResponseHandler
     {
+        private readonly object OPEN_ORDER_END = "OpenOrderEnd";
         IReaderThreadQueue _queue;
 
         public ResponseHandler(IReaderThreadQueue queue)
@@ -34,12 +35,12 @@ namespace SsbHedger.ResponseProcessing
 
         public void OnOpenOrderEnd()
         {
-            throw new NotImplementedException();
+            _queue.Enqueue(OPEN_ORDER_END);
         }
 
-        public void OnOrderStatus(OrderStatusMessage obj)
+        public void OnOrderStatus(OrderStatusMessage orderStatusMessage)
         {
-            throw new NotImplementedException();
+            _queue.Enqueue(orderStatusMessage);
         }
     }
 }

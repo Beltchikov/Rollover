@@ -68,5 +68,31 @@ namespace SsbHedger.UnitTests
                     == openOrderMessage.OrderState
             ));
         }
+
+        [Theory, AutoNSubstituteData]
+        public void CallEnqueueOnOpenOrderEnd(
+            [Frozen] IReaderThreadQueue queue,
+            ResponseHandler sut)
+        {
+            sut.OnOpenOrderEnd();
+            queue.Received().Enqueue(Arg.Is<object>(a =>
+                a.GetType() == typeof(string)
+                && ((string)a) == "OpenOrderEnd"
+            ));
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallOnOrderStatus(
+            OrderStatusMessage orderStatusMessage,
+            [Frozen] IReaderThreadQueue queue,
+            ResponseHandler sut)
+        {
+            sut.OnOrderStatus(orderStatusMessage);
+            queue.Received().Enqueue(Arg.Is<object>(a =>
+                a.GetType() == typeof(OrderStatusMessage)
+                && ((OrderStatusMessage)a).Status
+                    == orderStatusMessage.Status
+            ));
+        }
     }
 }
