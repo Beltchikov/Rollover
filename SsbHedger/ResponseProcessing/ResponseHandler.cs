@@ -27,9 +27,9 @@ namespace SsbHedger.ResponseProcessing
             _queue.Enqueue(connectionStatusMessage);
         }
 
-        public void OnOpenOrder(OpenOrderMessage obj)
+        public void OnOpenOrder(OpenOrderMessage openOrderMessage)
         {
-            throw new NotImplementedException();
+            _queue.Enqueue(openOrderMessage);
         }
 
         public void OnOpenOrderEnd()

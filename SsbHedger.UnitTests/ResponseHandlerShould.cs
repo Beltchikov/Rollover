@@ -50,5 +50,23 @@ namespace SsbHedger.UnitTests
                     == connectionStatusMessage.IsConnected
             ));
         }
+
+        [Theory, AutoNSubstituteData]
+        public void CallEnqueueOnOpenOrder(
+            OpenOrderMessage openOrderMessage,
+            [Frozen] IReaderThreadQueue queue,
+            ResponseHandler sut)
+        {
+            sut.OnOpenOrder(openOrderMessage);
+            queue.Received().Enqueue(Arg.Is<object>(a =>
+                a.GetType() == typeof(OpenOrderMessage)
+                && ((OpenOrderMessage)a).Contract.ConId
+                    == openOrderMessage.Contract.ConId
+                && ((OpenOrderMessage)a).Order.OrderId
+                    == openOrderMessage.Order.OrderId
+                && ((OpenOrderMessage)a).OrderState
+                    == openOrderMessage.OrderState
+            ));
+        }
     }
 }
