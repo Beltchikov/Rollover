@@ -5,6 +5,7 @@ namespace SsbHedger.ResponseProcessing
 {
     public interface IResponseHandler
     {
+        IReaderThreadQueue ReaderQueue { get; }
         void OnNextValidId(ConnectionStatusMessage connectionStatusMessage);
         void OnError(int refId, int code, string message, Exception exception);
         void OnManagedAccounts(ManagedAccountsMessage managedAccountsMessage);

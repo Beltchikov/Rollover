@@ -13,6 +13,8 @@ namespace SsbHedger.ResponseProcessing
             _queue = queue;
         }
 
+        public IReaderThreadQueue ReaderQueue => _queue;
+
         public void OnError(int reqId, int code, string message, Exception exception)
         {
             _queue.Enqueue(new ErrorInfo(reqId, code, message, exception));

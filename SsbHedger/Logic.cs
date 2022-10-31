@@ -16,10 +16,12 @@ namespace SsbHedger
             IResponseHandler responseHandler)
         {
             _ibClient = ibClient;
+
             _responseLoop = responseLoop;
-            _responseLoop.BreakCondition = 
+            _responseLoop.BreakCondition =
                 () => Console.ReadKey().KeyChar.ToString().ToUpper() == "Q";
             _responseLoop.Actions = () => { };
+
             _responseHandler = responseHandler;
         }
 

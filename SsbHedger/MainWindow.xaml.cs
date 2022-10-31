@@ -29,13 +29,12 @@ namespace SsbHedger
         {
             InitializeComponent();
 
+
+            var readerQueue = new ReaderThreadQueue();
             _logic = new Logic(
                 IBClient.CreateClient(),
-                //new ResponseLoop(
-                //    () => { }, 
-                //    () => Console.ReadKey().KeyChar.ToString().ToUpper() == "Q"),
                 new ResponseLoop(),
-                new ResponseHandler(new ReaderThreadQueue()));
+                new ResponseHandler(readerQueue));
             _logic.Execute();
         }
     }
