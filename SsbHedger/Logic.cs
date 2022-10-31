@@ -1,5 +1,6 @@
 ﻿using IbClient;
 using SsbHedger.ResponseProcessing;
+using System;
 
 namespace SsbHedger
 {
@@ -16,6 +17,9 @@ namespace SsbHedger
         {
             _ibClient = ibClient;
             _responseLoop = responseLoop;
+            _responseLoop.BreakCondition = 
+                () => Console.ReadKey().KeyChar.ToString().ToUpper() == "Q";
+            _responseLoop.Actions = () => { };
             _responseHandler = responseHandler;
         }
 

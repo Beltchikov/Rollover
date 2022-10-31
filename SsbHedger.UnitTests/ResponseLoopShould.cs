@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SsbHedger.UnitTests
+﻿namespace SsbHedger.UnitTests
 {
     public class ResponseLoopShould
     {
@@ -14,10 +8,10 @@ namespace SsbHedger.UnitTests
             var counter = 1;
             var millisecondsToRun = 10;
             var startTime = DateTime.Now;
-            var sut = new ResponseLoop(
-                () => counter++,
-                () => (DateTime.Now - startTime).Milliseconds > millisecondsToRun
-            );
+            
+            var sut = new ResponseLoop();
+            sut.BreakCondition = () => (DateTime.Now - startTime).Milliseconds > millisecondsToRun;
+            sut.Actions = () => counter++;
 
             sut.Start();
             var endTime = DateTime.Now;
