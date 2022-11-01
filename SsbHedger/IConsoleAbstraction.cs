@@ -2,7 +2,7 @@
 
 namespace SsbHedger
 {
-    public interface IConsoleWrapper
+    public interface IConsoleAbstraction
     {
         ConsoleKeyInfo ReadKey();
     }

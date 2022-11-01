@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SsbHedger
 {
-    public class ConsoleWrapper : IConsoleWrapper
+    public class ConsoleAbstraction : IConsoleAbstraction
     {
         public ConsoleKeyInfo ReadKey()
         {

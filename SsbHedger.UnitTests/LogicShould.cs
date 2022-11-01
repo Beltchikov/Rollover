@@ -19,7 +19,7 @@ namespace SsbHedger.UnitTests
         public void AttachEventHandlers(string eventName)
         {
             var ibClient = IBClient.CreateClient();
-            var consoleWrapper = Substitute.For<IConsoleWrapper>();
+            var consoleWrapper = Substitute.For<IConsoleAbstraction>();
             var responseLoop = Substitute.For<IResponseLoop>();
             var responseHandler= Substitute.For<IResponseHandler>();
             responseLoop.When(l => l.Start()).Do(x => { });
@@ -73,7 +73,7 @@ namespace SsbHedger.UnitTests
         [Theory, AutoNSubstituteData]
         public void CallDequeue(
             IIBClient ibClient,
-            IConsoleWrapper console,
+            IConsoleAbstraction console,
             IReaderThreadQueue readerQueueMock)
         {
             var responseHeandler = new ResponseHandler(readerQueueMock);

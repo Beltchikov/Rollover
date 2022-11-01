@@ -8,11 +8,11 @@ namespace SsbHedger
         IIBClient _ibClient;
         IResponseLoop _responseLoop;
         IResponseHandler _responseHandler;
-        IConsoleWrapper _consoleWrapper;
+        IConsoleAbstraction _consoleWrapper;
 
         public Logic(
             IIBClient ibClient,
-            IConsoleWrapper consoleWrapper,
+            IConsoleAbstraction consoleWrapper,
             IResponseLoop responseLoop,
             IResponseHandler responseHandler
             )
