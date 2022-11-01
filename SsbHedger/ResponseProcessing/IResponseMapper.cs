@@ -2,6 +2,6 @@
 {
     public interface IResponseMapper
     {
-        void AddResponse(object v);
+        void AddResponse(object message);
     }
 }
