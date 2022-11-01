@@ -9,13 +9,14 @@ namespace SsbHedger
         IResponseLoop _responseLoop;
         IResponseHandler _responseHandler;
         IConsoleAbstraction _consoleWrapper;
+        IResponseMapper _responseMapper;
 
         public Logic(
             IIBClient ibClient,
             IConsoleAbstraction consoleWrapper,
             IResponseLoop responseLoop,
-            IResponseHandler responseHandler
-            )
+            IResponseHandler responseHandler,
+            IResponseMapper responseMapper)
         {
             _ibClient = ibClient;
             _consoleWrapper = consoleWrapper;
@@ -26,9 +27,11 @@ namespace SsbHedger
             _responseLoop.Actions = () =>
             {
                 var message = responseHandler.ReaderQueue.Dequeue();
+                responseMapper.AddResponse(message);
             };
 
             _responseHandler = responseHandler;
+            _responseMapper = responseMapper;
         }
 
         public void Execute()

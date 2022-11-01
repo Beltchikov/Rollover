@@ -35,7 +35,8 @@ namespace SsbHedger
                 IBClient.CreateClient(),
                 new ConsoleAbstraction(),
                 new ResponseLoop(),
-                new ResponseHandler(readerQueue));
+                new ResponseHandler(readerQueue),
+                new ResponseMapper());
             _logic.Execute();
         }
     }

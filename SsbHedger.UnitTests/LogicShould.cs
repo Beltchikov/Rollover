@@ -21,16 +21,18 @@ namespace SsbHedger.UnitTests
             var ibClient = IBClient.CreateClient();
             var consoleWrapper = Substitute.For<IConsoleAbstraction>();
             var responseLoop = Substitute.For<IResponseLoop>();
-            var responseHandler= Substitute.For<IResponseHandler>();
+            var responseHandler = Substitute.For<IResponseHandler>();
+            var responseMapper = Substitute.For<IResponseMapper>();
             responseLoop.When(l => l.Start()).Do(x => { });
             var sut = new Logic(
                 ibClient,
                 consoleWrapper,
                 responseLoop,
-                responseHandler);
-            
+                responseHandler,
+                responseMapper);
+
             sut.Execute();
-            
+
             VerifyDelegateAttachedTo(ibClient, eventName);
         }
 
@@ -52,11 +54,11 @@ namespace SsbHedger.UnitTests
             [Frozen] IIBClient ibClient)
         {
             var wasCalled = false;
-            ibClient.NextValidId += (m) =>wasCalled = true;
+            ibClient.NextValidId += (m) => wasCalled = true;
 
             ibClient.NextValidId += Raise.Event<Action<ConnectionStatusMessage>>(
                 connectionStatusMessage);
-            
+
             Assert.True(wasCalled);
         }
 
@@ -82,15 +84,44 @@ namespace SsbHedger.UnitTests
                 new ConsoleKeyInfo('a', ConsoleKey.A, false, false, false),
                 new ConsoleKeyInfo('q', ConsoleKey.Q, false, false, false)
                 );
+            var responseMapper = Substitute.For<IResponseMapper>();
 
             var sut = new Logic(
                 ibClient,
                 console,
                 responseLoop,
-                responseHeandler);
+                responseHeandler,
+                responseMapper);
 
             sut.Execute();
             readerQueueMock.Received().Dequeue();
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallResponseMapperAddResponse(
+            object message,
+            IIBClient ibClient,
+            IConsoleAbstraction console,
+            IReaderThreadQueue readerQueueMock)
+        {
+            readerQueueMock.Dequeue().Returns(message);
+            var responseHeandler = new ResponseHandler(readerQueueMock);
+            var responseLoop = new ResponseLoop();
+            console.ReadKey().Returns(
+                new ConsoleKeyInfo('a', ConsoleKey.A, false, false, false),
+                new ConsoleKeyInfo('q', ConsoleKey.Q, false, false, false)
+                );
+            var responseMapper = Substitute.For<IResponseMapper>();
+
+            var sut = new Logic(
+                ibClient,
+                console,
+                responseLoop,
+                responseHeandler,
+                responseMapper);
+
+            sut.Execute();
+            responseMapper.Received().AddResponse(message);
         }
 
         private void VerifyDelegateAttachedTo(object objectWithEvent, string eventName)
