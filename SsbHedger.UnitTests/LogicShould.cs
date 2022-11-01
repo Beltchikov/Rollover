@@ -124,6 +124,32 @@ namespace SsbHedger.UnitTests
             responseMapper.Received().AddResponse(message);
         }
 
+        [Theory, AutoNSubstituteData]
+        public void NotCallResponseMapperAddResponseIfNoMessage(
+            IIBClient ibClient,
+            IConsoleAbstraction console,
+            IReaderThreadQueue readerQueueMock)
+        {
+            readerQueueMock.Dequeue().Returns(null);
+            var responseHeandler = new ResponseHandler(readerQueueMock);
+            var responseLoop = new ResponseLoop();
+            console.ReadKey().Returns(
+                new ConsoleKeyInfo('a', ConsoleKey.A, false, false, false),
+                new ConsoleKeyInfo('q', ConsoleKey.Q, false, false, false)
+                );
+            var responseMapper = Substitute.For<IResponseMapper>();
+
+            var sut = new Logic(
+                ibClient,
+                console,
+                responseLoop,
+                responseHeandler,
+                responseMapper);
+
+            sut.Execute();
+            responseMapper.DidNotReceive().AddResponse(Arg.Any<object>());
+        }
+
         private void VerifyDelegateAttachedTo(object objectWithEvent, string eventName)
         {
             var allBindings = BindingFlags.IgnoreCase | BindingFlags.Public |

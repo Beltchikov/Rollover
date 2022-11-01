@@ -27,6 +27,10 @@ namespace SsbHedger
             _responseLoop.Actions = () =>
             {
                 var message = responseHandler.ReaderQueue.Dequeue();
+                if(message == null)
+                {
+                    return;
+                }
                 responseMapper.AddResponse(message);
             };
 
