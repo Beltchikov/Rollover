@@ -6,6 +6,6 @@ namespace SsbHedger.ResponseProcessing
         int ReqId,
         int Code,
         string Message,
-        Exception exception);
+        Exception? exception);
     
 }
