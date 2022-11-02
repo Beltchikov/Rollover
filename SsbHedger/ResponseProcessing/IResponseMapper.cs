@@ -6,5 +6,6 @@ namespace SsbHedger.ResponseProcessing
     {
         void AddResponse(object message);
         List<ReqIdAndResponses> GetGrouppedResponses();
+        int Count { get; }
     }
 }

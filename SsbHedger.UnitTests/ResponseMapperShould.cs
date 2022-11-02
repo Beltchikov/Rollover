@@ -29,6 +29,7 @@ namespace SsbHedger.UnitTests
             List<ReqIdAndResponses> responses = sut.GetGrouppedResponses();
 
             Assert.Equal(count, responses.Count);
+            Assert.Equal(0, sut.Count);
         }
     }
 }

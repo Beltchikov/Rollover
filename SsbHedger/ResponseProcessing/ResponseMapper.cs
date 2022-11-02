@@ -24,7 +24,11 @@ namespace SsbHedger.ResponseProcessing
 
         public List<ReqIdAndResponses> GetGrouppedResponses()
         {
-            return _responses;
+            var responsesCopy = new List<ReqIdAndResponses>(_responses);
+            _responses.Clear();
+            return responsesCopy;
         }
+
+        public int Count => _responses.Count;
     }
 }
