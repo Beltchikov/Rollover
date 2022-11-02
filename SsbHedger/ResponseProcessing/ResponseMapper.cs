@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IbClient.messages;
+using System;
 using System.Collections.Generic;
 
 namespace SsbHedger.ResponseProcessing
@@ -16,9 +17,13 @@ namespace SsbHedger.ResponseProcessing
                     _responses.Add(new ReqIdAndResponses(errorInfo.ReqId, new List<object> { errorInfo }));
                 }
             }
+            else if(message is OpenOrderMessage openOrderMessage)
+            {
+                _responses.Add(new ReqIdAndResponses(openOrderMessage.OrderId, new List<object> { openOrderMessage }));
+            }
             else
             {
-                throw new ArgumentException($"Unknown message type {typeof(ErrorInfo)}");
+                throw new ArgumentException($"Unknown message type {message.GetType()}");
             }
         }
 

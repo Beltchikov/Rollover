@@ -1,4 +1,5 @@
-﻿using SsbHedger.ResponseProcessing;
+﻿using IbClient.messages;
+using SsbHedger.ResponseProcessing;
 
 namespace SsbHedger.UnitTests
 {
@@ -29,6 +30,24 @@ namespace SsbHedger.UnitTests
             List<ReqIdAndResponses> responses = sut.GetGrouppedResponses();
 
             Assert.Equal(count, responses.Count);
+            Assert.Equal(0, sut.Count);
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void NotGroupResponsesWithDifferentRefId(
+            IBApi.Contract contract,
+            IBApi.Order order,
+            IBApi.OrderState orderState,
+            ResponseMapper sut)
+        {
+            var message1 = new OpenOrderMessage(1, contract, order, orderState);
+            sut.AddResponse(message1);
+            var message2 = new OpenOrderMessage(2, contract, order, orderState);
+            sut.AddResponse(message2);
+            
+            List<ReqIdAndResponses> responses = sut.GetGrouppedResponses();
+
+            Assert.Equal(2, responses.Count);
             Assert.Equal(0, sut.Count);
         }
     }
