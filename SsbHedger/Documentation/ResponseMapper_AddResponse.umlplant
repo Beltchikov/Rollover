@@ -8,9 +8,8 @@ if "RefId > 0" then
     -->[true] "Update dictionary entry"
     --> (*)
   else
-    -->[false] "Create dictionary entry"
-    --> (*)
-  end if
+    -->[false] "Add response to dictionary"
+end if
 else
   -->[false] "Add response to dictionary"
   --> (*)
