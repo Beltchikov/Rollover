@@ -14,13 +14,13 @@ rt -> rh: Response
 rh -> rtq: Enqueue
 rl <- rtq: Dequeue
 rl -> rm : AddResponse(reqId)
-rl <- rm : GetCompletedResponses
+rl <- rm : GetGrouppedResponses
 loop foreach response
     rl -> sb : Create(response)
     sb -> rs : new
     activate rs
     rl -> rs: Execute
-    rs -> dr: Invoke
+    rs -> dw: Invoke
 end
 rl -> rl: CheckExitKey
 @enduml

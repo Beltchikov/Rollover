@@ -1,0 +1,11 @@
+@startuml
+
+(*) --> "Create result (List<object>)"
+
+partition ForeachRefIdInDictionary {
+  --> Add value to to the result
+}
+
+--> "Return result"
+--> (*)
+@enduml

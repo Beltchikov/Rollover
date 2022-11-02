@@ -1,0 +1,19 @@
+@startuml
+
+(*) --> "Check RefId"
+
+if "RefId > 0" then
+  -->[true] "Check RefId in dictionary"
+  if "Key for RefId exists"
+    -->[true] "Update dictionary entry"
+    --> (*)
+  else
+    -->[false] "Create dictionary entry"
+    --> (*)
+  end if
+else
+  -->[false] "Add response to dictionary"
+  --> (*)
+endif
+
+@enduml
