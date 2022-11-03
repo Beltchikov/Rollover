@@ -21,6 +21,14 @@ namespace SsbHedger.ResponseProcessing
             {
                 _responses.Add(new ReqIdAndResponses(openOrderMessage.OrderId, new List<object> { openOrderMessage }));
             }
+            else if (message is ConnectionStatusMessage connectionStatusMessage)
+            {
+                _responses.Add(new ReqIdAndResponses(-1, new List<object> { connectionStatusMessage }));
+            }
+            else if (message is ManagedAccountsMessage managedAccountsMessage)
+            {
+                _responses.Add(new ReqIdAndResponses(-1, new List<object> { managedAccountsMessage }));
+            }
             else
             {
                 throw new ArgumentException($"Unknown message type {message.GetType()}");

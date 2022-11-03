@@ -50,5 +50,25 @@ namespace SsbHedger.UnitTests
             Assert.Equal(2, responses.Count);
             Assert.Equal(0, sut.Count);
         }
+
+        [Theory, AutoNSubstituteData]
+        public void UseRefIdMinusOneIfNoRefId(
+            bool isConnected,
+            string managedAccounts,
+            ResponseMapper sut)
+        {
+            var message1 = new ConnectionStatusMessage(isConnected);
+            sut.AddResponse(message1);
+            var message2 = new ManagedAccountsMessage(managedAccounts);
+            sut.AddResponse(message2);
+
+            List<ReqIdAndResponses> responses = sut.GetGrouppedResponses();
+
+            Assert.Equal(2, responses.Count);
+            Assert.Equal(0, sut.Count);
+            Assert.Equal(-1, responses.First().ReqId);
+            Assert.Equal(-1, responses.Last().ReqId);
+            
+        }
     }
 }
