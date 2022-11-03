@@ -6,32 +6,28 @@ namespace SsbHedger.ResponseProcessing.Mapper
 {
     public class ResponseMapper : IResponseMapper
     {
-        private List<ReqIdAndResponses> _responses = new List<ReqIdAndResponses>();
+        internal List<ReqIdAndResponses> _responses = new List<ReqIdAndResponses>();
+
+        private Dictionary<Type, IStrategy> _strategies = new Dictionary<Type, IStrategy>()
+        {
+            {typeof(ErrorInfo), new ErrorInfoStrategy()},
+            {typeof(OpenOrderMessage), new OpenOrderStrategy()},
+            {typeof(ConnectionStatusMessage), new ConnectionStatusStrategy()},
+            {typeof(ManagedAccountsMessage), new ManagedAccountsStrategy()}
+        };
 
         public void AddResponse(object message)
         {
-            if (message is ErrorInfo errorInfo)
+            try
             {
-                if (errorInfo.ReqId < 0)
-                {
-                    _responses.Add(new ReqIdAndResponses(errorInfo.ReqId, new List<object> { errorInfo }));
-                }
+                IStrategy strategy = _strategies[message.GetType()];
+                strategy.AddResponse(message, _responses);
             }
-            else if (message is OpenOrderMessage openOrderMessage)
+            catch (KeyNotFoundException keyNotFoundException)
             {
-                _responses.Add(new ReqIdAndResponses(openOrderMessage.OrderId, new List<object> { openOrderMessage }));
-            }
-            else if (message is ConnectionStatusMessage connectionStatusMessage)
-            {
-                _responses.Add(new ReqIdAndResponses(-1, new List<object> { connectionStatusMessage }));
-            }
-            else if (message is ManagedAccountsMessage managedAccountsMessage)
-            {
-                _responses.Add(new ReqIdAndResponses(-1, new List<object> { managedAccountsMessage }));
-            }
-            else
-            {
-                throw new ArgumentException($"Unknown message type {message.GetType()}");
+                throw new ArgumentException(
+                    $"Unknown message type {message.GetType()}",
+                    keyNotFoundException);
             }
         }
 
