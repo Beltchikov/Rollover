@@ -1,5 +1,6 @@
 ﻿using IbClient;
 using SsbHedger.ResponseProcessing;
+using SsbHedger.ResponseProcessing.Mapper;
 
 namespace SsbHedger
 {

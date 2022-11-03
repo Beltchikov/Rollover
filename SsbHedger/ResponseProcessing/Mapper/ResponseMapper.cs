@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SsbHedger.ResponseProcessing
+namespace SsbHedger.ResponseProcessing.Mapper
 {
     public class ResponseMapper : IResponseMapper
     {
@@ -10,14 +10,14 @@ namespace SsbHedger.ResponseProcessing
 
         public void AddResponse(object message)
         {
-            if(message is ErrorInfo errorInfo)
+            if (message is ErrorInfo errorInfo)
             {
-                if(errorInfo.ReqId < 0)
+                if (errorInfo.ReqId < 0)
                 {
                     _responses.Add(new ReqIdAndResponses(errorInfo.ReqId, new List<object> { errorInfo }));
                 }
             }
-            else if(message is OpenOrderMessage openOrderMessage)
+            else if (message is OpenOrderMessage openOrderMessage)
             {
                 _responses.Add(new ReqIdAndResponses(openOrderMessage.OrderId, new List<object> { openOrderMessage }));
             }

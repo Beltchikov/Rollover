@@ -3,6 +3,7 @@ using IbClient;
 using IbClient.messages;
 using NSubstitute;
 using SsbHedger.ResponseProcessing;
+using SsbHedger.ResponseProcessing.Mapper;
 using System.Reflection;
 
 namespace SsbHedger.UnitTests

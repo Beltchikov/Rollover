@@ -1,5 +1,6 @@
 ﻿using IbClient.messages;
 using SsbHedger.ResponseProcessing;
+using SsbHedger.ResponseProcessing.Mapper;
 
 namespace SsbHedger.UnitTests
 {

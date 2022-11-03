@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SsbHedger.ResponseProcessing
+namespace SsbHedger.ResponseProcessing.Mapper
 {
     public interface IResponseMapper
     {
