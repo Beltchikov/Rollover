@@ -3,8 +3,7 @@ title Process Responses
 
 participant ResponceHandler as rh
 participant ResponseLoop as rl
-participant StrategyBuilder as sb
-participant ResponseStrategy as rs
+participant ResponseProcessor as rp
 participant DispatcherWrapper as dw
 participant ResponseMapper as rm
 participant ReaderThreadQueue as rtq
@@ -16,11 +15,12 @@ rl <- rtq: Dequeue
 rl -> rm : AddResponse(reqId)
 rl <- rm : GetGrouppedResponses
 loop foreach response
-    rl -> sb : Create(response)
-    sb -> rs : new
-    activate rs
-    rl -> rs: Execute
-    rs -> dw: Invoke
+    rl -> rp : Process(response)
+    rp -> dw : Invoke
+    note right
+  Raise corresponding event
+end note
+
 end
 rl -> rl: CheckExitKey
 @enduml
