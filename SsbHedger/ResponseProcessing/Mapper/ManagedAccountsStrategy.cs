@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SsbHedger.ResponseProcessing.Mapper
 {
-    public class ManagedAccountsStrategy : IStrategy
+    public class ManagedAccountsStrategy : IMapperStrategy
     {
         public void AddResponse(object message, List<ReqIdAndResponses> responses)
         {

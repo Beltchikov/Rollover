@@ -2,7 +2,7 @@
 
 namespace SsbHedger.ResponseProcessing.Mapper
 {
-    public class ErrorInfoStrategy : IStrategy
+    public class ErrorInfoStrategy : IMapperStrategy
     {
         public void AddResponse(object message, List<ReqIdAndResponses> responses)
         {

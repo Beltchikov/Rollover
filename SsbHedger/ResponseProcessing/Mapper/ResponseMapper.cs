@@ -8,7 +8,7 @@ namespace SsbHedger.ResponseProcessing.Mapper
     {
         internal List<ReqIdAndResponses> _responses = new List<ReqIdAndResponses>();
 
-        private Dictionary<Type, IStrategy> _strategies = new Dictionary<Type, IStrategy>()
+        private Dictionary<Type, IMapperStrategy> _strategies = new Dictionary<Type, IMapperStrategy>()
         {
             {typeof(ErrorInfo), new ErrorInfoStrategy()},
             {typeof(OpenOrderMessage), new OpenOrderStrategy()},
@@ -20,7 +20,7 @@ namespace SsbHedger.ResponseProcessing.Mapper
         {
             try
             {
-                IStrategy strategy = _strategies[message.GetType()];
+                IMapperStrategy strategy = _strategies[message.GetType()];
                 strategy.AddResponse(message, _responses);
             }
             catch (KeyNotFoundException keyNotFoundException)

@@ -2,7 +2,7 @@
 
 namespace SsbHedger.ResponseProcessing.Mapper
 {
-    public interface IStrategy
+    public interface IMapperStrategy
     {
         void AddResponse(object message, List<ReqIdAndResponses> responses);
     }
