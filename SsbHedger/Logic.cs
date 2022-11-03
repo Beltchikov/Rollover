@@ -33,6 +33,7 @@ namespace SsbHedger
                     return;
                 }
                 responseMapper.AddResponse(message);
+                var responses = responseMapper.GetGrouppedResponses();
             };
 
             _responseHandler = responseHandler;
