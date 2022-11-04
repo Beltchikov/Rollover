@@ -11,33 +11,36 @@ namespace SsbHedger
         IResponseHandler _responseHandler;
         IConsoleAbstraction _consoleWrapper;
         IResponseMapper _responseMapper;
+        IResponseProcessor _responseProcessor;
 
         public Logic(
             IIBClient ibClient,
             IConsoleAbstraction consoleWrapper,
             IResponseLoop responseLoop,
             IResponseHandler responseHandler,
-            IResponseMapper responseMapper)
+            IResponseMapper responseMapper,
+            IResponseProcessor responseProcessor)
         {
             _ibClient = ibClient;
             _consoleWrapper = consoleWrapper;
-
             _responseLoop = responseLoop;
+            _responseHandler = responseHandler;
+            _responseMapper = responseMapper;
+
+
             _responseLoop.BreakCondition =
                 () => _consoleWrapper.ReadKey().KeyChar.ToString().ToUpper() == "Q";
             _responseLoop.Actions = () =>
             {
                 var message = responseHandler.ReaderQueue.Dequeue();
-                if(message == null)
+                if (message == null)
                 {
                     return;
                 }
                 responseMapper.AddResponse(message);
-                var responses = responseMapper.GetGrouppedResponses();
+                var responses = _responseMapper.GetGrouppedResponses();
             };
-
-            _responseHandler = responseHandler;
-            _responseMapper = responseMapper;
+            _responseProcessor = responseProcessor;
         }
 
         public void Execute()

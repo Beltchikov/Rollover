@@ -1,7 +1,7 @@
 @startuml
 title Process Responses
 
-participant ResponceHandler as rh
+participant ResponseHandler as rh
 participant ResponseLoop as rl
 participant ResponseProcessor as rp
 participant DispatcherWrapper as dw

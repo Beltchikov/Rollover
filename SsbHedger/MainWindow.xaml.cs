@@ -37,7 +37,8 @@ namespace SsbHedger
                 new ConsoleAbstraction(),
                 new ResponseLoop(),
                 new ResponseHandler(readerQueue),
-                new ResponseMapper());
+                new ResponseMapper(),
+                new ResponseProcessor());
             _logic.Execute();
         }
     }
