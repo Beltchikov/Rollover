@@ -26,7 +26,7 @@ namespace SsbHedger
             _responseLoop = responseLoop;
             _responseHandler = responseHandler;
             _responseMapper = responseMapper;
-
+            _responseProcessor = responseProcessor;
 
             _responseLoop.BreakCondition =
                 () => _consoleWrapper.ReadKey().KeyChar.ToString().ToUpper() == "Q";
@@ -39,8 +39,11 @@ namespace SsbHedger
                 }
                 responseMapper.AddResponse(message);
                 var responses = _responseMapper.GetGrouppedResponses();
+                foreach(var response in responses)
+                {
+                    _responseProcessor.Process(response);
+                }
             };
-            _responseProcessor = responseProcessor;
         }
 
         public void Execute()

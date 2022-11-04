@@ -79,7 +79,8 @@ namespace SsbHedger.UnitTests
         public void CallDequeue(
             IIBClient ibClient,
             IConsoleAbstraction console,
-            IReaderThreadQueue readerQueueMock
+            IReaderThreadQueue readerQueueMock,
+            List<ReqIdAndResponses> messages
             )
         {
             var responseHeandler = new ResponseHandler(readerQueueMock);
@@ -89,6 +90,7 @@ namespace SsbHedger.UnitTests
                 new ConsoleKeyInfo('q', ConsoleKey.Q, false, false, false)
                 );
             var responseMapper = Substitute.For<IResponseMapper>();
+            responseMapper.GetGrouppedResponses().Returns(messages);
             var responseProcessor = Substitute.For<IResponseProcessor>();
 
             var sut = new Logic(
@@ -108,7 +110,8 @@ namespace SsbHedger.UnitTests
             object message,
             IIBClient ibClient,
             IConsoleAbstraction console,
-            IReaderThreadQueue readerQueueMock)
+            IReaderThreadQueue readerQueueMock, 
+            List<ReqIdAndResponses> messages)
         {
             readerQueueMock.Dequeue().Returns(message);
             var responseHeandler = new ResponseHandler(readerQueueMock);
@@ -118,6 +121,7 @@ namespace SsbHedger.UnitTests
                 new ConsoleKeyInfo('q', ConsoleKey.Q, false, false, false)
                 );
             var responseMapper = Substitute.For<IResponseMapper>();
+            responseMapper.GetGrouppedResponses().Returns(messages);
             var responseProcessor = Substitute.For<IResponseProcessor>();
 
             var sut = new Logic(
@@ -165,7 +169,8 @@ namespace SsbHedger.UnitTests
             object message,
             IIBClient ibClient,
             IConsoleAbstraction console,
-            IReaderThreadQueue readerQueueMock)
+            IReaderThreadQueue readerQueueMock,
+            List<ReqIdAndResponses> messages)
         {
             readerQueueMock.Dequeue().Returns(message);
             var responseHeandler = new ResponseHandler(readerQueueMock);
@@ -175,6 +180,7 @@ namespace SsbHedger.UnitTests
                 new ConsoleKeyInfo('q', ConsoleKey.Q, false, false, false)
                 );
             var responseMapper = Substitute.For<IResponseMapper>();
+            responseMapper.GetGrouppedResponses().Returns(messages);
             var responseProcessor = Substitute.For<IResponseProcessor>();
 
             var sut = new Logic(
@@ -190,31 +196,37 @@ namespace SsbHedger.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
-        public void CallResponseProcessorForExeryMessage(
+        public void CallResponseProcessorForEveryMessage(
             object message,
             IIBClient ibClient,
             IConsoleAbstraction console,
             IReaderThreadQueue readerQueueMock,
-            IResponseProcessor responseProcessor)
+            IResponseProcessor responseProcessor,
+            List<ReqIdAndResponses> messages)
         {
-            //readerQueueMock.Dequeue().Returns(message);
-            //var responseHeandler = new ResponseHandler(readerQueueMock);
-            //var responseLoop = new ResponseLoop();
-            //console.ReadKey().Returns(
-            //    new ConsoleKeyInfo('a', ConsoleKey.A, false, false, false),
-            //    new ConsoleKeyInfo('q', ConsoleKey.Q, false, false, false)
-            //    );
-            //var responseMapper = Substitute.For<IResponseMapper>();
+            readerQueueMock.Dequeue().Returns(message);
+            var responseHeandler = new ResponseHandler(readerQueueMock);
+            var responseLoop = new ResponseLoop();
+            console.ReadKey().Returns(
+                new ConsoleKeyInfo('a', ConsoleKey.A, false, false, false),
+                new ConsoleKeyInfo('q', ConsoleKey.Q, false, false, false)
+                );
+            var responseMapper = Substitute.For<IResponseMapper>();
+            responseMapper.GetGrouppedResponses().Returns(messages);
 
-            //var sut = new Logic(
-            //    ibClient,
-            //    console,
-            //    responseLoop,
-            //    responseHeandler,
-            //    responseMapper);
+            var sut = new Logic(
+                ibClient,
+                console,
+                responseLoop,
+                responseHeandler,
+                responseMapper, 
+                responseProcessor);
 
-            //sut.Execute();
-            //responseMapper.Received().GetGrouppedResponses();
+            sut.Execute();
+          
+            responseProcessor.Received().Process(messages[0]);
+            responseProcessor.Received().Process(messages[1]);
+            responseProcessor.Received().Process(messages[2]);
         }
 
         private void VerifyDelegateAttachedTo(object objectWithEvent, string eventName)

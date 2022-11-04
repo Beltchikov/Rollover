@@ -8,5 +8,9 @@ namespace SsbHedger.ResponseProcessing
 {
     public class ResponseProcessor : IResponseProcessor
     {
+        public void Process(object message)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

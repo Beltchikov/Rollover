@@ -2,5 +2,6 @@
 {
     public interface IResponseProcessor
     {
+        void Process(object message);
     }
 }
