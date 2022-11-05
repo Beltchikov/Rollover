@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SsbHedger
+namespace SsbHedger.Abstractions
 {
     public class ConsoleAbstraction : IConsoleAbstraction
     {
         public ConsoleKeyInfo ReadKey()
         {
-            return Console.ReadKey();   
+            return Console.ReadKey();
         }
     }
 }

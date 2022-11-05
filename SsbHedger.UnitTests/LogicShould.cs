@@ -2,6 +2,7 @@ using AutoFixture.Xunit2;
 using IbClient;
 using IbClient.messages;
 using NSubstitute;
+using SsbHedger.Abstractions;
 using SsbHedger.ResponseProcessing;
 using SsbHedger.ResponseProcessing.Mapper;
 using System.Reflection;
