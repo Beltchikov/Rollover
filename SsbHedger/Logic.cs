@@ -1,6 +1,7 @@
 ﻿using IbClient;
 using SsbHedger.ResponseProcessing;
 using SsbHedger.ResponseProcessing.Mapper;
+using System.Windows.Threading;
 
 namespace SsbHedger
 {
@@ -39,7 +40,7 @@ namespace SsbHedger
                 }
                 responseMapper.AddResponse(message);
                 var responses = _responseMapper.GetGrouppedResponses();
-                foreach(var response in responses)
+                foreach (var response in responses)
                 {
                     _responseProcessor.Process(response);
                 }
@@ -54,7 +55,7 @@ namespace SsbHedger
             _ibClient.OpenOrder += _responseHandler.OnOpenOrder;
             _ibClient.OpenOrderEnd += _responseHandler.OnOpenOrderEnd;
             _ibClient.OrderStatus += _responseHandler.OnOrderStatus;
-           
+
             _ibClient.ConnectAndStartReaderThread(
                        "localhost",
                        4001,

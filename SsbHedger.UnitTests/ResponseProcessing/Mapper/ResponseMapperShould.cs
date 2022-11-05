@@ -2,7 +2,7 @@
 using SsbHedger.ResponseProcessing;
 using SsbHedger.ResponseProcessing.Mapper;
 
-namespace SsbHedger.UnitTests
+namespace SsbHedger.UnitTests.ResponseProcessing.Mapper
 {
     public class ResponseMapperShould
     {
@@ -18,15 +18,15 @@ namespace SsbHedger.UnitTests
         [Theory, AutoNSubstituteData]
         public void NotGroupResponsesWithRefIdMinusOne(
             int code,
-            string message, 
+            string message,
             ResponseMapper sut)
         {
             int count = 3;
-            
+
             for (int i = 1; i <= count; i++)
             {
                 ErrorInfo errorInfo = new ErrorInfo(-1, code, message, null);
-                sut.AddResponse(errorInfo); 
+                sut.AddResponse(errorInfo);
             }
             List<ReqIdAndResponses> responses = sut.GetGrouppedResponses();
 
@@ -45,7 +45,7 @@ namespace SsbHedger.UnitTests
             sut.AddResponse(message1);
             var message2 = new OpenOrderMessage(2, contract, order, orderState);
             sut.AddResponse(message2);
-            
+
             List<ReqIdAndResponses> responses = sut.GetGrouppedResponses();
 
             Assert.Equal(2, responses.Count);
@@ -69,7 +69,7 @@ namespace SsbHedger.UnitTests
             Assert.Equal(0, sut.Count);
             Assert.Equal(-1, responses.First().ReqId);
             Assert.Equal(-1, responses.Last().ReqId);
-            
+
         }
     }
 }

@@ -8,9 +8,16 @@ namespace SsbHedger.ResponseProcessing
 {
     public class ResponseProcessor : IResponseProcessor
     {
+        IDispatcherAbstraction _dispatcher;
+
+        public ResponseProcessor(IDispatcherAbstraction dispatcher)
+        {
+            _dispatcher = dispatcher;
+        }
+
         public void Process(object message)
         {
-            throw new NotImplementedException();
+            _dispatcher.Invoke(() => { });
         }
     }
 }

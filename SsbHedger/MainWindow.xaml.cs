@@ -30,15 +30,17 @@ namespace SsbHedger
         {
             InitializeComponent();
 
-
             var readerQueue = new ReaderThreadQueue();
+            var dispatcher = new DispatcherAbstraction(Dispatcher);
+
+
             _logic = new Logic(
                 IBClient.CreateClient(),
                 new ConsoleAbstraction(),
                 new ResponseLoop(),
                 new ResponseHandler(readerQueue),
                 new ResponseMapper(),
-                new ResponseProcessor());
+                new ResponseProcessor(dispatcher));
             _logic.Execute();
         }
     }

@@ -3,7 +3,7 @@ using IbClient.messages;
 using NSubstitute;
 using SsbHedger.ResponseProcessing;
 
-namespace SsbHedger.UnitTests
+namespace SsbHedger.UnitTests.ResponseProcessing
 {
     public class ResponseHandlerShould
     {
@@ -15,7 +15,7 @@ namespace SsbHedger.UnitTests
             ResponseHandler sut)
         {
             sut.OnError(reqId, code, message, exception);
-            queue.Received().Enqueue(Arg.Is<object>(a => 
+            queue.Received().Enqueue(Arg.Is<object>(a =>
                 a.GetType() == typeof(ErrorInfo)
                 && ((ErrorInfo)a).ReqId == reqId
                 && ((ErrorInfo)a).Code == code
@@ -32,7 +32,7 @@ namespace SsbHedger.UnitTests
             sut.OnManagedAccounts(managedAccountsMessage);
             queue.Received().Enqueue(Arg.Is<object>(a =>
                 a.GetType() == typeof(ManagedAccountsMessage)
-                && ((ManagedAccountsMessage)a).ManagedAccounts.Count() 
+                && ((ManagedAccountsMessage)a).ManagedAccounts.Count()
                     == managedAccountsMessage.ManagedAccounts.Count()
             ));
         }
@@ -77,7 +77,7 @@ namespace SsbHedger.UnitTests
             sut.OnOpenOrderEnd();
             queue.Received().Enqueue(Arg.Is<object>(a =>
                 a.GetType() == typeof(string)
-                && ((string)a) == "OpenOrderEnd"
+                && (string)a == "OpenOrderEnd"
             ));
         }
 

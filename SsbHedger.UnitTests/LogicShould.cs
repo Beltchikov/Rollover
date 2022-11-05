@@ -25,6 +25,7 @@ namespace SsbHedger.UnitTests
             var responseHandler = Substitute.For<IResponseHandler>();
             var responseMapper = Substitute.For<IResponseMapper>();
             var responseProcessor = Substitute.For<IResponseProcessor>();
+      
             responseLoop.When(l => l.Start()).Do(x => { });
             var sut = new Logic(
                 ibClient,
@@ -92,7 +93,7 @@ namespace SsbHedger.UnitTests
             var responseMapper = Substitute.For<IResponseMapper>();
             responseMapper.GetGrouppedResponses().Returns(messages);
             var responseProcessor = Substitute.For<IResponseProcessor>();
-
+        
             var sut = new Logic(
                 ibClient,
                 console,
@@ -123,7 +124,7 @@ namespace SsbHedger.UnitTests
             var responseMapper = Substitute.For<IResponseMapper>();
             responseMapper.GetGrouppedResponses().Returns(messages);
             var responseProcessor = Substitute.For<IResponseProcessor>();
-
+  
             var sut = new Logic(
                 ibClient,
                 console,
@@ -151,7 +152,7 @@ namespace SsbHedger.UnitTests
                 );
             var responseMapper = Substitute.For<IResponseMapper>();
             var responseProcessor = Substitute.For<IResponseProcessor>();
-
+       
             var sut = new Logic(
                 ibClient,
                 console,
@@ -182,7 +183,7 @@ namespace SsbHedger.UnitTests
             var responseMapper = Substitute.For<IResponseMapper>();
             responseMapper.GetGrouppedResponses().Returns(messages);
             var responseProcessor = Substitute.For<IResponseProcessor>();
-
+  
             var sut = new Logic(
                 ibClient,
                 console,
@@ -213,7 +214,7 @@ namespace SsbHedger.UnitTests
                 );
             var responseMapper = Substitute.For<IResponseMapper>();
             responseMapper.GetGrouppedResponses().Returns(messages);
-
+      
             var sut = new Logic(
                 ibClient,
                 console,
