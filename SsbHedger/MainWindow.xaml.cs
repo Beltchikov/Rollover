@@ -43,6 +43,13 @@ namespace SsbHedger
                 new ResponseMapper(),
                 new ResponseProcessor(dispatcher));
             _logic.Execute();
+
+            _logic.Error += _logic_Error;
+        }
+
+        private void _logic_Error(string obj)
+        {
+            throw new NotImplementedException();
         }
     }
 }

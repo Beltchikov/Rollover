@@ -2,6 +2,7 @@
 using SsbHedger.Abstractions;
 using SsbHedger.ResponseProcessing;
 using SsbHedger.ResponseProcessing.Mapper;
+using System;
 using System.Windows.Threading;
 
 namespace SsbHedger
@@ -30,6 +31,8 @@ namespace SsbHedger
             _responseMapper = responseMapper;
             _responseProcessor = responseProcessor;
 
+            _responseProcessor.SetLogic(this);
+
             _responseLoop.BreakCondition =
                 () => _consoleWrapper.ReadKey().KeyChar.ToString().ToUpper() == "Q";
             _responseLoop.Actions = () =>
@@ -47,6 +50,9 @@ namespace SsbHedger
                 }
             };
         }
+
+        public event Action<bool> NextValidId;
+        public event Action<string> Error;
 
         public void Execute()
         {

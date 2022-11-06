@@ -78,6 +78,36 @@ namespace SsbHedger.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
+        public void CallResponseProcessorSetLogic(
+            IIBClient ibClient,
+            IConsoleAbstraction console,
+            IReaderThreadQueue readerQueueMock,
+            List<ReqIdAndResponses> messages
+            )
+        {
+            var responseHeandler = new ResponseHandler(readerQueueMock);
+            var responseLoop = new ResponseLoop();
+            console.ReadKey().Returns(
+                new ConsoleKeyInfo('a', ConsoleKey.A, false, false, false),
+                new ConsoleKeyInfo('q', ConsoleKey.Q, false, false, false)
+                );
+            var responseMapper = Substitute.For<IResponseMapper>();
+            responseMapper.GetGrouppedResponses().Returns(messages);
+            var responseProcessor = Substitute.For<IResponseProcessor>();
+
+            var sut = new Logic(
+                ibClient,
+                console,
+                responseLoop,
+                responseHeandler,
+                responseMapper,
+                responseProcessor);
+
+            sut.Execute();
+            responseProcessor.Received().SetLogic(sut);
+        }
+
+        [Theory, AutoNSubstituteData]
         public void CallDequeue(
             IIBClient ibClient,
             IConsoleAbstraction console,

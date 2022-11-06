@@ -10,6 +10,7 @@ namespace SsbHedger.ResponseProcessing
     public class ResponseProcessor : IResponseProcessor
     {
         IDispatcherAbstraction _dispatcher;
+        ILogic _logic;
 
         public ResponseProcessor(IDispatcherAbstraction dispatcher)
         {
@@ -18,7 +19,18 @@ namespace SsbHedger.ResponseProcessing
 
         public void Process(object message)
         {
+            //switch(message.GetType())
+            //{
+            //    case typeof(ErrorInfo):
+            //        break;
+            //}
+            
             _dispatcher.Invoke(() => { });
+        }
+
+        public void SetLogic(ILogic logic)
+        {
+            _logic = logic;
         }
     }
 }
