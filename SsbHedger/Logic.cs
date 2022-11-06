@@ -95,5 +95,10 @@ namespace SsbHedger
             //}
         }
 
+        public void InvokeError(string message)
+        {
+            Error.Invoke(message);
+        }
+
     }
 }

@@ -10,7 +10,7 @@ namespace SsbHedger.ResponseProcessing
     public class ResponseProcessor : IResponseProcessor
     {
         IDispatcherAbstraction _dispatcher;
-        ILogic _logic;
+        ILogic? _logic;
 
         public ResponseProcessor(IDispatcherAbstraction dispatcher)
         {
@@ -19,13 +19,17 @@ namespace SsbHedger.ResponseProcessing
 
         public void Process(object message)
         {
-            //switch(message.GetType())
-            //{
-            //    case typeof(ErrorInfo):
-            //        break;
-            //}
-            
-            _dispatcher.Invoke(() => { });
+            var messageType = message.GetType();
+
+            if(messageType == typeof(ErrorInfo))
+            {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                _dispatcher.Invoke(() => _logic.InvokeError((message as ErrorInfo).ToString()));
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+            }
+            else
+            { }
+
         }
 
         public void SetLogic(ILogic logic)

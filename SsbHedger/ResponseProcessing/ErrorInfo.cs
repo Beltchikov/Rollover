@@ -6,6 +6,12 @@ namespace SsbHedger.ResponseProcessing
         int ReqId,
         int Code,
         string Message,
-        Exception? exception);
-    
+        Exception? exception)
+    {
+        public override string ToString()
+        {
+            return $"ReqId:{ReqId} code:{Code} message:{Message} exception:{exception}";
+        }
+    }
+
 }
