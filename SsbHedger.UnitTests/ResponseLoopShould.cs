@@ -3,21 +3,25 @@
     public class ResponseLoopShould
     {
         [Fact]
-        public void CallActionAndExitOnExitCondition()
+        public void CallActionIfStartedOnNewThtread()
         {
             var counter = 1;
             var millisecondsToRun = 10;
             var startTime = DateTime.Now;
             
             var sut = new ResponseLoop();
-            sut.BreakCondition = () => (DateTime.Now - startTime).Milliseconds > millisecondsToRun;
+            sut.BreakCondition = () => 1==0;
             sut.Actions = () => counter++;
 
-            sut.Start();
-            var endTime = DateTime.Now;
+            new Thread(() =>
+            {
+                sut.Start();
+            })
+            { IsBackground = true }
+           .Start();
 
+            Thread.Sleep(millisecondsToRun);
             Assert.True(counter > 2);
-            Assert.True((endTime-startTime).Milliseconds >= millisecondsToRun);
         }
     }
 }
