@@ -21,7 +21,6 @@ namespace SsbHedger.UnitTests
         public void AttachEventHandlers(string eventName)
         {
             var ibClient = IBClient.CreateClient();
-            var consoleWrapper = Substitute.For<IConsoleAbstraction>();
             var responseLoop = Substitute.For<IResponseLoop>();
             var responseHandler = Substitute.For<IResponseHandler>();
             var responseMapper = Substitute.For<IResponseMapper>();
@@ -30,7 +29,6 @@ namespace SsbHedger.UnitTests
             responseLoop.When(l => l.Start()).Do(x => { });
             var sut = new Logic(
                 ibClient,
-                consoleWrapper,
                 responseLoop,
                 responseHandler,
                 responseMapper,
@@ -80,24 +78,18 @@ namespace SsbHedger.UnitTests
         [Theory, AutoNSubstituteData]
         public void CallResponseProcessorSetLogic(
             IIBClient ibClient,
-            IConsoleAbstraction console,
             IReaderThreadQueue readerQueueMock,
             List<ReqIdAndResponses> messages
             )
         {
             var responseHeandler = new ResponseHandler(readerQueueMock);
             var responseLoop = new ResponseLoop();
-            console.ReadKey().Returns(
-                new ConsoleKeyInfo('a', ConsoleKey.A, false, false, false),
-                new ConsoleKeyInfo('q', ConsoleKey.Q, false, false, false)
-                );
             var responseMapper = Substitute.For<IResponseMapper>();
             responseMapper.GetGrouppedResponses().Returns(messages);
             var responseProcessor = Substitute.For<IResponseProcessor>();
 
             var sut = new Logic(
                 ibClient,
-                console,
                 responseLoop,
                 responseHeandler,
                 responseMapper,
@@ -110,24 +102,18 @@ namespace SsbHedger.UnitTests
         [Theory, AutoNSubstituteData]
         public void CallDequeue(
             IIBClient ibClient,
-            IConsoleAbstraction console,
             IReaderThreadQueue readerQueueMock,
             List<ReqIdAndResponses> messages
             )
         {
             var responseHeandler = new ResponseHandler(readerQueueMock);
             var responseLoop = new ResponseLoop();
-            console.ReadKey().Returns(
-                new ConsoleKeyInfo('a', ConsoleKey.A, false, false, false),
-                new ConsoleKeyInfo('q', ConsoleKey.Q, false, false, false)
-                );
             var responseMapper = Substitute.For<IResponseMapper>();
             responseMapper.GetGrouppedResponses().Returns(messages);
             var responseProcessor = Substitute.For<IResponseProcessor>();
         
             var sut = new Logic(
                 ibClient,
-                console,
                 responseLoop,
                 responseHeandler,
                 responseMapper, 
@@ -141,24 +127,18 @@ namespace SsbHedger.UnitTests
         public void CallResponseMapperAddResponse(
             object message,
             IIBClient ibClient,
-            IConsoleAbstraction console,
             IReaderThreadQueue readerQueueMock, 
             List<ReqIdAndResponses> messages)
         {
             readerQueueMock.Dequeue().Returns(message);
             var responseHeandler = new ResponseHandler(readerQueueMock);
             var responseLoop = new ResponseLoop();
-            console.ReadKey().Returns(
-                new ConsoleKeyInfo('a', ConsoleKey.A, false, false, false),
-                new ConsoleKeyInfo('q', ConsoleKey.Q, false, false, false)
-                );
             var responseMapper = Substitute.For<IResponseMapper>();
             responseMapper.GetGrouppedResponses().Returns(messages);
             var responseProcessor = Substitute.For<IResponseProcessor>();
   
             var sut = new Logic(
                 ibClient,
-                console,
                 responseLoop,
                 responseHeandler,
                 responseMapper,
@@ -171,22 +151,16 @@ namespace SsbHedger.UnitTests
         [Theory, AutoNSubstituteData]
         public void NotCallResponseMapperAddResponseIfNoMessage(
             IIBClient ibClient,
-            IConsoleAbstraction console,
             IReaderThreadQueue readerQueueMock)
         {
             readerQueueMock.Dequeue().Returns(null);
             var responseHeandler = new ResponseHandler(readerQueueMock);
             var responseLoop = new ResponseLoop();
-            console.ReadKey().Returns(
-                new ConsoleKeyInfo('a', ConsoleKey.A, false, false, false),
-                new ConsoleKeyInfo('q', ConsoleKey.Q, false, false, false)
-                );
             var responseMapper = Substitute.For<IResponseMapper>();
             var responseProcessor = Substitute.For<IResponseProcessor>();
        
             var sut = new Logic(
                 ibClient,
-                console,
                 responseLoop,
                 responseHeandler,
                 responseMapper, 
@@ -200,24 +174,18 @@ namespace SsbHedger.UnitTests
         public void CallResponseMapperGetGrouppedResponses(
             object message,
             IIBClient ibClient,
-            IConsoleAbstraction console,
             IReaderThreadQueue readerQueueMock,
             List<ReqIdAndResponses> messages)
         {
             readerQueueMock.Dequeue().Returns(message);
             var responseHeandler = new ResponseHandler(readerQueueMock);
             var responseLoop = new ResponseLoop();
-            console.ReadKey().Returns(
-                new ConsoleKeyInfo('a', ConsoleKey.A, false, false, false),
-                new ConsoleKeyInfo('q', ConsoleKey.Q, false, false, false)
-                );
             var responseMapper = Substitute.For<IResponseMapper>();
             responseMapper.GetGrouppedResponses().Returns(messages);
             var responseProcessor = Substitute.For<IResponseProcessor>();
   
             var sut = new Logic(
                 ibClient,
-                console,
                 responseLoop,
                 responseHeandler,
                 responseMapper, 
@@ -231,7 +199,6 @@ namespace SsbHedger.UnitTests
         public void CallResponseProcessorForEveryMessage(
             object message,
             IIBClient ibClient,
-            IConsoleAbstraction console,
             IReaderThreadQueue readerQueueMock,
             IResponseProcessor responseProcessor,
             List<ReqIdAndResponses> messages)
@@ -239,16 +206,11 @@ namespace SsbHedger.UnitTests
             readerQueueMock.Dequeue().Returns(message);
             var responseHeandler = new ResponseHandler(readerQueueMock);
             var responseLoop = new ResponseLoop();
-            console.ReadKey().Returns(
-                new ConsoleKeyInfo('a', ConsoleKey.A, false, false, false),
-                new ConsoleKeyInfo('q', ConsoleKey.Q, false, false, false)
-                );
             var responseMapper = Substitute.For<IResponseMapper>();
             responseMapper.GetGrouppedResponses().Returns(messages);
       
             var sut = new Logic(
                 ibClient,
-                console,
                 responseLoop,
                 responseHeandler,
                 responseMapper, 

@@ -37,7 +37,6 @@ namespace SsbHedger
 
             _logic = new Logic(
                 IBClient.CreateClient(),
-                new ConsoleAbstraction(),
                 new ResponseLoop(),
                 new ResponseHandler(readerQueue),
                 new ResponseMapper(),

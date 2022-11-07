@@ -12,20 +12,17 @@ namespace SsbHedger
         IIBClient _ibClient;
         IResponseLoop _responseLoop;
         IResponseHandler _responseHandler;
-        IConsoleAbstraction _consoleWrapper;
         IResponseMapper _responseMapper;
         IResponseProcessor _responseProcessor;
 
         public Logic(
             IIBClient ibClient,
-            IConsoleAbstraction consoleWrapper,
             IResponseLoop responseLoop,
             IResponseHandler responseHandler,
             IResponseMapper responseMapper,
             IResponseProcessor responseProcessor)
         {
             _ibClient = ibClient;
-            _consoleWrapper = consoleWrapper;
             _responseLoop = responseLoop;
             _responseHandler = responseHandler;
             _responseMapper = responseMapper;
@@ -34,7 +31,7 @@ namespace SsbHedger
             _responseProcessor.SetLogic(this);
 
             _responseLoop.BreakCondition =
-                () => _consoleWrapper.ReadKey().KeyChar.ToString().ToUpper() == "Q";
+                () => 1==0;
             _responseLoop.Actions = () =>
             {
                 var message = responseHandler.ReaderQueue.Dequeue();
