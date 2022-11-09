@@ -11,6 +11,9 @@ namespace SsbHedger.UnitTests
 {
     public class LogicShould
     {
+        int _breakLoopAfter = 100;
+        DateTime _startTime = DateTime.Now;
+
         [Theory]
         [InlineData("NextValidId")]
         [InlineData("Error")]
@@ -25,6 +28,7 @@ namespace SsbHedger.UnitTests
             var responseHandler = Substitute.For<IResponseHandler>();
             var responseMapper = Substitute.For<IResponseMapper>();
             var responseProcessor = Substitute.For<IResponseProcessor>();
+            var backgroundWorker = Substitute.For<IBackgroundWorkerAbstraction>();
       
             responseLoop.When(l => l.Start()).Do(x => { });
             var sut = new Logic(
@@ -32,7 +36,8 @@ namespace SsbHedger.UnitTests
                 responseLoop,
                 responseHandler,
                 responseMapper,
-                responseProcessor);
+                responseProcessor,
+                backgroundWorker);
 
             sut.Execute();
 
@@ -65,61 +70,168 @@ namespace SsbHedger.UnitTests
             Assert.True(wasCalled);
         }
 
-
-        [Theory, AutoNSubstituteData]
-        public void CallResponseLoopStart(
-           [Frozen] IResponseLoop responseLoop,
-           Logic sut)
-        {
-            sut.Execute();
-            responseLoop.Received().Start();
-        }
-
         [Theory, AutoNSubstituteData]
         public void CallResponseProcessorSetLogic(
             IIBClient ibClient,
             IReaderThreadQueue readerQueueMock,
+            IBackgroundWorkerAbstraction backgroundWorker,
             List<ReqIdAndResponses> messages
             )
         {
             var responseHeandler = new ResponseHandler(readerQueueMock);
+
             var responseLoop = new ResponseLoop();
+            responseLoop.BreakCondition =
+                () => (DateTime.Now - _startTime).Milliseconds > _breakLoopAfter;
+
             var responseMapper = Substitute.For<IResponseMapper>();
             responseMapper.GetGrouppedResponses().Returns(messages);
             var responseProcessor = Substitute.For<IResponseProcessor>();
-
+            
             var sut = new Logic(
                 ibClient,
                 responseLoop,
                 responseHeandler,
                 responseMapper,
-                responseProcessor);
+                responseProcessor, 
+                backgroundWorker);
 
             sut.Execute();
             responseProcessor.Received().SetLogic(sut);
         }
 
         [Theory, AutoNSubstituteData]
-        public void CallDequeue(
+        public void NotCallResponseMapperAddResponseIfNoMessage(
             IIBClient ibClient,
             IReaderThreadQueue readerQueueMock,
-            List<ReqIdAndResponses> messages
-            )
+            IBackgroundWorkerAbstraction backgroundWorker)
         {
+            readerQueueMock.Dequeue().Returns(null);
             var responseHeandler = new ResponseHandler(readerQueueMock);
+
             var responseLoop = new ResponseLoop();
+            responseLoop.BreakCondition =
+                () => (DateTime.Now - _startTime).Milliseconds > _breakLoopAfter;
+
             var responseMapper = Substitute.For<IResponseMapper>();
-            responseMapper.GetGrouppedResponses().Returns(messages);
             var responseProcessor = Substitute.For<IResponseProcessor>();
-        
+            
             var sut = new Logic(
                 ibClient,
                 responseLoop,
                 responseHeandler,
                 responseMapper, 
-                responseProcessor);
+                responseProcessor, 
+                backgroundWorker );
 
             sut.Execute();
+            responseMapper.DidNotReceive().AddResponse(Arg.Any<object>());
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallBackgroundWorker(
+            object message,
+            IIBClient ibClient,
+            IReaderThreadQueue readerQueueMock,
+            IResponseProcessor responseProcessor,
+            IBackgroundWorkerAbstraction backgroundWorker,
+            List<ReqIdAndResponses> messages)
+        {
+            readerQueueMock.Dequeue().Returns(message);
+            var responseHeandler = new ResponseHandler(readerQueueMock);
+
+            var responseLoop = new ResponseLoop();
+            responseLoop.BreakCondition =
+                () => (DateTime.Now - _startTime).Milliseconds > _breakLoopAfter;
+
+            var responseMapper = Substitute.For<IResponseMapper>();
+            responseMapper.GetGrouppedResponses().Returns(messages);
+            
+            var sut = new Logic(
+                ibClient,
+                responseLoop,
+                responseHeandler,
+                responseMapper,
+                responseProcessor,
+                backgroundWorker);
+
+            sut.Execute();
+
+            backgroundWorker.Received().RunWorkerAsync();   
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallResponseLoopStart(
+            object message,
+            IIBClient ibClient,
+            IResponseLoop responseLoop,
+            IReaderThreadQueue readerQueueMock,
+            IResponseProcessor responseProcessor,
+            List<ReqIdAndResponses> messages)
+        {
+            readerQueueMock.Dequeue().Returns(message);
+            var responseHeandler = new ResponseHandler(readerQueueMock);
+
+            responseLoop.BreakCondition =
+                () => (DateTime.Now - _startTime).Milliseconds > _breakLoopAfter;
+
+            IBackgroundWorkerAbstraction backgroundWorker = new BackgroundWorkerAbstraction();
+            backgroundWorker.SetDoWorkEventHandler((s, e) =>
+            {
+                responseLoop.Start();
+            });
+
+            var responseMapper = Substitute.For<IResponseMapper>();
+            responseMapper.GetGrouppedResponses().Returns(messages);
+
+            var sut = new Logic(
+                ibClient,
+                responseLoop,
+                responseHeandler,
+                responseMapper,
+                responseProcessor,
+                backgroundWorker);
+
+            sut.Execute();
+
+            responseLoop.Received().Start();
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallDequeue(
+            object message,
+            IIBClient ibClient,
+            IReaderThreadQueue readerQueueMock,
+            IResponseProcessor responseProcessor,
+            List<ReqIdAndResponses> messages)
+        {
+            readerQueueMock.Dequeue().Returns(message);
+            var responseHandler = new ResponseHandler(readerQueueMock);
+
+            IResponseLoop responseLoop = new ResponseLoop();
+            responseLoop.BreakCondition =
+                () => (DateTime.Now - _startTime).Milliseconds > _breakLoopAfter;
+
+            IBackgroundWorkerAbstraction backgroundWorker = new BackgroundWorkerAbstraction();
+            backgroundWorker.SetDoWorkEventHandler((s, e) =>
+            {
+                responseLoop.Start();
+            });
+
+            var responseMapper = Substitute.For<IResponseMapper>();
+            responseMapper.GetGrouppedResponses().Returns(messages);
+
+            var sut = new Logic(
+                ibClient,
+                responseLoop,
+                responseHandler,
+                responseMapper,
+                responseProcessor,
+                backgroundWorker);
+
+            sut.Execute();
+
+            Thread.Sleep(_breakLoopAfter);
             readerQueueMock.Received().Dequeue();
         }
 
@@ -127,47 +239,38 @@ namespace SsbHedger.UnitTests
         public void CallResponseMapperAddResponse(
             object message,
             IIBClient ibClient,
-            IReaderThreadQueue readerQueueMock, 
+            IReaderThreadQueue readerQueueMock,
+            IResponseProcessor responseProcessor,
+            IResponseMapper responseMapper,
             List<ReqIdAndResponses> messages)
         {
             readerQueueMock.Dequeue().Returns(message);
-            var responseHeandler = new ResponseHandler(readerQueueMock);
-            var responseLoop = new ResponseLoop();
-            var responseMapper = Substitute.For<IResponseMapper>();
+            var responseHandler = new ResponseHandler(readerQueueMock);
+
+            IResponseLoop responseLoop = new ResponseLoop();
+            responseLoop.BreakCondition =
+                () => (DateTime.Now - _startTime).Milliseconds > _breakLoopAfter;
+
+            IBackgroundWorkerAbstraction backgroundWorker = new BackgroundWorkerAbstraction();
+            backgroundWorker.SetDoWorkEventHandler((s, e) =>
+            {
+                responseLoop.Start();
+            });
+
             responseMapper.GetGrouppedResponses().Returns(messages);
-            var responseProcessor = Substitute.For<IResponseProcessor>();
-  
+
             var sut = new Logic(
                 ibClient,
                 responseLoop,
-                responseHeandler,
+                responseHandler,
                 responseMapper,
-                responseProcessor);
+                responseProcessor,
+                backgroundWorker);
 
             sut.Execute();
-            responseMapper.Received().AddResponse(message);
-        }
 
-        [Theory, AutoNSubstituteData]
-        public void NotCallResponseMapperAddResponseIfNoMessage(
-            IIBClient ibClient,
-            IReaderThreadQueue readerQueueMock)
-        {
-            readerQueueMock.Dequeue().Returns(null);
-            var responseHeandler = new ResponseHandler(readerQueueMock);
-            var responseLoop = new ResponseLoop();
-            var responseMapper = Substitute.For<IResponseMapper>();
-            var responseProcessor = Substitute.For<IResponseProcessor>();
-       
-            var sut = new Logic(
-                ibClient,
-                responseLoop,
-                responseHeandler,
-                responseMapper, 
-                responseProcessor);
-
-            sut.Execute();
-            responseMapper.DidNotReceive().AddResponse(Arg.Any<object>());
+            Thread.Sleep(_breakLoopAfter);
+            responseMapper.Received().AddResponse(Arg.Any<object>());
         }
 
         [Theory, AutoNSubstituteData]
@@ -175,23 +278,36 @@ namespace SsbHedger.UnitTests
             object message,
             IIBClient ibClient,
             IReaderThreadQueue readerQueueMock,
+            IResponseProcessor responseProcessor,
+            IResponseMapper responseMapper,
             List<ReqIdAndResponses> messages)
         {
             readerQueueMock.Dequeue().Returns(message);
-            var responseHeandler = new ResponseHandler(readerQueueMock);
-            var responseLoop = new ResponseLoop();
-            var responseMapper = Substitute.For<IResponseMapper>();
+            var responseHandler = new ResponseHandler(readerQueueMock);
+
+            IResponseLoop responseLoop = new ResponseLoop();
+            responseLoop.BreakCondition =
+                () => (DateTime.Now - _startTime).Milliseconds > _breakLoopAfter;
+
+            IBackgroundWorkerAbstraction backgroundWorker = new BackgroundWorkerAbstraction();
+            backgroundWorker.SetDoWorkEventHandler((s, e) =>
+            {
+                responseLoop.Start();
+            });
+
             responseMapper.GetGrouppedResponses().Returns(messages);
-            var responseProcessor = Substitute.For<IResponseProcessor>();
-  
+
             var sut = new Logic(
                 ibClient,
                 responseLoop,
-                responseHeandler,
-                responseMapper, 
-                responseProcessor);
+                responseHandler,
+                responseMapper,
+                responseProcessor,
+                backgroundWorker);
 
             sut.Execute();
+
+            Thread.Sleep(_breakLoopAfter);
             responseMapper.Received().GetGrouppedResponses();
         }
 
@@ -201,26 +317,36 @@ namespace SsbHedger.UnitTests
             IIBClient ibClient,
             IReaderThreadQueue readerQueueMock,
             IResponseProcessor responseProcessor,
+            IResponseMapper responseMapper,
             List<ReqIdAndResponses> messages)
         {
             readerQueueMock.Dequeue().Returns(message);
-            var responseHeandler = new ResponseHandler(readerQueueMock);
-            var responseLoop = new ResponseLoop();
-            var responseMapper = Substitute.For<IResponseMapper>();
+            var responseHandler = new ResponseHandler(readerQueueMock);
+
+            IResponseLoop responseLoop = new ResponseLoop();
+            responseLoop.BreakCondition =
+                () => (DateTime.Now - _startTime).Milliseconds > _breakLoopAfter;
+
+            IBackgroundWorkerAbstraction backgroundWorker = new BackgroundWorkerAbstraction();
+            backgroundWorker.SetDoWorkEventHandler((s, e) =>
+            {
+                responseLoop.Start();
+            });
+
             responseMapper.GetGrouppedResponses().Returns(messages);
-      
+
             var sut = new Logic(
                 ibClient,
                 responseLoop,
-                responseHeandler,
-                responseMapper, 
-                responseProcessor);
+                responseHandler,
+                responseMapper,
+                responseProcessor,
+                backgroundWorker);
 
             sut.Execute();
-          
-            responseProcessor.Received().Process(messages[0]);
-            responseProcessor.Received().Process(messages[1]);
-            responseProcessor.Received().Process(messages[2]);
+
+            Thread.Sleep(_breakLoopAfter);
+            responseProcessor.Received().Process(Arg.Any<ReqIdAndResponses>());
         }
 
         private void VerifyDelegateAttachedTo(object objectWithEvent, string eventName)

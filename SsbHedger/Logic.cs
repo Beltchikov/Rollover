@@ -3,7 +3,6 @@ using SsbHedger.Abstractions;
 using SsbHedger.ResponseProcessing;
 using SsbHedger.ResponseProcessing.Mapper;
 using System;
-using System.Windows.Threading;
 
 namespace SsbHedger
 {
@@ -14,24 +13,25 @@ namespace SsbHedger
         IResponseHandler _responseHandler;
         IResponseMapper _responseMapper;
         IResponseProcessor _responseProcessor;
+        IBackgroundWorkerAbstraction _backgroundWorker;
 
         public Logic(
             IIBClient ibClient,
             IResponseLoop responseLoop,
             IResponseHandler responseHandler,
             IResponseMapper responseMapper,
-            IResponseProcessor responseProcessor)
+            IResponseProcessor responseProcessor,
+            IBackgroundWorkerAbstraction backgroundWorker)
         {
             _ibClient = ibClient;
             _responseLoop = responseLoop;
             _responseHandler = responseHandler;
             _responseMapper = responseMapper;
             _responseProcessor = responseProcessor;
+            _backgroundWorker = backgroundWorker;
 
             _responseProcessor.SetLogic(this);
 
-            _responseLoop.BreakCondition =
-                () => 1==0;
             _responseLoop.Actions = () =>
             {
                 var message = responseHandler.ReaderQueue.Dequeue();
@@ -39,7 +39,7 @@ namespace SsbHedger
                 {
                     return;
                 }
-                responseMapper.AddResponse(message);
+                _responseMapper.AddResponse(message);
                 var responses = _responseMapper.GetGrouppedResponses();
                 foreach (var response in responses)
                 {
@@ -65,7 +65,12 @@ namespace SsbHedger
                        4001,
                        1);
 
-            _responseLoop.Start();
+            _backgroundWorker.SetDoWorkEventHandler((s, e) =>
+            { 
+                _responseLoop.Start();
+            });
+            _backgroundWorker.RunWorkerAsync();
+
 
             //private void btPlaceOrder_Click(object sender, EventArgs e)
             //{

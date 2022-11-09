@@ -33,14 +33,14 @@ namespace SsbHedger
 
             var readerQueue = new ReaderThreadQueue();
             var dispatcher = new DispatcherAbstraction(Dispatcher);
-
-
+           
             _logic = new Logic(
                 IBClient.CreateClient(),
-                new ResponseLoop(),
+                new ResponseLoop() { BreakCondition = () => 1==0},
                 new ResponseHandler(readerQueue),
                 new ResponseMapper(),
-                new ResponseProcessor(dispatcher));
+                new ResponseProcessor(dispatcher),
+                new BackgroundWorkerAbstraction());
             _logic.Execute();
 
             _logic.Error += _logic_Error;

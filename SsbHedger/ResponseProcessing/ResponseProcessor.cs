@@ -21,6 +21,7 @@ namespace SsbHedger.ResponseProcessing
         {
             var messageType = message.GetType();
 
+            // TODO Type is ReqIdAndResponses
             if(messageType == typeof(ErrorInfo))
             {
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
