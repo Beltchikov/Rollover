@@ -9,11 +9,17 @@ namespace SsbHedger.UnitTests.ResponseProcessing
     {
         [Theory, AutoNSubstituteData]
         public void CallDispatcherInvokeForErrorInfoMessage(
-            ErrorInfo errorInfo,
+            int reqId,
+            ErrorInfo errorInfo1,
+            ErrorInfo errorInfo2,
             [Frozen] IDispatcherAbstraction dispatcher,
             ResponseProcessor sut)
         {
-            sut.Process(errorInfo);
+            var reqIdAndResponses = new ReqIdAndResponses(
+                reqId, 
+                new List<object> { errorInfo1, errorInfo2});
+
+            sut.Process(reqIdAndResponses);
             dispatcher.Received().Invoke(Arg.Any<Action>());
         }
 

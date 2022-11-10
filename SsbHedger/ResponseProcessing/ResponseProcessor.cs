@@ -17,20 +17,22 @@ namespace SsbHedger.ResponseProcessing
             _dispatcher = dispatcher;
         }
 
-        public void Process(object message)
+        public void Process(ReqIdAndResponses reqIdAndResponses)
         {
-            var messageType = message.GetType();
-
-            // TODO Type is ReqIdAndResponses
-            if(messageType == typeof(ErrorInfo))
+            var reqId = reqIdAndResponses.ReqId;    
+            foreach(var message in reqIdAndResponses.Responses)
             {
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-                _dispatcher.Invoke(() => _logic.InvokeError((message as ErrorInfo).ToString()));
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-            }
-            else
-            { }
+                var messageType = message.GetType();
 
+                if (messageType == typeof(ErrorInfo))
+                {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                    _dispatcher.Invoke(() => _logic.InvokeError(reqId, (message as ErrorInfo).ToString()));
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+                }
+                else
+                { }
+            }
         }
 
         public void SetLogic(ILogic logic)

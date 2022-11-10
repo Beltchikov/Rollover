@@ -4,10 +4,10 @@ namespace SsbHedger
 {
     public interface ILogic
     {
-        event Action<bool> NextValidId;
-        event Action<string> Error;
+        event Action<int, bool> NextValidId;
+        event Action<int, string> Error;
 
         void Execute();
-        void InvokeError(string message);
+        void InvokeError(int reqId, string message);
     }
 }

@@ -46,7 +46,7 @@ namespace SsbHedger
             _logic.Error += _logic_Error;
         }
 
-        private void _logic_Error(string obj)
+        private void _logic_Error(int reqId, string obj)
         {
             throw new NotImplementedException();
         }

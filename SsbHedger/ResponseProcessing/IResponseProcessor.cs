@@ -2,7 +2,7 @@
 {
     public interface IResponseProcessor
     {
-        void Process(object message);
+        void Process(ReqIdAndResponses reqIdAndResponses);
         void SetLogic(ILogic sut);
     }
 }

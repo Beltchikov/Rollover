@@ -41,15 +41,15 @@ namespace SsbHedger
                 }
                 _responseMapper.AddResponse(message);
                 var responses = _responseMapper.GetGrouppedResponses();
-                foreach (var response in responses)
+                foreach (ReqIdAndResponses response in responses)
                 {
                     _responseProcessor.Process(response);
                 }
             };
         }
 
-        public event Action<bool> NextValidId;
-        public event Action<string> Error;
+        public event Action<int, bool> NextValidId;
+        public event Action<int, string> Error;
 
         public void Execute()
         {
@@ -97,9 +97,9 @@ namespace SsbHedger
             //}
         }
 
-        public void InvokeError(string message)
+        public void InvokeError(int reqId, string message)
         {
-            Error.Invoke(message);
+            Error.Invoke(reqId, message);
         }
 
     }
