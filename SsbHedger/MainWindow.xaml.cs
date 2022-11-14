@@ -1,5 +1,6 @@
 ﻿using IbClient;
 using SsbHedger.Abstractions;
+using SsbHedger.Model;
 using SsbHedger.ResponseProcessing;
 using SsbHedger.ResponseProcessing.Mapper;
 using System;
@@ -33,10 +34,10 @@ namespace SsbHedger
 
             var readerQueue = new ReaderThreadQueue();
             var dispatcher = new DispatcherAbstraction(Dispatcher);
-           
+
             _logic = new Logic(
                 IBClient.CreateClient(),
-                new ResponseLoop() { BreakCondition = () => 1==0},
+                new ResponseLoop() { BreakCondition = () => 1 == 0 },
                 new ResponseHandler(readerQueue),
                 new ResponseMapper(),
                 new ResponseProcessor(dispatcher),
@@ -46,9 +47,10 @@ namespace SsbHedger
             _logic.Error += _logic_Error;
         }
 
-        private void _logic_Error(int reqId, string obj)
+        private void _logic_Error(int reqId, string message)
         {
-            throw new NotImplementedException();
+            //((ViewModelMain)DataContext).Messages.Add(new MessageListBoxItem { Content= $"ReqId:{reqId} {message}"});
+            //((ViewModelMain)DataContext).Messages.Add($"ReqId:{reqId} {message}");
         }
     }
 }
