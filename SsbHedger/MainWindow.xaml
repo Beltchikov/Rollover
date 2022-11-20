@@ -21,6 +21,14 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="10"></RowDefinition>
         </Grid.RowDefinitions>
-        <ListBox x:Name="listBox" Grid.Column="1" Grid.Row="2" d:ItemsSource="{Binding Messages}"/>
+        <ListBox x:Name="listBox" Grid.Column="1" Grid.Row="2" ItemsSource="{Binding Messages/}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Body}"></TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </Window>

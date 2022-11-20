@@ -11,17 +11,17 @@ namespace SsbHedger.Model
 {
     public class ViewModelMain : NotifyPropertyChangedImplementation
     {
-        private ObservableCollection<string> _messages;
+        private ObservableCollection<Message> _messages = new ObservableCollection<Message>();
 
 
         public ViewModelMain()
         {
-            _messages = new ObservableCollection<string>();
+            Messages = new ObservableCollection<Message>();
             //_messages.Add(new MessageListBoxItem { Content = "55555" });
-            _messages.Add("55555");
+            Messages.Add(new Message { ReqId = 0, Body = "TTT"});
         }
 
-        public ObservableCollection<string> Messages
+        public ObservableCollection<Message> Messages
         {
             get { return _messages; }
 

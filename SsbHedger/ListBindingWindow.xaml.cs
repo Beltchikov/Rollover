@@ -1,10 +1,9 @@
 ﻿using IbClient;
+using SsbHedger;
 using SsbHedger.Abstractions;
-using SsbHedger.Model;
-using SsbHedger.ResponseProcessing;
 using SsbHedger.ResponseProcessing.Mapper;
+using SsbHedger.ResponseProcessing;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,19 +15,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
+using SsbHedger.Model;
 
-namespace SsbHedger
+namespace ViewModel.ListBinding
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ListBindingWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ListBindingWindow : Window
     {
         ILogic _logic;
-        
-        public MainWindow()
+
+        public ListBindingWindow()
         {
             InitializeComponent();
 
@@ -49,7 +48,13 @@ namespace SsbHedger
 
         private void _logic_Error(int reqId, string message)
         {
-            ((ViewModelMain)DataContext).Messages.Add(new Message { ReqId=reqId, Body= message });
+            ((ListBindingWindowViewModel)DataContext).Messages.Add(new Message { ReqId = reqId, Body = message });
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+            this.Visibility = Visibility.Hidden;
         }
     }
 }
