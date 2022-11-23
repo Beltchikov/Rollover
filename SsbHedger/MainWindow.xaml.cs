@@ -34,7 +34,7 @@ namespace ViewModel.ListBinding
             var readerQueue = new ReaderThreadQueue();
             var dispatcher = new DispatcherAbstraction(Dispatcher);
 
-            _logic = new Logic(
+            _logic = new WpfIbClient(
                 IBClient.CreateClient(),
                 new ResponseLoop() { BreakCondition = () => 1 == 0 },
                 new ResponseHandler(readerQueue),
