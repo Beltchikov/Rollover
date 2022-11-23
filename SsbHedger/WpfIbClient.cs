@@ -3,6 +3,7 @@ using SsbHedger.Abstractions;
 using SsbHedger.ResponseProcessing;
 using SsbHedger.ResponseProcessing.Mapper;
 using System;
+using System.Windows.Threading;
 
 namespace SsbHedger
 {
@@ -16,25 +17,22 @@ namespace SsbHedger
         IBackgroundWorkerAbstraction _backgroundWorker;
 
         public WpfIbClient(
-            IIBClient ibClient,
-            IResponseLoop responseLoop,
-            IResponseHandler responseHandler,
-            IResponseMapper responseMapper,
-            IResponseProcessor responseProcessor,
+            Func<bool> responseLoopBreakCondition,
+            Dispatcher dispatcher,
             IBackgroundWorkerAbstraction backgroundWorker)
         {
-            _ibClient = ibClient;
-            _responseLoop = responseLoop;
-            _responseHandler = responseHandler;
-            _responseMapper = responseMapper;
-            _responseProcessor = responseProcessor;
+            _ibClient = IBClient.CreateClient();
+            _responseLoop = new ResponseLoop() { BreakCondition = responseLoopBreakCondition };
+            _responseHandler = new ResponseHandler(new ReaderThreadQueue());
+            _responseMapper = new ResponseMapper();
+            _responseProcessor = new ResponseProcessor(new DispatcherAbstraction(dispatcher));
             _backgroundWorker = backgroundWorker;
 
             _responseProcessor.SetLogic(this);
 
             _responseLoop.Actions = () =>
             {
-                var message = responseHandler.ReaderQueue.Dequeue();
+                var message = _responseHandler.ReaderQueue.Dequeue();
                 if (message == null)
                 {
                     return;
