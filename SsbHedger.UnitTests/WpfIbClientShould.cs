@@ -9,7 +9,7 @@ using System.Reflection;
 
 namespace SsbHedger.UnitTests
 {
-    public class LogicShould
+    public class WpfIbClientShould
     {
         int _breakLoopAfter = 100;
         DateTime _startTime = DateTime.Now;
