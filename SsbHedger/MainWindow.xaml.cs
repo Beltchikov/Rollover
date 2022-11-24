@@ -20,7 +20,7 @@ namespace ViewModel.ListBinding
             _ibClient = WpfIbClient.Create(() => 1 == 0, Dispatcher);
             _connectionObserver = new ConnectionObserver();
             _connectionObserver.Subscribe(_ibClient);
-            _ibClient.Execute();
+            _ibClient.Connect("localhost", 4001, 1);
 
 
             // Obsolete
