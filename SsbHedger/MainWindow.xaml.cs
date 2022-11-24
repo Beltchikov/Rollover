@@ -14,22 +14,22 @@ namespace ViewModel.ListBinding
     /// </summary>
     public partial class ListBindingWindow : Window
     {
-        IWpfIbClient _logic;
+        IWpfIbClient _ibClient;
 
         public ListBindingWindow()
         {
             InitializeComponent();
 
-           _logic = new WpfIbClient(
+           _ibClient = new WpfIbClient(
                 IBClient.CreateClient(),
                 new ResponseLoop() { BreakCondition = () => 1 == 0 },
                 new ResponseHandler(new ReaderThreadQueue()),
                 new ResponseMapper(),
                 new ResponseProcessor(new DispatcherAbstraction(Dispatcher)),
                 new BackgroundWorkerAbstraction());
-            _logic.Execute();
+            _ibClient.Execute();
 
-            _logic.Error += _logic_Error;
+            _ibClient.Error += _logic_Error;
         }
 
         private void _logic_Error(int reqId, string message)
