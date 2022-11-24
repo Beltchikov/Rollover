@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace SsbHedger
+namespace SsbHedger.WpfIbClient
 {
-    public interface ILogic
+    public interface IWpfIbClient
     {
         event Action<int, bool> NextValidId;
         event Action<int, string> Error;

@@ -1,4 +1,5 @@
 ﻿using SsbHedger.Abstractions;
+using SsbHedger.WpfIbClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace SsbHedger.ResponseProcessing
     public class ResponseProcessor : IResponseProcessor
     {
         IDispatcherAbstraction _dispatcher;
-        ILogic? _logic;
+        IWpfIbClient? _logic;
 
         public ResponseProcessor(IDispatcherAbstraction dispatcher)
         {
@@ -35,7 +36,7 @@ namespace SsbHedger.ResponseProcessing
             }
         }
 
-        public void SetLogic(ILogic logic)
+        public void SetLogic(IWpfIbClient logic)
         {
             _logic = logic;
         }

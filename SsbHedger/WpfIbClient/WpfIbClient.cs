@@ -6,7 +6,7 @@ using System;
 
 namespace SsbHedger.WpfIbClient
 {
-    public class WpfIbClient : ILogic
+    public class WpfIbClient : IWpfIbClient
     {
         IIBClient _ibClient;
         IResponseLoop _responseLoop;

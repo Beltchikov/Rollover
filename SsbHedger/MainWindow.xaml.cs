@@ -14,7 +14,7 @@ namespace ViewModel.ListBinding
     /// </summary>
     public partial class ListBindingWindow : Window
     {
-        ILogic _logic;
+        IWpfIbClient _logic;
 
         public ListBindingWindow()
         {
