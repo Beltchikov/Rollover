@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace SsbHedger.ResponseObservers
+namespace SsbHedger.WpfIbClient.ResponseObservers
 {
-    public class ConnectionObserver : IObserver<string>
+    public class ConnectionObserver : IObserver<Connection>
     {
         public ConnectionObserver()
         {
@@ -18,9 +18,14 @@ namespace SsbHedger.ResponseObservers
             throw new NotImplementedException();
         }
 
-        public void OnNext(string value)
+        public void OnNext(Connection value)
         {
             throw new NotImplementedException();
+        }
+
+        public void Subscribe(IObservable<Connection> ibClient)
+        {
+            //throw new NotImplementedException();
         }
     }
 }

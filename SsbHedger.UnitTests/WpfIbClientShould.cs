@@ -33,7 +33,7 @@ namespace SsbHedger.UnitTests
             var backgroundWorker = Substitute.For<IBackgroundWorkerAbstraction>();
       
             responseLoop.When(l => l.Start()).Do(x => { });
-            var sut = new WpfIbClient.WpfIbClient(
+            var sut = new SsbHedger.WpfIbClient.WpfIbClient(
                 ibClient,
                 responseLoop,
                 responseHandler,
@@ -50,7 +50,8 @@ namespace SsbHedger.UnitTests
         public void CallIbClientConnectAndStartReaderThread(
             [Frozen] IIBClient ibClient)
         {
-            WpfIbClient.WpfIbClient sut = (WpfIbClient.WpfIbClient)WpfIbClient.WpfIbClient
+            SsbHedger.WpfIbClient.WpfIbClient sut 
+                = (SsbHedger.WpfIbClient.WpfIbClient)SsbHedger.WpfIbClient.WpfIbClient
                 .Create(() => 1 == 1, (new UIElement()).Dispatcher);
             sut._ibClient = ibClient;
             sut.Execute();
@@ -92,7 +93,7 @@ namespace SsbHedger.UnitTests
             responseMapper.GetGrouppedResponses().Returns(messages);
             var responseProcessor = Substitute.For<IResponseProcessor>();
             
-            var sut = new WpfIbClient.WpfIbClient(
+            var sut = new SsbHedger.WpfIbClient.WpfIbClient(
                 ibClient,
                 responseLoop,
                 responseHeandler,
@@ -120,7 +121,7 @@ namespace SsbHedger.UnitTests
             var responseMapper = Substitute.For<IResponseMapper>();
             var responseProcessor = Substitute.For<IResponseProcessor>();
             
-            var sut = new WpfIbClient.WpfIbClient(
+            var sut = new SsbHedger.WpfIbClient.WpfIbClient(
                 ibClient,
                 responseLoop,
                 responseHeandler,
@@ -151,7 +152,7 @@ namespace SsbHedger.UnitTests
             var responseMapper = Substitute.For<IResponseMapper>();
             responseMapper.GetGrouppedResponses().Returns(messages);
             
-            var sut = new WpfIbClient.WpfIbClient(
+            var sut = new SsbHedger.WpfIbClient.WpfIbClient(
                 ibClient,
                 responseLoop,
                 responseHeandler,
@@ -188,7 +189,7 @@ namespace SsbHedger.UnitTests
             var responseMapper = Substitute.For<IResponseMapper>();
             responseMapper.GetGrouppedResponses().Returns(messages);
 
-            var sut = new WpfIbClient.WpfIbClient(
+            var sut = new SsbHedger.WpfIbClient.WpfIbClient(
                 ibClient,
                 responseLoop,
                 responseHeandler,
@@ -225,7 +226,7 @@ namespace SsbHedger.UnitTests
             var responseMapper = Substitute.For<IResponseMapper>();
             responseMapper.GetGrouppedResponses().Returns(messages);
 
-            var sut = new WpfIbClient.WpfIbClient(
+            var sut = new SsbHedger.WpfIbClient.WpfIbClient(
                 ibClient,
                 responseLoop,
                 responseHandler,
@@ -263,7 +264,7 @@ namespace SsbHedger.UnitTests
 
             responseMapper.GetGrouppedResponses().Returns(messages);
 
-            var sut = new WpfIbClient.WpfIbClient(
+            var sut = new SsbHedger.WpfIbClient.WpfIbClient(
                 ibClient,
                 responseLoop,
                 responseHandler,
@@ -301,7 +302,7 @@ namespace SsbHedger.UnitTests
 
             responseMapper.GetGrouppedResponses().Returns(messages);
 
-            var sut = new WpfIbClient.WpfIbClient(
+            var sut = new SsbHedger.WpfIbClient.WpfIbClient(
                 ibClient,
                 responseLoop,
                 responseHandler,
@@ -339,7 +340,7 @@ namespace SsbHedger.UnitTests
 
             responseMapper.GetGrouppedResponses().Returns(messages);
 
-            var sut = new WpfIbClient.WpfIbClient(
+            var sut = new SsbHedger.WpfIbClient.WpfIbClient(
                 ibClient,
                 responseLoop,
                 responseHandler,
