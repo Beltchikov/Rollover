@@ -3,20 +3,23 @@ using SsbHedger.Abstractions;
 using SsbHedger.ResponseProcessing;
 using SsbHedger.ResponseProcessing.Mapper;
 using System;
+using System.Runtime.CompilerServices;
 using System.Windows.Threading;
+
+[assembly: InternalsVisibleTo("SsbHedger.UnitTests")]
 
 namespace SsbHedger.WpfIbClient
 {
     public class WpfIbClient : IWpfIbClient
     {
-        IIBClient _ibClient;
+        internal IIBClient _ibClient;
         IResponseLoop _responseLoop;
         IResponseHandler _responseHandler;
         IResponseMapper _responseMapper;
         IResponseProcessor _responseProcessor;
         IBackgroundWorkerAbstraction _backgroundWorker;
 
-        public WpfIbClient(
+        internal WpfIbClient(
             IIBClient ibClient,
             IResponseLoop responseLoop,
             IResponseHandler responseHandler,

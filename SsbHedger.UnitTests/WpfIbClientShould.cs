@@ -6,6 +6,8 @@ using SsbHedger.Abstractions;
 using SsbHedger.ResponseProcessing;
 using SsbHedger.ResponseProcessing.Mapper;
 using System.Reflection;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace SsbHedger.UnitTests
 {
@@ -46,9 +48,11 @@ namespace SsbHedger.UnitTests
 
         [Theory, AutoNSubstituteData]
         public void CallIbClientConnectAndStartReaderThread(
-            [Frozen] IIBClient ibClient,
-            WpfIbClient.WpfIbClient sut)
+            [Frozen] IIBClient ibClient)
         {
+            WpfIbClient.WpfIbClient sut = (WpfIbClient.WpfIbClient)WpfIbClient.WpfIbClient
+                .Create(() => 1 == 1, (new UIElement()).Dispatcher);
+            sut._ibClient = ibClient;
             sut.Execute();
             ibClient.Received().ConnectAndStartReaderThread(
                 Arg.Any<string>(),
