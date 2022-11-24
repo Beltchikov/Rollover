@@ -5,6 +5,7 @@ using SsbHedger.Model;
 using SsbHedger.ResponseProcessing;
 using SsbHedger.ResponseProcessing.Mapper;
 using SsbHedger.WpfIbClient;
+using System.Net;
 using System.Windows;
 
 namespace ViewModel.ListBinding
@@ -20,15 +21,8 @@ namespace ViewModel.ListBinding
         {
             InitializeComponent();
 
-           _ibClient = new WpfIbClient(
-                IBClient.CreateClient(),
-                new ResponseLoop() { BreakCondition = () => 1 == 0 },
-                new ResponseHandler(new ReaderThreadQueue()),
-                new ResponseMapper(),
-                new ResponseProcessor(new DispatcherAbstraction(Dispatcher)),
-                new BackgroundWorkerAbstraction());
+            _ibClient = WpfIbClient.Create(() => 1 == 0, Dispatcher);
             _ibClient.Execute();
-
             _ibClient.Error += _logic_Error;
         }
 

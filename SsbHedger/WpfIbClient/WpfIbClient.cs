@@ -3,6 +3,7 @@ using SsbHedger.Abstractions;
 using SsbHedger.ResponseProcessing;
 using SsbHedger.ResponseProcessing.Mapper;
 using System;
+using System.Windows.Threading;
 
 namespace SsbHedger.WpfIbClient
 {
@@ -50,6 +51,17 @@ namespace SsbHedger.WpfIbClient
 
         public event Action<int, bool> NextValidId;
         public event Action<int, string> Error;
+
+        public static IWpfIbClient Create(Func<bool> breakCondition, Dispatcher dispatcher)
+        {
+            return new WpfIbClient(
+                 IBClient.CreateClient(),
+                 new ResponseLoop() { BreakCondition = breakCondition },
+                 new ResponseHandler(new ReaderThreadQueue()),
+                 new ResponseMapper(),
+                 new ResponseProcessor(new DispatcherAbstraction(dispatcher)),
+                 new BackgroundWorkerAbstraction());
+        }
 
         public void Execute()
         {
