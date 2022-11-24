@@ -31,15 +31,12 @@ namespace ViewModel.ListBinding
         {
             InitializeComponent();
 
-            var readerQueue = new ReaderThreadQueue();
-            var dispatcher = new DispatcherAbstraction(Dispatcher);
-
-            _logic = new WpfIbClient(
+           _logic = new WpfIbClient(
                 IBClient.CreateClient(),
                 new ResponseLoop() { BreakCondition = () => 1 == 0 },
-                new ResponseHandler(readerQueue),
+                new ResponseHandler(new ReaderThreadQueue()),
                 new ResponseMapper(),
-                new ResponseProcessor(dispatcher),
+                new ResponseProcessor(new DispatcherAbstraction(Dispatcher)),
                 new BackgroundWorkerAbstraction());
             _logic.Execute();
 
