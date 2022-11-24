@@ -2,6 +2,7 @@
 using SsbHedger;
 using SsbHedger.Abstractions;
 using SsbHedger.Model;
+using SsbHedger.ResponseObservers;
 using SsbHedger.ResponseProcessing;
 using SsbHedger.ResponseProcessing.Mapper;
 using SsbHedger.WpfIbClient;
@@ -23,6 +24,9 @@ namespace ViewModel.ListBinding
 
             _ibClient = WpfIbClient.Create(() => 1 == 0, Dispatcher);
             _ibClient.Execute();
+
+            var connectionObserver = new ConnectionObserver();
+
             _ibClient.Error += _logic_Error;
         }
 
