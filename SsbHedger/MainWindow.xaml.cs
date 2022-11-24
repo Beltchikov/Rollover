@@ -11,19 +11,19 @@ namespace ViewModel.ListBinding
     public partial class ListBindingWindow : Window
     {
         IWpfIbClient _ibClient;
+        ConnectionObserver _connectionObserver;
 
         public ListBindingWindow()
         {
             InitializeComponent();
 
             _ibClient = WpfIbClient.Create(() => 1 == 0, Dispatcher);
-            
-            
+            _connectionObserver = new ConnectionObserver();
+            _connectionObserver.Subscribe(_ibClient);
             _ibClient.Execute();
 
-            var connectionObserver = new ConnectionObserver();
-            connectionObserver.Subscribe(_ibClient);
 
+            // Obsolete
             _ibClient.Error += _logic_Error;
         }
 
