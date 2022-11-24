@@ -4,7 +4,7 @@ using SsbHedger.ResponseProcessing;
 using SsbHedger.ResponseProcessing.Mapper;
 using System;
 
-namespace SsbHedger
+namespace SsbHedger.WpfIbClient
 {
     public class WpfIbClient : ILogic
     {
@@ -66,7 +66,7 @@ namespace SsbHedger
                        1);
 
             _backgroundWorker.SetDoWorkEventHandler((s, e) =>
-            { 
+            {
                 _responseLoop.Start();
             });
             _backgroundWorker.RunWorkerAsync();
