@@ -5,9 +5,9 @@ using NSubstitute;
 using SsbHedger.Abstractions;
 using SsbHedger.ResponseProcessing;
 using SsbHedger.ResponseProcessing.Mapper;
+using SsbHedger.WpfIbClient.ResponseObservers;
 using System.Reflection;
 using System.Windows;
-using System.Windows.Threading;
 
 namespace SsbHedger.UnitTests
 {
@@ -352,6 +352,39 @@ namespace SsbHedger.UnitTests
 
             Thread.Sleep(_breakLoopAfter);
             responseProcessor.Received().Process(Arg.Any<ReqIdAndResponses>());
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void AddObserverInSubscribeConnection(ConnectionObserver observer)
+        {
+            SsbHedger.WpfIbClient.WpfIbClient sut
+                = (SsbHedger.WpfIbClient.WpfIbClient)SsbHedger.WpfIbClient.WpfIbClient
+                .Create(() => 1 == 1, (new UIElement()).Dispatcher);
+            sut.Subscribe(observer);
+            Assert.Single(sut._observersForConnection);
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void NotAddObserverInSubscribeConnectionIfExists(ConnectionObserver observer)
+        {
+            SsbHedger.WpfIbClient.WpfIbClient sut
+                = (SsbHedger.WpfIbClient.WpfIbClient)SsbHedger.WpfIbClient.WpfIbClient
+                .Create(() => 1 == 1, (new UIElement()).Dispatcher);
+            sut.Subscribe(observer);
+            sut.Subscribe(observer);
+            Assert.Single(sut._observersForConnection);
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void ReturnUnsubscriber(ConnectionObserver observer)
+        {
+            SsbHedger.WpfIbClient.WpfIbClient sut
+                = (SsbHedger.WpfIbClient.WpfIbClient)SsbHedger.WpfIbClient.WpfIbClient
+                .Create(() => 1 == 1, (new UIElement()).Dispatcher);
+            var result = sut.Subscribe(observer);
+            
+            Assert.NotNull(result);
+            Assert.IsType<Unsubscriber<Connection>>(result);
         }
 
         private void VerifyDelegateAttachedTo(object objectWithEvent, string eventName)
