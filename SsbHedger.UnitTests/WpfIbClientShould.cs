@@ -41,7 +41,7 @@ namespace SsbHedger.UnitTests
                 responseProcessor,
                 backgroundWorker);
 
-            sut.Connect("localhost", 4001, 1);
+            sut.Execute();
 
             VerifyDelegateAttachedTo(ibClient, eventName);
         }
@@ -54,7 +54,7 @@ namespace SsbHedger.UnitTests
                 = (SsbHedger.WpfIbClient.WpfIbClient)SsbHedger.WpfIbClient.WpfIbClient
                 .Create(() => 1 == 1, (new UIElement()).Dispatcher);
             sut._ibClient = ibClient;
-            sut.Connect("localhost", 4001, 1);
+            sut.Execute();
             ibClient.Received().ConnectAndStartReaderThread(
                 Arg.Any<string>(),
                 Arg.Any<int>(),
@@ -101,7 +101,7 @@ namespace SsbHedger.UnitTests
                 responseProcessor, 
                 backgroundWorker);
 
-            sut.Connect("localhost", 4001, 1);
+            sut.Execute();
             responseProcessor.Received().SetLogic(sut);
         }
 
@@ -129,7 +129,7 @@ namespace SsbHedger.UnitTests
                 responseProcessor, 
                 backgroundWorker );
 
-            sut.Connect("localhost", 4001, 1);
+            sut.Execute();
             responseMapper.DidNotReceive().AddResponse(Arg.Any<object>());
         }
 
@@ -160,7 +160,7 @@ namespace SsbHedger.UnitTests
                 responseProcessor,
                 backgroundWorker);
 
-            sut.Connect("localhost", 4001, 1);
+            sut.Execute();
 
             backgroundWorker.Received().RunWorkerAsync();   
         }
@@ -197,7 +197,7 @@ namespace SsbHedger.UnitTests
                 responseProcessor,
                 backgroundWorker);
 
-            sut.Connect("localhost", 4001, 1);
+            sut.Execute();
 
             responseLoop.Received().Start();
         }
@@ -234,7 +234,7 @@ namespace SsbHedger.UnitTests
                 responseProcessor,
                 backgroundWorker);
 
-            sut.Connect("localhost", 4001, 1);
+            sut.Execute();
 
             Thread.Sleep(_breakLoopAfter);
             readerQueueMock.Received().Dequeue();
@@ -272,7 +272,7 @@ namespace SsbHedger.UnitTests
                 responseProcessor,
                 backgroundWorker);
 
-            sut.Connect("localhost", 4001, 1);
+            sut.Execute();
 
             Thread.Sleep(_breakLoopAfter);
             responseMapper.Received().AddResponse(Arg.Any<object>());
@@ -310,7 +310,7 @@ namespace SsbHedger.UnitTests
                 responseProcessor,
                 backgroundWorker);
 
-            sut.Connect("localhost", 4001, 1);
+            sut.Execute();
 
             Thread.Sleep(_breakLoopAfter);
             responseMapper.Received().GetGrouppedResponses();
@@ -348,7 +348,7 @@ namespace SsbHedger.UnitTests
                 responseProcessor,
                 backgroundWorker);
 
-            sut.Connect("localhost", 4001, 1);
+            sut.Execute();
 
             Thread.Sleep(_breakLoopAfter);
             responseProcessor.Received().Process(Arg.Any<ReqIdAndResponses>());

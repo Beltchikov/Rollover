@@ -8,7 +8,7 @@ namespace SsbHedger.WpfIbClient
         event Action<int, bool> NextValidId;
         event Action<int, string> Error;
 
-        void Connect(string host, int port, int clientId);
+        void Execute();
         void InvokeError(int reqId, string message);
     }
 }

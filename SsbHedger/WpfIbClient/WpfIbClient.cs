@@ -72,7 +72,7 @@ namespace SsbHedger.WpfIbClient
                  new BackgroundWorkerAbstraction());
         }
 
-        public void Connect(string host, int port, int clientId)
+        public void Execute()
         {
             _ibClient.NextValidId += _responseHandler.OnNextValidId;
             _ibClient.Error += _responseHandler.OnError;
