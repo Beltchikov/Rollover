@@ -2,7 +2,6 @@
 using SsbHedger.Abstractions;
 using SsbHedger.ResponseProcessing;
 using SsbHedger.ResponseProcessing.Mapper;
-using SsbHedger.WpfIbClient.ResponseObservers;
 using System;
 using System.Runtime.CompilerServices;
 using System.Windows.Threading;
@@ -116,11 +115,6 @@ namespace SsbHedger.WpfIbClient
         public void InvokeError(int reqId, string message)
         {
             Error.Invoke(reqId, message);
-        }
-
-        public IDisposable Subscribe(IObserver<Connection> observer)
-        {
-            throw new NotImplementedException();
         }
     }
 }

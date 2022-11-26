@@ -1,9 +1,8 @@
-﻿using SsbHedger.WpfIbClient.ResponseObservers;
-using System;
+﻿using System;
 
 namespace SsbHedger.WpfIbClient
 {
-    public interface IWpfIbClient : IObservable<Connection>
+    public interface IWpfIbClient 
     {
         event Action<int, bool> NextValidId;
         event Action<int, string> Error;
