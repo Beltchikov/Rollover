@@ -4,7 +4,6 @@ using SsbHedger.ResponseProcessing;
 using SsbHedger.ResponseProcessing.Mapper;
 using SsbHedger.WpfIbClient.ResponseObservers;
 using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Windows.Threading;
 
@@ -21,8 +20,6 @@ namespace SsbHedger.WpfIbClient
         IResponseProcessor _responseProcessor;
         IBackgroundWorkerAbstraction _backgroundWorker;
 
-        internal List<IObserver<Connection>> _observersForConnection;
-
         internal WpfIbClient(
             IIBClient ibClient,
             IResponseLoop responseLoop,
@@ -37,8 +34,6 @@ namespace SsbHedger.WpfIbClient
             _responseMapper = responseMapper;
             _responseProcessor = responseProcessor;
             _backgroundWorker = backgroundWorker;
-
-            _observersForConnection = new List<IObserver<Connection>>();
 
             _responseProcessor.SetLogic(this);
 
@@ -125,12 +120,7 @@ namespace SsbHedger.WpfIbClient
 
         public IDisposable Subscribe(IObserver<Connection> observer)
         {
-            if (!_observersForConnection.Contains(observer))
-            {
-                _observersForConnection.Add(observer);
-            }
-
-            return new Unsubscriber<Connection>(_observersForConnection, observer);
+            throw new NotImplementedException();
         }
     }
 }

@@ -6,7 +6,7 @@ namespace SsbHedger.UnitTests.WpfIbClient.ResponseObserver
     public class ConnectionObserverShould
     {
         [Theory, AutoNSubstituteData]
-        public void CallIbClientSubscribeForConnection(
+        public void CallIbClientSubscribe(
             IObservable<Connection> connectionObservable,
             ConnectionObserver sut)
         {
@@ -16,14 +16,14 @@ namespace SsbHedger.UnitTests.WpfIbClient.ResponseObserver
         }
 
         [Theory, AutoNSubstituteData]
-        public void CallUnsubscriberConnectionDispose(
+        public void CallUnsubscriberDispose(
             IDisposable unsubscriber,
             IObservable<Connection> connectionObservable,
             ConnectionObserver sut)
         {
             sut.Subscribe(connectionObservable);
-            sut._unsubscriberConnection = unsubscriber;
-            sut.UnsubscribeForConnection();
+            sut._unsubscriber = unsubscriber;
+            sut.Unsubscribe();
 
             unsubscriber.Received().Dispose();
         }

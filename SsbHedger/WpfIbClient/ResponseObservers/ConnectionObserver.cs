@@ -4,7 +4,7 @@ namespace SsbHedger.WpfIbClient.ResponseObservers
 {
     public class ConnectionObserver : IObserver<Connection>
     {
-        internal IDisposable _unsubscriberConnection;
+        internal IDisposable _unsubscriber;
 
         public ConnectionObserver()
         {
@@ -27,12 +27,12 @@ namespace SsbHedger.WpfIbClient.ResponseObservers
 
         public void Subscribe(IObservable<Connection> ibClient)
         {
-            _unsubscriberConnection = ibClient.Subscribe(this);
+            _unsubscriber = ibClient.Subscribe(this);
         }
 
-        public void UnsubscribeForConnection()
+        public void Unsubscribe()
         {
-            _unsubscriberConnection.Dispose();
+            _unsubscriber.Dispose();
         }
     }
 }
