@@ -127,7 +127,6 @@ namespace SsbHedger.UnitTests
 
         [Theory, AutoNSubstituteData]
         public void CallDequeue(
-            object message,
             IIBClient ibClient,
             IResponseHandler responseHandler)
         {
