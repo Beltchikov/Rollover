@@ -1,4 +1,5 @@
 ﻿using IbClient.messages;
+using SsbHedger.Abstractions;
 using System;
 
 namespace SsbHedger.ResponseProcessing
@@ -7,10 +8,14 @@ namespace SsbHedger.ResponseProcessing
     {
         private readonly object OPEN_ORDER_END = "OpenOrderEnd";
         IReaderThreadQueue _queue;
+        IDispatcherAbstraction _dispatcherAbstraction;
 
-        public ResponseHandler(IReaderThreadQueue queue)
+        public ResponseHandler(
+            IReaderThreadQueue queue,
+            IDispatcherAbstraction dispatcherAbstraction)
         {
             _queue = queue;
+            _dispatcherAbstraction = dispatcherAbstraction;
         }
 
         internal IReaderThreadQueue ReaderQueue => _queue;
@@ -23,6 +28,12 @@ namespace SsbHedger.ResponseProcessing
         public void HandleNextMessage()
         {
             var message = Dequeue();
+            if(message == null)
+            {
+                return;
+            }
+
+            _dispatcherAbstraction.Invoke(() => { });
 
             //throw new NotImplementedException();
         }

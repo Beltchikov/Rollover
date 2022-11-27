@@ -30,12 +30,11 @@ namespace SsbHedger.UnitTests
             var dispatcherAbstraction = Substitute.For<IDispatcherAbstraction>();
       
             responseLoop.When(l => l.Start()).Do(x => { });
-            var sut = new SsbHedger.WpfIbClient.WpfIbClient(
+            var sut = new WpfIbClient.WpfIbClient(
                 ibClient,
                 responseLoop,
                 responseHandler,
-                backgroundWorker,
-                dispatcherAbstraction);
+                backgroundWorker);
 
             sut.Execute();
 
@@ -80,7 +79,9 @@ namespace SsbHedger.UnitTests
             IDispatcherAbstraction dispatcherAbstraction)
         {
             readerQueueMock.Dequeue().Returns(message);
-            var responseHeandler = new ResponseHandler(readerQueueMock);
+            var responseHeandler = new ResponseHandler(
+                readerQueueMock,
+                dispatcherAbstraction);
 
             var responseLoop = new ResponseLoop();
             responseLoop.BreakCondition =
@@ -90,8 +91,7 @@ namespace SsbHedger.UnitTests
                 ibClient,
                 responseLoop,
                 responseHeandler,
-                backgroundWorker, 
-                dispatcherAbstraction);
+                backgroundWorker);
 
             sut.Execute();
 
@@ -107,7 +107,9 @@ namespace SsbHedger.UnitTests
             IDispatcherAbstraction dispatcherAbstraction)
         {
             readerQueueMock.Dequeue().Returns(message);
-            var responseHeandler = new ResponseHandler(readerQueueMock);
+            var responseHeandler = new ResponseHandler(
+                readerQueueMock,
+                dispatcherAbstraction);
 
             responseLoop.BreakCondition =
                 () => (DateTime.Now - _startTime).Milliseconds > _breakLoopAfter;
@@ -122,8 +124,7 @@ namespace SsbHedger.UnitTests
                 ibClient,
                 responseLoop,
                 responseHeandler,
-                backgroundWorker,
-                dispatcherAbstraction);
+                backgroundWorker);
 
             sut.Execute();
 
@@ -133,8 +134,7 @@ namespace SsbHedger.UnitTests
         [Theory, AutoNSubstituteData]
         public void CallResponseHandlerHandleNextMessage(
             IIBClient ibClient,
-            IResponseHandler responseHandler,
-            IDispatcherAbstraction dispatcherAbstraction)
+            IResponseHandler responseHandler)
         {
             IResponseLoop responseLoop = new ResponseLoop();
             responseLoop.BreakCondition =
@@ -150,8 +150,7 @@ namespace SsbHedger.UnitTests
                 ibClient,
                 responseLoop,
                 responseHandler,
-                backgroundWorker,
-                dispatcherAbstraction);
+                backgroundWorker);
 
             sut.Execute();
 

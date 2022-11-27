@@ -20,8 +20,7 @@ namespace SsbHedger.WpfIbClient
             IIBClient ibClient,
             IResponseLoop responseLoop,
             IResponseHandler responseHandler,
-            IBackgroundWorkerAbstraction backgroundWorker,
-            IDispatcherAbstraction dispatcherAbstraction)
+            IBackgroundWorkerAbstraction backgroundWorker)
         {
             _ibClient = ibClient;
             _responseLoop = responseLoop;
@@ -50,9 +49,8 @@ namespace SsbHedger.WpfIbClient
             return new WpfIbClient(
                  IBClient.CreateClient(),
                  new ResponseLoop() { BreakCondition = breakCondition },
-                 new ResponseHandler(new ReaderThreadQueue()),
-                 new BackgroundWorkerAbstraction(),
-                 new DispatcherAbstraction(dispatcher));
+                 new ResponseHandler(new ReaderThreadQueue(), new DispatcherAbstraction(dispatcher)),
+                 new BackgroundWorkerAbstraction());
         }
 
         public void Execute()

@@ -1,6 +1,8 @@
 ﻿using AutoFixture.Xunit2;
 using IbClient.messages;
 using NSubstitute;
+using NSubstitute.ReturnsExtensions;
+using SsbHedger.Abstractions;
 using SsbHedger.ResponseProcessing;
 
 namespace SsbHedger.UnitTests.ResponseProcessing
@@ -111,6 +113,28 @@ namespace SsbHedger.UnitTests.ResponseProcessing
         {
             sut.HandleNextMessage();
             queue.Received().Dequeue();
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallDispatcherAbstractionInvoke(
+            [Frozen] IReaderThreadQueue queue,
+            [Frozen] IDispatcherAbstraction dispatcherAbstraction,
+            ResponseHandler sut)
+        {
+            queue.Dequeue().Returns(new object());
+            sut.HandleNextMessage();
+            dispatcherAbstraction.Received().Invoke(Arg.Any<Action>());
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void NotCallDispatcherAbstractionInvoke(
+           [Frozen] IReaderThreadQueue queue,
+           [Frozen] IDispatcherAbstraction dispatcherAbstraction,
+           ResponseHandler sut)
+        {
+            queue.Dequeue().ReturnsNull();
+            sut.HandleNextMessage();
+            dispatcherAbstraction.DidNotReceive().Invoke(Arg.Any<Action>());
         }
     }
 }
