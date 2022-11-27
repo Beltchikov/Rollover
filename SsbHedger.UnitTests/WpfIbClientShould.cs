@@ -27,7 +27,6 @@ namespace SsbHedger.UnitTests
             var ibClient = IBClient.CreateClient();
             var responseLoop = Substitute.For<IResponseLoop>();
             var responseHandler = Substitute.For<IResponseHandler>();
-            var responseProcessor = Substitute.For<IResponseProcessor>();
             var backgroundWorker = Substitute.For<IBackgroundWorkerAbstraction>();
       
             responseLoop.When(l => l.Start()).Do(x => { });
@@ -35,7 +34,6 @@ namespace SsbHedger.UnitTests
                 ibClient,
                 responseLoop,
                 responseHandler,
-                responseProcessor,
                 backgroundWorker);
 
             sut.Execute();
@@ -73,40 +71,11 @@ namespace SsbHedger.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
-        public void CallResponseProcessorSetLogic(
-            IIBClient ibClient,
-            IReaderThreadQueue readerQueueMock,
-            IBackgroundWorkerAbstraction backgroundWorker,
-            List<ReqIdAndResponses> messages
-            )
-        {
-            var responseHeandler = new ResponseHandler(readerQueueMock);
-
-            var responseLoop = new ResponseLoop();
-            responseLoop.BreakCondition =
-                () => (DateTime.Now - _startTime).Milliseconds > _breakLoopAfter;
-
-            var responseProcessor = Substitute.For<IResponseProcessor>();
-            
-            var sut = new SsbHedger.WpfIbClient.WpfIbClient(
-                ibClient,
-                responseLoop,
-                responseHeandler,
-                responseProcessor, 
-                backgroundWorker);
-
-            sut.Execute();
-            responseProcessor.Received().SetLogic(sut);
-        }
-
-        [Theory, AutoNSubstituteData]
         public void CallBackgroundWorker(
             object message,
             IIBClient ibClient,
             IReaderThreadQueue readerQueueMock,
-            IResponseProcessor responseProcessor,
-            IBackgroundWorkerAbstraction backgroundWorker,
-            List<ReqIdAndResponses> messages)
+            IBackgroundWorkerAbstraction backgroundWorker)
         {
             readerQueueMock.Dequeue().Returns(message);
             var responseHeandler = new ResponseHandler(readerQueueMock);
@@ -115,12 +84,11 @@ namespace SsbHedger.UnitTests
             responseLoop.BreakCondition =
                 () => (DateTime.Now - _startTime).Milliseconds > _breakLoopAfter;
 
-            var sut = new SsbHedger.WpfIbClient.WpfIbClient(
+            var sut = new WpfIbClient.WpfIbClient(
                 ibClient,
                 responseLoop,
                 responseHeandler,
-                responseProcessor,
-                backgroundWorker);
+               backgroundWorker);
 
             sut.Execute();
 
@@ -132,9 +100,7 @@ namespace SsbHedger.UnitTests
             object message,
             IIBClient ibClient,
             IResponseLoop responseLoop,
-            IReaderThreadQueue readerQueueMock,
-            IResponseProcessor responseProcessor,
-            List<ReqIdAndResponses> messages)
+            IReaderThreadQueue readerQueueMock)
         {
             readerQueueMock.Dequeue().Returns(message);
             var responseHeandler = new ResponseHandler(readerQueueMock);
@@ -148,11 +114,10 @@ namespace SsbHedger.UnitTests
                 responseLoop.Start();
             });
 
-            var sut = new SsbHedger.WpfIbClient.WpfIbClient(
+            var sut = new WpfIbClient.WpfIbClient(
                 ibClient,
                 responseLoop,
                 responseHeandler,
-                responseProcessor,
                 backgroundWorker);
 
             sut.Execute();
@@ -164,9 +129,7 @@ namespace SsbHedger.UnitTests
         public void CallDequeue(
             object message,
             IIBClient ibClient,
-            IReaderThreadQueue readerQueueMock,
-            IResponseProcessor responseProcessor,
-            List<ReqIdAndResponses> messages)
+            IReaderThreadQueue readerQueueMock)
         {
             readerQueueMock.Dequeue().Returns(message);
             var responseHandler = new ResponseHandler(readerQueueMock);
@@ -185,47 +148,12 @@ namespace SsbHedger.UnitTests
                 ibClient,
                 responseLoop,
                 responseHandler,
-                responseProcessor,
                 backgroundWorker);
 
             sut.Execute();
 
             Thread.Sleep(_breakLoopAfter);
             readerQueueMock.Received().Dequeue();
-        }
-
-        [Theory, AutoNSubstituteData]
-        public void CallResponseProcessorForEveryMessage(
-            object message,
-            IIBClient ibClient,
-            IReaderThreadQueue readerQueueMock,
-            IResponseProcessor responseProcessor,
-            List<ReqIdAndResponses> messages)
-        {
-            readerQueueMock.Dequeue().Returns(message);
-            var responseHandler = new ResponseHandler(readerQueueMock);
-
-            IResponseLoop responseLoop = new ResponseLoop();
-            responseLoop.BreakCondition =
-                () => (DateTime.Now - _startTime).Milliseconds > _breakLoopAfter;
-
-            IBackgroundWorkerAbstraction backgroundWorker = new BackgroundWorkerAbstraction();
-            backgroundWorker.SetDoWorkEventHandler((s, e) =>
-            {
-                responseLoop.Start();
-            });
-
-            var sut = new WpfIbClient.WpfIbClient(
-                ibClient,
-                responseLoop,
-                responseHandler,
-                responseProcessor,
-                backgroundWorker);
-
-            sut.Execute();
-
-            Thread.Sleep(_breakLoopAfter);
-            responseProcessor.Received().Process(Arg.Any<ReqIdAndResponses>());
         }
 
         private void VerifyDelegateAttachedTo(object objectWithEvent, string eventName)

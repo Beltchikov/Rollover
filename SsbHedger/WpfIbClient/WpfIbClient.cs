@@ -14,23 +14,18 @@ namespace SsbHedger.WpfIbClient
         internal IIBClient _ibClient;
         IResponseLoop _responseLoop;
         IResponseHandler _responseHandler;
-        IResponseProcessor _responseProcessor;
         IBackgroundWorkerAbstraction _backgroundWorker;
 
         internal WpfIbClient(
             IIBClient ibClient,
             IResponseLoop responseLoop,
             IResponseHandler responseHandler,
-            IResponseProcessor responseProcessor,
             IBackgroundWorkerAbstraction backgroundWorker)
         {
             _ibClient = ibClient;
             _responseLoop = responseLoop;
             _responseHandler = responseHandler;
-            _responseProcessor = responseProcessor;
             _backgroundWorker = backgroundWorker;
-
-            _responseProcessor.SetLogic(this);
 
             _responseLoop.Actions = () =>
             {
@@ -39,11 +34,6 @@ namespace SsbHedger.WpfIbClient
                 {
                     return;
                 }
-               
-                //foreach (ReqIdAndResponses response in responses)
-                //{
-                //    _responseProcessor.Process(response);
-                //}
             };
         }
 
@@ -56,7 +46,6 @@ namespace SsbHedger.WpfIbClient
                  IBClient.CreateClient(),
                  new ResponseLoop() { BreakCondition = breakCondition },
                  new ResponseHandler(new ReaderThreadQueue()),
-                 new ResponseProcessor(new DispatcherAbstraction(dispatcher)),
                  new BackgroundWorkerAbstraction());
         }
 
