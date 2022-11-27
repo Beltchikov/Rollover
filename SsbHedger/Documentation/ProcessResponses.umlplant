@@ -3,19 +3,16 @@ title Process Responses
 
 participant ResponseHandler as rh
 participant ResponseLoop as rl
-participant ResponseProcessor as rp
 participant DispatcherWrapper as dw
-participant ResponseMapper as rm
 participant ReaderThreadQueue as rtq
 participant ReaderThread as rt
 
 rt -> rh: Response
 rh -> rtq: Enqueue
 rl <- rtq: Dequeue
-rl -> rm : AddResponse(reqId)
-rl <- rm : GetGrouppedResponses
+
 loop foreach response
-    rl -> rp : Process(reqIdAndResposes)
+    'rl -> rp : Process(reqIdAndResposes)
     rp -> dw : Invoke
     note right
   Raise corresponding event

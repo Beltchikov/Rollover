@@ -4,7 +4,6 @@ using IbClient.messages;
 using NSubstitute;
 using SsbHedger.Abstractions;
 using SsbHedger.ResponseProcessing;
-using SsbHedger.ResponseProcessing.Mapper;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
@@ -28,7 +27,6 @@ namespace SsbHedger.UnitTests
             var ibClient = IBClient.CreateClient();
             var responseLoop = Substitute.For<IResponseLoop>();
             var responseHandler = Substitute.For<IResponseHandler>();
-            var responseMapper = Substitute.For<IResponseMapper>();
             var responseProcessor = Substitute.For<IResponseProcessor>();
             var backgroundWorker = Substitute.For<IBackgroundWorkerAbstraction>();
       
@@ -37,7 +35,6 @@ namespace SsbHedger.UnitTests
                 ibClient,
                 responseLoop,
                 responseHandler,
-                responseMapper,
                 responseProcessor,
                 backgroundWorker);
 
@@ -89,48 +86,17 @@ namespace SsbHedger.UnitTests
             responseLoop.BreakCondition =
                 () => (DateTime.Now - _startTime).Milliseconds > _breakLoopAfter;
 
-            var responseMapper = Substitute.For<IResponseMapper>();
-            responseMapper.GetGrouppedResponses().Returns(messages);
             var responseProcessor = Substitute.For<IResponseProcessor>();
             
             var sut = new SsbHedger.WpfIbClient.WpfIbClient(
                 ibClient,
                 responseLoop,
                 responseHeandler,
-                responseMapper,
                 responseProcessor, 
                 backgroundWorker);
 
             sut.Execute();
             responseProcessor.Received().SetLogic(sut);
-        }
-
-        [Theory, AutoNSubstituteData]
-        public void NotCallResponseMapperAddResponseIfNoMessage(
-            IIBClient ibClient,
-            IReaderThreadQueue readerQueueMock,
-            IBackgroundWorkerAbstraction backgroundWorker)
-        {
-            readerQueueMock.Dequeue().Returns(null);
-            var responseHeandler = new ResponseHandler(readerQueueMock);
-
-            var responseLoop = new ResponseLoop();
-            responseLoop.BreakCondition =
-                () => (DateTime.Now - _startTime).Milliseconds > _breakLoopAfter;
-
-            var responseMapper = Substitute.For<IResponseMapper>();
-            var responseProcessor = Substitute.For<IResponseProcessor>();
-            
-            var sut = new SsbHedger.WpfIbClient.WpfIbClient(
-                ibClient,
-                responseLoop,
-                responseHeandler,
-                responseMapper, 
-                responseProcessor, 
-                backgroundWorker );
-
-            sut.Execute();
-            responseMapper.DidNotReceive().AddResponse(Arg.Any<object>());
         }
 
         [Theory, AutoNSubstituteData]
@@ -149,14 +115,10 @@ namespace SsbHedger.UnitTests
             responseLoop.BreakCondition =
                 () => (DateTime.Now - _startTime).Milliseconds > _breakLoopAfter;
 
-            var responseMapper = Substitute.For<IResponseMapper>();
-            responseMapper.GetGrouppedResponses().Returns(messages);
-            
             var sut = new SsbHedger.WpfIbClient.WpfIbClient(
                 ibClient,
                 responseLoop,
                 responseHeandler,
-                responseMapper,
                 responseProcessor,
                 backgroundWorker);
 
@@ -186,14 +148,10 @@ namespace SsbHedger.UnitTests
                 responseLoop.Start();
             });
 
-            var responseMapper = Substitute.For<IResponseMapper>();
-            responseMapper.GetGrouppedResponses().Returns(messages);
-
             var sut = new SsbHedger.WpfIbClient.WpfIbClient(
                 ibClient,
                 responseLoop,
                 responseHeandler,
-                responseMapper,
                 responseProcessor,
                 backgroundWorker);
 
@@ -223,14 +181,10 @@ namespace SsbHedger.UnitTests
                 responseLoop.Start();
             });
 
-            var responseMapper = Substitute.For<IResponseMapper>();
-            responseMapper.GetGrouppedResponses().Returns(messages);
-
-            var sut = new SsbHedger.WpfIbClient.WpfIbClient(
+            var sut = new WpfIbClient.WpfIbClient(
                 ibClient,
                 responseLoop,
                 responseHandler,
-                responseMapper,
                 responseProcessor,
                 backgroundWorker);
 
@@ -241,88 +195,11 @@ namespace SsbHedger.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
-        public void CallResponseMapperAddResponse(
-            object message,
-            IIBClient ibClient,
-            IReaderThreadQueue readerQueueMock,
-            IResponseProcessor responseProcessor,
-            IResponseMapper responseMapper,
-            List<ReqIdAndResponses> messages)
-        {
-            readerQueueMock.Dequeue().Returns(message);
-            var responseHandler = new ResponseHandler(readerQueueMock);
-
-            IResponseLoop responseLoop = new ResponseLoop();
-            responseLoop.BreakCondition =
-                () => (DateTime.Now - _startTime).Milliseconds > _breakLoopAfter;
-
-            IBackgroundWorkerAbstraction backgroundWorker = new BackgroundWorkerAbstraction();
-            backgroundWorker.SetDoWorkEventHandler((s, e) =>
-            {
-                responseLoop.Start();
-            });
-
-            responseMapper.GetGrouppedResponses().Returns(messages);
-
-            var sut = new SsbHedger.WpfIbClient.WpfIbClient(
-                ibClient,
-                responseLoop,
-                responseHandler,
-                responseMapper,
-                responseProcessor,
-                backgroundWorker);
-
-            sut.Execute();
-
-            Thread.Sleep(_breakLoopAfter);
-            responseMapper.Received().AddResponse(Arg.Any<object>());
-        }
-
-        [Theory, AutoNSubstituteData]
-        public void CallResponseMapperGetGrouppedResponses(
-            object message,
-            IIBClient ibClient,
-            IReaderThreadQueue readerQueueMock,
-            IResponseProcessor responseProcessor,
-            IResponseMapper responseMapper,
-            List<ReqIdAndResponses> messages)
-        {
-            readerQueueMock.Dequeue().Returns(message);
-            var responseHandler = new ResponseHandler(readerQueueMock);
-
-            IResponseLoop responseLoop = new ResponseLoop();
-            responseLoop.BreakCondition =
-                () => (DateTime.Now - _startTime).Milliseconds > _breakLoopAfter;
-
-            IBackgroundWorkerAbstraction backgroundWorker = new BackgroundWorkerAbstraction();
-            backgroundWorker.SetDoWorkEventHandler((s, e) =>
-            {
-                responseLoop.Start();
-            });
-
-            responseMapper.GetGrouppedResponses().Returns(messages);
-
-            var sut = new SsbHedger.WpfIbClient.WpfIbClient(
-                ibClient,
-                responseLoop,
-                responseHandler,
-                responseMapper,
-                responseProcessor,
-                backgroundWorker);
-
-            sut.Execute();
-
-            Thread.Sleep(_breakLoopAfter);
-            responseMapper.Received().GetGrouppedResponses();
-        }
-
-        [Theory, AutoNSubstituteData]
         public void CallResponseProcessorForEveryMessage(
             object message,
             IIBClient ibClient,
             IReaderThreadQueue readerQueueMock,
             IResponseProcessor responseProcessor,
-            IResponseMapper responseMapper,
             List<ReqIdAndResponses> messages)
         {
             readerQueueMock.Dequeue().Returns(message);
@@ -338,13 +215,10 @@ namespace SsbHedger.UnitTests
                 responseLoop.Start();
             });
 
-            responseMapper.GetGrouppedResponses().Returns(messages);
-
-            var sut = new SsbHedger.WpfIbClient.WpfIbClient(
+            var sut = new WpfIbClient.WpfIbClient(
                 ibClient,
                 responseLoop,
                 responseHandler,
-                responseMapper,
                 responseProcessor,
                 backgroundWorker);
 

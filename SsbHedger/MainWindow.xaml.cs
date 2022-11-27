@@ -3,7 +3,6 @@ using SsbHedger;
 using SsbHedger.Abstractions;
 using SsbHedger.Model;
 using SsbHedger.ResponseProcessing;
-using SsbHedger.ResponseProcessing.Mapper;
 using SsbHedger.WpfIbClient;
 using System.Net;
 using System.Windows;

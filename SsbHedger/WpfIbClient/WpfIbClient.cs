@@ -1,7 +1,6 @@
 ﻿using IbClient;
 using SsbHedger.Abstractions;
 using SsbHedger.ResponseProcessing;
-using SsbHedger.ResponseProcessing.Mapper;
 using System;
 using System.Runtime.CompilerServices;
 using System.Windows.Threading;
@@ -15,7 +14,6 @@ namespace SsbHedger.WpfIbClient
         internal IIBClient _ibClient;
         IResponseLoop _responseLoop;
         IResponseHandler _responseHandler;
-        IResponseMapper _responseMapper;
         IResponseProcessor _responseProcessor;
         IBackgroundWorkerAbstraction _backgroundWorker;
 
@@ -23,14 +21,12 @@ namespace SsbHedger.WpfIbClient
             IIBClient ibClient,
             IResponseLoop responseLoop,
             IResponseHandler responseHandler,
-            IResponseMapper responseMapper,
             IResponseProcessor responseProcessor,
             IBackgroundWorkerAbstraction backgroundWorker)
         {
             _ibClient = ibClient;
             _responseLoop = responseLoop;
             _responseHandler = responseHandler;
-            _responseMapper = responseMapper;
             _responseProcessor = responseProcessor;
             _backgroundWorker = backgroundWorker;
 
@@ -43,12 +39,11 @@ namespace SsbHedger.WpfIbClient
                 {
                     return;
                 }
-                _responseMapper.AddResponse(message);
-                var responses = _responseMapper.GetGrouppedResponses();
-                foreach (ReqIdAndResponses response in responses)
-                {
-                    _responseProcessor.Process(response);
-                }
+               
+                //foreach (ReqIdAndResponses response in responses)
+                //{
+                //    _responseProcessor.Process(response);
+                //}
             };
         }
 
@@ -61,7 +56,6 @@ namespace SsbHedger.WpfIbClient
                  IBClient.CreateClient(),
                  new ResponseLoop() { BreakCondition = breakCondition },
                  new ResponseHandler(new ReaderThreadQueue()),
-                 new ResponseMapper(),
                  new ResponseProcessor(new DispatcherAbstraction(dispatcher)),
                  new BackgroundWorkerAbstraction());
         }
