@@ -15,7 +15,7 @@ rl <- rtq: Dequeue
 rl -> rm : AddResponse(reqId)
 rl <- rm : GetGrouppedResponses
 loop foreach response
-    rl -> rp : Process(response)
+    rl -> rp : Process(reqIdAndResposes)
     rp -> dw : Invoke
     note right
   Raise corresponding event

@@ -38,7 +38,7 @@ namespace SsbHedger.WpfIbClient
 
             _responseLoop.Actions = () =>
             {
-                var message = responseHandler.ReaderQueue.Dequeue();
+                var message = _responseHandler.ReaderQueue.Dequeue();
                 if (message == null)
                 {
                     return;
