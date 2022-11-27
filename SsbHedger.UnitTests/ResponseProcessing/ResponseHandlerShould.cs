@@ -103,5 +103,14 @@ namespace SsbHedger.UnitTests.ResponseProcessing
             sut.Dequeue();
             queue.Received().Dequeue();
         }
+
+        [Theory, AutoNSubstituteData]
+        public void CallDequeueOnHandleNextMessage(
+            [Frozen] IReaderThreadQueue queue,
+            ResponseHandler sut)
+        {
+            sut.HandleNextMessage();
+            queue.Received().Dequeue();
+        }
     }
 }

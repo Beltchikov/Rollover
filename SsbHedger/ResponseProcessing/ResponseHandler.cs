@@ -22,7 +22,9 @@ namespace SsbHedger.ResponseProcessing
 
         public void HandleNextMessage()
         {
-            throw new NotImplementedException();
+            var message = Dequeue();
+
+            //throw new NotImplementedException();
         }
 
         public void OnError(int reqId, int code, string message, Exception exception)
