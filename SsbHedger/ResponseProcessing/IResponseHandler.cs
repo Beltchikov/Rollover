@@ -12,5 +12,6 @@ namespace SsbHedger.ResponseProcessing
         void OnOpenOrderEnd();
         void OnOrderStatus(OrderStatusMessage obj);
         object? Dequeue();
+        void HandleNextMessage();
     }
 }

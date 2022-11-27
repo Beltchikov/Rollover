@@ -6,7 +6,6 @@ using SsbHedger.Abstractions;
 using SsbHedger.ResponseProcessing;
 using System.Reflection;
 using System.Windows;
-using System.Windows.Threading;
 
 namespace SsbHedger.UnitTests
 {
@@ -132,7 +131,7 @@ namespace SsbHedger.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
-        public void CallDequeue(
+        public void CallResponseHandlerHandleNextMessage(
             IIBClient ibClient,
             IResponseHandler responseHandler,
             IDispatcherAbstraction dispatcherAbstraction)
@@ -157,7 +156,7 @@ namespace SsbHedger.UnitTests
             sut.Execute();
 
             Thread.Sleep(_breakLoopAfter);
-            responseHandler.Received().Dequeue();
+            responseHandler.Received().HandleNextMessage();
         }
 
         private void VerifyDelegateAttachedTo(object objectWithEvent, string eventName)

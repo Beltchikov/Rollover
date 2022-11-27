@@ -30,13 +30,15 @@ namespace SsbHedger.WpfIbClient
 
             _responseLoop.Actions = () =>
             {
-                var message = _responseHandler.Dequeue();
-                if (message == null)
-                {
-                    return;
-                }
+                _responseHandler.HandleNextMessage();
 
-                dispatcherAbstraction.Invoke(() => InvokeError(-1, message.ToString()));
+            //    var message = _responseHandler.Dequeue();
+            //    if (message == null)
+            //    {
+            //        return;
+            //    }
+
+                //    dispatcherAbstraction.Invoke(() => InvokeError(-1, message.ToString()));
             };
         }
 

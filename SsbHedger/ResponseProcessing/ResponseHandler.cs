@@ -20,6 +20,11 @@ namespace SsbHedger.ResponseProcessing
             return _queue.Dequeue();
         }
 
+        public void HandleNextMessage()
+        {
+            throw new NotImplementedException();
+        }
+
         public void OnError(int reqId, int code, string message, Exception exception)
         {
             _queue.Enqueue(new ErrorInfo(reqId, code, message, exception));
