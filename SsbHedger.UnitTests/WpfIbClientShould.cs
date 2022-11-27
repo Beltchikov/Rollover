@@ -129,11 +129,8 @@ namespace SsbHedger.UnitTests
         public void CallDequeue(
             object message,
             IIBClient ibClient,
-            IReaderThreadQueue readerQueueMock)
+            IResponseHandler responseHandler)
         {
-            readerQueueMock.Dequeue().Returns(message);
-            var responseHandler = new ResponseHandler(readerQueueMock);
-
             IResponseLoop responseLoop = new ResponseLoop();
             responseLoop.BreakCondition =
                 () => (DateTime.Now - _startTime).Milliseconds > _breakLoopAfter;
@@ -153,7 +150,7 @@ namespace SsbHedger.UnitTests
             sut.Execute();
 
             Thread.Sleep(_breakLoopAfter);
-            readerQueueMock.Received().Dequeue();
+            responseHandler.Received().Dequeue();
         }
 
         private void VerifyDelegateAttachedTo(object objectWithEvent, string eventName)

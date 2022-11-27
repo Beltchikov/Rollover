@@ -13,7 +13,12 @@ namespace SsbHedger.ResponseProcessing
             _queue = queue;
         }
 
-        public IReaderThreadQueue ReaderQueue => _queue;
+        internal IReaderThreadQueue ReaderQueue => _queue;
+
+        public object? Dequeue()
+        {
+            return _queue.Dequeue();
+        }
 
         public void OnError(int reqId, int code, string message, Exception exception)
         {
