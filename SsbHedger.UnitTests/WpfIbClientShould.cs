@@ -28,13 +28,15 @@ namespace SsbHedger.UnitTests
             var responseLoop = Substitute.For<IResponseLoop>();
             var responseHandler = Substitute.For<IResponseHandler>();
             var backgroundWorker = Substitute.For<IBackgroundWorkerAbstraction>();
+            var dispatcherAbstraction = Substitute.For<IDispatcherAbstraction>();
       
             responseLoop.When(l => l.Start()).Do(x => { });
             var sut = new SsbHedger.WpfIbClient.WpfIbClient(
                 ibClient,
                 responseLoop,
                 responseHandler,
-                backgroundWorker);
+                backgroundWorker,
+                dispatcherAbstraction);
 
             sut.Execute();
 
@@ -75,7 +77,8 @@ namespace SsbHedger.UnitTests
             object message,
             IIBClient ibClient,
             IReaderThreadQueue readerQueueMock,
-            IBackgroundWorkerAbstraction backgroundWorker)
+            IBackgroundWorkerAbstraction backgroundWorker,
+            IDispatcherAbstraction dispatcherAbstraction)
         {
             readerQueueMock.Dequeue().Returns(message);
             var responseHeandler = new ResponseHandler(readerQueueMock);
@@ -88,7 +91,8 @@ namespace SsbHedger.UnitTests
                 ibClient,
                 responseLoop,
                 responseHeandler,
-               backgroundWorker);
+                backgroundWorker, 
+                dispatcherAbstraction);
 
             sut.Execute();
 
@@ -100,7 +104,8 @@ namespace SsbHedger.UnitTests
             object message,
             IIBClient ibClient,
             IResponseLoop responseLoop,
-            IReaderThreadQueue readerQueueMock)
+            IReaderThreadQueue readerQueueMock,
+            IDispatcherAbstraction dispatcherAbstraction)
         {
             readerQueueMock.Dequeue().Returns(message);
             var responseHeandler = new ResponseHandler(readerQueueMock);
@@ -118,7 +123,8 @@ namespace SsbHedger.UnitTests
                 ibClient,
                 responseLoop,
                 responseHeandler,
-                backgroundWorker);
+                backgroundWorker,
+                dispatcherAbstraction);
 
             sut.Execute();
 
@@ -128,7 +134,8 @@ namespace SsbHedger.UnitTests
         [Theory, AutoNSubstituteData]
         public void CallDequeue(
             IIBClient ibClient,
-            IResponseHandler responseHandler)
+            IResponseHandler responseHandler,
+            IDispatcherAbstraction dispatcherAbstraction)
         {
             IResponseLoop responseLoop = new ResponseLoop();
             responseLoop.BreakCondition =
@@ -144,7 +151,8 @@ namespace SsbHedger.UnitTests
                 ibClient,
                 responseLoop,
                 responseHandler,
-                backgroundWorker);
+                backgroundWorker,
+                dispatcherAbstraction);
 
             sut.Execute();
 
