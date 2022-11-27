@@ -82,7 +82,7 @@ namespace SsbHedger.UnitTests.ResponseProcessing
         }
 
         [Theory, AutoNSubstituteData]
-        public void CallOnOrderStatus(
+        public void CallEnqueueOnOrderStatus(
             OrderStatusMessage orderStatusMessage,
             [Frozen] IReaderThreadQueue queue,
             ResponseHandler sut)
@@ -93,6 +93,15 @@ namespace SsbHedger.UnitTests.ResponseProcessing
                 && ((OrderStatusMessage)a).Status
                     == orderStatusMessage.Status
             ));
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void CallDequeueOnDequeue(
+            [Frozen] IReaderThreadQueue queue,
+            ResponseHandler sut)
+        {
+            sut.Dequeue();
+            queue.Received().Dequeue();
         }
     }
 }
