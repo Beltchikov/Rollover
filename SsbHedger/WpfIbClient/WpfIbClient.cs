@@ -3,6 +3,7 @@ using SsbHedger.Abstractions;
 using SsbHedger.ResponseProcessing;
 using System;
 using System.Runtime.CompilerServices;
+using System.Windows.Documents;
 using System.Windows.Threading;
 
 [assembly: InternalsVisibleTo("SsbHedger.UnitTests")]
@@ -15,6 +16,11 @@ namespace SsbHedger.WpfIbClient
         IResponseLoop _responseLoop;
         IResponseHandler _responseHandler;
         IBackgroundWorkerAbstraction _backgroundWorker;
+
+        public event Action<int, bool> NextValidId;
+        public event Action<int, string> Error;
+
+        // private List<ResponseTypeAction>   ????
 
         internal WpfIbClient(
             IIBClient ibClient,
@@ -41,15 +47,14 @@ namespace SsbHedger.WpfIbClient
             };
         }
 
-        public event Action<int, bool> NextValidId;
-        public event Action<int, string> Error;
-
         public static IWpfIbClient Create(Func<bool> breakCondition, Dispatcher dispatcher)
         {
             return new WpfIbClient(
                  IBClient.CreateClient(),
                  new ResponseLoop() { BreakCondition = breakCondition },
-                 new ResponseHandler(new ReaderThreadQueue(), new DispatcherAbstraction(dispatcher)),
+                 new ResponseHandler(
+                     new ReaderThreadQueue(),
+                     new DispatcherAbstraction(dispatcher)),
                  new BackgroundWorkerAbstraction());
         }
 

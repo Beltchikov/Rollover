@@ -9,7 +9,7 @@ namespace SsbHedger.ResponseProcessing
         private readonly object OPEN_ORDER_END = "OpenOrderEnd";
         IReaderThreadQueue _queue;
         IDispatcherAbstraction _dispatcherAbstraction;
-
+        
         public ResponseHandler(
             IReaderThreadQueue queue,
             IDispatcherAbstraction dispatcherAbstraction)
@@ -19,7 +19,7 @@ namespace SsbHedger.ResponseProcessing
         }
 
         internal IReaderThreadQueue ReaderQueue => _queue;
-
+   
         public object? Dequeue()
         {
             return _queue.Dequeue();
@@ -33,7 +33,7 @@ namespace SsbHedger.ResponseProcessing
                 return;
             }
 
-            _dispatcherAbstraction.Invoke(() => { });
+            // _dispatcherAbstraction.Invoke(() => ((Action)action)());
 
             //throw new NotImplementedException();
         }

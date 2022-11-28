@@ -115,26 +115,40 @@ namespace SsbHedger.UnitTests.ResponseProcessing
             queue.Received().Dequeue();
         }
 
-        [Theory, AutoNSubstituteData]
-        public void CallDispatcherAbstractionInvoke(
-            [Frozen] IReaderThreadQueue queue,
-            [Frozen] IDispatcherAbstraction dispatcherAbstraction,
-            ResponseHandler sut)
-        {
-            queue.Dequeue().Returns(new object());
-            sut.HandleNextMessage();
-            dispatcherAbstraction.Received().Invoke(Arg.Any<Action>());
-        }
 
-        [Theory, AutoNSubstituteData]
-        public void NotCallDispatcherAbstractionInvoke(
-           [Frozen] IReaderThreadQueue queue,
-           [Frozen] IDispatcherAbstraction dispatcherAbstraction,
-           ResponseHandler sut)
-        {
-            queue.Dequeue().ReturnsNull();
-            sut.HandleNextMessage();
-            dispatcherAbstraction.DidNotReceive().Invoke(Arg.Any<Action>());
+        //[Theory, AutoNSubstituteData]
+        //public void CallDispatcherAbstractionInvoke(
+        //    List<object> actions,
+        //    [Frozen] IReaderThreadQueue queue,
+        //    [Frozen] IResponseProcessor responseProcessor,
+        //    [Frozen] IDispatcherAbstraction dispatcherAbstraction,
+        //    ResponseHandler sut)
+        //{
+        //    actions.Clear();
+        //    actions.AddRange(new List<object> { () => { }, () => { } });
+
+        //    queue.Dequeue().Returns(new object());
+        //    responseProcessor.Process(Arg.Any<Object>()).Returns(actions);
+        //    sut.HandleNextMessage();
+
+        //    foreach (var action in actions)
+        //    {
+        //        dispatcherAbstraction.Received(2).Invoke((Action)action);
+        //    }
+
+        //}
+
+            //[Theory, AutoNSubstituteData]
+            //public void NotCallDispatcherAbstractionInvoke(
+            //   [Frozen] IReaderThreadQueue queue,
+            //   [Frozen] IDispatcherAbstraction dispatcherAbstraction,
+            //   ResponseHandler sut)
+            //{
+            //    queue.Dequeue().ReturnsNull();
+            //    sut.HandleNextMessage();
+            //    dispatcherAbstraction.DidNotReceive().Invoke(Arg.Any<Action>());
+            //}
+
+
         }
-    }
 }
