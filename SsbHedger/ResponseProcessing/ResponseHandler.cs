@@ -1,5 +1,6 @@
 ﻿using IbClient.messages;
 using SsbHedger.Abstractions;
+using SsbHedger.WpfIbClient;
 using System;
 
 namespace SsbHedger.ResponseProcessing
@@ -9,6 +10,7 @@ namespace SsbHedger.ResponseProcessing
         private readonly object OPEN_ORDER_END = "OpenOrderEnd";
         IReaderThreadQueue _queue;
         IDispatcherAbstraction _dispatcherAbstraction;
+        IWpfIbClient _client;
         
         public ResponseHandler(
             IReaderThreadQueue queue,
@@ -66,6 +68,11 @@ namespace SsbHedger.ResponseProcessing
         public void OnOrderStatus(OrderStatusMessage orderStatusMessage)
         {
             _queue.Enqueue(orderStatusMessage);
+        }
+
+        public void SetClient(IWpfIbClient wpfIbClient)
+        {
+            _client = wpfIbClient;
         }
     }
 }

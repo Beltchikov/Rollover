@@ -31,6 +31,7 @@ namespace SsbHedger.WpfIbClient
             _ibClient = ibClient;
             _responseLoop = responseLoop;
             _responseHandler = responseHandler;
+            _responseHandler.SetClient(this);
             _backgroundWorker = backgroundWorker;
 
             _responseLoop.Actions = () =>

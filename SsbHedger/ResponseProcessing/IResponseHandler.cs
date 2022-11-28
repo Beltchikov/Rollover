@@ -1,4 +1,5 @@
 ﻿using IbClient.messages;
+using SsbHedger.WpfIbClient;
 using System;
 
 namespace SsbHedger.ResponseProcessing
@@ -13,5 +14,6 @@ namespace SsbHedger.ResponseProcessing
         void OnOrderStatus(OrderStatusMessage obj);
         object? Dequeue();
         void HandleNextMessage();
+        void SetClient(IWpfIbClient wpfIbClient);
     }
 }
