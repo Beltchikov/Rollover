@@ -35,9 +35,13 @@ namespace SsbHedger.ResponseProcessing
                 return;
             }
 
-            var t = 0;
+            if(message is ErrorInfo errorInfo)
+            {
+                _dispatcherAbstraction.Invoke(() 
+                    => _client.InvokeError(errorInfo.ReqId, errorInfo.Message));
+            }
 
-            _dispatcherAbstraction.Invoke(() => { });
+           
 
             //throw new NotImplementedException();
         }

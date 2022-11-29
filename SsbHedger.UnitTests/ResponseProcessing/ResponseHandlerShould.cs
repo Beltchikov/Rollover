@@ -5,6 +5,7 @@ using NSubstitute.ReturnsExtensions;
 using SsbHedger.Abstractions;
 using SsbHedger.ResponseProcessing;
 using SsbHedger.WpfIbClient;
+using System.Windows;
 
 namespace SsbHedger.UnitTests.ResponseProcessing
 {
@@ -116,11 +117,9 @@ namespace SsbHedger.UnitTests.ResponseProcessing
             queue.Received().Dequeue();
         }
 
-
         [Theory, AutoNSubstituteData]
-        public void TriggerErrorEventOnClient(
+        public void CallIDispatcheInvoke(
             ErrorInfo message,
-            List<object> actions,
             [Frozen] IReaderThreadQueue queue,
             [Frozen] IDispatcherAbstraction dispatcherAbstraction,
             [Frozen] IWpfIbClient client,
@@ -133,8 +132,23 @@ namespace SsbHedger.UnitTests.ResponseProcessing
             dispatcherAbstraction.Received().Invoke(Arg.Any<Action>());
         }
 
-     
+        [Fact]
+        public void TriggerErrorEventOnClient()
+        {
+            ErrorInfo message = new(1, 3, "err", null);
 
+            IReaderThreadQueue queue = Substitute.For<IReaderThreadQueue>();
+            queue.Dequeue().Returns(message);
 
+            var dispatcher = (new UIElement()).Dispatcher;
+            var dispatcherAbstraction = new DispatcherAbstraction(dispatcher);
+            IWpfIbClient client = Substitute.For<IWpfIbClient>();
+
+            ResponseHandler sut = new(queue, dispatcherAbstraction);
+            sut.SetClient(client);
+            sut.HandleNextMessage();
+
+            client.Received().InvokeError(message.ReqId, message.Message);
+        }
     }
 }
