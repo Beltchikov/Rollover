@@ -4,6 +4,7 @@ using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using SsbHedger.Abstractions;
 using SsbHedger.ResponseProcessing;
+using SsbHedger.WpfIbClient;
 
 namespace SsbHedger.UnitTests.ResponseProcessing
 {
@@ -116,39 +117,24 @@ namespace SsbHedger.UnitTests.ResponseProcessing
         }
 
 
-        //[Theory, AutoNSubstituteData]
-        //public void CallDispatcherAbstractionInvoke(
-        //    List<object> actions,
-        //    [Frozen] IReaderThreadQueue queue,
-        //    [Frozen] IResponseProcessor responseProcessor,
-        //    [Frozen] IDispatcherAbstraction dispatcherAbstraction,
-        //    ResponseHandler sut)
-        //{
-        //    actions.Clear();
-        //    actions.AddRange(new List<object> { () => { }, () => { } });
+        [Theory, AutoNSubstituteData]
+        public void TriggerErrorEventOnClient(
+            ErrorInfo message,
+            List<object> actions,
+            [Frozen] IReaderThreadQueue queue,
+            [Frozen] IDispatcherAbstraction dispatcherAbstraction,
+            [Frozen] IWpfIbClient client,
+            ResponseHandler sut)
+        {
+            queue.Dequeue().Returns(message);
+            sut.SetClient(client);
+            sut.HandleNextMessage();
 
-        //    queue.Dequeue().Returns(new object());
-        //    responseProcessor.Process(Arg.Any<Object>()).Returns(actions);
-        //    sut.HandleNextMessage();
-
-        //    foreach (var action in actions)
-        //    {
-        //        dispatcherAbstraction.Received(2).Invoke((Action)action);
-        //    }
-
-        //}
-
-            //[Theory, AutoNSubstituteData]
-            //public void NotCallDispatcherAbstractionInvoke(
-            //   [Frozen] IReaderThreadQueue queue,
-            //   [Frozen] IDispatcherAbstraction dispatcherAbstraction,
-            //   ResponseHandler sut)
-            //{
-            //    queue.Dequeue().ReturnsNull();
-            //    sut.HandleNextMessage();
-            //    dispatcherAbstraction.DidNotReceive().Invoke(Arg.Any<Action>());
-            //}
-
-
+            dispatcherAbstraction.Received().Invoke(Arg.Any<Action>());
         }
+
+     
+
+
+    }
 }

@@ -35,7 +35,9 @@ namespace SsbHedger.ResponseProcessing
                 return;
             }
 
-            // _dispatcherAbstraction.Invoke(() => ((Action)action)());
+            var t = 0;
+
+            _dispatcherAbstraction.Invoke(() => { });
 
             //throw new NotImplementedException();
         }
