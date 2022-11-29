@@ -41,9 +41,10 @@ namespace SsbHedger.ResponseProcessing
                     => _client.InvokeError(errorInfo.ReqId, errorInfo.Message));
             }
 
-           
-
-            //throw new NotImplementedException();
+            //foreach(var responseAction in _responseActionMap.GetActions(message.GetType()))
+            //{
+            //    _dispatcherAbstraction.Invoke(responseAction);
+            //}
         }
 
         public void OnError(int reqId, int code, string message, Exception exception)
