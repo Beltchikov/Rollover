@@ -151,5 +151,24 @@ namespace SsbHedger.UnitTests.ResponseProcessing
             client.Received().InvokeError(message.ReqId, 
                 $"{message.Message} Exception: {message.exception}");
         }
+
+        [Fact]
+        public void TriggerNextValidIdEventOnClient()
+        {
+            ConnectionStatusMessage message = new ConnectionStatusMessage(true);
+
+            IReaderThreadQueue queue = Substitute.For<IReaderThreadQueue>();
+            queue.Dequeue().Returns(message);
+
+            var dispatcher = (new UIElement()).Dispatcher;
+            var dispatcherAbstraction = new DispatcherAbstraction(dispatcher);
+            IWpfIbClient client = Substitute.For<IWpfIbClient>();
+
+            ResponseHandler sut = new(queue, dispatcherAbstraction);
+            sut.SetClient(client);
+            sut.HandleNextMessage();
+
+            client.Received().InvokeNextValidId(message);
+        }
     }
 }

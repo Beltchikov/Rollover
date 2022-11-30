@@ -1,4 +1,5 @@
 ﻿using IbClient;
+using IbClient.messages;
 using SsbHedger.Abstractions;
 using SsbHedger.ResponseProcessing;
 using System;
@@ -17,10 +18,8 @@ namespace SsbHedger.WpfIbClient
         IResponseHandler _responseHandler;
         IBackgroundWorkerAbstraction _backgroundWorker;
 
-        public event Action<int, bool> NextValidId;
+        public event Action<ConnectionStatusMessage> NextValidId;
         public event Action<int, string> Error;
-
-        // private List<ResponseTypeAction>   ????
 
         internal WpfIbClient(
             IIBClient ibClient,
@@ -107,7 +106,12 @@ namespace SsbHedger.WpfIbClient
 
         public void InvokeError(int reqId, string message)
         {
-            Error.Invoke(reqId, message);
+            Error?.Invoke(reqId, message);
+        }
+
+        public void InvokeNextValidId(ConnectionStatusMessage message)
+        {
+            NextValidId?.Invoke(message);
         }
     }
 }

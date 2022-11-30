@@ -23,11 +23,18 @@ namespace ViewModel.ListBinding
             _ibClient = WpfIbClient.Create(() => 1 == 0, Dispatcher);
             _ibClient.Execute();
             _ibClient.Error += _logic_Error;
+            _ibClient.NextValidId += _ibClient_NextValidId;
         }
 
         private void _logic_Error(int reqId, string message)
         {
             ((MainWindowViewModel)DataContext).Messages.Add(new Message { ReqId = reqId, Body = message });
+        }
+
+        private void _ibClient_NextValidId(IbClient.messages.ConnectionStatusMessage message)
+        {
+            ((MainWindowViewModel)DataContext).Messages.Add(
+                new Message { ReqId = 0, Body = message.IsConnected ? "CONNECTED" : "NOT CONNECTED" });
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

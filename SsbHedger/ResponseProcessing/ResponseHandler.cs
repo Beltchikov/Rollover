@@ -41,11 +41,12 @@ namespace SsbHedger.ResponseProcessing
                     => _client.InvokeError(errorInfo.ReqId, 
                     $"{errorInfo.Message} Exception: {errorInfo.exception}"));
             }
+            else if (message is ConnectionStatusMessage connectionStatusMessage)
+            {
+                _dispatcherAbstraction.Invoke(()
+                    => _client.InvokeNextValidId(connectionStatusMessage));
+            }
 
-            //foreach(var responseAction in _responseActionMap.GetActions(message.GetType()))
-            //{
-            //    _dispatcherAbstraction.Invoke(responseAction);
-            //}
         }
 
         public void OnError(int reqId, int code, string message, Exception exception)
