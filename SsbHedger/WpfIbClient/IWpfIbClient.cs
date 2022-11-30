@@ -7,6 +7,7 @@ namespace SsbHedger.WpfIbClient
     {
         event Action<ConnectionStatusMessage> NextValidId;
         event Action<int, string> Error;
+        event Action<ManagedAccountsMessage> ManagedAccounts;
 
         void Execute();
         void InvokeError(int reqId, string message);

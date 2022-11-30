@@ -4,6 +4,7 @@ using SsbHedger.Abstractions;
 using SsbHedger.Model;
 using SsbHedger.ResponseProcessing;
 using SsbHedger.WpfIbClient;
+using System.Linq;
 using System.Net;
 using System.Windows;
 
@@ -24,6 +25,7 @@ namespace ViewModel.ListBinding
             _ibClient.Execute();
             _ibClient.Error += _logic_Error;
             _ibClient.NextValidId += _ibClient_NextValidId;
+            _ibClient.ManagedAccounts += _ibClient_ManagedAccounts;
         }
 
         private void _logic_Error(int reqId, string message)
@@ -35,6 +37,15 @@ namespace ViewModel.ListBinding
         {
             ((MainWindowViewModel)DataContext).Messages.Add(
                 new Message { ReqId = 0, Body = message.IsConnected ? "CONNECTED" : "NOT CONNECTED" });
+        }
+
+        private void _ibClient_ManagedAccounts(IbClient.messages.ManagedAccountsMessage message)
+        {
+            ((MainWindowViewModel)DataContext).Messages.Add(
+                new Message { 
+                    ReqId = 0, 
+                    Body = $"Managed accounts: {message.ManagedAccounts.Aggregate((r,n) => r + "," +n)}" 
+                });
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
