@@ -38,7 +38,8 @@ namespace SsbHedger.ResponseProcessing
             if(message is ErrorInfo errorInfo)
             {
                 _dispatcherAbstraction.Invoke(() 
-                    => _client.InvokeError(errorInfo.ReqId, errorInfo.Message));
+                    => _client.InvokeError(errorInfo.ReqId, 
+                    $"{errorInfo.Message} Exception: {errorInfo.exception}"));
             }
 
             //foreach(var responseAction in _responseActionMap.GetActions(message.GetType()))

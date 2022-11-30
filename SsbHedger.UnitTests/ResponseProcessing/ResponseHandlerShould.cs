@@ -148,7 +148,8 @@ namespace SsbHedger.UnitTests.ResponseProcessing
             sut.SetClient(client);
             sut.HandleNextMessage();
 
-            client.Received().InvokeError(message.ReqId, message.Message);
+            client.Received().InvokeError(message.ReqId, 
+                $"{message.Message} Exception: {message.exception}");
         }
     }
 }
