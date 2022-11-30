@@ -11,5 +11,6 @@ namespace SsbHedger.WpfIbClient
         void Execute();
         void InvokeError(int reqId, string message);
         void InvokeNextValidId(ConnectionStatusMessage message);
+        void InvokeManagedAccounts(ManagedAccountsMessage message);
     }
 }

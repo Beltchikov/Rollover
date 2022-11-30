@@ -46,7 +46,11 @@ namespace SsbHedger.ResponseProcessing
                 _dispatcherAbstraction.Invoke(()
                     => _client.InvokeNextValidId(connectionStatusMessage));
             }
-
+            else if (message is ManagedAccountsMessage managedAccountsMessage)
+            {
+                _dispatcherAbstraction.Invoke(()
+                    => _client.InvokeManagedAccounts(managedAccountsMessage));
+            }
         }
 
         public void OnError(int reqId, int code, string message, Exception exception)

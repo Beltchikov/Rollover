@@ -170,5 +170,24 @@ namespace SsbHedger.UnitTests.ResponseProcessing
 
             client.Received().InvokeNextValidId(message);
         }
+
+        [Fact]
+        public void TriggerManagedAccountsOnClient()
+        {
+            ManagedAccountsMessage message = new ManagedAccountsMessage("acc1, acc1");
+
+            IReaderThreadQueue queue = Substitute.For<IReaderThreadQueue>();
+            queue.Dequeue().Returns(message);
+
+            var dispatcher = (new UIElement()).Dispatcher;
+            var dispatcherAbstraction = new DispatcherAbstraction(dispatcher);
+            IWpfIbClient client = Substitute.For<IWpfIbClient>();
+
+            ResponseHandler sut = new(queue, dispatcherAbstraction);
+            sut.SetClient(client);
+            sut.HandleNextMessage();
+
+            client.Received().InvokeManagedAccounts(message);
+        }
     }
 }

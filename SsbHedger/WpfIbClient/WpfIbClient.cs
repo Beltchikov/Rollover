@@ -20,6 +20,7 @@ namespace SsbHedger.WpfIbClient
 
         public event Action<ConnectionStatusMessage> NextValidId;
         public event Action<int, string> Error;
+        public event Action<ManagedAccountsMessage> ManagedAccounts;
 
         internal WpfIbClient(
             IIBClient ibClient,
@@ -112,6 +113,11 @@ namespace SsbHedger.WpfIbClient
         public void InvokeNextValidId(ConnectionStatusMessage message)
         {
             NextValidId?.Invoke(message);
+        }
+
+        public void InvokeManagedAccounts(ManagedAccountsMessage message)
+        {
+            ManagedAccounts?.Invoke(message);
         }
     }
 }
