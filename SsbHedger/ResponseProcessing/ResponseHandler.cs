@@ -1,7 +1,10 @@
 ﻿using IbClient.messages;
 using SsbHedger.Abstractions;
+using SsbHedger.ResponseProcessing.Command;
 using SsbHedger.WpfIbClient;
 using System;
+using System.Collections.Generic;
+using System.Windows.Input;
 
 namespace SsbHedger.ResponseProcessing
 {
@@ -11,7 +14,8 @@ namespace SsbHedger.ResponseProcessing
         IReaderThreadQueue _queue;
         IDispatcherAbstraction _dispatcherAbstraction;
         IWpfIbClient _client;
-        
+        Dictionary<Type, List<ResponseCommand>> _responseActionMap = new();
+
         public ResponseHandler(
             IReaderThreadQueue queue,
             IDispatcherAbstraction dispatcherAbstraction)
@@ -35,22 +39,32 @@ namespace SsbHedger.ResponseProcessing
                 return;
             }
 
-            if(message is ErrorInfo errorInfo)
+            //if(message is ErrorInfo errorInfo)
+            //{
+            //    _dispatcherAbstraction.Invoke(() 
+            //        => _client.InvokeError(errorInfo.ReqId, 
+            //        $"{errorInfo.Message} Exception: {errorInfo.exception}"));
+            //}
+            //else if (message is ConnectionStatusMessage connectionStatusMessage)
+            //{
+            //    _dispatcherAbstraction.Invoke(()
+            //        => _client.InvokeNextValidId(connectionStatusMessage));
+            //}
+            //else if (message is ManagedAccountsMessage managedAccountsMessage)
+            //{
+            //    _dispatcherAbstraction.Invoke(()
+            //        => _client.InvokeManagedAccounts(managedAccountsMessage));
+            //}
+
+            var commands = _responseActionMap[message.GetType()];
+            foreach(var command in commands)
             {
-                _dispatcherAbstraction.Invoke(() 
-                    => _client.InvokeError(errorInfo.ReqId, 
-                    $"{errorInfo.Message} Exception: {errorInfo.exception}"));
+                command.SetParameters(message);
+
+
+                _dispatcherAbstraction.Invoke(() => command.Execute());
             }
-            else if (message is ConnectionStatusMessage connectionStatusMessage)
-            {
-                _dispatcherAbstraction.Invoke(()
-                    => _client.InvokeNextValidId(connectionStatusMessage));
-            }
-            else if (message is ManagedAccountsMessage managedAccountsMessage)
-            {
-                _dispatcherAbstraction.Invoke(()
-                    => _client.InvokeManagedAccounts(managedAccountsMessage));
-            }
+            
         }
 
         public void OnError(int reqId, int code, string message, Exception exception)
@@ -86,6 +100,8 @@ namespace SsbHedger.ResponseProcessing
         public void SetClient(IWpfIbClient wpfIbClient)
         {
             _client = wpfIbClient;
+
+            _responseActionMap[typeof(ErrorInfo)] = new List<ResponseCommand>{ new CommandErrorInfo(_client) };
         }
     }
 }
