@@ -1,4 +1,5 @@
-﻿using SsbHedger.WpfIbClient;
+﻿using SsbHedger.Model;
+using SsbHedger.WpfIbClient;
 using System.Collections.Generic;
 
 namespace SsbHedger.ResponseProcessing.Command
@@ -17,6 +18,7 @@ namespace SsbHedger.ResponseProcessing.Command
             if (message is ErrorInfo errorInfo)
             {
                 _parameters.Add(errorInfo.ReqId);
+                _parameters.Add(errorInfo.Code);
                 _parameters.Add(errorInfo.Message);
                 _parameters.Add(errorInfo.Exception == null ? "" : errorInfo.Exception);
             }
@@ -24,7 +26,7 @@ namespace SsbHedger.ResponseProcessing.Command
 
         public override void Execute()
         {
-            _client.InvokeError((int)_parameters[0], $"{_parameters[1]} Exception: {_parameters[2]}");
+            _client.InvokeError((int)_parameters[0], $"Code:{_parameters[1]} Message:{_parameters[2]} Exception:{_parameters[3]}");
         }
     }
 }
