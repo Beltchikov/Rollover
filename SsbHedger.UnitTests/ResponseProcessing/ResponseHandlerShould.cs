@@ -149,7 +149,7 @@ namespace SsbHedger.UnitTests.ResponseProcessing
             sut.HandleNextMessage();
 
             client.Received().InvokeError(message.ReqId, 
-                $"{message.Message} Exception: {message.Exception}");
+                $"Code:{message.Code} Message:{message.Message} Exception:{message.Exception}");
         }
 
         [Fact]

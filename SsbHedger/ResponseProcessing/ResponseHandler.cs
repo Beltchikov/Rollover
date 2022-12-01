@@ -39,32 +39,32 @@ namespace SsbHedger.ResponseProcessing
                 return;
             }
 
-            //if(message is ErrorInfo errorInfo)
-            //{
-            //    _dispatcherAbstraction.Invoke(() 
-            //        => _client.InvokeError(errorInfo.ReqId, 
-            //        $"{errorInfo.Message} Exception: {errorInfo.exception}"));
-            //}
-            //else if (message is ConnectionStatusMessage connectionStatusMessage)
-            //{
-            //    _dispatcherAbstraction.Invoke(()
-            //        => _client.InvokeNextValidId(connectionStatusMessage));
-            //}
-            //else if (message is ManagedAccountsMessage managedAccountsMessage)
-            //{
-            //    _dispatcherAbstraction.Invoke(()
-            //        => _client.InvokeManagedAccounts(managedAccountsMessage));
-            //}
-
-            var commands = _responseActionMap[message.GetType()];
-            foreach(var command in commands)
+            if (message is ErrorInfo errorInfo)
             {
-                command.SetParameters(message);
-
-
-                _dispatcherAbstraction.Invoke(() => command.Execute());
+                _dispatcherAbstraction.Invoke(()
+                    => _client.InvokeError(errorInfo.ReqId,
+                    $"Code:{errorInfo.Code} Message:{errorInfo.Message} Exception:{errorInfo.Exception}"));
             }
-            
+            else if (message is ConnectionStatusMessage connectionStatusMessage)
+            {
+                _dispatcherAbstraction.Invoke(()
+                    => _client.InvokeNextValidId(connectionStatusMessage));
+            }
+            else if (message is ManagedAccountsMessage managedAccountsMessage)
+            {
+                _dispatcherAbstraction.Invoke(()
+                    => _client.InvokeManagedAccounts(managedAccountsMessage));
+            }
+
+            //var commands = _responseActionMap[message.GetType()];
+            //foreach(var command in commands)
+            //{
+            //    command.SetParameters(message);
+
+
+            //    _dispatcherAbstraction.Invoke(() => command.Execute());
+            //}
+
         }
 
         public void OnError(int reqId, int code, string message, Exception exception)
