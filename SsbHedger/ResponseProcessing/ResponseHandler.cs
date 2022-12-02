@@ -1,5 +1,6 @@
 ﻿using IbClient.messages;
 using SsbHedger.Abstractions;
+using SsbHedger.Model;
 using SsbHedger.ResponseProcessing.Command;
 using SsbHedger.WpfIbClient;
 using System;
@@ -101,7 +102,12 @@ namespace SsbHedger.ResponseProcessing
         {
             _client = wpfIbClient;
 
-            _responseActionMap[typeof(ErrorInfo)] = new List<ResponseCommand>{ new CommandErrorInfo(_client) };
+            _responseActionMap[typeof(ErrorInfo)] 
+                = new List<ResponseCommand>{ new CommandErrorInfo(_client) };
+            _responseActionMap[typeof(ConnectionStatusMessage)] 
+                = new List<ResponseCommand>{ new CommandConnectionStatusMessage(_client) };
+            _responseActionMap[typeof(ManagedAccountsMessage)]
+                = new List<ResponseCommand> { new CommandManagedAccountsMessage(_client) };
         }
     }
 }
