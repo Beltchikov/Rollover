@@ -1,11 +1,9 @@
 ﻿using IbClient.messages;
 using SsbHedger.Abstractions;
-using SsbHedger.Model;
 using SsbHedger.ResponseProcessing.Command;
 using SsbHedger.WpfIbClient;
 using System;
 using System.Collections.Generic;
-using System.Windows.Input;
 
 namespace SsbHedger.ResponseProcessing
 {
@@ -40,23 +38,6 @@ namespace SsbHedger.ResponseProcessing
                 return;
             }
 
-            //if (message is ErrorInfo errorInfo)
-            //{
-            //    _dispatcherAbstraction.Invoke(()
-            //        => _client.InvokeError(errorInfo.ReqId,
-            //        $"Code:{errorInfo.Code} Message:{errorInfo.Message} Exception:{errorInfo.Exception}"));
-            //}
-            //else if (message is ConnectionStatusMessage connectionStatusMessage)
-            //{
-            //    _dispatcherAbstraction.Invoke(()
-            //        => _client.InvokeNextValidId(connectionStatusMessage));
-            //}
-            //else if (message is ManagedAccountsMessage managedAccountsMessage)
-            //{
-            //    _dispatcherAbstraction.Invoke(()
-            //        => _client.InvokeManagedAccounts(managedAccountsMessage));
-            //}
-
             var commands = _responseActionMap[message.GetType()];
             foreach (var command in commands)
             {
@@ -65,7 +46,6 @@ namespace SsbHedger.ResponseProcessing
 
                 _dispatcherAbstraction.Invoke(() => command.Execute());
             }
-
         }
 
         public void OnError(int reqId, int code, string message, Exception exception)
