@@ -110,9 +110,13 @@ namespace SsbHedger.UnitTests.ResponseProcessing
 
         [Theory, AutoNSubstituteData]
         public void CallDequeueOnHandleNextMessage(
+            ErrorInfo message,
             [Frozen] IReaderThreadQueue queue,
+            [Frozen] IWpfIbClient client,
             ResponseHandler sut)
         {
+            queue.Dequeue().Returns(message);
+            sut.SetClient(client);
             sut.HandleNextMessage();
             queue.Received().Dequeue();
         }
