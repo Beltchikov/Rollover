@@ -4,7 +4,7 @@ namespace SsbHedger.Abstractions
 {
     public class BackgroundWorkerAbstraction : IBackgroundWorkerAbstraction
     {
-        private BackgroundWorker _backgroundWorker = new BackgroundWorker();
+        private BackgroundWorker _backgroundWorker = new();
         
         public void SetDoWorkEventHandler(DoWorkEventHandler handler)
         {

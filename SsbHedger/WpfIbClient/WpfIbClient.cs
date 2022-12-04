@@ -71,7 +71,7 @@ namespace SsbHedger.WpfIbClient
             _ibClient.ConnectAndStartReaderThread(
                        "localhost",
                        4001,
-                       1);
+                       2);
 
             _backgroundWorker.SetDoWorkEventHandler((s, e) =>
             {

@@ -1,5 +1,4 @@
-﻿using SsbHedger;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 
 namespace SsbHedger.Model
 {
