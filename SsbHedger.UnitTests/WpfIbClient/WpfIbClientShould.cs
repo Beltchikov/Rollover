@@ -7,7 +7,7 @@ using SsbHedger.ResponseProcessing;
 using System.Reflection;
 using System.Windows;
 
-namespace SsbHedger.UnitTests
+namespace SsbHedger.UnitTests.WpfIbClient
 {
     public class WpfIbClientShould
     {
@@ -28,9 +28,9 @@ namespace SsbHedger.UnitTests
             var responseHandler = Substitute.For<IResponseHandler>();
             var backgroundWorker = Substitute.For<IBackgroundWorkerAbstraction>();
             var dispatcherAbstraction = Substitute.For<IDispatcherAbstraction>();
-      
+
             responseLoop.When(l => l.Start()).Do(x => { });
-            var sut = new WpfIbClient.WpfIbClient(
+            var sut = new SsbHedger.WpfIbClient.WpfIbClient(
                 ibClient,
                 responseLoop,
                 responseHandler,
@@ -45,9 +45,9 @@ namespace SsbHedger.UnitTests
         public void CallIbClientConnectAndStartReaderThread(
             [Frozen] IIBClient ibClient)
         {
-            SsbHedger.WpfIbClient.WpfIbClient sut 
+            SsbHedger.WpfIbClient.WpfIbClient sut
                 = (SsbHedger.WpfIbClient.WpfIbClient)SsbHedger.WpfIbClient.WpfIbClient
-                .Create(() => 1 == 1, (new UIElement()).Dispatcher);
+                .Create(() => 1 == 1, new UIElement().Dispatcher);
             sut._ibClient = ibClient;
             sut.Execute();
             ibClient.Received().ConnectAndStartReaderThread(
@@ -87,7 +87,7 @@ namespace SsbHedger.UnitTests
             responseLoop.BreakCondition =
                 () => (DateTime.Now - _startTime).Milliseconds > _breakLoopAfter;
 
-            var sut = new WpfIbClient.WpfIbClient(
+            var sut = new SsbHedger.WpfIbClient.WpfIbClient(
                 ibClient,
                 responseLoop,
                 responseHeandler,
@@ -95,7 +95,7 @@ namespace SsbHedger.UnitTests
 
             sut.Execute();
 
-            backgroundWorker.Received().RunWorkerAsync();   
+            backgroundWorker.Received().RunWorkerAsync();
         }
 
         [Theory, AutoNSubstituteData]
@@ -120,7 +120,7 @@ namespace SsbHedger.UnitTests
                 responseLoop.Start();
             });
 
-            var sut = new WpfIbClient.WpfIbClient(
+            var sut = new SsbHedger.WpfIbClient.WpfIbClient(
                 ibClient,
                 responseLoop,
                 responseHeandler,
@@ -146,7 +146,7 @@ namespace SsbHedger.UnitTests
                 responseLoop.Start();
             });
 
-            var sut = new WpfIbClient.WpfIbClient(
+            var sut = new SsbHedger.WpfIbClient.WpfIbClient(
                 ibClient,
                 responseLoop,
                 responseHandler,

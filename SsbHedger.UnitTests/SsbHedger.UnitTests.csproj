@@ -28,8 +28,4 @@
     <ProjectReference Include="..\SsbHedger\SsbHedger.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="WpfIbClient\" />
-  </ItemGroup>
-
 </Project>
