@@ -4,6 +4,7 @@ using IbClient.messages;
 using NSubstitute;
 using SsbHedger.Abstractions;
 using SsbHedger.ResponseProcessing;
+using SsbHedger.WpfIbClient;
 using System.Reflection;
 using System.Windows;
 

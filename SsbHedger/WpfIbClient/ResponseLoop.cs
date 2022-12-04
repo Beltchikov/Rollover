@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SsbHedger
+namespace SsbHedger.WpfIbClient
 {
     public class ResponseLoop : IResponseLoop
     {
@@ -9,9 +9,9 @@ namespace SsbHedger
 
         public void Start()
         {
-            while(!BreakCondition())
+            while (!BreakCondition())
             {
-                Actions(); 
+                Actions();
             }
         }
     }
