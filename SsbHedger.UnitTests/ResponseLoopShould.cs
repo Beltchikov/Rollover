@@ -1,4 +1,6 @@
-﻿namespace SsbHedger.UnitTests
+﻿using SsbHedger.WpfIbClient;
+
+namespace SsbHedger.UnitTests
 {
     public class ResponseLoopShould
     {
