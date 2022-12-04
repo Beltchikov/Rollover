@@ -7,7 +7,7 @@ using SsbHedger.ResponseProcessing;
 using SsbHedger.WpfIbClient;
 using System.Windows;
 
-namespace SsbHedger.UnitTests.ResponseProcessing
+namespace SsbHedger.UnitTests.WpfIbClient.ResponseProcessing
 {
     public class ResponseHandlerShould
     {
@@ -144,7 +144,7 @@ namespace SsbHedger.UnitTests.ResponseProcessing
             IReaderThreadQueue queue = Substitute.For<IReaderThreadQueue>();
             queue.Dequeue().Returns(message);
 
-            var dispatcher = (new UIElement()).Dispatcher;
+            var dispatcher = new UIElement().Dispatcher;
             var dispatcherAbstraction = new DispatcherAbstraction(dispatcher);
             IWpfIbClient client = Substitute.For<IWpfIbClient>();
 
@@ -152,7 +152,7 @@ namespace SsbHedger.UnitTests.ResponseProcessing
             sut.SetClient(client);
             sut.HandleNextMessage();
 
-            client.Received().InvokeError(message.ReqId, 
+            client.Received().InvokeError(message.ReqId,
                 $"Code:{message.Code} Message:{message.Message} Exception:{message.Exception}");
         }
 
@@ -164,7 +164,7 @@ namespace SsbHedger.UnitTests.ResponseProcessing
             IReaderThreadQueue queue = Substitute.For<IReaderThreadQueue>();
             queue.Dequeue().Returns(message);
 
-            var dispatcher = (new UIElement()).Dispatcher;
+            var dispatcher = new UIElement().Dispatcher;
             var dispatcherAbstraction = new DispatcherAbstraction(dispatcher);
             IWpfIbClient client = Substitute.For<IWpfIbClient>();
 
@@ -183,7 +183,7 @@ namespace SsbHedger.UnitTests.ResponseProcessing
             IReaderThreadQueue queue = Substitute.For<IReaderThreadQueue>();
             queue.Dequeue().Returns(message);
 
-            var dispatcher = (new UIElement()).Dispatcher;
+            var dispatcher = new UIElement().Dispatcher;
             var dispatcherAbstraction = new DispatcherAbstraction(dispatcher);
             IWpfIbClient client = Substitute.For<IWpfIbClient>();
 
