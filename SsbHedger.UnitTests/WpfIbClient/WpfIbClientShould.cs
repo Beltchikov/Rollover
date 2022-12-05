@@ -37,7 +37,7 @@ namespace SsbHedger.UnitTests.WpfIbClient
                 responseHandler,
                 backgroundWorker);
 
-            sut.Execute();
+            sut.Execute("localhost", 4001, 1);
 
             VerifyDelegateAttachedTo(ibClient, eventName);
         }
@@ -50,7 +50,7 @@ namespace SsbHedger.UnitTests.WpfIbClient
                 = (SsbHedger.WpfIbClient.WpfIbClient)SsbHedger.WpfIbClient.WpfIbClient
                 .Create(() => 1 == 1, new UIElement().Dispatcher);
             sut._ibClient = ibClient;
-            sut.Execute();
+            sut.Execute("localhost", 4001, 1);
             ibClient.Received().ConnectAndStartReaderThread(
                 Arg.Any<string>(),
                 Arg.Any<int>(),
@@ -94,7 +94,7 @@ namespace SsbHedger.UnitTests.WpfIbClient
                 responseHeandler,
                 backgroundWorker);
 
-            sut.Execute();
+            sut.Execute("localhost", 4001, 1);
 
             backgroundWorker.Received().RunWorkerAsync();
         }
@@ -127,7 +127,7 @@ namespace SsbHedger.UnitTests.WpfIbClient
                 responseHeandler,
                 backgroundWorker);
 
-            sut.Execute();
+            sut.Execute("localhost", 4001, 1);
 
             responseLoop.Received().Start();
         }
@@ -153,7 +153,7 @@ namespace SsbHedger.UnitTests.WpfIbClient
                 responseHandler,
                 backgroundWorker);
 
-            sut.Execute();
+            sut.Execute("localhost", 4001, 1);
 
             Thread.Sleep(_breakLoopAfter);
             responseHandler.Received().HandleNextMessage();

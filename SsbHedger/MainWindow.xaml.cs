@@ -1,11 +1,6 @@
-﻿using IbClient;
-using SsbHedger;
-using SsbHedger.Abstractions;
-using SsbHedger.Model;
-using SsbHedger.ResponseProcessing;
+﻿using SsbHedger.Model;
 using SsbHedger.WpfIbClient;
 using System.Linq;
-using System.Net;
 using System.Windows;
 
 namespace ViewModel.ListBinding
@@ -22,7 +17,7 @@ namespace ViewModel.ListBinding
             InitializeComponent();
 
             _ibClient = WpfIbClient.Create(() => 1 == 0, Dispatcher);
-            _ibClient.Execute();
+            _ibClient.Execute("localhost", 4001, 2);
             _ibClient.Error += _logic_Error;
             _ibClient.NextValidId += _ibClient_NextValidId;
             _ibClient.ManagedAccounts += _ibClient_ManagedAccounts;
