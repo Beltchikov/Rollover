@@ -17,7 +17,7 @@ namespace ViewModel.ListBinding
             InitializeComponent();
 
             _ibClient = WpfIbClient.Create(() => 1 == 0, Dispatcher);
-            _ibClient.Execute("localhost", 4001, 2);
+            _ibClient.Execute("localhost", 4001, 1);
             _ibClient.Error += _logic_Error;
             _ibClient.NextValidId += _ibClient_NextValidId;
             _ibClient.ManagedAccounts += _ibClient_ManagedAccounts;

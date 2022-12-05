@@ -13,8 +13,7 @@ namespace SsbHedger.UnitTests.WpfIbClient
     public class WpfIbClientShould
     {
         int _breakLoopAfter = 100;
-        DateTime _startTime = DateTime.Now;
-
+        
         [Theory]
         [InlineData("NextValidId")]
         [InlineData("Error")]
@@ -85,8 +84,9 @@ namespace SsbHedger.UnitTests.WpfIbClient
                 dispatcherAbstraction);
 
             var responseLoop = new ResponseLoop();
+            var startTime = DateTime.Now;
             responseLoop.BreakCondition =
-                () => (DateTime.Now - _startTime).Milliseconds > _breakLoopAfter;
+                () => (DateTime.Now - startTime).Milliseconds > _breakLoopAfter;
 
             var sut = new SsbHedger.WpfIbClient.WpfIbClient(
                 ibClient,
@@ -112,8 +112,9 @@ namespace SsbHedger.UnitTests.WpfIbClient
                 readerQueueMock,
                 dispatcherAbstraction);
 
+            var startTime = DateTime.Now;
             responseLoop.BreakCondition =
-                () => (DateTime.Now - _startTime).Milliseconds > _breakLoopAfter;
+                () => (DateTime.Now - startTime).Milliseconds > _breakLoopAfter;
 
             IBackgroundWorkerAbstraction backgroundWorker = new BackgroundWorkerAbstraction();
             backgroundWorker.SetDoWorkEventHandler((s, e) =>
@@ -138,8 +139,9 @@ namespace SsbHedger.UnitTests.WpfIbClient
             IResponseHandler responseHandler)
         {
             IResponseLoop responseLoop = new ResponseLoop();
+            var startTime = DateTime.Now;
             responseLoop.BreakCondition =
-                () => (DateTime.Now - _startTime).Milliseconds > _breakLoopAfter;
+                () => (DateTime.Now - startTime).Milliseconds > _breakLoopAfter;
 
             IBackgroundWorkerAbstraction backgroundWorker = new BackgroundWorkerAbstraction();
             backgroundWorker.SetDoWorkEventHandler((s, e) =>

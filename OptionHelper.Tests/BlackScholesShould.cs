@@ -8,14 +8,7 @@ namespace OptionHelper.Tests
         public void ReturnDoubleForCall()
         {
             var sut = new BlackScholes();
-            var result = sut.CallPrice(
-                Arg.Any<double>(),
-                0,
-                Arg.Any<double>(),
-                Arg.Any<double>(),
-                Arg.Any<double>(),
-                Arg.Any<double>());
-
+            var result = sut.CallPrice(0, 0, 0, 0, 0, 0);
             Assert.IsType<double>(result);
         }
 
