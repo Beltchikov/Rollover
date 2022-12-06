@@ -18,9 +18,9 @@ namespace SsbHedger.WpfIbClient
         IResponseHandler _responseHandler;
         IBackgroundWorkerAbstraction _backgroundWorker;
 
-        public event Action<ConnectionStatusMessage> NextValidId;
-        public event Action<int, string> Error;
-        public event Action<ManagedAccountsMessage> ManagedAccounts;
+        public event Action<ConnectionStatusMessage> NextValidId = null!;
+        public event Action<int, string> Error = null!;
+        public event Action<ManagedAccountsMessage> ManagedAccounts = null!;
 
         internal WpfIbClient(
             IIBClient ibClient,
@@ -37,14 +37,6 @@ namespace SsbHedger.WpfIbClient
             _responseLoop.Actions = () =>
             {
                 _responseHandler.HandleNextMessage();
-
-            //    var message = _responseHandler.Dequeue();
-            //    if (message == null)
-            //    {
-            //        return;
-            //    }
-
-                //    dispatcherAbstraction.Invoke(() => InvokeError(-1, message.ToString()));
             };
         }
 
