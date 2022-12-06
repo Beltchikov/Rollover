@@ -129,7 +129,8 @@ namespace SsbHedger.UnitTests.WpfIbClient
                 backgroundWorker);
 
             sut.Execute("localhost", 4001, 1);
-
+            Thread.Sleep(100);
+            
             responseLoop.Received().Start();
         }
 
