@@ -8,7 +8,7 @@ namespace SsbHedger.UnitTests
         public void CallActionIfStartedOnNewThtread()
         {
             var counter = 1;
-            var millisecondsToRun = 10;
+            var millisecondsToRun = 100;
             var startTime = DateTime.Now;
             
             var sut = new ResponseLoop();
