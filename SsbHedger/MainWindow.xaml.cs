@@ -25,6 +25,8 @@ namespace ViewModel.ListBinding
             _ibClient.Error += _logic_Error;
             _ibClient.NextValidId += _ibClient_NextValidId;
             _ibClient.ManagedAccounts += _ibClient_ManagedAccounts;
+
+            ((MainWindowViewModel)DataContext).ConnectionMessage = $"{host}, {port}, client ID: {clientId}";
         }
 
         private void _logic_Error(int reqId, string message)
