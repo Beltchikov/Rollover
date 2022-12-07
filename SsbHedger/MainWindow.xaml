@@ -31,8 +31,8 @@
                VerticalAlignment="Top" Width="141" FontSize="16" 
                FontWeight="Bold" Grid.ColumnSpan="2"/>
 
-        <Image Grid.Row="3" Grid.Column="2" Source="https://picsum.photos/200/300" />
-        <Image Grid.Row="2" Grid.Column="1" Width="30" Height="20" Source="Images\GreenCircle.png" />
+        <Image Grid.Row="2" Grid.Column="1" Width="30" Height="20" 
+               Source="pack://application:,,,/SsbHedger;component/Images/GreenCircle.png" />
 
         <ListBox Name="messages" Grid.Row="4" Grid.Column="1" 
                  Background="Azure" ItemsSource="{Binding Messages}"

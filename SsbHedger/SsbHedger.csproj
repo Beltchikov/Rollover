@@ -8,17 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\IbClient\IbClient.csproj" />
+    <None Remove="Images\GreenCircle.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Images\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Images\GreenCircle.png">
+    <Resource Include="Images\GreenCircle.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IbClient\IbClient.csproj" />
   </ItemGroup>
 
 </Project>
