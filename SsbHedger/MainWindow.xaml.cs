@@ -36,8 +36,12 @@ namespace ViewModel.ListBinding
 
         private void _ibClient_NextValidId(IbClient.messages.ConnectionStatusMessage message)
         {
-            ((MainWindowViewModel)DataContext).Messages.Add(
-                new Message { ReqId = 0, Body = message.IsConnected ? "CONNECTED" : "NOT CONNECTED" });
+            var viewModel = ((MainWindowViewModel)DataContext);
+            var connected = "CONNECTED!";
+
+            viewModel.Messages.Add(
+                new Message { ReqId = 0, Body = message.IsConnected ? connected : "NOT CONNECTED" });
+            viewModel.ConnectionMessage = $"{connected} {viewModel.ConnectionMessage}";
         }
 
         private void _ibClient_ManagedAccounts(IbClient.messages.ManagedAccountsMessage message)
