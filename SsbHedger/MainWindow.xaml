@@ -22,6 +22,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"></ColumnDefinition>
             <ColumnDefinition Width="30"></ColumnDefinition>
+            <ColumnDefinition Width="200"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="10"></ColumnDefinition>
         </Grid.ColumnDefinitions>
@@ -34,9 +35,11 @@
         <Image Grid.Row="2" Grid.Column="1" Width="30" Height="20" 
                Source="pack://application:,,,/SsbHedger;component/Images/GreenCircle.png" />
 
+        
+        
         <ListBox Name="messages" Grid.Row="4" Grid.Column="1" 
                  Background="Azure" ItemsSource="{Binding Messages}"
-                 Grid.ColumnSpan="2">
+                 Grid.ColumnSpan="3">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
