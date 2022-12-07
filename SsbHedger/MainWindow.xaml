@@ -12,7 +12,8 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="10"></RowDefinition>
-            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="200"></RowDefinition>
             <RowDefinition Height="10"></RowDefinition>
@@ -20,15 +21,22 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"></ColumnDefinition>
+            <ColumnDefinition Width="30"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="10"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
         <Label x:Name="label" Grid.Row="1" Grid.Column="1" Content="SSB Hedger" 
                HorizontalAlignment="Left" Height="33"  
-               VerticalAlignment="Top" Width="141" FontSize="16" FontWeight="Bold"/>
-        <ListBox Name="messages" Grid.Row="3" Grid.Column="1" 
-                 Background="Azure" ItemsSource="{Binding Messages}">
+               VerticalAlignment="Top" Width="141" FontSize="16" 
+               FontWeight="Bold" Grid.ColumnSpan="2"/>
+
+        <Image Grid.Row="3" Grid.Column="2" Source="https://picsum.photos/200/300" />
+        <Image Grid.Row="2" Grid.Column="1" Width="30" Height="20" Source="Images\GreenCircle.png" />
+
+        <ListBox Name="messages" Grid.Row="4" Grid.Column="1" 
+                 Background="Azure" ItemsSource="{Binding Messages}"
+                 Grid.ColumnSpan="2">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
