@@ -5,16 +5,52 @@ namespace SsbHedger.Model
     public class MainWindowViewModel : NotifyPropertyChangedImplementation
     {
         private ObservableCollection<Message> messages = new ObservableCollection<Message>();
+        private string host = "";
+        private int port;
+        private int clientId;
         private string connectionMessage = "";
         private bool connected;
 
-        public string ConnectionMessage
+        public string Host
         {
-            get => connectionMessage;
+            get => host;
             set
             {
-                connectionMessage = value;
+                host = value;
                 RaisePropertyChanged();
+                RaisePropertyChanged("ConnectionMessage");
+            }
+        }
+
+        public int Port
+        {
+            get => port;
+            set
+            {
+                port = value;
+                RaisePropertyChanged();
+                RaisePropertyChanged("ConnectionMessage");
+            }
+        }
+
+        public int ClientId
+        {
+            get => clientId;
+            set
+            {
+                clientId = value;
+                RaisePropertyChanged();
+                RaisePropertyChanged("ConnectionMessage");
+            }
+        }
+
+        public string ConnectionMessage
+        {
+            get 
+            {
+                return connected
+                    ? $"CONNECTED! {host}, {port}, client ID: {clientId}"
+                    : $"NOT CONNECTED! {host}, {port}, client ID: {clientId}";
             }
         }
 
@@ -25,6 +61,7 @@ namespace SsbHedger.Model
             {
                 connected = value;
                 RaisePropertyChanged();
+                RaisePropertyChanged("ConnectionMessage");
             }
         }
 

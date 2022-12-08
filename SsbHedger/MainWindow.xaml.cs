@@ -26,7 +26,9 @@ namespace ViewModel.ListBinding
             _ibClient.NextValidId += _ibClient_NextValidId;
             _ibClient.ManagedAccounts += _ibClient_ManagedAccounts;
 
-            ((MainWindowViewModel)DataContext).ConnectionMessage = $"{host}, {port}, client ID: {clientId}";
+            ((MainWindowViewModel)DataContext).Host = host;
+            ((MainWindowViewModel)DataContext).Port = port;
+            ((MainWindowViewModel)DataContext).ClientId = clientId;
         }
 
         private void _logic_Error(int reqId, string message)
@@ -42,7 +44,6 @@ namespace ViewModel.ListBinding
             viewModel.Messages.Add(
                 new Message { ReqId = 0, Body = message.IsConnected ? connected : "NOT CONNECTED" });
             viewModel.Connected = message.IsConnected;
-            viewModel.ConnectionMessage = $"{connected} {viewModel.ConnectionMessage}";
         }
 
         private void _ibClient_ManagedAccounts(IbClient.messages.ManagedAccountsMessage message)
