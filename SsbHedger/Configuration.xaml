@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SsbHedger"
         mc:Ignorable="d"
-        Title="Configuration" Height="140" Width="220">
+        Title="Configuration" Height="140" Width="180">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"></RowDefinition>
@@ -17,21 +17,45 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"></ColumnDefinition>
-            <ColumnDefinition Width="100"></ColumnDefinition>
+            <ColumnDefinition Width="60"></ColumnDefinition>
             <ColumnDefinition Width="100"></ColumnDefinition>
             <ColumnDefinition Width="10"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Column="1" Grid.Row="0"  Text="Host"
+        <TextBlock Grid.Column="1" Grid.Row="0"  Text="Host:"
+                   HorizontalAlignment="Right"
+                   Margin="0,0,5,0"
                    Style="{StaticResource NormalTextBlock}">
         </TextBlock>
+        <TextBox Name="txtHost" Grid.Column="2" Grid.Row="0"
+                 Style="{StaticResource NormalTextBox}"
+                 Text="localhost"></TextBox>
 
+        <TextBlock Grid.Column="1" Grid.Row="1"  Text="Port:"
+                   HorizontalAlignment="Right"
+                   Margin="0,0,5,0"
+                   Style="{StaticResource NormalTextBlock}">
+        </TextBlock>
+        <TextBox Name="txtPort" Grid.Column="2" Grid.Row="1"
+                 Style="{StaticResource NormalTextBox}"
+                 Text="4001"></TextBox>
 
-        <!--<Label x:Name="lblHost" 
-               Grid.Column="1" Grid.Row="0"
-               Content="Host" 
-               Height="25" 
-               Width="60"/>-->
+        <TextBlock Grid.Column="1" Grid.Row="2"  Text="Client ID:"
+                   HorizontalAlignment="Right"
+                   Margin="0,0,5,0"
+                   Style="{StaticResource NormalTextBlock}">
+        </TextBlock>
+        <TextBox Name="txtClientId" Grid.Column="2" Grid.Row="2"
+                 Style="{StaticResource NormalTextBox}"
+                 Text="1"></TextBox>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
+                    Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2">
+            <Button Name="btCancel" Margin="0,3,0,3" Padding="5,0,5,0">Cancel</Button>
+            <Button Name="btDone" Margin="10,3,0,3" Padding="5,0,5,0" >Done</Button>
+        </StackPanel>
+
+       
 
     </Grid>
 </Window>

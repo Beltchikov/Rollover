@@ -48,8 +48,7 @@
         </Image>
 
         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="2" >
-            <TextBlock VerticalAlignment="Center" 
-                       Style="{StaticResource NormalTextBlock}"
+            <TextBlock Style="{StaticResource NormalTextBlock}"
                        Text="{Binding ConnectionMessage}">
             </TextBlock>
             <Button Name="btConfiguration" Margin="10,0,0,0"
