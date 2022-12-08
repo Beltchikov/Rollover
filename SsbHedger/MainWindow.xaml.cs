@@ -1,4 +1,5 @@
-﻿using SsbHedger.Model;
+﻿using SsbHedger;
+using SsbHedger.Model;
 using SsbHedger.WpfIbClient;
 using System.Linq;
 using System.Windows;
@@ -11,6 +12,7 @@ namespace ViewModel.ListBinding
     public partial class ListBindingWindow : Window
     {
         IWpfIbClient _ibClient;
+        ConfigurationWindow _configurationWindow = new ConfigurationWindow();
 
         public ListBindingWindow()
         {
@@ -59,6 +61,11 @@ namespace ViewModel.ListBinding
         {
             e.Cancel = true;
             this.Visibility = Visibility.Hidden;
+        }
+
+        private void btConfiguration_Click(object sender, RoutedEventArgs e)
+        {
+            _configurationWindow.ShowDialog();
         }
     }
 }
