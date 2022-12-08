@@ -6,6 +6,7 @@ namespace SsbHedger.Model
     {
         private ObservableCollection<Message> messages = new ObservableCollection<Message>();
         private string connectionMessage = "";
+        private bool connected;
 
         public string ConnectionMessage
         {
@@ -13,6 +14,16 @@ namespace SsbHedger.Model
             set
             {
                 connectionMessage = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public bool Connected
+        {
+            get => connected;
+            set
+            {
+                connected = value;
                 RaisePropertyChanged();
             }
         }

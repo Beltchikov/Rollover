@@ -32,8 +32,23 @@
                VerticalAlignment="Top" Width="141" FontSize="16" 
                FontWeight="Bold" Grid.ColumnSpan="2"/>
 
-        <Image Grid.Row="2" Grid.Column="1" Width="30" Height="20" 
-               Source="pack://application:,,,/SsbHedger;component/Images/GreenCircle.png" />
+        <!--<Image Grid.Row="2" Grid.Column="1" Width="30" Height="20" 
+               Source="pack://application:,,,/SsbHedger;component/Images/GreenCircle.png"/>-->
+
+        <Image Grid.Row="2" Grid.Column="1" Width="30" Height="20" >
+            <Image.Style>
+                <Style TargetType="{x:Type Image}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Connected}" Value="False">
+                            <Setter Property="Source" Value="pack://application:,,,/SsbHedger;component/Images/RedCircle.png"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Connected}" Value="True">
+                            <Setter Property="Source" Value="pack://application:,,,/SsbHedger;component/Images/GreenCircle.png"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Image.Style>
+        </Image>
 
         <TextBlock Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Text="{Binding ConnectionMessage}"></TextBlock>
         
