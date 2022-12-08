@@ -41,7 +41,7 @@ namespace ViewModel.ListBinding
 
             viewModel.Messages.Add(
                 new Message { ReqId = 0, Body = message.IsConnected ? connected : "NOT CONNECTED" });
-            viewModel.Connected = true;
+            viewModel.Connected = message.IsConnected;
             viewModel.ConnectionMessage = $"{connected} {viewModel.ConnectionMessage}";
         }
 
