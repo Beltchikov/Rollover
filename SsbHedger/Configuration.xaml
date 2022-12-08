@@ -22,12 +22,16 @@
             <ColumnDefinition Width="10"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
+        <TextBlock Grid.Column="1" Grid.Row="0"  Text="Host"
+                   Style="{StaticResource NormalTextBlock}">
+        </TextBlock>
 
-        <Label x:Name="lblHost" 
+
+        <!--<Label x:Name="lblHost" 
                Grid.Column="1" Grid.Row="0"
                Content="Host" 
                Height="25" 
-               Width="60"/>
+               Width="60"/>-->
 
     </Grid>
 </Window>

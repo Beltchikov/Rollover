@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:SsbHedger"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Style x:Key="NormalTextBlock" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12" />
+        </Style>
     </Application.Resources>
 </Application>
