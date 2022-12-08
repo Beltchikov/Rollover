@@ -47,8 +47,16 @@
             </Image.Style>
         </Image>
 
-        <TextBlock Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Text="{Binding ConnectionMessage}"></TextBlock>
-        
+        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="2" >
+            <TextBlock VerticalAlignment="Center" Text="{Binding ConnectionMessage}">
+            </TextBlock>
+            <Button Name="btConfiguration" Margin="10,0,0,0"
+                    Background="White"
+                    FontWeight="ExtraBold"
+                    Foreground="Blue"
+                    BorderThickness="0" Cursor="Hand"> ... </Button>
+        </StackPanel>
+
         <ListBox Name="messages" Grid.Row="4" Grid.Column="1" 
                  Background="Azure" ItemsSource="{Binding Messages}"
                  Grid.ColumnSpan="3">
