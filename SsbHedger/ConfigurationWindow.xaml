@@ -9,7 +9,6 @@
         SizeToContent="WidthAndHeight"
         Closing="Window_Closing">
     <Grid>
-        <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
@@ -59,6 +58,5 @@
         </StackPanel>
 
 
-        </Grid>
     </Grid>
 </Window>
