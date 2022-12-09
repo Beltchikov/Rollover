@@ -53,7 +53,7 @@
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
                     Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2">
-            <Button Name="btCancel" Margin="0,3,0,3" Padding="5,0,5,0">Cancel</Button>
+            <Button Name="btCancel" Margin="0,3,0,3" Padding="5,0,5,0" Click="btCancel_Click">Cancel</Button>
             <Button Name="btDone" Margin="10,3,0,3" Padding="5,0,5,0" >Done</Button>
         </StackPanel>
 
