@@ -47,7 +47,7 @@
             </Image.Style>
         </Image>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="2" >
+        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" >
             <TextBlock Style="{StaticResource NormalTextBlock}"
                        Text="{Binding ConnectionMessage}">
             </TextBlock>
