@@ -1,0 +1,25 @@
+@startuml
+
+start
+
+group For all configuration values
+:Read value from registry;
+if (Configuration value found?) then (yes)
+  :Assign value to Model;
+else (no)
+  :Assign default values to Model;
+endif
+end group
+
+:Configuration window closed by Done button;
+
+group For all configuration values in Model
+:Read value from registry;
+if(Value has changed) then (yes)
+    : Write value to registry;
+endif
+end group
+
+stop
+
+@enduml
