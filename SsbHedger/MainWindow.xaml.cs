@@ -9,12 +9,12 @@ namespace ViewModel.ListBinding
     /// <summary>
     /// Interaction logic for ListBindingWindow.xaml
     /// </summary>
-    public partial class ListBindingWindow : Window
+    public partial class MainWindow : Window
     {
         IWpfIbClient _ibClient;
         ConfigurationWindow _configurationWindow = new ConfigurationWindow();
 
-        public ListBindingWindow()
+        public MainWindow()
         {
             InitializeComponent();
 
