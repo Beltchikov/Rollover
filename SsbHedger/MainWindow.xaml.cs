@@ -1,10 +1,9 @@
-﻿using SsbHedger;
-using SsbHedger.Model;
+﻿using SsbHedger.Model;
 using SsbHedger.WpfIbClient;
 using System.Linq;
 using System.Windows;
 
-namespace ViewModel.ListBinding
+namespace SsbHedger
 {
     /// <summary>
     /// Interaction logic for ListBindingWindow.xaml
@@ -14,15 +13,11 @@ namespace ViewModel.ListBinding
         IWpfIbClient _ibClient;
         ConfigurationWindow _configurationWindow = new ConfigurationWindow();
 
-        public MainWindow()
+        public MainWindow(string host, int port, int clientId)
         {
             InitializeComponent();
 
-            var host = "localhost";
-            int port = 4001;
-            int clientId = 1;
-
-            _ibClient = WpfIbClient.Create(() => 1 == 0, Dispatcher);
+            _ibClient = WpfIbClient.WpfIbClient.Create(() => 1 == 0, Dispatcher);
             _ibClient.Execute(host, port, clientId);
             _ibClient.Error += _logic_Error;
             _ibClient.NextValidId += _ibClient_NextValidId;
