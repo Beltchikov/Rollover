@@ -1,14 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NSubstitute;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SsbHedger;
-using System.Windows;
-using System.Runtime.Serialization;
+﻿using NSubstitute;
 using SsbHedger.Builders;
+using System.Runtime.Serialization;
+using System.Windows;
 
 namespace SsbHedger.UnitTests
 {
@@ -35,8 +28,6 @@ namespace SsbHedger.UnitTests
                 Arg.Any<string>(),
                 Arg.Any<int>(),
                 Arg.Any<int>());
-
-            //throw new NotImplementedException();
         }
 
         private void CallMethod(App sut, string methodName, object[] parameters)
