@@ -46,7 +46,7 @@ namespace SsbHedger.UnitTests
 
             registryCurrentUser.OpenSubKey(SOFTWARE_SSBHEDGER).Returns(registryKey);
 
-            SetFiledValue(sut, "_registryCurrentUser", registryCurrentUser);
+            Reflection.SetFiledValue(sut, "_registryCurrentUser", registryCurrentUser);
 
             var (host, port, clientId) = sut.ReadConfiguration(
                 defaultHost,
@@ -57,14 +57,5 @@ namespace SsbHedger.UnitTests
             Assert.Equal(portFromRegistry, port);
             Assert.Equal(clientIdFromRegistry, clientId);
         }
-
-        private static void SetFiledValue(RegistryManager sut, string fieldName, object value)
-        {
-            var fieldInfo = sut.GetType().GetField(
-                fieldName,
-               System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            fieldInfo?.SetValue(sut, value);
-        }
-
     }
 }
