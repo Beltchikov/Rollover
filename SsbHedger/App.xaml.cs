@@ -8,19 +8,19 @@ namespace SsbHedger
     /// </summary>
     public partial class App : Application
     {
-        IRegistryManager _registryManager = new RegistryManager();
-        private IMainWindowBuilder _mainWindowBuilder = new MainWindowBuilder();
+        private readonly IRegistryManager _registryManager = new RegistryManager();
+        private readonly IMainWindowBuilder _mainWindowBuilder = new MainWindowBuilder();
+
+        private readonly string _defaultHost = "localhost";
+        private readonly int _defaultPort = 4001;
+        private readonly int _defaultClientId = 1;
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            var defaultHost = "localhost";
-            int defaultPort = 4001;
-            int defaultClientId = 1;
-
-            var (host, port, clientId) = _registryManager.ReadConfiguration(
-                defaultHost,
-                defaultPort,
-                defaultClientId);
+           var (host, port, clientId) = _registryManager.ReadConfiguration(
+                _defaultHost,
+                _defaultPort,
+                _defaultClientId);
 
             MainWindow mainWindow = _mainWindowBuilder.Build(host, port, clientId);
             mainWindow?.Show();

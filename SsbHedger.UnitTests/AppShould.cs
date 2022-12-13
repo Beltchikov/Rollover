@@ -24,25 +24,39 @@ namespace SsbHedger.UnitTests
             CallMethod(sut, "Application_Startup", parameters);
 
             // Verify
-            registryManagerMock.Received().ReadConfiguration(
-                Arg.Any<string>(),
-                Arg.Any<int>(),
-                Arg.Any<int>());
+            string? defaultHost = GetFiledValue<string>(sut, "_defaultHost");
+            int? defaultPort= GetFiledValue<int>(sut, "_defaultPort");
+            int? defaultClientId = GetFiledValue<int>(sut, "_defaultClientId");
+            if (defaultHost != null && defaultPort != null && defaultClientId != null)
+            {
+                registryManagerMock.Received().ReadConfiguration(
+                    defaultHost,
+                    defaultPort.Value,
+                    defaultClientId.Value);
+            }
         }
 
-        private void CallMethod(App sut, string methodName, object[] parameters)
+        private static void CallMethod(App sut, string methodName, object[] parameters)
         {
             var methodInfo = sut.GetType().GetMethod(methodName,
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             methodInfo?.Invoke(sut, parameters);
         }
 
-        private void SetFiledValue(App sut, string fieldName, object value)
+        private static void SetFiledValue(App sut, string fieldName, object value)
         {
             var fieldInfo = sut.GetType().GetField(
                 fieldName,
                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             fieldInfo?.SetValue(sut, value);
+        }
+
+        private static T? GetFiledValue<T>(App sut, string fieldName) //where T: struct
+        {
+            var fieldInfo = sut.GetType().GetField(
+                fieldName,
+               System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            return (T?)fieldInfo?.GetValue(sut);
         }
     }
 }
