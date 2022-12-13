@@ -14,7 +14,7 @@ namespace SsbHedger.UnitTests
             [Frozen] IRegistryCurrentUserAbstraction registryCurrentUser,
             RegistryManager sut)
         {
-            var (host, port, clientId ) = sut.ReadConfiguration(
+            var (host, port, clientId) = sut.ReadConfiguration(
                 defaultHost,
                 defaultPort,
                 defaultClientId);
@@ -24,10 +24,39 @@ namespace SsbHedger.UnitTests
             Assert.Equal(defaultClientId, clientId);
         }
 
-        [Fact]
-        public void ReturnValuesFromRegistry()
+
+        [Theory, AutoNSubstituteData]
+        public void ReturnValuesFromRegistry(
+            string defaultHost,
+            int defaultPort,
+            int defaultClientId,
+            string hostFromRegistry,
+            int portFromRegistry,
+            int clientIdFromRegistry,
+            IRegistryKeyAbstraction registryKey,
+            [Frozen] IRegistryCurrentUserAbstraction registryCurrentUser,
+            RegistryManager sut)
         {
-            //throw new NotImplementedException();
+            const string SOFTWARE_SSBHEDGER = @"SOFTWARE\SsbHedger";
+            const string HOST = @"Host";
+            const string PORT = @"Port";
+            const string CLIENT_ID = @"ClientId";
+
+            registryKey.GetValue(HOST).Returns(hostFromRegistry);
+            registryKey.GetValue(PORT).Returns(portFromRegistry);
+            registryKey.GetValue(CLIENT_ID).Returns(clientIdFromRegistry);
+
+            registryCurrentUser.OpenSubKey(SOFTWARE_SSBHEDGER).Returns(registryKey);
+
+            var (host, port, clientId) = sut.ReadConfiguration(
+                defaultHost,
+                defaultPort,
+                defaultClientId);
+
+            Assert.Equal(hostFromRegistry, host);
+            Assert.Equal(portFromRegistry, port);
+            Assert.Equal(clientIdFromRegistry, clientId);
         }
+
     }
 }
