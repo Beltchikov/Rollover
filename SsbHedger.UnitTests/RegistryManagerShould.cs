@@ -1,5 +1,4 @@
-﻿using AutoFixture.Xunit2;
-using NSubstitute;
+﻿using NSubstitute;
 using SsbHedger.Abstractions;
 
 namespace SsbHedger.UnitTests
@@ -11,7 +10,6 @@ namespace SsbHedger.UnitTests
             string defaultHost,
             int defaultPort,
             int defaultClientId,
-            [Frozen] IRegistryCurrentUserAbstraction registryCurrentUser,
             RegistryManager sut)
         {
             var (host, port, clientId) = sut.ReadConfiguration(
@@ -34,7 +32,7 @@ namespace SsbHedger.UnitTests
             int portFromRegistry,
             int clientIdFromRegistry,
             IRegistryKeyAbstraction registryKey,
-            [Frozen] IRegistryCurrentUserAbstraction registryCurrentUser,
+            IRegistryCurrentUserAbstraction registryCurrentUser,
             RegistryManager sut)
         {
             const string SOFTWARE_SSBHEDGER = @"SOFTWARE\SsbHedger";
@@ -48,6 +46,8 @@ namespace SsbHedger.UnitTests
 
             registryCurrentUser.OpenSubKey(SOFTWARE_SSBHEDGER).Returns(registryKey);
 
+            SetFiledValue(sut, "_registryCurrentUser", registryCurrentUser);
+
             var (host, port, clientId) = sut.ReadConfiguration(
                 defaultHost,
                 defaultPort,
@@ -56,6 +56,14 @@ namespace SsbHedger.UnitTests
             Assert.Equal(hostFromRegistry, host);
             Assert.Equal(portFromRegistry, port);
             Assert.Equal(clientIdFromRegistry, clientId);
+        }
+
+        private static void SetFiledValue(RegistryManager sut, string fieldName, object value)
+        {
+            var fieldInfo = sut.GetType().GetField(
+                fieldName,
+               System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            fieldInfo?.SetValue(sut, value);
         }
 
     }

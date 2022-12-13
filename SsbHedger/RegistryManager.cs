@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using SsbHedger.Abstractions;
+﻿using SsbHedger.Abstractions;
 using System;
 
 namespace SsbHedger
@@ -33,10 +32,6 @@ namespace SsbHedger
             }
 
             return new ValueTuple<string, int, int>(host, port.Value, clientId.Value);
-
-            ////////////////////////
-            // RegistryKey? key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\SsbHedger");
-            // https://www.c-sharpcorner.com/UploadFile/f9f215/windows-registry/
         }
     }
 }
