@@ -13,7 +13,7 @@ namespace SsbHedger
 
         private readonly string _defaultHost = "localhost";
         private readonly int _defaultPort = 4001;
-        private readonly int _defaultClientId = 1;
+        private readonly int _defaultClientId = 3;
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {

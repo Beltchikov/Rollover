@@ -1,8 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace SsbHedger.Model
 {
-    public class MainWindowViewModel : NotifyPropertyChangedImplementation
+    public class MainWindowViewModel : ObservableObject
     {
         private ObservableCollection<Message> messages = new ObservableCollection<Message>();
         private string host = "";
@@ -14,34 +15,19 @@ namespace SsbHedger.Model
         public string Host
         {
             get => host;
-            set
-            {
-                host = value;
-                RaisePropertyChanged();
-                RaisePropertyChanged("ConnectionMessage");
-            }
+            set => SetProperty(ref host, value);
         }
 
         public int Port
         {
             get => port;
-            set
-            {
-                port = value;
-                RaisePropertyChanged();
-                RaisePropertyChanged("ConnectionMessage");
-            }
+            set => SetProperty(ref port, value);
         }
 
         public int ClientId
         {
             get => clientId;
-            set
-            {
-                clientId = value;
-                RaisePropertyChanged();
-                RaisePropertyChanged("ConnectionMessage");
-            }
+            set => SetProperty(ref clientId, value);
         }
 
         public string ConnectionMessage
@@ -57,26 +43,13 @@ namespace SsbHedger.Model
         public bool Connected
         {
             get => connected;
-            set
-            {
-                connected = value;
-                RaisePropertyChanged();
-                RaisePropertyChanged("ConnectionMessage");
-            }
+            set => SetProperty(ref connected, value);
         }
 
         public ObservableCollection<Message> Messages
         {
-            get { return messages; }
-
-            set
-            {
-                if (messages != value)
-                {
-                    messages = value;
-                    RaisePropertyChanged();
-                }
-            }
+            get => messages;
+            set => SetProperty(ref messages, value);
         }
     }
 }
