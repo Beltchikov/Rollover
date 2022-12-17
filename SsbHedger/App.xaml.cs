@@ -11,7 +11,7 @@ namespace SsbHedger
     public partial class App : Application
     {
         private IRegistryManager? _registryManager;
-        private readonly IMainWindowBuilder _mainWindowBuilder = new MainWindowBuilder();
+        private IMainWindowBuilder? _mainWindowBuilder;
 
         private readonly string _defaultHost = "localhost";
         private readonly int _defaultPort = 4001;
@@ -21,6 +21,7 @@ namespace SsbHedger
         {
             Services = new ServiceCollection()
                 .AddSingleton<IRegistryManager, RegistryManager>()
+                .AddSingleton<IMainWindowBuilder, MainWindowBuilder>()
                 .BuildServiceProvider();
         }
 
@@ -39,6 +40,11 @@ namespace SsbHedger
                  _defaultPort,
                  _defaultClientId);
 
+            _mainWindowBuilder = Services.GetService<IMainWindowBuilder>();
+            if (_mainWindowBuilder == null)
+            {
+                throw new ApplicationException("Unexpected! _mainWindowBuilder is null");
+            }
             MainWindow mainWindow = _mainWindowBuilder.Build(host, port, clientId);
             mainWindow?.Show();
         }

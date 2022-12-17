@@ -17,6 +17,7 @@ namespace SsbHedger.UnitTests
             IServiceProvider serviceProviderMock = Substitute.For<IServiceProvider>();
 
             serviceProviderMock.GetService<IRegistryManager>().Returns(registryManagerMock);
+            serviceProviderMock.GetService<IMainWindowBuilder>().Returns(mainWindowBuilderMock);
 
             var sut = new App();
             Reflection.SetPropertyValue(sut, "Services", serviceProviderMock);
