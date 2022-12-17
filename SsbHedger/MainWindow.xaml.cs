@@ -12,7 +12,7 @@ namespace SsbHedger
     {
         IWpfIbClient _ibClient;
         ConfigurationWindow _configurationWindow = new ConfigurationWindow();
-
+        
         public MainWindow(string host, int port, int clientId)
         {
             InitializeComponent();

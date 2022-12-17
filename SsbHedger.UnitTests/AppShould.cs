@@ -1,4 +1,5 @@
-﻿using NSubstitute;
+﻿using Microsoft.Extensions.DependencyInjection;
+using NSubstitute;
 using SsbHedger.Builders;
 using System.Runtime.Serialization;
 using System.Windows;
@@ -13,9 +14,12 @@ namespace SsbHedger.UnitTests
             // Arrange
             IRegistryManager registryManagerMock = Substitute.For<IRegistryManager>();
             IMainWindowBuilder mainWindowBuilderMock = Substitute.For<IMainWindowBuilder>();
+            IServiceProvider serviceProviderMock = Substitute.For<IServiceProvider>();
+
+            serviceProviderMock.GetService<IRegistryManager>().Returns(registryManagerMock);
 
             var sut = new App();
-            Reflection.SetFiledValue(sut, "_registryManager", registryManagerMock);
+            Reflection.SetPropertyValue(sut, "Services", serviceProviderMock);
             Reflection.SetFiledValue(sut, "_mainWindowBuilder", mainWindowBuilderMock);
 
             // Act
