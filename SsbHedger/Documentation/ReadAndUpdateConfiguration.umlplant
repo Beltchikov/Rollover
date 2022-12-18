@@ -8,6 +8,7 @@ if (Configuration value found?) then (yes)
   :Assign value to Model;
 else (no)
   :Assign default values to Model;
+  :Save default values in Registry;
 endif
 end group
 

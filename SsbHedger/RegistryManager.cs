@@ -9,7 +9,12 @@ namespace SsbHedger
         private const string HOST = @"Host";
         private const string PORT = @"Port";
         private const string CLIENT_ID = @"ClientId";
-        private IRegistryCurrentUserAbstraction _registryCurrentUser = new RegistryCurrentUserAbstraction();
+        private IRegistryCurrentUserAbstraction _registryCurrentUser;
+
+        public RegistryManager(IRegistryCurrentUserAbstraction registryCurrentUser)
+        {
+            _registryCurrentUser = registryCurrentUser;
+        }
 
         public (string host, int port, int clientId) ReadConfiguration(
             string defaultHost,

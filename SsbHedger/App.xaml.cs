@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SsbHedger.Abstractions;
 using SsbHedger.Builders;
 using System;
 using System.Windows;
@@ -22,6 +23,7 @@ namespace SsbHedger
             Services = new ServiceCollection()
                 .AddSingleton<IRegistryManager, RegistryManager>()
                 .AddSingleton<IMainWindowBuilder, MainWindowBuilder>()
+                .AddScoped<IRegistryCurrentUserAbstraction, RegistryCurrentUserAbstraction>()
                 .BuildServiceProvider();
         }
 

@@ -1,17 +1,32 @@
-﻿using NSubstitute;
+﻿using AutoFixture.Xunit2;
+using NSubstitute;
+using NSubstitute.ReturnsExtensions;
 using SsbHedger.Abstractions;
 
 namespace SsbHedger.UnitTests
 {
     public class RegistryManagerShould
     {
+        const string SOFTWARE_SSBHEDGER = @"SOFTWARE\SsbHedger";
+        const string HOST = @"Host";
+        const string PORT = @"Port";
+        const string CLIENT_ID = @"ClientId";
+
         [Theory, AutoNSubstituteData]
         public void ReturnDefaultValuesIfNoValuesInRegistry(
             string defaultHost,
             int defaultPort,
             int defaultClientId,
+            [Frozen] IRegistryKeyAbstraction registryKey,
+            [Frozen] IRegistryCurrentUserAbstraction registryCurrentUser,
             RegistryManager sut)
         {
+            registryKey.GetValue(HOST).ReturnsNull();
+            registryKey.GetValue(PORT).ReturnsNull();
+            registryKey.GetValue(CLIENT_ID).ReturnsNull();
+
+            registryCurrentUser.OpenSubKey(SOFTWARE_SSBHEDGER).Returns(registryKey);
+
             var (host, port, clientId) = sut.ReadConfiguration(
                 defaultHost,
                 defaultPort,
@@ -35,11 +50,6 @@ namespace SsbHedger.UnitTests
             IRegistryCurrentUserAbstraction registryCurrentUser,
             RegistryManager sut)
         {
-            const string SOFTWARE_SSBHEDGER = @"SOFTWARE\SsbHedger";
-            const string HOST = @"Host";
-            const string PORT = @"Port";
-            const string CLIENT_ID = @"ClientId";
-
             registryKey.GetValue(HOST).Returns(hostFromRegistry);
             registryKey.GetValue(PORT).Returns(portFromRegistry);
             registryKey.GetValue(CLIENT_ID).Returns(clientIdFromRegistry);
