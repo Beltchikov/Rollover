@@ -11,7 +11,7 @@ namespace SsbHedger
     public partial class MainWindow : Window
     {
         IWpfIbClient _ibClient;
-        ConfigurationWindow _configurationWindow = new ConfigurationWindow();
+        ConfigurationWindow _configurationWindow = new();
         
         public MainWindow(string host, int port, int clientId)
         {
