@@ -25,6 +25,11 @@ namespace SsbHedger
             var subKey = _registryCurrentUser.OpenSubKey(SOFTWARE_SSBHEDGER);
             if(subKey == null)
             {
+                subKey = _registryCurrentUser.CreateSubKey(SOFTWARE_SSBHEDGER);
+                subKey.SetValue(HOST, defaultHost);
+                subKey.SetValue(PORT, defaultPort);
+                subKey.SetValue(CLIENT_ID, defaultClientId);
+
                 return new ValueTuple<string, int, int>(defaultHost, defaultPort, defaultClientId);
             }
 

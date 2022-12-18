@@ -1,10 +1,8 @@
-﻿using Microsoft.Win32;
-using System;
-
-namespace SsbHedger.Abstractions
+﻿namespace SsbHedger.Abstractions
 {
     public interface IRegistryCurrentUserAbstraction
     {
+        IRegistryKeyAbstraction CreateSubKey(string path);
         IRegistryKeyAbstraction? OpenSubKey(string path);
     }
 }
