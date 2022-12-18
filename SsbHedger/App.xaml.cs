@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using SsbHedger.Abstractions;
 using SsbHedger.Builders;
 using System;
@@ -24,6 +25,7 @@ namespace SsbHedger
                 .AddSingleton<IRegistryManager, RegistryManager>()
                 .AddSingleton<IMainWindowBuilder, MainWindowBuilder>()
                 .AddScoped<IRegistryCurrentUserAbstraction, RegistryCurrentUserAbstraction>()
+                .AddMediatR(GetType().Assembly)
                 .BuildServiceProvider();
         }
 
