@@ -5,12 +5,16 @@ namespace SsbHedger.Model
 {
     public class MainWindowViewModel : ObservableObject
     {
-        private ObservableCollection<Message> messages = new ObservableCollection<Message>();
+        private ObservableCollection<Message> messages;
         private string host = "";
         private int port;
         private int clientId;
-        private string connectionMessage = "";
         private bool connected;
+
+        public MainWindowViewModel()
+        {
+            messages = new ObservableCollection<Message>();
+        }
 
         public string Host
         {
