@@ -6,12 +6,13 @@ using System.Windows;
 using System.Windows.Input;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using SsbHedger.MediatorCommands;
 
 namespace SsbHedger.Model
 {
     public class MainWindowViewModel : ObservableObject
     {
-        IMediator? mediator;
+        IMediator? _mediator;
         private ObservableCollection<Message> messages;
         private string host = "";
         private int port;
@@ -20,14 +21,11 @@ namespace SsbHedger.Model
 
         public MainWindowViewModel()
         {
-            mediator = ((App)Application.Current).Services.GetService<IMediator>();
-            if (mediator == null)
-            {
-                throw new ApplicationException("Unexpected! mediator is null");
-            }
-
+            _mediator = ((App)Application.Current).Services.GetService<IMediator>()
+                ?? throw new ApplicationException("Unexpected! mediator is null");
+         
             messages = new ObservableCollection<Message>();
-            UpdateConfigurationCommand = new RelayCommand(() => { }); // TODO
+            UpdateConfigurationCommand = new RelayCommand<string>(async (data) => await _mediator.Send(new UpdateConfigurationMediatorCommand(data))); 
 
         }
 
