@@ -28,30 +28,42 @@ namespace SsbHedger.Model
 
             messages = new ObservableCollection<Message>();
             UpdateConfigurationCommand = new RelayCommand(() => { }); // TODO
-            
+
         }
 
         public string Host
         {
             get => host;
-            set => SetProperty(ref host, value);
+            set
+            {
+                SetProperty(ref host, value);
+                OnPropertyChanged(nameof(ConnectionMessage));
+            }
         }
 
         public int Port
         {
             get => port;
-            set => SetProperty(ref port, value);
+            set
+            {
+                SetProperty(ref port, value);
+                OnPropertyChanged(nameof(ConnectionMessage));
+            }
         }
 
         public int ClientId
         {
             get => clientId;
-            set => SetProperty(ref clientId, value);
+            set
+            {
+                SetProperty(ref clientId, value);
+                OnPropertyChanged(nameof(ConnectionMessage));
+            }
         }
 
         public string ConnectionMessage
         {
-            get 
+            get
             {
                 return connected
                     ? $"CONNECTED! {host}, {port}, client ID: {clientId}"
@@ -62,7 +74,11 @@ namespace SsbHedger.Model
         public bool Connected
         {
             get => connected;
-            set => SetProperty(ref connected, value);
+            set
+            {
+                SetProperty(ref connected, value);
+                OnPropertyChanged(nameof(ConnectionMessage));
+            }
         }
 
         public ObservableCollection<Message> Messages
