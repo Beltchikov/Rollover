@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using SsbHedger.MediatorCommands;
+using System.Linq;
 
 namespace SsbHedger.Model
 {
@@ -25,7 +26,15 @@ namespace SsbHedger.Model
                 ?? throw new ApplicationException("Unexpected! mediator is null");
          
             messages = new ObservableCollection<Message>();
-            UpdateConfigurationCommand = new RelayCommand<string>(async (data) => await _mediator.Send(new UpdateConfigurationMediatorCommand(data))); 
+            UpdateConfigurationCommand = new RelayCommand<string>(async (data) =>
+            {
+                if(data == null) { throw new ApplicationException("Unexpected! data is null"); }
+                var dataArray = data.Split(";").Select(m => m.Trim()).ToList();
+                await _mediator.Send(new UpdateConfigurationMediatorCommand(
+                    dataArray[0], 
+                    Convert.ToInt32(dataArray[1]),
+                    Convert.ToInt32(dataArray[2])));
+            }); 
 
         }
 

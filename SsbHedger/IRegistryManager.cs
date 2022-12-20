@@ -6,5 +6,6 @@
             string defaultHost,
             int defaultPort,
             int defaultClientId);
+        void WriteConfiguration(string host, int port, int clientId);
     }
 }

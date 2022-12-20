@@ -7,8 +7,17 @@ namespace SsbHedger.MediatorCommands
 {
     public class UpdateConfigurationMediatorCommandHandler : IRequestHandler<UpdateConfigurationMediatorCommand>
     {
-        public Task<Unit> Handle(UpdateConfigurationMediatorCommand request, CancellationToken cancellationToken)
+        private IRegistryManager _registryManager;
+
+        public UpdateConfigurationMediatorCommandHandler(IRegistryManager registryManager)
         {
+            _registryManager = registryManager;
+        }
+
+        public Task<Unit> Handle(UpdateConfigurationMediatorCommand command, CancellationToken cancellationToken)
+        {
+            //_registryManager.WriteConfiguration()
+
             throw new NotImplementedException();
         }
     }

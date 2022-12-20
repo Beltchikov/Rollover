@@ -4,11 +4,15 @@ namespace SsbHedger.MediatorCommands
 {
     public class UpdateConfigurationMediatorCommand : IRequest
     {
-        private string? data;
+        public string Host { get; set; }
+        public int Port { get; set; }
+        public int ClientId { get; set; }
 
-        public UpdateConfigurationMediatorCommand(string? data)
+        public UpdateConfigurationMediatorCommand(string host, int port, int clientId)
         {
-            this.data = data;
+            Host= host;
+            Port= port;
+            ClientId = clientId;
         }
     }
 }

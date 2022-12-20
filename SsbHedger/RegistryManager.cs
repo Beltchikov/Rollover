@@ -43,5 +43,10 @@ namespace SsbHedger
 
             return new ValueTuple<string, int, int>(host, port.Value, clientId.Value);
         }
+
+        public void WriteConfiguration(string host, int port, int clientId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
