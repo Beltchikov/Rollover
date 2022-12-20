@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SsbHedger"
+        xmlns:converters="clr-namespace:SsbHedger.Converters"
         mc:Ignorable="d"
         xmlns:model="clr-namespace:SsbHedger.Model"
         Title="Configuration" Height="140" Width="180" 
@@ -12,6 +13,11 @@
     <Window.DataContext>
         <model:MainWindowViewModel></model:MainWindowViewModel>
     </Window.DataContext>
+    <Window.Resources>
+        <ResourceDictionary>
+            <converters:ConfigurationConverter x:Key="configurationConverter"/>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"></RowDefinition>
@@ -58,8 +64,17 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
                     Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2">
             <Button Name="btCancel" Margin="0,3,0,3" Padding="5,0,5,0" Click="btCancel_Click">Cancel</Button>
-            <Button Name="btDone" Margin="10,3,0,3" Padding="5,0,5,0" Command="{Binding UpdateConfigurationCommand, Mode=OneWay}" 
-                    CommandParameter="{Binding Text, ElementName=txtHost}" >Done</Button>
+            <!--<Button Name="btDone" Margin="10,3,0,3" Padding="5,0,5,0" Command="{Binding UpdateConfigurationCommand, Mode=OneWay}" 
+                    CommandParameter="{Binding Text, ElementName=txtHost}" >Done</Button>-->
+            <Button Name="btDone" Margin="10,3,0,3" Padding="5,0,5,0" Command="{Binding UpdateConfigurationCommand, Mode=OneWay}">
+                <Button.CommandParameter>
+                    <MultiBinding Converter="{StaticResource configurationConverter}">
+                        <Binding ElementName="txtHost" Path="Text"/>
+                        <Binding ElementName="txtPort" Path="Text"/>
+                        <Binding ElementName="txtClientId" Path="Text"/>
+                    </MultiBinding>
+                </Button.CommandParameter>
+                Done</Button>
         </StackPanel>
 
 
