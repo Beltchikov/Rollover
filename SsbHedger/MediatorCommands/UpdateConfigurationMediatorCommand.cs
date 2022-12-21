@@ -2,7 +2,7 @@
 
 namespace SsbHedger.MediatorCommands
 {
-    public class UpdateConfigurationMediatorCommand : IRequest
+    public class UpdateConfigurationMediatorCommand : INotification
     {
         public string Host { get; set; }
         public int Port { get; set; }

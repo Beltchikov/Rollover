@@ -1,11 +1,10 @@
 ﻿using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace SsbHedger.MediatorCommands
 {
-    public class UpdateConfigurationMediatorCommandHandler : IRequestHandler<UpdateConfigurationMediatorCommand>
+    public class UpdateConfigurationMediatorCommandHandler : INotificationHandler<UpdateConfigurationMediatorCommand>
     {
         private IRegistryManager _registryManager;
 
@@ -14,11 +13,13 @@ namespace SsbHedger.MediatorCommands
             _registryManager = registryManager;
         }
 
-        public Task<Unit> Handle(UpdateConfigurationMediatorCommand command, CancellationToken cancellationToken)
+        public async Task Handle(UpdateConfigurationMediatorCommand notification, CancellationToken cancellationToken)
         {
-            //_registryManager.WriteConfiguration()
-
-            throw new NotImplementedException();
+            await Task.Run(() => _registryManager.WriteConfiguration(
+                notification.Host,
+                notification.Port,
+                notification.ClientId));
+            
         }
     }
 }
