@@ -30,7 +30,7 @@ namespace SsbHedger.Model
             {
                 if(data == null) { throw new ApplicationException("Unexpected! data is null"); }
                 var dataArray = data.Split(";").Select(m => m.Trim()).ToList();
-                await _mediator.Send(new UpdateConfigurationMediatorCommand(
+                await _mediator.Publish(new UpdateConfigurationMediatorCommand(
                     dataArray[0], 
                     Convert.ToInt32(dataArray[1]),
                     Convert.ToInt32(dataArray[2])));
