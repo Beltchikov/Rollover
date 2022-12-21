@@ -11,7 +11,7 @@ namespace SsbHedger
     public partial class MainWindow : Window
     {
         IWpfIbClient _ibClient;
-        ConfigurationWindow _configurationWindow = new();
+        ConfigurationWindow _configurationWindow;
         
         public MainWindow(string host, int port, int clientId)
         {
@@ -26,6 +26,8 @@ namespace SsbHedger
             ((MainWindowViewModel)DataContext).Host = host;
             ((MainWindowViewModel)DataContext).Port = port;
             ((MainWindowViewModel)DataContext).ClientId = clientId;
+
+            _configurationWindow = new();
         }
 
         private void _logic_Error(int reqId, string message)
