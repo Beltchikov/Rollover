@@ -90,5 +90,26 @@ namespace SsbHedger.UnitTests
             Assert.Equal(portFromRegistry, port);
             Assert.Equal(clientIdFromRegistry, clientId);
         }
+
+        [Theory, AutoNSubstituteData]
+        public void WriteValuesToRegistry(
+            string defaultHost,
+            int defaultPort,
+            int defaultClientId,
+            IRegistryKeyAbstraction registryKey,
+            [Frozen] IRegistryCurrentUserAbstraction registryCurrentUser,
+            RegistryManager sut)
+        {
+            registryCurrentUser.OpenSubKey(SOFTWARE_SSBHEDGER).Returns(registryKey);
+
+            sut.WriteConfiguration(
+                defaultHost,
+                defaultPort,
+                defaultClientId);
+
+            registryKey.Received().SetValue(HOST, defaultHost);
+            registryKey.Received().SetValue(PORT, defaultPort);
+            registryKey.Received().SetValue(CLIENT_ID, defaultClientId);
+        }
     }
 }

@@ -21,7 +21,7 @@ namespace SsbHedger
             int defaultPort,
             int defaultClientId)
         {
-            
+
             var subKey = _registryCurrentUser.OpenSubKey(SOFTWARE_SSBHEDGER);
             if(subKey == null)
             {
@@ -29,7 +29,7 @@ namespace SsbHedger
                 subKey.SetValue(HOST, defaultHost);
                 subKey.SetValue(PORT, defaultPort);
                 subKey.SetValue(CLIENT_ID, defaultClientId);
-
+                
                 return new ValueTuple<string, int, int>(defaultHost, defaultPort, defaultClientId);
             }
 
@@ -46,7 +46,12 @@ namespace SsbHedger
 
         public void WriteConfiguration(string host, int port, int clientId)
         {
-            throw new NotImplementedException();
+            var subKey = _registryCurrentUser.OpenSubKey(SOFTWARE_SSBHEDGER)
+                ?? _registryCurrentUser.CreateSubKey(SOFTWARE_SSBHEDGER); 
+     
+            subKey.SetValue(HOST, host);
+            subKey.SetValue(PORT, port);
+            subKey.SetValue(CLIENT_ID, clientId);
         }
     }
 }
