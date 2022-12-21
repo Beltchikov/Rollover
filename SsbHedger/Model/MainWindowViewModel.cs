@@ -30,10 +30,11 @@ namespace SsbHedger.Model
             {
                 if(data == null) { throw new ApplicationException("Unexpected! data is null"); }
                 var dataArray = data.Split(";").Select(m => m.Trim()).ToList();
+                Host = dataArray[0];
+                Port = Convert.ToInt32(dataArray[1]);
+                ClientId= Convert.ToInt32(dataArray[2]);
                 await _mediator.Publish(new UpdateConfigurationMediatorCommand(
-                    dataArray[0], 
-                    Convert.ToInt32(dataArray[1]),
-                    Convert.ToInt32(dataArray[2])));
+                    Host, Port, ClientId));
             }); 
 
         }

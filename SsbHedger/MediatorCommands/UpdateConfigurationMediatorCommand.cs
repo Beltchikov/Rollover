@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using SsbHedger.Model;
 
 namespace SsbHedger.MediatorCommands
 {
@@ -7,8 +8,11 @@ namespace SsbHedger.MediatorCommands
         public string Host { get; set; }
         public int Port { get; set; }
         public int ClientId { get; set; }
-
-        public UpdateConfigurationMediatorCommand(string host, int port, int clientId)
+        
+        public UpdateConfigurationMediatorCommand(
+            string host,
+            int port,
+            int clientId)
         {
             Host= host;
             Port= port;

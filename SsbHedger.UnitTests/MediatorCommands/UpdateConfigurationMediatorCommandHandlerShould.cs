@@ -1,6 +1,7 @@
 ﻿using AutoFixture.Xunit2;
 using NSubstitute;
 using SsbHedger.MediatorCommands;
+using SsbHedger.Model;
 
 namespace SsbHedger.UnitTests.MediatorCommands
 {
@@ -14,7 +15,10 @@ namespace SsbHedger.UnitTests.MediatorCommands
             [Frozen] IRegistryManager registryManager,
             UpdateConfigurationMediatorCommandHandler sut)
         {
-            var command = new UpdateConfigurationMediatorCommand(host, port, clientId);
+            var command = new UpdateConfigurationMediatorCommand(
+                host,
+                port,
+                clientId);
             await sut.Handle(command, new CancellationToken());
             registryManager.Received().WriteConfiguration(host, port, clientId);
         }
