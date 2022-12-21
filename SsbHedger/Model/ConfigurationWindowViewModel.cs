@@ -29,6 +29,7 @@ namespace SsbHedger.Model
                 Host = dataArray[0];
                 Port = Convert.ToInt32(dataArray[1]);
                 ClientId= Convert.ToInt32(dataArray[2]);
+                if (CloseAction == null) { throw new ApplicationException("Unexpected! CloseAction is null"); }
                 await _mediator.Publish(new UpdateConfigurationMediatorCommand(
                     Host, Port, ClientId, CloseAction));
             }); 
@@ -64,6 +65,6 @@ namespace SsbHedger.Model
 
         public ICommand UpdateConfigurationCommand { get; }
 
-        public Action CloseAction { get; set; }
+        public Action? CloseAction { get; set; }
     }
 }
