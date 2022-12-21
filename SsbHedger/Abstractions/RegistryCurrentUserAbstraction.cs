@@ -12,7 +12,7 @@ namespace SsbHedger.Abstractions
 
         public IRegistryKeyAbstraction? OpenSubKey(string path)
         {
-            var subKey = Registry.CurrentUser.OpenSubKey(path);
+            var subKey = Registry.CurrentUser.OpenSubKey(path, true);
             if(subKey == null)
             { 
                 return null; 
