@@ -1,4 +1,5 @@
 ﻿using SsbHedger.Model;
+using System;
 using System.Windows;
 
 namespace SsbHedger
@@ -15,6 +16,7 @@ namespace SsbHedger
             ((ConfigurationWindowViewModel)DataContext).Host = host;
             ((ConfigurationWindowViewModel)DataContext).Port = port;
             ((ConfigurationWindowViewModel)DataContext).ClientId = clientId;
+            ((ConfigurationWindowViewModel)DataContext).CloseAction = new Action(Close);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -25,6 +27,7 @@ namespace SsbHedger
 
         private void btCancel_Click(object sender, RoutedEventArgs e)
         {
+            DialogResult = false;
             Close();
         }
     }

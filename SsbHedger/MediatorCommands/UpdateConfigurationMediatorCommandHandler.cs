@@ -19,6 +19,7 @@ namespace SsbHedger.MediatorCommands
                 notification.Host,
                 notification.Port,
                 notification.ClientId));
+            notification.CloseAction();
         }
     }
 }

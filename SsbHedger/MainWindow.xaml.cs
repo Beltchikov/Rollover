@@ -62,7 +62,7 @@ namespace SsbHedger
 
         private void btConfiguration_Click(object sender, RoutedEventArgs e)
         {
-            _configurationWindow.ShowDialog();
+           var configurationChanged = _configurationWindow.ShowDialog();
         }
     }
 }
