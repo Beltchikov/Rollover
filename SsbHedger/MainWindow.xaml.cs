@@ -27,7 +27,7 @@ namespace SsbHedger
             ((MainWindowViewModel)DataContext).Port = port;
             ((MainWindowViewModel)DataContext).ClientId = clientId;
 
-            _configurationWindow = new();
+            _configurationWindow = new(host, port, clientId);
         }
 
         private void _logic_Error(int reqId, string message)

@@ -1,13 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using MediatR;
-using System.Collections.ObjectModel;
-using System.Windows;
-using System.Windows.Input;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using SsbHedger.MediatorCommands;
-using System.Linq;
+using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace SsbHedger.Model
 {
@@ -26,17 +22,6 @@ namespace SsbHedger.Model
                 ?? throw new ApplicationException("Unexpected! mediator is null");
          
             messages = new ObservableCollection<Message>();
-            UpdateConfigurationCommand = new RelayCommand<string>(async (data) =>
-            {
-                if(data == null) { throw new ApplicationException("Unexpected! data is null"); }
-                var dataArray = data.Split(";").Select(m => m.Trim()).ToList();
-                Host = dataArray[0];
-                Port = Convert.ToInt32(dataArray[1]);
-                ClientId= Convert.ToInt32(dataArray[2]);
-                await _mediator.Publish(new UpdateConfigurationMediatorCommand(
-                    Host, Port, ClientId));
-            }); 
-
         }
 
         public string Host
@@ -94,7 +79,5 @@ namespace SsbHedger.Model
             get => messages;
             set => SetProperty(ref messages, value);
         }
-
-        public ICommand UpdateConfigurationCommand { get; }
     }
 }

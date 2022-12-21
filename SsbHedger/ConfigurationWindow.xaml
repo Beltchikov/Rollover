@@ -11,7 +11,7 @@
         SizeToContent="WidthAndHeight"
         Closing="Window_Closing">
     <Window.DataContext>
-        <model:MainWindowViewModel></model:MainWindowViewModel>
+        <model:ConfigurationWindowViewModel></model:ConfigurationWindowViewModel>
     </Window.DataContext>
     <Window.Resources>
         <ResourceDictionary>

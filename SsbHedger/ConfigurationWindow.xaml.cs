@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using SsbHedger.Model;
+using System.Windows;
 
 namespace SsbHedger
 {
@@ -7,20 +8,24 @@ namespace SsbHedger
     /// </summary>
     public partial class ConfigurationWindow : Window
     {
-        public ConfigurationWindow()
+        public ConfigurationWindow(string host, int port, int clientId)
         {
             InitializeComponent();
+
+            ((ConfigurationWindowViewModel)DataContext).Host = host;
+            ((ConfigurationWindowViewModel)DataContext).Port = port;
+            ((ConfigurationWindowViewModel)DataContext).ClientId = clientId;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             e.Cancel = true;
-            this.Visibility = Visibility.Hidden;
+            Visibility = Visibility.Hidden;
         }
 
         private void btCancel_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
     }
 }
