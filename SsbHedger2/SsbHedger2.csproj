@@ -20,6 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\IbClient\IbClient.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Images\GreenCircle.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

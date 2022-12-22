@@ -18,7 +18,7 @@ namespace SsbHedger2.Model
 
         public MainWindowViewModel()
         {
-            ibHost = new IbHost();
+            ibHost = new IbHost(Host, Port, ClientId);
             InitializeCommand = new RelayCommand(() => InitializeCommandHandler.Handle(ibHost));
             
             messages = new ObservableCollection<Message>();
