@@ -1,19 +1,28 @@
-﻿using SsbHedger2.WpfIbClient;
+﻿using IbClient;
+using SsbHedger2.Model;
+using System;
 using System.Windows.Threading;
 
 namespace SsbHedger2
 {
     internal class IbHost : IIbHost
     {
-        IWpfIbClient _ibClient;
+        IIBClient _ibClient;
 
-        public IbHost(string host, int port, int clientId)
+        public IbHost(MainWindowViewModel viewModel, string host, int port, int clientId)
         {
-            //_ibClient = WpfIbClient.WpfIbClient.Create(() => 1 == 0, Dispatcher);
-            //_ibClient.Execute(host, port, clientId);
-            //_ibClient.Error += _ibClient_Error;
-            //_ibClient.NextValidId += _ibClient_NextValidId;
-            //_ibClient.ManagedAccounts += _ibClient_ManagedAccounts;
+            _ibClient = IBClient.CreateClient();
+            
+            _ibClient.Error += _ibClient_Error;
+            _ibClient.NextValidId += _ibClient_NextValidId;
+            _ibClient.ManagedAccounts += _ibClient_ManagedAccounts;
+
+            _ibClient.ConnectAndStartReaderThread(host, port, clientId);
+        }
+
+        private void _ibClient_Error(int reqId, int code, string message, Exception exception)
+        {
+            throw new NotImplementedException();
         }
 
         private void _ibClient_ManagedAccounts(IbClient.messages.ManagedAccountsMessage obj)
@@ -26,9 +35,5 @@ namespace SsbHedger2
             throw new System.NotImplementedException();
         }
 
-        private void _ibClient_Error(int arg1, string arg2)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

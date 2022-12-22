@@ -1,24 +1,20 @@
-﻿using System;
+﻿using SsbHedger2.Model;
+using System;
 
 namespace SsbHedger2.CommandHandler
 {
     internal class InitializeCommandHandler
     {
-        internal static void Handle(IIbHost ibHost)
+        internal static void Handle(MainWindowViewModel mainWindowViewModel, IIbHost ibHost)
         {
             throw new NotImplementedException();
 
-            //_ibClient = WpfIbClient.WpfIbClient.Create(() => 1 == 0, Dispatcher);
-            //_ibClient.Execute(host, port, clientId);
-            //_ibClient.Error += _logic_Error;
-            //_ibClient.NextValidId += _ibClient_NextValidId;
-            //_ibClient.ManagedAccounts += _ibClient_ManagedAccounts;
+            // Read configuration from Registry
 
-            //((MainWindowViewModel)DataContext).Host = host;
-            //((MainWindowViewModel)DataContext).Port = port;
-            //((MainWindowViewModel)DataContext).ClientId = clientId;
+            // Instatiate ibHost
 
-            //_configurationWindow = new(host, port, clientId);
+            // IbHost is responsible for the updating of viewModel
+
         }
     }
 }

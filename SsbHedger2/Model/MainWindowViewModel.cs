@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SsbHedger2.CommandHandler;
-using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -14,17 +13,14 @@ namespace SsbHedger2.Model
         private int port;
         private int clientId;
         private bool connected;
-        private IIbHost ibHost;
+        private IIbHost ibHost = null!;
 
         public MainWindowViewModel()
         {
-            ibHost = new IbHost(Host, Port, ClientId);
-            InitializeCommand = new RelayCommand(() => InitializeCommandHandler.Handle(ibHost));
+            InitializeCommand = new RelayCommand(() => InitializeCommandHandler.Handle(this, ibHost));
             
             messages = new ObservableCollection<Message>();
         }
-
-        
 
         public string Host
         {
