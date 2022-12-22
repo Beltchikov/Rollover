@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Windows;
 
 namespace SsbHedger2
@@ -13,5 +9,12 @@ namespace SsbHedger2
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            Services = new ServiceCollection()
+                //.AddSingleton<IIbHost, IbHost>()
+                .BuildServiceProvider();
+        }
+        public IServiceProvider Services { get; }
     }
 }

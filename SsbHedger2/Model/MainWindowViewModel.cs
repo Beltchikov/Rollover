@@ -14,10 +14,12 @@ namespace SsbHedger2.Model
         private int port;
         private int clientId;
         private bool connected;
+        private IIbHost ibHost;
 
         public MainWindowViewModel()
         {
-            InitializeCommand = new RelayCommand(InitializeCommandHandler.Handle);
+            ibHost = new IbHost();
+            InitializeCommand = new RelayCommand(() => InitializeCommandHandler.Handle(ibHost));
             
             messages = new ObservableCollection<Message>();
         }
