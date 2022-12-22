@@ -57,12 +57,16 @@ namespace SsbHedger
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             e.Cancel = true;
-            this.Visibility = Visibility.Hidden;
+            Visibility = Visibility.Hidden;
         }
 
         private void btConfiguration_Click(object sender, RoutedEventArgs e)
         {
            var configurationChanged = _configurationWindow.ShowDialog();
+            if(configurationChanged == true)
+            {
+                //TODO Update view model
+            }
         }
     }
 }
