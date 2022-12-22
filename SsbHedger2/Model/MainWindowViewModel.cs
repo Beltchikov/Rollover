@@ -1,5 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using SsbHedger2.CommandHandler;
+using System;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace SsbHedger2.Model
 {
@@ -13,8 +17,12 @@ namespace SsbHedger2.Model
 
         public MainWindowViewModel()
         {
+            InitializeCommand = new RelayCommand(InitializeCommandHandler.Handle);
+            
             messages = new ObservableCollection<Message>();
         }
+
+        
 
         public string Host
         {
@@ -71,5 +79,7 @@ namespace SsbHedger2.Model
             get => messages;
             set => SetProperty(ref messages, value);
         }
+
+        public ICommand InitializeCommand { get; }
     }
 }
