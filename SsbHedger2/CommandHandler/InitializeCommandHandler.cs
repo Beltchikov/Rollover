@@ -1,4 +1,4 @@
-﻿using SsbHedger2.Model;
+﻿using SsbHedger2.IbHost;
 using SsbHedger2.RegistryManager;
 using System;
 
@@ -9,10 +9,11 @@ namespace SsbHedger2.CommandHandler
         private static InitializeCommandHandler _instance = null!;
         private static readonly object threadLock = new object();
         private IRegistryManager _registryManager = null!;
+        private IIbHost _ibHost = null!;
 
         private InitializeCommandHandler() { }
 
-        internal static InitializeCommandHandler Create()
+        internal static InitializeCommandHandler Create(IRegistryManager registryManager, IIbHost ibHost)
         {
 
             lock (threadLock)
@@ -20,13 +21,15 @@ namespace SsbHedger2.CommandHandler
                 if (_instance == null)
                 {
                     _instance = new InitializeCommandHandler();
+                    _instance._registryManager = registryManager;
+                    _instance._ibHost = ibHost;
                 }
 
                 return _instance;
             }
         }
 
-        internal static void Handle(MainWindowViewModel mainWindowViewModel)
+        internal void Handle()
         {
             throw new NotImplementedException();
 

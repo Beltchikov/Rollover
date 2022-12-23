@@ -3,7 +3,7 @@ using SsbHedger2.Model;
 using System;
 using System.Windows.Threading;
 
-namespace SsbHedger2
+namespace SsbHedger2.IbHost
 {
     internal class IbHost : IIbHost
     {
@@ -12,7 +12,7 @@ namespace SsbHedger2
         public IbHost(MainWindowViewModel viewModel, string host, int port, int clientId)
         {
             _ibClient = IBClient.CreateClient();
-            
+
             _ibClient.Error += _ibClient_Error;
             _ibClient.NextValidId += _ibClient_NextValidId;
             _ibClient.ManagedAccounts += _ibClient_ManagedAccounts;
@@ -27,12 +27,12 @@ namespace SsbHedger2
 
         private void _ibClient_ManagedAccounts(IbClient.messages.ManagedAccountsMessage obj)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         private void _ibClient_NextValidId(IbClient.messages.ConnectionStatusMessage obj)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
     }

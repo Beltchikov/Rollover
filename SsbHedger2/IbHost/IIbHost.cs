@@ -1,4 +1,4 @@
-﻿namespace SsbHedger2
+﻿namespace SsbHedger2.IbHost
 {
     internal interface IIbHost
     {

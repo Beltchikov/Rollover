@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SsbHedger2.CommandHandler;
+using SsbHedger2.IbHost;
 using SsbHedger2.RegistryManager;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -14,26 +15,25 @@ namespace SsbHedger2.Model
         private int port;
         private int clientId;
         private bool connected;
-        private IIbHost ibHost = null!;
-
+        
         IRegistryManagerBuilder registryManagerBuilder = null!;
-        //IInitializeCommandHandlerBilder initializeCommandHandlerBilder = null!;
+        IIbHostBuilder ibHostBuilder = null!;
+        IInitializeCommandHandlerBilder initializeCommandHandlerBilder = null!;
 
         public MainWindowViewModel()
         {
             registryManagerBuilder = new RegistryManagerBuilder();
             IRegistryManager registryManager = registryManagerBuilder.Build();
 
-            //InitializeCommand = new RelayCommand(() 
-            //    => InitializeCommandHandler.Create().Handle(this, ibHost));
+            ibHostBuilder = new IbHostBuilder();
+            IIbHost ibHost = ibHostBuilder.Build(this, Host, Port, ClientId);
 
-            //initializeCommandHandlerBilder = new InitializeCommandHandlerBilder();
-            //InitializeCommand = new RelayCommand(()
-            //    => initializeCommandHandlerBilder
-            //    .With(registryManager)
-            //    .With(ibHost)
-            //    .Build()
-            //    .Handle(this));
+            initializeCommandHandlerBilder = new InitializeCommandHandlerBilder();
+            InitializeCommandHandler initializeCommandHandler 
+                = initializeCommandHandlerBilder.Build(registryManager, ibHost);
+
+            InitializeCommand = new RelayCommand(()
+                => initializeCommandHandler.Handle());
 
             messages = new ObservableCollection<Message>();
         }
