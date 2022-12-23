@@ -13,6 +13,7 @@ namespace SsbHedger2
         {
             Services = new ServiceCollection()
                 //.AddSingleton<IIbHost, IbHost>()
+                //.AddSingleton<IRegistryManager, RegistryManager>()
                 .BuildServiceProvider();
         }
         public IServiceProvider Services { get; }

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SsbHedger2.CommandHandler;
+using SsbHedger2.RegistryManager;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -15,10 +16,25 @@ namespace SsbHedger2.Model
         private bool connected;
         private IIbHost ibHost = null!;
 
+        IRegistryManagerBuilder registryManagerBuilder = null!;
+        //IInitializeCommandHandlerBilder initializeCommandHandlerBilder = null!;
+
         public MainWindowViewModel()
         {
-            InitializeCommand = new RelayCommand(() => InitializeCommandHandler.Handle(this, ibHost));
-            
+            registryManagerBuilder = new RegistryManagerBuilder();
+            IRegistryManager registryManager = registryManagerBuilder.Build();
+
+            //InitializeCommand = new RelayCommand(() 
+            //    => InitializeCommandHandler.Create().Handle(this, ibHost));
+
+            //initializeCommandHandlerBilder = new InitializeCommandHandlerBilder();
+            //InitializeCommand = new RelayCommand(()
+            //    => initializeCommandHandlerBilder
+            //    .With(registryManager)
+            //    .With(ibHost)
+            //    .Build()
+            //    .Handle(this));
+
             messages = new ObservableCollection<Message>();
         }
 
