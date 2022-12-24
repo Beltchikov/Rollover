@@ -2,7 +2,7 @@
 
 namespace SsbHedger2.CommandHandler
 {
-    internal sealed class InitializeCommandHandler
+    public sealed class InitializeCommandHandler
     {
         private IRegistryManager _registryManager = null!;
         private IIbHost _ibHost = null!;
@@ -13,11 +13,15 @@ namespace SsbHedger2.CommandHandler
             _ibHost = ibHost;
         }
 
-        internal void Handle()
+        public void Handle()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
 
             // Read configuration from Registry
+            var (host, port, clientId) = _registryManager.ReadConfiguration(
+                _ibHost.DefaultHost,
+                _ibHost.DefaultPort,
+                _ibHost.DefaultClientId);
 
             // Call IbHost.ConnectAndStartReaderThread(string host, int port, int clientId)
 
