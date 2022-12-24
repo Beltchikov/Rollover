@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SsbHedger2.Abstractions;
 using System;
 using System.Windows;
 
@@ -12,8 +13,9 @@ namespace SsbHedger2
         public App()
         {
             Services = new ServiceCollection()
-                //.AddSingleton<IIbHost, IbHost>()
-                //.AddSingleton<IRegistryManager, RegistryManager>()
+                .AddSingleton<IRegistryCurrentUserAbstraction, RegistryCurrentUserAbstraction>()
+                .AddSingleton<IIbHost, IbHost>()
+                .AddSingleton<IRegistryManager, RegistryManager>()
                 .BuildServiceProvider();
         }
         public IServiceProvider Services { get; }

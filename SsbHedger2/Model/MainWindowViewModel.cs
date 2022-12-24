@@ -1,13 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SsbHedger2.CommandHandler;
-using SsbHedger2.IbHost;
-using SsbHedger2.RegistryManager;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 
 namespace SsbHedger2.Model
 {
+    [ExcludeFromCodeCoverage]
     public class MainWindowViewModel : ObservableObject
     {
         private ObservableCollection<Message> messages;
@@ -16,24 +16,11 @@ namespace SsbHedger2.Model
         private int clientId;
         private bool connected;
         
-        IRegistryManagerBuilder registryManagerBuilder = null!;
-        IIbHostBuilder ibHostBuilder = null!;
-        IInitializeCommandHandlerBilder initializeCommandHandlerBilder = null!;
-
         public MainWindowViewModel()
         {
-            registryManagerBuilder = new RegistryManagerBuilder();
-            IRegistryManager registryManager = registryManagerBuilder.Build();
-
-            ibHostBuilder = new IbHostBuilder();
-            IIbHost ibHost = ibHostBuilder.Build(this, Host, Port, ClientId);
-
-            initializeCommandHandlerBilder = new InitializeCommandHandlerBilder();
-            InitializeCommandHandler initializeCommandHandler 
-                = initializeCommandHandlerBilder.Build(registryManager, ibHost);
-
-            InitializeCommand = new RelayCommand(()
-                => initializeCommandHandler.Handle());
+            var initializeCommandHandlerBilder = new InitializeCommandHandlerBilder();
+            InitializeCommandHandler initializeCommandHandler = initializeCommandHandlerBilder.Build(this);
+            InitializeCommand = new RelayCommand(() => initializeCommandHandler.Handle());
 
             messages = new ObservableCollection<Message>();
         }

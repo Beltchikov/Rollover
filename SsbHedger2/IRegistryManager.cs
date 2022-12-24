@@ -1,4 +1,4 @@
-﻿namespace SsbHedger2.RegistryManager
+﻿namespace SsbHedger2
 {
     public interface IRegistryManager
     {

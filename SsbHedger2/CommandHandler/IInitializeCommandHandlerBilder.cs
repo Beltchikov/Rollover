@@ -1,10 +1,9 @@
-﻿using SsbHedger2.IbHost;
-using SsbHedger2.RegistryManager;
+﻿using SsbHedger2.Model;
 
 namespace SsbHedger2.CommandHandler
 {
     internal interface IInitializeCommandHandlerBilder
     {
-        InitializeCommandHandler Build(IRegistryManager registryManager, IIbHost ibHost);
+        InitializeCommandHandler Build(MainWindowViewModel mainWindowViewModel);
     }
 }
