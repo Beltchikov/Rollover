@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SsbHedger2.CommandHandler
+﻿namespace SsbHedger2.CommandHandler
 {
     public sealed class InitializeCommandHandler
     {
@@ -15,18 +13,11 @@ namespace SsbHedger2.CommandHandler
 
         public void Handle()
         {
-            //throw new NotImplementedException();
-
-            // Read configuration from Registry
             var (host, port, clientId) = _registryManager.ReadConfiguration(
                 _ibHost.DefaultHost,
                 _ibHost.DefaultPort,
                 _ibHost.DefaultClientId);
-
-            // Call IbHost.ConnectAndStartReaderThread(string host, int port, int clientId)
-
-            // IbHost is responsible for the updating of viewModel
-
+            _ibHost.ConnectAndStartReaderThread(host, port, clientId);
         }
     }
 }
