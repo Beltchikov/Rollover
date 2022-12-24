@@ -12,13 +12,16 @@ namespace SsbHedger2.UnitTests.CommandHandler
             int port,
             int clientId,
             [Frozen] IRegistryManager registryManager,
+            [Frozen] IIbHost ibHost,
             InitializeCommandHandler sut)
         {
+            ibHost.DefaultHost.Returns(host);
+            ibHost.DefaultPort.Returns(port);
+            ibHost.DefaultClientId.Returns(clientId);
+
             sut.Handle();
             registryManager.Received().ReadConfiguration(
-                Arg.Any<string>(),
-                Arg.Any<int>(),
-                Arg.Any<int>());
+                host, port, clientId);
         }
     }
 }
