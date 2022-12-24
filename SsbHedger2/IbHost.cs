@@ -37,17 +37,17 @@ namespace SsbHedger2
 
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)
         {
-            //throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         private void _ibClient_ManagedAccounts(IbClient.messages.ManagedAccountsMessage obj)
         {
-            //throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         private void _ibClient_NextValidId(IbClient.messages.ConnectionStatusMessage obj)
         {
-            //throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
     }
