@@ -76,6 +76,7 @@ namespace SsbHedger2.UnitTests
             Assert.Equal(0, viewModel.Messages.First().ReqId);
             var expectedBody = "CONNECTED!";
             Assert.Equal(expectedBody, viewModel.Messages.First().Body);
+            Assert.True(viewModel.Connected);
         }
 
         [Fact]
@@ -98,6 +99,7 @@ namespace SsbHedger2.UnitTests
             Assert.Equal(0, viewModel.Messages.First().ReqId);
             var expectedBody = "NOT CONNECTED!";
             Assert.Equal(expectedBody, viewModel.Messages.First().Body);
+            Assert.False(viewModel.Connected);
         }
     }
 }

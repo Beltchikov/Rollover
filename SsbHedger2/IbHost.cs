@@ -29,21 +29,33 @@ namespace SsbHedger2
 
         public void ConnectAndStartReaderThread(string host, int port, int clientId)
         {
-            EnsureViewModelIsNotNull();
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+            ViewModel.Host = host;
+            ViewModel.Port = port;
+            ViewModel.ClientId = clientId;
             _ibClient.ConnectAndStartReaderThread(host, port, clientId);
         }
 
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)
         {
-            EnsureViewModelIsNotNull();
-            ViewModel?.Messages.Add(new Message 
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+            ViewModel.Messages.Add(new Message 
             { ReqId = reqId, Body = $"Code:{code} message:{message} exception:{exception}" });
         }
 
         private void _ibClient_ManagedAccounts(ManagedAccountsMessage message)
         {
-            EnsureViewModelIsNotNull();
-            ViewModel?.Messages.Add(new Message
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+            ViewModel.Messages.Add(new Message
             { 
                 ReqId = 0, 
                 Body = $"Managed accounts: {message.ManagedAccounts.Aggregate((r, n) => r + "," + n)}" 
@@ -52,20 +64,16 @@ namespace SsbHedger2
 
         private void _ibClient_NextValidId(ConnectionStatusMessage message)
         {
-            EnsureViewModelIsNotNull();
-            ViewModel?.Messages.Add(new Message
-            {
-                ReqId = 0,
-                Body = message.IsConnected ? "CONNECTED!" : "NOT CONNECTED!"
-            });
-        }
-
-        private void EnsureViewModelIsNotNull()
-        {
             if (ViewModel == null)
             {
                 throw new ApplicationException("Unexpected! ViewModel is null");
             }
+            ViewModel.Messages.Add(new Message
+            {
+                ReqId = 0,
+                Body = message.IsConnected ? "CONNECTED!" : "NOT CONNECTED!"
+            });
+            ViewModel.Connected = message.IsConnected;
         }
     }
 }
