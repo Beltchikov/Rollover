@@ -4,7 +4,7 @@ using System;
 
 namespace SsbHedger2
 {
-    internal class IbHost : IIbHost
+    public class IbHost : IIbHost
     {
         IIBClient _ibClient;
 
@@ -31,13 +31,17 @@ namespace SsbHedger2
             {
                 throw new ApplicationException("Unexpected! ViewModel is null");
             }
-
             _ibClient.ConnectAndStartReaderThread(host, port, clientId);
         }
 
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)
         {
-            throw new NotImplementedException();
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+            ViewModel.Messages.Add(new Message 
+            { ReqId = reqId, Body = $"Code:{code} message:{message} exception:{exception}" });
         }
 
         private void _ibClient_ManagedAccounts(IbClient.messages.ManagedAccountsMessage obj)
