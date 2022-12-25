@@ -1,6 +1,7 @@
 ﻿using SsbHedger2.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -40,7 +41,7 @@ namespace SsbHedger2.UnitTests
             var sut = new IbHost();
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
-            Reflection.SetPropertyValue(viewModel, "Messages", new new ObservableCollection<Message>(); )
+            viewModel.Messages = new ObservableCollection<Message>();
             sut.ViewModel = viewModel;
 
             Reflection.CallMethod(
@@ -49,6 +50,9 @@ namespace SsbHedger2.UnitTests
                 new object[] { reqId, code, message, exception });
             
             Assert.Single(viewModel.Messages);
+            Assert.Equal(reqId, viewModel.Messages.First().ReqId);
+            Assert.Equal($"Code:{code} message:{message} exception:{exception}", 
+                viewModel.Messages.First().Body);
         }
     }
 }
