@@ -8,6 +8,26 @@ namespace SsbHedger2.UnitTests
     public class IbHostShould
     {
         [Fact]
+        public void UpdateHostPortClientIdInViewModel()
+        {
+            string host = "localhost";
+            int port = 5090;
+            int clientId = 22;
+
+            var sut = new IbHost();
+            MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
+                .GetUninitializedObject(typeof(MainWindowViewModel));
+            viewModel.Messages = new ObservableCollection<Message>();
+            sut.ViewModel = viewModel;
+
+            sut.ConnectAndStartReaderThread(host, port, clientId);
+
+            Assert.Equal(viewModel.Host, host);
+            Assert.Equal(viewModel.Port, port);
+            Assert.Equal(viewModel.ClientId, clientId);
+        }
+
+        [Fact]
         public void AddErrorMessageToViewModel()
         {
             int reqId = 1;
