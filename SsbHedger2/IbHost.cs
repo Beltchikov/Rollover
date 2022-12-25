@@ -1,6 +1,8 @@
 ﻿using IbClient;
 using SsbHedger2.Model;
 using System;
+using System.Linq;
+using IbClient.messages;
 
 namespace SsbHedger2
 {
@@ -27,32 +29,42 @@ namespace SsbHedger2
 
         public void ConnectAndStartReaderThread(string host, int port, int clientId)
         {
-            if (ViewModel == null)
-            {
-                throw new ApplicationException("Unexpected! ViewModel is null");
-            }
+            EnsureViewModelIsNotNull();
             _ibClient.ConnectAndStartReaderThread(host, port, clientId);
         }
 
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)
         {
+            EnsureViewModelIsNotNull();
+            ViewModel?.Messages.Add(new Message 
+            { ReqId = reqId, Body = $"Code:{code} message:{message} exception:{exception}" });
+        }
+
+        private void _ibClient_ManagedAccounts(ManagedAccountsMessage message)
+        {
+            EnsureViewModelIsNotNull();
+            ViewModel?.Messages.Add(new Message
+            { 
+                ReqId = 0, 
+                Body = $"Managed accounts: {message.ManagedAccounts.Aggregate((r, n) => r + "," + n)}" 
+            });
+        }
+
+        private void _ibClient_NextValidId(ConnectionStatusMessage message)
+        {
+            throw new NotImplementedException();
+
+            //viewModel.Messages.Add(
+            //    new Message { ReqId = 0, Body = message.IsConnected ? connected : "NOT CONNECTED" });
+            //viewModel.Connected = message.IsConnected;
+        }
+
+        private void EnsureViewModelIsNotNull()
+        {
             if (ViewModel == null)
             {
                 throw new ApplicationException("Unexpected! ViewModel is null");
             }
-            ViewModel.Messages.Add(new Message 
-            { ReqId = reqId, Body = $"Code:{code} message:{message} exception:{exception}" });
         }
-
-        private void _ibClient_ManagedAccounts(IbClient.messages.ManagedAccountsMessage obj)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void _ibClient_NextValidId(IbClient.messages.ConnectionStatusMessage obj)
-        {
-            throw new NotImplementedException();
-        }
-
     }
 }
