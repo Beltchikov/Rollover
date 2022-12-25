@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SsbHedger2.Model;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SsbHedger2
 {
@@ -20,9 +8,26 @@ namespace SsbHedger2
     /// </summary>
     public partial class MainWindow : Window
     {
+        ConfigurationWindow _configurationWindow;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            //((MainWindowViewModel)DataContext).Host = host;
+            //((MainWindowViewModel)DataContext).Port = port;
+            //((MainWindowViewModel)DataContext).ClientId = clientId;
+
+            _configurationWindow = new("", 0, 0);
+        }
+
+        private void btConfiguration_Click(object sender, RoutedEventArgs e)
+        {
+            var configurationChanged = _configurationWindow.ShowDialog();
+            if (configurationChanged == true)
+            {
+                //TODO Update view model
+            }
         }
     }
 }

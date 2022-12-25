@@ -64,7 +64,7 @@
                     Background="White"
                     FontWeight="ExtraBold"
                     Foreground="Blue"
-                    BorderThickness="0" Cursor="Hand">...</Button>
+                    BorderThickness="0" Cursor="Hand" Click="btConfiguration_Click">...</Button>
         </StackPanel>
 
         <ListBox Name="messages" Grid.Row="4" Grid.Column="1" 
