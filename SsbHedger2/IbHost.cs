@@ -52,11 +52,12 @@ namespace SsbHedger2
 
         private void _ibClient_NextValidId(ConnectionStatusMessage message)
         {
-            throw new NotImplementedException();
-
-            //viewModel.Messages.Add(
-            //    new Message { ReqId = 0, Body = message.IsConnected ? connected : "NOT CONNECTED" });
-            //viewModel.Connected = message.IsConnected;
+            EnsureViewModelIsNotNull();
+            ViewModel?.Messages.Add(new Message
+            {
+                ReqId = 0,
+                Body = message.IsConnected ? "CONNECTED!" : "NOT CONNECTED!"
+            });
         }
 
         private void EnsureViewModelIsNotNull()

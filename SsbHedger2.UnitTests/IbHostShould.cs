@@ -55,5 +55,27 @@ namespace SsbHedger2.UnitTests
                 $"{message.ManagedAccounts.Aggregate((r, n) => r + "," + n)}";
             Assert.Equal(expectedBody,viewModel.Messages.First().Body);
         }
+
+        [Fact]
+        public void AddConnectionStatusMessageToViewModel()
+        {
+            ConnectionStatusMessage message = new ConnectionStatusMessage(true);
+
+            var sut = new IbHost();
+            MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
+                .GetUninitializedObject(typeof(MainWindowViewModel));
+            viewModel.Messages = new ObservableCollection<Message>();
+            sut.ViewModel = viewModel;
+
+            Reflection.CallMethod(
+                sut,
+                "_ibClient_NextValidId",
+                new object[] { message });
+
+            Assert.Single(viewModel.Messages);
+            Assert.Equal(0, viewModel.Messages.First().ReqId);
+            var expectedBody = "CONNECTED!";
+            Assert.Equal(expectedBody, viewModel.Messages.First().Body);
+        }
     }
 }
