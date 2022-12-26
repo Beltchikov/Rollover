@@ -46,7 +46,7 @@ namespace SsbHedger2.UnitTests
             [Frozen] IRegistryCurrentUserAbstraction registryCurrentUser,
             RegistryManager sut)
         {
-            registryKey.GetValue(HOST).Returns("");
+            registryKey.GetValue(HOST).Returns(" ");
             registryKey.GetValue(PORT).Returns(111);
             registryKey.GetValue(CLIENT_ID).Returns(222);
 
