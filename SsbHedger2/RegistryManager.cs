@@ -39,44 +39,37 @@ namespace SsbHedger2
                 (int?)subKey.GetValue(PORT),
                 (int?)subKey.GetValue(CLIENT_ID)
             };
-            object?[] configValuesValidated = new object?[3];
+            object[] configValuesValidated = new object[3];
             for(int i = 0; i < 3; i++)
             {
                 var configValue = configValuesFromRegistry[i];
                 switch (i)
                 {
                     case 0:
-                        configValuesValidated[i] = String.IsNullOrWhiteSpace(configValue?.ToString())
-                            ? defaultHost
-                            : configValue?.ToString();
+                        var configValue1Typed = configValue?.ToString();
+                        configValuesValidated[i] = ! String.IsNullOrWhiteSpace(configValue1Typed)
+                            ? configValue1Typed
+                            : defaultHost;
                         break;
                     case 1:
-                        configValuesValidated[i] = ValidPortAndClientId((int?)subKey.GetValue(PORT)) 
-                            ? defaultPort
-                            : (int?)subKey.GetValue(PORT);
+                        var configValue2Typed = (int?)subKey.GetValue(PORT);
+                        configValuesValidated[i] = configValue2Typed != null && configValue2Typed > 0 
+                            ? configValue2Typed
+                            : defaultPort;
                         break;
                     case 2:
-                        configValuesValidated[i] = ValidPortAndClientId((int?)subKey.GetValue(CLIENT_ID))
-                            ? defaultClientId
-                            : (int?)subKey.GetValue(CLIENT_ID);
-                        break;
+                        var configValue3Typed = (int?)subKey.GetValue(CLIENT_ID);
+                        configValuesValidated[i] = configValue3Typed != null && configValue3Typed > 0
+                            ? configValue3Typed
+                            : defaultClientId;
+                     break;
                 }
             }
 
             return new ValueTuple<string, int, int>(
-                configValuesValidated[0]?.ToString(),
-                port.Value,
-                clientId.Value);
-
-            //var host = subKey.GetValue(HOST)?.ToString();
-            //var port = (int?)subKey.GetValue(PORT);
-            //var clientId = (int?)subKey.GetValue(CLIENT_ID);
-            //if (host == null || port == null || clientId == null)
-            //{
-            //    return new ValueTuple<string, int, int>(defaultHost, defaultPort, defaultClientId);
-            //}
-
-            //return new ValueTuple<string, int, int>(host, port.Value, clientId.Value);
+                (string)configValuesValidated[0],
+                (int)configValuesValidated[1],
+                (int)configValuesValidated[2]);
         }
 
         public void WriteConfiguration(string host, int port, int clientId)
@@ -87,16 +80,6 @@ namespace SsbHedger2
             subKey.SetValue(HOST, host);
             subKey.SetValue(PORT, port);
             subKey.SetValue(CLIENT_ID, clientId);
-        }
-
-        private bool ValidPortAndClientId(int? port)
-        {
-            if(port == null)
-            {
-                return false;
-            }
-
-            return port > 0;
         }
     }
 }

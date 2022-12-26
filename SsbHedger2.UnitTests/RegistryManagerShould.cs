@@ -46,22 +46,18 @@ namespace SsbHedger2.UnitTests
             [Frozen] IRegistryCurrentUserAbstraction registryCurrentUser,
             RegistryManager sut)
         {
-            // Es soll red sein!
-            
-            //registryKey.GetValue(HOST).Returns("");
-            //registryKey.GetValue(PORT).ReturnsNull();
-            //registryKey.GetValue(CLIENT_ID).ReturnsNull();
+            registryKey.GetValue(HOST).Returns("");
+            registryKey.GetValue(PORT).Returns(111);
+            registryKey.GetValue(CLIENT_ID).Returns(222);
 
-            //registryCurrentUser.OpenSubKey(SOFTWARE_SSBHEDGER).Returns(registryKey);
+            registryCurrentUser.OpenSubKey(SOFTWARE_SSBHEDGER).Returns(registryKey);
 
-            //var (host, port, clientId) = sut.ReadConfiguration(
-            //    defaultHost,
-            //    defaultPort,
-            //    defaultClientId);
+            var (host, port, clientId) = sut.ReadConfiguration(
+                defaultHost,
+                defaultPort,
+                defaultClientId);
 
-            //Assert.Equal(defaultHost, host);
-            //Assert.Equal(defaultPort, port);
-            //Assert.Equal(defaultClientId, clientId);
+            Assert.Equal(defaultHost, host);
         }
 
         [Theory, AutoNSubstituteData]
