@@ -38,6 +38,33 @@ namespace SsbHedger2.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
+        public void SaveDefaultHostIfHostInRegistryIsEmptyString(
+            string defaultHost,
+            int defaultPort,
+            int defaultClientId,
+            [Frozen] IRegistryKeyAbstraction registryKey,
+            [Frozen] IRegistryCurrentUserAbstraction registryCurrentUser,
+            RegistryManager sut)
+        {
+            // Es soll red sein!
+            
+            //registryKey.GetValue(HOST).Returns("");
+            //registryKey.GetValue(PORT).ReturnsNull();
+            //registryKey.GetValue(CLIENT_ID).ReturnsNull();
+
+            //registryCurrentUser.OpenSubKey(SOFTWARE_SSBHEDGER).Returns(registryKey);
+
+            //var (host, port, clientId) = sut.ReadConfiguration(
+            //    defaultHost,
+            //    defaultPort,
+            //    defaultClientId);
+
+            //Assert.Equal(defaultHost, host);
+            //Assert.Equal(defaultPort, port);
+            //Assert.Equal(defaultClientId, clientId);
+        }
+
+        [Theory, AutoNSubstituteData]
         public void SaveDefaultValuesIfNoValuesInRegistry(
            string defaultHost,
            int defaultPort,
@@ -59,7 +86,6 @@ namespace SsbHedger2.UnitTests
             registryKey.Received().SetValue(PORT, defaultPort);
             registryKey.Received().SetValue(CLIENT_ID, defaultClientId);
         }
-
 
         [Theory, AutoNSubstituteData]
         public void ReturnValuesFromRegistry(
