@@ -15,6 +15,7 @@ namespace SsbHedger2
         {
             Services = new ServiceCollection()
                 .AddSingleton<IRegistryCurrentUserAbstraction, RegistryCurrentUserAbstraction>()
+                .AddScoped<IRegistryKeyAbstraction, RegistryKeyAbstraction>()
                 .AddSingleton<IIbHost, IbHost>()
                 .AddSingleton<IRegistryManager, RegistryManager>()
                 .AddMediatR(GetType().Assembly)
