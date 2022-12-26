@@ -61,6 +61,52 @@ namespace SsbHedger2.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
+        public void SaveDefaultPortIfPortInRegistryBelowZero(
+            string defaultHost,
+            int defaultPort,
+            int defaultClientId,
+            [Frozen] IRegistryKeyAbstraction registryKey,
+            [Frozen] IRegistryCurrentUserAbstraction registryCurrentUser,
+            RegistryManager sut)
+        {
+            registryKey.GetValue(HOST).Returns("aaa");
+            registryKey.GetValue(PORT).Returns(-1);
+            registryKey.GetValue(CLIENT_ID).Returns(222);
+
+            registryCurrentUser.OpenSubKey(SOFTWARE_SSBHEDGER).Returns(registryKey);
+
+            var (host, port, clientId) = sut.ReadConfiguration(
+                defaultHost,
+                defaultPort,
+                defaultClientId);
+
+            Assert.Equal(defaultPort, port);
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void SaveDefaultClientIdIfClientIdInRegistryBelowZero(
+           string defaultHost,
+           int defaultPort,
+           int defaultClientId,
+           [Frozen] IRegistryKeyAbstraction registryKey,
+           [Frozen] IRegistryCurrentUserAbstraction registryCurrentUser,
+           RegistryManager sut)
+        {
+            registryKey.GetValue(HOST).Returns("aaa");
+            registryKey.GetValue(PORT).Returns(4444);
+            registryKey.GetValue(CLIENT_ID).Returns(-222);
+
+            registryCurrentUser.OpenSubKey(SOFTWARE_SSBHEDGER).Returns(registryKey);
+
+            var (host, port, clientId) = sut.ReadConfiguration(
+                defaultHost,
+                defaultPort,
+                defaultClientId);
+
+            Assert.Equal(defaultClientId, clientId);
+        }
+
+        [Theory, AutoNSubstituteData]
         public void SaveDefaultValuesIfNoValuesInRegistry(
            string defaultHost,
            int defaultPort,
