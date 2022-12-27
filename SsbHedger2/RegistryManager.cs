@@ -47,9 +47,15 @@ namespace SsbHedger2
                 {
                     case 0:
                         var configValue1Typed = configValue?.ToString();
-                        configValuesValidated[i] = ! String.IsNullOrWhiteSpace(configValue1Typed)
-                            ? configValue1Typed
-                            : defaultHost;
+                        if(!String.IsNullOrWhiteSpace(configValue1Typed))
+                        {
+                            configValuesValidated[i] = configValue1Typed;
+                        }
+                        else
+                        {
+                            configValuesValidated[i] = defaultHost;
+                            subKey.SetValue(HOST, defaultHost);
+                        }
                         break;
                     case 1:
                         var configValue2Typed = (int?)subKey.GetValue(PORT);
