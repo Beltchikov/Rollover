@@ -28,7 +28,9 @@ namespace SsbHedger2
             var configurationChanged = _configurationWindow.ShowDialog();
             if (configurationChanged == true)
             {
-                //TODO Update view model
+                ((MainWindowViewModel)DataContext).Host = ((ConfigurationWindowViewModel)_configurationWindow.DataContext).Host;
+                ((MainWindowViewModel)DataContext).Port = ((ConfigurationWindowViewModel)_configurationWindow.DataContext).Port;
+                ((MainWindowViewModel)DataContext).ClientId = ((ConfigurationWindowViewModel)_configurationWindow.DataContext).ClientId;
             }
         }
     }
