@@ -71,10 +71,16 @@ namespace SsbHedger2
                         break;
                     case 2:
                         var configValue3Typed = (int?)subKey.GetValue(CLIENT_ID);
-                        configValuesValidated[i] = configValue3Typed != null && configValue3Typed > 0
-                            ? configValue3Typed
-                            : defaultClientId;
-                     break;
+                        if (configValue3Typed != null && configValue3Typed > 0)
+                        {
+                            configValuesValidated[i] = configValue3Typed;
+                        }
+                        else
+                        {
+                            configValuesValidated[i] = defaultClientId;
+                            subKey.SetValue(CLIENT_ID, defaultClientId);
+                        }
+                        break;
                 }
             }
 
