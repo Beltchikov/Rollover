@@ -59,9 +59,15 @@ namespace SsbHedger2
                         break;
                     case 1:
                         var configValue2Typed = (int?)subKey.GetValue(PORT);
-                        configValuesValidated[i] = configValue2Typed != null && configValue2Typed > 0 
-                            ? configValue2Typed
-                            : defaultPort;
+                        if (configValue2Typed != null && configValue2Typed > 0)
+                        {
+                            configValuesValidated[i] = configValue2Typed;
+                        }
+                        else
+                        {
+                            configValuesValidated[i] = defaultPort;
+                            subKey.SetValue(PORT, defaultPort);
+                        }
                         break;
                     case 2:
                         var configValue3Typed = (int?)subKey.GetValue(CLIENT_ID);

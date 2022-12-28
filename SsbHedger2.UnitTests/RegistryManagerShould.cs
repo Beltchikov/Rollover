@@ -61,7 +61,7 @@ namespace SsbHedger2.UnitTests
         }
 
         [Theory, AutoNSubstituteData]
-        public void SaveDefaultPortIfPortInRegistryBelowZero(
+        public void SaveAndReturnDefaultPortIfPortInRegistryBelowZero(
             string defaultHost,
             int defaultPort,
             int defaultClientId,
@@ -75,12 +75,13 @@ namespace SsbHedger2.UnitTests
 
             registryCurrentUser.OpenSubKey(SOFTWARE_SSBHEDGER).Returns(registryKey);
 
-            var (host, port, clientId) = sut.ReadConfiguration(
+            var (_, port, _) = sut.ReadConfiguration(
                 defaultHost,
                 defaultPort,
                 defaultClientId);
 
             Assert.Equal(defaultPort, port);
+            registryKey.Received().SetValue(PORT, port);
         }
 
         [Theory, AutoNSubstituteData]
