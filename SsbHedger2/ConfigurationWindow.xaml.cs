@@ -1,6 +1,4 @@
-﻿using SsbHedger2.Model;
-using System;
-using System.Windows;
+﻿using System.Windows;
 
 namespace SsbHedger2
 {
@@ -13,22 +11,19 @@ namespace SsbHedger2
         {
             InitializeComponent();
 
-            ((ConfigurationWindowViewModel)DataContext).Host = host;
-            ((ConfigurationWindowViewModel)DataContext).Port = port;
-            ((ConfigurationWindowViewModel)DataContext).ClientId = clientId;
-            ((ConfigurationWindowViewModel)DataContext).CloseAction = new Action(Close);
-        }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            e.Cancel = true;
-            Visibility = Visibility.Hidden;
+            txtHost.Text = host;
+            txtPort.Text = port.ToString();
+            txtClientId.Text = clientId.ToString();
         }
 
         private void btCancel_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
-            Close();
+        }
+
+        private void btDone_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
         }
     }
 }

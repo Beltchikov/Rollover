@@ -1,4 +1,5 @@
 ﻿using SsbHedger2.Model;
+using System;
 using System.Windows;
 
 namespace SsbHedger2
@@ -25,12 +26,12 @@ namespace SsbHedger2
                     ((MainWindowViewModel)DataContext).ClientId);
             }
             
-            var configurationChanged = _configurationWindow.ShowDialog();
+            bool? configurationChanged = _configurationWindow.ShowDialog();
             if (configurationChanged == true)
             {
-                ((MainWindowViewModel)DataContext).Host = ((ConfigurationWindowViewModel)_configurationWindow.DataContext).Host;
-                ((MainWindowViewModel)DataContext).Port = ((ConfigurationWindowViewModel)_configurationWindow.DataContext).Port;
-                ((MainWindowViewModel)DataContext).ClientId = ((ConfigurationWindowViewModel)_configurationWindow.DataContext).ClientId;
+                ((MainWindowViewModel)DataContext).Host = _configurationWindow.txtHost.Text;
+                ((MainWindowViewModel)DataContext).Port = Convert.ToInt32(_configurationWindow.txtPort.Text);
+                ((MainWindowViewModel)DataContext).ClientId = Convert.ToInt32(_configurationWindow.txtClientId.Text);
             }
         }
     }

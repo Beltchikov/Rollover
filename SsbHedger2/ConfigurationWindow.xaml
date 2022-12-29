@@ -3,21 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SsbHedger2"
-        xmlns:converters="clr-namespace:SsbHedger2.Converters"
         mc:Ignorable="d"
-        xmlns:model="clr-namespace:SsbHedger2.Model"
         Title="Configuration" Height="140" Width="180" 
-        SizeToContent="WidthAndHeight"
-        Closing="Window_Closing">
-    <Window.DataContext>
-        <model:ConfigurationWindowViewModel></model:ConfigurationWindowViewModel>
-    </Window.DataContext>
-    <Window.Resources>
-        <ResourceDictionary>
-            <converters:ConfigurationConverter x:Key="configurationConverter"/>
-        </ResourceDictionary>
-    </Window.Resources>
+        SizeToContent="WidthAndHeight">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"></RowDefinition>
@@ -41,7 +29,7 @@
         </TextBlock>
         <TextBox Name="txtHost" Grid.Column="2" Grid.Row="0"
                  Style="{StaticResource NormalTextBox}"
-                 Text="{Binding Host}"></TextBox>
+                 Text=""></TextBox>
 
         <TextBlock Grid.Column="1" Grid.Row="1"  Text="Port:"
                    HorizontalAlignment="Right"
@@ -50,7 +38,7 @@
         </TextBlock>
         <TextBox Name="txtPort" Grid.Column="2" Grid.Row="1"
                  Style="{StaticResource NormalTextBox}"
-                 Text="{Binding Port}"></TextBox>
+                 Text=""></TextBox>
 
         <TextBlock Grid.Column="1" Grid.Row="2"  Text="Client ID:"
                    HorizontalAlignment="Right"
@@ -59,20 +47,12 @@
         </TextBlock>
         <TextBox Name="txtClientId" Grid.Column="2" Grid.Row="2"
                  Style="{StaticResource NormalTextBox}"
-                 Text="{Binding ClientId}"></TextBox>
+                 Text=""></TextBox>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
                     Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2">
-            <Button Name="btCancel" Margin="0,3,0,3" Padding="5,0,5,0" Click="btCancel_Click">Cancel</Button>
-            <Button Name="btDone" Margin="10,3,0,3" Padding="5,0,5,0" Command="{Binding UpdateConfigurationCommand, Mode=OneWay}">
-                <Button.CommandParameter>
-                    <MultiBinding Converter="{StaticResource configurationConverter}">
-                        <Binding ElementName="txtHost" Path="Text"/>
-                        <Binding ElementName="txtPort" Path="Text"/>
-                        <Binding ElementName="txtClientId" Path="Text"/>
-                    </MultiBinding>
-                </Button.CommandParameter>
-                Done</Button>
+            <Button Name="btCancel" Margin="0,3,0,3" Padding="5,0,5,0" Click="btCancel_Click" IsCancel="True">Cancel</Button>
+            <Button Name="btDone" Margin="10,3,0,3" Padding="5,0,5,0" Click="btDone_Click" IsDefault="True">Done</Button>
         </StackPanel>
 
 
