@@ -9,8 +9,6 @@ namespace SsbHedger2
     /// </summary>
     public partial class MainWindow : Window
     {
-        ConfigurationWindow? _configurationWindow;
-
         public MainWindow()
         {
             InitializeComponent();
@@ -18,14 +16,11 @@ namespace SsbHedger2
 
         private void btConfiguration_Click(object sender, RoutedEventArgs e)
         {
-            if(_configurationWindow == null)
-            {
-                _configurationWindow = new(
+            ConfigurationWindow? _configurationWindow = new(
                     ((MainWindowViewModel)DataContext).Host,
                     ((MainWindowViewModel)DataContext).Port,
                     ((MainWindowViewModel)DataContext).ClientId);
-            }
-            
+
             bool? configurationChanged = _configurationWindow.ShowDialog();
             if (configurationChanged == true)
             {
