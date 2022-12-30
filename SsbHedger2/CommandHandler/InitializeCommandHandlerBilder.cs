@@ -6,7 +6,7 @@ using System.Windows;
 
 namespace SsbHedger2.CommandHandler
 {
-    internal class InitializeCommandHandlerBilder : IInitializeCommandHandlerBilder
+    internal class InitializeCommandHandlerBilder 
     {
         [ExcludeFromCodeCoverage]
         public InitializeCommandHandler Build(MainWindowViewModel mainWindowViewModel)
