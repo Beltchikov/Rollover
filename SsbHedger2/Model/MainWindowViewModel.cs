@@ -24,7 +24,7 @@ namespace SsbHedger2.Model
 
             var updateConfigurationCommandHandlerBilder = new UpdateConfigurationCommandHandlerBuilder();
             UpdateConfigurationCommandHandler updateConfigurationCommandHandler = updateConfigurationCommandHandlerBilder.Build(this); 
-            UpdateConfigurationCommand = new RelayCommand(() => updateConfigurationCommandHandler.Handle());
+            UpdateConfigurationCommand = new RelayCommand<object[]>((p) => updateConfigurationCommandHandler.Handle(p));
 
             messages = new ObservableCollection<Message>();
         }

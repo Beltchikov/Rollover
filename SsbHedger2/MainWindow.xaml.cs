@@ -29,7 +29,6 @@ namespace SsbHedger2
             {
                 object[] commandParams = new object[]
                 {
-                    _viewModel,
                     _configurationWindow.txtHost.Text,
                     Convert.ToInt32(_configurationWindow.txtPort.Text),
                     Convert.ToInt32(_configurationWindow.txtClientId.Text)

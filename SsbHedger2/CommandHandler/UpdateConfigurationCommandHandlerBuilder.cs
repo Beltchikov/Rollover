@@ -9,7 +9,7 @@ namespace SsbHedger2.CommandHandler
     internal class UpdateConfigurationCommandHandlerBuilder
     {
         [ExcludeFromCodeCoverage]
-        internal UpdateConfigurationCommandHandler Build(MainWindowViewModel mainWindowViewModel)
+        internal UpdateConfigurationCommandHandler Build(MainWindowViewModel viewModel)
         {
             IRegistryManager? registryManager = ((App)Application.Current).Services.GetService<IRegistryManager>();
             if (registryManager == null)
@@ -17,7 +17,7 @@ namespace SsbHedger2.CommandHandler
                 throw new ApplicationException("Unexpected! registryManager is null");
             }
 
-            return new UpdateConfigurationCommandHandler(registryManager);
+            return new UpdateConfigurationCommandHandler(registryManager, viewModel);
         }
     }
 }

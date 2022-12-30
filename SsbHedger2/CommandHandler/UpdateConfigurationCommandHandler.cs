@@ -1,17 +1,22 @@
 ﻿using System;
+using SsbHedger2.Model;
 
 namespace SsbHedger2.CommandHandler
 {
     public class UpdateConfigurationCommandHandler
     {
-        private IRegistryManager registryManager = null!;
+        private IRegistryManager _registryManager = null!;
+        MainWindowViewModel _viewModel = null!;
 
-        public UpdateConfigurationCommandHandler(IRegistryManager registryManager)
+        public UpdateConfigurationCommandHandler(
+            IRegistryManager registryManager,
+            MainWindowViewModel viewModel)
         {
-            this.registryManager = registryManager;
+            _registryManager = registryManager;
+            _viewModel = viewModel;
         }
 
-        internal void Handle()
+        public void Handle(object[] parameters)
         {
             throw new NotImplementedException();
 
