@@ -25,24 +25,17 @@ namespace SsbHedger2
             bool? configurationChanged = _configurationWindow.ShowDialog();
             if (configurationChanged == true)
             {
-                // TODO
-                // UpdateConfigurationCommand
+                var viewModel = ((MainWindowViewModel)DataContext);
 
-                //UpdateConfigurationCommand = new RelayCommand<string>(async (data) =>
-                //{
-                //    if (data == null) { throw new ApplicationException("Unexpected! data is null"); }
-                //    var dataArray = data.Split(";").Select(m => m.Trim()).ToList();
-                //    Host = dataArray[0];
-                //    Port = Convert.ToInt32(dataArray[1]);
-                //    ClientId = Convert.ToInt32(dataArray[2]);
-                //    if (CloseAction == null) { throw new ApplicationException("Unexpected! CloseAction is null"); }
-                //    await _mediator.Publish(new UpdateConfigurationMediatorCommand(
-                //        Host, Port, ClientId, CloseAction));
-                //});
+                object[] commandParams = new object[]
+                {
+                    viewModel,
+                    _configurationWindow.txtHost.Text,
+                    Convert.ToInt32(_configurationWindow.txtPort.Text),
+                    Convert.ToInt32(_configurationWindow.txtClientId.Text)
+                };
 
-                ((MainWindowViewModel)DataContext).Host = _configurationWindow.txtHost.Text;
-                ((MainWindowViewModel)DataContext).Port = Convert.ToInt32(_configurationWindow.txtPort.Text);
-                ((MainWindowViewModel)DataContext).ClientId = Convert.ToInt32(_configurationWindow.txtClientId.Text);
+                viewModel.UpdateConfigurationCommand.Execute(commandParams);
             }
         }
     }

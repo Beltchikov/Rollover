@@ -22,6 +22,10 @@ namespace SsbHedger2.Model
             InitializeCommandHandler initializeCommandHandler = initializeCommandHandlerBilder.Build(this);
             InitializeCommand = new RelayCommand(() => initializeCommandHandler.Handle());
 
+            var updateConfigurationCommandHandlerBilder = new UpdateConfigurationCommandHandlerBuilder();
+            UpdateConfigurationCommandHandler updateConfigurationCommandHandler = updateConfigurationCommandHandlerBilder.Build(this); 
+            UpdateConfigurationCommand = new RelayCommand(() => updateConfigurationCommandHandler.Handle());
+
             messages = new ObservableCollection<Message>();
         }
 
@@ -82,5 +86,6 @@ namespace SsbHedger2.Model
         }
 
         public ICommand InitializeCommand { get; }
+        public ICommand UpdateConfigurationCommand { get; }
     }
 }
