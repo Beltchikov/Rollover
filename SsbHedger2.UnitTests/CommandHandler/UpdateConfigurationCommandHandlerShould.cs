@@ -1,9 +1,9 @@
 using AutoFixture.Xunit2;
 using NSubstitute;
-using SsbHedger2.CommandHandler;
-using SsbHedger2.Configuration;
+using SsbHedger.CommandHandler;
+using SsbHedger.Configuration;
 
-namespace SsbHedger2.UnitTests.CommandHandler
+namespace SsbHedger.UnitTests.CommandHandler
 {
     public class UpdateConfigurationCommandHandlerShould
     {

@@ -1,10 +1,10 @@
 ﻿using AutoFixture.Xunit2;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
-using SsbHedger2.Abstractions;
-using SsbHedger2.Configuration;
+using SsbHedger.Abstractions;
+using SsbHedger.Configuration;
 
-namespace SsbHedger2.UnitTests
+namespace SsbHedger.UnitTests
 {
     public class RegistryManagerShould
     {

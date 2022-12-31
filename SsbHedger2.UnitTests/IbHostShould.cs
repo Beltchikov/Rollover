@@ -1,9 +1,9 @@
 ﻿using IbClient.messages;
-using SsbHedger2.Model;
+using SsbHedger.Model;
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 
-namespace SsbHedger2.UnitTests
+namespace SsbHedger.UnitTests
 {
     public class IbHostShould
     {

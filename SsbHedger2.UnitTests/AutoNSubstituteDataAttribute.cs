@@ -1,4 +1,4 @@
-﻿namespace SsbHedger2.UnitTests
+﻿namespace SsbHedger.UnitTests
 {
     using AutoFixture;
     using AutoFixture.AutoNSubstitute;
