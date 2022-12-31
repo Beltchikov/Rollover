@@ -1,7 +1,5 @@
-﻿using System;
-using System.Windows.Markup;
-using SsbHedger2.Configuration;
-using SsbHedger2.Model;
+﻿using SsbHedger2.Configuration;
+using System;
 
 namespace SsbHedger2.CommandHandler
 {
@@ -33,7 +31,9 @@ namespace SsbHedger2.CommandHandler
             int clientId = Convert.ToInt32(parameters[2]);
 
             _registryManager.WriteConfiguration(host, port, clientId);
-
+            _configuration.Host = host;
+            _configuration.Port = port;
+            _configuration.ClientId = clientId;
         }
     }
 }
