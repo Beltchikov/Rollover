@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Markup;
 using SsbHedger2.Configuration;
 using SsbHedger2.Model;
 
@@ -19,11 +20,20 @@ namespace SsbHedger2.CommandHandler
 
         public void Handle(object[] parameters)
         {
-            throw new NotImplementedException();
+            if (parameters == null) 
+            { 
+                throw new ApplicationException("Unexpected! data is null"); 
+            }
+            string? host = parameters[0]?.ToString();
+            if (host == null) 
+            { 
+                throw new ApplicationException("Unexpected! host is null"); 
+            }
+            int port = Convert.ToInt32(parameters[1]);
+            int clientId = Convert.ToInt32(parameters[2]);
 
-            //viewModel.Host = _configurationWindow.txtHost.Text;
-            //viewModel.Port = Convert.ToInt32(_configurationWindow.txtPort.Text);
-            //viewModel.ClientId = Convert.ToInt32(_configurationWindow.txtClientId.Text);
+            _registryManager.WriteConfiguration(host, port, clientId);
+
         }
     }
 }
