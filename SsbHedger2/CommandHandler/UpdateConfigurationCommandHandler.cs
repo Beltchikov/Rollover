@@ -1,7 +1,7 @@
-﻿using SsbHedger2.Configuration;
+﻿using SsbHedger.Configuration;
 using System;
 
-namespace SsbHedger2.CommandHandler
+namespace SsbHedger.CommandHandler
 {
     public class UpdateConfigurationCommandHandler
     {

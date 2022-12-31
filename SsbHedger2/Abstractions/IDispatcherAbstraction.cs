@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SsbHedger2.Abstractions
+namespace SsbHedger.Abstractions
 {
     public interface IDispatcherAbstraction
     {

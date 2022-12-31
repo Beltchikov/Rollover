@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System;
-using SsbHedger2.Model;
+using SsbHedger.Model;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
-using SsbHedger2.Configuration;
+using SsbHedger.Configuration;
 
-namespace SsbHedger2.CommandHandler
+namespace SsbHedger.CommandHandler
 {
     internal class UpdateConfigurationCommandHandlerBuilder
     {

@@ -1,7 +1,7 @@
-﻿using SsbHedger2.Model;
+﻿using SsbHedger.Model;
 using System;
 
-namespace SsbHedger2
+namespace SsbHedger
 {
     public interface IIbHost
     {

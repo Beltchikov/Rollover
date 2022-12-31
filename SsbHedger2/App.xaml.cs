@@ -1,11 +1,11 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using SsbHedger2.Abstractions;
-using SsbHedger2.Configuration;
+using SsbHedger.Abstractions;
+using SsbHedger.Configuration;
 using System;
 using System.Windows;
 
-namespace SsbHedger2
+namespace SsbHedger
 {
     /// <summary>
     /// Interaction logic for App.xaml

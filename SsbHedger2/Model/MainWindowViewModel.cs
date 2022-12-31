@@ -1,12 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using SsbHedger2.CommandHandler;
-using SsbHedger2.Configuration;
+using SsbHedger.CommandHandler;
+using SsbHedger.Configuration;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 
-namespace SsbHedger2.Model
+namespace SsbHedger.Model
 {
     [ExcludeFromCodeCoverage]
     public class MainWindowViewModel : ObservableObject, IConfiguration

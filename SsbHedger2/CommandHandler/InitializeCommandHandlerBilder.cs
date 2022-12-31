@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using SsbHedger2.Configuration;
-using SsbHedger2.Model;
+using SsbHedger.Configuration;
+using SsbHedger.Model;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 
-namespace SsbHedger2.CommandHandler
+namespace SsbHedger.CommandHandler
 {
     internal class InitializeCommandHandlerBilder 
     {

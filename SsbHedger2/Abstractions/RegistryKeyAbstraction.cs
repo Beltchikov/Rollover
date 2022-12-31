@@ -1,6 +1,6 @@
 ﻿using Microsoft.Win32;
 
-namespace SsbHedger2.Abstractions
+namespace SsbHedger.Abstractions
 {
     public class RegistryKeyAbstraction : IRegistryKeyAbstraction
     {

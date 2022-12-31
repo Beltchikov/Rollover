@@ -1,4 +1,4 @@
-﻿using SsbHedger2.Model;
+﻿using SsbHedger.Model;
 using System;
 using System.Windows;
 

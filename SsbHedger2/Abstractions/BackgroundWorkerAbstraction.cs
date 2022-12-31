@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace SsbHedger2.Abstractions
+namespace SsbHedger.Abstractions
 {
     public class BackgroundWorkerAbstraction : IBackgroundWorkerAbstraction
     {

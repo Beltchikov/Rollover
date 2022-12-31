@@ -1,4 +1,4 @@
-﻿namespace SsbHedger2.Abstractions
+﻿namespace SsbHedger.Abstractions
 {
     public interface IRegistryCurrentUserAbstraction
     {

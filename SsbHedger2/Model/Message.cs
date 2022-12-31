@@ -1,4 +1,4 @@
-﻿namespace SsbHedger2.Model
+﻿namespace SsbHedger.Model
 {
     public class Message
     {

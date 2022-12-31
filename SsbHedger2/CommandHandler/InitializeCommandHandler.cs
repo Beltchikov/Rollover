@@ -1,6 +1,6 @@
-﻿using SsbHedger2.Configuration;
+﻿using SsbHedger.Configuration;
 
-namespace SsbHedger2.CommandHandler
+namespace SsbHedger.CommandHandler
 {
     public sealed class InitializeCommandHandler
     {

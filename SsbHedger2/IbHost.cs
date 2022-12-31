@@ -1,10 +1,10 @@
 ﻿using IbClient;
-using SsbHedger2.Model;
+using SsbHedger.Model;
 using System;
 using System.Linq;
 using IbClient.messages;
 
-namespace SsbHedger2
+namespace SsbHedger
 {
     public class IbHost : IIbHost
     {

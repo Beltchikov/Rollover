@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Windows.Threading;
 
-namespace SsbHedger2.Abstractions
+namespace SsbHedger.Abstractions
 {
     [ExcludeFromCodeCoverage]
     public class DispatcherAbstraction : IDispatcherAbstraction
