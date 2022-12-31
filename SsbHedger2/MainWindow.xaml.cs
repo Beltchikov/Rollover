@@ -2,7 +2,7 @@
 using System;
 using System.Windows;
 
-namespace SsbHedger2
+namespace SsbHedger
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
