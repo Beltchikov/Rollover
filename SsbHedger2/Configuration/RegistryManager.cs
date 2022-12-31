@@ -1,7 +1,7 @@
 ﻿using SsbHedger2.Abstractions;
 using System;
 
-namespace SsbHedger2
+namespace SsbHedger2.Configuration
 {
     public class RegistryManager : IRegistryManager
     {
@@ -40,14 +40,14 @@ namespace SsbHedger2
                 (int?)subKey.GetValue(CLIENT_ID)
             };
             object[] configValuesValidated = new object[3];
-            for(int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++)
             {
                 var configValue = configValuesFromRegistry[i];
                 switch (i)
                 {
                     case 0:
                         var configValue1Typed = configValue?.ToString();
-                        if(!String.IsNullOrWhiteSpace(configValue1Typed))
+                        if (!string.IsNullOrWhiteSpace(configValue1Typed))
                         {
                             configValuesValidated[i] = configValue1Typed;
                         }

@@ -1,6 +1,7 @@
 using AutoFixture.Xunit2;
 using NSubstitute;
 using SsbHedger2.CommandHandler;
+using SsbHedger2.Configuration;
 
 namespace SsbHedger2.UnitTests.CommandHandler
 {

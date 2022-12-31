@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using SsbHedger2.Abstractions;
+using SsbHedger2.Configuration;
 using System;
 using System.Windows;
 

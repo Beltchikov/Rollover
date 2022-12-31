@@ -3,6 +3,7 @@ using System;
 using SsbHedger2.Model;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using SsbHedger2.Configuration;
 
 namespace SsbHedger2.CommandHandler
 {

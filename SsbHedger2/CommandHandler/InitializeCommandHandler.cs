@@ -1,4 +1,6 @@
-﻿namespace SsbHedger2.CommandHandler
+﻿using SsbHedger2.Configuration;
+
+namespace SsbHedger2.CommandHandler
 {
     public sealed class InitializeCommandHandler
     {

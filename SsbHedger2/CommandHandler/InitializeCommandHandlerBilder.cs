@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SsbHedger2.Configuration;
 using SsbHedger2.Model;
 using System;
 using System.Diagnostics.CodeAnalysis;

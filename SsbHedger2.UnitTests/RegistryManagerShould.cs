@@ -2,6 +2,7 @@
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using SsbHedger2.Abstractions;
+using SsbHedger2.Configuration;
 
 namespace SsbHedger2.UnitTests
 {
