@@ -1,4 +1,5 @@
 ﻿using System;
+using SsbHedger2.Configuration;
 using SsbHedger2.Model;
 
 namespace SsbHedger2.CommandHandler
@@ -6,14 +7,14 @@ namespace SsbHedger2.CommandHandler
     public class UpdateConfigurationCommandHandler
     {
         private IRegistryManager _registryManager = null!;
-        MainWindowViewModel _viewModel = null!;
+        IConfiguration _configuration = null!;
 
         public UpdateConfigurationCommandHandler(
             IRegistryManager registryManager,
-            MainWindowViewModel viewModel)
+            IConfiguration configuration)
         {
             _registryManager = registryManager;
-            _viewModel = viewModel;
+            _configuration = configuration;
         }
 
         public void Handle(object[] parameters)

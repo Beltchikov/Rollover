@@ -14,7 +14,7 @@ namespace SsbHedger2.UnitTests.CommandHandler
         //    [Frozen] IRegistryManager registryManager,
         //    UpdateConfigurationCommandHandler sut)
         //{
-        //    sut.Handle(new object[] {host, port, clientId});
+        //    sut.Handle(new object[] { host, port, clientId });
         //    registryManager.Received().WriteConfiguration(
         //        host, port, clientId);
         //}

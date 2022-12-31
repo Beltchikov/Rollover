@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SsbHedger2.CommandHandler;
+using SsbHedger2.Configuration;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
@@ -8,7 +9,7 @@ using System.Windows.Input;
 namespace SsbHedger2.Model
 {
     [ExcludeFromCodeCoverage]
-    public class MainWindowViewModel : ObservableObject
+    public class MainWindowViewModel : ObservableObject, IConfiguration
     {
         private ObservableCollection<Message> messages;
         private string host = "";
