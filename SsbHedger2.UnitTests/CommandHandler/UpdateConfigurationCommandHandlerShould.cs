@@ -1,7 +1,8 @@
 using AutoFixture.Xunit2;
 using NSubstitute;
 using SsbHedger.CommandHandler;
-using SsbHedger.Configuration;
+using SsbHedger.Model;
+using SsbHedger.RegistryManager;
 
 namespace SsbHedger.UnitTests.CommandHandler
 {
@@ -29,9 +30,10 @@ namespace SsbHedger.UnitTests.CommandHandler
             UpdateConfigurationCommandHandler sut)
         {
             sut.Handle(new object[] { host, port, clientId });
-            configuration.Received().Host = host;
-            configuration.Received().Port = port;
-            configuration.Received().ClientId = clientId;
+            
+            configuration.Received().SetValue("Host", host);
+            configuration.Received().SetValue("Port", port);
+            configuration.Received().SetValue("ClientId", clientId);
         }
     }
 }

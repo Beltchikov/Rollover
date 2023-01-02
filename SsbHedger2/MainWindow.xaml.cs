@@ -9,22 +9,21 @@ namespace SsbHedger
     /// </summary>
     public partial class MainWindow : Window
     {
-        MainWindowViewModel _viewModel;
+        IConfiguration _configuration;
 
-        public MainWindow()
+        public MainWindow(IConfiguration configuration)
         {
             InitializeComponent();
-            _viewModel = ((MainWindowViewModel)DataContext);
+            DataContext = new MainWindowViewModel();
+            _configuration = configuration;
         }
 
         private void btConfiguration_Click(object sender, RoutedEventArgs e)
         {
-            ConfigurationWindow? _configurationWindow = new(
-                    _viewModel.Host,
-                    _viewModel.Port,
-                    _viewModel.ClientId);
+            var app = (App)Application.Current;
+            ConfigurationWindow? _configurationWindow = new(_configuration);
 
-            bool? configurationChanged = _configurationWindow.ShowDialog();
+            bool ? configurationChanged = _configurationWindow.ShowDialog();
             if (configurationChanged == true)
             {
                 object[] commandParams = new object[]
@@ -33,7 +32,7 @@ namespace SsbHedger
                     Convert.ToInt32(_configurationWindow.txtPort.Text),
                     Convert.ToInt32(_configurationWindow.txtClientId.Text)
                 };
-                _viewModel.UpdateConfigurationCommand.Execute(commandParams);
+                ((MainWindowViewModel)DataContext).UpdateConfigurationCommand.Execute(commandParams);
             }
         }
     }

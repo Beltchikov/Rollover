@@ -1,4 +1,4 @@
-﻿using SsbHedger.Configuration;
+﻿using SsbHedger.RegistryManager;
 
 namespace SsbHedger.CommandHandler
 {

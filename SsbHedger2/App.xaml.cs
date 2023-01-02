@@ -1,7 +1,8 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using SsbHedger.Abstractions;
-using SsbHedger.Configuration;
+using SsbHedger.Model;
+using SsbHedger.RegistryManager;
 using System;
 using System.Windows;
 
@@ -17,11 +18,18 @@ namespace SsbHedger
             Services = new ServiceCollection()
                 .AddSingleton<IRegistryCurrentUserAbstraction, RegistryCurrentUserAbstraction>()
                 .AddScoped<IRegistryKeyAbstraction, RegistryKeyAbstraction>()
+                .AddSingleton<IConfiguration, Model.Configuration>()
+                .AddSingleton<IRegistryManager, RegistryManager.RegistryManager>()
                 .AddSingleton<IIbHost, IbHost>()
-                .AddSingleton<IRegistryManager, RegistryManager>()
                 .AddMediatR(GetType().Assembly)
                 .BuildServiceProvider();
         }
         public IServiceProvider Services { get; }
+
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            MainWindow mainWindow = new MainWindow(Services.GetRequiredService<IConfiguration>());
+            mainWindow.Show();
+        }
     }
 }

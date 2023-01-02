@@ -1,4 +1,5 @@
 ﻿using IbClient.messages;
+using NSubstitute;
 using SsbHedger.Model;
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
@@ -8,26 +9,6 @@ namespace SsbHedger.UnitTests
     public class IbHostShould
     {
         [Fact]
-        public void UpdateHostPortClientIdInViewModel()
-        {
-            string host = "localhost";
-            int port = 5090;
-            int clientId = 22;
-
-            var sut = new IbHost();
-            MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
-                .GetUninitializedObject(typeof(MainWindowViewModel));
-            viewModel.Messages = new ObservableCollection<Message>();
-            sut.ViewModel = viewModel;
-
-            sut.ConnectAndStartReaderThread(host, port, clientId);
-
-            Assert.Equal(viewModel.Host, host);
-            Assert.Equal(viewModel.Port, port);
-            Assert.Equal(viewModel.ClientId, clientId);
-        }
-
-        [Fact]
         public void AddErrorMessageToViewModel()
         {
             int reqId = 1;
@@ -35,7 +16,8 @@ namespace SsbHedger.UnitTests
             string message = "3";
             Exception exception = new Exception("4");
 
-            var sut = new IbHost();
+            IConfiguration configuration = Substitute.For<IConfiguration>();
+            var sut = new IbHost(configuration);
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
             viewModel.Messages = new ObservableCollection<Message>();
@@ -58,7 +40,8 @@ namespace SsbHedger.UnitTests
             var accounts = "acc1 ,acc2";
             ManagedAccountsMessage message = new ManagedAccountsMessage(accounts);
 
-            var sut = new IbHost();
+            IConfiguration configuration = Substitute.For<IConfiguration>();
+            var sut = new IbHost(configuration);
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
             viewModel.Messages = new ObservableCollection<Message>();
@@ -81,7 +64,8 @@ namespace SsbHedger.UnitTests
         {
             ConnectionStatusMessage message = new ConnectionStatusMessage(true);
 
-            var sut = new IbHost();
+            IConfiguration configuration = Substitute.For<IConfiguration>();
+            var sut = new IbHost(configuration);
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
             viewModel.Messages = new ObservableCollection<Message>();
@@ -96,6 +80,7 @@ namespace SsbHedger.UnitTests
             Assert.Equal(0, viewModel.Messages.First().ReqId);
             var expectedBody = "CONNECTED!";
             Assert.Equal(expectedBody, viewModel.Messages.First().Body);
+            Assert.StartsWith(expectedBody, viewModel.ConnectionMessage);
             Assert.True(viewModel.Connected);
         }
 
@@ -104,7 +89,8 @@ namespace SsbHedger.UnitTests
         {
             ConnectionStatusMessage message = new ConnectionStatusMessage(false);
 
-            var sut = new IbHost();
+            IConfiguration configuration = Substitute.For<IConfiguration>();
+            var sut = new IbHost(configuration);
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
             viewModel.Messages = new ObservableCollection<Message>();
@@ -119,6 +105,7 @@ namespace SsbHedger.UnitTests
             Assert.Equal(0, viewModel.Messages.First().ReqId);
             var expectedBody = "NOT CONNECTED!";
             Assert.Equal(expectedBody, viewModel.Messages.First().Body);
+            Assert.StartsWith(expectedBody, viewModel.ConnectionMessage);
             Assert.False(viewModel.Connected);
         }
     }

@@ -2,7 +2,7 @@
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using SsbHedger.Abstractions;
-using SsbHedger.Configuration;
+using SsbHedger.RegistryManager;
 
 namespace SsbHedger.UnitTests
 {
@@ -20,7 +20,7 @@ namespace SsbHedger.UnitTests
             int defaultClientId,
             [Frozen] IRegistryKeyAbstraction registryKey,
             [Frozen] IRegistryCurrentUserAbstraction registryCurrentUser,
-            RegistryManager sut)
+            RegistryManager.RegistryManager sut)
         {
             registryKey.GetValue(HOST).ReturnsNull();
             registryKey.GetValue(PORT).ReturnsNull();
@@ -45,7 +45,7 @@ namespace SsbHedger.UnitTests
             int defaultClientId,
             [Frozen] IRegistryKeyAbstraction registryKey,
             [Frozen] IRegistryCurrentUserAbstraction registryCurrentUser,
-            RegistryManager sut)
+            RegistryManager.RegistryManager sut)
         {
             registryKey.GetValue(HOST).Returns(" ");
             registryKey.GetValue(PORT).Returns(111);
@@ -68,7 +68,7 @@ namespace SsbHedger.UnitTests
             int defaultClientId,
             [Frozen] IRegistryKeyAbstraction registryKey,
             [Frozen] IRegistryCurrentUserAbstraction registryCurrentUser,
-            RegistryManager sut)
+            RegistryManager.RegistryManager sut)
         {
             registryKey.GetValue(HOST).Returns("aaa");
             registryKey.GetValue(PORT).Returns(-1);
@@ -92,7 +92,7 @@ namespace SsbHedger.UnitTests
            int defaultClientId,
            [Frozen] IRegistryKeyAbstraction registryKey,
            [Frozen] IRegistryCurrentUserAbstraction registryCurrentUser,
-           RegistryManager sut)
+           RegistryManager.RegistryManager sut)
         {
             registryKey.GetValue(HOST).Returns("aaa");
             registryKey.GetValue(PORT).Returns(4444);
@@ -116,7 +116,7 @@ namespace SsbHedger.UnitTests
            int defaultClientId,
            [Frozen] IRegistryKeyAbstraction registryKey,
            [Frozen] IRegistryCurrentUserAbstraction registryCurrentUser,
-           RegistryManager sut)
+           RegistryManager.RegistryManager sut)
         {
             registryCurrentUser.OpenSubKey(SOFTWARE_SSBHEDGER).ReturnsNull();
             registryCurrentUser.CreateSubKey(SOFTWARE_SSBHEDGER).Returns(registryKey);
@@ -142,7 +142,7 @@ namespace SsbHedger.UnitTests
             int clientIdFromRegistry,
             IRegistryKeyAbstraction registryKey,
             IRegistryCurrentUserAbstraction registryCurrentUser,
-            RegistryManager sut)
+            RegistryManager.RegistryManager sut)
         {
             registryKey.GetValue(HOST).Returns(hostFromRegistry);
             registryKey.GetValue(PORT).Returns(portFromRegistry);
@@ -169,7 +169,7 @@ namespace SsbHedger.UnitTests
             int defaultClientId,
             IRegistryKeyAbstraction registryKey,
             [Frozen] IRegistryCurrentUserAbstraction registryCurrentUser,
-            RegistryManager sut)
+            RegistryManager.RegistryManager sut)
         {
             registryCurrentUser.OpenSubKey(SOFTWARE_SSBHEDGER).Returns(registryKey);
 

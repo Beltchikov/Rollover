@@ -1,7 +1,7 @@
 ﻿using SsbHedger.Abstractions;
 using System;
 
-namespace SsbHedger.Configuration
+namespace SsbHedger.RegistryManager
 {
     public class RegistryManager : IRegistryManager
     {

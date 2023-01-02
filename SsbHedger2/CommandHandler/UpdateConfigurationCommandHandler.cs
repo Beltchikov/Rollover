@@ -1,4 +1,5 @@
-﻿using SsbHedger.Configuration;
+﻿using SsbHedger.Model;
+using SsbHedger.RegistryManager;
 using System;
 
 namespace SsbHedger.CommandHandler
@@ -31,9 +32,9 @@ namespace SsbHedger.CommandHandler
             int clientId = Convert.ToInt32(parameters[2]);
 
             _registryManager.WriteConfiguration(host, port, clientId);
-            _configuration.Host = host;
-            _configuration.Port = port;
-            _configuration.ClientId = clientId;
+            _configuration.SetValue("Host", host);
+            _configuration.SetValue("Port", port);
+            _configuration.SetValue("ClientId", clientId);
         }
     }
 }

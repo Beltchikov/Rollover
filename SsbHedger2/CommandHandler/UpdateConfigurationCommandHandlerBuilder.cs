@@ -3,14 +3,14 @@ using System;
 using SsbHedger.Model;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
-using SsbHedger.Configuration;
+using SsbHedger.RegistryManager;
 
 namespace SsbHedger.CommandHandler
 {
     internal class UpdateConfigurationCommandHandlerBuilder
     {
         [ExcludeFromCodeCoverage]
-        internal UpdateConfigurationCommandHandler Build(MainWindowViewModel viewModel)
+        internal UpdateConfigurationCommandHandler Build()
         {
             IRegistryManager? registryManager = ((App)Application.Current).Services.GetService<IRegistryManager>();
             if (registryManager == null)
@@ -18,7 +18,13 @@ namespace SsbHedger.CommandHandler
                 throw new ApplicationException("Unexpected! registryManager is null");
             }
 
-            return new UpdateConfigurationCommandHandler(registryManager, viewModel);
+            IConfiguration? configuration = ((App)Application.Current).Services.GetService<IConfiguration>();
+            if (configuration == null)
+            {
+                throw new ApplicationException("Unexpected! configuration is null");
+            }
+
+            return new UpdateConfigurationCommandHandler(registryManager, configuration);
         }
     }
 }

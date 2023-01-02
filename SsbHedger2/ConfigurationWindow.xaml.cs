@@ -2,7 +2,6 @@
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-//using static System.Net.Mime.MediaTypeNames;
 
 namespace SsbHedger
 {
@@ -17,14 +16,13 @@ namespace SsbHedger
 
         Regex _regexDigits = new ("^[0-9]*$");
 
-
-        public ConfigurationWindow(string host, int port, int clientId)
+        public ConfigurationWindow(Model.IConfiguration configuration)
         {
             InitializeComponent();
 
-            txtHost.Text = _initialHost = host;
-            txtPort.Text = (_initialPort = port).ToString();
-            txtClientId.Text = (_initialClientId = clientId).ToString();
+            txtHost.Text = _initialHost = (string)configuration.GetValue("Host");
+            txtPort.Text = (_initialPort = (int)configuration.GetValue("Port")).ToString();
+            txtClientId.Text = (_initialClientId = (int)configuration.GetValue("ClientId")).ToString();
         }
 
         private void btCancel_Click(object sender, RoutedEventArgs e)
