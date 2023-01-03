@@ -11,17 +11,14 @@ namespace SsbHedger.Model
     public class MainWindowViewModel : ObservableObject
     {
         private ObservableCollection<Message> messages;
-        private string connectionMessage;
+        private string connectionMessage = "Connecting...";
         private bool connected;
         
-        public MainWindowViewModel()
+        public MainWindowViewModel(
+            IInitializeCommandHandler initializeCommandHandler,
+            IUpdateConfigurationCommandHandler updateConfigurationCommandHandler)
         {
-            var initializeCommandHandlerBilder = new InitializeCommandHandlerBilder();
-            InitializeCommandHandler initializeCommandHandler = initializeCommandHandlerBilder.Build(this);
-            InitializeCommand = new RelayCommand(() => initializeCommandHandler.Handle());
-
-            var updateConfigurationCommandHandlerBilder = new UpdateConfigurationCommandHandlerBuilder();
-            UpdateConfigurationCommandHandler updateConfigurationCommandHandler = updateConfigurationCommandHandlerBilder.Build(); 
+            InitializeCommand = new RelayCommand(() => initializeCommandHandler.Handle(this));
             UpdateConfigurationCommand = new RelayCommand<object[]>((p) => updateConfigurationCommandHandler.Handle(p));
 
             messages = new ObservableCollection<Message>();

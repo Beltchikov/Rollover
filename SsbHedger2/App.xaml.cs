@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using SsbHedger.Abstractions;
+using SsbHedger.CommandHandler;
 using SsbHedger.Model;
 using SsbHedger.RegistryManager;
 using System;
@@ -21,6 +22,8 @@ namespace SsbHedger
                 .AddSingleton<IConfiguration, Model.Configuration>()
                 .AddSingleton<IRegistryManager, RegistryManager.RegistryManager>()
                 .AddSingleton<IIbHost, IbHost>()
+                .AddSingleton<IInitializeCommandHandler, InitializeCommandHandler>()
+                .AddSingleton<IUpdateConfigurationCommandHandler, UpdateConfigurationCommandHandler>()
                 .AddMediatR(GetType().Assembly)
                 .BuildServiceProvider();
         }
@@ -28,8 +31,12 @@ namespace SsbHedger
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            MainWindow mainWindow = new MainWindow(Services.GetRequiredService<IConfiguration>());
-            mainWindow.DataContext = new MainWindowViewModel();
+            MainWindow mainWindow = new(Services.GetRequiredService<IConfiguration>())
+            {
+                DataContext = new MainWindowViewModel(
+                    Services.GetRequiredService<IInitializeCommandHandler>(),
+                    Services.GetRequiredService<IUpdateConfigurationCommandHandler>())
+            };
             mainWindow.Show();
         }
     }

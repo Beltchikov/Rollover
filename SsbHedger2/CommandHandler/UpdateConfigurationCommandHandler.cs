@@ -4,7 +4,7 @@ using System;
 
 namespace SsbHedger.CommandHandler
 {
-    public class UpdateConfigurationCommandHandler
+    public class UpdateConfigurationCommandHandler : IUpdateConfigurationCommandHandler
     {
         private IRegistryManager _registryManager = null!;
         IConfiguration _configuration = null!;
@@ -19,14 +19,14 @@ namespace SsbHedger.CommandHandler
 
         public void Handle(object[] parameters)
         {
-            if (parameters == null) 
-            { 
-                throw new ApplicationException("Unexpected! data is null"); 
+            if (parameters == null)
+            {
+                throw new ApplicationException("Unexpected! data is null");
             }
             string? host = parameters[0]?.ToString();
-            if (host == null) 
-            { 
-                throw new ApplicationException("Unexpected! host is null"); 
+            if (host == null)
+            {
+                throw new ApplicationException("Unexpected! host is null");
             }
             int port = Convert.ToInt32(parameters[1]);
             int clientId = Convert.ToInt32(parameters[2]);

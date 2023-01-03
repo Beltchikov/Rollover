@@ -13,6 +13,7 @@ namespace SsbHedger.UnitTests.CommandHandler
             string host,
             int port,
             int clientId,
+            MainWindowViewModel viewModel,
             [Frozen] IRegistryManager registryManager,
             [Frozen] IConfiguration configuration,
             InitializeCommandHandler sut)
@@ -21,7 +22,7 @@ namespace SsbHedger.UnitTests.CommandHandler
             configuration.GetValue("Port").Returns(port);
             configuration.GetValue("ClientId").Returns(clientId);
             
-            sut.Handle();
+            sut.Handle(viewModel);
             registryManager.Received().ReadConfiguration(
                 host, port, clientId);
         }
@@ -31,6 +32,7 @@ namespace SsbHedger.UnitTests.CommandHandler
             string host,
             int port,
             int clientId,
+            MainWindowViewModel viewModel,
             [Frozen] IRegistryManager registryManager,
             [Frozen] IConfiguration configuration,
             [Frozen] IIbHost ibHost,
@@ -42,7 +44,7 @@ namespace SsbHedger.UnitTests.CommandHandler
             registryManager.ReadConfiguration(Arg.Any<string>(), default, default)
                 .ReturnsForAnyArgs(ValueTuple.Create( host,  port,  clientId));
             
-            sut.Handle();
+            sut.Handle(viewModel);
             
             ibHost.Received().ConnectAndStartReaderThread(host, port, clientId);
         }
