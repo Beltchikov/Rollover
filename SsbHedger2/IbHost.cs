@@ -47,6 +47,7 @@ namespace SsbHedger
             }
             ViewModel.Messages.Add(new Message
             { ReqId = reqId, Body = $"Code:{code} message:{message} exception:{exception}" });
+            UpdateConnectionMessage(ViewModel.Connected);
         }
 
         private void _ibClient_ManagedAccounts(ManagedAccountsMessage message)
@@ -74,11 +75,20 @@ namespace SsbHedger
                 Body = message.IsConnected ? "CONNECTED!" : "NOT CONNECTED!"
             });
             ViewModel.Connected = message.IsConnected;
+            UpdateConnectionMessage(message.IsConnected);
+        }
+
+        private void UpdateConnectionMessage(bool isConnected)
+        {
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
 
             var host = _configuration.GetValue("Host");
             var port = _configuration.GetValue("Port");
             var clientId = _configuration.GetValue("ClientId");
-            ViewModel.ConnectionMessage = message.IsConnected
+            ViewModel.ConnectionMessage = isConnected
                     ? $"CONNECTED! {host}, {port}, client ID: {clientId}"
                     : $"NOT CONNECTED! {host}, {port}, client ID: {clientId}";
         }
