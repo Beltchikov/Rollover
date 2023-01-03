@@ -9,7 +9,9 @@ namespace SsbHedger
     public class IbHost : IIbHost
     {
         IIBClient _ibClient;
-        IConfiguration _configuration;
+        string _host;
+        int _port;
+        int _clientId;
 
         public IbHost(IConfiguration configuration)
         {
@@ -18,8 +20,6 @@ namespace SsbHedger
             _ibClient.Error += _ibClient_Error;
             _ibClient.NextValidId += _ibClient_NextValidId;
             _ibClient.ManagedAccounts += _ibClient_ManagedAccounts;
-
-            _configuration = configuration;
         }
 
         public MainWindowViewModel? ViewModel { get; set; }
@@ -30,6 +30,9 @@ namespace SsbHedger
             {
                 throw new ApplicationException("Unexpected! ViewModel is null");
             }
+            _host = host;
+            _port = port;
+            _clientId = clientId;
             _ibClient.ConnectAndStartReaderThread(host, port, clientId);
         }
 
@@ -79,12 +82,9 @@ namespace SsbHedger
                 throw new ApplicationException("Unexpected! ViewModel is null");
             }
 
-            var host = _configuration.GetValue("Host");
-            var port = _configuration.GetValue("Port");
-            var clientId = _configuration.GetValue("ClientId");
             ViewModel.ConnectionMessage = isConnected
-                    ? $"CONNECTED! {host}, {port}, client ID: {clientId}"
-                    : $"NOT CONNECTED! {host}, {port}, client ID: {clientId}";
+                    ? $"CONNECTED! {_host}, {_port}, client ID: {_clientId}"
+                    : $"NOT CONNECTED! {_host}, {_port}, client ID: {_clientId}";
         }
     }
 }
