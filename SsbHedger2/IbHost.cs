@@ -24,12 +24,6 @@ namespace SsbHedger
 
         public MainWindowViewModel? ViewModel { get; set; }
 
-        public string DefaultHost => "localhost";
-
-        public int DefaultPort => 4001;
-
-        public int DefaultClientId => 1;
-
         public void ConnectAndStartReaderThread(string host, int port, int clientId)
         {
             if (ViewModel == null)

@@ -18,6 +18,12 @@ namespace SsbHedger.CommandHandler
                 throw new ApplicationException("Unexpected! registryManager is null");
             }
 
+            IConfiguration? configuration = ((App)Application.Current).Services.GetService<IConfiguration>();
+            if (configuration == null)
+            {
+                throw new ApplicationException("Unexpected! configuration is null");
+            }
+
             IIbHost? ibHost = ((App)Application.Current).Services.GetService<IIbHost>();
             if (ibHost == null)
             {
@@ -26,7 +32,7 @@ namespace SsbHedger.CommandHandler
 
             ibHost.ViewModel = mainWindowViewModel;
 
-            return new InitializeCommandHandler(registryManager, ibHost);
+            return new InitializeCommandHandler(registryManager, configuration, ibHost);
         }
     }
 }

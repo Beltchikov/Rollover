@@ -1,6 +1,7 @@
 using AutoFixture.Xunit2;
 using NSubstitute;
 using SsbHedger.CommandHandler;
+using SsbHedger.Model;
 using SsbHedger.RegistryManager;
 
 namespace SsbHedger.UnitTests.CommandHandler
@@ -13,13 +14,13 @@ namespace SsbHedger.UnitTests.CommandHandler
             int port,
             int clientId,
             [Frozen] IRegistryManager registryManager,
-            [Frozen] IIbHost ibHost,
+            [Frozen] IConfiguration configuration,
             InitializeCommandHandler sut)
         {
-            ibHost.DefaultHost.Returns(host);
-            ibHost.DefaultPort.Returns(port);
-            ibHost.DefaultClientId.Returns(clientId);
-
+            configuration.GetValue("Host").Returns(host);
+            configuration.GetValue("Port").Returns(port);
+            configuration.GetValue("ClientId").Returns(clientId);
+            
             sut.Handle();
             registryManager.Received().ReadConfiguration(
                 host, port, clientId);
@@ -31,12 +32,18 @@ namespace SsbHedger.UnitTests.CommandHandler
             int port,
             int clientId,
             [Frozen] IRegistryManager registryManager,
+            [Frozen] IConfiguration configuration,
             [Frozen] IIbHost ibHost,
             InitializeCommandHandler sut)
         {
+            configuration.GetValue("Host").Returns(host);
+            configuration.GetValue("Port").Returns(port);
+            configuration.GetValue("ClientId").Returns(clientId);
             registryManager.ReadConfiguration(Arg.Any<string>(), default, default)
                 .ReturnsForAnyArgs(ValueTuple.Create( host,  port,  clientId));
+            
             sut.Handle();
+            
             ibHost.Received().ConnectAndStartReaderThread(host, port, clientId);
         }
     }
