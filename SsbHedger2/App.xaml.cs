@@ -29,6 +29,7 @@ namespace SsbHedger
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             MainWindow mainWindow = new MainWindow(Services.GetRequiredService<IConfiguration>());
+            mainWindow.DataContext = new MainWindowViewModel();
             mainWindow.Show();
         }
     }

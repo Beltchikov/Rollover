@@ -14,7 +14,6 @@ namespace SsbHedger
         public MainWindow(IConfiguration configuration)
         {
             InitializeComponent();
-            DataContext = new MainWindowViewModel();
             _configuration = configuration;
         }
 
