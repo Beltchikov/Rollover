@@ -17,7 +17,7 @@ namespace SsbHedger.CommandHandler
             _configuration = configuration;
         }
 
-        public void Handle(object[] parameters)
+        public void Handle(MainWindowViewModel viewModel, object[] parameters)
         {
             if (parameters == null)
             {

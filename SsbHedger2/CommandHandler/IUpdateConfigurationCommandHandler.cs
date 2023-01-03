@@ -1,7 +1,9 @@
-﻿namespace SsbHedger.CommandHandler
+﻿using SsbHedger.Model;
+
+namespace SsbHedger.CommandHandler
 {
     public interface IUpdateConfigurationCommandHandler
     {
-        void Handle(object[] parameters);
+        void Handle(MainWindowViewModel viewModel, object[] parameters);
     }
 }
