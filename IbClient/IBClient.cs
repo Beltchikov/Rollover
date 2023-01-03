@@ -1,13 +1,10 @@
-/* Copyright (C) 2019 Interactive Brokers LLC. All rights reserved. This code is subject to the terms
- * and conditions of the IB API Non-Commercial License or the IB API Commercial License, as applicable. */
+using IBApi;
+using IbClient.messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using IBApi;
 using System.Threading;
 using System.Threading.Tasks;
-using IbClient.messages;
 
 namespace IbClient
 {
@@ -80,6 +77,11 @@ namespace IbClient
             })
             { IsBackground = true }
             .Start();
+        }
+
+        public void Disconnect()
+        {
+            ClientSocket.eDisconnect();
         }
 
         public Task<Contract> ResolveContractAsync(int conId, string refExch)

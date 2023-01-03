@@ -3,7 +3,6 @@ using IbClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -23,6 +22,7 @@ namespace PrototypeWpf
             _ibClient = IBClient.CreateClient();
 
             _ibClient.NextValidId += _ibClient_NextValidId;
+            _ibClient.ConnectionClosed += _ibClient_ConnectionClosed;
             _ibClient.Error += _ibClient_Error;
             _ibClient.ManagedAccounts += _ibClient_ManagedAccounts;
             _ibClient.ContractDetails += _ibClient_ContractDetails;
@@ -30,7 +30,7 @@ namespace PrototypeWpf
             _ibClient.TickSize += _ibClient_TickSize;
             _ibClient.TickString += _ibClient_TickString;
             _ibClient.TickOptionCommunication += _ibClient_TickOptionCommunication;
-
+           
             InitializeComponent();
         }
 
@@ -41,6 +41,10 @@ namespace PrototypeWpf
                        Int32.Parse(tbPort.Text),
                        Int32.Parse(tbClientId.Text));
 
+        }
+        private void btDisconnect_Click(object sender, RoutedEventArgs e)
+        {
+            _ibClient.Disconnect();
         }
         private void btContractDetails_Click(object sender, RoutedEventArgs e)
         {
@@ -79,6 +83,11 @@ namespace PrototypeWpf
                 : "nNextValidId: Disconnected...";
 
             AddLineToTextbox(tbMessages, msg);
+        }
+        
+        private void _ibClient_ConnectionClosed()
+        {
+            AddLineToTextbox(tbMessages, "DISCONNECTED!");
         }
 
         private void _ibClient_Error(int id, int errorCode, string msg, Exception ex)

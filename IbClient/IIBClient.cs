@@ -1,6 +1,4 @@
-﻿/* Copyright (C) 2019 Interactive Brokers LLC. All rights reserved. This code is subject to the terms
- * and conditions of the IB API Non-Commercial License or the IB API Commercial License, as applicable. */
-using IBApi;
+﻿using IBApi;
 using IbClient.messages;
 using System;
 using System.Collections.Generic;
@@ -14,6 +12,7 @@ namespace IbClient
         int NextOrderId { get; set; }
         EClientSocket ClientSocket { get; }
         void ConnectAndStartReaderThread(string host, int port, int clientId);
+        void Disconnect();
         Task<Contract> ResolveContractAsync(int conId, string refExch);
         Task<Contract[]> ResolveContractAsync(string secType, string symbol, string currency, string exchange);
 
