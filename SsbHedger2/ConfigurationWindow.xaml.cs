@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using SsbHedger.Configuration;
 
 namespace SsbHedger
 {
@@ -16,7 +17,7 @@ namespace SsbHedger
 
         Regex _regexDigits = new ("^[0-9]*$");
 
-        public ConfigurationWindow(Model.IConfiguration configuration)
+        public ConfigurationWindow(IConfiguration configuration)
         {
             InitializeComponent();
 

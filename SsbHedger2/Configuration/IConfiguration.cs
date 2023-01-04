@@ -1,4 +1,4 @@
-﻿namespace SsbHedger.Model
+﻿namespace SsbHedger.Configuration
 {
     public interface IConfiguration
     {

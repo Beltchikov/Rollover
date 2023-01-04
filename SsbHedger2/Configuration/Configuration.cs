@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SsbHedger.Model
+namespace SsbHedger.Configuration
 {
     public class Configuration : IConfiguration
     {

@@ -1,4 +1,5 @@
-﻿using SsbHedger.Model;
+﻿using SsbHedger.Configuration;
+using SsbHedger.Model;
 using SsbHedger.RegistryManager;
 using System;
 

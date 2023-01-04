@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using SsbHedger.Abstractions;
 using SsbHedger.CommandHandler;
+using SsbHedger.Configuration;
 using SsbHedger.Model;
 using SsbHedger.RegistryManager;
 using System;
@@ -19,7 +20,7 @@ namespace SsbHedger
             Services = new ServiceCollection()
                 .AddSingleton<IRegistryCurrentUserAbstraction, RegistryCurrentUserAbstraction>()
                 .AddScoped<IRegistryKeyAbstraction, RegistryKeyAbstraction>()
-                .AddSingleton<IConfiguration, Model.Configuration>()
+                .AddSingleton<IConfiguration, Configuration.Configuration>()
                 .AddSingleton<IRegistryManager, RegistryManager.RegistryManager>()
                 .AddSingleton<IIbHost, IbHost>()
                 .AddSingleton<IInitializeCommandHandler, InitializeCommandHandler>()

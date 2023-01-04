@@ -1,5 +1,6 @@
 ﻿using IbClient.messages;
 using NSubstitute;
+using SsbHedger.Configuration;
 using SsbHedger.Model;
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
