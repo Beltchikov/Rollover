@@ -38,21 +38,20 @@ namespace SsbHedger.UnitTests.CommandHandler
             configuration.Received().SetValue("ClientId", clientId);
         }
 
-        [Theory, AutoNSubstituteData]
-        public void UpdateConnectionMessageInViewModel(
-            string host,
-            int port,
-            int clientId,
-            MainWindowViewModel viewModel,
-            [Frozen] IConfiguration configuration,
-            UpdateConfigurationCommandHandler sut)
-        {
-            sut.Handle(viewModel, new object[] { host, port, clientId });
+        //[Theory, AutoNSubstituteData]
+        //public void UpdateConnectionMessageInViewModel(
+        //    string host,
+        //    int port,
+        //    int clientId,
+        //    MainWindowViewModel viewModel,
+        //    UpdateConfigurationCommandHandler sut)
+        //{
+        //    sut.Handle(viewModel, new object[] { host, port, clientId });
 
-            Assert.Contains(host, viewModel.ConnectionMessage);
-            Assert.Contains(port.ToString(), viewModel.ConnectionMessage);
-            Assert.Contains(clientId.ToString(), viewModel.ConnectionMessage);
-        }
+        //    Assert.Contains(host, viewModel.ConnectionMessage);
+        //    Assert.Contains(port.ToString(), viewModel.ConnectionMessage);
+        //    Assert.Contains(clientId.ToString(), viewModel.ConnectionMessage);
+        //}
 
         [Theory, AutoNSubstituteData]
         public void Reconnect(
@@ -60,16 +59,14 @@ namespace SsbHedger.UnitTests.CommandHandler
            int port,
            int clientId,
            MainWindowViewModel viewModel,
-           [Frozen] IConfiguration configuration,
+           [Frozen] IIbHost ibHost,
            UpdateConfigurationCommandHandler sut)
         {
             throw new NotImplementedException();
-
+            
             //sut.Handle(viewModel, new object[] { host, port, clientId });
 
-            //configuration.Received().SetValue("Host", host);
-            //configuration.Received().SetValue("Port", port);
-            //configuration.Received().SetValue("ClientId", clientId);
+            //ibHost.Received().C
         }
     }
 }

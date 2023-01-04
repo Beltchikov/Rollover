@@ -39,7 +39,7 @@ namespace SsbHedger.CommandHandler
             _configuration.SetValue("Port", port);
             _configuration.SetValue("ClientId", clientId);
 
-            viewModel.ConnectionMessage = $"CONNECTED! {host}, {port}, client ID: {clientId}";
+            //viewModel.ConnectionMessage = $"CONNECTED! {host}, {port}, client ID: {clientId}";
         }
     }
 }

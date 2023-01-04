@@ -108,5 +108,30 @@ namespace SsbHedger.UnitTests
             Assert.StartsWith(expectedBody, viewModel.ConnectionMessage);
             Assert.False(viewModel.Connected);
         }
+
+        [Fact]
+        public void AddConnectionStatusMessageOnDisconnect()
+        {
+            ConnectionStatusMessage message = new ConnectionStatusMessage(false);
+
+            IConfiguration configuration = Substitute.For<IConfiguration>();
+            var sut = new IbHost(configuration);
+            MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
+                .GetUninitializedObject(typeof(MainWindowViewModel));
+            viewModel.Messages = new ObservableCollection<Message>();
+            sut.ViewModel = viewModel;
+
+            Reflection.CallMethod(
+                sut,
+                "_ibClient_ConnectionClosed",
+                new object[] { });
+
+            Assert.Single(viewModel.Messages);
+            Assert.Equal(0, viewModel.Messages.First().ReqId);
+            var expectedBody = "DISCONNECTED!";
+            Assert.Equal(expectedBody, viewModel.Messages.First().Body);
+            Assert.StartsWith(expectedBody, viewModel.ConnectionMessage);
+            Assert.False(viewModel.Connected);
+        }
     }
 }

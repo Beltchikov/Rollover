@@ -9,7 +9,7 @@ namespace SsbHedger
     public class IbHost : IIbHost
     {
         IIBClient _ibClient;
-        string _host;
+        string _host = null!;
         int _port;
         int _clientId;
 
@@ -20,7 +20,10 @@ namespace SsbHedger
             _ibClient.Error += _ibClient_Error;
             _ibClient.NextValidId += _ibClient_NextValidId;
             _ibClient.ManagedAccounts += _ibClient_ManagedAccounts;
+            _ibClient.ConnectionClosed += _ibClient_ConnectionClosed;
         }
+
+       
 
         public MainWindowViewModel? ViewModel { get; set; }
 
@@ -34,6 +37,11 @@ namespace SsbHedger
             _port = port;
             _clientId = clientId;
             _ibClient.ConnectAndStartReaderThread(host, port, clientId);
+        }
+
+        public void Disconnect()
+        {
+            _ibClient.Disconnect();
         }
 
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)
@@ -85,6 +93,23 @@ namespace SsbHedger
             ViewModel.ConnectionMessage = isConnected
                     ? $"CONNECTED! {_host}, {_port}, client ID: {_clientId}"
                     : $"NOT CONNECTED! {_host}, {_port}, client ID: {_clientId}";
+        }
+
+        private void _ibClient_ConnectionClosed()
+        {
+            const string DISCONNECTED = "DISCONNECTED!";
+
+
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+            ViewModel.Messages.Add(new Message
+            {
+                ReqId = 0,
+                Body = DISCONNECTED
+            });
+            ViewModel.ConnectionMessage = DISCONNECTED;
         }
     }
 }
