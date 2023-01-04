@@ -13,6 +13,9 @@ namespace SsbHedger.Configuration
                 {"Host", "localhost" },
                 {"Port", 4001 },
                 {"ClientId", 1 },
+                {"UnderlyingSymbol", "SPY" },
+                {"SessionStart", "15:30" },
+                {"SessionEnd", "22:15" },
             };
         }
 
