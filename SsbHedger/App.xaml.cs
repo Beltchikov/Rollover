@@ -1,7 +1,10 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using SsbHedger.Abstractions;
-using SsbHedger.Builders;
+using SsbHedger.CommandHandler;
+using SsbHedger.Configuration;
+using SsbHedger.Model;
+using SsbHedger.RegistryManager;
 using System;
 using System.Windows;
 
@@ -12,45 +15,30 @@ namespace SsbHedger
     /// </summary>
     public partial class App : Application
     {
-        private IRegistryManager? _registryManager;
-        private IMainWindowBuilder? _mainWindowBuilder;
-
-        private readonly string _defaultHost = "localhost";
-        private readonly int _defaultPort = 4001;
-        private readonly int _defaultClientId = 3;
-
         public App()
         {
             Services = new ServiceCollection()
-                .AddSingleton<IRegistryManager, RegistryManager>()
-                .AddSingleton<IMainWindowBuilder, MainWindowBuilder>()
-                .AddScoped<IRegistryCurrentUserAbstraction, RegistryCurrentUserAbstraction>()
+                .AddSingleton<IRegistryCurrentUserAbstraction, RegistryCurrentUserAbstraction>()
+                .AddScoped<IRegistryKeyAbstraction, RegistryKeyAbstraction>()
+                .AddSingleton<IConfiguration, Configuration.Configuration>()
+                .AddSingleton<IRegistryManager, RegistryManager.RegistryManager>()
+                .AddSingleton<IIbHost, IbHost>()
+                .AddSingleton<IInitializeCommandHandler, InitializeCommandHandler>()
+                .AddSingleton<IUpdateConfigurationCommandHandler, UpdateConfigurationCommandHandler>()
                 .AddMediatR(GetType().Assembly)
                 .BuildServiceProvider();
         }
-
         public IServiceProvider Services { get; }
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            _registryManager = Services.GetService<IRegistryManager>();
-            if(_registryManager == null ) 
+            MainWindow mainWindow = new(Services.GetRequiredService<IConfiguration>())
             {
-                throw new ApplicationException("Unexpected! _registryManager is null");
-            }
-
-            var (host, port, clientId) = _registryManager.ReadConfiguration(
-                 _defaultHost,
-                 _defaultPort,
-                 _defaultClientId);
-
-            _mainWindowBuilder = Services.GetService<IMainWindowBuilder>();
-            if (_mainWindowBuilder == null)
-            {
-                throw new ApplicationException("Unexpected! _mainWindowBuilder is null");
-            }
-            MainWindow mainWindow = _mainWindowBuilder.Build(host, port, clientId);
-            mainWindow?.Show();
+                DataContext = new MainWindowViewModel(
+                    Services.GetRequiredService<IInitializeCommandHandler>(),
+                    Services.GetRequiredService<IUpdateConfigurationCommandHandler>())
+            };
+            mainWindow.Show();
         }
     }
 }

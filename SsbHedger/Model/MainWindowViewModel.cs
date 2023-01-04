@@ -1,66 +1,35 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using MediatR;
-using Microsoft.Extensions.DependencyInjection;
-using System;
+using CommunityToolkit.Mvvm.Input;
+using SsbHedger.CommandHandler;
 using System.Collections.ObjectModel;
-using System.Windows;
+using System.Diagnostics.CodeAnalysis;
+using System.Windows.Input;
 
 namespace SsbHedger.Model
 {
+    [ExcludeFromCodeCoverage]
     public class MainWindowViewModel : ObservableObject
     {
-        IMediator? _mediator;
         private ObservableCollection<Message> messages;
-        private string host = "";
-        private int port;
-        private int clientId;
+        private string connectionMessage = "Connecting...";
         private bool connected;
-
-        public MainWindowViewModel()
+        
+        public MainWindowViewModel(
+            IInitializeCommandHandler initializeCommandHandler,
+            IUpdateConfigurationCommandHandler updateConfigurationCommandHandler)
         {
-            _mediator = ((App)Application.Current).Services.GetService<IMediator>()
-                ?? throw new ApplicationException("Unexpected! mediator is null");
-         
+            InitializeCommand = new RelayCommand(() => initializeCommandHandler.Handle(this));
+            UpdateConfigurationCommand = new RelayCommand<object[]>((p) => updateConfigurationCommandHandler.Handle(this, p));
+
             messages = new ObservableCollection<Message>();
-        }
-
-        public string Host
-        {
-            get => host;
-            set
-            {
-                SetProperty(ref host, value);
-                OnPropertyChanged(nameof(ConnectionMessage));
-            }
-        }
-
-        public int Port
-        {
-            get => port;
-            set
-            {
-                SetProperty(ref port, value);
-                OnPropertyChanged(nameof(ConnectionMessage));
-            }
-        }
-
-        public int ClientId
-        {
-            get => clientId;
-            set
-            {
-                SetProperty(ref clientId, value);
-                OnPropertyChanged(nameof(ConnectionMessage));
-            }
         }
 
         public string ConnectionMessage
         {
-            get
+            get => connectionMessage;
+            set
             {
-                return connected
-                    ? $"CONNECTED! {host}, {port}, client ID: {clientId}"
-                    : $"NOT CONNECTED! {host}, {port}, client ID: {clientId}";
+                SetProperty(ref connectionMessage, value);
             }
         }
 
@@ -79,5 +48,7 @@ namespace SsbHedger.Model
             get => messages;
             set => SetProperty(ref messages, value);
         }
+        public ICommand InitializeCommand { get; }
+        public ICommand UpdateConfigurationCommand { get; }
     }
 }

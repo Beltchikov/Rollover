@@ -1,71 +1,38 @@
-﻿using SsbHedger.Model;
-using SsbHedger.WpfIbClient;
-using System.Linq;
+﻿using SsbHedger.Configuration;
+using SsbHedger.Model;
+using System;
 using System.Windows;
 
 namespace SsbHedger
 {
     /// <summary>
-    /// Interaction logic for ListBindingWindow.xaml
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        IWpfIbClient _ibClient;
-        ConfigurationWindow _configurationWindow;
-        
-        public MainWindow(string host, int port, int clientId)
+        IConfiguration _configuration;
+
+        public MainWindow(IConfiguration configuration)
         {
             InitializeComponent();
-
-            _ibClient = WpfIbClient.WpfIbClient.Create(() => 1 == 0, Dispatcher);
-            _ibClient.Execute(host, port, clientId);
-            _ibClient.Error += _logic_Error;
-            _ibClient.NextValidId += _ibClient_NextValidId;
-            _ibClient.ManagedAccounts += _ibClient_ManagedAccounts;
-
-            ((MainWindowViewModel)DataContext).Host = host;
-            ((MainWindowViewModel)DataContext).Port = port;
-            ((MainWindowViewModel)DataContext).ClientId = clientId;
-
-            _configurationWindow = new(host, port, clientId);
-        }
-
-        private void _logic_Error(int reqId, string message)
-        {
-            ((MainWindowViewModel)DataContext).Messages.Add(new Message { ReqId = reqId, Body = message });
-        }
-
-        private void _ibClient_NextValidId(IbClient.messages.ConnectionStatusMessage message)
-        {
-            var viewModel = ((MainWindowViewModel)DataContext);
-            var connected = "CONNECTED!";
-
-            viewModel.Messages.Add(
-                new Message { ReqId = 0, Body = message.IsConnected ? connected : "NOT CONNECTED" });
-            viewModel.Connected = message.IsConnected;
-        }
-
-        private void _ibClient_ManagedAccounts(IbClient.messages.ManagedAccountsMessage message)
-        {
-            ((MainWindowViewModel)DataContext).Messages.Add(
-                new Message { 
-                    ReqId = 0, 
-                    Body = $"Managed accounts: {message.ManagedAccounts.Aggregate((r,n) => r + "," +n)}" 
-                });
-        }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            e.Cancel = true;
-            Visibility = Visibility.Hidden;
+            _configuration = configuration;
         }
 
         private void btConfiguration_Click(object sender, RoutedEventArgs e)
         {
-           var configurationChanged = _configurationWindow.ShowDialog();
-            if(configurationChanged == true)
+            ConfigurationWindow? _configurationWindow = new(_configuration);
+            _configurationWindow.Owner= this;   
+
+            bool ? configurationChanged = _configurationWindow.ShowDialog();
+            if (configurationChanged == true)
             {
-                //TODO Update view model
+                object[] commandParams = new object[]
+                {
+                    _configurationWindow.txtHost.Text,
+                    Convert.ToInt32(_configurationWindow.txtPort.Text),
+                    Convert.ToInt32(_configurationWindow.txtClientId.Text)
+                };
+                ((MainWindowViewModel)DataContext).UpdateConfigurationCommand.Execute(commandParams);
             }
         }
     }
