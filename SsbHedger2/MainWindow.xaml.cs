@@ -20,6 +20,7 @@ namespace SsbHedger
         private void btConfiguration_Click(object sender, RoutedEventArgs e)
         {
             ConfigurationWindow? _configurationWindow = new(_configuration);
+            _configurationWindow.Owner= this;   
 
             bool ? configurationChanged = _configurationWindow.ShowDialog();
             if (configurationChanged == true)
