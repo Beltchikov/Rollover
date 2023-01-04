@@ -21,10 +21,19 @@ namespace SsbHedger.CommandHandler
 
         public void Handle(MainWindowViewModel viewModel)
         {
+            const string HOST = "Host";
+            const string PORT = "Port";
+            const string CLIENT_ID = "ClientId";
+
             var (host, port, clientId) = _registryManager.ReadConfiguration(
-                (string)_configuration.GetValue("Host"),
-                (int)_configuration.GetValue("Port"),
-                (int)_configuration.GetValue("ClientId"));
+                (string)_configuration.GetValue(HOST),
+                (int)_configuration.GetValue(PORT),
+                (int)_configuration.GetValue(CLIENT_ID));
+
+            _configuration.SetValue(HOST, host);
+            _configuration.SetValue(PORT, port);
+            _configuration.SetValue(CLIENT_ID, clientId);
+
             _ibHost.ViewModel= viewModel;   
             _ibHost.ConnectAndStartReaderThread(host, port, clientId);
         }
