@@ -33,7 +33,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SsbOrderSender", "SsbOrderS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SsbHedger", "SsbHedger\SsbHedger.csproj", "{4754895E-D2C6-42FC-B0B2-A75967270893}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SsbHedger.UnitTests", "SsbHedger2.UnitTests\SsbHedger.UnitTests.csproj", "{D3FE0A38-D395-4409-BDD9-87E073F23207}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SsbHedger.UnitTests", "SsbHedger.UnitTests\SsbHedger.UnitTests.csproj", "{D3FE0A38-D395-4409-BDD9-87E073F23207}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

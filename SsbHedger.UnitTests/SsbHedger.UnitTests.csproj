@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SsbHedger2\SsbHedger.csproj" />
+    <ProjectReference Include="..\SsbHedger\SsbHedger.csproj" />
   </ItemGroup>
 
 </Project>
