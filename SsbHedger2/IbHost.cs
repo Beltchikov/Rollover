@@ -109,6 +109,7 @@ namespace SsbHedger
                 ReqId = 0,
                 Body = DISCONNECTED
             });
+            ViewModel.Connected = false;
             ViewModel.ConnectionMessage = DISCONNECTED;
         }
     }

@@ -112,7 +112,8 @@ namespace SsbHedger.UnitTests
         [Fact]
         public void AddConnectionStatusMessageOnDisconnect()
         {
-            ConnectionStatusMessage message = new ConnectionStatusMessage(false);
+            ConnectionStatusMessage messageNotConnected = new ConnectionStatusMessage(false);
+            ConnectionStatusMessage messageConnected = new ConnectionStatusMessage(true);
 
             IConfiguration configuration = Substitute.For<IConfiguration>();
             var sut = new IbHost(configuration);
@@ -123,13 +124,17 @@ namespace SsbHedger.UnitTests
 
             Reflection.CallMethod(
                 sut,
+                "_ibClient_NextValidId",
+                new object[] { messageConnected });
+            Reflection.CallMethod(
+                sut,
                 "_ibClient_ConnectionClosed",
                 new object[] { });
 
-            Assert.Single(viewModel.Messages);
-            Assert.Equal(0, viewModel.Messages.First().ReqId);
+            Assert.Equal(2, viewModel.Messages.Count);
+            Assert.Equal(0, viewModel.Messages.Last().ReqId);
             var expectedBody = "DISCONNECTED!";
-            Assert.Equal(expectedBody, viewModel.Messages.First().Body);
+            Assert.Equal(expectedBody, viewModel.Messages.Last().Body);
             Assert.StartsWith(expectedBody, viewModel.ConnectionMessage);
             Assert.False(viewModel.Connected);
         }

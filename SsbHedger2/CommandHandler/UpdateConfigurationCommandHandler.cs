@@ -35,11 +35,13 @@ namespace SsbHedger.CommandHandler
             int clientId = Convert.ToInt32(parameters[2]);
 
             _registryManager.WriteConfiguration(host, port, clientId);
+
             _configuration.SetValue("Host", host);
             _configuration.SetValue("Port", port);
             _configuration.SetValue("ClientId", clientId);
 
-            //viewModel.ConnectionMessage = $"CONNECTED! {host}, {port}, client ID: {clientId}";
+            _ibHost.Disconnect();
+            _ibHost.ConnectAndStartReaderThread(host, port, clientId);
         }
     }
 }

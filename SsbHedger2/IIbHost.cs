@@ -6,5 +6,6 @@ namespace SsbHedger
     {
         public MainWindowViewModel? ViewModel { get; set; }
         public void ConnectAndStartReaderThread(string host, int port, int clientId);
+        public void Disconnect();
     }
 }

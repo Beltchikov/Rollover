@@ -38,21 +38,6 @@ namespace SsbHedger.UnitTests.CommandHandler
             configuration.Received().SetValue("ClientId", clientId);
         }
 
-        //[Theory, AutoNSubstituteData]
-        //public void UpdateConnectionMessageInViewModel(
-        //    string host,
-        //    int port,
-        //    int clientId,
-        //    MainWindowViewModel viewModel,
-        //    UpdateConfigurationCommandHandler sut)
-        //{
-        //    sut.Handle(viewModel, new object[] { host, port, clientId });
-
-        //    Assert.Contains(host, viewModel.ConnectionMessage);
-        //    Assert.Contains(port.ToString(), viewModel.ConnectionMessage);
-        //    Assert.Contains(clientId.ToString(), viewModel.ConnectionMessage);
-        //}
-
         [Theory, AutoNSubstituteData]
         public void Reconnect(
            string host,
@@ -62,11 +47,10 @@ namespace SsbHedger.UnitTests.CommandHandler
            [Frozen] IIbHost ibHost,
            UpdateConfigurationCommandHandler sut)
         {
-            throw new NotImplementedException();
-            
-            //sut.Handle(viewModel, new object[] { host, port, clientId });
+            sut.Handle(viewModel, new object[] { host, port, clientId });
 
-            //ibHost.Received().C
+            ibHost.Received().Disconnect();
+            ibHost.Received().ConnectAndStartReaderThread(host, port, clientId);
         }
     }
 }
