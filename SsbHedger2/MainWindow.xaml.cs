@@ -19,7 +19,6 @@ namespace SsbHedger
 
         private void btConfiguration_Click(object sender, RoutedEventArgs e)
         {
-            var app = (App)Application.Current;
             ConfigurationWindow? _configurationWindow = new(_configuration);
 
             bool ? configurationChanged = _configurationWindow.ShowDialog();
