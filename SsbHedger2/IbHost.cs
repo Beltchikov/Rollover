@@ -22,9 +22,7 @@ namespace SsbHedger
             _ibClient.ManagedAccounts += _ibClient_ManagedAccounts;
             _ibClient.ConnectionClosed += _ibClient_ConnectionClosed;
         }
-
-       
-
+        
         public MainWindowViewModel? ViewModel { get; set; }
 
         public void ConnectAndStartReaderThread(string host, int port, int clientId)
