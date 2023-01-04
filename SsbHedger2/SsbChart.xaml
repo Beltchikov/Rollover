@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:SsbHedger"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" 
-             Background="LightGreen">
+             Background="White">
     <Grid>
             
     </Grid>
