@@ -7,14 +7,17 @@ namespace SsbHedger.CommandHandler
     public class UpdateConfigurationCommandHandler : IUpdateConfigurationCommandHandler
     {
         private IRegistryManager _registryManager = null!;
-        IConfiguration _configuration = null!;
+        private IConfiguration _configuration = null!;
+        private IIbHost _ibHost = null!;
 
         public UpdateConfigurationCommandHandler(
             IRegistryManager registryManager,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IIbHost ibHost)
         {
             _registryManager = registryManager;
             _configuration = configuration;
+            _ibHost = ibHost;
         }
 
         public void Handle(MainWindowViewModel viewModel, object[] parameters)
@@ -35,6 +38,8 @@ namespace SsbHedger.CommandHandler
             _configuration.SetValue("Host", host);
             _configuration.SetValue("Port", port);
             _configuration.SetValue("ClientId", clientId);
+
+            viewModel.ConnectionMessage = $"CONNECTED! {host}, {port}, client ID: {clientId}";
         }
     }
 }
