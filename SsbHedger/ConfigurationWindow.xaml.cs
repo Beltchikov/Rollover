@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,12 +14,12 @@ namespace SsbHedger
     {
         IConfiguration _configuration;
 
-        Regex _regexDigits = new ("^[0-9]*$");
+        Regex _regexDigits = new("^[0-9]*$");
 
         public ConfigurationWindow(IConfiguration configuration)
         {
             InitializeComponent();
-            
+
             _configuration = configuration;
             txtHost.Text = (string)_configuration.GetValue("Host");
             txtPort.Text = _configuration.GetValue("Port").ToString();
@@ -40,7 +41,9 @@ namespace SsbHedger
 
         private void txtHost_TextChanged(object sender, TextChangedEventArgs e)
         {
-            btDone.IsEnabled = ConfigurationIsUpdated(((TextBox)sender), txtPort, txtClientId);
+            Dictionary<string, TextBox> textBoxesDict = BuildDefaultTextBoxesDictionary();
+            textBoxesDict["txtHost"] = (TextBox)sender;
+            btDone.IsEnabled = ConfigurationIsUpdated(textBoxesDict);
         }
 
         private void txtPort_TextChanged(object sender, TextChangedEventArgs e)
@@ -51,7 +54,9 @@ namespace SsbHedger
                 return;
             }
 
-            btDone.IsEnabled = ConfigurationIsUpdated(txtHost, ((TextBox)sender), txtClientId);
+            Dictionary<string, TextBox> textBoxesDict = BuildDefaultTextBoxesDictionary();
+            textBoxesDict["txtPort"] = (TextBox)sender;
+            btDone.IsEnabled = ConfigurationIsUpdated(textBoxesDict);
         }
 
         private void txtClientId_TextChanged(object sender, TextChangedEventArgs e)
@@ -62,22 +67,34 @@ namespace SsbHedger
                 return;
             }
 
-            btDone.IsEnabled = ConfigurationIsUpdated(txtHost, txtPort, ((TextBox)sender));
+            Dictionary<string, TextBox> textBoxesDict = BuildDefaultTextBoxesDictionary();
+            textBoxesDict["txtClientId"] = (TextBox)sender;
+            btDone.IsEnabled = ConfigurationIsUpdated(textBoxesDict);
         }
 
-        private bool ConfigurationIsUpdated(TextBox hostTextBox, TextBox portTextBox, TextBox clientIdTextBox)
+        private Dictionary<string, TextBox> BuildDefaultTextBoxesDictionary()
         {
-            if(string.IsNullOrWhiteSpace(hostTextBox.Text)
-                || string.IsNullOrWhiteSpace(portTextBox.Text)
-                || string.IsNullOrWhiteSpace(clientIdTextBox.Text))
+            return new Dictionary<string, TextBox>
+            {
+                {"txtHost", txtHost },
+                {"txtPort", txtPort },
+                {"txtClientId", txtClientId }
+            };
+        }
+
+        private bool ConfigurationIsUpdated(Dictionary<string, TextBox> textBoxesDict)
+        {
+            if (string.IsNullOrWhiteSpace(textBoxesDict["txtHost"].Text)
+                || string.IsNullOrWhiteSpace(textBoxesDict["txtPort"].Text)
+                || string.IsNullOrWhiteSpace(textBoxesDict["txtClientId"].Text))
             {
                 return false;
             }
 
-            bool newHost = !string.Equals((string)_configuration.GetValue("Host"), hostTextBox.Text, StringComparison.InvariantCultureIgnoreCase);
-            bool newPort = (int)_configuration.GetValue("Port") != Convert.ToInt32(portTextBox.Text);
-            bool newClientId = (int)_configuration.GetValue("ClientId") != Convert.ToInt32(clientIdTextBox.Text);
-            
+            bool newHost = !string.Equals((string)_configuration.GetValue("Host"), textBoxesDict["txtHost"].Text, StringComparison.InvariantCultureIgnoreCase);
+            bool newPort = (int)_configuration.GetValue("Port") != Convert.ToInt32(textBoxesDict["txtPort"].Text);
+            bool newClientId = (int)_configuration.GetValue("ClientId") != Convert.ToInt32(textBoxesDict["txtClientId"].Text);
+
             return newHost || newPort || newClientId;
         }
     }
