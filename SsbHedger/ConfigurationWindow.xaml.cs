@@ -11,19 +11,18 @@ namespace SsbHedger
     /// </summary>
     public partial class ConfigurationWindow : Window
     {
-        string _initialHost;
-        int _initialPort;
-        int _initialClientId;
+        IConfiguration _configuration;
 
         Regex _regexDigits = new ("^[0-9]*$");
 
         public ConfigurationWindow(IConfiguration configuration)
         {
             InitializeComponent();
-
-            txtHost.Text = _initialHost = (string)configuration.GetValue("Host");
-            txtPort.Text = (_initialPort = (int)configuration.GetValue("Port")).ToString();
-            txtClientId.Text = (_initialClientId = (int)configuration.GetValue("ClientId")).ToString();
+            
+            _configuration = configuration;
+            txtHost.Text = (string)_configuration.GetValue("Host");
+            txtPort.Text = (string)_configuration.GetValue("Port");
+            txtClientId.Text = (string)_configuration.GetValue("ClientId");
         }
 
         private void btCancel_Click(object sender, RoutedEventArgs e)
@@ -71,10 +70,10 @@ namespace SsbHedger
             {
                 return false;
             }
-            
-            bool newHost = !string.Equals(_initialHost, hostTextBox.Text, StringComparison.InvariantCultureIgnoreCase);
-            bool newPort = _initialPort != Convert.ToInt32(portTextBox.Text);
-            bool newClientId = _initialClientId != Convert.ToInt32(clientIdTextBox.Text);
+
+            bool newHost = !string.Equals((string)_configuration.GetValue("Host"), hostTextBox.Text, StringComparison.InvariantCultureIgnoreCase);
+            bool newPort = (int)_configuration.GetValue("Port") != Convert.ToInt32(portTextBox.Text);
+            bool newClientId = (int)_configuration.GetValue("ClientId") != Convert.ToInt32(clientIdTextBox.Text);
             
             return newHost || newPort || newClientId;
         }
