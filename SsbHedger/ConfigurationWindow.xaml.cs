@@ -21,8 +21,11 @@ namespace SsbHedger
             
             _configuration = configuration;
             txtHost.Text = (string)_configuration.GetValue("Host");
-            txtPort.Text = (string)_configuration.GetValue("Port");
-            txtClientId.Text = (string)_configuration.GetValue("ClientId");
+            txtPort.Text = _configuration.GetValue("Port").ToString();
+            txtClientId.Text = _configuration.GetValue("ClientId").ToString();
+            txtUnderlyingSymbol.Text = (string)_configuration.GetValue("UnderlyingSymbol");
+            txtSessionStart.Text = (string)_configuration.GetValue("SessionStart");
+            txtSessionEnd.Text = (string)_configuration.GetValue("SessionEnd");
         }
 
         private void btCancel_Click(object sender, RoutedEventArgs e)
