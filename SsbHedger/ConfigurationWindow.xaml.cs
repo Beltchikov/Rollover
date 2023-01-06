@@ -50,7 +50,7 @@ namespace SsbHedger
         {
             if (!_regexDigits.IsMatch(((TextBox)sender).Text))
             {
-                e.Handled = true;
+                UndoInput(e, (TextBox)sender);
                 return;
             }
 
@@ -126,6 +126,15 @@ namespace SsbHedger
                 {"txtSessionStart", txtSessionStart},
                 {"txtSessionEnd", txtSessionEnd },
             };
+        }
+
+        private static void UndoInput(TextChangedEventArgs e, TextBox textBox)
+        {
+            var currentPosition = textBox.SelectionStart - 1;
+            textBox.Text = textBox.Text.Remove(textBox.Text.Length - 1, 1);
+            textBox.Select(currentPosition, 0);
+            e.Handled = true;
+            return;
         }
     }
 }
