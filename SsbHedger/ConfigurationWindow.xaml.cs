@@ -72,21 +72,35 @@ namespace SsbHedger
             btDone.IsEnabled = ConfigurationIsUpdated(textBoxesDict);
         }
 
-        private Dictionary<string, TextBox> BuildDefaultTextBoxesDictionary()
+        private void txtUnderlyingSymbol_TextChanged(object sender, TextChangedEventArgs e)
         {
-            return new Dictionary<string, TextBox>
-            {
-                {"txtHost", txtHost },
-                {"txtPort", txtPort },
-                {"txtClientId", txtClientId }
-            };
+            Dictionary<string, TextBox> textBoxesDict = BuildDefaultTextBoxesDictionary();
+            textBoxesDict["txtUnderlyingSymbol"] = (TextBox)sender;
+            btDone.IsEnabled = ConfigurationIsUpdated(textBoxesDict);
+        }
+
+        private void txtSessionStart_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Dictionary<string, TextBox> textBoxesDict = BuildDefaultTextBoxesDictionary();
+            textBoxesDict["txtSessionStart"] = (TextBox)sender;
+            btDone.IsEnabled = ConfigurationIsUpdated(textBoxesDict);
+        }
+
+        private void txtSessionEnd_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Dictionary<string, TextBox> textBoxesDict = BuildDefaultTextBoxesDictionary();
+            textBoxesDict["txtSessionEnd"] = (TextBox)sender;
+            btDone.IsEnabled = ConfigurationIsUpdated(textBoxesDict);
         }
 
         private bool ConfigurationIsUpdated(Dictionary<string, TextBox> textBoxesDict)
         {
             if (string.IsNullOrWhiteSpace(textBoxesDict["txtHost"].Text)
                 || string.IsNullOrWhiteSpace(textBoxesDict["txtPort"].Text)
-                || string.IsNullOrWhiteSpace(textBoxesDict["txtClientId"].Text))
+                || string.IsNullOrWhiteSpace(textBoxesDict["txtClientId"].Text)
+                || string.IsNullOrWhiteSpace(textBoxesDict["txtUnderlyingSymbol"].Text)
+                || string.IsNullOrWhiteSpace(textBoxesDict["txtSessionStart"].Text)
+                || string.IsNullOrWhiteSpace(textBoxesDict["txtSessionEnd"].Text))
             {
                 return false;
             }
@@ -94,8 +108,24 @@ namespace SsbHedger
             bool newHost = !string.Equals((string)_configuration.GetValue("Host"), textBoxesDict["txtHost"].Text, StringComparison.InvariantCultureIgnoreCase);
             bool newPort = (int)_configuration.GetValue("Port") != Convert.ToInt32(textBoxesDict["txtPort"].Text);
             bool newClientId = (int)_configuration.GetValue("ClientId") != Convert.ToInt32(textBoxesDict["txtClientId"].Text);
+            bool newUnderlyingSymbol = !string.Equals((string)_configuration.GetValue("UnderlyingSymbol"), textBoxesDict["txtUnderlyingSymbol"].Text, StringComparison.InvariantCultureIgnoreCase);
+            bool newSessionStart = !string.Equals((string)_configuration.GetValue("SessionStart"), textBoxesDict["txtSessionStart"].Text, StringComparison.InvariantCultureIgnoreCase);
+            bool newSessionEnd = !string.Equals((string)_configuration.GetValue("SessionEnd"), textBoxesDict["txtSessionEnd"].Text, StringComparison.InvariantCultureIgnoreCase);
 
-            return newHost || newPort || newClientId;
+            return newHost || newPort || newClientId || newUnderlyingSymbol || newSessionStart || newSessionEnd;
+        }
+
+        private Dictionary<string, TextBox> BuildDefaultTextBoxesDictionary()
+        {
+            return new Dictionary<string, TextBox>
+            {
+                {"txtHost", txtHost },
+                {"txtPort", txtPort },
+                {"txtClientId", txtClientId },
+                {"txtUnderlyingSymbol", txtUnderlyingSymbol},
+                {"txtSessionStart", txtSessionStart},
+                {"txtSessionEnd", txtSessionEnd },
+            };
         }
     }
 }
