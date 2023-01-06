@@ -63,7 +63,7 @@ namespace SsbHedger
         {
             if (!_regexDigits.IsMatch(((TextBox)sender).Text))
             {
-                e.Handled = true;
+                UndoInput(e, (TextBox)sender);
                 return;
             }
 
