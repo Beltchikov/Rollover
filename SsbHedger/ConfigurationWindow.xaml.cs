@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using SsbHedger.Configuration;
+using SsbHedger.Model;
 
 namespace SsbHedger
 {
@@ -16,7 +18,9 @@ namespace SsbHedger
 
         Regex _regexDigits = new("^[0-9]*$");
         Regex _regexHoursAndMinutes = new("^[\\d|:]{1,5}$");
-   
+        const string BORDER_BRUSH_HEX_COLOR = "#FFABADB3";
+
+
         public ConfigurationWindow(IConfiguration configuration)
         {
             InitializeComponent();
@@ -37,6 +41,18 @@ namespace SsbHedger
 
         private void btDone_Click(object sender, RoutedEventArgs e)
         {
+            if(!DateTime.TryParse(txtSessionStart.Text, out _))
+            {
+                txtSessionStart.BorderBrush = Brushes.Red;
+                return;
+            }
+
+            if (!DateTime.TryParse(txtSessionEnd.Text, out _))
+            {
+                txtSessionEnd.BorderBrush = Brushes.Red;
+                return;
+            }
+
             DialogResult = true;
         }
 
@@ -82,6 +98,8 @@ namespace SsbHedger
 
         private void txtSessionStart_TextChanged(object sender, TextChangedEventArgs e)
         {
+            txtSessionStart.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(BORDER_BRUSH_HEX_COLOR));
+
             if (!_regexHoursAndMinutes.IsMatch(((TextBox)sender).Text))
             {
                 UndoInput(e, (TextBox)sender);
@@ -95,6 +113,8 @@ namespace SsbHedger
 
         private void txtSessionEnd_TextChanged(object sender, TextChangedEventArgs e)
         {
+            txtSessionStart.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(BORDER_BRUSH_HEX_COLOR));
+
             if (!_regexHoursAndMinutes.IsMatch(((TextBox)sender).Text))
             {
                 UndoInput(e, (TextBox)sender);
