@@ -15,7 +15,8 @@ namespace SsbHedger
         IConfiguration _configuration;
 
         Regex _regexDigits = new("^[0-9]*$");
-
+        Regex _regexHoursAndMinutes = new("^[\\d|:]{1,5}$");
+   
         public ConfigurationWindow(IConfiguration configuration)
         {
             InitializeComponent();
@@ -81,6 +82,12 @@ namespace SsbHedger
 
         private void txtSessionStart_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (!_regexHoursAndMinutes.IsMatch(((TextBox)sender).Text))
+            {
+                UndoInput(e, (TextBox)sender);
+                return;
+            }
+
             Dictionary<string, TextBox> textBoxesDict = BuildDefaultTextBoxesDictionary();
             textBoxesDict["txtSessionStart"] = (TextBox)sender;
             btDone.IsEnabled = ConfigurationIsUpdated(textBoxesDict);
@@ -88,6 +95,12 @@ namespace SsbHedger
 
         private void txtSessionEnd_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (!_regexHoursAndMinutes.IsMatch(((TextBox)sender).Text))
+            {
+                UndoInput(e, (TextBox)sender);
+                return;
+            }
+
             Dictionary<string, TextBox> textBoxesDict = BuildDefaultTextBoxesDictionary();
             textBoxesDict["txtSessionEnd"] = (TextBox)sender;
             btDone.IsEnabled = ConfigurationIsUpdated(textBoxesDict);
@@ -130,8 +143,20 @@ namespace SsbHedger
 
         private static void UndoInput(TextChangedEventArgs e, TextBox textBox)
         {
+            if(textBox.Text.Length == 0)
+            {
+                e.Handled = true;
+                return;
+            }
+            
             var currentPosition = textBox.SelectionStart - 1;
             textBox.Text = textBox.Text.Remove(textBox.Text.Length - 1, 1);
+            if (currentPosition < 0)
+            {
+                e.Handled = true;
+                return;
+            }
+
             textBox.Select(currentPosition, 0);
             e.Handled = true;
             return;
