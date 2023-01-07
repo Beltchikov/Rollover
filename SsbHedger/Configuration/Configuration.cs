@@ -4,6 +4,13 @@ namespace SsbHedger.Configuration
 {
     public class Configuration : IConfiguration
     {
+        public const string HOST = "Host";
+        public const string PORT = "Port";
+        public const string CLIENT_ID = "ClientId";
+        public const string UNDERLYING_SYMBOL = "UnderlyingSymbol";
+        public const string SESSION_START = "SessionStart";
+        public const string SESSION_END = "SessionEnd";
+
         private Dictionary<string, object> _configuration;
 
         public Configuration()

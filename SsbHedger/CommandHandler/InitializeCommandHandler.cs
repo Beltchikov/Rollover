@@ -22,21 +22,26 @@ namespace SsbHedger.CommandHandler
 
         public void Handle(MainWindowViewModel viewModel)
         {
-            const string HOST = "Host";
-            const string PORT = "Port";
-            const string CLIENT_ID = "ClientId";
+            var configurationdata = _registryManager.ReadConfiguration(new ConfigurationData(
+                (string)_configuration.GetValue(Configuration.Configuration.HOST),
+                (int)_configuration.GetValue(Configuration.Configuration.PORT),
+                (int)_configuration.GetValue(Configuration.Configuration.CLIENT_ID),
+                (string)_configuration.GetValue(Configuration.Configuration.UNDERLYING_SYMBOL),
+                (string)_configuration.GetValue(Configuration.Configuration.SESSION_START),
+                (string)_configuration.GetValue(Configuration.Configuration.SESSION_END)));
 
-            var (host, port, clientId) = _registryManager.ReadConfiguration(
-                (string)_configuration.GetValue(HOST),
-                (int)_configuration.GetValue(PORT),
-                (int)_configuration.GetValue(CLIENT_ID));
+            _configuration.SetValue(Configuration.Configuration.HOST, configurationdata.Host);
+            _configuration.SetValue(Configuration.Configuration.PORT, configurationdata.Port);
+            _configuration.SetValue(Configuration.Configuration.CLIENT_ID, configurationdata.ClientId);
+            _configuration.SetValue(Configuration.Configuration.UNDERLYING_SYMBOL, configurationdata.UnderlyingSymbol);
+            _configuration.SetValue(Configuration.Configuration.SESSION_START, configurationdata.SessionStart);
+            _configuration.SetValue(Configuration.Configuration.SESSION_END, configurationdata.SessionEnd);
 
-            _configuration.SetValue(HOST, host);
-            _configuration.SetValue(PORT, port);
-            _configuration.SetValue(CLIENT_ID, clientId);
-
-            _ibHost.ViewModel= viewModel;   
-            _ibHost.ConnectAndStartReaderThread(host, port, clientId);
+            _ibHost.ViewModel = viewModel;
+            _ibHost.ConnectAndStartReaderThread(
+                configurationdata.Host,
+                configurationdata.Port,
+                configurationdata.ClientId);
         }
     }
 }

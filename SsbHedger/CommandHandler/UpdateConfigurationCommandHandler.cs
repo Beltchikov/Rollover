@@ -27,19 +27,49 @@ namespace SsbHedger.CommandHandler
             {
                 throw new ApplicationException("Unexpected! data is null");
             }
+            
             string? host = parameters[0]?.ToString();
             if (host == null)
             {
                 throw new ApplicationException("Unexpected! host is null");
             }
+            
             int port = Convert.ToInt32(parameters[1]);
             int clientId = Convert.ToInt32(parameters[2]);
+            
+            string? underlyingSymbol = parameters[3]?.ToString();
+            if (underlyingSymbol == null)
+            {
+                throw new ApplicationException("Unexpected! underlyingSymbol is null");
+            }
 
-            _registryManager.WriteConfiguration(host, port, clientId);
+            string? sessionStart = parameters[4]?.ToString();
+            if (sessionStart == null)
+            {
+                throw new ApplicationException("Unexpected! sessionStart is null");
+            }
 
-            _configuration.SetValue("Host", host);
-            _configuration.SetValue("Port", port);
-            _configuration.SetValue("ClientId", clientId);
+            string? sessionEnd= parameters[5]?.ToString();
+            if (sessionEnd == null)
+            {
+                throw new ApplicationException("Unexpected! sessionEnd is null");
+            }
+
+
+            _registryManager.WriteConfiguration(new ConfigurationData(
+                host,
+                port,
+                clientId,
+                underlyingSymbol,
+                sessionStart,
+                sessionEnd));
+
+            _configuration.SetValue(Configuration.Configuration.HOST, host);
+            _configuration.SetValue(Configuration.Configuration.PORT, port);
+            _configuration.SetValue(Configuration.Configuration.CLIENT_ID, clientId);
+            _configuration.SetValue(Configuration.Configuration.UNDERLYING_SYMBOL, underlyingSymbol);
+            _configuration.SetValue(Configuration.Configuration.SESSION_START, sessionStart);
+            _configuration.SetValue(Configuration.Configuration.SESSION_END, sessionEnd);
 
             _ibHost.Disconnect();
             _ibHost.ConnectAndStartReaderThread(host, port, clientId);
