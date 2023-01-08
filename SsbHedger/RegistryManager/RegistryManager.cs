@@ -70,7 +70,7 @@ namespace SsbHedger.RegistryManager
                         }
                         break;
                     case 1:
-                        var configValue1Typed = (int?)subKey.GetValue(PORT);
+                        var configValue1Typed = (int?)configValue;
                         if (configValue1Typed != null && configValue1Typed > 0)
                         {
                             configValuesValidated[i] = configValue1Typed;
@@ -82,7 +82,7 @@ namespace SsbHedger.RegistryManager
                         }
                         break;
                     case 2:
-                        var configValue2Typed = (int?)subKey.GetValue(CLIENT_ID);
+                        var configValue2Typed = (int?)configValue;
                         if (configValue2Typed != null && configValue2Typed > 0)
                         {
                             configValuesValidated[i] = configValue2Typed;
