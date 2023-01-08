@@ -20,6 +20,9 @@ namespace SsbHedger.UnitTests
             registryKey.GetValue(Configuration.Configuration.HOST).ReturnsNull();
             registryKey.GetValue(Configuration.Configuration.PORT).ReturnsNull();
             registryKey.GetValue(Configuration.Configuration.CLIENT_ID).ReturnsNull();
+            registryKey.GetValue(Configuration.Configuration.UNDERLYING_SYMBOL).ReturnsNull();
+            registryKey.GetValue(Configuration.Configuration.SESSION_START).ReturnsNull();
+            registryKey.GetValue(Configuration.Configuration.SESSION_END).ReturnsNull();
 
             registryCurrentUser.OpenSubKey(SOFTWARE_SSBHEDGER).Returns(registryKey);
 

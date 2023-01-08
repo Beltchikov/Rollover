@@ -13,9 +13,23 @@ namespace SsbHedger.UnitTests.CommandHandler
         public void CallRegistryManager(
             ConfigurationData configurationData,
             MainWindowViewModel viewModel,
+            [Frozen] IConfiguration configuration,
             [Frozen] IRegistryManager registryManager,
             InitializeCommandHandler sut)
         {
+            configuration.GetValue(Configuration.Configuration.HOST)
+                .Returns(configurationData.Host);
+            configuration.GetValue(Configuration.Configuration.PORT)
+                .Returns(configurationData.Port);
+            configuration.GetValue(Configuration.Configuration.CLIENT_ID)
+                .Returns(configurationData.ClientId);
+            configuration.GetValue(Configuration.Configuration.UNDERLYING_SYMBOL)
+                .Returns(configurationData.UnderlyingSymbol);
+            configuration.GetValue(Configuration.Configuration.SESSION_START)
+                .Returns(configurationData.SessionStart);
+            configuration.GetValue(Configuration.Configuration.SESSION_END)
+                .Returns(configurationData.SessionEnd);
+
             sut.Handle(viewModel);
             registryManager.Received().ReadConfiguration(configurationData);
         }
@@ -72,9 +86,13 @@ namespace SsbHedger.UnitTests.CommandHandler
             [Frozen] IIbHost ibHost,
             InitializeCommandHandler sut)
         {
-            configuration.GetValue("Host").Returns(host);
-            configuration.GetValue("Port").Returns(port);
-            configuration.GetValue("ClientId").Returns(clientId);
+            configuration.GetValue(Configuration.Configuration.HOST).Returns(host);
+            configuration.GetValue(Configuration.Configuration.PORT).Returns(port);
+            configuration.GetValue(Configuration.Configuration.CLIENT_ID).Returns(clientId);
+            configuration.GetValue(Configuration.Configuration.UNDERLYING_SYMBOL).Returns("");
+            configuration.GetValue(Configuration.Configuration.SESSION_START).Returns("");
+            configuration.GetValue(Configuration.Configuration.SESSION_END).Returns("");
+
             registryManager.ReadConfiguration(Arg.Any<ConfigurationData>())
                 .ReturnsForAnyArgs(new ConfigurationData( host,  port,  clientId, "", "", ""));
             
