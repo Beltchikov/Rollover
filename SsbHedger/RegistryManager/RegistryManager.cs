@@ -101,8 +101,8 @@ namespace SsbHedger.RegistryManager
                         }
                         else
                         {
-                            configValuesValidated[i] = defaultConfigurationData.Host;
-                            subKey.SetValue(HOST, defaultConfigurationData.Host);
+                            configValuesValidated[i] = defaultConfigurationData.UnderlyingSymbol;
+                            subKey.SetValue(Configuration.Configuration.UNDERLYING_SYMBOL, defaultConfigurationData.UnderlyingSymbol);
                         }
                         break;
                     case 4:
@@ -113,8 +113,8 @@ namespace SsbHedger.RegistryManager
                         }
                         else
                         {
-                            configValuesValidated[i] = defaultConfigurationData.Host;
-                            subKey.SetValue(HOST, defaultConfigurationData.Host);
+                            configValuesValidated[i] = defaultConfigurationData.SessionStart;
+                            subKey.SetValue(Configuration.Configuration.SESSION_START, defaultConfigurationData.SessionStart);
                         }
                         break;
                     case 5:
@@ -125,8 +125,8 @@ namespace SsbHedger.RegistryManager
                         }
                         else
                         {
-                            configValuesValidated[i] = defaultConfigurationData.Host;
-                            subKey.SetValue(HOST, defaultConfigurationData.Host);
+                            configValuesValidated[i] = defaultConfigurationData.SessionEnd;
+                            subKey.SetValue(Configuration.Configuration.SESSION_END, defaultConfigurationData.SessionEnd);
                         }
                         break;
                 }
