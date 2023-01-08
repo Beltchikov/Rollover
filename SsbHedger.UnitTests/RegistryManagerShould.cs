@@ -59,7 +59,7 @@ namespace SsbHedger.UnitTests
             registryKey.GetValue(Configuration.Configuration.HOST).Returns("aaa");
             registryKey.GetValue(Configuration.Configuration.PORT).Returns(-1);
             registryKey.GetValue(Configuration.Configuration.CLIENT_ID).Returns(222);
-
+            
             registryCurrentUser.OpenSubKey(SOFTWARE_SSBHEDGER).Returns(registryKey);
 
             var (_, port, _,_,_,_) = sut.ReadConfiguration(defaultConfigurationData);

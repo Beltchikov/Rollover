@@ -14,7 +14,7 @@ namespace SsbHedger.RegistryManager
         private const string SESSION_START = @"SessionStart";
         private const string SESSION_END= @"SessionEnd";
         private IRegistryCurrentUserAbstraction _registryCurrentUser;
-
+        
         public RegistryManager(IRegistryCurrentUserAbstraction registryCurrentUser)
         {
             _registryCurrentUser = registryCurrentUser;
@@ -42,106 +42,84 @@ namespace SsbHedger.RegistryManager
                     defaultConfigurationData.SessionEnd);
             }
 
-            object?[] configValuesFromRegistry = new object?[]
+            var defaultOrFromRegistryConfigData = new ConfigurationData();
+
+            var hostFromRegistry = subKey?.GetValue(HOST)?.ToString();
+            if(!string.IsNullOrWhiteSpace(hostFromRegistry))
             {
-                subKey.GetValue(HOST)?.ToString(),
-                (int?)subKey.GetValue(PORT),
-                (int?)subKey.GetValue(CLIENT_ID),
-                subKey.GetValue(UNDERLYING_SYMBOL)?.ToString(),
-                subKey.GetValue(SESSION_START)?.ToString(),
-                subKey.GetValue(SESSION_END)?.ToString(),
-            };
-            object[] configValuesValidated = new object[6];
-            for (int i = 0; i < 6; i++)
+                defaultOrFromRegistryConfigData.Host = hostFromRegistry;
+            }
+            else
             {
-                var configValue = configValuesFromRegistry[i];
-                switch (i)
-                {
-                    case 0:
-                        var configValue0Typed = configValue?.ToString();
-                        if (!string.IsNullOrWhiteSpace(configValue0Typed))
-                        {
-                            configValuesValidated[i] = configValue0Typed;
-                        }
-                        else
-                        {
-                            configValuesValidated[i] = defaultConfigurationData.Host;
-                            subKey.SetValue(HOST, defaultConfigurationData.Host);
-                        }
-                        break;
-                    case 1:
-                        var configValue1Typed = (int?)configValue;
-                        if (configValue1Typed != null && configValue1Typed > 0)
-                        {
-                            configValuesValidated[i] = configValue1Typed;
-                        }
-                        else
-                        {
-                            configValuesValidated[i] = defaultConfigurationData.Port;
-                            subKey.SetValue(PORT, defaultConfigurationData.Port);
-                        }
-                        break;
-                    case 2:
-                        var configValue2Typed = (int?)configValue;
-                        if (configValue2Typed != null && configValue2Typed > 0)
-                        {
-                            configValuesValidated[i] = configValue2Typed;
-                        }
-                        else
-                        {
-                            configValuesValidated[i] = defaultConfigurationData.ClientId;
-                            subKey.SetValue(CLIENT_ID, defaultConfigurationData.ClientId);
-                        }
-                        break;
-                    case 3:
-                        var configValue3Typed = configValue?.ToString();
-                        if (!string.IsNullOrWhiteSpace(configValue3Typed))
-                        {
-                            configValuesValidated[i] = configValue3Typed;
-                        }
-                        else
-                        {
-                            configValuesValidated[i] = defaultConfigurationData.UnderlyingSymbol;
-                            subKey.SetValue(Configuration.Configuration.UNDERLYING_SYMBOL, defaultConfigurationData.UnderlyingSymbol);
-                        }
-                        break;
-                    case 4:
-                        var configValue4Typed = configValue?.ToString();
-                        if (!string.IsNullOrWhiteSpace(configValue4Typed))
-                        {
-                            configValuesValidated[i] = configValue4Typed;
-                        }
-                        else
-                        {
-                            configValuesValidated[i] = defaultConfigurationData.SessionStart;
-                            subKey.SetValue(Configuration.Configuration.SESSION_START, defaultConfigurationData.SessionStart);
-                        }
-                        break;
-                    case 5:
-                        var configValue5Typed = configValue?.ToString();
-                        if (!string.IsNullOrWhiteSpace(configValue5Typed))
-                        {
-                            configValuesValidated[i] = configValue5Typed;
-                        }
-                        else
-                        {
-                            configValuesValidated[i] = defaultConfigurationData.SessionEnd;
-                            subKey.SetValue(Configuration.Configuration.SESSION_END, defaultConfigurationData.SessionEnd);
-                        }
-                        break;
-                }
+                defaultOrFromRegistryConfigData.Host = defaultConfigurationData.Host;
+                subKey?.SetValue(HOST, defaultConfigurationData.Host);
+            }
+
+            var portFromRegistry = (int?)subKey?.GetValue(PORT);
+            if (portFromRegistry != null && portFromRegistry > 0)
+            {
+                defaultOrFromRegistryConfigData.Port = (int)portFromRegistry;
+            }
+            else
+            {
+                defaultOrFromRegistryConfigData.Port = defaultConfigurationData.Port;
+                subKey?.SetValue(PORT, defaultConfigurationData.Port);
+            }
+
+            var clientIdFromRegistry = (int?)subKey?.GetValue(CLIENT_ID);
+            if (clientIdFromRegistry != null && clientIdFromRegistry > 0)
+            {
+                defaultOrFromRegistryConfigData.ClientId = (int)clientIdFromRegistry;
+            }
+            else
+            {
+                defaultOrFromRegistryConfigData.ClientId = defaultConfigurationData.ClientId;
+                subKey?.SetValue(CLIENT_ID, defaultConfigurationData.ClientId);
+            }
+
+            var underlyingSymbolFromRegistry = subKey?.GetValue(UNDERLYING_SYMBOL)?.ToString();
+            if (!string.IsNullOrWhiteSpace(underlyingSymbolFromRegistry))
+            {
+                defaultOrFromRegistryConfigData.UnderlyingSymbol = underlyingSymbolFromRegistry;
+            }
+            else
+            {
+                defaultOrFromRegistryConfigData.UnderlyingSymbol = defaultConfigurationData.UnderlyingSymbol;
+                subKey?.SetValue(UNDERLYING_SYMBOL, defaultConfigurationData.UnderlyingSymbol);
+            }
+
+            var sessionStartFromRegistry = subKey?.GetValue(SESSION_START)?.ToString();
+            if (!string.IsNullOrWhiteSpace(sessionStartFromRegistry))
+            {
+                defaultOrFromRegistryConfigData.SessionStart = sessionStartFromRegistry;
+            }
+            else
+            {
+                defaultOrFromRegistryConfigData.SessionStart = defaultConfigurationData.SessionStart;
+                subKey?.SetValue(SESSION_START, defaultConfigurationData.SessionStart);
+            }
+
+            var sessionEndFromRegistry = subKey?.GetValue(SESSION_END)?.ToString();
+            if (!string.IsNullOrWhiteSpace(sessionEndFromRegistry))
+            {
+                defaultOrFromRegistryConfigData.SessionEnd = sessionEndFromRegistry;
+            }
+            else
+            {
+                defaultOrFromRegistryConfigData.SessionEnd = defaultConfigurationData.SessionEnd;
+                subKey?.SetValue(SESSION_END, defaultConfigurationData.SessionEnd);
             }
 
             return new ValueTuple<string, int, int, string, string, string>(
-                (string)configValuesValidated[0],
-                (int)configValuesValidated[1],
-                (int)configValuesValidated[2],
-                (string)configValuesValidated[3],
-                (string)configValuesValidated[4],
-                (string)configValuesValidated[5]);
+                defaultOrFromRegistryConfigData.Host,
+                defaultOrFromRegistryConfigData.Port,
+                defaultOrFromRegistryConfigData.ClientId,
+                defaultOrFromRegistryConfigData.UnderlyingSymbol,
+                defaultOrFromRegistryConfigData.SessionStart,
+                defaultOrFromRegistryConfigData.SessionEnd);
         }
 
-       public void WriteConfiguration(ConfigurationData defaultConfigurationData)
+        public void WriteConfiguration(ConfigurationData defaultConfigurationData)
         {
             var subKey = _registryCurrentUser.OpenSubKey(SOFTWARE_SSBHEDGER)
                 ?? _registryCurrentUser.CreateSubKey(SOFTWARE_SSBHEDGER);
