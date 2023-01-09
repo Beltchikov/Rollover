@@ -6,12 +6,6 @@ namespace SsbHedger.SsbConfiguration
     public class RegistryManager : IRegistryManager
     {
         private const string SOFTWARE_SSBHEDGER = @"SOFTWARE\SsbHedger";
-        private const string HOST = @"Host";
-        private const string PORT = @"Port";
-        private const string CLIENT_ID = @"ClientId";
-        private const string UNDERLYING_SYMBOL = @"UnderlyingSymbol";
-        private const string SESSION_START = @"SessionStart";
-        private const string SESSION_END = @"SessionEnd";
         private IRegistryCurrentUserAbstraction _registryCurrentUser;
 
         public RegistryManager(IRegistryCurrentUserAbstraction registryCurrentUser)
@@ -25,12 +19,12 @@ namespace SsbHedger.SsbConfiguration
             if (subKey == null)
             {
                 subKey = _registryCurrentUser.CreateSubKey(SOFTWARE_SSBHEDGER);
-                subKey.SetValue(HOST, defaultConfigurationData.Host);
-                subKey.SetValue(PORT, defaultConfigurationData.Port);
-                subKey.SetValue(CLIENT_ID, defaultConfigurationData.ClientId);
-                subKey.SetValue(UNDERLYING_SYMBOL, defaultConfigurationData.UnderlyingSymbol);
-                subKey.SetValue(SESSION_START, defaultConfigurationData.SessionStart);
-                subKey.SetValue(SESSION_END, defaultConfigurationData.SessionEnd);
+                subKey.SetValue(Configuration.HOST, defaultConfigurationData.Host);
+                subKey.SetValue(Configuration.PORT, defaultConfigurationData.Port);
+                subKey.SetValue(Configuration.CLIENT_ID, defaultConfigurationData.ClientId);
+                subKey.SetValue(Configuration.UNDERLYING_SYMBOL, defaultConfigurationData.UnderlyingSymbol);
+                subKey.SetValue(Configuration.SESSION_START, defaultConfigurationData.SessionStart);
+                subKey.SetValue(Configuration.SESSION_END, defaultConfigurationData.SessionEnd);
 
                 return new ValueTuple<string, int, int, string, string, string>(
                     defaultConfigurationData.Host,
@@ -43,7 +37,7 @@ namespace SsbHedger.SsbConfiguration
 
             var defaultOrFromRegistryConfigData = new ConfigurationData();
 
-            var hostFromRegistry = subKey?.GetValue(HOST)?.ToString();
+            var hostFromRegistry = subKey?.GetValue(Configuration.HOST)?.ToString();
             if (!string.IsNullOrWhiteSpace(hostFromRegistry))
             {
                 defaultOrFromRegistryConfigData.Host = hostFromRegistry;
@@ -51,10 +45,10 @@ namespace SsbHedger.SsbConfiguration
             else
             {
                 defaultOrFromRegistryConfigData.Host = defaultConfigurationData.Host;
-                subKey?.SetValue(HOST, defaultConfigurationData.Host);
+                subKey?.SetValue(Configuration.HOST, defaultConfigurationData.Host);
             }
 
-            var portFromRegistry = (int?)subKey?.GetValue(PORT);
+            var portFromRegistry = (int?)subKey?.GetValue(Configuration.PORT);
             if (portFromRegistry != null && portFromRegistry > 0)
             {
                 defaultOrFromRegistryConfigData.Port = (int)portFromRegistry;
@@ -62,10 +56,10 @@ namespace SsbHedger.SsbConfiguration
             else
             {
                 defaultOrFromRegistryConfigData.Port = defaultConfigurationData.Port;
-                subKey?.SetValue(PORT, defaultConfigurationData.Port);
+                subKey?.SetValue(Configuration.PORT, defaultConfigurationData.Port);
             }
 
-            var clientIdFromRegistry = (int?)subKey?.GetValue(CLIENT_ID);
+            var clientIdFromRegistry = (int?)subKey?.GetValue(Configuration.CLIENT_ID);
             if (clientIdFromRegistry != null && clientIdFromRegistry > 0)
             {
                 defaultOrFromRegistryConfigData.ClientId = (int)clientIdFromRegistry;
@@ -73,10 +67,10 @@ namespace SsbHedger.SsbConfiguration
             else
             {
                 defaultOrFromRegistryConfigData.ClientId = defaultConfigurationData.ClientId;
-                subKey?.SetValue(CLIENT_ID, defaultConfigurationData.ClientId);
+                subKey?.SetValue(Configuration.CLIENT_ID, defaultConfigurationData.ClientId);
             }
 
-            var underlyingSymbolFromRegistry = subKey?.GetValue(UNDERLYING_SYMBOL)?.ToString();
+            var underlyingSymbolFromRegistry = subKey?.GetValue(Configuration.UNDERLYING_SYMBOL)?.ToString();
             if (!string.IsNullOrWhiteSpace(underlyingSymbolFromRegistry))
             {
                 defaultOrFromRegistryConfigData.UnderlyingSymbol = underlyingSymbolFromRegistry;
@@ -84,10 +78,10 @@ namespace SsbHedger.SsbConfiguration
             else
             {
                 defaultOrFromRegistryConfigData.UnderlyingSymbol = defaultConfigurationData.UnderlyingSymbol;
-                subKey?.SetValue(UNDERLYING_SYMBOL, defaultConfigurationData.UnderlyingSymbol);
+                subKey?.SetValue(Configuration.UNDERLYING_SYMBOL, defaultConfigurationData.UnderlyingSymbol);
             }
 
-            var sessionStartFromRegistry = subKey?.GetValue(SESSION_START)?.ToString();
+            var sessionStartFromRegistry = subKey?.GetValue(Configuration.SESSION_START)?.ToString();
             if (!string.IsNullOrWhiteSpace(sessionStartFromRegistry))
             {
                 defaultOrFromRegistryConfigData.SessionStart = sessionStartFromRegistry;
@@ -95,10 +89,10 @@ namespace SsbHedger.SsbConfiguration
             else
             {
                 defaultOrFromRegistryConfigData.SessionStart = defaultConfigurationData.SessionStart;
-                subKey?.SetValue(SESSION_START, defaultConfigurationData.SessionStart);
+                subKey?.SetValue(Configuration.SESSION_START, defaultConfigurationData.SessionStart);
             }
 
-            var sessionEndFromRegistry = subKey?.GetValue(SESSION_END)?.ToString();
+            var sessionEndFromRegistry = subKey?.GetValue(Configuration.SESSION_END)?.ToString();
             if (!string.IsNullOrWhiteSpace(sessionEndFromRegistry))
             {
                 defaultOrFromRegistryConfigData.SessionEnd = sessionEndFromRegistry;
@@ -106,7 +100,7 @@ namespace SsbHedger.SsbConfiguration
             else
             {
                 defaultOrFromRegistryConfigData.SessionEnd = defaultConfigurationData.SessionEnd;
-                subKey?.SetValue(SESSION_END, defaultConfigurationData.SessionEnd);
+                subKey?.SetValue(Configuration.SESSION_END, defaultConfigurationData.SessionEnd);
             }
 
             return new ValueTuple<string, int, int, string, string, string>(
@@ -123,12 +117,12 @@ namespace SsbHedger.SsbConfiguration
             var subKey = _registryCurrentUser.OpenSubKey(SOFTWARE_SSBHEDGER)
                 ?? _registryCurrentUser.CreateSubKey(SOFTWARE_SSBHEDGER);
 
-            subKey.SetValue(HOST, defaultConfigurationData.Host);
-            subKey.SetValue(PORT, defaultConfigurationData.Port);
-            subKey.SetValue(CLIENT_ID, defaultConfigurationData.ClientId);
-            subKey.SetValue(UNDERLYING_SYMBOL, defaultConfigurationData.UnderlyingSymbol);
-            subKey.SetValue(SESSION_START, defaultConfigurationData.SessionStart);
-            subKey.SetValue(SESSION_END, defaultConfigurationData.SessionEnd);
+            subKey.SetValue(Configuration.HOST, defaultConfigurationData.Host);
+            subKey.SetValue(Configuration.PORT, defaultConfigurationData.Port);
+            subKey.SetValue(Configuration.CLIENT_ID, defaultConfigurationData.ClientId);
+            subKey.SetValue(Configuration.UNDERLYING_SYMBOL, defaultConfigurationData.UnderlyingSymbol);
+            subKey.SetValue(Configuration.SESSION_START, defaultConfigurationData.SessionStart);
+            subKey.SetValue(Configuration.SESSION_END, defaultConfigurationData.SessionEnd);
         }
     }
 }
