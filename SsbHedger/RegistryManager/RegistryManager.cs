@@ -1,7 +1,6 @@
 ﻿using SsbHedger.Abstractions;
 using SsbHedger.Configuration;
 using System;
-using System.Collections.Generic;
 
 namespace SsbHedger.RegistryManager
 {
@@ -15,17 +14,10 @@ namespace SsbHedger.RegistryManager
         private const string SESSION_START = @"SessionStart";
         private const string SESSION_END= @"SessionEnd";
         private IRegistryCurrentUserAbstraction _registryCurrentUser;
-        private Dictionary<string, Func<IRegistryKeyAbstraction?, string, object?>> getValueFunctions;
         
         public RegistryManager(IRegistryCurrentUserAbstraction registryCurrentUser)
         {
             _registryCurrentUser = registryCurrentUser;
-
-            getValueFunctions = new Dictionary<string, Func<IRegistryKeyAbstraction?, string, object?>>
-            {
-                {HOST,  (key, name) => key?.GetValue(name)?.ToString()},
-                {PORT,  (key, name) => (int?)key?.GetValue(name)}
-            };
         }
 
         public ConfigurationData ReadConfiguration(ConfigurationData defaultConfigurationData)
@@ -52,40 +44,27 @@ namespace SsbHedger.RegistryManager
 
             var defaultOrFromRegistryConfigData = new ConfigurationData();
 
-            string? hostFromRegistry = (string?)GetValue(subKey, HOST);
-            defaultOrFromRegistryConfigData = SetValueToReturn(
-                defaultOrFromRegistryConfigData,
-                hostFromRegistry,
-                (v) => !string.IsNullOrWhiteSpace(v?.ToString()),
-                defaultConfigurationData);
-            SetValueInRegistry(
-                subKey,
-                hostFromRegistry,
-                (v) => !string.IsNullOrWhiteSpace(v?.ToString()),
-                defaultConfigurationData);
+            var hostFromRegistry = subKey?.GetValue(HOST)?.ToString();
+            if(!string.IsNullOrWhiteSpace(hostFromRegistry))
+            {
+                defaultOrFromRegistryConfigData.Host = hostFromRegistry;
+            }
+            else
+            {
+                defaultOrFromRegistryConfigData.Host = defaultConfigurationData.Host;
+                subKey?.SetValue(HOST, defaultConfigurationData.Host);
+            }
 
-            //var portFromRegistry = (int?)subKey?.GetValue(PORT);
-            //if (portFromRegistry != null && portFromRegistry > 0)
-            //{
-            //    defaultOrFromRegistryConfigData.Port = (int)portFromRegistry;
-            //}
-            //else
-            //{
-            //    defaultOrFromRegistryConfigData.Port = defaultConfigurationData.Port;
-            //    subKey?.SetValue(PORT, defaultConfigurationData.Port);
-            //}
-
-            int? portFromRegistry = (int?)GetValue(subKey, PORT);
-            defaultOrFromRegistryConfigData = SetValueToReturn(
-                defaultOrFromRegistryConfigData,
-                portFromRegistry,
-                (v) => v != null && (int)v > 0,
-                defaultConfigurationData);
-            SetValueInRegistry(
-                subKey,
-                hostFromRegistry,
-                (v) => !string.IsNullOrWhiteSpace(v?.ToString()),
-                defaultConfigurationData);
+            var portFromRegistry = (int?)subKey?.GetValue(PORT);
+            if (portFromRegistry != null && portFromRegistry > 0)
+            {
+                defaultOrFromRegistryConfigData.Port = (int)portFromRegistry;
+            }
+            else
+            {
+                defaultOrFromRegistryConfigData.Port = defaultConfigurationData.Port;
+                subKey?.SetValue(PORT, defaultConfigurationData.Port);
+            }
 
             var clientIdFromRegistry = (int?)subKey?.GetValue(CLIENT_ID);
             if (clientIdFromRegistry != null && clientIdFromRegistry > 0)
@@ -138,46 +117,6 @@ namespace SsbHedger.RegistryManager
                 defaultOrFromRegistryConfigData.UnderlyingSymbol,
                 defaultOrFromRegistryConfigData.SessionStart,
                 defaultOrFromRegistryConfigData.SessionEnd);
-        }
-
-        private static ConfigurationData SetValueToReturn(
-            ConfigurationData defaultOrFromRegistryConfigData,
-            object? valueFromRegistry,
-            Func<object?, bool> validValueFunc,
-            ConfigurationData defaultConfigurationData)
-        {
-            if (validValueFunc(valueFromRegistry))
-            {
-                defaultOrFromRegistryConfigData.Host = valueFromRegistry;
-            }
-            else
-            {
-                defaultOrFromRegistryConfigData.Host = defaultConfigurationData.Host;
-        }
-
-            return defaultOrFromRegistryConfigData;
-        }
-
-        private void SetValueInRegistry(
-           IRegistryKeyAbstraction? subKey,
-           string? valueFromRegistry,
-           Func<object?, bool> validValueFunc,
-           ConfigurationData defaultConfigurationData)
-        {
-            if (!validValueFunc(valueFromRegistry))
-            {
-                subKey?.SetValue(HOST, defaultConfigurationData.Host);
-            }
-        }
-
-        private object? GetValue(IRegistryKeyAbstraction key , string name)
-        {
-            //return key.GetValue(HOST)?.ToString();
-
-            //Func<IRegistryKeyAbstraction?, string, object?> getValueFunc = (key, name) => key?.GetValue(name)?.ToString();
-            //return getValueFunc(key, name);
-
-            return getValueFunctions[name](key, name);
         }
 
         public void WriteConfiguration(ConfigurationData defaultConfigurationData)
