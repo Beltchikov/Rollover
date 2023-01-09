@@ -26,12 +26,12 @@ namespace SsbHedger
             InitializeComponent();
 
             _configuration = configuration;
-            txtHost.Text = (string)_configuration.GetValue("Host");
-            txtPort.Text = _configuration.GetValue("Port").ToString();
-            txtClientId.Text = _configuration.GetValue("ClientId").ToString();
-            txtUnderlyingSymbol.Text = (string)_configuration.GetValue("UnderlyingSymbol");
-            txtSessionStart.Text = (string)_configuration.GetValue("SessionStart");
-            txtSessionEnd.Text = (string)_configuration.GetValue("SessionEnd");
+            txtHost.Text = (string)_configuration.GetValue(Configuration.HOST);
+            txtPort.Text = _configuration.GetValue(Configuration.PORT).ToString();
+            txtClientId.Text = _configuration.GetValue(Configuration.CLIENT_ID).ToString();
+            txtUnderlyingSymbol.Text = (string)_configuration.GetValue(Configuration.UNDERLYING_SYMBOL);
+            txtSessionStart.Text = (string)_configuration.GetValue(Configuration.SESSION_END);
+            txtSessionEnd.Text = (string)_configuration.GetValue(Configuration.SESSION_END);
         }
 
         private void btCancel_Click(object sender, RoutedEventArgs e)
@@ -138,12 +138,16 @@ namespace SsbHedger
                 return false;
             }
 
-            bool newHost = !string.Equals((string)_configuration.GetValue("Host"), textBoxesDict["txtHost"].Text, StringComparison.InvariantCultureIgnoreCase);
-            bool newPort = (int)_configuration.GetValue("Port") != Convert.ToInt32(textBoxesDict["txtPort"].Text);
-            bool newClientId = (int)_configuration.GetValue("ClientId") != Convert.ToInt32(textBoxesDict["txtClientId"].Text);
-            bool newUnderlyingSymbol = !string.Equals((string)_configuration.GetValue("UnderlyingSymbol"), textBoxesDict["txtUnderlyingSymbol"].Text, StringComparison.InvariantCultureIgnoreCase);
-            bool newSessionStart = !string.Equals((string)_configuration.GetValue("SessionStart"), textBoxesDict["txtSessionStart"].Text, StringComparison.InvariantCultureIgnoreCase);
-            bool newSessionEnd = !string.Equals((string)_configuration.GetValue("SessionEnd"), textBoxesDict["txtSessionEnd"].Text, StringComparison.InvariantCultureIgnoreCase);
+            bool newHost = !string.Equals((string)_configuration.GetValue(Configuration.HOST), 
+                textBoxesDict["txtHost"].Text, StringComparison.InvariantCultureIgnoreCase);
+            bool newPort = (int)_configuration.GetValue(Configuration.PORT) != Convert.ToInt32(textBoxesDict["txtPort"].Text);
+            bool newClientId = (int)_configuration.GetValue(Configuration.CLIENT_ID) != Convert.ToInt32(textBoxesDict["txtClientId"].Text);
+            bool newUnderlyingSymbol = !string.Equals((string)_configuration.GetValue(Configuration.UNDERLYING_SYMBOL), 
+                textBoxesDict["txtUnderlyingSymbol"].Text, StringComparison.InvariantCultureIgnoreCase);
+            bool newSessionStart = !string.Equals((string)_configuration.GetValue(Configuration.SESSION_START), 
+                textBoxesDict["txtSessionStart"].Text, StringComparison.InvariantCultureIgnoreCase);
+            bool newSessionEnd = !string.Equals((string)_configuration.GetValue(Configuration.SESSION_END), 
+                textBoxesDict["txtSessionEnd"].Text, StringComparison.InvariantCultureIgnoreCase);
 
             return newHost || newPort || newClientId || newUnderlyingSymbol || newSessionStart || newSessionEnd;
         }

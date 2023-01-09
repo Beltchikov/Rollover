@@ -17,12 +17,12 @@ namespace SsbHedger.SsbConfiguration
         {
             _configuration = new Dictionary<string, object>()
             {
-                {"Host", "localhost" },
-                {"Port", 4001 },
-                {"ClientId", 1 },
-                {"UnderlyingSymbol", "SPY" },
-                {"SessionStart", "15:30" },
-                {"SessionEnd", "22:15" },
+                {HOST, "localhost" },
+                {PORT, 4001 },
+                {CLIENT_ID, 1 },
+                {UNDERLYING_SYMBOL, "SPY" },
+                {SESSION_START, "15:30" },
+                {SESSION_END, "22:15" },
             };
         }
 
