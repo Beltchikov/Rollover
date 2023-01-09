@@ -1,9 +1,9 @@
 using AutoFixture.Xunit2;
 using NSubstitute;
 using SsbHedger.CommandHandler;
-using SsbHedger.Configuration;
 using SsbHedger.Model;
 using SsbHedger.RegistryManager;
+using SsbHedger.SsbConfiguration;
 
 namespace SsbHedger.UnitTests.CommandHandler
 {
@@ -17,17 +17,17 @@ namespace SsbHedger.UnitTests.CommandHandler
             [Frozen] IRegistryManager registryManager,
             InitializeCommandHandler sut)
         {
-            configuration.GetValue(Configuration.Configuration.HOST)
+            configuration.GetValue(SsbConfiguration.Configuration.HOST)
                 .Returns(configurationData.Host);
-            configuration.GetValue(Configuration.Configuration.PORT)
+            configuration.GetValue(SsbConfiguration.Configuration.PORT)
                 .Returns(configurationData.Port);
-            configuration.GetValue(Configuration.Configuration.CLIENT_ID)
+            configuration.GetValue(SsbConfiguration.Configuration.CLIENT_ID)
                 .Returns(configurationData.ClientId);
-            configuration.GetValue(Configuration.Configuration.UNDERLYING_SYMBOL)
+            configuration.GetValue(SsbConfiguration.Configuration.UNDERLYING_SYMBOL)
                 .Returns(configurationData.UnderlyingSymbol);
-            configuration.GetValue(Configuration.Configuration.SESSION_START)
+            configuration.GetValue(SsbConfiguration.Configuration.SESSION_START)
                 .Returns(configurationData.SessionStart);
-            configuration.GetValue(Configuration.Configuration.SESSION_END)
+            configuration.GetValue(SsbConfiguration.Configuration.SESSION_END)
                 .Returns(configurationData.SessionEnd);
 
             sut.Handle(viewModel);
@@ -43,17 +43,17 @@ namespace SsbHedger.UnitTests.CommandHandler
            [Frozen] IConfiguration configuration,
            InitializeCommandHandler sut)
         {
-            configuration.GetValue(Configuration.Configuration.HOST)
+            configuration.GetValue(SsbConfiguration.Configuration.HOST)
                 .Returns(configurationData.Host);
-            configuration.GetValue(Configuration.Configuration.PORT)
+            configuration.GetValue(SsbConfiguration.Configuration.PORT)
                 .Returns(configurationData.Port);
-            configuration.GetValue(Configuration.Configuration.CLIENT_ID)
+            configuration.GetValue(SsbConfiguration.Configuration.CLIENT_ID)
                 .Returns(configurationData.ClientId);
-            configuration.GetValue(Configuration.Configuration.UNDERLYING_SYMBOL)
+            configuration.GetValue(SsbConfiguration.Configuration.UNDERLYING_SYMBOL)
                 .Returns(configurationData.UnderlyingSymbol);
-            configuration.GetValue(Configuration.Configuration.SESSION_START)
+            configuration.GetValue(SsbConfiguration.Configuration.SESSION_START)
                 .Returns(configurationData.SessionStart);
-            configuration.GetValue(Configuration.Configuration.SESSION_END)
+            configuration.GetValue(SsbConfiguration.Configuration.SESSION_END)
                 .Returns(configurationData.SessionEnd);
 
             registryManager.ReadConfiguration(configurationData)
@@ -62,17 +62,17 @@ namespace SsbHedger.UnitTests.CommandHandler
             sut.Handle(viewModel);
             
             configuration.Received().SetValue(
-                Configuration.Configuration.HOST, configurationDataFromRegistry.Host);
+                SsbConfiguration.Configuration.HOST, configurationDataFromRegistry.Host);
             configuration.Received().SetValue(
-                Configuration.Configuration.PORT, configurationDataFromRegistry.Port);
+                SsbConfiguration.Configuration.PORT, configurationDataFromRegistry.Port);
             configuration.Received().SetValue(
-                Configuration.Configuration.CLIENT_ID, configurationDataFromRegistry.ClientId);
+                SsbConfiguration.Configuration.CLIENT_ID, configurationDataFromRegistry.ClientId);
             configuration.Received().SetValue(
-                Configuration.Configuration.UNDERLYING_SYMBOL, configurationDataFromRegistry.UnderlyingSymbol);
+                SsbConfiguration.Configuration.UNDERLYING_SYMBOL, configurationDataFromRegistry.UnderlyingSymbol);
             configuration.Received().SetValue(
-                Configuration.Configuration.SESSION_START, configurationDataFromRegistry.SessionStart);
+                SsbConfiguration.Configuration.SESSION_START, configurationDataFromRegistry.SessionStart);
             configuration.Received().SetValue(
-                Configuration.Configuration.SESSION_END, configurationDataFromRegistry.SessionEnd);
+                SsbConfiguration.Configuration.SESSION_END, configurationDataFromRegistry.SessionEnd);
         }
 
         [Theory, AutoNSubstituteData]
@@ -86,12 +86,12 @@ namespace SsbHedger.UnitTests.CommandHandler
             [Frozen] IIbHost ibHost,
             InitializeCommandHandler sut)
         {
-            configuration.GetValue(Configuration.Configuration.HOST).Returns(host);
-            configuration.GetValue(Configuration.Configuration.PORT).Returns(port);
-            configuration.GetValue(Configuration.Configuration.CLIENT_ID).Returns(clientId);
-            configuration.GetValue(Configuration.Configuration.UNDERLYING_SYMBOL).Returns("");
-            configuration.GetValue(Configuration.Configuration.SESSION_START).Returns("");
-            configuration.GetValue(Configuration.Configuration.SESSION_END).Returns("");
+            configuration.GetValue(SsbConfiguration.Configuration.HOST).Returns(host);
+            configuration.GetValue(SsbConfiguration.Configuration.PORT).Returns(port);
+            configuration.GetValue(SsbConfiguration.Configuration.CLIENT_ID).Returns(clientId);
+            configuration.GetValue(SsbConfiguration.Configuration.UNDERLYING_SYMBOL).Returns("");
+            configuration.GetValue(SsbConfiguration.Configuration.SESSION_START).Returns("");
+            configuration.GetValue(SsbConfiguration.Configuration.SESSION_END).Returns("");
 
             registryManager.ReadConfiguration(Arg.Any<ConfigurationData>())
                 .ReturnsForAnyArgs(new ConfigurationData( host,  port,  clientId, "", "", ""));

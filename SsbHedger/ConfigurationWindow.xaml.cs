@@ -4,8 +4,8 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using SsbHedger.Configuration;
 using SsbHedger.Model;
+using SsbHedger.SsbConfiguration;
 
 namespace SsbHedger
 {

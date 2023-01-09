@@ -1,6 +1,6 @@
-﻿using SsbHedger.Configuration;
-using SsbHedger.Model;
+﻿using SsbHedger.Model;
 using SsbHedger.RegistryManager;
+using SsbHedger.SsbConfiguration;
 using System;
 
 namespace SsbHedger.CommandHandler
@@ -64,12 +64,12 @@ namespace SsbHedger.CommandHandler
                 sessionStart,
                 sessionEnd));
 
-            _configuration.SetValue(Configuration.Configuration.HOST, host);
-            _configuration.SetValue(Configuration.Configuration.PORT, port);
-            _configuration.SetValue(Configuration.Configuration.CLIENT_ID, clientId);
-            _configuration.SetValue(Configuration.Configuration.UNDERLYING_SYMBOL, underlyingSymbol);
-            _configuration.SetValue(Configuration.Configuration.SESSION_START, sessionStart);
-            _configuration.SetValue(Configuration.Configuration.SESSION_END, sessionEnd);
+            _configuration.SetValue(Configuration.HOST, host);
+            _configuration.SetValue(Configuration.PORT, port);
+            _configuration.SetValue(Configuration.CLIENT_ID, clientId);
+            _configuration.SetValue(Configuration.UNDERLYING_SYMBOL, underlyingSymbol);
+            _configuration.SetValue(Configuration.SESSION_START, sessionStart);
+            _configuration.SetValue(Configuration.SESSION_END, sessionEnd);
 
             _ibHost.Disconnect();
             _ibHost.ConnectAndStartReaderThread(host, port, clientId);

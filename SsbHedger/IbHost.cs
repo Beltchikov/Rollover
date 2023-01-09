@@ -3,7 +3,7 @@ using SsbHedger.Model;
 using System;
 using System.Linq;
 using IbClient.messages;
-using SsbHedger.Configuration;
+using SsbHedger.SsbConfiguration;
 
 namespace SsbHedger
 {

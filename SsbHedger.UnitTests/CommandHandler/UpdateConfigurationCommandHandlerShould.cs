@@ -1,9 +1,9 @@
 using AutoFixture.Xunit2;
 using NSubstitute;
 using SsbHedger.CommandHandler;
-using SsbHedger.Configuration;
 using SsbHedger.Model;
 using SsbHedger.RegistryManager;
+using SsbHedger.SsbConfiguration;
 
 namespace SsbHedger.UnitTests.CommandHandler
 {
@@ -46,17 +46,17 @@ namespace SsbHedger.UnitTests.CommandHandler
             });
 
             configuration.Received().SetValue(
-                Configuration.Configuration.HOST, configurationData.Host);
+                SsbConfiguration.Configuration.HOST, configurationData.Host);
             configuration.Received().SetValue(
-                Configuration.Configuration.PORT, configurationData.Port);
+                SsbConfiguration.Configuration.PORT, configurationData.Port);
             configuration.Received().SetValue(
-                Configuration.Configuration.CLIENT_ID, configurationData.ClientId);
+                SsbConfiguration.Configuration.CLIENT_ID, configurationData.ClientId);
             configuration.Received().SetValue(
-                Configuration.Configuration.UNDERLYING_SYMBOL, configurationData.UnderlyingSymbol);
+                SsbConfiguration.Configuration.UNDERLYING_SYMBOL, configurationData.UnderlyingSymbol);
             configuration.Received().SetValue(
-                Configuration.Configuration.SESSION_START, configurationData.SessionStart);
+                SsbConfiguration.Configuration.SESSION_START, configurationData.SessionStart);
             configuration.Received().SetValue(
-                Configuration.Configuration.SESSION_END, configurationData.SessionEnd);
+                SsbConfiguration.Configuration.SESSION_END, configurationData.SessionEnd);
         }
 
         [Theory, AutoNSubstituteData]

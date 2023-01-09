@@ -1,6 +1,6 @@
-﻿using SsbHedger.Configuration;
-using SsbHedger.Model;
+﻿using SsbHedger.Model;
 using SsbHedger.RegistryManager;
+using SsbHedger.SsbConfiguration;
 
 namespace SsbHedger.CommandHandler
 {
@@ -23,19 +23,19 @@ namespace SsbHedger.CommandHandler
         public void Handle(MainWindowViewModel viewModel)
         {
             var configurationdata = _registryManager.ReadConfiguration(new ConfigurationData(
-                (string)_configuration.GetValue(Configuration.Configuration.HOST),
-                (int)_configuration.GetValue(Configuration.Configuration.PORT),
-                (int)_configuration.GetValue(Configuration.Configuration.CLIENT_ID),
-                (string)_configuration.GetValue(Configuration.Configuration.UNDERLYING_SYMBOL),
-                (string)_configuration.GetValue(Configuration.Configuration.SESSION_START),
-                (string)_configuration.GetValue(Configuration.Configuration.SESSION_END)));
+                (string)_configuration.GetValue(Configuration.HOST),
+                (int)_configuration.GetValue(Configuration.PORT),
+                (int)_configuration.GetValue(Configuration.CLIENT_ID),
+                (string)_configuration.GetValue(Configuration.UNDERLYING_SYMBOL),
+                (string)_configuration.GetValue(Configuration.SESSION_START),
+                (string)_configuration.GetValue(Configuration.SESSION_END)));
 
-            _configuration.SetValue(Configuration.Configuration.HOST, configurationdata.Host);
-            _configuration.SetValue(Configuration.Configuration.PORT, configurationdata.Port);
-            _configuration.SetValue(Configuration.Configuration.CLIENT_ID, configurationdata.ClientId);
-            _configuration.SetValue(Configuration.Configuration.UNDERLYING_SYMBOL, configurationdata.UnderlyingSymbol);
-            _configuration.SetValue(Configuration.Configuration.SESSION_START, configurationdata.SessionStart);
-            _configuration.SetValue(Configuration.Configuration.SESSION_END, configurationdata.SessionEnd);
+            _configuration.SetValue(Configuration.HOST, configurationdata.Host);
+            _configuration.SetValue(Configuration.PORT, configurationdata.Port);
+            _configuration.SetValue(Configuration.CLIENT_ID, configurationdata.ClientId);
+            _configuration.SetValue(Configuration.UNDERLYING_SYMBOL, configurationdata.UnderlyingSymbol);
+            _configuration.SetValue(Configuration.SESSION_START, configurationdata.SessionStart);
+            _configuration.SetValue(Configuration.SESSION_END, configurationdata.SessionEnd);
 
             _ibHost.ViewModel = viewModel;
             _ibHost.ConnectAndStartReaderThread(

@@ -2,7 +2,7 @@
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using SsbHedger.Abstractions;
-using SsbHedger.Configuration;
+using SsbHedger.SsbConfiguration;
 
 namespace SsbHedger.UnitTests
 {
@@ -17,12 +17,12 @@ namespace SsbHedger.UnitTests
             [Frozen] IRegistryCurrentUserAbstraction registryCurrentUser,
             RegistryManager.RegistryManager sut)
         {
-            registryKey.GetValue(Configuration.Configuration.HOST).ReturnsNull();
-            registryKey.GetValue(Configuration.Configuration.PORT).ReturnsNull();
-            registryKey.GetValue(Configuration.Configuration.CLIENT_ID).ReturnsNull();
-            registryKey.GetValue(Configuration.Configuration.UNDERLYING_SYMBOL).ReturnsNull();
-            registryKey.GetValue(Configuration.Configuration.SESSION_START).ReturnsNull();
-            registryKey.GetValue(Configuration.Configuration.SESSION_END).ReturnsNull();
+            registryKey.GetValue(SsbConfiguration.Configuration.HOST).ReturnsNull();
+            registryKey.GetValue(SsbConfiguration.Configuration.PORT).ReturnsNull();
+            registryKey.GetValue(SsbConfiguration.Configuration.CLIENT_ID).ReturnsNull();
+            registryKey.GetValue(SsbConfiguration.Configuration.UNDERLYING_SYMBOL).ReturnsNull();
+            registryKey.GetValue(SsbConfiguration.Configuration.SESSION_START).ReturnsNull();
+            registryKey.GetValue(SsbConfiguration.Configuration.SESSION_END).ReturnsNull();
 
             registryCurrentUser.OpenSubKey(SOFTWARE_SSBHEDGER).Returns(registryKey);
 
@@ -38,15 +38,15 @@ namespace SsbHedger.UnitTests
             [Frozen] IRegistryCurrentUserAbstraction registryCurrentUser,
             RegistryManager.RegistryManager sut)
         {
-            registryKey.GetValue(Configuration.Configuration.HOST).Returns(" ");
-            registryKey.GetValue(Configuration.Configuration.PORT).Returns(111);
-            registryKey.GetValue(Configuration.Configuration.CLIENT_ID).Returns(222);
+            registryKey.GetValue(SsbConfiguration.Configuration.HOST).Returns(" ");
+            registryKey.GetValue(SsbConfiguration.Configuration.PORT).Returns(111);
+            registryKey.GetValue(SsbConfiguration.Configuration.CLIENT_ID).Returns(222);
 
             registryCurrentUser.OpenSubKey(SOFTWARE_SSBHEDGER).Returns(registryKey);
             var (host, _, _, _, _, _) = sut.ReadConfiguration(defaultConfigurationData);
 
             Assert.Equal(defaultConfigurationData.Host, host);
-            registryKey.Received().SetValue(Configuration.Configuration.HOST, host);
+            registryKey.Received().SetValue(SsbConfiguration.Configuration.HOST, host);
         }
 
         [Theory, AutoNSubstituteData]
@@ -56,16 +56,16 @@ namespace SsbHedger.UnitTests
             [Frozen] IRegistryCurrentUserAbstraction registryCurrentUser,
             RegistryManager.RegistryManager sut)
         {
-            registryKey.GetValue(Configuration.Configuration.HOST).Returns("aaa");
-            registryKey.GetValue(Configuration.Configuration.PORT).Returns(-1);
-            registryKey.GetValue(Configuration.Configuration.CLIENT_ID).Returns(222);
+            registryKey.GetValue(SsbConfiguration.Configuration.HOST).Returns("aaa");
+            registryKey.GetValue(SsbConfiguration.Configuration.PORT).Returns(-1);
+            registryKey.GetValue(SsbConfiguration.Configuration.CLIENT_ID).Returns(222);
             
             registryCurrentUser.OpenSubKey(SOFTWARE_SSBHEDGER).Returns(registryKey);
 
             var (_, port, _,_,_,_) = sut.ReadConfiguration(defaultConfigurationData);
 
             Assert.Equal(defaultConfigurationData.Port, port);
-            registryKey.Received().SetValue(Configuration.Configuration.PORT, port);
+            registryKey.Received().SetValue(SsbConfiguration.Configuration.PORT, port);
         }
 
         [Theory, AutoNSubstituteData]
@@ -75,16 +75,16 @@ namespace SsbHedger.UnitTests
            [Frozen] IRegistryCurrentUserAbstraction registryCurrentUser,
            RegistryManager.RegistryManager sut)
         {
-            registryKey.GetValue(Configuration.Configuration.HOST).Returns("aaa");
-            registryKey.GetValue(Configuration.Configuration.PORT).Returns(4444);
-            registryKey.GetValue(Configuration.Configuration.CLIENT_ID).Returns(-222);
+            registryKey.GetValue(SsbConfiguration.Configuration.HOST).Returns("aaa");
+            registryKey.GetValue(SsbConfiguration.Configuration.PORT).Returns(4444);
+            registryKey.GetValue(SsbConfiguration.Configuration.CLIENT_ID).Returns(-222);
 
             registryCurrentUser.OpenSubKey(SOFTWARE_SSBHEDGER).Returns(registryKey);
 
             var (_, _, clientId,_,_,_) = sut.ReadConfiguration(defaultConfigurationData);
 
             Assert.Equal(defaultConfigurationData.ClientId, clientId);
-            registryKey.Received().SetValue(Configuration.Configuration.CLIENT_ID, clientId);
+            registryKey.Received().SetValue(SsbConfiguration.Configuration.CLIENT_ID, clientId);
         }
 
         [Theory, AutoNSubstituteData]
@@ -100,12 +100,12 @@ namespace SsbHedger.UnitTests
             sut.ReadConfiguration(defaultConfigurationData);
 
             registryCurrentUser.Received().CreateSubKey(SOFTWARE_SSBHEDGER);
-            registryKey.Received().SetValue(Configuration.Configuration.HOST, defaultConfigurationData.Host);
-            registryKey.Received().SetValue(Configuration.Configuration.PORT, defaultConfigurationData.Port);
-            registryKey.Received().SetValue(Configuration.Configuration.CLIENT_ID, defaultConfigurationData.ClientId);
-            registryKey.Received().SetValue(Configuration.Configuration.UNDERLYING_SYMBOL, defaultConfigurationData.UnderlyingSymbol);
-            registryKey.Received().SetValue(Configuration.Configuration.SESSION_START, defaultConfigurationData.SessionStart);
-            registryKey.Received().SetValue(Configuration.Configuration.SESSION_END, defaultConfigurationData.SessionEnd);
+            registryKey.Received().SetValue(SsbConfiguration.Configuration.HOST, defaultConfigurationData.Host);
+            registryKey.Received().SetValue(SsbConfiguration.Configuration.PORT, defaultConfigurationData.Port);
+            registryKey.Received().SetValue(SsbConfiguration.Configuration.CLIENT_ID, defaultConfigurationData.ClientId);
+            registryKey.Received().SetValue(SsbConfiguration.Configuration.UNDERLYING_SYMBOL, defaultConfigurationData.UnderlyingSymbol);
+            registryKey.Received().SetValue(SsbConfiguration.Configuration.SESSION_START, defaultConfigurationData.SessionStart);
+            registryKey.Received().SetValue(SsbConfiguration.Configuration.SESSION_END, defaultConfigurationData.SessionEnd);
      
         }
 
@@ -117,17 +117,17 @@ namespace SsbHedger.UnitTests
             IRegistryCurrentUserAbstraction registryCurrentUser,
             RegistryManager.RegistryManager sut)
         {
-            registryKey.GetValue(Configuration.Configuration.HOST)
+            registryKey.GetValue(SsbConfiguration.Configuration.HOST)
                 .Returns(configurationDataFromRegistry.Host);
-            registryKey.GetValue(Configuration.Configuration.PORT)
+            registryKey.GetValue(SsbConfiguration.Configuration.PORT)
                 .Returns(configurationDataFromRegistry.Port);
-            registryKey.GetValue(Configuration.Configuration.CLIENT_ID)
+            registryKey.GetValue(SsbConfiguration.Configuration.CLIENT_ID)
                 .Returns(configurationDataFromRegistry.ClientId);
-            registryKey.GetValue(Configuration.Configuration.UNDERLYING_SYMBOL)
+            registryKey.GetValue(SsbConfiguration.Configuration.UNDERLYING_SYMBOL)
                 .Returns(configurationDataFromRegistry.UnderlyingSymbol);
-            registryKey.GetValue(Configuration.Configuration.SESSION_START)
+            registryKey.GetValue(SsbConfiguration.Configuration.SESSION_START)
                 .Returns(configurationDataFromRegistry.SessionStart);
-            registryKey.GetValue(Configuration.Configuration.SESSION_END)
+            registryKey.GetValue(SsbConfiguration.Configuration.SESSION_END)
                 .Returns(configurationDataFromRegistry.SessionEnd);
 
             registryCurrentUser.OpenSubKey(SOFTWARE_SSBHEDGER).Returns(registryKey);
@@ -150,12 +150,12 @@ namespace SsbHedger.UnitTests
 
             sut.WriteConfiguration(defaultConfigurationData);
 
-            registryKey.Received().SetValue(Configuration.Configuration.HOST, defaultConfigurationData.Host);
-            registryKey.Received().SetValue(Configuration.Configuration.PORT, defaultConfigurationData.Port);
-            registryKey.Received().SetValue(Configuration.Configuration.CLIENT_ID, defaultConfigurationData.ClientId);
-            registryKey.Received().SetValue(Configuration.Configuration.UNDERLYING_SYMBOL, defaultConfigurationData.UnderlyingSymbol);
-            registryKey.Received().SetValue(Configuration.Configuration.SESSION_START, defaultConfigurationData.SessionStart);
-            registryKey.Received().SetValue(Configuration.Configuration.SESSION_END, defaultConfigurationData.SessionEnd);
+            registryKey.Received().SetValue(SsbConfiguration.Configuration.HOST, defaultConfigurationData.Host);
+            registryKey.Received().SetValue(SsbConfiguration.Configuration.PORT, defaultConfigurationData.Port);
+            registryKey.Received().SetValue(SsbConfiguration.Configuration.CLIENT_ID, defaultConfigurationData.ClientId);
+            registryKey.Received().SetValue(SsbConfiguration.Configuration.UNDERLYING_SYMBOL, defaultConfigurationData.UnderlyingSymbol);
+            registryKey.Received().SetValue(SsbConfiguration.Configuration.SESSION_START, defaultConfigurationData.SessionStart);
+            registryKey.Received().SetValue(SsbConfiguration.Configuration.SESSION_END, defaultConfigurationData.SessionEnd);
         }
     }
 }

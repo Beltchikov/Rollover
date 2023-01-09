@@ -1,4 +1,4 @@
-﻿namespace SsbHedger.Configuration
+﻿namespace SsbHedger.SsbConfiguration
 {
     public record struct ConfigurationData(string Host,
         int Port,

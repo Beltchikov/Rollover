@@ -1,5 +1,5 @@
 ﻿using SsbHedger.Abstractions;
-using SsbHedger.Configuration;
+using SsbHedger.SsbConfiguration;
 using System;
 
 namespace SsbHedger.RegistryManager
