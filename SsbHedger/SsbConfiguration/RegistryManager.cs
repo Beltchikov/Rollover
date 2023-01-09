@@ -1,8 +1,7 @@
 ﻿using SsbHedger.Abstractions;
-using SsbHedger.SsbConfiguration;
 using System;
 
-namespace SsbHedger.RegistryManager
+namespace SsbHedger.SsbConfiguration
 {
     public class RegistryManager : IRegistryManager
     {
@@ -12,9 +11,9 @@ namespace SsbHedger.RegistryManager
         private const string CLIENT_ID = @"ClientId";
         private const string UNDERLYING_SYMBOL = @"UnderlyingSymbol";
         private const string SESSION_START = @"SessionStart";
-        private const string SESSION_END= @"SessionEnd";
+        private const string SESSION_END = @"SessionEnd";
         private IRegistryCurrentUserAbstraction _registryCurrentUser;
-        
+
         public RegistryManager(IRegistryCurrentUserAbstraction registryCurrentUser)
         {
             _registryCurrentUser = registryCurrentUser;
@@ -45,7 +44,7 @@ namespace SsbHedger.RegistryManager
             var defaultOrFromRegistryConfigData = new ConfigurationData();
 
             var hostFromRegistry = subKey?.GetValue(HOST)?.ToString();
-            if(!string.IsNullOrWhiteSpace(hostFromRegistry))
+            if (!string.IsNullOrWhiteSpace(hostFromRegistry))
             {
                 defaultOrFromRegistryConfigData.Host = hostFromRegistry;
             }

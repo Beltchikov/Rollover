@@ -2,7 +2,6 @@ using AutoFixture.Xunit2;
 using NSubstitute;
 using SsbHedger.CommandHandler;
 using SsbHedger.Model;
-using SsbHedger.RegistryManager;
 using SsbHedger.SsbConfiguration;
 
 namespace SsbHedger.UnitTests.CommandHandler

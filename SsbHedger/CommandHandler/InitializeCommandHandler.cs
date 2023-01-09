@@ -1,5 +1,4 @@
 ﻿using SsbHedger.Model;
-using SsbHedger.RegistryManager;
 using SsbHedger.SsbConfiguration;
 
 namespace SsbHedger.CommandHandler

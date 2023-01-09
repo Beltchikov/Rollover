@@ -1,6 +1,4 @@
-﻿using SsbHedger.SsbConfiguration;
-
-namespace SsbHedger.RegistryManager
+﻿namespace SsbHedger.SsbConfiguration
 {
     public interface IRegistryManager
     {
