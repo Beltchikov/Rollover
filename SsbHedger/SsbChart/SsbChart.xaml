@@ -9,7 +9,8 @@
              Background="White">
     <UserControl.Resources>
         <DrawingBrush x:Key="GridTile" Stretch="None" TileMode="Tile"
-              Viewport="0,0 20,20" ViewportUnits="Absolute">
+              Viewport="0,0 20,20" ViewportUnits="Absolute" 
+                      AlignmentX="Left" AlignmentY="Bottom">
             <DrawingBrush.Drawing>
                 <GeometryDrawing>
                     <GeometryDrawing.Geometry>
@@ -25,10 +26,21 @@
             </DrawingBrush.Drawing>
         </DrawingBrush>
     </UserControl.Resources>
-    
+
     <Grid>
-        <Canvas Background="{StaticResource GridTile}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="10"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Border BorderThickness="0 1 0 0" BorderBrush="DarkGray" 
+                Grid.Row="1" Grid.Column="1"></Border>
+
+        <Canvas Background="{StaticResource GridTile}" Grid.Column="1" Grid.Row="0">
 
         </Canvas>
-</Grid>
+    </Grid>
 </UserControl>
