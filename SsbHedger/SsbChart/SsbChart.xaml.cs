@@ -24,5 +24,8 @@ namespace SsbHedger
         {
             InitializeComponent();
         }
+
+        public DateTime SessionStart { get; set; }
+        public DateTime SessionEnd{ get; set; }
     }
 }
