@@ -24,7 +24,7 @@ namespace SsbHedger
         string _barSizeSetting = "5 mins";
         string _whatToShow = "BID";
         int _useRTH = 0;
-        bool _keepUpToDate = true;
+        bool _keepUpToDate = false;
 
         public IbHost(IConfiguration configuration)
         {
