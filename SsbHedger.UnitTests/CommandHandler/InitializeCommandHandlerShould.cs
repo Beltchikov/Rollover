@@ -153,5 +153,32 @@ namespace SsbHedger.UnitTests.CommandHandler
 
             ibHost.Received().ReqHistoricalData();
         }
+
+        //[Theory, AutoNSubstituteData]
+        //public async Task CallApplyDefaultHistoricalDataIfNotConnected(
+        //    string host,
+        //    int port,
+        //    int clientId,
+        //    MainWindowViewModel viewModel,
+        //    [Frozen] IRegistryManager registryManager,
+        //    [Frozen] IConfiguration configuration,
+        //    [Frozen] IIbHost ibHost,
+        //    InitializeCommandHandler sut)
+        //{
+        //    configuration.GetValue(Configuration.HOST).Returns(host);
+        //    configuration.GetValue(Configuration.PORT).Returns(port);
+        //    configuration.GetValue(Configuration.CLIENT_ID).Returns(clientId);
+        //    configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("");
+        //    configuration.GetValue(Configuration.SESSION_START).Returns("");
+        //    configuration.GetValue(Configuration.SESSION_END).Returns("");
+
+        //    registryManager.ReadConfiguration(Arg.Any<ConfigurationData>())
+        //        .ReturnsForAnyArgs(new ConfigurationData(host, port, clientId, "", "", ""));
+        //    ibHost.ConnectAndStartReaderThread().Returns(false);
+
+        //    await sut.HandleAsync(viewModel);
+
+        //    ibHost.Received().ReqHistoricalData();
+        //}
     }
 }
