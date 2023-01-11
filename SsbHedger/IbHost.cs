@@ -17,6 +17,11 @@ namespace SsbHedger
         int _reqIdHistoricalData = 1000;
         Dictionary<string, Contract> _contractDict = null!;
         Contract _contractUnderlying = null!;
+        string _durationString = "1 D";
+        string _barSizeSetting = "5 mins";
+        string _whatToShow = "BID";
+        int _useRTH = 0;
+        bool _keepUpToDate = true;
 
         public IbHost(IConfiguration configuration)
         {
@@ -63,7 +68,23 @@ namespace SsbHedger
         public void ReqHistoricalData()
         {
             _reqIdHistoricalData++;
-            //_ibClient.ClientSocket.reqHistoricalData(currentTicker + HISTORICAL_ID_BASE, contract, endDateTime, durationString, barSizeSetting, whatToShow, useRTH, 1, keepUpToDate, new List<TagValue>());
+            _ibClient.ClientSocket.reqHistoricalData(
+                _reqIdHistoricalData,
+                _contractUnderlying,
+                GetEndDateTime(),
+                _durationString,
+                _barSizeSetting,
+                _whatToShow,
+                _useRTH,
+                1,
+                _keepUpToDate,
+                new List<TagValue>());
+        }
+
+        private string GetEndDateTime()
+        {
+            // TODO
+            return "20230111 22:15:00";
         }
 
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)
@@ -137,19 +158,43 @@ namespace SsbHedger
             ViewModel.ConnectionMessage = DISCONNECTED;
         }
 
-        private void _ibClient_HistoricalData(HistoricalDataMessage obj)
+        private void _ibClient_HistoricalData(HistoricalDataMessage message)
         {
-            throw new NotImplementedException();
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+            ViewModel.Messages.Add(new Message
+            {
+                ReqId = message.RequestId,
+                Body = $"HistoricalData: {message.Date} {message.Open} {message.High} {message.Low} {message.Close}"
+            });
         }
 
-        private void _ibClient_HistoricalDataUpdate(HistoricalDataMessage obj)
+        private void _ibClient_HistoricalDataUpdate(HistoricalDataMessage message)
         {
-            throw new NotImplementedException();
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+            ViewModel.Messages.Add(new Message
+            {
+                ReqId = message.RequestId,
+                Body = $"HistoricalDataUpdate: {message.Date} {message.Open} {message.High} {message.Low} {message.Close}"
+            });
         }
 
-        private void _ibClient_HistoricalDataEnd(HistoricalDataEndMessage obj)
+        private void _ibClient_HistoricalDataEnd(HistoricalDataEndMessage message)
         {
-            throw new NotImplementedException();
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+            ViewModel.Messages.Add(new Message
+            {
+                ReqId = message.RequestId,
+                Body = $"HistoricalDataEnd: {message.StartDate} {message.EndDate} "
+            });
         }
     }
 }
