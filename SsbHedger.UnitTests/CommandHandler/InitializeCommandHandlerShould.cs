@@ -9,7 +9,7 @@ namespace SsbHedger.UnitTests.CommandHandler
     public class InitializeCommandHandlerShould
     {
         [Theory, AutoNSubstituteData]
-        public void CallRegistryManager(
+        public async Task CallRegistryManagerAsync(
             ConfigurationData configurationData,
             MainWindowViewModel viewModel,
             [Frozen] IConfiguration configuration,
@@ -29,12 +29,12 @@ namespace SsbHedger.UnitTests.CommandHandler
             configuration.GetValue(SsbConfiguration.Configuration.SESSION_END)
                 .Returns(configurationData.SessionEnd);
 
-            sut.HandleAsync(viewModel);
+            await sut.HandleAsync(viewModel);
             registryManager.Received().ReadConfiguration(configurationData);
         }
 
         [Theory, AutoNSubstituteData]
-        public void SyncConfigurationWithRegistry(
+        public async Task SyncConfigurationWithRegistryAsync(
            ConfigurationData configurationData,
            ConfigurationData configurationDataFromRegistry,
            MainWindowViewModel viewModel,
@@ -58,7 +58,7 @@ namespace SsbHedger.UnitTests.CommandHandler
             registryManager.ReadConfiguration(configurationData)
                 .Returns(configurationDataFromRegistry);
 
-            sut.HandleAsync(viewModel);
+            await sut.HandleAsync(viewModel);
             
             configuration.Received().SetValue(
                 SsbConfiguration.Configuration.HOST, configurationDataFromRegistry.Host);
@@ -75,7 +75,7 @@ namespace SsbHedger.UnitTests.CommandHandler
         }
 
         [Theory, AutoNSubstituteData]
-        public void CallConnectAndStartReaderThread(
+        public async Task CallConnectAndStartReaderThreadAsync(
             string host,
             int port,
             int clientId,
@@ -94,8 +94,8 @@ namespace SsbHedger.UnitTests.CommandHandler
 
             registryManager.ReadConfiguration(Arg.Any<ConfigurationData>())
                 .ReturnsForAnyArgs(new ConfigurationData( host,  port,  clientId, "", "", ""));
-            
-            sut.HandleAsync(viewModel);
+
+            await sut.HandleAsync(viewModel);
             
             ibHost.Received().ConnectAndStartReaderThread();
         }
