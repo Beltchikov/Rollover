@@ -29,7 +29,7 @@ namespace SsbHedger.UnitTests.CommandHandler
             configuration.GetValue(SsbConfiguration.Configuration.SESSION_END)
                 .Returns(configurationData.SessionEnd);
 
-            sut.Handle(viewModel);
+            sut.HandleAsync(viewModel);
             registryManager.Received().ReadConfiguration(configurationData);
         }
 
@@ -58,7 +58,7 @@ namespace SsbHedger.UnitTests.CommandHandler
             registryManager.ReadConfiguration(configurationData)
                 .Returns(configurationDataFromRegistry);
 
-            sut.Handle(viewModel);
+            sut.HandleAsync(viewModel);
             
             configuration.Received().SetValue(
                 SsbConfiguration.Configuration.HOST, configurationDataFromRegistry.Host);
@@ -95,7 +95,7 @@ namespace SsbHedger.UnitTests.CommandHandler
             registryManager.ReadConfiguration(Arg.Any<ConfigurationData>())
                 .ReturnsForAnyArgs(new ConfigurationData( host,  port,  clientId, "", "", ""));
             
-            sut.Handle(viewModel);
+            sut.HandleAsync(viewModel);
             
             ibHost.Received().ConnectAndStartReaderThread();
         }

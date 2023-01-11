@@ -18,7 +18,7 @@ namespace SsbHedger.Model
             IInitializeCommandHandler initializeCommandHandler,
             IUpdateConfigurationCommandHandler updateConfigurationCommandHandler)
         {
-            InitializeCommand = new RelayCommand(() => initializeCommandHandler.Handle(this));
+            InitializeCommand = new RelayCommand(() => initializeCommandHandler.HandleAsync(this));
             UpdateConfigurationCommand = new RelayCommand<object[]>((p) => updateConfigurationCommandHandler.Handle(this, p));
 
             messages = new ObservableCollection<Message>();

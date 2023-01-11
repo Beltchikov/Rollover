@@ -1,7 +1,9 @@
-﻿namespace SsbHedger.CommandHandler
+﻿using System.Threading.Tasks;
+
+namespace SsbHedger.CommandHandler
 {
     public interface IInitializeCommandHandler
     {
-        void Handle(Model.MainWindowViewModel mainWindowViewModel);
+        Task HandleAsync(Model.MainWindowViewModel mainWindowViewModel);
     }
 }

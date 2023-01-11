@@ -1,5 +1,6 @@
 ﻿using SsbHedger.Model;
 using SsbHedger.SsbConfiguration;
+using System.Threading.Tasks;
 
 namespace SsbHedger.CommandHandler
 {
@@ -19,7 +20,7 @@ namespace SsbHedger.CommandHandler
             _configuration = configuration;
         }
 
-        public void Handle(MainWindowViewModel viewModel)
+        public async Task HandleAsync(MainWindowViewModel viewModel)
         {
             var configurationdata = _registryManager.ReadConfiguration(new ConfigurationData(
                 (string)_configuration.GetValue(Configuration.HOST),
@@ -37,7 +38,7 @@ namespace SsbHedger.CommandHandler
             _configuration.SetValue(Configuration.SESSION_END, configurationdata.SessionEnd);
 
             _ibHost.ViewModel = viewModel;
-            _ibHost.ConnectAndStartReaderThread();
+            await _ibHost.ConnectAndStartReaderThread();
         }
     }
 }
