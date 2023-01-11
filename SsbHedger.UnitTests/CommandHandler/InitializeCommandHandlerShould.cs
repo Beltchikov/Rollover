@@ -16,17 +16,17 @@ namespace SsbHedger.UnitTests.CommandHandler
             [Frozen] IRegistryManager registryManager,
             InitializeCommandHandler sut)
         {
-            configuration.GetValue(SsbConfiguration.Configuration.HOST)
+            configuration.GetValue(Configuration.HOST)
                 .Returns(configurationData.Host);
-            configuration.GetValue(SsbConfiguration.Configuration.PORT)
+            configuration.GetValue(Configuration.PORT)
                 .Returns(configurationData.Port);
-            configuration.GetValue(SsbConfiguration.Configuration.CLIENT_ID)
+            configuration.GetValue(Configuration.CLIENT_ID)
                 .Returns(configurationData.ClientId);
-            configuration.GetValue(SsbConfiguration.Configuration.UNDERLYING_SYMBOL)
+            configuration.GetValue(Configuration.UNDERLYING_SYMBOL)
                 .Returns(configurationData.UnderlyingSymbol);
-            configuration.GetValue(SsbConfiguration.Configuration.SESSION_START)
+            configuration.GetValue(Configuration.SESSION_START)
                 .Returns(configurationData.SessionStart);
-            configuration.GetValue(SsbConfiguration.Configuration.SESSION_END)
+            configuration.GetValue(Configuration.SESSION_END)
                 .Returns(configurationData.SessionEnd);
 
             await sut.HandleAsync(viewModel);
@@ -42,17 +42,17 @@ namespace SsbHedger.UnitTests.CommandHandler
            [Frozen] IConfiguration configuration,
            InitializeCommandHandler sut)
         {
-            configuration.GetValue(SsbConfiguration.Configuration.HOST)
+            configuration.GetValue(Configuration.HOST)
                 .Returns(configurationData.Host);
-            configuration.GetValue(SsbConfiguration.Configuration.PORT)
+            configuration.GetValue(Configuration.PORT)
                 .Returns(configurationData.Port);
-            configuration.GetValue(SsbConfiguration.Configuration.CLIENT_ID)
+            configuration.GetValue(Configuration.CLIENT_ID)
                 .Returns(configurationData.ClientId);
-            configuration.GetValue(SsbConfiguration.Configuration.UNDERLYING_SYMBOL)
+            configuration.GetValue(Configuration.UNDERLYING_SYMBOL)
                 .Returns(configurationData.UnderlyingSymbol);
-            configuration.GetValue(SsbConfiguration.Configuration.SESSION_START)
+            configuration.GetValue(Configuration.SESSION_START)
                 .Returns(configurationData.SessionStart);
-            configuration.GetValue(SsbConfiguration.Configuration.SESSION_END)
+            configuration.GetValue(Configuration.SESSION_END)
                 .Returns(configurationData.SessionEnd);
 
             registryManager.ReadConfiguration(configurationData)
@@ -61,17 +61,17 @@ namespace SsbHedger.UnitTests.CommandHandler
             await sut.HandleAsync(viewModel);
             
             configuration.Received().SetValue(
-                SsbConfiguration.Configuration.HOST, configurationDataFromRegistry.Host);
+                Configuration.HOST, configurationDataFromRegistry.Host);
             configuration.Received().SetValue(
-                SsbConfiguration.Configuration.PORT, configurationDataFromRegistry.Port);
+                Configuration.PORT, configurationDataFromRegistry.Port);
             configuration.Received().SetValue(
-                SsbConfiguration.Configuration.CLIENT_ID, configurationDataFromRegistry.ClientId);
+                Configuration.CLIENT_ID, configurationDataFromRegistry.ClientId);
             configuration.Received().SetValue(
-                SsbConfiguration.Configuration.UNDERLYING_SYMBOL, configurationDataFromRegistry.UnderlyingSymbol);
+                Configuration.UNDERLYING_SYMBOL, configurationDataFromRegistry.UnderlyingSymbol);
             configuration.Received().SetValue(
-                SsbConfiguration.Configuration.SESSION_START, configurationDataFromRegistry.SessionStart);
+                Configuration.SESSION_START, configurationDataFromRegistry.SessionStart);
             configuration.Received().SetValue(
-                SsbConfiguration.Configuration.SESSION_END, configurationDataFromRegistry.SessionEnd);
+                Configuration.SESSION_END, configurationDataFromRegistry.SessionEnd);
         }
 
         [Theory, AutoNSubstituteData]
@@ -97,7 +97,7 @@ namespace SsbHedger.UnitTests.CommandHandler
 
             await sut.HandleAsync(viewModel);
             
-            ibHost.Received().ConnectAndStartReaderThread();
+            await ibHost.Received().ConnectAndStartReaderThread();
         }
     }
 }
