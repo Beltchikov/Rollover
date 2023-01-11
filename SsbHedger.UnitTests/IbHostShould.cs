@@ -18,6 +18,8 @@ namespace SsbHedger.UnitTests
             Exception exception = new Exception("4");
 
             IConfiguration configuration = Substitute.For<IConfiguration>();
+            configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");  
+
             var sut = new IbHost(configuration);
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
@@ -42,6 +44,8 @@ namespace SsbHedger.UnitTests
             ManagedAccountsMessage message = new ManagedAccountsMessage(accounts);
 
             IConfiguration configuration = Substitute.For<IConfiguration>();
+            configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
+
             var sut = new IbHost(configuration);
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
@@ -66,6 +70,8 @@ namespace SsbHedger.UnitTests
             ConnectionStatusMessage message = new ConnectionStatusMessage(true);
 
             IConfiguration configuration = Substitute.For<IConfiguration>();
+            configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
+
             var sut = new IbHost(configuration);
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
@@ -91,6 +97,8 @@ namespace SsbHedger.UnitTests
             ConnectionStatusMessage message = new ConnectionStatusMessage(false);
 
             IConfiguration configuration = Substitute.For<IConfiguration>();
+            configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
+
             var sut = new IbHost(configuration);
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
@@ -117,6 +125,8 @@ namespace SsbHedger.UnitTests
             ConnectionStatusMessage messageConnected = new ConnectionStatusMessage(true);
 
             IConfiguration configuration = Substitute.For<IConfiguration>();
+            configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
+
             var sut = new IbHost(configuration);
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
