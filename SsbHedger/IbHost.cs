@@ -12,12 +12,8 @@ namespace SsbHedger
     public class IbHost : IIbHost
     {
         IConfiguration _configuration;
-
         IIBClient _ibClient;
-        string _host = null!;
-        int _port;
-        int _clientId;
-
+       
         int _reqIdHistoricalData = 1000;
         Dictionary<string, Contract> _contractDict = null!;
         Contract _contractUnderlying = null!;
@@ -47,16 +43,16 @@ namespace SsbHedger
 
         public MainWindowViewModel? ViewModel { get; set; }
 
-        public void ConnectAndStartReaderThread(string host, int port, int clientId)
+        public void ConnectAndStartReaderThread()
         {
             if (ViewModel == null)
             {
                 throw new ApplicationException("Unexpected! ViewModel is null");
             }
-            _host = host;
-            _port = port;
-            _clientId = clientId;
-            _ibClient.ConnectAndStartReaderThread(host, port, clientId);
+            _ibClient.ConnectAndStartReaderThread(
+                (string)_configuration.GetValue(Configuration.HOST),
+                (int)_configuration.GetValue(Configuration.PORT),
+                (int)_configuration.GetValue(Configuration.CLIENT_ID));
         }
 
         public void Disconnect()
@@ -117,8 +113,10 @@ namespace SsbHedger
             }
 
             ViewModel.ConnectionMessage = isConnected
-                    ? $"CONNECTED! {_host}, {_port}, client ID: {_clientId}"
-                    : $"NOT CONNECTED! {_host}, {_port}, client ID: {_clientId}";
+                    ? $"CONNECTED! {_configuration.GetValue(Configuration.HOST)}, " +
+                    $"{_configuration.GetValue(Configuration.PORT)}, client ID: {_configuration.GetValue(Configuration.CLIENT_ID)}"
+                    : $"NOT CONNECTED! {_configuration.GetValue(Configuration.HOST)}, " +
+                    $"{_configuration.GetValue(Configuration.PORT)}, client ID: {_configuration.GetValue(Configuration.CLIENT_ID)}";
         }
 
         private void _ibClient_ConnectionClosed()

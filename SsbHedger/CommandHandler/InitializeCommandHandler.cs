@@ -37,10 +37,7 @@ namespace SsbHedger.CommandHandler
             _configuration.SetValue(Configuration.SESSION_END, configurationdata.SessionEnd);
 
             _ibHost.ViewModel = viewModel;
-            _ibHost.ConnectAndStartReaderThread(
-                configurationdata.Host,
-                configurationdata.Port,
-                configurationdata.ClientId);
+            _ibHost.ConnectAndStartReaderThread();
         }
     }
 }

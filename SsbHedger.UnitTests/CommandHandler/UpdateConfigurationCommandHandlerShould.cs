@@ -76,10 +76,7 @@ namespace SsbHedger.UnitTests.CommandHandler
             });
 
             ibHost.Received().Disconnect();
-            ibHost.Received().ConnectAndStartReaderThread(
-                configurationData.Host,
-                configurationData.Port,
-                configurationData.ClientId);
+            ibHost.Received().ConnectAndStartReaderThread();
         }
     }
 }

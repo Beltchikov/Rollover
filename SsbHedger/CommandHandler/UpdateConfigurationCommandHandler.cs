@@ -71,7 +71,7 @@ namespace SsbHedger.CommandHandler
             _configuration.SetValue(Configuration.SESSION_END, sessionEnd);
 
             _ibHost.Disconnect();
-            _ibHost.ConnectAndStartReaderThread(host, port, clientId);
+            _ibHost.ConnectAndStartReaderThread();
         }
     }
 }

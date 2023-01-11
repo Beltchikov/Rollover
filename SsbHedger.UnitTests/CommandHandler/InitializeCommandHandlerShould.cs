@@ -85,19 +85,19 @@ namespace SsbHedger.UnitTests.CommandHandler
             [Frozen] IIbHost ibHost,
             InitializeCommandHandler sut)
         {
-            configuration.GetValue(SsbConfiguration.Configuration.HOST).Returns(host);
-            configuration.GetValue(SsbConfiguration.Configuration.PORT).Returns(port);
-            configuration.GetValue(SsbConfiguration.Configuration.CLIENT_ID).Returns(clientId);
-            configuration.GetValue(SsbConfiguration.Configuration.UNDERLYING_SYMBOL).Returns("");
-            configuration.GetValue(SsbConfiguration.Configuration.SESSION_START).Returns("");
-            configuration.GetValue(SsbConfiguration.Configuration.SESSION_END).Returns("");
+            configuration.GetValue(Configuration.HOST).Returns(host);
+            configuration.GetValue(Configuration.PORT).Returns(port);
+            configuration.GetValue(Configuration.CLIENT_ID).Returns(clientId);
+            configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("");
+            configuration.GetValue(Configuration.SESSION_START).Returns("");
+            configuration.GetValue(Configuration.SESSION_END).Returns("");
 
             registryManager.ReadConfiguration(Arg.Any<ConfigurationData>())
                 .ReturnsForAnyArgs(new ConfigurationData( host,  port,  clientId, "", "", ""));
             
             sut.Handle(viewModel);
             
-            ibHost.Received().ConnectAndStartReaderThread(host, port, clientId);
+            ibHost.Received().ConnectAndStartReaderThread();
         }
     }
 }
