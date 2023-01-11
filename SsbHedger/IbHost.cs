@@ -64,7 +64,7 @@ namespace SsbHedger
                     (int)_configuration.GetValue(Configuration.CLIENT_ID));
 
                 var startTime = DateTime.Now;
-                while ((DateTime.Now - startTime).Milliseconds < TIMEOUT || ViewModel.Connected) { }
+                while ((DateTime.Now - startTime).Milliseconds < TIMEOUT && !ViewModel.Connected) { }
                 return ViewModel.Connected;
             });
         }
