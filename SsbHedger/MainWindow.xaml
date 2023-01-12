@@ -69,7 +69,8 @@
                     Click="btConfiguration_Click">...</Button>
         </StackPanel>
 
-        <local:SsbChart Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" ></local:SsbChart>
+        <local:SsbChart Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3"
+                        BarsUnderlying="{Binding Bars}"></local:SsbChart>
 
         <ListBox Name="messages" Grid.Row="8" Grid.Column="1" 
                  Background="Azure" ItemsSource="{Binding Messages}"
