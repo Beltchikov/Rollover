@@ -107,8 +107,7 @@ namespace SsbHedger
             {
                 throw new ApplicationException("Unexpected! ViewModel is null");
             }
-            ViewModel.Messages.Add(new Message
-            { ReqId = reqId, Body = $"Code:{code} message:{message} exception:{exception}" });
+            ViewModel.Messages.Add(new Message(reqId, $"Code:{code} message:{message} exception:{exception}"));
             UpdateConnectionMessage(ViewModel.Connected);
         }
 
@@ -118,11 +117,7 @@ namespace SsbHedger
             {
                 throw new ApplicationException("Unexpected! ViewModel is null");
             }
-            ViewModel.Messages.Add(new Message
-            {
-                ReqId = 0,
-                Body = $"Managed accounts: {message.ManagedAccounts.Aggregate((r, n) => r + "," + n)}"
-            });
+            ViewModel.Messages.Add(new Message(0, $"Managed accounts: {message.ManagedAccounts.Aggregate((r, n) => r + "," + n)}"));
         }
 
         private void _ibClient_NextValidId(ConnectionStatusMessage message)
@@ -131,11 +126,7 @@ namespace SsbHedger
             {
                 throw new ApplicationException("Unexpected! ViewModel is null");
             }
-            ViewModel.Messages.Add(new Message
-            {
-                ReqId = 0,
-                Body = message.IsConnected ? "CONNECTED!" : "NOT CONNECTED!"
-            });
+            ViewModel.Messages.Add(new Message(0, message.IsConnected ? "CONNECTED!" : "NOT CONNECTED!"));
             ViewModel.Connected = message.IsConnected;
             UpdateConnectionMessage(message.IsConnected);
         }
@@ -163,11 +154,7 @@ namespace SsbHedger
             {
                 throw new ApplicationException("Unexpected! ViewModel is null");
             }
-            ViewModel.Messages.Add(new Message
-            {
-                ReqId = 0,
-                Body = DISCONNECTED
-            });
+            ViewModel.Messages.Add(new Message(0, DISCONNECTED));
             ViewModel.Connected = false;
             ViewModel.ConnectionMessage = DISCONNECTED;
         }
@@ -178,11 +165,8 @@ namespace SsbHedger
             {
                 throw new ApplicationException("Unexpected! ViewModel is null");
             }
-            ViewModel.Messages.Add(new Message
-            {
-                ReqId = message.RequestId,
-                Body = $"HistoricalData: {message.Date} {message.Open} {message.High} {message.Low} {message.Close}"
-            });
+            ViewModel.Messages.Add(new Message(message.RequestId, 
+                $"HistoricalData: {message.Date} {message.Open} {message.High} {message.Low} {message.Close}"));
         }
 
         private void _ibClient_HistoricalDataUpdate(HistoricalDataMessage message)
@@ -191,11 +175,9 @@ namespace SsbHedger
             {
                 throw new ApplicationException("Unexpected! ViewModel is null");
             }
-            ViewModel.Messages.Add(new Message
-            {
-                ReqId = message.RequestId,
-                Body = $"HistoricalDataUpdate: {message.Date} {message.Open} {message.High} {message.Low} {message.Close}"
-            });
+            ViewModel.Messages.Add(new Message(message.RequestId, 
+                $"HistoricalDataUpdate: {message.Date} {message.Open} {message.High} {message.Low} {message.Close}"));
+          
         }
 
         private void _ibClient_HistoricalDataEnd(HistoricalDataEndMessage message)
@@ -204,11 +186,8 @@ namespace SsbHedger
             {
                 throw new ApplicationException("Unexpected! ViewModel is null");
             }
-            ViewModel.Messages.Add(new Message
-            {
-                ReqId = message.RequestId,
-                Body = $"HistoricalDataEnd: {message.StartDate} {message.EndDate} "
-            });
+            ViewModel.Messages.Add(new Message(message.RequestId, 
+                $"HistoricalDataEnd: {message.StartDate} {message.EndDate} "));
         }
     }
 }
