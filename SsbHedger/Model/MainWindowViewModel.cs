@@ -11,6 +11,7 @@ namespace SsbHedger.Model
     public class MainWindowViewModel : ObservableObject
     {
         private ObservableCollection<Message> messages;
+        private ObservableCollection<Bar> bars;
         private string connectionMessage = "Connecting...";
         private bool connected;
         
@@ -22,6 +23,7 @@ namespace SsbHedger.Model
             UpdateConfigurationCommand = new RelayCommand<object[]>((p) => updateConfigurationCommandHandler.Handle(this, p));
 
             messages = new ObservableCollection<Message>();
+            bars = new ObservableCollection<Bar>();
         }
 
         public string ConnectionMessage
@@ -48,6 +50,13 @@ namespace SsbHedger.Model
             get => messages;
             set => SetProperty(ref messages, value);
         }
+
+        public ObservableCollection<Bar> Bars
+        {
+            get => bars;
+            set => SetProperty(ref bars, value);
+        }
+
         public ICommand InitializeCommand { get; }
         public ICommand UpdateConfigurationCommand { get; }
     }

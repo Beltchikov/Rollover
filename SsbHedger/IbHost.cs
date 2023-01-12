@@ -8,6 +8,7 @@ using IBApi;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace SsbHedger
 {
@@ -58,13 +59,14 @@ namespace SsbHedger
                 {
                     throw new ApplicationException("Unexpected! ViewModel is null");
                 }
+                
                 _ibClient.ConnectAndStartReaderThread(
-                    (string)_configuration.GetValue(Configuration.HOST),
-                    (int)_configuration.GetValue(Configuration.PORT),
-                    (int)_configuration.GetValue(Configuration.CLIENT_ID));
-
+                                (string)_configuration.GetValue(Configuration.HOST),
+                                (int)_configuration.GetValue(Configuration.PORT),
+                                (int)_configuration.GetValue(Configuration.CLIENT_ID));
+                
                 var startTime = DateTime.Now;
-                while ((DateTime.Now - startTime).Milliseconds < TIMEOUT && !ViewModel.Connected) { }
+                while ((DateTime.Now - startTime).TotalMilliseconds < TIMEOUT && !ViewModel.Connected) { }
                 return ViewModel.Connected;
             });
         }
@@ -92,7 +94,30 @@ namespace SsbHedger
 
         public void ApplyDefaultHistoricalData()
         {
-            throw new NotImplementedException();
+            // TODO read from file
+
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+
+            var bars = new List<Model.Bar>()
+            {
+                new Model.Bar(DateTime.ParseExact("20230111 10:00:00", "yyyyMMdd hh:mm:ss", CultureInfo.InvariantCulture), 
+                    390.44, 390.93, 390.2, 390.84),
+                new Model.Bar(DateTime.ParseExact("20230111 10:05:00", "yyyyMMdd hh:mm:ss", CultureInfo.InvariantCulture),
+                    390.84, 391.18, 390.78, 391.01),
+                new Model.Bar(DateTime.ParseExact("20230111 10:10:00", "yyyyMMdd hh:mm:ss", CultureInfo.InvariantCulture),
+                    391.01, 391.07, 390.93, 391.02),
+                new Model.Bar(DateTime.ParseExact("20230111 10:15:00", "yyyyMMdd hh:mm:ss", CultureInfo.InvariantCulture),
+                    391.02, 391.5, 390.98, 391.46)
+            };
+
+            bars.ForEach(b => ViewModel.Bars.Add(b));
+
+
+            //throw new NotImplementedException();
+
         }
 
         private string GetEndDateTime()

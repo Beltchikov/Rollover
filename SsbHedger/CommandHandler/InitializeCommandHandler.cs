@@ -38,8 +38,8 @@ namespace SsbHedger.CommandHandler
             _configuration.SetValue(Configuration.SESSION_END, configurationdata.SessionEnd);
 
             _ibHost.ViewModel = viewModel;
+            
             var connected = await _ibHost.ConnectAndStartReaderThread();
-
             if(connected)
             {
                 _ibHost.ReqHistoricalData();
