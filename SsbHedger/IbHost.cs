@@ -90,6 +90,11 @@ namespace SsbHedger
                 new List<TagValue>());
         }
 
+        public void ApplyDefaultHistoricalData()
+        {
+            throw new NotImplementedException();
+        }
+
         private string GetEndDateTime()
         {
             // TODO

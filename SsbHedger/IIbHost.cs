@@ -8,7 +8,7 @@ namespace SsbHedger
         public MainWindowViewModel? ViewModel { get; set; }
         public Task<bool> ConnectAndStartReaderThread();
         public void Disconnect();
-
         public void ReqHistoricalData();
+        void ApplyDefaultHistoricalData();
     }
 }

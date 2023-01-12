@@ -44,6 +44,10 @@ namespace SsbHedger.CommandHandler
             {
                 _ibHost.ReqHistoricalData();
             }
+            else
+            {
+                _ibHost.ApplyDefaultHistoricalData();
+            }
         }
     }
 }
