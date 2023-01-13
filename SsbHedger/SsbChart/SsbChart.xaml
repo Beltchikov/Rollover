@@ -40,7 +40,21 @@
                 Grid.Row="1" Grid.Column="1"></Border>
 
         <Canvas Background="{StaticResource GridTile}" Grid.Column="1" Grid.Row="0">
-
+            <ItemsControl ItemsSource="{Binding BarsUnderlying}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Rectangle  Width="50" Height="80" Fill="Crimson"
+                                    Canvas.Left="10" Canvas.Top="20"></Rectangle>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <!--<Rectangle  Width="50" Height="80" Fill="Crimson"
+                                    Canvas.Left="10" Canvas.Top="20"></Rectangle>-->
         </Canvas>
     </Grid>
 </UserControl>
