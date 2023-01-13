@@ -32,6 +32,7 @@ namespace SsbHedger
         public SsbChart()
         {
             InitializeComponent();
+            DataContext= this;
         }
 
         public DateTime SessionStart { get; set; }
