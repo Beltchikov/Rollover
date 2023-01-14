@@ -14,7 +14,9 @@ namespace SsbHedger.Model
         private ObservableCollection<Bar> bars;
         private string connectionMessage = "Connecting...";
         private bool connected;
-        
+        private string sessionStart;
+        private string sessionEnd;
+
         public MainWindowViewModel(
             IInitializeCommandHandler initializeCommandHandler,
             IUpdateConfigurationCommandHandler updateConfigurationCommandHandler)
@@ -49,6 +51,26 @@ namespace SsbHedger.Model
         {
             get => messages;
             set => SetProperty(ref messages, value);
+        }
+
+        public string SessionStart
+        {
+            get => sessionStart;
+            set
+            {
+                SetProperty(ref sessionStart, value);
+                OnPropertyChanged(nameof(SessionStart));
+            }
+        }
+
+        public string SessionEnd
+        {
+            get => sessionEnd;
+            set
+            {
+                SetProperty(ref sessionEnd, value);
+                OnPropertyChanged(nameof(SessionEnd));
+            }
         }
 
         public ObservableCollection<Bar> Bars

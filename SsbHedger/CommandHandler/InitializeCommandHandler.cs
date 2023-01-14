@@ -37,6 +37,8 @@ namespace SsbHedger.CommandHandler
             _configuration.SetValue(Configuration.SESSION_START, configurationdata.SessionStart);
             _configuration.SetValue(Configuration.SESSION_END, configurationdata.SessionEnd);
 
+            viewModel.SessionStart = configurationdata.SessionStart;
+            viewModel.SessionEnd= configurationdata.SessionEnd;
             _ibHost.ViewModel = viewModel;
             
             var connected = await _ibHost.ConnectAndStartReaderThread();
