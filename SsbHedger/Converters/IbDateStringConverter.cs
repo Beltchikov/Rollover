@@ -14,7 +14,17 @@ namespace SsbHedger.Converters
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             DateTime valueTyped = (DateTime)value;
-            return $"{valueTyped.Year}";
+            return $"{valueTyped.Year}{EnsureTwoDigits(valueTyped.Month)}" +
+                $"{EnsureTwoDigits(valueTyped.Day)}" +
+                $" {EnsureTwoDigits(valueTyped.Hour)}:" +
+                $"{EnsureTwoDigits(valueTyped.Minute)}:" +
+                $"{EnsureTwoDigits(valueTyped.Second)}";
+        }
+
+        private string EnsureTwoDigits(int month)
+        {
+            string result = month.ToString();
+            return result.Length == 2 ? result : "0" + result;
         }
     }
 }
