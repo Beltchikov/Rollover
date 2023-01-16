@@ -79,11 +79,6 @@
                         SessionStart="{Binding DataContext.SessionStart, ElementName=mainWindow, Converter={StaticResource TimeToDateTimeConverter}}"
                         SessionEnd="{Binding DataContext.SessionEnd, ElementName=mainWindow, Converter={StaticResource TimeToDateTimeConverter}}"
                         BarsUnderlying="{Binding Bars}"></local:SsbChart>
-        <!--<local:SsbChart Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3"
-                        SessionStart="15:30"
-                        SessionEnd="22:15"
-                        BarsUnderlying="{Binding Bars}"></local:SsbChart>-->
-
 
         <ListBox Name="messages" Grid.Row="8" Grid.Column="1" 
                  Background="Azure" ItemsSource="{Binding Messages}"
