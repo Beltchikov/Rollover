@@ -31,11 +31,12 @@ namespace SsbHedger
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            var viewModel = new MainWindowViewModel(
+                    Services.GetRequiredService<IInitializeCommandHandler>(),
+                    Services.GetRequiredService<IUpdateConfigurationCommandHandler>());
             MainWindow mainWindow = new(Services.GetRequiredService<IConfiguration>())
             {
-                DataContext = new MainWindowViewModel(
-                    Services.GetRequiredService<IInitializeCommandHandler>(),
-                    Services.GetRequiredService<IUpdateConfigurationCommandHandler>())
+                DataContext = viewModel
             };
             mainWindow.Show();
         }
