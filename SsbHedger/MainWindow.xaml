@@ -8,7 +8,9 @@
         xmlns:converters="clr-namespace:SsbHedger.Converters"
         xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1000" Width="1600" WindowState="Maximized" Background="#FFA0A0A0">
+        Title="MainWindow" Height="1000" Width="1600" WindowState="Maximized" 
+        Background="#FFA0A0A0"
+        x:Name="mainWindow">
     <b:Interaction.Triggers>
         <b:EventTrigger EventName="Loaded">
             <b:InvokeCommandAction
@@ -73,14 +75,14 @@
                     Click="btConfiguration_Click">...</Button>
         </StackPanel>
 
-        <!--<local:SsbChart Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3"
-                        SessionStart="{Binding SessionStart, Converter={StaticResource IbDateStringConverter}}"
-                        SessionEnd="{Binding SessionEnd, Converter={StaticResource IbDateStringConverter}}"
-                        BarsUnderlying="{Binding Bars}"></local:SsbChart>-->
         <local:SsbChart Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3"
+                        SessionStart="{Binding DataContext.SessionStart, ElementName=mainWindow, Converter={StaticResource IbDateStringConverter}}"
+                        SessionEnd="{Binding DataContext.SessionEnd, ElementName=mainWindow, Converter={StaticResource IbDateStringConverter}}"
+                        BarsUnderlying="{Binding Bars}"></local:SsbChart>
+        <!--<local:SsbChart Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3"
                         SessionStart="15:30"
                         SessionEnd="22:15"
-                        BarsUnderlying="{Binding Bars}"></local:SsbChart>
+                        BarsUnderlying="{Binding Bars}"></local:SsbChart>-->
 
 
         <ListBox Name="messages" Grid.Row="8" Grid.Column="1" 
