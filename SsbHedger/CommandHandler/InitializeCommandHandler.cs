@@ -22,21 +22,6 @@ namespace SsbHedger.CommandHandler
 
         public async Task HandleAsync(MainWindowViewModel viewModel)
         {
-            var configurationdata = _registryManager.ReadConfiguration(new ConfigurationData(
-                (string)_configuration.GetValue(Configuration.HOST),
-                (int)_configuration.GetValue(Configuration.PORT),
-                (int)_configuration.GetValue(Configuration.CLIENT_ID),
-                (string)_configuration.GetValue(Configuration.UNDERLYING_SYMBOL),
-                (string)_configuration.GetValue(Configuration.SESSION_START),
-                (string)_configuration.GetValue(Configuration.SESSION_END)));
-
-            _configuration.SetValue(Configuration.HOST, configurationdata.Host);
-            _configuration.SetValue(Configuration.PORT, configurationdata.Port);
-            _configuration.SetValue(Configuration.CLIENT_ID, configurationdata.ClientId);
-            _configuration.SetValue(Configuration.UNDERLYING_SYMBOL, configurationdata.UnderlyingSymbol);
-            _configuration.SetValue(Configuration.SESSION_START, configurationdata.SessionStart);
-            _configuration.SetValue(Configuration.SESSION_END, configurationdata.SessionEnd);
-
             _ibHost.ViewModel = viewModel;
             
             var connected = await _ibHost.ConnectAndStartReaderThread();
