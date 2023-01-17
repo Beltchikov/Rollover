@@ -55,7 +55,7 @@ namespace SsbHedger.SsbChartControl
         {
             get
             {
-                return _lineValuesConverter.LineTiems(SessionStart, SessionEnd);
+                return _lineValuesConverter.LineTimes(SessionStart, SessionEnd);
             }
         }
         public List<BarUnderlying> BarsUnderlying
