@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace SsbHedger
+namespace SsbHedger.SsbChart
 {
     public record BarUnderlying(DateTime Time, double Open, double High, double Low, double Close);
 
@@ -13,6 +13,8 @@ namespace SsbHedger
     /// </summary>
     public partial class SsbChart : UserControl
     {
+        private ILineValuesConverter _lineValuesConverter;
+
         // Test code
         static List<BarUnderlying> bars = new List<BarUnderlying>()
             {
@@ -25,7 +27,7 @@ namespace SsbHedger
                 new BarUnderlying(DateTime.ParseExact("20230111 10:15:00", "yyyyMMdd hh:mm:ss", CultureInfo.InvariantCulture),
                     391.02, 391.5, 390.98, 391.46)
             };
-
+        
         public static readonly DependencyProperty SessionStartProperty =
             DependencyProperty.Register("SessionStart", typeof(DateTime), typeof(SsbChart), new PropertyMetadata(default(DateTime)));
         public static readonly DependencyProperty SessionEndProperty =
@@ -49,11 +51,11 @@ namespace SsbHedger
             set { SetValue(SessionEndProperty, value); }
         }
 
-        public List<DateTime> LineValuesX
+        public List<DateTime> LineTimes
         {
             get
             {
-                throw new NotImplementedException();
+                return _lineValuesConverter.LineTiems(SessionStart, SessionEnd);
             }
         }
         public List<BarUnderlying> BarsUnderlying
