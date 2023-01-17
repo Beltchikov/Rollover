@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace SsbHedger.SsbChart
+namespace SsbHedger.SsbChartControl
 {
     public record BarUnderlying(DateTime Time, double Open, double High, double Low, double Close);
 
