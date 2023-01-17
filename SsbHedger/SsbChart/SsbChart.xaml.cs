@@ -36,7 +36,7 @@ namespace SsbHedger
         public SsbChart()
         {
             InitializeComponent();
-            DataContext= this;
+            DataContext = this;
         }
         public DateTime SessionStart
         {
@@ -47,6 +47,14 @@ namespace SsbHedger
         {
             get { return (DateTime)GetValue(SessionEndProperty); }
             set { SetValue(SessionEndProperty, value); }
+        }
+
+        public List<DateTime> LineValuesX
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
         }
         public List<BarUnderlying> BarsUnderlying
         {
