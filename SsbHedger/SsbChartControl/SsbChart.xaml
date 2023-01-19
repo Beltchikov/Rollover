@@ -28,6 +28,7 @@
         </DrawingBrush>
 
         <converters:SessionStartConverter x:Key="sessionStartConverter"/>
+        <converters:LineTimesConverter x:Key="lineTimesConverter"/>
 
     </UserControl.Resources>
 
@@ -58,8 +59,8 @@
                                     Canvas.Left="10" Canvas.Top="20"></Rectangle>-->
         </Canvas>
 
-        <Canvas Background="LightBlue" Grid.Column="1" Grid.Row="1">
-            <ItemsControl ItemsSource="{Binding LineTimes}" Background="Beige">
+        <Canvas x:Name="xAxis"  Background="LightBlue" Grid.Column="1" Grid.Row="1">
+            <ItemsControl ItemsSource="{Binding LineTimes, Converter={StaticResource lineTimesConverter}}" Background="Beige">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal"/>
