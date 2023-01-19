@@ -6,7 +6,10 @@ namespace SsbHedger.UnitTests.SsbChartControl
     public class LineValuesConverterShould
     {
         [Theory]
-        [InlineData("15:30", "22:15", "16:00;18:00;20:00;22:00")]
+        //[InlineData("15:30", "22:15", "16:00;18:00;20:00;22:00")]
+        [InlineData("15:30", 
+            "22:15", 
+            ";;16:00;;;;;;;;18:00;;;;;;;;20:00;;;;;;;;22:00;")]
         public void ReturnLineTimesCorrectly(
             string sessionStartString,
             string sessionEndString,
@@ -15,10 +18,14 @@ namespace SsbHedger.UnitTests.SsbChartControl
             var sessionStart = DateTime.Parse(sessionStartString);
             var sessionEnd = DateTime.Parse(sessionEndString);
             List<DateTime> expectedLineTimesList = new List<DateTime>();
+            //expectedLineTimesListString
+            //    .Split(";")
+            //    .ToList()
+            //    .ForEach(ts => expectedLineTimesList.Add(DateTime.Parse(ts)));
             expectedLineTimesListString
                 .Split(";")
                 .ToList()
-                .ForEach(ts => expectedLineTimesList.Add(DateTime.Parse(ts)));
+                .ForEach(ts => expectedLineTimesList.Add(ParseTimeString(ts)));
 
 
             var sut = (new Fixture()).Create<LineValuesConverter>();
@@ -36,6 +43,16 @@ namespace SsbHedger.UnitTests.SsbChartControl
                 Assert.Equal(0, lineTime.Minute);
                 Assert.Equal(0, lineTime.Second);
             }
+        }
+
+        private DateTime ParseTimeString(string timeString)
+        {
+            if (string.IsNullOrWhiteSpace(timeString))
+            {
+                return DateTime.MinValue;
+            }
+
+            return DateTime.Parse(timeString);
         }
     }
 }
