@@ -59,10 +59,14 @@
         </Canvas>
 
         <Canvas x:Name="xAxis"  Background="LightBlue" Grid.Column="1" Grid.Row="1">
-            <ItemsControl ItemsSource="{Binding LineTimes, Converter={StaticResource lineTimesConverter}}" Background="Beige">
+            <ItemsControl ItemsSource="{Binding LineTimes, 
+                Converter={StaticResource lineTimesConverter}}" 
+                          Background="Beige"
+                          Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Canvas}},
+                Path=ActualWidth}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal"/>
+                        <UniformGrid Rows="1" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
