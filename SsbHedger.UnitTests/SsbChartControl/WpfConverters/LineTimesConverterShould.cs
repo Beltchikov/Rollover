@@ -1,7 +1,7 @@
 ﻿using SsbHedger.SsbChartControl.WpfConverters;
 using System.Globalization;
 
-namespace SsbHedger.UnitTests.SsbChartControl
+namespace SsbHedger.UnitTests.SsbChartControl.WpfConverters
 {
     public class LineTimesConverterShould
     {
@@ -18,12 +18,12 @@ namespace SsbHedger.UnitTests.SsbChartControl
                 .ToList();
 
             var sut = new LineTimesConverter();
-            List<string> convertedTimeList= (List<string>)sut.Convert(
+            List<string> convertedTimeList = (List<string>)sut.Convert(
                 timeList,
                 typeof(List<string>),
                 new object(),
                 CultureInfo.InvariantCulture);
-            
+
             Assert.Equal(expectedTimeList.Count(), convertedTimeList.Count());
         }
     }
