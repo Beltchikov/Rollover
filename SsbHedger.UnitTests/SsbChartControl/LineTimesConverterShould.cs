@@ -1,12 +1,30 @@
-﻿namespace SsbHedger.UnitTests.SsbChartControl
+﻿using SsbHedger.SsbChartControl.WpfConverters;
+using System.Globalization;
+
+namespace SsbHedger.UnitTests.SsbChartControl
 {
     public class LineTimesConverterShould
     {
         [Theory]
-        [InlineData("15:30", "15:30")]
-        public void ConvertCorrectly(string timeString, string expectedTimeString)
+        [InlineData("16:00;18:00;20:00;22:00", "16:00;18:00;20:00;22:00")]
+        public void ConvertCorrectly(string timeListString, string expectedTimeListString)
         {
-            throw new NotImplementedException();
+            var timeList = timeListString
+                .Split(";")
+                .Select(x => DateTime.Parse(x))
+                .ToList();
+            var expectedTimeList = expectedTimeListString
+                .Split(";")
+                .ToList();
+
+            var sut = new LineTimesConverter();
+            List<string> convertedTimeList= (List<string>)sut.Convert(
+                timeList,
+                typeof(List<string>),
+                new object(),
+                CultureInfo.InvariantCulture);
+            
+            Assert.Equal(expectedTimeList.Count(), convertedTimeList.Count());
         }
     }
 }
