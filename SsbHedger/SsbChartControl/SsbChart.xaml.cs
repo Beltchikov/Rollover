@@ -38,6 +38,7 @@ namespace SsbHedger.SsbChartControl
         public SsbChart()
         {
             InitializeComponent();
+            _lineValuesConverter = new LineValuesConverter();   
             DataContext = this;
         }
         public DateTime SessionStart

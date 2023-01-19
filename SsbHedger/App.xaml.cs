@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SsbHedger.Abstractions;
 using SsbHedger.CommandHandler;
 using SsbHedger.Model;
+using SsbHedger.SsbChartControl;
 using SsbHedger.SsbConfiguration;
 using System;
 using System.Windows;
