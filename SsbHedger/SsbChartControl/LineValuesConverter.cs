@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SsbHedger.SsbChartControl.Utilities;
 
 namespace SsbHedger.SsbChartControl
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SsbHedger.SsbChartControl
+namespace SsbHedger.SsbChartControl.Utilities
 {
     public interface IIncrementCalculator
     {
