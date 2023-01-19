@@ -27,7 +27,6 @@
             </DrawingBrush.Drawing>
         </DrawingBrush>
 
-        <converters:SessionStartConverter x:Key="sessionStartConverter"/>
         <converters:LineTimesConverter x:Key="lineTimesConverter"/>
 
     </UserControl.Resources>
