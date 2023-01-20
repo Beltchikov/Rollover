@@ -28,7 +28,7 @@
         </DrawingBrush>
 
         <converters:LineTimesConverter x:Key="lineTimesConverter"/>
-
+        
     </UserControl.Resources>
 
     <Grid>
@@ -74,6 +74,8 @@
                     <DataTemplate>
                         <TextBlock Text="{Binding}" Background="LightBlue"
                                    HorizontalAlignment="Center"/>
+                        <!--<TextBlock Text="{Binding}" Background="LightBlue"
+                                   HorizontalAlignment="Center"/>-->
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
