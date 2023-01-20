@@ -61,8 +61,10 @@
         <Canvas x:Name="xAxis"  Background="LightBlue" Grid.Column="1" Grid.Row="1">
             <ItemsControl ItemsSource="{Binding LineTimes, 
                 Converter={StaticResource lineTimesConverter}}" 
-                          Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Canvas}},
-                Path=ActualWidth}">
+                          Width="{Binding RelativeSource=
+                                    {RelativeSource FindAncestor,
+                                        AncestorType={x:Type Canvas}},
+                                        Path=ActualWidth}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <UniformGrid Rows="1" />
