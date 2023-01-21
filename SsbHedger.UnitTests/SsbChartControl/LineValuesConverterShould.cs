@@ -24,7 +24,7 @@ namespace SsbHedger.UnitTests.SsbChartControl
 
 
             var sut = (new Fixture()).Create<LineValuesConverter>();
-            var lineTimes = sut.LineTimes(sessionStart, sessionEnd);
+            var lineTimes = sut.LineTimes(sessionStart, sessionEnd, 2);
 
             Assert.IsType<List<DateTime>>(lineTimes);
             Assert.Equal(expectedLineTimesList.Count, lineTimes.Count);
