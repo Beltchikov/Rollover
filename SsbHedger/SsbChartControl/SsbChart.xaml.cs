@@ -13,6 +13,7 @@ namespace SsbHedger.SsbChartControl
     /// </summary>
     public partial class SsbChart : UserControl
     {
+        private readonly int HOURS_INTERVAL = 2;
         private ILineValuesConverter _lineValuesConverter;
 
         // Test code
@@ -34,7 +35,7 @@ namespace SsbHedger.SsbChartControl
             DependencyProperty.Register("SessionEnd", typeof(DateTime), typeof(SsbChart), new PropertyMetadata(default(DateTime)));
         public static readonly DependencyProperty BarsUnderlyingProperty =
             DependencyProperty.Register("BarsUnderlying", typeof(List<BarUnderlying>), typeof(SsbChart), new PropertyMetadata(bars));
-
+        
         public SsbChart()
         {
             InitializeComponent();
@@ -56,7 +57,7 @@ namespace SsbHedger.SsbChartControl
         {
             get
             {
-                return _lineValuesConverter.LineTimes(SessionStart, SessionEnd);
+                return _lineValuesConverter.LineTimes(SessionStart, SessionEnd, HOURS_INTERVAL);
             }
         }
 

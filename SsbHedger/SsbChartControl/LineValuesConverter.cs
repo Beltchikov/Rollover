@@ -14,9 +14,9 @@ namespace SsbHedger.SsbChartControl
            _incrementCalculator = new IncrementCalculator();
         }
 
-        public List<DateTime> LineTimes(DateTime sessionStart, DateTime sessionEnd)
+        public List<DateTime> LineTimes(DateTime sessionStart, DateTime sessionEnd, int hoursInterval)
         {
-            List<DateTime> displayableTimes = GetDisplayableTimes(sessionStart, sessionEnd);
+            List<DateTime> displayableTimes = GetDisplayableTimes(sessionStart, sessionEnd, hoursInterval);
             int incrementInMinutes = _incrementCalculator.Calculate(sessionStart, sessionEnd);
             List<DateTime> allTimes = GetAllTimes(sessionStart, sessionEnd, incrementInMinutes);
 
@@ -66,7 +66,10 @@ namespace SsbHedger.SsbChartControl
             return result;
         }
 
-        private static List<DateTime> GetDisplayableTimes(DateTime sessionStart, DateTime sessionEnd)
+        private static List<DateTime> GetDisplayableTimes(
+            DateTime sessionStart,
+            DateTime sessionEnd,
+            int hoursInterval)
         {
             var result = new List<DateTime>();
 
@@ -80,7 +83,7 @@ namespace SsbHedger.SsbChartControl
 
             while (running < sessionEnd)
             {
-                if (running.Hour % 2 == 0)
+                if (running.Hour % hoursInterval == 0)
                 {
                     var dateTimeToAdd = new DateTime(
                         sessionStart.Year,
