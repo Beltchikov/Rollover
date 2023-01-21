@@ -20,6 +20,7 @@
                 <MultiBinding Converter="{StaticResource gridRectConverter}">
                     <MultiBinding.Bindings>
                         <Binding Path="LineTimes"/>
+                        <Binding Path="BarWidth"/>
                         <Binding ElementName="SsbChartControl" Path="ActualWidth"/>
                     </MultiBinding.Bindings>
                 </MultiBinding>

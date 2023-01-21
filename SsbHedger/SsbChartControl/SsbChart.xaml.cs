@@ -14,6 +14,7 @@ namespace SsbHedger.SsbChartControl
     public partial class SsbChart : UserControl
     {
         private readonly int HOURS_INTERVAL = 2;
+        private readonly int BAR_WIDTH = 10;
         private ILineValuesConverter _lineValuesConverter;
         private Rect _gridRect = Rect.Empty;
 
@@ -62,21 +63,13 @@ namespace SsbHedger.SsbChartControl
             }
         }
 
-        //public Rect GridRect
-        //{
-        //    get
-        //    {
-        //        var lockingObject = new object();
-        //        lock (lockingObject)
-        //        {
-        //            if (_gridRect == Rect.Empty)
-        //            {
-        //                _gridRect = new Rect(0, 0, 20, 20);
-        //            }
-        //        }
-        //        return _gridRect;   
-        //    }
-        //}
+        public int BarWidth
+        {
+            get
+            {
+                return BAR_WIDTH;
+            }
+        }
 
         public List<BarUnderlying> BarsUnderlying
         {
