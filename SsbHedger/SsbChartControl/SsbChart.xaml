@@ -10,7 +10,7 @@
              Background="White">
     <UserControl.Resources>
         <DrawingBrush x:Key="GridTile" Stretch="None" TileMode="Tile"
-              Viewport="{Binding GridsRect}" ViewportUnits="Absolute" 
+              Viewport="{Binding GridRect}" ViewportUnits="Absolute" 
                       AlignmentX="Left" AlignmentY="Bottom">
             <!--<DrawingBrush x:Key="GridTile" Stretch="None" TileMode="Tile"
               Viewport="0,0,40,20" ViewportUnits="Absolute" 

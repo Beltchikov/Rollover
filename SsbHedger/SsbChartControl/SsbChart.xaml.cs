@@ -15,6 +15,7 @@ namespace SsbHedger.SsbChartControl
     {
         private readonly int HOURS_INTERVAL = 2;
         private ILineValuesConverter _lineValuesConverter;
+        private Rect _gridRect = Rect.Empty;
 
         // Test code
         static List<BarUnderlying> bars = new List<BarUnderlying>()
@@ -61,11 +62,19 @@ namespace SsbHedger.SsbChartControl
             }
         }
 
-        public Rect GridsRect
+        public Rect GridRect
         {
             get
             {
-                return new Rect(0,0,20,20);
+                var lockingObject = new object();
+                lock (lockingObject)
+                {
+                    if (_gridRect == Rect.Empty)
+                    {
+                        _gridRect = new Rect(0, 0, 20, 20);
+                    }
+                }
+                return _gridRect;   
             }
         }
 
