@@ -8,14 +8,14 @@ using System.Windows.Data;
 
 namespace SsbHedger.SsbChartControl.WpfConverters
 {
-    public class GridRectConverter : IValueConverter
+    public class GridRectConverter : IMultiValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

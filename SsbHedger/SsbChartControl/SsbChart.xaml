@@ -1,4 +1,5 @@
 ﻿<UserControl x:Class="SsbHedger.SsbChartControl.SsbChart"
+             x:Name="SsbChartControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -11,10 +12,23 @@
     <UserControl.Resources>
         <converters:LineTimesConverter x:Key="lineTimesConverter"/>
         <converters:GridRectConverter x:Key="gridRectConverter"/>
-        
-        <DrawingBrush x:Key="GridTile" Stretch="None" TileMode="Tile"
-              Viewport="{Binding GridRect, Converter={StaticResource gridRectConverter}}" ViewportUnits="Absolute" 
+
+        <DrawingBrush x:Key="GridTile" Stretch="None" TileMode="Tile" 
+                      ViewportUnits="Absolute" 
                       AlignmentX="Left" AlignmentY="Bottom">
+            <DrawingBrush.Viewport>
+                <MultiBinding Converter="{StaticResource gridRectConverter}">
+                    <MultiBinding.Bindings>
+                        <Binding Path="LineTimes"/>
+                        <Binding ElementName="SsbChartControl" Path="ActualWidth"/>
+                    </MultiBinding.Bindings>
+                </MultiBinding>
+            </DrawingBrush.Viewport>
+            <!--<DrawingBrush x:Key="GridTile" Stretch="None" TileMode="Tile"
+              Viewport="{Binding GridRect, 
+                        Converter={StaticResource gridRectConverter}}" 
+                      ViewportUnits="Absolute" 
+                      AlignmentX="Left" AlignmentY="Bottom">-->
             <!--<DrawingBrush x:Key="GridTile" Stretch="None" TileMode="Tile"
               Viewport="0,0,40,20" ViewportUnits="Absolute" 
                       AlignmentX="Left" AlignmentY="Bottom">-->

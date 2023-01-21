@@ -62,21 +62,21 @@ namespace SsbHedger.SsbChartControl
             }
         }
 
-        public Rect GridRect
-        {
-            get
-            {
-                var lockingObject = new object();
-                lock (lockingObject)
-                {
-                    if (_gridRect == Rect.Empty)
-                    {
-                        _gridRect = new Rect(0, 0, 20, 20);
-                    }
-                }
-                return _gridRect;   
-            }
-        }
+        //public Rect GridRect
+        //{
+        //    get
+        //    {
+        //        var lockingObject = new object();
+        //        lock (lockingObject)
+        //        {
+        //            if (_gridRect == Rect.Empty)
+        //            {
+        //                _gridRect = new Rect(0, 0, 20, 20);
+        //            }
+        //        }
+        //        return _gridRect;   
+        //    }
+        //}
 
         public List<BarUnderlying> BarsUnderlying
         {
