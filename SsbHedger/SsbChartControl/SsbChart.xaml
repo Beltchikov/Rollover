@@ -9,8 +9,11 @@
              d:DesignHeight="450" d:DesignWidth="800" 
              Background="White">
     <UserControl.Resources>
+        <converters:LineTimesConverter x:Key="lineTimesConverter"/>
+        <converters:GridRectConverter x:Key="gridRectConverter"/>
+        
         <DrawingBrush x:Key="GridTile" Stretch="None" TileMode="Tile"
-              Viewport="{Binding GridRect}" ViewportUnits="Absolute" 
+              Viewport="{Binding GridRect, Converter={StaticResource gridRectConverter}}" ViewportUnits="Absolute" 
                       AlignmentX="Left" AlignmentY="Bottom">
             <!--<DrawingBrush x:Key="GridTile" Stretch="None" TileMode="Tile"
               Viewport="0,0,40,20" ViewportUnits="Absolute" 
@@ -31,8 +34,6 @@
             </DrawingBrush.Drawing>
         </DrawingBrush>
 
-        <converters:LineTimesConverter x:Key="lineTimesConverter"/>
-        
     </UserControl.Resources>
 
     <Grid>
