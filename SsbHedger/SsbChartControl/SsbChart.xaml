@@ -54,11 +54,9 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <!--<Rectangle  Width="50" Height="80" Fill="Crimson"
-                                    Canvas.Left="10" Canvas.Top="20"></Rectangle>-->
         </Canvas>
 
-        <Canvas x:Name="xAxis"  Background="LightBlue" Grid.Column="1" Grid.Row="1">
+        <Canvas x:Name="xAxis" Grid.Column="1" Grid.Row="1">
             <ItemsControl ItemsSource="{Binding LineTimes, 
                 Converter={StaticResource lineTimesConverter}}" 
                           Width="{Binding RelativeSource=
@@ -72,10 +70,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding}" Background="LightBlue"
-                                   HorizontalAlignment="Center"/>
-                        <!--<TextBlock Text="{Binding}" Background="LightBlue"
-                                   HorizontalAlignment="Center"/>-->
+                        <TextBlock Text="{Binding}" HorizontalAlignment="Center"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
