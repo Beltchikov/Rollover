@@ -59,6 +59,15 @@ namespace SsbHedger.SsbChartControl
                 return _lineValuesConverter.LineTimes(SessionStart, SessionEnd);
             }
         }
+
+        public Rect GridsRect
+        {
+            get
+            {
+                return new Rect(0,0,20,20);
+            }
+        }
+
         public List<BarUnderlying> BarsUnderlying
         {
             get { return (List<BarUnderlying>)GetValue(BarsUnderlyingProperty); }
