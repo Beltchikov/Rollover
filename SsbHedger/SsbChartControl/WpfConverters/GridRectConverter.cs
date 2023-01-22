@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 
@@ -14,19 +15,17 @@ namespace SsbHedger.SsbChartControl.WpfConverters
             object parameter,
             CultureInfo culture)
         {
-            //List<DateTime> lineTimes = (List<DateTime>)values[0];
-            //int barWidth = (int)values[1];
-            //double controlWidth = (double)values[2];
+            Dictionary<DateTime, bool> lineTimesDictionary = (Dictionary<DateTime, bool>)values[0];
+            int barWidth = (int)values[1];
+            double controlWidth = (double)values[2];
 
-            //int interval = GetInterval(lineTimes);
-            //int period = GetPeriod(sessionStart, sessionEnd);
-            //double ratioIntervalPeriod = (double)interval / (double)period;   
+            double interval = GetInterval(lineTimesDictionary);
+            double period = GetPeriod(lineTimesDictionary);
+            double ratioIntervalPeriod = interval / period;
 
-            //double scaledWidth = (controlWidth - 2 * barWidth) * ratioIntervalPeriod;
+            double scaledWidth = (controlWidth - 2 * barWidth) * ratioIntervalPeriod;
 
-            //return new Rect(0, 0, scaledWidth, 20);
-
-            return new Rect(0, 0, 20, 20);
+            return new Rect(0, 0, scaledWidth, 20);
         }
 
         public object[] ConvertBack(
@@ -38,24 +37,17 @@ namespace SsbHedger.SsbChartControl.WpfConverters
             throw new NotImplementedException();
         }
 
-        private int GetInterval(List<DateTime> lineTimes)
+        private double GetInterval(Dictionary<DateTime, bool> lineTimesDictionary)
         {
-            List<DateTime> tempList = new List<DateTime>();
-            foreach (DateTime dateTime in lineTimes)
-            {
-                if (!dateTime.Equals(DateTime.MinValue))
-                {
-                    tempList.Add(dateTime);
-                }
-            }
-            return (int)(tempList[1] - tempList[0]).TotalMinutes;
+            var tempList = lineTimesDictionary.Where(d => d.Value).ToList();
+            return (tempList[1].Key - tempList[0].Key).TotalMinutes;
         }
 
-        private int GetPeriod(
-            DateTime sessionStart,
-            DateTime sessionEnd)
+        private double GetPeriod(Dictionary<DateTime, bool> lineTimesDictionary)
         {
-            return (int)(sessionEnd - sessionStart).TotalMinutes;
+            var count = lineTimesDictionary.Keys.Count;
+            return (lineTimesDictionary.Keys.ElementAt(count -1) 
+                - lineTimesDictionary.Keys.ElementAt(0)).TotalMinutes;
         }
     }
 }

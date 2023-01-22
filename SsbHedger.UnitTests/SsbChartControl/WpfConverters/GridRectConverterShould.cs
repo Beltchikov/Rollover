@@ -7,22 +7,34 @@ namespace SsbHedger.UnitTests.SsbChartControl.WpfConverters
     public class GridRectConverterShould
     {
         [Theory]
-        [InlineData(";;16:00;;;;;;;;18:00;;;;;;;;20:00;;;;;;;;22:00;",
+        [InlineData("15:30;15:45;" +
+            "16:00;16:15;16:30;16:45;17:00;17:15;17:30;17:45;" +
+            "18:00;18:15;18:30;18:30;18:45;19:00;19:15;19:30;" +
+            "20:00;20:15;20:30;20:45;21:00;21:15;21:30;21:45;" +
+            "22:00;22:15",
+            "0;0;" +
+            "1;0;0;0;0;0;0;0;" +
+            "1;0;0;0;0;0;0;0;" +
+            "1;0;0;0;0;0;0;0;" +
+            "1;0",
             10,
             580,
             160)]
         void ConvertCorrectly(
             string lineTimesString,
+            string displayFlagString,
             int barWidth,
             double controlWidth,
             int expectedScaledWidth)
         {
-            List<DateTime> lineTimes = BuildDateTimeArrray(lineTimesString);
+            Dictionary<DateTime, bool> lineTimesDictionary = BuildDateTimeDictionary(
+                lineTimesString,
+                displayFlagString);
             
             var sut = new GridRectConverter();
             object[] values =
             {
-                lineTimes,
+                lineTimesDictionary,
                 barWidth,
                 controlWidth
             };
@@ -35,23 +47,24 @@ namespace SsbHedger.UnitTests.SsbChartControl.WpfConverters
             Assert.Equal(expectedScaledWidth, rect.Width);
         }
 
-        private static List<DateTime> BuildDateTimeArrray(string lineTimesString)
+        private static Dictionary<DateTime, bool> BuildDateTimeDictionary(
+            string lineTimesString,
+            string displayFlagString)
         {
-            List<DateTime> lineTimes = new List<DateTime>();
+            Dictionary<DateTime, bool> lineTimesDictionary = new Dictionary<DateTime, bool>();
+            
             string[] lineTimesStringArray = lineTimesString.Split(";");
-            foreach (var timeString in lineTimesStringArray)
+            string[] displayFlagStringArray = displayFlagString.Split(";");
+
+            for(int i = 0; i < lineTimesStringArray.Length; i++)
             {
-                if (string.IsNullOrWhiteSpace(timeString))
-                {
-                    lineTimes.Add(DateTime.MinValue);
-                }
-                else
-                {
-                    lineTimes.Add(DateTime.Parse(timeString));
-                }
+                var time= DateTime.Parse(lineTimesStringArray[i]);
+                var displayFlag= Convert.ToBoolean(Convert.ToInt32(displayFlagStringArray[i]));
+
+                lineTimesDictionary[time] = displayFlag; 
             }
 
-            return lineTimes;
+            return lineTimesDictionary;
         }
     }
 }

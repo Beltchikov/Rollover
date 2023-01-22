@@ -51,7 +51,7 @@ namespace SsbHedger.UnitTests.SsbChartControl
                 var expectedLineTime = expectedLineTimesList[i];
                 var expectedDisplayFlag= expectedDisplayableFlagList[i];
                 var lineTime = lineTimesDictionary.Keys.First(k => k == expectedLineTime);
-                var displayFlag = lineTimesDictionary[lineTime]:
+                var displayFlag = lineTimesDictionary[lineTime];
 
                 Assert.Equal(expectedLineTime.Hour, lineTime.Hour);
                 Assert.Equal(expectedLineTime.Minute, lineTime.Minute);
