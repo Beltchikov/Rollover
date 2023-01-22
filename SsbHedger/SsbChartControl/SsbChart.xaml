@@ -27,20 +27,12 @@
                     </MultiBinding.Bindings>
                 </MultiBinding>
             </DrawingBrush.Viewport>
-            <!--<DrawingBrush x:Key="GridTile" Stretch="None" TileMode="Tile"
-              Viewport="{Binding GridRect, 
-                        Converter={StaticResource gridRectConverter}}" 
-                      ViewportUnits="Absolute" 
-                      AlignmentX="Left" AlignmentY="Bottom">-->
-            <!--<DrawingBrush x:Key="GridTile" Stretch="None" TileMode="Tile"
-              Viewport="0,0,40,20" ViewportUnits="Absolute" 
-                      AlignmentX="Left" AlignmentY="Bottom">-->
-                <DrawingBrush.Drawing>
+            <DrawingBrush.Drawing>
                 <GeometryDrawing>
                     <GeometryDrawing.Geometry>
                         <GeometryGroup>
-                            <LineGeometry StartPoint="0,0" EndPoint="0,20" /> 
-                            <!--<LineGeometry StartPoint="0,0" EndPoint="0,40" />--> 
+                            <LineGeometry StartPoint="0,0" EndPoint="0,20" />
+                            <!--<LineGeometry StartPoint="0,0" EndPoint="0,40" />-->
                             <LineGeometry StartPoint="0,0" EndPoint="20,0" />
                         </GeometryGroup>
                     </GeometryDrawing.Geometry>
