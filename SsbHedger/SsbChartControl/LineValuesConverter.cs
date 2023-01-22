@@ -14,27 +14,27 @@ namespace SsbHedger.SsbChartControl
            _incrementCalculator = new IncrementCalculator();
         }
 
-        public List<DateTime> LineTimes(DateTime sessionStart, DateTime sessionEnd, int hoursInterval)
+        public Dictionary<DateTime, bool> LineTimes(DateTime sessionStart, DateTime sessionEnd, int hoursInterval)
         {
             List<DateTime> displayableTimes = GetDisplayableTimes(sessionStart, sessionEnd, hoursInterval);
             int incrementInMinutes = _incrementCalculator.Calculate(sessionStart, sessionEnd);
             List<DateTime> allTimes = GetAllTimes(sessionStart, sessionEnd, incrementInMinutes);
 
-            List<DateTime> resultTimes = new List<DateTime>();
+            Dictionary<DateTime, bool> resultDictionary = new Dictionary<DateTime, bool>();
             foreach (DateTime time in allTimes) 
             { 
                 if(displayableTimes.Any(d => d.Hour == time.Hour 
                     && d.Minute == time.Minute))
                 {
-                    resultTimes.Add(time);
+                    resultDictionary[time] = true;
                 }
                 else
                 {
-                    resultTimes.Add(DateTime.MinValue);
+                    resultDictionary[time] = false;
                 }
             }
 
-            return resultTimes;
+            return resultDictionary;
         }
 
         private List<DateTime> GetAllTimes(DateTime sessionStart, DateTime sessionEnd, int incrementInMinutes)

@@ -12,15 +12,15 @@ namespace SsbHedger.SsbChartControl.WpfConverters
         {
             var resultList = new List<string>();
 
-            foreach (var dateTime in (List<DateTime>)value) 
+            foreach (var dateTimeKeyValue in (Dictionary<DateTime, bool>)value) 
             { 
-                if(dateTime == DateTime.MinValue)
+                if(!dateTimeKeyValue.Value)
                 {
                     resultList.Add("");
                 }
                 else
                 {
-                    resultList.Add(dateTime.ToString("HH:mm"));
+                    resultList.Add(dateTimeKeyValue.Key.ToString("HH:mm"));
                 }
             }
             

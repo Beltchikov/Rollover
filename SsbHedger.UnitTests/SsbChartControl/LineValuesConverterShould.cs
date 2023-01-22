@@ -8,35 +8,55 @@ namespace SsbHedger.UnitTests.SsbChartControl
         [Theory]
         [InlineData("15:30", 
             "22:15", 
-            ";;16:00;;;;;;;;18:00;;;;;;;;20:00;;;;;;;;22:00;")]
+            "15:30;15:45;" +
+            "16:00;16:15;16:30;16:45;17:00;17:15;17:30;17:45;" +
+            "18:00;18:15;18:30;18:30;18:45;19:00;19:15;19:30;" +
+            "20:00;20:15;20:30;20:45;21:00;21:15;21:30;21:45;" +
+            "22:00;22:15",
+            "0;0;" +
+            "1;0;0;0;0;0;0;0;" +
+            "1;0;0;0;0;0;0;0;" +
+            "1;0;0;0;0;0;0;0;" +
+            "1;0")]
         public void ReturnLineTimesCorrectly(
             string sessionStartString,
             string sessionEndString,
-            string expectedLineTimesListString)
+            string expectedLineTimesListString,
+            string expectedDisplayableFlagString)
         {
             var sessionStart = DateTime.Parse(sessionStartString);
             var sessionEnd = DateTime.Parse(sessionEndString);
+            
             List<DateTime> expectedLineTimesList = new List<DateTime>();
             expectedLineTimesListString
                 .Split(";")
                 .ToList()
                 .ForEach(ts => expectedLineTimesList.Add(ParseTimeString(ts)));
 
+            List<bool> expectedDisplayableFlagList= new List<bool>();
+            expectedDisplayableFlagString
+                .Split(";")
+                .ToList()
+                .ForEach(df => expectedDisplayableFlagList.Add(
+                    Convert.ToBoolean(Convert.ToInt32(df))));
 
             var sut = (new Fixture()).Create<LineValuesConverter>();
-            var lineTimes = sut.LineTimes(sessionStart, sessionEnd, 2);
+            var lineTimesDictionary = sut.LineTimes(sessionStart, sessionEnd, 2);
 
-            Assert.IsType<List<DateTime>>(lineTimes);
-            Assert.Equal(expectedLineTimesList.Count, lineTimes.Count);
+            Assert.IsType<Dictionary<DateTime, bool>>(lineTimesDictionary);
+            Assert.Equal(expectedLineTimesList.Count, lineTimesDictionary.Count);
 
-            for(int i = 0; i < expectedLineTimesList.Count; i++)
+            for (int i = 0; i < expectedLineTimesList.Count; i++)
             {
-                var expectedLineTime = expectedLineTimesList[i];    
-                var lineTime = lineTimes[i];    
+                var expectedLineTime = expectedLineTimesList[i];
+                var expectedDisplayFlag= expectedDisplayableFlagList[i];
+                var lineTime = lineTimesDictionary.Keys.First(k => k == expectedLineTime);
+                var displayFlag = lineTimesDictionary[lineTime]:
+
                 Assert.Equal(expectedLineTime.Hour, lineTime.Hour);
                 Assert.Equal(expectedLineTime.Minute, lineTime.Minute);
-                Assert.Equal(0, lineTime.Minute);
                 Assert.Equal(0, lineTime.Second);
+                Assert.Equal(expectedDisplayFlag, displayFlag);
             }
         }
 

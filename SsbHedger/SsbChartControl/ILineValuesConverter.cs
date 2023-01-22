@@ -5,7 +5,7 @@ namespace SsbHedger.SsbChartControl
 {
     public interface ILineValuesConverter
     {
-        List<DateTime> LineTimes(
+        Dictionary<DateTime, bool> LineTimes(
             DateTime sessionStart,
             DateTime sessionEnd,
             int hoursInterval);
