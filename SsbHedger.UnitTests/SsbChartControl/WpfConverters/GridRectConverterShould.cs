@@ -1,10 +1,5 @@
 ﻿using SsbHedger.SsbChartControl.WpfConverters;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace SsbHedger.UnitTests.SsbChartControl.WpfConverters
@@ -13,19 +8,32 @@ namespace SsbHedger.UnitTests.SsbChartControl.WpfConverters
     {
         [Theory]
         [InlineData(";;16:00;;;;;;;;18:00;;;;;;;;20:00;;;;;;;;22:00;",
+            "15:30",
+            "22:15,",
             10,
             580,
             160)]
         void ConvertCorrectly(
             string lineTimesString,
+            string sessionStartString,
+            string sessionEndString,
             int barWidth,
-            int controlWidth,
+            double controlWidth,
             int expectedScaledWidth)
         {
             List<DateTime> lineTimes = BuildDateTimeArrray(lineTimesString);
+            DateTime sessionStart = DateTime.Parse(sessionStartString);
+            DateTime sessionEnd= DateTime.Parse(sessionEndString);
             
             var sut = new GridRectConverter();
-            object[] values = { lineTimes, barWidth, controlWidth };
+            object[] values =
+            {
+                lineTimes,
+                sessionStart,
+                sessionEnd,
+                barWidth,
+                controlWidth
+            };
             Rect rect = (Rect)sut.Convert(
                 values,
                 typeof(Rect),
