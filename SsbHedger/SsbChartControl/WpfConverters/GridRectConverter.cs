@@ -14,19 +14,19 @@ namespace SsbHedger.SsbChartControl.WpfConverters
             object parameter,
             CultureInfo culture)
         {
-            List<DateTime> lineTimes = (List<DateTime>)values[0];
-            DateTime sessionStart = (DateTime)values[1];
-            DateTime sessionEnd= (DateTime)values[2];
-            int barWidth = (int)values[3];
-            double controlWidth = (double)values[4];
+            //List<DateTime> lineTimes = (List<DateTime>)values[0];
+            //int barWidth = (int)values[1];
+            //double controlWidth = (double)values[2];
 
-            int interval = GetInterval(lineTimes);
-            int period = GetPeriod(sessionStart, sessionEnd);
-            double ratioIntervalPeriod = (double)interval / (double)period;   
+            //int interval = GetInterval(lineTimes);
+            //int period = GetPeriod(sessionStart, sessionEnd);
+            //double ratioIntervalPeriod = (double)interval / (double)period;   
 
-            double scaledWidth = (controlWidth - 2 * barWidth) * ratioIntervalPeriod;
+            //double scaledWidth = (controlWidth - 2 * barWidth) * ratioIntervalPeriod;
 
-            return new Rect(0, 0, scaledWidth, 20);
+            //return new Rect(0, 0, scaledWidth, 20);
+
+            return new Rect(0, 0, 20, 20);
         }
 
         public object[] ConvertBack(
