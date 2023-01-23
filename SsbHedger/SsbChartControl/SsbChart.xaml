@@ -12,6 +12,8 @@
     <UserControl.Resources>
         <converters:LineTimesConverter x:Key="lineTimesConverter"/>
         <converters:GridRectConverter x:Key="gridRectConverter"/>
+        <converters:HorizontalGridLineConverter x:Key="horizontalGridLineConverter"/>
+
 
         <DrawingBrush x:Key="GridTile" Stretch="None" TileMode="Tile" 
                       ViewportUnits="Absolute" 
@@ -31,7 +33,22 @@
                     <GeometryDrawing.Geometry>
                         <GeometryGroup>
                             <LineGeometry StartPoint="0,0" EndPoint="0,20"/>
-                           <LineGeometry StartPoint="0,0" EndPoint="400,0" />
+                            <!--<LineGeometry StartPoint="0,0" EndPoint="400,0" />-->
+                            <LineGeometry>
+                                <LineGeometry.StartPoint>
+                                    <Point X="0" Y="0"/>
+                                </LineGeometry.StartPoint>
+                                    <LineGeometry.EndPoint>
+                                    <MultiBinding Converter="{StaticResource horizontalGridLineConverter}">
+                                        <MultiBinding.Bindings>
+                                            <Binding Path="LineTimes"/>
+                                            <Binding Path="BarWidth"/>
+                                            <Binding Path="YAxisWidth"/>
+                                            <Binding ElementName="SsbChartControl" Path="ActualWidth"/>
+                                        </MultiBinding.Bindings>
+                                    </MultiBinding>
+                                </LineGeometry.EndPoint>
+                            </LineGeometry>
                         </GeometryGroup>
                     </GeometryDrawing.Geometry>
                     <GeometryDrawing.Pen>
