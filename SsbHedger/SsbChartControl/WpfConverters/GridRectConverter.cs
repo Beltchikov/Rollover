@@ -9,12 +9,20 @@ namespace SsbHedger.SsbChartControl.WpfConverters
 {
     public class GridRectConverter : IMultiValueConverter
     {
+        int DEFAULT_WIDTH = 20;
+        int DEFAULT_HEIGHT = 20;
+        
         public object Convert(
             object[] values,
             Type targetType,
             object parameter,
             CultureInfo culture)
         {
+            if(values[0].GetType() != typeof(Dictionary<DateTime, bool>))
+            {
+                return new Rect(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+            }
+            
             Dictionary<DateTime, bool> lineTimesDictionary = (Dictionary<DateTime, bool>)values[0];
             int barWidth = (int)values[1];
             int yAxisWidth = (int)values[2];
