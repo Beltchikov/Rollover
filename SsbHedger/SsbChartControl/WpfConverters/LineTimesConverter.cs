@@ -12,18 +12,19 @@ namespace SsbHedger.SsbChartControl.WpfConverters
         {
             var resultList = new List<string>();
 
-            foreach (var dateTimeKeyValue in (Dictionary<DateTime, bool>)value) 
-            { 
-                if(!dateTimeKeyValue.Value)
+            var lineTimesDictionary = (Dictionary<DateTime, bool>)value;
+            foreach (var dateTimeKey in lineTimesDictionary.Keys)
+            {
+                if (!lineTimesDictionary[dateTimeKey])
                 {
                     resultList.Add("");
                 }
                 else
                 {
-                    resultList.Add(dateTimeKeyValue.Key.ToString("HH:mm"));
+                    resultList.Add(dateTimeKey.ToString("HH:mm"));
                 }
             }
-            
+
             return resultList.ToList();
         }
 

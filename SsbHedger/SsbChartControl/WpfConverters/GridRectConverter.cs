@@ -23,7 +23,7 @@ namespace SsbHedger.SsbChartControl.WpfConverters
             double period = GetPeriod(lineTimesDictionary);
             double ratioIntervalPeriod = interval / period;
 
-            double scaledWidth = (controlWidth - 2 * barWidth) * ratioIntervalPeriod;
+            double scaledWidth = (controlWidth - 2 * barWidth -20) * ratioIntervalPeriod;
 
             return new Rect(0, 0, scaledWidth, 20);
         }

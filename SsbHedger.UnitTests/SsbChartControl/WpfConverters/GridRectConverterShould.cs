@@ -1,4 +1,5 @@
 ﻿using SsbHedger.SsbChartControl.WpfConverters;
+using SsbHedger.UnitTests.Shared;
 using System.Globalization;
 using System.Windows;
 
@@ -9,7 +10,7 @@ namespace SsbHedger.UnitTests.SsbChartControl.WpfConverters
         [Theory]
         [InlineData("15:30;15:45;" +
             "16:00;16:15;16:30;16:45;17:00;17:15;17:30;17:45;" +
-            "18:00;18:15;18:30;18:30;18:45;19:00;19:15;19:30;" +
+            "18:00;18:15;18:30;18:45;19:00;19:15;19:30;19:45;" +
             "20:00;20:15;20:30;20:45;21:00;21:15;21:30;21:45;" +
             "22:00;22:15",
             "0;0;" +
@@ -27,7 +28,7 @@ namespace SsbHedger.UnitTests.SsbChartControl.WpfConverters
             double controlWidth,
             int expectedScaledWidth)
         {
-            Dictionary<DateTime, bool> lineTimesDictionary = BuildDateTimeDictionary(
+            Dictionary<DateTime, bool> lineTimesDictionary = Utils.BuildDateTimeDictionary(
                 lineTimesString,
                 displayFlagString);
             
@@ -45,26 +46,6 @@ namespace SsbHedger.UnitTests.SsbChartControl.WpfConverters
                 CultureInfo.InvariantCulture);
 
             Assert.Equal(expectedScaledWidth, rect.Width);
-        }
-
-        private static Dictionary<DateTime, bool> BuildDateTimeDictionary(
-            string lineTimesString,
-            string displayFlagString)
-        {
-            Dictionary<DateTime, bool> lineTimesDictionary = new Dictionary<DateTime, bool>();
-            
-            string[] lineTimesStringArray = lineTimesString.Split(";");
-            string[] displayFlagStringArray = displayFlagString.Split(";");
-
-            for(int i = 0; i < lineTimesStringArray.Length; i++)
-            {
-                var time= DateTime.Parse(lineTimesStringArray[i]);
-                var displayFlag= Convert.ToBoolean(Convert.ToInt32(displayFlagStringArray[i]));
-
-                lineTimesDictionary[time] = displayFlag; 
-            }
-
-            return lineTimesDictionary;
         }
     }
 }
