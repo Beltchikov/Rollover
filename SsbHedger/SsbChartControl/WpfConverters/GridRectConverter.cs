@@ -17,13 +17,14 @@ namespace SsbHedger.SsbChartControl.WpfConverters
         {
             Dictionary<DateTime, bool> lineTimesDictionary = (Dictionary<DateTime, bool>)values[0];
             int barWidth = (int)values[1];
-            double controlWidth = (double)values[2];
+            int yAxisWidth = (int)values[2];
+            double controlWidth = (double)values[3];
 
             double interval = GetInterval(lineTimesDictionary);
             double period = GetPeriod(lineTimesDictionary);
             double ratioIntervalPeriod = interval / period;
 
-            double scaledWidth = (controlWidth - 2 * barWidth -20) * ratioIntervalPeriod;
+            double scaledWidth = (controlWidth - 2 * barWidth - yAxisWidth) * ratioIntervalPeriod;
 
             return new Rect(0, 0, scaledWidth, 20);
         }

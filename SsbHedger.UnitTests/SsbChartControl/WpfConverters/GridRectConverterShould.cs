@@ -19,16 +19,19 @@ namespace SsbHedger.UnitTests.SsbChartControl.WpfConverters
             "1;0;0;0;0;0;0;0;" +
             "1;0",
             10,
+            20,
             580,
             160)]
         void ConvertCorrectly(
             string lineTimesString,
             string displayFlagString,
             int barWidth,
+            int yAxisWidth,
             double controlWidth,
             int expectedScaledWidth)
         {
-            Dictionary<DateTime, bool> lineTimesDictionary = Utils.BuildDateTimeDictionary(
+            Dictionary<DateTime, bool> lineTimesDictionary = 
+                Utils.BuildDateTimeDictionary(
                 lineTimesString,
                 displayFlagString);
             
@@ -37,6 +40,7 @@ namespace SsbHedger.UnitTests.SsbChartControl.WpfConverters
             {
                 lineTimesDictionary,
                 barWidth,
+                yAxisWidth,
                 controlWidth
             };
             Rect rect = (Rect)sut.Convert(
