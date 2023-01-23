@@ -31,10 +31,26 @@ namespace SsbHedger.SsbChartControl.WpfConverters
             double interval = GetInterval(lineTimesDictionary);
             double period = GetPeriod(lineTimesDictionary);
             double ratioIntervalPeriod = interval / period;
-
             double scaledWidth = (controlWidth - 2 * barWidth - yAxisWidth) * ratioIntervalPeriod;
 
-            return new Rect(0, 0, scaledWidth, 20);
+            double offset = GetOffset(lineTimesDictionary);
+            double ratioOffsetPeriod = offset / period;
+            double scaledOffset= (controlWidth - 2 * barWidth - yAxisWidth) * ratioOffsetPeriod;
+
+            return new Rect(scaledOffset, 0, scaledWidth, 20);
+        }
+
+        private double GetOffset(Dictionary<DateTime, bool> lineTimesDictionary)
+        {
+            int i = 0;
+            while (!lineTimesDictionary[lineTimesDictionary.Keys.ElementAt(i)])
+            {
+                i++;
+            }
+
+            var firstDisplayableTime= lineTimesDictionary.Keys.ElementAt(i);
+            var firstTime= lineTimesDictionary.Keys.ElementAt(0);
+            return (firstDisplayableTime - firstTime).TotalMinutes;
         }
 
         public object[] ConvertBack(

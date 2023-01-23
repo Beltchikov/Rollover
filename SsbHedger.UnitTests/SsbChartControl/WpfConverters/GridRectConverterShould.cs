@@ -21,14 +21,16 @@ namespace SsbHedger.UnitTests.SsbChartControl.WpfConverters
             10,
             20,
             580,
-            160)]
+            160,
+            40)]
         void ConvertCorrectly(
             string lineTimesString,
             string displayFlagString,
             int barWidth,
             int yAxisWidth,
             double controlWidth,
-            int expectedScaledWidth)
+            int expectedScaledWidth,
+            int expectedX)
         {
             Dictionary<DateTime, bool> lineTimesDictionary = 
                 Utils.BuildDateTimeDictionary(
@@ -50,6 +52,7 @@ namespace SsbHedger.UnitTests.SsbChartControl.WpfConverters
                 CultureInfo.InvariantCulture);
 
             Assert.Equal(expectedScaledWidth, rect.Width);
+            Assert.Equal(expectedX, rect.X);
         }
     }
 }

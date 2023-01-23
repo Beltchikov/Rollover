@@ -33,7 +33,6 @@
                     <GeometryDrawing.Geometry>
                         <GeometryGroup>
                             <LineGeometry StartPoint="0,0" EndPoint="0,20"/>
-                            <!--<LineGeometry StartPoint="0,0" EndPoint="400,0" />-->
                             <LineGeometry>
                                 <LineGeometry.StartPoint>
                                     <Point X="0" Y="0"/>
