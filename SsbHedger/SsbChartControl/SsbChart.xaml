@@ -62,12 +62,12 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="{Binding YAxisWidth}"></ColumnDefinition>
+            <ColumnDefinition Width="{Binding YAxisWidth, FallbackValue=20}"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="{Binding XAxisHeight}"></RowDefinition>
+            <RowDefinition Height="{Binding XAxisHeight, FallbackValue=15}"></RowDefinition>
         </Grid.RowDefinitions>
         <Border BorderThickness="0 1 0 0" BorderBrush="DarkGray" 
                 Grid.Row="1" Grid.Column="1"></Border>
