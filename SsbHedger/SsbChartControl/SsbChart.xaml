@@ -30,9 +30,8 @@
                 <GeometryDrawing>
                     <GeometryDrawing.Geometry>
                         <GeometryGroup>
-                            <LineGeometry StartPoint="0,0" EndPoint="0,20" />
-                            <!--<LineGeometry StartPoint="0,0" EndPoint="0,40" />-->
-                            <LineGeometry StartPoint="0,0" EndPoint="20,0" />
+                            <LineGeometry StartPoint="0,0" EndPoint="0,20"/>
+                           <LineGeometry StartPoint="0,0" EndPoint="400,0" />
                         </GeometryGroup>
                     </GeometryDrawing.Geometry>
                     <GeometryDrawing.Pen>
