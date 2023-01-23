@@ -45,12 +45,12 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10"></ColumnDefinition>
+            <ColumnDefinition Width="{Binding YAxisWidth}"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="15"></RowDefinition>
+            <RowDefinition Height="{Binding XAxisHeight}"></RowDefinition>
         </Grid.RowDefinitions>
         <Border BorderThickness="0 1 0 0" BorderBrush="DarkGray" 
                 Grid.Row="1" Grid.Column="1"></Border>

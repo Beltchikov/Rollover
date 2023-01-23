@@ -15,6 +15,8 @@ namespace SsbHedger.SsbChartControl
     {
         private readonly int HOURS_INTERVAL = 2;
         private readonly int BAR_WIDTH = 10;
+        private readonly int X_AXIS_HEIGHT = 15;
+        private readonly int Y_AXIS_WIDTH = 20;
         private ILineValuesConverter _lineValuesConverter;
         private Rect _gridRect = Rect.Empty;
 
@@ -63,13 +65,9 @@ namespace SsbHedger.SsbChartControl
             }
         }
 
-        public int BarWidth
-        {
-            get
-            {
-                return BAR_WIDTH;
-            }
-        }
+        public int BarWidth => BAR_WIDTH;
+        public int XAxisHeight => X_AXIS_HEIGHT;
+        public int YAxisWidth => Y_AXIS_WIDTH;
 
         public List<BarUnderlying> BarsUnderlying
         {
