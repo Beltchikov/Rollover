@@ -113,7 +113,7 @@
             </ItemsControl>
         </Canvas>
 
-        <!--<Canvas x:Name="xAxis" Grid.Column="1" Grid.Row="1">
+        <Canvas x:Name="xAxis" Grid.Column="1" Grid.Row="1">
             <ItemsControl ItemsSource="{Binding LineTimes, 
                 Converter={StaticResource lineTimesConverter}}" 
                           Width="{Binding RelativeSource=
@@ -127,15 +127,15 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding Path=TimeAsString}" HorizontalAlignment="Center"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-        </Canvas>-->
+        </Canvas>
 
-        <Canvas x:Name="xAxis" Background="{StaticResource XAxis}" 
+        <!--<Canvas x:Name="xAxis" Background="{StaticResource XAxis}" 
                 Grid.Column="1" Grid.Row="1">
-         </Canvas>
+         </Canvas>-->
 
     </Grid>
 </UserControl>

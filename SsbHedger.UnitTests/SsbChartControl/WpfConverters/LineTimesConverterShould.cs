@@ -36,7 +36,7 @@ namespace SsbHedger.UnitTests.SsbChartControl.WpfConverters
                 .ToList();
 
             var sut = new LineTimesConverter();
-            List<string> convertedTimeList = (List<string>)sut.Convert(
+            List<XAxisValue> convertedTimeList = (List<XAxisValue>)sut.Convert(
                 lineTimesDictionary,
                 typeof(List<string>),
                 new object(),
