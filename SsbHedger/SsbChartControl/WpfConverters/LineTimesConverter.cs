@@ -13,18 +13,18 @@ namespace SsbHedger.SsbChartControl.WpfConverters
             var resultList = new List<XAxisValue>();
 
             var lineTimesDictionary = (Dictionary<DateTime, bool>)value;
-            int position = 0;
+            int index = 0;
             foreach (var dateTimeKey in lineTimesDictionary.Keys)
             {
                 if (!lineTimesDictionary[dateTimeKey])
                 {
-                    resultList.Add(new XAxisValue(DateTime.MinValue, position));
+                    resultList.Add(new XAxisValue(DateTime.MinValue, index));
                 }
                 else
                 {
-                    resultList.Add(new XAxisValue(dateTimeKey, position));
+                    resultList.Add(new XAxisValue(dateTimeKey, index));
                 }
-                position+=400;
+                index+=1;
             }
 
             return resultList.ToList();
@@ -38,10 +38,10 @@ namespace SsbHedger.SsbChartControl.WpfConverters
 
     public class XAxisValue
     {
-        public XAxisValue(DateTime dateTime, int position)
+        public XAxisValue(DateTime dateTime, int index)
         {
             Time = dateTime;
-            Position = position;
+            Index = index;
         }
 
         public DateTime Time { get; set; }
@@ -54,6 +54,6 @@ namespace SsbHedger.SsbChartControl.WpfConverters
                     : Time.ToString("HH:mm"); 
             } 
         }
-        public int Position { get; set; }
+        public int Index { get; set; }
     }
 }

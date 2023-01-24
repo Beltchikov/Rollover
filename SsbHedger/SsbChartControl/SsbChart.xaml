@@ -133,7 +133,7 @@
                             <TextBlock.Margin>
                                 <MultiBinding Converter="{StaticResource xAxisLabelPositionConverter}">
                                     <MultiBinding.Bindings>
-                                        <Binding Path="Position"/>
+                                        <Binding Path="Index"/>
                                         <Binding>
                                             <Binding.RelativeSource>
                                                 <RelativeSource>
