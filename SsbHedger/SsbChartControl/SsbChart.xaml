@@ -16,7 +16,7 @@
         <converters:HorizontalGridLineConverter x:Key="horizontalGridLineConverter"/>
         <converters:XAxisConverter x:Key="xAxisConverter"/>
         <converters:XAxisLabelPositionConverter x:Key="xAxisLabelPositionConverter"/>
-        
+
 
         <DrawingBrush x:Key="GridTile" Stretch="None" TileMode="Tile" 
                       ViewportUnits="Absolute" 
@@ -40,7 +40,7 @@
                                 <LineGeometry.StartPoint>
                                     <Point X="0" Y="0"/>
                                 </LineGeometry.StartPoint>
-                                    <LineGeometry.EndPoint>
+                                <LineGeometry.EndPoint>
                                     <MultiBinding Converter="{StaticResource horizontalGridLineConverter}">
                                         <MultiBinding.Bindings>
                                             <Binding Path="LineTimes"/>
@@ -134,14 +134,23 @@
                                 <MultiBinding Converter="{StaticResource xAxisLabelPositionConverter}">
                                     <MultiBinding.Bindings>
                                         <Binding Path="Position"/>
-                                        <Binding Path="LineTimes"/>
+                                        <Binding>
+                                            <Binding.RelativeSource>
+                                                <RelativeSource>
+                                                    <RelativeSource.AncestorType>
+                                                        <x:Type TypeName="UserControl"></x:Type>
+                                                    </RelativeSource.AncestorType>
+                                                </RelativeSource>
+                                            </Binding.RelativeSource>
+                                            <Binding.Path>LineTimes</Binding.Path>
+                                        </Binding>
                                         <Binding Path="BarWidth"/>
                                         <Binding Path="YAxisWidth"/>
                                         <Binding ElementName="SsbChartControl" Path="ActualWidth"/>
                                     </MultiBinding.Bindings>
                                 </MultiBinding>
                             </TextBlock.Margin>
-                            </TextBlock>
+                        </TextBlock>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
