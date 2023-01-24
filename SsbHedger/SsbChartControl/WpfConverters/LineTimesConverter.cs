@@ -16,11 +16,7 @@ namespace SsbHedger.SsbChartControl.WpfConverters
             int index = 0;
             foreach (var dateTimeKey in lineTimesDictionary.Keys)
             {
-                if (!lineTimesDictionary[dateTimeKey])
-                {
-                    resultList.Add(new XAxisValue(DateTime.MinValue, index));
-                }
-                else
+                if (lineTimesDictionary[dateTimeKey])
                 {
                     resultList.Add(new XAxisValue(dateTimeKey, index));
                 }

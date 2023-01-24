@@ -18,11 +18,7 @@ namespace SsbHedger.UnitTests.SsbChartControl.WpfConverters
             "1;0;0;0;0;0;0;0;" +
             "1;0;0;0;0;0;0;0;" +
             "1;0",
-            ";;" +
-            "16:00;;;;;;;;" +
-            "18:00;;;;;;;;" +
-            "20:00;;;;;;;;" +
-            "22:00;")]
+            "16:00;18:00;20:00;22:00")]
         public void ConvertCorrectly(
             string timeListString,
             string displayFlagString,
