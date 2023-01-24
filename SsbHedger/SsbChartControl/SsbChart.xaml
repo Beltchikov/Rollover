@@ -80,7 +80,7 @@
                         </GeometryGroup>
                     </GeometryDrawing.Geometry>
                     <GeometryDrawing.Pen>
-                        <Pen Thickness="1" Brush="DarkGray" />
+                        <Pen Thickness="1" Brush="Black" />
                     </GeometryDrawing.Pen>
                 </GeometryDrawing>
             </DrawingBrush.Drawing>
