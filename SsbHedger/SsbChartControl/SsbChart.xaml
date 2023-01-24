@@ -6,6 +6,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SsbHedger.SsbChartControl"
              xmlns:converters="clr-namespace:SsbHedger.SsbChartControl.WpfConverters"
+             xmlns:markupExtensions = "clr-namespace:SsbHedger.SsbChartControl.MarkupExtensions" 
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" 
              Background="White">
@@ -13,7 +14,8 @@
         <converters:LineTimesConverter x:Key="lineTimesConverter"/>
         <converters:GridRectConverter x:Key="gridRectConverter"/>
         <converters:HorizontalGridLineConverter x:Key="horizontalGridLineConverter"/>
-
+        <converters:XAxisConverter x:Key="xAxisConverter"/>
+        
 
         <DrawingBrush x:Key="GridTile" Stretch="None" TileMode="Tile" 
                       ViewportUnits="Absolute" 
@@ -57,6 +59,33 @@
             </DrawingBrush.Drawing>
         </DrawingBrush>
 
+        <DrawingBrush x:Key="XAxis" Stretch="None" TileMode="Tile" 
+                      ViewportUnits="Absolute" 
+                      AlignmentX="Left" AlignmentY="Bottom">
+            <DrawingBrush.Viewport>
+                <MultiBinding Converter="{StaticResource xAxisConverter}">
+                    <MultiBinding.Bindings>
+                        <Binding Path="LineTimes"/>
+                        <Binding Path="BarWidth"/>
+                        <Binding Path="YAxisWidth"/>
+                        <Binding ElementName="SsbChartControl" Path="ActualWidth"/>
+                    </MultiBinding.Bindings>
+                </MultiBinding>
+            </DrawingBrush.Viewport>
+            <DrawingBrush.Drawing>
+                <GeometryDrawing>
+                    <GeometryDrawing.Geometry>
+                        <GeometryGroup>
+                            <markupExtensions:TextXAxis Text="aaa"/>
+                        </GeometryGroup>
+                    </GeometryDrawing.Geometry>
+                    <GeometryDrawing.Pen>
+                        <Pen Thickness="1" Brush="DarkGray" />
+                    </GeometryDrawing.Pen>
+                </GeometryDrawing>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+
     </UserControl.Resources>
 
     <Grid>
@@ -84,7 +113,7 @@
             </ItemsControl>
         </Canvas>
 
-        <Canvas x:Name="xAxis" Grid.Column="1" Grid.Row="1">
+        <!--<Canvas x:Name="xAxis" Grid.Column="1" Grid.Row="1">
             <ItemsControl ItemsSource="{Binding LineTimes, 
                 Converter={StaticResource lineTimesConverter}}" 
                           Width="{Binding RelativeSource=
@@ -102,7 +131,11 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-        </Canvas>
+        </Canvas>-->
+
+        <Canvas x:Name="xAxis" Background="{StaticResource XAxis}" 
+                Grid.Column="1" Grid.Row="1">
+         </Canvas>
 
     </Grid>
 </UserControl>
