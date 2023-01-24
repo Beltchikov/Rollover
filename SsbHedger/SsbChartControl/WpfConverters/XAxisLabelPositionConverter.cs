@@ -31,8 +31,10 @@ namespace SsbHedger.SsbChartControl.WpfConverters
             };
 
             Rect rect = (Rect)base.Convert(valuesForBaseConverter, targetType, parameter, culture);
-            double left = rect.Left + rect.Width * position;  
-            return new Thickness(left,0, 0, 0);  
+            double left = rect.Left + rect.Width * position;
+
+            //return left;  
+            return new Thickness(left, 0, 0, 0);
             
         }
 

@@ -19,8 +19,8 @@ namespace SsbHedger.SsbChartControl.WpfConverters
                 if (lineTimesDictionary[dateTimeKey])
                 {
                     resultList.Add(new XAxisValue(dateTimeKey, index));
+                    index += 1;
                 }
-                index+=1;
             }
 
             return resultList.ToList();

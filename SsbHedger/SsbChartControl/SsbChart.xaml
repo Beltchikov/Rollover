@@ -130,7 +130,8 @@
                     <DataTemplate>
                         <TextBlock Text="{Binding Path=TimeAsString}" 
                                    HorizontalAlignment="Center">
-                            <TextBlock.Margin>
+                            <!--<Canvas.Left>-->
+                                <TextBlock.Margin>
                                 <MultiBinding Converter="{StaticResource xAxisLabelPositionConverter}">
                                     <MultiBinding.Bindings>
                                         <Binding Path="Index"/>
@@ -167,6 +168,7 @@
                                         <Binding ElementName="SsbChartControl" Path="ActualWidth"/>
                                     </MultiBinding.Bindings>
                                 </MultiBinding>
+                            <!--</Canvas.Left>-->
                             </TextBlock.Margin>
                         </TextBlock>
                     </DataTemplate>
