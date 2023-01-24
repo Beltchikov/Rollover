@@ -130,8 +130,7 @@
                     <DataTemplate>
                         <TextBlock Text="{Binding Path=TimeAsString}" 
                                    HorizontalAlignment="Center">
-                            <!--<Canvas.Left>-->
-                                <TextBlock.Margin>
+                            <TextBlock.Margin>
                                 <MultiBinding Converter="{StaticResource xAxisLabelPositionConverter}">
                                     <MultiBinding.Bindings>
                                         <Binding Path="Index"/>
@@ -168,17 +167,11 @@
                                         <Binding ElementName="SsbChartControl" Path="ActualWidth"/>
                                     </MultiBinding.Bindings>
                                 </MultiBinding>
-                            <!--</Canvas.Left>-->
                             </TextBlock.Margin>
                         </TextBlock>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </Canvas>
-
-        <!--<Canvas x:Name="xAxis" Background="{StaticResource XAxis}" 
-                Grid.Column="1" Grid.Row="1">
-         </Canvas>-->
-
     </Grid>
 </UserControl>

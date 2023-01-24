@@ -15,7 +15,7 @@ namespace SsbHedger.SsbChartControl.WpfConverters
                 return new Rect(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
             }
 
-            int position = (int)values[0];
+            int index = (int)values[0];
 
             Dictionary<DateTime, bool> lineTimesDictionary = (Dictionary<DateTime, bool>)values[1];
             int barWidth = (int)values[2];
@@ -31,9 +31,7 @@ namespace SsbHedger.SsbChartControl.WpfConverters
             };
 
             Rect rect = (Rect)base.Convert(valuesForBaseConverter, targetType, parameter, culture);
-            double left = rect.Left + rect.Width * position;
-
-            //return left;  
+            double left = rect.Left + rect.Width * index;
             return new Thickness(left, 0, 0, 0);
             
         }
