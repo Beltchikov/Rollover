@@ -144,8 +144,26 @@
                                             </Binding.RelativeSource>
                                             <Binding.Path>LineTimes</Binding.Path>
                                         </Binding>
-                                        <Binding Path="BarWidth"/>
-                                        <Binding Path="YAxisWidth"/>
+                                        <Binding>
+                                            <Binding.RelativeSource>
+                                                <RelativeSource>
+                                                    <RelativeSource.AncestorType>
+                                                        <x:Type TypeName="UserControl"></x:Type>
+                                                    </RelativeSource.AncestorType>
+                                                </RelativeSource>
+                                            </Binding.RelativeSource>
+                                            <Binding.Path>BarWidth</Binding.Path>
+                                        </Binding>
+                                        <Binding>
+                                            <Binding.RelativeSource>
+                                                <RelativeSource>
+                                                    <RelativeSource.AncestorType>
+                                                        <x:Type TypeName="UserControl"></x:Type>
+                                                    </RelativeSource.AncestorType>
+                                                </RelativeSource>
+                                            </Binding.RelativeSource>
+                                            <Binding.Path>YAxisWidth</Binding.Path>
+                                        </Binding>
                                         <Binding ElementName="SsbChartControl" Path="ActualWidth"/>
                                     </MultiBinding.Bindings>
                                 </MultiBinding>
