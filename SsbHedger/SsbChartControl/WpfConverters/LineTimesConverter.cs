@@ -24,7 +24,7 @@ namespace SsbHedger.SsbChartControl.WpfConverters
                 {
                     resultList.Add(new XAxisValue(dateTimeKey, position));
                 }
-                position++;
+                position+=400;
             }
 
             return resultList.ToList();

@@ -9,8 +9,8 @@ namespace SsbHedger.SsbChartControl.WpfConverters
 {
     public class GridRectConverter : IMultiValueConverter
     {
-        int DEFAULT_WIDTH = 20;
-        int DEFAULT_HEIGHT = 20;
+        protected int DEFAULT_WIDTH = 20;
+        protected int DEFAULT_HEIGHT = 20;
         
         public object Convert(
             object[] values,
