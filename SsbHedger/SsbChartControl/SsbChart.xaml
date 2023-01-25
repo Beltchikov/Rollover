@@ -70,6 +70,8 @@
         </Grid.RowDefinitions>
         <Border BorderThickness="0 1 0 0" BorderBrush="DarkGray" 
                 Grid.Row="1" Grid.Column="1"></Border>
+        <Border BorderThickness="0 0 1 0" BorderBrush="DarkGray" 
+                Grid.Row="0" Grid.Column="0"></Border>
 
         <Canvas Background="{StaticResource GridTile}" Grid.Column="1" Grid.Row="0">
             <ItemsControl ItemsSource="{Binding BarsUnderlying}">
