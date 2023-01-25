@@ -5,7 +5,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:converters="clr-namespace:SsbHedger.SsbChartControl.WpfConverters"
-             xmlns:markupExtensions = "clr-namespace:SsbHedger.SsbChartControl.MarkupExtensions" 
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" 
              Background="White">
@@ -58,34 +57,6 @@
                 </GeometryDrawing>
             </DrawingBrush.Drawing>
         </DrawingBrush>
-
-        <DrawingBrush x:Key="XAxis" Stretch="None" TileMode="Tile" 
-                      ViewportUnits="Absolute" 
-                      AlignmentX="Left" AlignmentY="Bottom">
-            <DrawingBrush.Viewport>
-                <MultiBinding Converter="{StaticResource xAxisConverter}">
-                    <MultiBinding.Bindings>
-                        <Binding Path="LineTimes"/>
-                        <Binding Path="BarWidth"/>
-                        <Binding Path="YAxisWidth"/>
-                        <Binding ElementName="SsbChartControl" Path="ActualWidth"/>
-                    </MultiBinding.Bindings>
-                </MultiBinding>
-            </DrawingBrush.Viewport>
-            <DrawingBrush.Drawing>
-                <GeometryDrawing>
-                    <GeometryDrawing.Geometry>
-                        <GeometryGroup>
-                            <markupExtensions:TextXAxis Text="aaa"/>
-                        </GeometryGroup>
-                    </GeometryDrawing.Geometry>
-                    <GeometryDrawing.Pen>
-                        <Pen Thickness="1" Brush="Black" />
-                    </GeometryDrawing.Pen>
-                </GeometryDrawing>
-            </DrawingBrush.Drawing>
-        </DrawingBrush>
-
     </UserControl.Resources>
 
     <Grid>
