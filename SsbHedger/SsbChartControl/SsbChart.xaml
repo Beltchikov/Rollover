@@ -95,7 +95,7 @@
                                                         </RelativeSource.AncestorType>
                                                     </RelativeSource>
                                                 </Binding.RelativeSource>
-                                                <Binding.Path>LineTimesEvery2Hours</Binding.Path>
+                                                <Binding.Path>LineTimesEveryHour</Binding.Path>
                                             </Binding>
                                             <Binding>
                                                 <Binding.RelativeSource>
