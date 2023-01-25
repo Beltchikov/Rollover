@@ -14,7 +14,8 @@
         <converters:HorizontalGridLineConverter x:Key="horizontalGridLineConverter"/>
         <converters:XAxisConverter x:Key="xAxisConverter"/>
         <converters:XAxisLabelPositionConverter x:Key="xAxisLabelPositionConverter"/>
-
+        <converters:BarCanvasLeftConverter x:Key="barCanvasLeftConverter"/>
+        
 
         <DrawingBrush x:Key="GridTile" Stretch="None" TileMode="Tile" 
                       ViewportUnits="Absolute" 
@@ -79,8 +80,48 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Canvas>
-                            <Rectangle  Width="50" Height="80" Fill="Crimson"
-                                    Canvas.Left="10" Canvas.Top="20"></Rectangle>
+                            <!--<Rectangle  Width="50" Height="80" Fill="Crimson"
+                                    Canvas.Left="10" Canvas.Top="20"></Rectangle>-->
+                            <Rectangle  Width="10" Height="40" Fill="Crimson" Canvas.Top="20">
+                                <Canvas.Left>
+                                    <MultiBinding Converter="{StaticResource barCanvasLeftConverter}">
+                                        <MultiBinding.Bindings>
+                                            <Binding/>
+                                            <Binding>
+                                                <Binding.RelativeSource>
+                                                    <RelativeSource>
+                                                        <RelativeSource.AncestorType>
+                                                            <x:Type TypeName="UserControl"></x:Type>
+                                                        </RelativeSource.AncestorType>
+                                                    </RelativeSource>
+                                                </Binding.RelativeSource>
+                                                <Binding.Path>LineTimesEvery2Hours</Binding.Path>
+                                            </Binding>
+                                            <Binding>
+                                                <Binding.RelativeSource>
+                                                    <RelativeSource>
+                                                        <RelativeSource.AncestorType>
+                                                            <x:Type TypeName="UserControl"></x:Type>
+                                                        </RelativeSource.AncestorType>
+                                                    </RelativeSource>
+                                                </Binding.RelativeSource>
+                                                <Binding.Path>BarWidth</Binding.Path>
+                                            </Binding>
+                                            <Binding>
+                                                <Binding.RelativeSource>
+                                                    <RelativeSource>
+                                                        <RelativeSource.AncestorType>
+                                                            <x:Type TypeName="UserControl"></x:Type>
+                                                        </RelativeSource.AncestorType>
+                                                    </RelativeSource>
+                                                </Binding.RelativeSource>
+                                                <Binding.Path>YAxisWidth</Binding.Path>
+                                            </Binding>
+                                            <Binding ElementName="SsbChartControl" Path="ActualWidth"/>
+                                        </MultiBinding.Bindings>
+                                    </MultiBinding>
+                                </Canvas.Left>
+                            </Rectangle>
                         </Canvas>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
