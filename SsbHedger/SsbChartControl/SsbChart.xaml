@@ -22,7 +22,7 @@
             <DrawingBrush.Viewport>
                 <MultiBinding Converter="{StaticResource gridRectConverter}">
                     <MultiBinding.Bindings>
-                        <Binding Path="LineTimes"/>
+                        <Binding Path="LineTimesEvery2Hours"/>
                         <Binding Path="BarWidth"/>
                         <Binding Path="YAxisWidth"/>
                         <Binding ElementName="SsbChartControl" Path="ActualWidth"/>
@@ -41,7 +41,7 @@
                                 <LineGeometry.EndPoint>
                                     <MultiBinding Converter="{StaticResource horizontalGridLineConverter}">
                                         <MultiBinding.Bindings>
-                                            <Binding Path="LineTimes"/>
+                                            <Binding Path="LineTimesEvery2Hours"/>
                                             <Binding Path="BarWidth"/>
                                             <Binding Path="YAxisWidth"/>
                                             <Binding ElementName="SsbChartControl" Path="ActualWidth"/>
@@ -68,6 +68,7 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="{Binding XAxisHeight, FallbackValue=15}"></RowDefinition>
         </Grid.RowDefinitions>
+        
         <Border BorderThickness="0 1 0 0" BorderBrush="DarkGray" 
                 Grid.Row="1" Grid.Column="1"></Border>
         <Border BorderThickness="0 0 1 0" BorderBrush="DarkGray" 
@@ -87,7 +88,7 @@
         </Canvas>
 
         <Canvas x:Name="xAxis" Grid.Column="1" Grid.Row="1">
-            <ItemsControl ItemsSource="{Binding LineTimes, 
+            <ItemsControl ItemsSource="{Binding LineTimesEvery2Hours, 
                 Converter={StaticResource lineTimesConverter}}" 
                           Width="{Binding RelativeSource=
                                     {RelativeSource FindAncestor,
@@ -114,7 +115,7 @@
                                                     </RelativeSource.AncestorType>
                                                 </RelativeSource>
                                             </Binding.RelativeSource>
-                                            <Binding.Path>LineTimes</Binding.Path>
+                                            <Binding.Path>LineTimesEvery2Hours</Binding.Path>
                                         </Binding>
                                         <Binding>
                                             <Binding.RelativeSource>

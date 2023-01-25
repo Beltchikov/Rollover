@@ -57,7 +57,7 @@ namespace SsbHedger.SsbChartControl
             set { SetValue(SessionEndProperty, value); }
         }
 
-        public Dictionary<DateTime, bool> LineTimes
+        public Dictionary<DateTime, bool> LineTimesEvery2Hours
         {
             get
             {
