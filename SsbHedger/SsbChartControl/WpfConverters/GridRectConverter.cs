@@ -9,9 +9,6 @@ namespace SsbHedger.SsbChartControl.WpfConverters
 {
     public class GridRectConverter : IMultiValueConverter
     {
-        protected int DEFAULT_WIDTH = 20;
-        protected int DEFAULT_HEIGHT = 20;
-        
         public object Convert(
             object[] values,
             Type targetType,
@@ -20,7 +17,11 @@ namespace SsbHedger.SsbChartControl.WpfConverters
         {
             if(values[0].GetType() != typeof(Dictionary<DateTime, bool>))
             {
-                return new Rect(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+                return new Rect(
+                    0,
+                    0,
+                    WpfConvertersConstants.DEFAULT_GRID_WIDTH,
+                    WpfConvertersConstants.DEFAULT_GRID_HEIGHT);
             }
             
             Dictionary<DateTime, bool> lineTimesDictionary = (Dictionary<DateTime, bool>)values[0];

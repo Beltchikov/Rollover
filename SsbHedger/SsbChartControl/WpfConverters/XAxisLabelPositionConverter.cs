@@ -12,7 +12,11 @@ namespace SsbHedger.SsbChartControl.WpfConverters
         {
             if (values[1].GetType() != typeof(Dictionary<DateTime, bool>))
             {
-                return new Rect(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+                return new Rect(
+                    0,
+                    0,
+                    WpfConvertersConstants.DEFAULT_GRID_WIDTH,
+                    WpfConvertersConstants.DEFAULT_GRID_HEIGHT);
             }
 
             int index = (int)values[0];
