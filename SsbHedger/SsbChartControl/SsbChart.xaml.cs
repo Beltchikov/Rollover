@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -44,7 +45,7 @@ namespace SsbHedger.SsbChartControl
                 new BarUnderlying(DateTime.ParseExact("20230111 15:45:00", "yyyyMMdd HH:mm:ss", CultureInfo.InvariantCulture),
                     391.02, 391.5, 390.98, 391.46)
             };
-
+       
         public static readonly DependencyProperty SessionStartProperty =
             DependencyProperty.Register("SessionStart", typeof(DateTime), typeof(SsbChart), new PropertyMetadata(default(DateTime)));
         public static readonly DependencyProperty SessionEndProperty =

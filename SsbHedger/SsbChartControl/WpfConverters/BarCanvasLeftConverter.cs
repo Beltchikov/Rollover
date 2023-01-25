@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 
 namespace SsbHedger.SsbChartControl.WpfConverters
 {
-    public class BarCanvasLeftConverter : IMultiValueConverter
+    public class BarCanvasLeftConverter : GridRectConverter, IMultiValueConverter
     {
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public new object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             if (values[1].GetType() != typeof(Dictionary<DateTime, bool>))
             {
@@ -20,17 +21,45 @@ namespace SsbHedger.SsbChartControl.WpfConverters
             }
 
             BarUnderlying bar = (BarUnderlying)values[0];
+            
+            // Ensure date of today for the test bars
+            if (bar.Time.Date != DateTime.Now.Date)
+            {
+                bar = new BarUnderlying(
+                    new DateTime(
+                    DateTime.Now.Year,
+                    DateTime.Now.Month,
+                    DateTime.Now.Day,
+                    bar.Time.Hour,
+                    bar.Time.Minute,
+                    0),
+                     bar.Open,
+                bar.High,
+                bar.Low,
+                bar.Close);
+            }
 
             Dictionary<DateTime, bool> lineTimesDictionary = (Dictionary<DateTime, bool>)values[1];
             int barWidth = (int)values[2];
             int yAxisWidth = (int)values[3];
             double controlWidth = (double)values[4];
 
-            // TODO
-            return 20.0;
+            object[] valuesForBaseConverter =
+            {
+                lineTimesDictionary,
+                barWidth,
+                yAxisWidth,
+                controlWidth
+            };
+
+            Rect rect = (Rect)base.Convert(valuesForBaseConverter, targetType, parameter, culture);
+            DateTime sessionStart = lineTimesDictionary.Keys.ElementAt(0);
+            double diffBarSessionStart = (bar.Time - sessionStart).TotalHours;
+            
+            return diffBarSessionStart * rect.Width;
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        public new object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
