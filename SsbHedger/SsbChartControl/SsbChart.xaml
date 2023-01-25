@@ -22,7 +22,7 @@
             <DrawingBrush.Viewport>
                 <MultiBinding Converter="{StaticResource gridRectConverter}">
                     <MultiBinding.Bindings>
-                        <Binding Path="LineTimesEvery2Hours"/>
+                        <Binding Path="LineTimesEveryHour"/>
                         <Binding Path="BarWidth"/>
                         <Binding Path="YAxisWidth"/>
                         <Binding ElementName="SsbChartControl" Path="ActualWidth"/>
@@ -41,7 +41,7 @@
                                 <LineGeometry.EndPoint>
                                     <MultiBinding Converter="{StaticResource horizontalGridLineConverter}">
                                         <MultiBinding.Bindings>
-                                            <Binding Path="LineTimesEvery2Hours"/>
+                                            <Binding Path="LineTimesEveryHour"/>
                                             <Binding Path="BarWidth"/>
                                             <Binding Path="YAxisWidth"/>
                                             <Binding ElementName="SsbChartControl" Path="ActualWidth"/>

@@ -65,6 +65,14 @@ namespace SsbHedger.SsbChartControl
             }
         }
 
+        public Dictionary<DateTime, bool> LineTimesEveryHour
+        {
+            get
+            {
+                return _lineValuesConverter.LineTimes(SessionStart, SessionEnd, 1);
+            }
+        }
+
         public int BarWidth => BAR_WIDTH;
         public int XAxisHeight => X_AXIS_HEIGHT;
         public int YAxisWidth => Y_AXIS_WIDTH;
