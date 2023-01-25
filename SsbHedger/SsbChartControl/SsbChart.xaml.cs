@@ -21,18 +21,30 @@ namespace SsbHedger.SsbChartControl
         private Rect _gridRect = Rect.Empty;
 
         // Test code
+        //static List<BarUnderlying> bars = new List<BarUnderlying>()
+        //    {
+        //        new BarUnderlying(DateTime.ParseExact("20230111 10:00:00", "yyyyMMdd HH:mm:ss", CultureInfo.InvariantCulture),
+        //            390.44, 390.93, 390.2, 390.84),
+        //        new BarUnderlying(DateTime.ParseExact("20230111 10:05:00", "yyyyMMdd HH:mm:ss", CultureInfo.InvariantCulture),
+        //            390.84, 391.18, 390.78, 391.01),
+        //        new BarUnderlying(DateTime.ParseExact("20230111 10:10:00", "yyyyMMdd HH:mm:ss", CultureInfo.InvariantCulture),
+        //            391.01, 391.07, 390.93, 391.02),
+        //        new BarUnderlying(DateTime.ParseExact("20230111 10:15:00", "yyyyMMdd HH:mm:ss", CultureInfo.InvariantCulture),
+        //            391.02, 391.5, 390.98, 391.46)
+        //    };
+
         static List<BarUnderlying> bars = new List<BarUnderlying>()
             {
-                new BarUnderlying(DateTime.ParseExact("20230111 10:00:00", "yyyyMMdd hh:mm:ss", CultureInfo.InvariantCulture),
-                    390.44, 390.93, 390.2, 390.84),
-                new BarUnderlying(DateTime.ParseExact("20230111 10:05:00", "yyyyMMdd hh:mm:ss", CultureInfo.InvariantCulture),
-                    390.84, 391.18, 390.78, 391.01),
-                new BarUnderlying(DateTime.ParseExact("20230111 10:10:00", "yyyyMMdd hh:mm:ss", CultureInfo.InvariantCulture),
-                    391.01, 391.07, 390.93, 391.02),
-                new BarUnderlying(DateTime.ParseExact("20230111 10:15:00", "yyyyMMdd hh:mm:ss", CultureInfo.InvariantCulture),
+                new BarUnderlying(DateTime.ParseExact("20230111 15:30:00", "yyyyMMdd HH:mm:ss", CultureInfo.InvariantCulture),
+                    390.44, 390.93, 390.2, 390.84),              
+                new BarUnderlying(DateTime.ParseExact("20230111 15:35:00", "yyyyMMdd HH:mm:ss", CultureInfo.InvariantCulture),
+                    390.84, 391.18, 390.78, 391.01),             
+                new BarUnderlying(DateTime.ParseExact("20230111 15:40:00", "yyyyMMdd HH:mm:ss", CultureInfo.InvariantCulture),
+                    391.01, 391.07, 390.93, 391.02),             
+                new BarUnderlying(DateTime.ParseExact("20230111 15:45:00", "yyyyMMdd HH:mm:ss", CultureInfo.InvariantCulture),
                     391.02, 391.5, 390.98, 391.46)
             };
-        
+
         public static readonly DependencyProperty SessionStartProperty =
             DependencyProperty.Register("SessionStart", typeof(DateTime), typeof(SsbChart), new PropertyMetadata(default(DateTime)));
         public static readonly DependencyProperty SessionEndProperty =
