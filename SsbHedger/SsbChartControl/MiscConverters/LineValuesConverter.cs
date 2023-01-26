@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SsbHedger.SsbChartControl.Utilities;
 
-namespace SsbHedger.SsbChartControl
+namespace SsbHedger.SsbChartControl.MiscConverters
 {
     public class LineValuesConverter : ILineValuesConverter
     {
@@ -11,7 +11,7 @@ namespace SsbHedger.SsbChartControl
 
         public LineValuesConverter()
         {
-           _incrementCalculator = new IncrementCalculator();
+            _incrementCalculator = new IncrementCalculator();
         }
 
         public Dictionary<DateTime, bool> LineTimes(DateTime sessionStart, DateTime sessionEnd, int hoursInterval)
@@ -21,9 +21,9 @@ namespace SsbHedger.SsbChartControl
             List<DateTime> allTimes = GetAllTimes(sessionStart, sessionEnd, incrementInMinutes);
 
             Dictionary<DateTime, bool> resultDictionary = new Dictionary<DateTime, bool>();
-            foreach (DateTime time in allTimes) 
-            { 
-                if(displayableTimes.Any(d => d.Hour == time.Hour 
+            foreach (DateTime time in allTimes)
+            {
+                if (displayableTimes.Any(d => d.Hour == time.Hour
                     && d.Minute == time.Minute))
                 {
                     resultDictionary[time] = true;
@@ -59,7 +59,7 @@ namespace SsbHedger.SsbChartControl
                     running.Minute,
                     0);
                 result.Add(dateTimeToAdd);
-               
+
                 running = running.AddMinutes(incrementInMinutes);
             }
 

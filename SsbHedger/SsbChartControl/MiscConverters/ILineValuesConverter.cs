@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SsbHedger.SsbChartControl
+namespace SsbHedger.SsbChartControl.MiscConverters
 {
     public interface ILineValuesConverter
     {

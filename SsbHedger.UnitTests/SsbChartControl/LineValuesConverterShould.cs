@@ -1,5 +1,5 @@
 ﻿using AutoFixture;
-using SsbHedger.SsbChartControl;
+using SsbHedger.SsbChartControl.MiscConverters;
 
 namespace SsbHedger.UnitTests.SsbChartControl
 {
