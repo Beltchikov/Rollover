@@ -14,7 +14,7 @@ namespace SsbHedger.SsbChartControl.WpfConverters
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             var bars = (List<BarUnderlying>)values[0];
-            var axisHight = (double)values[1];
+            var axisHeight = (double)values[1];
 
             // TODO
             return new List<PriceAndMargin> 
