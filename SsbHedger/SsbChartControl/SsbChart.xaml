@@ -201,11 +201,8 @@
             </ItemsControl>
         </Canvas>
 
-        <Canvas x:Name="yAxis" Grid.Column="0" Grid.Row="0" Background="Aqua">
-            <ItemsControl Background="red" 
-                          ItemsSource="{Binding BarsUnderlying,
-                                        Converter={StaticResource barPricesConverter}}"
-                          Width="{Binding RelativeSource=
+        <Canvas x:Name="yAxis" Grid.Column="0" Grid.Row="0">
+            <ItemsControl Width="{Binding RelativeSource=
                                     {RelativeSource FindAncestor,
                                         AncestorType={x:Type UIElement}},
                                         Path=ActualWidth}"
@@ -213,6 +210,23 @@
                                     {RelativeSource FindAncestor,
                                         AncestorType={x:Type UIElement}},
                                         Path=ActualHeight}">
+                <ItemsControl.ItemsSource>
+                    <MultiBinding Converter="{StaticResource barPricesConverter}">
+                        <MultiBinding.Bindings>
+                            <Binding Path="BarsUnderlying"/>
+                            <Binding>
+                                <Binding.RelativeSource>
+                                    <RelativeSource>
+                                        <RelativeSource.AncestorType>
+                                            <x:Type TypeName="Canvas"></x:Type>
+                                        </RelativeSource.AncestorType>
+                                    </RelativeSource>
+                                </Binding.RelativeSource>
+                                <Binding.Path>ActualHeight</Binding.Path>
+                            </Binding>
+                        </MultiBinding.Bindings>
+                    </MultiBinding>
+                </ItemsControl.ItemsSource>
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Canvas />
