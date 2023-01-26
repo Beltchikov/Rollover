@@ -15,7 +15,7 @@ namespace SsbHedger.SsbChartControl
     public partial class SsbChart : UserControl
     {
         private readonly int HOURS_INTERVAL = 2;
-        private readonly int BAR_WIDTH = 10;
+        private readonly int BAR_WIDTH = 5;
         private readonly int X_AXIS_HEIGHT = 15;
         private readonly int Y_AXIS_WIDTH = 20;
         private ILineValuesConverter _lineValuesConverter;

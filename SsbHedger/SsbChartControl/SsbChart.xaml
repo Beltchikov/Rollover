@@ -82,7 +82,7 @@
                         <Canvas>
                             <!--<Rectangle  Width="50" Height="80" Fill="Crimson"
                                     Canvas.Left="10" Canvas.Top="20"></Rectangle>-->
-                            <Rectangle  Width="10" Height="40" Fill="Crimson" Canvas.Top="20">
+                            <Rectangle  Height="40" Fill="Crimson" Canvas.Top="20">
                                 <Canvas.Left>
                                     <MultiBinding Converter="{StaticResource barCanvasLeftConverter}">
                                         <MultiBinding.Bindings>
@@ -121,6 +121,18 @@
                                         </MultiBinding.Bindings>
                                     </MultiBinding>
                                 </Canvas.Left>
+                                <Rectangle.Width>
+                                    <Binding>
+                                        <Binding.RelativeSource>
+                                            <RelativeSource>
+                                                <RelativeSource.AncestorType>
+                                                    <x:Type TypeName="UserControl"></x:Type>
+                                                </RelativeSource.AncestorType>
+                                            </RelativeSource>
+                                        </Binding.RelativeSource>
+                                        <Binding.Path>BarWidth</Binding.Path>
+                                    </Binding>
+                                </Rectangle.Width>
                             </Rectangle>
                         </Canvas>
                     </DataTemplate>
