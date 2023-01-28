@@ -16,6 +16,22 @@ namespace SsbHedger.SsbChartControl.WpfConverters
             var bars = (List<BarUnderlying>)values[0];
             var axisHeight = (double)values[1];
 
+            double axisHeightNet = axisHeight *
+                (1 - 2 * WpfConvertersConstants.CHART_BUFFER_UP_DOWN_IN_PERCENT / 100);
+            int numberOfLabels = (int)Math.Round(
+                axisHeightNet / WpfConvertersConstants.MIN_HEIGHT_FOR_PRICE_LABEL,
+                0);
+
+            (double rangeMin, double rangeMax) = GetRangeMinMax(bars);
+
+            // TODO
+            //List<double> labelPrices _priceLabelsUtility.GetPrices(numberOfLabels, rangeMin, rangeMax);
+            //List<int> canvasTopsList _priceLabelsUtility.GetCanvasTops(
+            //  axisHeightNet,
+            //  rangeMin,
+            //  rangeMax,
+            //  labelPrices);
+
             // TODO
             return new List<PriceAndMargin> 
             { 
@@ -24,6 +40,19 @@ namespace SsbHedger.SsbChartControl.WpfConverters
                 new PriceAndMargin("101", new Thickness(0,100,0,0)),
                 new PriceAndMargin("100", new Thickness(0,150,0,0))
             };
+        }
+
+        private (double rangeMin, double rangeMax) GetRangeMinMax(List<BarUnderlying> bars)
+        {
+            BarUnderlying? barWithLowestLow = bars.MinBy(b => b.Low);
+            BarUnderlying? barWithHighesHigh = bars.MaxBy(b => b.High);
+
+            if(barWithLowestLow == null || barWithHighesHigh == null)
+            {
+                throw new ApplicationException("Unexpected! Range low - high can not be calculated.");
+            }
+
+            return  ValueTuple.Create(barWithLowestLow.Low, barWithHighesHigh.High);
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
