@@ -1,7 +1,7 @@
 ﻿using SsbHedger.SsbChartControl;
+using SsbHedger.SsbChartControl.WpfConverters;
 using SsbHedger.UnitTests.Shared;
-using System.Collections;
-using System.Collections.Generic;
+using System.Globalization;
 
 namespace SsbHedger.UnitTests.SsbChartControl.WpfConverters
 {
@@ -19,33 +19,36 @@ namespace SsbHedger.UnitTests.SsbChartControl.WpfConverters
                 5,
                 rangeMin,
                 rangeMax,
+                2,
                 10);
+            object[] values = new object[]
+            {
+                bars,
+                axisHeight
+            };
+                        
+            var sut = new BarPricesConverter();
+            var result = sut.Convert(
+                values,
+                typeof(List<PriceAndMargin>),
+                new object(),
+                CultureInfo.InvariantCulture);
 
-            throw new NotImplementedException();
+            Assert.IsType<List<PriceAndMargin>>(result);
+            var resultTyped = (List<PriceAndMargin>)result; 
+            Assert.Equal(
+                ExpectedNumberOfLabels(axisHeight),
+                resultTyped.Count());
+        }
+
+        private int ExpectedNumberOfLabels(double axisHeight)
+        {
+            double axisHeightNet = axisHeight *
+                (1 - 2 * WpfConvertersConstants.CHART_BUFFER_UP_DOWN_IN_PERCENT / 100);
+            int numberOfLabels = (int)Math.Round(
+               axisHeightNet / WpfConvertersConstants.MIN_HEIGHT_FOR_PRICE_LABEL,
+               0);
+            return numberOfLabels;  
         }
     }
-
-    //internal class Height150TestData : IEnumerable<object[]>
-    //{
-    //    public IEnumerator<object[]> GetEnumerator()
-    //    {
-    //        var testBars = new List<BarUnderlying>
-    //        {
-    //            new BarUnderlying(DateTime.Now, 186,190, 184, 188),
-    //            new BarUnderlying(DateTime.Now, 170,175, 165, 166),
-    //            new BarUnderlying(DateTime.Now, 165,168, 160, 162)
-    //        };
-    //        var expectedLabels = new List<double> { 165, 185 };
-
-    //        yield return new object[]
-    //        {
-    //            150,
-    //            10,
-    //            testBars,
-    //            expectedLabels
-    //        };
-    //    }
-
-    //    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-    //}
 }

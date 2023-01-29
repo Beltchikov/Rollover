@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
@@ -32,14 +30,15 @@ namespace SsbHedger.SsbChartControl.WpfConverters
             //  rangeMax,
             //  labelPrices);
 
-            // TODO
-            return new List<PriceAndMargin> 
-            { 
-                new PriceAndMargin("103", new Thickness(0,0,0,0)),
-                new PriceAndMargin("102", new Thickness(0,50,0,0)),
-                new PriceAndMargin("101", new Thickness(0,100,0,0)),
-                new PriceAndMargin("100", new Thickness(0,150,0,0))
-            };
+            // TODO change implementation later on
+            var resultList = new List<PriceAndMargin>();
+            for(int i=0; i < numberOfLabels; i++)
+            {
+                resultList.Add(new PriceAndMargin(
+                    (103 - i).ToString(),
+                    new Thickness(0, 50 * i, 0, 0)));
+            }
+            return resultList;
         }
 
         private (double rangeMin, double rangeMax) GetRangeMinMax(List<BarUnderlying> bars)
