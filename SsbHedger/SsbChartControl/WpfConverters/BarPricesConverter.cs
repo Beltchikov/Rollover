@@ -10,7 +10,12 @@ namespace SsbHedger.SsbChartControl.WpfConverters
 {
     public class BarPricesConverter : IMultiValueConverter
     {
-        private IPriceLabelsUtility _priceLabelsUtility;
+        private IPriceLabelsUtility _priceLabelsUtility = null!;
+
+        public BarPricesConverter()
+        {
+            _priceLabelsUtility = new PriceLabelsUtility(); 
+        }
 
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
@@ -26,12 +31,12 @@ namespace SsbHedger.SsbChartControl.WpfConverters
             (double rangeMin, double rangeMax) = GetRangeMinMax(bars);
 
             // TODO
-            //List<double> labelPrices _priceLabelsUtility.GetPrices(numberOfLabels, rangeMin, rangeMax);
-            //List<int> canvasTopsList _priceLabelsUtility.GetCanvasTops(
-            //  axisHeightNet,
-            //  rangeMin,
-            //  rangeMax,
-            //  labelPrices);
+            List<double> labelPrices = _priceLabelsUtility.GetPrices(numberOfLabels, rangeMin, rangeMax);
+            List<int> canvasTopsList = _priceLabelsUtility.GetCanvasTops(
+              axisHeightNet,
+              rangeMin,
+              rangeMax,
+              labelPrices);
 
             // TODO change implementation later on
             var resultList = new List<PriceAndMargin>();
