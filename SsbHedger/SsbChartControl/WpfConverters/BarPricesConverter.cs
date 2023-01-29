@@ -4,11 +4,14 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
+using SsbHedger.SsbChartControl.Utilities;
 
 namespace SsbHedger.SsbChartControl.WpfConverters
 {
     public class BarPricesConverter : IMultiValueConverter
     {
+        private IPriceLabelsUtility _priceLabelsUtility;
+
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             var bars = (List<BarUnderlying>)values[0];
