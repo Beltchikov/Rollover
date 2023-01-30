@@ -15,8 +15,8 @@ namespace SsbHedger.SsbChartControl.Utilities
 
             double range = rangeMax - rangeMin;
             int maxDecimalPlaces = GetMaxDecimalPlaces(rangeMin, rangeMax);
-            double offsetAbs = range
-                * WpfConvertersConstants.CHART_BUFFER_UP_DOWN_IN_PERCENT / 100;
+            double offsetAbs = range * 
+                WpfConvertersConstants.CHART_BUFFER_UP_DOWN_IN_PERCENT / 100;
             offsetAbs = Math.Round(
                 offsetAbs,
                 maxDecimalPlaces,
@@ -25,12 +25,28 @@ namespace SsbHedger.SsbChartControl.Utilities
             double rangeMaxNet = rangeMax - offsetAbs;
 
             double labelStep = (rangeMaxNet - rangeMinNet) / numberOfLabels;
+            labelStep = Math.Round(
+                labelStep,
+                maxDecimalPlaces,
+                MidpointRounding.AwayFromZero);
+            double halfOfLabelStep = Math.Round(
+                labelStep/2,
+                maxDecimalPlaces,
+                MidpointRounding.AwayFromZero);
 
             // TODO
-            resultList.Add(23);
-            resultList.Add(45);
-            resultList.Add(123);
-            resultList.Add(560);
+            resultList.Add(rangeMinNet + halfOfLabelStep);
+            double nextPrice = 0;
+            while ((nextPrice = resultList[resultList.Count - 1] + labelStep) < rangeMaxNet)
+            {
+                resultList.Add(nextPrice);
+            }
+
+
+            //resultList.Add(23);
+            //resultList.Add(45);
+            //resultList.Add(123);
+            //resultList.Add(560);
 
             return resultList;
         }

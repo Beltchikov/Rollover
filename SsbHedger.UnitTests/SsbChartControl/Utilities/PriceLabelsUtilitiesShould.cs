@@ -17,7 +17,10 @@ namespace SsbHedger.UnitTests.SsbChartControl.Utilities
             double rangeMax,
             string expectedListString)
         {
-            var expectedList = expectedListString.Split(";").ToList();
+            var expectedList = expectedListString
+                .Split(";")
+                .Select(m => Convert.ToDouble(m))
+                .ToList();
 
             var sut = new PriceLabelsUtility();
             var resultList = sut.GetPrices(
@@ -25,13 +28,18 @@ namespace SsbHedger.UnitTests.SsbChartControl.Utilities
                 rangeMin,
                 rangeMax);
 
-            throw new NotImplementedException();
+            Assert.Equal(expectedList.Count, resultList.Count);
+            
+            Assert.Equal(expectedList[0], resultList[0]);
+            Assert.Equal(expectedList[1], resultList[1]);
+            Assert.Equal(expectedList[1], resultList[1]);
+            Assert.Equal(expectedList[1], resultList[1]);
         }
 
-        [Fact]
-        public void GetCorrectCanvasTops()
-        {
-            throw new NotImplementedException();
-        }
+        //[Fact]
+        //public void GetCorrectCanvasTops()
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
