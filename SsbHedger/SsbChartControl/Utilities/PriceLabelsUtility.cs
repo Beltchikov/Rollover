@@ -1,6 +1,7 @@
 ﻿using SsbHedger.SsbChartControl.WpfConverters;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SsbHedger.SsbChartControl.Utilities
 {
@@ -34,27 +35,19 @@ namespace SsbHedger.SsbChartControl.Utilities
                 maxDecimalPlaces,
                 MidpointRounding.AwayFromZero);
 
-            // TODO
             resultList.Add(rangeMinNet + halfOfLabelStep);
             double nextPrice = 0;
             while ((nextPrice = resultList[resultList.Count - 1] + labelStep) < rangeMaxNet)
             {
-                resultList.Add(nextPrice);
+               resultList.Add(nextPrice);
             }
 
-
-            //resultList.Add(23);
-            //resultList.Add(45);
-            //resultList.Add(123);
-            //resultList.Add(560);
+            resultList = RoundUsingTwoLastDigitsArray(
+                   resultList,
+                   WpfConvertersConstants.TWO_LAST_DIGITS_ARRAY_STRING,
+                   rangeMaxNet);
 
             return resultList;
-        }
-
-        private int GetMaxDecimalPlaces(double rangeMin, double rangeMax)
-        {
-            // TODO implement if necessary
-            return 2;
         }
 
         public List<int> GetCanvasTops(
@@ -72,6 +65,43 @@ namespace SsbHedger.SsbChartControl.Utilities
             resultList.Add(560);
 
             return resultList;
+        }
+
+        private int GetMaxDecimalPlaces(double rangeMin, double rangeMax)
+        {
+            // TODO implement if necessary
+            return 2;
+        }
+
+        private List<double> RoundUsingTwoLastDigitsArray(
+            List<double> priceList,
+            string twoLastDigitsArrayString,
+            double rangeMaxNet)
+        {
+            var twoLastDigitsList = twoLastDigitsArrayString
+                .Split(";")
+                .ToList();
+
+            foreach(string twoLastDigits in twoLastDigitsList)
+            {
+                List<double> resultList = 
+                    priceList
+                    .Select(p => RoundUsingTwoLastDigitsArray(p, twoLastDigits))
+                    .ToList();
+
+                if(resultList.Max() <= rangeMaxNet)
+                {
+                    return resultList;
+                }
+            }
+
+            return priceList;
+        }
+
+        private double RoundUsingTwoLastDigitsArray(double price, string twoLastDigits)
+        {
+            // TODO
+            return price;
         }
     }
 }
