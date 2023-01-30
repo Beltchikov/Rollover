@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SsbHedger.SsbChartControl.WpfConverters;
+using System;
 using System.Collections.Generic;
 
 namespace SsbHedger.SsbChartControl.Utilities
@@ -10,7 +11,34 @@ namespace SsbHedger.SsbChartControl.Utilities
             double rangeMin,
             double rangeMax)
         {
-            throw new NotImplementedException();
+            var resultList = new List<double>();
+
+            double range = rangeMax - rangeMin;
+            int maxDecimalPlaces = GetMaxDecimalPlaces(rangeMin, rangeMax);
+            double offsetAbs = range
+                * WpfConvertersConstants.CHART_BUFFER_UP_DOWN_IN_PERCENT / 100;
+            offsetAbs = Math.Round(
+                offsetAbs,
+                maxDecimalPlaces,
+                MidpointRounding.AwayFromZero);
+            double rangeMinNet = rangeMin + offsetAbs;
+            double rangeMaxNet = rangeMax - offsetAbs;
+
+            double labelStep = (rangeMaxNet - rangeMinNet) / numberOfLabels;
+
+            // TODO
+            resultList.Add(23);
+            resultList.Add(45);
+            resultList.Add(123);
+            resultList.Add(560);
+
+            return resultList;
+        }
+
+        private int GetMaxDecimalPlaces(double rangeMin, double rangeMax)
+        {
+            // TODO implement if necessary
+            return 2;
         }
 
         public List<int> GetCanvasTops(
@@ -19,7 +47,15 @@ namespace SsbHedger.SsbChartControl.Utilities
             double rangeMax,
             List<double> labelPrices)
         {
-            throw new NotImplementedException();
+            var resultList = new List<int>();
+
+            // TODO
+            resultList.Add(23);
+            resultList.Add(45);
+            resultList.Add(123);
+            resultList.Add(560);
+
+            return resultList;
         }
     }
 }
