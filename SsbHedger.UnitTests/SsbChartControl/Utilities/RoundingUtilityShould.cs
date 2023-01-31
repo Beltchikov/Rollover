@@ -6,10 +6,10 @@ namespace SsbHedger.UnitTests.SsbChartControl.Utilities
     {
         [Theory]
         [InlineData(164.88, "00", 165)]
-        //[InlineData(171.63, "50;25;20;10;5;2", 172)]
-        //[InlineData(178.38, "50;25;20;10;5;2", 179)]
-        //[InlineData(185.13, "50;25;20;10;5;2", 186)]
-        public void RoundCorrectly(
+        [InlineData(171.63, "00", 172)]
+        [InlineData(178.38, "00", 179)]
+        [InlineData(185.13, "00", 186)]
+        public void RoundCorrectly00(
             double inputPrice,
             string lastDigitsString,
             double expectedPrice)
@@ -21,6 +21,8 @@ namespace SsbHedger.UnitTests.SsbChartControl.Utilities
 
             Assert.Equal(expectedPrice, roundedPrice);
         }
+
+        // TODO test "50"
 
         // TODO test "25;20;10;5;2"
 

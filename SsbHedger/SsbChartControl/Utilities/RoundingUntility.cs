@@ -9,12 +9,14 @@ namespace SsbHedger.SsbChartControl.Utilities
         {
             int numberOfDigits = lastDigitsString.Length;
             int decimalPlacesInPrice = GetDecimalPlaces(price);
+            int decimalPlacesAfterRounding = decimalPlacesInPrice - numberOfDigits;
             int lastDigits = Convert.ToInt32(lastDigitsString);
 
             double result = 0;
             if(lastDigits == 0)
             {
-                result = Math.Round(price, decimalPlacesInPrice - numberOfDigits);
+                var koef = Math.Pow(10, decimalPlacesAfterRounding);
+                result = Math.Ceiling(price * koef) / koef;
             }
             else
             {
