@@ -93,7 +93,9 @@ namespace SsbHedger.SsbChartControl.Utilities
             {
                 List<double> resultList = 
                     priceList
-                    .Select(p => _roundingUntility.RoundUsingTwoLastDigitsArray(p, twoLastDigits))
+                    .Select(p => _roundingUntility.RoundUsingTwoLastDigits(
+                        p,
+                        twoLastDigits))
                     .ToList();
 
                 if(resultList.Max() <= rangeMaxNet)

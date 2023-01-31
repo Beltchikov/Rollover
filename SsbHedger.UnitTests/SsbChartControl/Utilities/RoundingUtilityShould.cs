@@ -5,19 +5,19 @@ namespace SsbHedger.UnitTests.SsbChartControl.Utilities
     public class RoundingUtilityShould
     {
         [Theory]
-        [InlineData(164.88, "50;25;20;10;5;2", 165)]
+        [InlineData(164.88, "00", 165)]
         //[InlineData(171.63, "50;25;20;10;5;2", 172)]
         //[InlineData(178.38, "50;25;20;10;5;2", 179)]
         //[InlineData(185.13, "50;25;20;10;5;2", 186)]
         public void RoundCorrectly(
             double inputPrice,
-            string lastTwoDigitsArrayString,
+            string lastDigitsString,
             double expectedPrice)
         {
             var sut = new RoundingUtility();
-            var roundedPrice = sut.RoundUsingTwoLastDigitsArray(
+            var roundedPrice = sut.RoundUsingTwoLastDigits(
                 inputPrice,
-                lastTwoDigitsArrayString);
+                lastDigitsString);
 
             Assert.Equal(expectedPrice, roundedPrice);
         }

@@ -2,6 +2,6 @@
 {
     public interface IRoundingUtility
     {
-        double RoundUsingTwoLastDigitsArray(double price, string twoLastDigits);
+        double RoundUsingTwoLastDigits(double price, string twoLastDigits);
     }
 }
