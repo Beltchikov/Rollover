@@ -7,6 +7,13 @@ namespace SsbHedger.SsbChartControl.Utilities
 {
     public class PriceLabelsUtility : IPriceLabelsUtility
     {
+        private IRoundingUtility _roundingUntility;
+
+        public PriceLabelsUtility()
+        {
+            _roundingUntility = new RoundingUtility(); ;
+        }
+
         public List<double> GetPrices(
             int numberOfLabels,
             double rangeMin,
@@ -86,7 +93,7 @@ namespace SsbHedger.SsbChartControl.Utilities
             {
                 List<double> resultList = 
                     priceList
-                    .Select(p => RoundUsingTwoLastDigitsArray(p, twoLastDigits))
+                    .Select(p => _roundingUntility.RoundUsingTwoLastDigitsArray(p, twoLastDigits))
                     .ToList();
 
                 if(resultList.Max() <= rangeMaxNet)
@@ -96,12 +103,6 @@ namespace SsbHedger.SsbChartControl.Utilities
             }
 
             return priceList;
-        }
-
-        private double RoundUsingTwoLastDigitsArray(double price, string twoLastDigits)
-        {
-            // TODO
-            return price;
         }
     }
 }
