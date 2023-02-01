@@ -21,7 +21,7 @@ namespace SsbHedger.SsbChartControl.Utilities
             else
             {
                 int roundingKoef = (int)Math.Pow(10, numberOfDigits) / lastDigits;
-                result = (Math.Round(price * roundingKoef, 0)) / roundingKoef;
+                result = (Math.Ceiling(price * roundingKoef)) / roundingKoef;
             }
 
             return result;
