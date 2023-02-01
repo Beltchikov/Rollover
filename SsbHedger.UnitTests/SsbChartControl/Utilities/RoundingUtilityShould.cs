@@ -22,7 +22,23 @@ namespace SsbHedger.UnitTests.SsbChartControl.Utilities
             Assert.Equal(expectedPrice, roundedPrice);
         }
 
-        // TODO test "50"
+        [Theory]
+        [InlineData(177.4, "50", 177.5)]
+        [InlineData(180.82, "50", 181)]
+        [InlineData(184.2, "50", 184.5)]
+        [InlineData(187.58, "50", 188)]
+        public void RoundCorrectly50(
+            double inputPrice,
+            string lastDigitsString,
+            double expectedPrice)
+        {
+            var sut = new RoundingUtility();
+            var roundedPrice = sut.RoundUsingTwoLastDigits(
+                inputPrice,
+                lastDigitsString);
+
+            Assert.Equal(expectedPrice, roundedPrice);
+        }
 
         // TODO test "25;20;10;5;2"
 
