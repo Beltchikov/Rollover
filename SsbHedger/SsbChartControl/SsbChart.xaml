@@ -156,7 +156,8 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Path=TimeAsString}" 
-                                   HorizontalAlignment="Center">
+                                   HorizontalAlignment="Center"
+                                   FontSize="10">
                             <TextBlock.Margin>
                                 <MultiBinding Converter="{StaticResource xAxisLabelPositionConverter}">
                                     <MultiBinding.Bindings>
@@ -235,6 +236,8 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Path=PriceAsString}" 
+                                   FontSize="10"
+                                   Padding="2"
                                    HorizontalAlignment="Center"
                                    Margin="{Binding Path=Margin}">
                         </TextBlock>

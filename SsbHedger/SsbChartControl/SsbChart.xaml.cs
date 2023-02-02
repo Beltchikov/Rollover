@@ -18,7 +18,7 @@ namespace SsbHedger.SsbChartControl
         private readonly int HOURS_INTERVAL = 2;
         private readonly int BAR_WIDTH = 5;
         private readonly int X_AXIS_HEIGHT = 15;
-        private readonly int Y_AXIS_WIDTH = 20;
+        private readonly int Y_AXIS_WIDTH = 35;
         private ILineValuesConverter _lineValuesConverter;
         private Rect _gridRect = Rect.Empty;
 
