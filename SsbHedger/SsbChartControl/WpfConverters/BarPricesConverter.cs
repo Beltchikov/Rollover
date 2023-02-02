@@ -43,7 +43,7 @@ namespace SsbHedger.SsbChartControl.WpfConverters
             for(int i=0; i < numberOfLabels; i++)
             {
                 resultList.Add(new PriceAndMargin(
-                    (103 - i).ToString(),
+                    labelPrices[i].ToString(),
                     new Thickness(0, 50 * i, 0, 0)));
             }
             return resultList;
