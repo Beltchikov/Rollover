@@ -94,7 +94,23 @@ namespace SsbHedger.UnitTests.SsbChartControl.Utilities
             Assert.Equal(expectedPrice, roundedPrice);
         }
 
-        // TODO test "5;2"
+        [Theory]
+        [InlineData(188.67, "05", 188.7)]
+        [InlineData(189.01, "05", 189.05)]
+        [InlineData(189.34, "05", 189.35)]
+        [InlineData(189.68, "05", 189.7)]
+        public void RoundCorrectly5(
+          double inputPrice,
+          string lastDigitsString,
+          double expectedPrice)
+        {
+            var sut = new RoundingUtility();
+            var roundedPrice = sut.RoundUsingTwoLastDigits(
+                inputPrice,
+                lastDigitsString);
+
+            Assert.Equal(expectedPrice, roundedPrice);
+        }
 
         // TODO test "2"
 
