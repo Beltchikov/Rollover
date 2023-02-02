@@ -10,7 +10,7 @@ namespace SsbHedger.UnitTests.SsbChartControl.Utilities
     public class PriceLabelsUtilitiesShould
     {
         [Theory]
-        [InlineData(4, 160, 190, "165;172;179;186")]
+        [InlineData(4, 160, 190, "186;179;172;165")]
         public void GetCorrectPrices(
             int numberOfLabels,
             double rangeMin,
@@ -34,6 +34,8 @@ namespace SsbHedger.UnitTests.SsbChartControl.Utilities
             Assert.Equal(expectedList[1], resultList[1]);
             Assert.Equal(expectedList[1], resultList[1]);
             Assert.Equal(expectedList[1], resultList[1]);
+
+            Assert.True(resultList[1] < resultList[0]);
         }
 
         //[Fact]

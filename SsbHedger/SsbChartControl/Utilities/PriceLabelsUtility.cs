@@ -42,9 +42,9 @@ namespace SsbHedger.SsbChartControl.Utilities
                 maxDecimalPlaces,
                 MidpointRounding.AwayFromZero);
 
-            resultList.Add(rangeMinNet + halfOfLabelStep);
-            double nextPrice = 0;
-            while ((nextPrice = resultList[resultList.Count - 1] + labelStep) < rangeMaxNet)
+            resultList.Add(rangeMaxNet - halfOfLabelStep);
+            double nextPrice;
+            while ((nextPrice = resultList[resultList.Count - 1] - labelStep) > rangeMinNet)
             {
                resultList.Add(nextPrice);
             }
