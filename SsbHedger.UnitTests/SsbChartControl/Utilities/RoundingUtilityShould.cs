@@ -77,7 +77,7 @@ namespace SsbHedger.UnitTests.SsbChartControl.Utilities
         }
 
         [Theory]
-        [InlineData(187.34, "10", 178,4)]
+        [InlineData(187.34, "10", 187.4)]
         [InlineData(188.01, "10", 188.1)]
         [InlineData(188.69, "10", 188.7)]
         [InlineData(189.36, "10", 189.4)]
