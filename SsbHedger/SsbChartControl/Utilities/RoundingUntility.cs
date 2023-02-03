@@ -30,8 +30,13 @@ namespace SsbHedger.SsbChartControl.Utilities
         private int GetDecimalPlaces(double price)
         {
             var priceString = price.ToString(CultureInfo.InvariantCulture);
-            var splittedString = priceString.Split('.');
-            return splittedString[1].Length;
+            var splittedStringArray = priceString.Split('.');
+            if(splittedStringArray.Length < 2) 
+            {
+                return 0;
+            }
+
+            return splittedStringArray[1].Length;
         }
     }
 }
