@@ -98,7 +98,8 @@ namespace SsbHedger.SsbChartControl.Utilities
                         twoLastDigits))
                     .ToList();
 
-                if(resultList.Max() <= rangeMaxNet)
+                if(resultList.Max() <= rangeMaxNet 
+                    && resultList.SequenceEqual(resultList.Distinct()))
                 {
                     return resultList;
                 }
