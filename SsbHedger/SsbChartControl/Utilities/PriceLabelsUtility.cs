@@ -117,10 +117,6 @@ namespace SsbHedger.SsbChartControl.Utilities
                     && resultList.SequenceEqual(resultList.Distinct())
                     && SameStep(resultList, maxDecimalPlaces))
                 {
-                    // TODO test code
-                    SameStep(resultList, maxDecimalPlaces);
-
-
                     return resultList;
                 }
             }
