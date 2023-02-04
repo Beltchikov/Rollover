@@ -61,12 +61,24 @@ namespace SsbHedger.SsbChartControl.Utilities
         {
             var resultList = new List<int>();
 
-            // TODO
-            resultList.Add(23);
-            resultList.Add(45);
-            resultList.Add(123);
-            resultList.Add(560);
+            int maxDecimalPlaces = GetMaxDecimalPlaces(rangeMin, rangeMax);
+            (double rangeMinNet, double rangeMaxNet) = GetRangeMinMaxNet(
+                rangeMin,
+                rangeMax,
+                maxDecimalPlaces,
+                WpfConvertersConstants.CHART_BUFFER_UP_DOWN_IN_PERCENT);
+            double rangeNet = rangeMaxNet - rangeMinNet;
+            double priceUnitInPoints = axisHeightNet / rangeNet;
 
+            resultList.Add(0);
+            for (int i = 1; i < labelPrices.Count; i++)
+            {
+                double price = labelPrices[i];
+                double firstPrice = labelPrices[0];
+                int top = (int)Math.Round((firstPrice - price) * priceUnitInPoints,0);
+                resultList.Add(top);
+            }
+            
             return resultList;
         }
 

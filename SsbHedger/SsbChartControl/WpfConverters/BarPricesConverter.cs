@@ -30,7 +30,6 @@ namespace SsbHedger.SsbChartControl.WpfConverters
 
             (double rangeMin, double rangeMax) = GetRangeMinMax(bars);
 
-            // TODO
             List<double> labelPrices = _priceLabelsUtility.GetPrices(numberOfLabels, rangeMin, rangeMax);
             List<int> canvasTopsList = _priceLabelsUtility.GetCanvasTops(
               axisHeightNet,
@@ -38,13 +37,12 @@ namespace SsbHedger.SsbChartControl.WpfConverters
               rangeMax,
               labelPrices);
 
-            // TODO change implementation later on
             var resultList = new List<PriceAndMargin>();
             for(int i=0; i < numberOfLabels; i++)
             {
                 resultList.Add(new PriceAndMargin(
                     labelPrices[i].ToString(),
-                    new Thickness(0, 50 * i, 0, 0)));
+                    new Thickness(0, canvasTopsList[i], 0, 0)));
             }
             return resultList;
         }
