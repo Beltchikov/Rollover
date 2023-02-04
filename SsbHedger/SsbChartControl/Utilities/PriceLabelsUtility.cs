@@ -73,14 +73,14 @@ namespace SsbHedger.SsbChartControl.Utilities
             double rangeNet = rangeMaxNet - rangeMinNet;
             double priceUnitInPoints = axisHeightNet / rangeNet;
             double offset = range * buffer / (2 * 100);
-            int offsetInPoints = (int)Math.Round(offset * priceUnitInPoints, 0);
+            int offsetInPoints = (int)Math.Ceiling(offset * priceUnitInPoints);
 
             resultList.Add(offsetInPoints);
             for (int i = 1; i < labelPrices.Count; i++)
             {
                 double price = labelPrices[i];
                 double firstPrice = labelPrices[0];
-                int top = (int)Math.Round((firstPrice - price) * priceUnitInPoints,0);
+                int top = (int)Math.Ceiling((firstPrice - price) * priceUnitInPoints);
                 resultList.Add(top);
             }
             
