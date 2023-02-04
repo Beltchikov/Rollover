@@ -48,7 +48,8 @@ namespace SsbHedger.SsbChartControl.Utilities
             resultList = RoundUsingTwoLastDigitsArray(
                    resultList,
                    WpfConvertersConstants.TWO_LAST_DIGITS_ARRAY_STRING,
-                   rangeMaxNet);
+                   rangeMaxNet,
+                   maxDecimalPlaces);
 
             return resultList;
         }
@@ -96,7 +97,8 @@ namespace SsbHedger.SsbChartControl.Utilities
         private List<double> RoundUsingTwoLastDigitsArray(
             List<double> priceList,
             string twoLastDigitsArrayString,
-            double rangeMaxNet)
+            double rangeMaxNet,
+            int maxDecimalPlaces)
         {
             var twoLastDigitsList = twoLastDigitsArrayString
                 .Split(";")
@@ -112,8 +114,13 @@ namespace SsbHedger.SsbChartControl.Utilities
                     .ToList();
 
                 if(resultList.Max() <= rangeMaxNet 
-                    && resultList.SequenceEqual(resultList.Distinct()))
+                    && resultList.SequenceEqual(resultList.Distinct())
+                    && SameStep(resultList, maxDecimalPlaces))
                 {
+                    // TODO test code
+                    SameStep(resultList, maxDecimalPlaces);
+
+
                     return resultList;
                 }
             }
@@ -137,6 +144,30 @@ namespace SsbHedger.SsbChartControl.Utilities
             double rangeMaxNet = rangeMax - offsetAbs;
 
             return ValueTuple.Create(rangeMinNet, rangeMaxNet);
+        }
+
+        private bool SameStep(List<double> resultList, int maxDecimalPlaces)
+        {
+            var stepList = new List<int>();
+
+            for (int i = 1; i < resultList.Count; i++)
+            {
+                var currentValue = resultList[i];
+                var valueBefore = resultList[i - 1];
+                var step = currentValue - valueBefore;
+                var stepMultiplied =step * Math.Pow(10, maxDecimalPlaces);
+                int stepRounded = (int)Math.Round(
+                    stepMultiplied,
+                    maxDecimalPlaces,
+                    MidpointRounding.AwayFromZero);
+                stepList.Add(stepRounded);
+                if(stepList.Max() != stepList.Min())
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }
