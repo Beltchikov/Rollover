@@ -60,17 +60,22 @@ namespace SsbHedger.SsbChartControl.Utilities
             List<double> labelPrices)
         {
             var resultList = new List<int>();
+            var buffer = WpfConvertersConstants.CHART_BUFFER_UP_DOWN_IN_PERCENT;
 
             int maxDecimalPlaces = GetMaxDecimalPlaces(rangeMin, rangeMax);
             (double rangeMinNet, double rangeMaxNet) = GetRangeMinMaxNet(
                 rangeMin,
                 rangeMax,
                 maxDecimalPlaces,
-                WpfConvertersConstants.CHART_BUFFER_UP_DOWN_IN_PERCENT);
+                buffer
+                );
+            double range = rangeMax - rangeMin;
             double rangeNet = rangeMaxNet - rangeMinNet;
             double priceUnitInPoints = axisHeightNet / rangeNet;
+            double offset = range * buffer / (2 * 100);
+            int offsetInPoints = (int)Math.Round(offset * priceUnitInPoints, 0);
 
-            resultList.Add(0);
+            resultList.Add(offsetInPoints);
             for (int i = 1; i < labelPrices.Count; i++)
             {
                 double price = labelPrices[i];
