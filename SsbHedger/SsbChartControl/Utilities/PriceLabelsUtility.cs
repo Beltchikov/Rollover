@@ -11,7 +11,7 @@ namespace SsbHedger.SsbChartControl.Utilities
 
         public PriceLabelsUtility()
         {
-            _roundingUntility = new RoundingUtility(); ;
+            _roundingUntility = new RoundingUtility();
         }
 
         public List<double> GetPrices(
@@ -21,16 +21,12 @@ namespace SsbHedger.SsbChartControl.Utilities
         {
             var resultList = new List<double>();
 
-            double range = rangeMax - rangeMin;
             int maxDecimalPlaces = GetMaxDecimalPlaces(rangeMin, rangeMax);
-            double offsetAbs = range * 
-                WpfConvertersConstants.CHART_BUFFER_UP_DOWN_IN_PERCENT / 100;
-            offsetAbs = Math.Round(
-                offsetAbs,
+            (double rangeMinNet, double rangeMaxNet) = GetRangeMinMaxNet(
+                rangeMin,
+                rangeMax,
                 maxDecimalPlaces,
-                MidpointRounding.AwayFromZero);
-            double rangeMinNet = rangeMin + offsetAbs;
-            double rangeMaxNet = rangeMax - offsetAbs;
+                WpfConvertersConstants.CHART_BUFFER_UP_DOWN_IN_PERCENT);
 
             double labelStep = (rangeMaxNet - rangeMinNet) / numberOfLabels;
             labelStep = Math.Round(
@@ -106,6 +102,24 @@ namespace SsbHedger.SsbChartControl.Utilities
             }
 
             return priceList;
+        }
+
+        private (double rangeMinNet, double rangeMaxNet) GetRangeMinMaxNet(
+            double rangeMin,
+            double rangeMax,
+            int maxDecimalPlaces,
+            double chartBuffer)
+        {
+            double range = rangeMax - rangeMin;
+            double offsetAbs = range * chartBuffer / 100;
+            offsetAbs = Math.Round(
+                offsetAbs,
+                maxDecimalPlaces,
+                MidpointRounding.AwayFromZero);
+            double rangeMinNet = rangeMin + offsetAbs;
+            double rangeMaxNet = rangeMax - offsetAbs;
+
+            return ValueTuple.Create(rangeMinNet, rangeMaxNet);
         }
     }
 }
