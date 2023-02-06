@@ -42,7 +42,7 @@ namespace SsbHedger.SsbChartControl.Utilities
             double nextPrice;
             while ((nextPrice = resultList[resultList.Count - 1] - labelStep) > rangeMinNet)
             {
-               resultList.Add(nextPrice);
+               resultList.Add(Math.Round(nextPrice, maxDecimalPlaces));
             }
 
             resultList = RoundUsingTwoLastDigitsArray(
