@@ -55,7 +55,7 @@ namespace SsbHedger.SsbChartControl.Utilities
         }
 
         public List<int> GetCanvasTops(
-            double axisHeightNet,
+            double axisHeight,
             double rangeMin,
             double rangeMax,
             List<double> labelPrices)
@@ -72,7 +72,7 @@ namespace SsbHedger.SsbChartControl.Utilities
                 );
             double range = rangeMax - rangeMin;
             double rangeNet = rangeMaxNet - rangeMinNet;
-            double priceUnitInPoints = axisHeightNet / rangeNet;
+            double priceUnitInPoints = axisHeight / rangeNet;
             double offset = range * buffer / (2 * 100);
             int offsetInPoints = (int)Math.Ceiling(offset * priceUnitInPoints);
 

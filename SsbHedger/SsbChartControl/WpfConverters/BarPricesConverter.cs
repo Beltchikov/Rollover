@@ -32,7 +32,7 @@ namespace SsbHedger.SsbChartControl.WpfConverters
 
             List<double> labelPrices = _priceLabelsUtility.GetPrices(numberOfLabels, rangeMin, rangeMax);
             List<int> canvasTopsList = _priceLabelsUtility.GetCanvasTops(
-              axisHeightNet,
+              axisHeight,
               rangeMin,
               rangeMax,
               labelPrices);
