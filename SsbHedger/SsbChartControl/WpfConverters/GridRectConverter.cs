@@ -34,14 +34,14 @@ namespace SsbHedger.SsbChartControl.WpfConverters
             double ratioIntervalPeriod = interval / period;
             double scaledWidth = (controlWidth - 2 * barWidth - yAxisWidth) * ratioIntervalPeriod;
 
-            double offset = GetOffset(lineTimesDictionary);
-            double ratioOffsetPeriod = offset / period;
-            double scaledOffset= (controlWidth - 2 * barWidth - yAxisWidth) * ratioOffsetPeriod;
+            double offsetX = GetOffsetX(lineTimesDictionary);
+            double ratioOffsetPeriod = offsetX / period;
+            double scaledOffsetX= (controlWidth - 2 * barWidth - yAxisWidth) * ratioOffsetPeriod;
 
-            return new Rect(scaledOffset, 0, scaledWidth, 20);
+            return new Rect(scaledOffsetX, 0, scaledWidth, 20);
         }
 
-        private double GetOffset(Dictionary<DateTime, bool> lineTimesDictionary)
+        private double GetOffsetX(Dictionary<DateTime, bool> lineTimesDictionary)
         {
             int i = 0;
             while (!lineTimesDictionary[lineTimesDictionary.Keys.ElementAt(i)])
