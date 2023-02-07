@@ -34,7 +34,7 @@ namespace SsbHedger.SsbChartControl.Utilities
                 maxDecimalPlaces,
                 MidpointRounding.AwayFromZero);
             double halfOfLabelStep = Math.Round(
-                labelStep/2,
+                labelStep / 2,
                 maxDecimalPlaces,
                 MidpointRounding.AwayFromZero);
 
@@ -42,7 +42,7 @@ namespace SsbHedger.SsbChartControl.Utilities
             double nextPrice;
             while ((nextPrice = resultList[resultList.Count - 1] - labelStep) > rangeMinNet)
             {
-               resultList.Add(Math.Round(nextPrice, maxDecimalPlaces));
+                resultList.Add(Math.Round(nextPrice, maxDecimalPlaces));
             }
 
             resultList = RoundUsingTwoLastDigitsArray(
@@ -84,15 +84,28 @@ namespace SsbHedger.SsbChartControl.Utilities
                 int top = (int)Math.Ceiling((firstPrice - price) * priceUnitInPoints);
                 resultList.Add(top);
             }
-            
+
             return resultList;
         }
 
         public int GetNumberOfLabels(double axisHeight, double chartBuffer, double minHeightForLabel)
         {
             double axisHeightNet = axisHeight * (1 - 2 * chartBuffer / 100);
-            int numberOfLabels = (int)Math.Round(axisHeightNet / minHeightForLabel,0);
+            int numberOfLabels = (int)Math.Round(axisHeightNet / minHeightForLabel, 0);
             return numberOfLabels;
+        }
+
+        public (double rangeMin, double rangeMax) GetRangeMinMax(List<BarUnderlying> bars)
+        {
+            BarUnderlying? barWithLowestLow = bars.MinBy(b => b.Low);
+            BarUnderlying? barWithHighesHigh = bars.MaxBy(b => b.High);
+
+            if (barWithLowestLow == null || barWithHighesHigh == null)
+            {
+                throw new ApplicationException("Unexpected! Range low - high can not be calculated.");
+            }
+
+            return ValueTuple.Create(barWithLowestLow.Low, barWithHighesHigh.High);
         }
 
         private int GetMaxDecimalPlaces(double rangeMin, double rangeMax)
@@ -111,16 +124,16 @@ namespace SsbHedger.SsbChartControl.Utilities
                 .Split(";")
                 .ToList();
 
-            foreach(string twoLastDigits in twoLastDigitsList)
+            foreach (string twoLastDigits in twoLastDigitsList)
             {
-                List<double> resultList = 
+                List<double> resultList =
                     priceList
                     .Select(p => _roundingUntility.RoundUsingTwoLastDigits(
                         p,
                         twoLastDigits))
                     .ToList();
 
-                if(resultList.Max() <= rangeMaxNet 
+                if (resultList.Max() <= rangeMaxNet
                     && resultList.SequenceEqual(resultList.Distinct())
                     && SameStep(resultList, maxDecimalPlaces))
                 {
@@ -158,13 +171,13 @@ namespace SsbHedger.SsbChartControl.Utilities
                 var currentValue = resultList[i];
                 var valueBefore = resultList[i - 1];
                 var step = currentValue - valueBefore;
-                var stepMultiplied =step * Math.Pow(10, maxDecimalPlaces);
+                var stepMultiplied = step * Math.Pow(10, maxDecimalPlaces);
                 int stepRounded = (int)Math.Round(
                     stepMultiplied,
                     maxDecimalPlaces,
                     MidpointRounding.AwayFromZero);
                 stepList.Add(stepRounded);
-                if(stepList.Max() != stepList.Min())
+                if (stepList.Max() != stepList.Min())
                 {
                     return false;
                 }

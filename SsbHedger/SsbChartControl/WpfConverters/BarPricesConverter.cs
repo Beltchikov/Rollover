@@ -31,9 +31,7 @@ namespace SsbHedger.SsbChartControl.WpfConverters
                 axisHeight,
                 WpfConvertersConstants.CHART_BUFFER_UP_DOWN_IN_PERCENT,
                 WpfConvertersConstants.MIN_HEIGHT_FOR_PRICE_LABEL);
-
-            // TODO introduce method in _priceLabelsUtility
-            (double rangeMin, double rangeMax) = GetRangeMinMax(bars);
+            (double rangeMin, double rangeMax) = _priceLabelsUtility.GetRangeMinMax(bars);
 
             List<double> labelPrices = _priceLabelsUtility.GetPrices(numberOfLabels, rangeMin, rangeMax);
             List<int> canvasTopsList = _priceLabelsUtility.GetCanvasTops(
@@ -50,19 +48,6 @@ namespace SsbHedger.SsbChartControl.WpfConverters
                     new Thickness(0, canvasTopsList[i], 0, 0)));
             }
             return resultList;
-        }
-
-        private (double rangeMin, double rangeMax) GetRangeMinMax(List<BarUnderlying> bars)
-        {
-            BarUnderlying? barWithLowestLow = bars.MinBy(b => b.Low);
-            BarUnderlying? barWithHighesHigh = bars.MaxBy(b => b.High);
-
-            if(barWithLowestLow == null || barWithHighesHigh == null)
-            {
-                throw new ApplicationException("Unexpected! Range low - high can not be calculated.");
-            }
-
-            return  ValueTuple.Create(barWithLowestLow.Low, barWithHighesHigh.High);
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
