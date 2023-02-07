@@ -12,7 +12,6 @@
         <converters:LineTimesConverter x:Key="lineTimesConverter"/>
         <converters:GridRectConverter x:Key="gridRectConverter"/>
         <converters:HorizontalGridLineConverter x:Key="horizontalGridLineConverter"/>
-        <converters:XAxisConverter x:Key="xAxisConverter"/>
         <converters:XAxisLabelPositionConverter x:Key="xAxisLabelPositionConverter"/>
         <converters:BarCanvasLeftConverter x:Key="barCanvasLeftConverter"/>
         <converters:BarPricesConverter x:Key="barPricesConverter"/>
