@@ -14,5 +14,6 @@ namespace SsbHedger.SsbChartControl.Utilities
             double rangeMin,
             double rangeMax,
             List<double> labelPrices);
+        int GetNumberOfLabels(double axisHeight, double chartBuffer, double minHeightForLabel);
     }
 }

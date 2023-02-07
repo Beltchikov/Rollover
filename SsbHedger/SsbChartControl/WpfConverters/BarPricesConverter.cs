@@ -27,12 +27,12 @@ namespace SsbHedger.SsbChartControl.WpfConverters
             var bars = (List<BarUnderlying>)values[0];
             var axisHeight = (double)values[1];
 
-            double axisHeightNet = axisHeight *
-                (1 - 2 * WpfConvertersConstants.CHART_BUFFER_UP_DOWN_IN_PERCENT / 100);
-            int numberOfLabels = (int)Math.Round(
-                axisHeightNet / WpfConvertersConstants.MIN_HEIGHT_FOR_PRICE_LABEL,
-                0);
+            int numberOfLabels = _priceLabelsUtility.GetNumberOfLabels(
+                axisHeight,
+                WpfConvertersConstants.CHART_BUFFER_UP_DOWN_IN_PERCENT,
+                WpfConvertersConstants.MIN_HEIGHT_FOR_PRICE_LABEL);
 
+            // TODO introduce method in _priceLabelsUtility
             (double rangeMin, double rangeMax) = GetRangeMinMax(bars);
 
             List<double> labelPrices = _priceLabelsUtility.GetPrices(numberOfLabels, rangeMin, rangeMax);

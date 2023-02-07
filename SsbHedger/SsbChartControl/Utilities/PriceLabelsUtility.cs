@@ -88,6 +88,13 @@ namespace SsbHedger.SsbChartControl.Utilities
             return resultList;
         }
 
+        public int GetNumberOfLabels(double axisHeight, double chartBuffer, double minHeightForLabel)
+        {
+            double axisHeightNet = axisHeight * (1 - 2 * chartBuffer / 100);
+            int numberOfLabels = (int)Math.Round(axisHeightNet / minHeightForLabel,0);
+            return numberOfLabels;
+        }
+
         private int GetMaxDecimalPlaces(double rangeMin, double rangeMax)
         {
             // TODO implement if necessary
