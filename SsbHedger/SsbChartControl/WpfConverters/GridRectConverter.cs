@@ -38,6 +38,10 @@ namespace SsbHedger.SsbChartControl.WpfConverters
             double ratioOffsetPeriod = offsetX / period;
             double scaledOffsetX= (controlWidth - 2 * barWidth - yAxisWidth) * ratioOffsetPeriod;
 
+            // TODO
+            //double offsetX = _gridLinesUtility.GetOffsetX(lineTimesDictionary);
+            //double scaledWidth = _gridLinesUtility.GetScaledWidth(lineTimesDictionary, barWidth, yAxisWidth, controlWidth);
+
             return new Rect(scaledOffsetX, 0, scaledWidth, 20);
         }
 
