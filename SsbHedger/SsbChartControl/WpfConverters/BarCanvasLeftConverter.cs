@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SsbHedger.SsbChartControl.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -7,9 +8,16 @@ using System.Windows.Data;
 
 namespace SsbHedger.SsbChartControl.WpfConverters
 {
-    public class BarCanvasLeftConverter : GridRectConverter, IMultiValueConverter
+    public class BarCanvasLeftConverter : IMultiValueConverter
     {
-        public new object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        IGridLinesUtility _gridLinesUtility;
+
+        public BarCanvasLeftConverter()
+        {
+            _gridLinesUtility = new GridLinesUtility();
+        }
+
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             if (values[1].GetType() != typeof(Dictionary<DateTime, bool>))
             {
@@ -44,22 +52,20 @@ namespace SsbHedger.SsbChartControl.WpfConverters
             int yAxisWidth = (int)values[3];
             double controlWidth = (double)values[4];
 
-            object[] valuesForBaseConverter =
-            {
+            double scaledWidth = _gridLinesUtility.GetScaledWidth(
                 lineTimesDictionary,
                 barWidth,
                 yAxisWidth,
-                controlWidth
-            };
+                controlWidth);
 
-            Rect rect = (Rect)base.Convert(valuesForBaseConverter, targetType, parameter, culture);
+
             DateTime sessionStart = lineTimesDictionary.Keys.ElementAt(0);
             double diffBarSessionStart = (bar.Time - sessionStart).TotalHours;
             
-            return diffBarSessionStart * rect.Width;
+            return diffBarSessionStart * scaledWidth;
         }
 
-        public new object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
