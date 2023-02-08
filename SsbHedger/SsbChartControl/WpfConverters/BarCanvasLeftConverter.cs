@@ -19,15 +19,6 @@ namespace SsbHedger.SsbChartControl.WpfConverters
 
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values[1].GetType() != typeof(Dictionary<DateTime, bool>))
-            {
-                return new Rect(
-                    0,
-                    0,
-                    WpfConvertersConstants.DEFAULT_GRID_WIDTH,
-                    WpfConvertersConstants.DEFAULT_GRID_HEIGHT);
-            }
-
             BarUnderlying bar = (BarUnderlying)values[0];
             
             // Ensure date of today for the test bars
@@ -45,6 +36,15 @@ namespace SsbHedger.SsbChartControl.WpfConverters
                 bar.High,
                 bar.Low,
                 bar.Close);
+            }
+
+            if (values[1].GetType() != typeof(Dictionary<DateTime, bool>))
+            {
+                return new Rect(
+                    0,
+                    0,
+                    WpfConvertersConstants.DEFAULT_GRID_WIDTH,
+                    WpfConvertersConstants.DEFAULT_GRID_HEIGHT);
             }
 
             Dictionary<DateTime, bool> lineTimesDictionary = (Dictionary<DateTime, bool>)values[1];
