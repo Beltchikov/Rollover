@@ -25,17 +25,17 @@ namespace SsbHedger.SsbChartControl.WpfConverters
             }
             
             var bars = (List<BarUnderlying>)values[0];
-            var axisHeight = (double)values[1];
+            var yAxisHeight = (double)values[1];
 
             int numberOfLabels = _priceLabelsUtility.GetNumberOfLabels(
-                axisHeight,
+                yAxisHeight,
                 WpfConvertersConstants.CHART_BUFFER_UP_DOWN_IN_PERCENT,
                 WpfConvertersConstants.MIN_HEIGHT_FOR_PRICE_LABEL);
             (double rangeMin, double rangeMax) = _priceLabelsUtility.GetRangeMinMax(bars);
 
             List<double> labelPrices = _priceLabelsUtility.GetPrices(numberOfLabels, rangeMin, rangeMax);
             List<int> canvasTopsList = _priceLabelsUtility.GetCanvasTops(
-              axisHeight,
+              yAxisHeight,
               rangeMin,
               rangeMax,
               labelPrices);
