@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SsbHedger.SsbChartControl.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Windows;
@@ -6,10 +7,17 @@ using System.Windows.Data;
 
 namespace SsbHedger.SsbChartControl.WpfConverters
 {
-    public class XAxisLabelPositionConverter : GridRectConverter, IMultiValueConverter
+    public class XAxisLabelPositionConverter : IMultiValueConverter
     {
-        public new object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        IGridLinesUtility _gridLinesUtility;
+
+        public XAxisLabelPositionConverter()
         {
+            _gridLinesUtility = new GridLinesUtility();
+        }
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            int index = (int)values[0];
             if (values[1].GetType() != typeof(Dictionary<DateTime, bool>))
             {
                 return new Rect(
@@ -18,29 +26,28 @@ namespace SsbHedger.SsbChartControl.WpfConverters
                     WpfConvertersConstants.DEFAULT_GRID_WIDTH,
                     WpfConvertersConstants.DEFAULT_GRID_HEIGHT);
             }
-
-            int index = (int)values[0];
-
             Dictionary<DateTime, bool> lineTimesDictionary = (Dictionary<DateTime, bool>)values[1];
             int barWidth = (int)values[2];
             int yAxisWidth = (int)values[3];
             double controlWidth = (double)values[4];
 
-            object[] valuesForBaseConverter =
-            {
+            double scaledOffsetX = _gridLinesUtility.GetScaledOffsetX(
                 lineTimesDictionary,
                 barWidth,
                 yAxisWidth,
-                controlWidth
-            };
+                controlWidth);
+            double scaledWidth = _gridLinesUtility.GetScaledWidth(
+                lineTimesDictionary,
+                barWidth,
+                yAxisWidth,
+                controlWidth);
 
-            Rect rect = (Rect)base.Convert(valuesForBaseConverter, targetType, parameter, culture);
-            double left = rect.Left + rect.Width * index;
+            double left = scaledOffsetX + scaledWidth * index;
             return new Thickness(left, 0, 0, 0);
             
         }
 
-        public new object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

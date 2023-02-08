@@ -7,7 +7,7 @@ using System.Windows.Data;
 
 namespace SsbHedger.SsbChartControl.WpfConverters
 {
-    public class HorizontalGridLineConverter : GridRectConverter, IMultiValueConverter
+    public class HorizontalGridLineConverter : IMultiValueConverter
     {
         IGridLinesUtility _gridLinesUtility;
 
@@ -16,7 +16,7 @@ namespace SsbHedger.SsbChartControl.WpfConverters
             _gridLinesUtility = new GridLinesUtility();
         }
 
-        public new object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             if (values[0].GetType() != typeof(Dictionary<DateTime, bool>))
             {
@@ -40,7 +40,7 @@ namespace SsbHedger.SsbChartControl.WpfConverters
             return new Point(scaledWidth, 0);
         }
 
-        public new object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
