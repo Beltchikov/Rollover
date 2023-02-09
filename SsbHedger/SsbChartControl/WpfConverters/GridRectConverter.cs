@@ -33,8 +33,11 @@ namespace SsbHedger.SsbChartControl.WpfConverters
             
             Dictionary<DateTime, bool> lineTimesDictionary = (Dictionary<DateTime, bool>)values[0];
             int barWidth = (int)values[1];
-            int yAxisWidth = (int)values[2];
-            double controlWidth = (double)values[3];
+            int xAxisHeight = (int)values[2];
+            int yAxisWidth = (int)values[3];
+            double controlWidth = (double)values[4];
+            double controlHeight= (double)values[5];
+            var bars = (List<BarUnderlying>)values[6];
 
             double scaledOffsetX = _gridLinesUtility.GetScaledOffsetX(
                 lineTimesDictionary,

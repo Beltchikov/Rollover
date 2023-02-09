@@ -1,4 +1,5 @@
-﻿using SsbHedger.SsbChartControl.WpfConverters;
+﻿using SsbHedger.SsbChartControl;
+using SsbHedger.SsbChartControl.WpfConverters;
 using SsbHedger.UnitTests.Shared;
 using System.Globalization;
 using System.Windows;
@@ -19,16 +20,24 @@ namespace SsbHedger.UnitTests.SsbChartControl.WpfConverters
             "1;0;0;0;0;0;0;0;" +
             "1;0",
             10,
+            15,
             20,
             580,
+            200,
+            400,
+            420,
             160,
             40)]
         void ConvertCorrectly(
             string lineTimesString,
             string displayFlagString,
             int barWidth,
+            int xAxisHeight,
             int yAxisWidth,
             double controlWidth,
+            double controlHeight,
+            double rangeMin,
+            double rangeMax,
             int expectedScaledWidth,
             int expectedX)
         {
@@ -36,14 +45,24 @@ namespace SsbHedger.UnitTests.SsbChartControl.WpfConverters
                 Utils.BuildDateTimeDictionary(
                 lineTimesString,
                 displayFlagString);
-            
+            List<BarUnderlying> bars = Utils.GenerateTestBars(
+                DateTime.Now,
+                5,
+                rangeMin,
+                rangeMax,
+                2,
+                10);
+
             var sut = new GridRectConverter();
             object[] values =
             {
                 lineTimesDictionary,
                 barWidth,
+                xAxisHeight,
                 yAxisWidth,
-                controlWidth
+                controlWidth,
+                controlHeight,
+                bars
             };
             Rect rect = (Rect)sut.Convert(
                 values,

@@ -25,8 +25,11 @@
                     <MultiBinding.Bindings>
                         <Binding Path="LineTimesEveryHour"/>
                         <Binding Path="BarWidth"/>
+                        <Binding Path="XAxisHeight"/>
                         <Binding Path="YAxisWidth"/>
                         <Binding ElementName="SsbChartControl" Path="ActualWidth"/>
+                        <Binding ElementName="SsbChartControl" Path="ActualHeight"/>
+                        <Binding Path="BarsUnderlying"/>
                     </MultiBinding.Bindings>
                 </MultiBinding>
             </DrawingBrush.Viewport>
