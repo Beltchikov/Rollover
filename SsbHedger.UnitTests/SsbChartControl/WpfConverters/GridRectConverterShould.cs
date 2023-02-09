@@ -24,10 +24,10 @@ namespace SsbHedger.UnitTests.SsbChartControl.WpfConverters
             20,
             580,
             200,
-            400,
-            420,
-            160,
-            40)]
+            390.2,
+            391.5,
+            40,
+            160)]
         void ConvertCorrectly(
             string lineTimesString,
             string displayFlagString,
@@ -38,8 +38,8 @@ namespace SsbHedger.UnitTests.SsbChartControl.WpfConverters
             double controlHeight,
             double rangeMin,
             double rangeMax,
-            int expectedScaledWidth,
-            int expectedX)
+            int expectedX,
+            int expectedScaledWidth)
         {
             Dictionary<DateTime, bool> lineTimesDictionary = 
                 Utils.BuildDateTimeDictionary(
