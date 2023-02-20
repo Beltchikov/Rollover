@@ -32,7 +32,7 @@ namespace SsbHedger.UnitTests.Shared
             int intervalInMinutes,
             double rangeMin,
             double rangeMax,
-            int roundDigits,
+            int decimalPlaces,
             int count)
         {
             List <BarUnderlying> resultList = new List<BarUnderlying>();
@@ -42,10 +42,10 @@ namespace SsbHedger.UnitTests.Shared
             while(i < count)
             {
                 time = startTime.AddMinutes(i*intervalInMinutes);
-                double open = RandomPrice(rangeMin, rangeMax, roundDigits);
-                double high = RandomPrice(open, rangeMax, roundDigits);
-                double low = RandomPrice(rangeMin, open, roundDigits);
-                double close = RandomPrice(high, low, roundDigits);
+                double open = RandomPrice(rangeMin, rangeMax, decimalPlaces);
+                double high = RandomPrice(open, rangeMax, decimalPlaces);
+                double low = RandomPrice(rangeMin, open, decimalPlaces);
+                double close = RandomPrice(high, low, decimalPlaces);
 
                 var newBar = new BarUnderlying(time, open, high, low, close);
                 resultList.Add(newBar);

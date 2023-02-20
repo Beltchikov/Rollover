@@ -14,12 +14,13 @@ namespace SsbHedger.UnitTests.SsbChartControl.WpfConverters
             double rangeMax,
             double axisHeight)
         {
+            var decimalPlaces = 2;
             List<BarUnderlying> bars = Utils.GenerateTestBars(
                 DateTime.Now,
                 5,
                 rangeMin,
                 rangeMax,
-                2,
+                decimalPlaces,
                 10);
             object[] values = new object[]
             {
@@ -34,11 +35,30 @@ namespace SsbHedger.UnitTests.SsbChartControl.WpfConverters
                 new object(),
                 CultureInfo.InvariantCulture);
 
+            // Verify type and count
             Assert.IsType<List<PriceAndMargin>>(result);
             var resultTyped = (List<PriceAndMargin>)result; 
             Assert.Equal(
                 ExpectedNumberOfLabels(axisHeight),
                 resultTyped.Count());
+
+            // Verify same step for prices
+            var prices = resultTyped
+                .Select(r => Convert.ToDouble(r.PriceAsString))
+                .ToList();
+            var priceSteps = prices.Zip(prices
+                .Skip(1), (x,y) => Math.Round(x-y, decimalPlaces))
+                .ToList();
+            Assert.Equal(priceSteps.Max(), priceSteps.Min());
+
+            // Verify same step for margin tops
+            var marginTopValues = resultTyped
+                .Select(r => r.Margin.Top)
+                .ToList();
+            var marginTopSteps = marginTopValues.Zip(marginTopValues
+                .Skip(1), (x, y) => y - x)
+                .ToList();
+            Assert.Equal(marginTopSteps.Max(), marginTopSteps.Min());
         }
 
         private int ExpectedNumberOfLabels(double axisHeight)
