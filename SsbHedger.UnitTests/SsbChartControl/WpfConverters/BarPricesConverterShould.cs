@@ -8,7 +8,8 @@ namespace SsbHedger.UnitTests.SsbChartControl.WpfConverters
     public  class BarPricesConverterShould
     {
         [Theory]
-        [InlineData(160, 190, 150)]
+        //[InlineData(160, 190, 150)]
+        [InlineData(100, 200, 200)]
         public void ReturnListOfPriceAndMargin(
             double rangeMin,
             double rangeMax,
