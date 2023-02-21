@@ -52,6 +52,24 @@ namespace SsbHedger.UnitTests.Shared
                 i++;
             }
 
+            // Ensure max high = rangeMax
+            var barWithMaxHigh = resultList.MaxBy(b => b.High);
+            if (barWithMaxHigh != null)
+            {
+                var barMaxHighCopy = CloneBarAndSetHigh(barWithMaxHigh, rangeMax);
+                var idx = resultList.FindIndex(b => b.Time == barWithMaxHigh.Time);
+                resultList[idx] = barMaxHighCopy;   
+            }
+
+            // Ensure min low = rangeMin
+            var barWithMinLow = resultList.MinBy(b => b.Low);
+            if (barWithMinLow != null)
+            {
+                var barMinLowCopy = CloneBarAndSetLow(barWithMinLow, rangeMin);
+                var idx = resultList.FindIndex(b => b.Time == barWithMinLow.Time);
+                resultList[idx] = barMinLowCopy;
+            }
+
             return resultList;
         }
 
@@ -63,6 +81,29 @@ namespace SsbHedger.UnitTests.Shared
             Random random = new Random();
             double unroundedValue = random.NextDouble() * (rangeMax - rangeMin) + rangeMin;
             return Math.Round(unroundedValue, roundDigits);
+        }
+        private static BarUnderlying CloneBarAndSetHigh(
+            BarUnderlying barWithMaxHigh,
+            double newHigh)
+        {
+            return new BarUnderlying(
+                barWithMaxHigh.Time,
+                barWithMaxHigh.Open,
+                newHigh,
+                barWithMaxHigh.Low,
+                barWithMaxHigh.Close);
+        }
+
+        private static BarUnderlying CloneBarAndSetLow(
+            BarUnderlying barWithMinLow,
+            double newLow)
+        {
+            return new BarUnderlying(
+                barWithMinLow.Time,
+                barWithMinLow.Open,
+                barWithMinLow.High,
+                newLow,
+                barWithMinLow.Close);
         }
     }
 }
