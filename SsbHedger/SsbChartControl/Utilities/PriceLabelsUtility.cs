@@ -22,33 +22,24 @@ namespace SsbHedger.SsbChartControl.Utilities
             var resultList = new List<double>();
 
             int maxDecimalPlaces = GetMaxDecimalPlaces(rangeMin, rangeMax);
-            (double rangeMinNet, double rangeMaxNet) = GetRangeMinMaxNet(
-                rangeMin,
-                rangeMax,
-                maxDecimalPlaces,
-                WpfConvertersConstants.CHART_BUFFER_UP_DOWN_IN_PERCENT);
-
-            double labelStep = (rangeMaxNet - rangeMinNet) / numberOfLabels;
+            double labelStep = (rangeMax - rangeMin) / (numberOfLabels-1);
             labelStep = Math.Round(
                 labelStep,
                 maxDecimalPlaces,
                 MidpointRounding.AwayFromZero);
-            double halfOfLabelStep = Math.Round(
-                labelStep / 2,
-                maxDecimalPlaces,
-                MidpointRounding.AwayFromZero);
 
-            resultList.Add(rangeMaxNet - halfOfLabelStep);
+            resultList.Add(rangeMax);
             double nextPrice;
-            while ((nextPrice = resultList[resultList.Count - 1] - labelStep) > rangeMinNet)
+            while ((nextPrice = resultList[resultList.Count - 1] - labelStep) > rangeMin)
             {
                 resultList.Add(Math.Round(nextPrice, maxDecimalPlaces));
             }
+            resultList.Add(rangeMin);
 
             resultList = RoundUsingTwoLastDigitsArray(
                    resultList,
                    WpfConvertersConstants.TWO_LAST_DIGITS_ARRAY_STRING,
-                   rangeMaxNet,
+                   rangeMax,
                    maxDecimalPlaces);
 
             return resultList;
@@ -64,19 +55,21 @@ namespace SsbHedger.SsbChartControl.Utilities
             var buffer = WpfConvertersConstants.CHART_BUFFER_UP_DOWN_IN_PERCENT;
 
             int maxDecimalPlaces = GetMaxDecimalPlaces(rangeMin, rangeMax);
-            (double rangeMinNet, double rangeMaxNet) = GetRangeMinMaxNet(
-                rangeMin,
-                rangeMax,
-                maxDecimalPlaces,
-                buffer
-                );
+            //(double rangeMinNet, double rangeMaxNet) = GetRangeMinMaxNet(
+            //    rangeMin,
+            //    rangeMax,
+            //    maxDecimalPlaces,
+            //    buffer
+            //    );
             double range = rangeMax - rangeMin;
-            double rangeNet = rangeMaxNet - rangeMinNet;
-            double priceUnitInPoints = axisHeight / rangeNet;
-            double offset = range * buffer / (2 * 100);
-            int offsetInPoints = (int)Math.Ceiling(offset * priceUnitInPoints);
+            //double rangeNet = rangeMaxNet - rangeMinNet;
+            int offset = (int)Math.Ceiling(axisHeight * buffer / 100);
+            var axisHeightNet = axisHeight - 2 * offset;
+            double priceUnitInPoints = range / axisHeightNet;
+            //double offset = range * buffer / (2 * 100);
+            //int offsetInPoints = (int)Math.Ceiling(offset * priceUnitInPoints);
 
-            resultList.Add(offsetInPoints);
+            resultList.Add(offset);
             for (int i = 1; i < labelPrices.Count; i++)
             {
                 double price = labelPrices[i];
