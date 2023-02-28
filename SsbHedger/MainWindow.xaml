@@ -31,8 +31,6 @@
             <RowDefinition Height="10"></RowDefinition>
             <RowDefinition Height="200"></RowDefinition>
             <RowDefinition Height="10"></RowDefinition>
-            <RowDefinition Height="200"></RowDefinition>
-            <RowDefinition Height="10"></RowDefinition>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -75,7 +73,7 @@
                     Click="btConfiguration_Click">...</Button>
         </StackPanel>
 
-        <ListBox Name="messages" Grid.Row="8" Grid.Column="1" 
+        <ListBox Name="messages" Grid.Row="6" Grid.Column="1" 
                  Background="Azure" ItemsSource="{Binding Messages}"
                  Grid.ColumnSpan="3">
             <ListBox.ItemTemplate>
