@@ -228,11 +228,16 @@ namespace SsbHedger
             {
                 throw new ApplicationException("Unexpected! ViewModel is null");
             }
+            
             ViewModel.Messages.Add(new Message(0,
                 $"PositionMessage: {positionMessage.Contract.ConId} " +
                 $"{positionMessage.Contract.LocalSymbol} " +
                 $"{positionMessage.AverageCost} " +
                 $"{positionMessage.Position}"));
+
+            // TODO
+            //_positionMessagesUtility.AddData(positionMessage.Contract.LocalSymbol, positionMessage.AverageCost, positionMessage.Position);
+
         }
 
         private void _ibClient_PositionEnd()
@@ -241,8 +246,14 @@ namespace SsbHedger
             {
                 throw new ApplicationException("Unexpected! ViewModel is null");
             }
-            ViewModel.Messages.Add(new Message(0,
-                $"PositionEnd"));
+            ViewModel.Messages.Add(new Message(0, $"PositionEnd"));
+
+            // TODO
+            //ViewModel.Size = _positionMessagesUtility.GetSize();
+            //ViewModel.PutStrike = _positionMessagesUtility.GetPutStrike();
+            //ViewModel.PutPrice = _positionMessagesUtility.GetPutPrice();
+            //ViewModel.CallStrike = _positionMessagesUtility.GetCallStrike();
+            //ViewModel.CallPrice = _positionMessagesUtility.GetCallPrice();
         }
     }
 }
