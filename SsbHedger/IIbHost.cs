@@ -10,5 +10,6 @@ namespace SsbHedger
         public void Disconnect();
         public void ReqHistoricalData();
         void ApplyDefaultHistoricalData();
+        void ReqPositions();
     }
 }

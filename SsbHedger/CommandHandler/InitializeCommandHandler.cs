@@ -27,11 +27,13 @@ namespace SsbHedger.CommandHandler
             var connected = await _ibHost.ConnectAndStartReaderThread();
             if(connected)
             {
-                _ibHost.ReqHistoricalData();
+                //_ibHost.ReqHistoricalData();
+                _ibHost.ReqPositions();
+                
             }
             else
             {
-                _ibHost.ApplyDefaultHistoricalData();
+                //_ibHost.ApplyDefaultHistoricalData();
             }
         }
     }

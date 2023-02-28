@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using System.Globalization;
+using System.Net;
 
 namespace SsbHedger
 {
@@ -26,7 +27,7 @@ namespace SsbHedger
         string _whatToShow = "BID";
         int _useRTH = 0;
         bool _keepUpToDate = false;
-
+        
         public IbHost(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -40,6 +41,8 @@ namespace SsbHedger
             _ibClient.HistoricalData += _ibClient_HistoricalData;
             _ibClient.HistoricalDataUpdate += _ibClient_HistoricalDataUpdate;
             _ibClient.HistoricalDataEnd += _ibClient_HistoricalDataEnd;
+            _ibClient.Position += _ibClient_Position;
+            _ibClient.PositionEnd += _ibClient_PositionEnd;
 
             _contractDict = new Dictionary<string, Contract>
             {
@@ -49,7 +52,6 @@ namespace SsbHedger
             _contractUnderlying = _contractDict[(string)_configuration.GetValue(Configuration.UNDERLYING_SYMBOL)];
 
         }
-
         public MainWindowViewModel? ViewModel { get; set; }
 
         public async Task<bool> ConnectAndStartReaderThread()
@@ -90,6 +92,11 @@ namespace SsbHedger
                 1,
                 _keepUpToDate,
                 new List<TagValue>());
+        }
+
+        public void ReqPositions()
+        {
+            _ibClient.ClientSocket.reqPositions();
         }
 
         public void ApplyDefaultHistoricalData()
@@ -213,6 +220,28 @@ namespace SsbHedger
             }
             ViewModel.Messages.Add(new Message(message.RequestId, 
                 $"HistoricalDataEnd: {message.StartDate} {message.EndDate} "));
+        }
+
+        private void _ibClient_Position(PositionMessage positionMessage)
+        {
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+            ViewModel.Messages.Add(new Message(0,
+                $"PositionMessage: {positionMessage.Contract.ConId} " +
+                $"{positionMessage.Contract.LocalSymbol} " +
+                $"{positionMessage.Position}"));
+        }
+
+        private void _ibClient_PositionEnd()
+        {
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+            ViewModel.Messages.Add(new Message(0,
+                $"PositionEnd"));
         }
     }
 }
