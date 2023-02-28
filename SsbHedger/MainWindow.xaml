@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SsbHedger"
         xmlns:model="clr-namespace:SsbHedger.Model"
-        xmlns:ssbChartControl="clr-namespace:SsbHedger.SsbChartControl"
         xmlns:converters="clr-namespace:SsbHedger.Converters"
         xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
@@ -75,11 +74,6 @@
                     BorderThickness="0" Cursor="Hand" 
                     Click="btConfiguration_Click">...</Button>
         </StackPanel>
-
-        <ssbChartControl:SsbChart Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3"
-                        SessionStart="{Binding DataContext.SessionStart, ElementName=mainWindow, Converter={StaticResource TimeToDateTimeConverter}}"
-                        SessionEnd="{Binding DataContext.SessionEnd, ElementName=mainWindow, Converter={StaticResource TimeToDateTimeConverter}}"
-                        BarsUnderlying="{Binding Bars}"></ssbChartControl:SsbChart>
 
         <ListBox Name="messages" Grid.Row="8" Grid.Column="1" 
                  Background="Azure" ItemsSource="{Binding Messages}"
