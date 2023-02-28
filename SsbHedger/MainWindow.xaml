@@ -73,6 +73,10 @@
                     Click="btConfiguration_Click">...</Button>
         </StackPanel>
 
+        <Grid x:Name="maxLoss" Background="LightBlue" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3">
+            
+        </Grid>
+
         <ListBox Name="messages" Grid.Row="6" Grid.Column="1" 
                  Background="Azure" ItemsSource="{Binding Messages}"
                  Grid.ColumnSpan="3">
