@@ -16,6 +16,7 @@ namespace SsbHedger.Model
         private bool connected;
         private string sessionStart;
         private string sessionEnd;
+        private int size;
 
         public MainWindowViewModel(
             IInitializeCommandHandler initializeCommandHandler,
@@ -70,6 +71,16 @@ namespace SsbHedger.Model
             {
                 SetProperty(ref sessionEnd, value);
                 OnPropertyChanged(nameof(SessionEnd));
+            }
+        }
+
+        public int Size
+        {
+            get => size;
+            set
+            {
+                SetProperty(ref size, value);
+                OnPropertyChanged(nameof(Size));
             }
         }
 
