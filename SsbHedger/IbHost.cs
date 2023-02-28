@@ -231,6 +231,7 @@ namespace SsbHedger
             ViewModel.Messages.Add(new Message(0,
                 $"PositionMessage: {positionMessage.Contract.ConId} " +
                 $"{positionMessage.Contract.LocalSymbol} " +
+                $"{positionMessage.AverageCost} " +
                 $"{positionMessage.Position}"));
         }
 
