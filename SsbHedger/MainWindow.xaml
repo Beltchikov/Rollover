@@ -105,7 +105,7 @@
             </StackPanel>
         </Grid>
 
-        <ListBox Name="messages" Grid.Row="6" Grid.Column="1" 
+        <ListBox Name="listBoxMessages" Grid.Row="6" Grid.Column="1" 
                  Background="Azure" ItemsSource="{Binding Messages}"
                  Grid.ColumnSpan="3">
             <ListBox.ItemTemplate>
