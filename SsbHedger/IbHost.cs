@@ -20,6 +20,8 @@ namespace SsbHedger
         IIBClient _ibClient;
        
         int _reqIdHistoricalData = 1000;
+        int _reqContractDetails = 2000;
+        int _reqMktDataData = 3000;
         Dictionary<string, Contract> _contractDict = null!;
         Contract _contractUnderlying = null!;
         string _durationString = "1 D";
@@ -43,6 +45,12 @@ namespace SsbHedger
             _ibClient.HistoricalDataEnd += _ibClient_HistoricalDataEnd;
             _ibClient.Position += _ibClient_Position;
             _ibClient.PositionEnd += _ibClient_PositionEnd;
+            _ibClient.ContractDetails += _ibClient_ContractDetails;
+            _ibClient.ContractDetailsEnd += _ibClient_ContractDetailsEnd;
+            _ibClient.TickPrice += _ibClient_TickPrice;
+            _ibClient.TickSize += _ibClient_TickSize;
+            _ibClient.TickPrice += _ibClient_TickPrice;
+            _ibClient.TickString += _ibClient_TickString;
 
             _contractDict = new Dictionary<string, Contract>
             {
@@ -52,6 +60,7 @@ namespace SsbHedger
             _contractUnderlying = _contractDict[(string)_configuration.GetValue(Configuration.UNDERLYING_SYMBOL)];
 
         }
+
         public MainWindowViewModel? ViewModel { get; set; }
 
         public async Task<bool> ConnectAndStartReaderThread()
@@ -235,9 +244,21 @@ namespace SsbHedger
                 $"{positionMessage.AverageCost} " +
                 $"{positionMessage.Position}"));
 
-            // TODO
-            //_positionMessagesUtility.AddData(positionMessage.Contract.LocalSymbol, positionMessage.AverageCost, positionMessage.Position);
-
+            if(positionMessage.Position != 0 && positionMessage.Contract != null)
+            {
+                if (positionMessage.Contract.Right == "C")
+                {
+                    positionMessage.Contract.Strike++;
+                    _reqContractDetails++;
+                    _ibClient.ClientSocket.reqContractDetails(_reqContractDetails, positionMessage.Contract);
+                }
+                if (positionMessage.Contract.Right == "P")
+                {
+                    positionMessage.Contract.Strike--;
+                    _reqContractDetails++;
+                    _ibClient.ClientSocket.reqContractDetails(_reqContractDetails, positionMessage.Contract);
+                }
+            }
         }
 
         private void _ibClient_PositionEnd()
@@ -247,13 +268,74 @@ namespace SsbHedger
                 throw new ApplicationException("Unexpected! ViewModel is null");
             }
             ViewModel.Messages.Add(new Message(0, $"PositionEnd"));
+        }
 
-            // TODO
-            //ViewModel.Size = _positionMessagesUtility.GetSize();
-            //ViewModel.PutStrike = _positionMessagesUtility.GetPutStrike();
-            //ViewModel.PutPrice = _positionMessagesUtility.GetPutPrice();
-            //ViewModel.CallStrike = _positionMessagesUtility.GetCallStrike();
-            //ViewModel.CallPrice = _positionMessagesUtility.GetCallPrice();
+        private void _ibClient_ContractDetails(ContractDetailsMessage contractDetailsMessage)
+        {
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+
+            ViewModel.Messages.Add(new Message(0,
+                $"ContractDetailsMessage: {contractDetailsMessage.ContractDetails.Contract.ConId} " +
+                $"{contractDetailsMessage.ContractDetails.Contract.Symbol} " +
+                $"{contractDetailsMessage.ContractDetails.Contract.Exchange} " +
+                $"{contractDetailsMessage.ContractDetails.Contract.Right} " +
+                $"{contractDetailsMessage.ContractDetails.Contract.LastTradeDateOrContractMonth} " +
+                $"{contractDetailsMessage.ContractDetails.Contract.Strike} " +
+                $"{ contractDetailsMessage.ContractDetails.Contract.LocalSymbol }"));
+
+            _reqMktDataData++;
+            _ibClient.ClientSocket.reqMktData(
+                _reqMktDataData,
+                contractDetailsMessage.ContractDetails.Contract,
+                "",
+                false,
+                false,
+                new List<TagValue>());
+        }
+
+        private void _ibClient_ContractDetailsEnd(int obj)
+        {
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+            ViewModel.Messages.Add(new Message(0, $"ContractDetailsEnd"));
+        }
+
+        private void _ibClient_TickString(int tickerId, int tickType, string value)
+        {
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+
+            ViewModel.Messages.Add(new Message(0,
+                $"TickString: {tickerId} {tickType} {value}"));
+        }
+
+        private void _ibClient_TickSize(TickSizeMessage tickSizeMessage)
+        {
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+
+            ViewModel.Messages.Add(new Message(0,
+                $"TickSize: {tickSizeMessage.Field} {tickSizeMessage.Size}"));
+        }
+
+        private void _ibClient_TickPrice(TickPriceMessage tickPriceMessage)
+        {
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+
+            ViewModel.Messages.Add(new Message(0,
+                $"TickPrice: {tickPriceMessage.Field} {tickPriceMessage.Price}"));
         }
     }
 }
