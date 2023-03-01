@@ -248,15 +248,15 @@ namespace SsbHedger
             {
                 if (positionMessage.Contract.Right == "C")
                 {
-                    positionMessage.Contract.Strike++;
+                    var contractForHedge = CopyContractWithHigherStrike(positionMessage.Contract);
                     _reqContractDetails++;
-                    _ibClient.ClientSocket.reqContractDetails(_reqContractDetails, positionMessage.Contract);
+                    _ibClient.ClientSocket.reqContractDetails(_reqContractDetails, contractForHedge);
                 }
                 if (positionMessage.Contract.Right == "P")
                 {
-                    positionMessage.Contract.Strike--;
+                    var contractForHedge = CopyContractWithLowerStrike(positionMessage.Contract);
                     _reqContractDetails++;
-                    _ibClient.ClientSocket.reqContractDetails(_reqContractDetails, positionMessage.Contract);
+                    _ibClient.ClientSocket.reqContractDetails(_reqContractDetails, contractForHedge);
                 }
             }
         }
@@ -336,6 +336,35 @@ namespace SsbHedger
 
             ViewModel.Messages.Add(new Message(0,
                 $"TickPrice: {tickPriceMessage.Field} {tickPriceMessage.Price}"));
+        }
+
+        private Contract CopyContractWithHigherStrike(Contract contract)
+        {
+            return new Contract { 
+                Symbol= contract.Symbol,
+                SecType= contract.SecType,  
+                LastTradeDateOrContractMonth= contract.LastTradeDateOrContractMonth,
+                Strike = contract.Strike + 1,
+                Right = contract.Right,
+                Multiplier= contract.Multiplier,
+                Exchange= "SMART",    
+                Currency= contract.Currency
+            };
+        }
+
+        private Contract CopyContractWithLowerStrike(Contract contract)
+        {
+            return new Contract
+            {
+                Symbol = contract.Symbol,
+                SecType = contract.SecType,
+                LastTradeDateOrContractMonth = contract.LastTradeDateOrContractMonth,
+                Strike = contract.Strike - 1,
+                Right = contract.Right,
+                Multiplier = contract.Multiplier,
+                Exchange = "SMART",
+                Currency = contract.Currency
+            };
         }
     }
 }
