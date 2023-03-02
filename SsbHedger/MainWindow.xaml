@@ -100,8 +100,12 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="5">
-                <TextBlock HorizontalAlignment="Center" FontSize="20">size</TextBlock>
-                <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Size}"></TextBlock>
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource TableHeader}">size</TextBlock>
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource NormalTextBlock}"
+                           Text="{Binding Path=Size, FallbackValue=0}">
+                </TextBlock>
             </StackPanel>
         </Grid>
 
