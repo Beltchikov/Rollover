@@ -248,19 +248,26 @@ namespace SsbHedger
             {
                 if (positionMessage.Contract.Right == "C")
                 {
+                    SetSize(positionMessage);
+                    SetCallStrike(positionMessage);
+                    SetCallPrice(positionMessage);
+                    
                     var contractForHedge = CopyContractWithHigherStrike(positionMessage.Contract);
                     _reqContractDetails++;
                     _ibClient.ClientSocket.reqContractDetails(_reqContractDetails, contractForHedge);
                 }
                 if (positionMessage.Contract.Right == "P")
                 {
+                    SetSize(positionMessage);
+                    SetPutStrike(positionMessage);
+                    SetPutPrice(positionMessage);
+
                     var contractForHedge = CopyContractWithLowerStrike(positionMessage.Contract);
                     _reqContractDetails++;
                     _ibClient.ClientSocket.reqContractDetails(_reqContractDetails, contractForHedge);
                 }
             }
         }
-
         private void _ibClient_PositionEnd()
         {
             if (ViewModel == null)
@@ -366,5 +373,58 @@ namespace SsbHedger
                 Currency = contract.Currency
             };
         }
+        private void SetSize(PositionMessage positionMessage)
+        {
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+
+            if (ViewModel.Size != positionMessage.Position)
+            {
+                ViewModel.Size = (int)positionMessage.Position;  
+            }
+        }
+
+        private void SetCallStrike(PositionMessage positionMessage)
+        {
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+
+            ViewModel.CallShortStrike = positionMessage.Contract.Strike;
+        }
+
+        private void SetCallPrice(PositionMessage positionMessage)
+        {
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+
+            ViewModel.CallShortPrice = Math.Round(positionMessage.AverageCost / MainWindowViewModel.MULTIPLIER, 3);
+        }
+
+        private void SetPutStrike(PositionMessage positionMessage)
+        {
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+
+            ViewModel.PutShortStrike = positionMessage.Contract.Strike;
+        }
+
+        private void SetPutPrice(PositionMessage positionMessage)
+        {
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+
+            ViewModel.PutShortPrice = Math.Round(positionMessage.AverageCost / MainWindowViewModel.MULTIPLIER, 3);
+        }
+
     }
 }

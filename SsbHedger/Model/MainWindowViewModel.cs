@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SsbHedger.CommandHandler;
+using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
@@ -21,7 +22,7 @@ namespace SsbHedger.Model
         private double putShortPrice;
         private double callShortStrike;
         private double callShortPrice;
-        private const double MULTIPLIER = 100;
+        public const double MULTIPLIER = 100;
 
         public MainWindowViewModel(
             IInitializeCommandHandler initializeCommandHandler,
@@ -140,7 +141,7 @@ namespace SsbHedger.Model
 
         public double PremiumOnePosition
         {
-            get => (putShortPrice + callShortPrice) * MULTIPLIER;
+            get => Math.Round(putShortPrice + callShortPrice,3);
             set
             {
                 OnPropertyChanged(nameof(PremiumOnePosition));
