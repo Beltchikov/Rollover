@@ -251,7 +251,8 @@ namespace SsbHedger
                     SetSize(positionMessage);
                     SetCallStrike(positionMessage);
                     SetCallPrice(positionMessage);
-                    
+                    SetBullHedgeStrike(positionMessage);
+
                     var contractForHedge = CopyContractWithHigherStrike(positionMessage.Contract);
                     _reqContractDetails++;
                     _ibClient.ClientSocket.reqContractDetails(_reqContractDetails, contractForHedge);
@@ -261,6 +262,7 @@ namespace SsbHedger
                     SetSize(positionMessage);
                     SetPutStrike(positionMessage);
                     SetPutPrice(positionMessage);
+                    SetBearHedgeStrike(positionMessage);
 
                     var contractForHedge = CopyContractWithLowerStrike(positionMessage.Contract);
                     _reqContractDetails++;
@@ -268,6 +270,7 @@ namespace SsbHedger
                 }
             }
         }
+
         private void _ibClient_PositionEnd()
         {
             if (ViewModel == null)
@@ -424,6 +427,26 @@ namespace SsbHedger
             }
 
             ViewModel.PutShortPrice = Math.Round(positionMessage.AverageCost / MainWindowViewModel.MULTIPLIER, 3);
+        }
+
+        private void SetBearHedgeStrike(PositionMessage positionMessage)
+        {
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+
+            ViewModel.BearHedgeStrike = positionMessage.Contract.Strike -1;
+        }
+
+        private void SetBullHedgeStrike(PositionMessage positionMessage)
+        {
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+
+            ViewModel.BullHedgeStrike = positionMessage.Contract.Strike + 1;
         }
 
     }

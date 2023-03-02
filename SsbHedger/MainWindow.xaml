@@ -149,6 +149,32 @@
                            Text="{Binding Path=Premium, FallbackValue=0}">
                 </TextBlock>
             </StackPanel>
+            <StackPanel Name="panelBearHedgePut" Orientation="Vertical" 
+                        Grid.Row="3" Grid.Column="3">
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource TableHeader}">bear hedge (put)</TextBlock>
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource NormalTextBlock}"
+                           Text="{Binding Path=BearHedgeStrike, FallbackValue=0}">
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource NormalTextBlock}"
+                           Text="{Binding Path=BearHedgePrice, FallbackValue=0}">
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Name="panelBullHedgeCall" Orientation="Vertical" 
+                        Grid.Row="3" Grid.Column="7">
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource TableHeader}">bull hedge (call)</TextBlock>
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource NormalTextBlock}"
+                           Text="{Binding Path=BullHedgeStrike, FallbackValue=0}">
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource NormalTextBlock}"
+                           Text="{Binding Path=BullHedgePrice, FallbackValue=0}">
+                </TextBlock>
+            </StackPanel>
         </Grid>
 
         <ListBox Name="listBoxMessages" Grid.Row="6" Grid.Column="1" 

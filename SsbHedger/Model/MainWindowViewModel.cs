@@ -11,6 +11,8 @@ namespace SsbHedger.Model
     [ExcludeFromCodeCoverage]
     public class MainWindowViewModel : ObservableObject
     {
+        public const double MULTIPLIER = 100;
+
         private ObservableCollection<Message> messages;
         private ObservableCollection<Bar> bars;
         private string connectionMessage = "Connecting...";
@@ -22,7 +24,10 @@ namespace SsbHedger.Model
         private double putShortPrice;
         private double callShortStrike;
         private double callShortPrice;
-        public const double MULTIPLIER = 100;
+        private double bearHedgeStrike;
+        private double bearHedgePrice;
+        private double bullHedgeStrike;
+        private double bullHedgePrice;
 
         public MainWindowViewModel(
             IInitializeCommandHandler initializeCommandHandler,
@@ -159,6 +164,47 @@ namespace SsbHedger.Model
                 OnPropertyChanged(nameof(Premium));
             }
         }
+
+        public double BearHedgeStrike
+        {
+            get => bearHedgeStrike;
+            set
+            {
+                SetProperty(ref bearHedgeStrike, value);
+                OnPropertyChanged(nameof(BearHedgeStrike));
+            }
+        }
+
+        public double BearHedgePrice
+        {
+            get => bearHedgePrice;
+            set
+            {
+                SetProperty(ref bearHedgePrice, value);
+                OnPropertyChanged(nameof(BearHedgePrice));
+            }
+        }
+
+        public double BullHedgeStrike
+        {
+            get => bullHedgeStrike;
+            set
+            {
+                SetProperty(ref bullHedgeStrike, value);
+                OnPropertyChanged(nameof(BullHedgeStrike));
+            }
+        }
+
+        public double BullHedgePrice
+        {
+            get => bullHedgePrice;
+            set
+            {
+                SetProperty(ref bullHedgePrice, value);
+                OnPropertyChanged(nameof(BullHedgePrice));
+            }
+        }
+
 
         public ObservableCollection<Bar> Bars
         {
