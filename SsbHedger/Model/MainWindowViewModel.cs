@@ -21,6 +21,7 @@ namespace SsbHedger.Model
         private double putShortPrice;
         private double callShortStrike;
         private double callShortPrice;
+        private const double MULTIPLIER = 100;
 
         public MainWindowViewModel(
             IInitializeCommandHandler initializeCommandHandler,
@@ -31,6 +32,12 @@ namespace SsbHedger.Model
 
             messages = new ObservableCollection<Message>();
             bars = new ObservableCollection<Bar>();
+
+            size = 10;
+            putShortStrike = 95;
+            putShortPrice = 3;
+            callShortStrike = 105;
+            callShortPrice = 2;
         }
 
         public string ConnectionMessage
@@ -85,6 +92,7 @@ namespace SsbHedger.Model
             {
                 SetProperty(ref size, value);
                 OnPropertyChanged(nameof(Size));
+                OnPropertyChanged(nameof(PremiumOnePosition));
             }
         }
 
@@ -105,6 +113,7 @@ namespace SsbHedger.Model
             {
                 SetProperty(ref putShortPrice, value);
                 OnPropertyChanged(nameof(PutShortPrice));
+                OnPropertyChanged(nameof(PremiumOnePosition));
             }
         }
 
@@ -125,6 +134,16 @@ namespace SsbHedger.Model
             {
                 SetProperty(ref callShortPrice, value);
                 OnPropertyChanged(nameof(CallShortPrice));
+                OnPropertyChanged(nameof(PremiumOnePosition));
+            }
+        }
+
+        public double PremiumOnePosition
+        {
+            get => (putShortPrice + callShortPrice) * MULTIPLIER;
+            set
+            {
+                OnPropertyChanged(nameof(PremiumOnePosition));
             }
         }
 

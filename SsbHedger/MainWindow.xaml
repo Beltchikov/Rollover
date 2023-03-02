@@ -131,6 +131,15 @@
                            Text="{Binding Path=CallShortPrice, FallbackValue=0}">
                 </TextBlock>
             </StackPanel>
+            <StackPanel Name="panelPremiumOnePosition" Orientation="Vertical" 
+                        Grid.Row="1" Grid.Column="5">
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource TableHeader}">premium 1 pos.</TextBlock>
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource NormalTextBlock}"
+                           Text="{Binding Path=PremiumOnePosition, FallbackValue=0}">
+                </TextBlock>
+            </StackPanel>
         </Grid>
 
         <ListBox Name="listBoxMessages" Grid.Row="6" Grid.Column="1" 
