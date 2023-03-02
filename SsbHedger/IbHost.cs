@@ -380,9 +380,9 @@ namespace SsbHedger
                 throw new ApplicationException("Unexpected! ViewModel is null");
             }
 
-            if (ViewModel.Size != positionMessage.Position)
+            if (ViewModel.Size != -positionMessage.Position)
             {
-                ViewModel.Size = (int)positionMessage.Position;  
+                ViewModel.Size = (int)-positionMessage.Position;  
             }
         }
 

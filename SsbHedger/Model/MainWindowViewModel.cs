@@ -94,6 +94,7 @@ namespace SsbHedger.Model
                 SetProperty(ref size, value);
                 OnPropertyChanged(nameof(Size));
                 OnPropertyChanged(nameof(PremiumOnePosition));
+                OnPropertyChanged(nameof(Premium));
             }
         }
 
@@ -115,6 +116,7 @@ namespace SsbHedger.Model
                 SetProperty(ref putShortPrice, value);
                 OnPropertyChanged(nameof(PutShortPrice));
                 OnPropertyChanged(nameof(PremiumOnePosition));
+                OnPropertyChanged(nameof(Premium));
             }
         }
 
@@ -136,6 +138,7 @@ namespace SsbHedger.Model
                 SetProperty(ref callShortPrice, value);
                 OnPropertyChanged(nameof(CallShortPrice));
                 OnPropertyChanged(nameof(PremiumOnePosition));
+                OnPropertyChanged(nameof(Premium));
             }
         }
 
@@ -145,6 +148,15 @@ namespace SsbHedger.Model
             set
             {
                 OnPropertyChanged(nameof(PremiumOnePosition));
+            }
+        }
+
+        public double Premium
+        {
+            get => Math.Round((putShortPrice + callShortPrice) * size * MULTIPLIER, 2);
+            set
+            {
+                OnPropertyChanged(nameof(Premium));
             }
         }
 
