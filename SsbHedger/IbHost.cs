@@ -16,12 +16,14 @@ namespace SsbHedger
     public class IbHost : IIbHost
     {
         private readonly int TIMEOUT = 2000;
+        private readonly int REQ_MKT_DATA_BULL_HEDGE_CALL_ID = 3001;
+        private readonly int REQ_MKT_DATA_BEAR_HEDGE_CALL_ID = 3002;
+
         IConfiguration _configuration;
         IIBClient _ibClient;
        
         int _reqIdHistoricalData = 1000;
         int _reqContractDetails = 2000;
-        int _reqMktDataData = 3000;
         Dictionary<string, Contract> _contractDict = null!;
         Contract _contractUnderlying = null!;
         string _durationString = "1 D";
@@ -296,9 +298,11 @@ namespace SsbHedger
                 $"{contractDetailsMessage.ContractDetails.Contract.Strike} " +
                 $"{ contractDetailsMessage.ContractDetails.Contract.LocalSymbol }"));
 
-            _reqMktDataData++;
+            int reqMktDataId = contractDetailsMessage.ContractDetails.Contract.Right == "P"
+                ? REQ_MKT_DATA_BEAR_HEDGE_CALL_ID
+                : REQ_MKT_DATA_BULL_HEDGE_CALL_ID;
             _ibClient.ClientSocket.reqMktData(
-                _reqMktDataData,
+                reqMktDataId,
                 contractDetailsMessage.ContractDetails.Contract,
                 "",
                 false,
@@ -346,6 +350,18 @@ namespace SsbHedger
 
             ViewModel.Messages.Add(new Message(0,
                 $"TickPrice: {tickPriceMessage.Field} {tickPriceMessage.Price}"));
+
+            if (tickPriceMessage.Field == 2)  // ask. Use 1 for bid
+            {
+                if (tickPriceMessage.RequestId == REQ_MKT_DATA_BEAR_HEDGE_CALL_ID)
+                {
+                    ViewModel.BearHedgePrice = tickPriceMessage.Price;
+                }
+                if (tickPriceMessage.RequestId == REQ_MKT_DATA_BULL_HEDGE_CALL_ID)
+                {
+                    ViewModel.BullHedgePrice = tickPriceMessage.Price;
+                }
+            }
         }
 
         private Contract CopyContractWithHigherStrike(Contract contract)
