@@ -99,12 +99,36 @@
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="5">
+            <StackPanel Name="panelSize" Orientation="Vertical" Grid.Row="0" Grid.Column="5">
                 <TextBlock HorizontalAlignment="Center" 
                            Style="{StaticResource TableHeader}">size</TextBlock>
                 <TextBlock HorizontalAlignment="Center" 
                            Style="{StaticResource NormalTextBlock}"
                            Text="{Binding Path=Size, FallbackValue=0}">
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Name="panelPutShort" Orientation="Vertical" Grid.Row="1" Grid.Column="4">
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource TableHeader}">put short</TextBlock>
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource NormalTextBlock}"
+                           Text="{Binding Path=PutShortStrike, FallbackValue=0}">
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource NormalTextBlock}"
+                           Text="{Binding Path=PutShortPrice, FallbackValue=0}">
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Name="panelCalltShort" Orientation="Vertical" Grid.Row="1" Grid.Column="6">
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource TableHeader}">call short</TextBlock>
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource NormalTextBlock}"
+                           Text="{Binding Path=CallShortStrike, FallbackValue=0}">
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource NormalTextBlock}"
+                           Text="{Binding Path=CallShortPrice, FallbackValue=0}">
                 </TextBlock>
             </StackPanel>
         </Grid>

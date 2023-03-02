@@ -17,6 +17,10 @@ namespace SsbHedger.Model
         private string sessionStart;
         private string sessionEnd;
         private int size;
+        private double putShortStrike;
+        private double putShortPrice;
+        private double callShortStrike;
+        private double callShortPrice;
 
         public MainWindowViewModel(
             IInitializeCommandHandler initializeCommandHandler,
@@ -81,6 +85,46 @@ namespace SsbHedger.Model
             {
                 SetProperty(ref size, value);
                 OnPropertyChanged(nameof(Size));
+            }
+        }
+
+        public double PutShortStrike
+        {
+            get => putShortStrike;
+            set
+            {
+                SetProperty(ref putShortStrike, value);
+                OnPropertyChanged(nameof(PutShortStrike));
+            }
+        }
+
+        public double PutShortPrice
+        {
+            get => putShortPrice;
+            set
+            {
+                SetProperty(ref putShortPrice, value);
+                OnPropertyChanged(nameof(PutShortPrice));
+            }
+        }
+
+        public double CallShortStrike
+        {
+            get => callShortStrike;
+            set
+            {
+                SetProperty(ref callShortStrike, value);
+                OnPropertyChanged(nameof(CallShortStrike));
+            }
+        }
+
+        public double CallShortPrice
+        {
+            get => callShortPrice;
+            set
+            {
+                SetProperty(ref callShortPrice, value);
+                OnPropertyChanged(nameof(CallShortPrice));
             }
         }
 
