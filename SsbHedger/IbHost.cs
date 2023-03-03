@@ -255,7 +255,8 @@ namespace SsbHedger
                     SetCallPrice(positionMessage);
                     SetBullHedgeStrike(positionMessage);
 
-                    var contractForHedge = CopyContractWithHigherStrike(positionMessage.Contract);
+                    var newStrike = positionMessage.Contract.Strike + 1;
+                    var contractForHedge = CopyContractWithOtherStrike(positionMessage.Contract, newStrike);
                     _reqContractDetails++;
                     _ibClient.ClientSocket.reqContractDetails(_reqContractDetails, contractForHedge);
                 }
@@ -266,7 +267,8 @@ namespace SsbHedger
                     SetPutPrice(positionMessage);
                     SetBearHedgeStrike(positionMessage);
 
-                    var contractForHedge = CopyContractWithLowerStrike(positionMessage.Contract);
+                    var newStrike = positionMessage.Contract.Strike - 1;
+                    var contractForHedge = CopyContractWithOtherStrike(positionMessage.Contract, newStrike);
                     _reqContractDetails++;
                     _ibClient.ClientSocket.reqContractDetails(_reqContractDetails, contractForHedge);
                 }
@@ -364,13 +366,13 @@ namespace SsbHedger
             }
         }
 
-        private Contract CopyContractWithHigherStrike(Contract contract)
+        private Contract CopyContractWithOtherStrike(Contract contract, double newStrike)
         {
             return new Contract { 
                 Symbol= contract.Symbol,
                 SecType= contract.SecType,  
                 LastTradeDateOrContractMonth= contract.LastTradeDateOrContractMonth,
-                Strike = contract.Strike + 1,
+                Strike = newStrike,
                 Right = contract.Right,
                 Multiplier= contract.Multiplier,
                 Exchange= "SMART",    
@@ -378,20 +380,7 @@ namespace SsbHedger
             };
         }
 
-        private Contract CopyContractWithLowerStrike(Contract contract)
-        {
-            return new Contract
-            {
-                Symbol = contract.Symbol,
-                SecType = contract.SecType,
-                LastTradeDateOrContractMonth = contract.LastTradeDateOrContractMonth,
-                Strike = contract.Strike - 1,
-                Right = contract.Right,
-                Multiplier = contract.Multiplier,
-                Exchange = "SMART",
-                Currency = contract.Currency
-            };
-        }
+        
         private void SetSize(PositionMessage positionMessage)
         {
             if (ViewModel == null)
