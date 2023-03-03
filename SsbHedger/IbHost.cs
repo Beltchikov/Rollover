@@ -21,9 +21,10 @@ namespace SsbHedger
 
         IConfiguration _configuration;
         IIBClient _ibClient;
-       
+
         int _reqIdHistoricalData = 1000;
         int _reqContractDetails = 2000;
+        Dictionary<int, double> _reqIdStrikeDict = null!;
         Dictionary<string, Contract> _contractDict = null!;
         Contract _contractUnderlying = null!;
         string _durationString = "1 D";
@@ -31,7 +32,7 @@ namespace SsbHedger
         string _whatToShow = "BID";
         int _useRTH = 0;
         bool _keepUpToDate = false;
-        
+
         public IbHost(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -54,6 +55,7 @@ namespace SsbHedger
             _ibClient.TickPrice += _ibClient_TickPrice;
             _ibClient.TickString += _ibClient_TickString;
 
+            _reqIdStrikeDict = new Dictionary<int, double>();
             _contractDict = new Dictionary<string, Contract>
             {
                 {"SPY", new Contract(){Symbol = "SPY", SecType = "STK", Currency="USD", Exchange = "SMART"} }
@@ -67,17 +69,18 @@ namespace SsbHedger
 
         public async Task<bool> ConnectAndStartReaderThread()
         {
-            return await Task.Run(() => {
+            return await Task.Run(() =>
+            {
                 if (ViewModel == null)
                 {
                     throw new ApplicationException("Unexpected! ViewModel is null");
                 }
-                
+
                 _ibClient.ConnectAndStartReaderThread(
                                 (string)_configuration.GetValue(Configuration.HOST),
                                 (int)_configuration.GetValue(Configuration.PORT),
                                 (int)_configuration.GetValue(Configuration.CLIENT_ID));
-                
+
                 var startTime = DateTime.Now;
                 while ((DateTime.Now - startTime).TotalMilliseconds < TIMEOUT && !ViewModel.Connected) { }
                 return ViewModel.Connected;
@@ -121,7 +124,7 @@ namespace SsbHedger
 
             var bars = new List<Model.Bar>()
             {
-                new Model.Bar(DateTime.ParseExact("20230111 10:00:00", "yyyyMMdd hh:mm:ss", CultureInfo.InvariantCulture), 
+                new Model.Bar(DateTime.ParseExact("20230111 10:00:00", "yyyyMMdd hh:mm:ss", CultureInfo.InvariantCulture),
                     390.44, 390.93, 390.2, 390.84),
                 new Model.Bar(DateTime.ParseExact("20230111 10:05:00", "yyyyMMdd hh:mm:ss", CultureInfo.InvariantCulture),
                     390.84, 391.18, 390.78, 391.01),
@@ -208,7 +211,7 @@ namespace SsbHedger
             {
                 throw new ApplicationException("Unexpected! ViewModel is null");
             }
-            ViewModel.Messages.Add(new Message(message.RequestId, 
+            ViewModel.Messages.Add(new Message(message.RequestId,
                 $"HistoricalData: {message.Date} {message.Open} {message.High} {message.Low} {message.Close}"));
         }
 
@@ -218,9 +221,9 @@ namespace SsbHedger
             {
                 throw new ApplicationException("Unexpected! ViewModel is null");
             }
-            ViewModel.Messages.Add(new Message(message.RequestId, 
+            ViewModel.Messages.Add(new Message(message.RequestId,
                 $"HistoricalDataUpdate: {message.Date} {message.Open} {message.High} {message.Low} {message.Close}"));
-          
+
         }
 
         private void _ibClient_HistoricalDataEnd(HistoricalDataEndMessage message)
@@ -229,7 +232,7 @@ namespace SsbHedger
             {
                 throw new ApplicationException("Unexpected! ViewModel is null");
             }
-            ViewModel.Messages.Add(new Message(message.RequestId, 
+            ViewModel.Messages.Add(new Message(message.RequestId,
                 $"HistoricalDataEnd: {message.StartDate} {message.EndDate} "));
         }
 
@@ -239,14 +242,14 @@ namespace SsbHedger
             {
                 throw new ApplicationException("Unexpected! ViewModel is null");
             }
-            
+
             ViewModel.Messages.Add(new Message(0,
                 $"PositionMessage: {positionMessage.Contract.ConId} " +
                 $"{positionMessage.Contract.LocalSymbol} " +
                 $"{positionMessage.AverageCost} " +
                 $"{positionMessage.Position}"));
 
-            if(positionMessage.Position != 0 && positionMessage.Contract != null)
+            if (positionMessage.Position != 0 && positionMessage.Contract != null)
             {
                 if (positionMessage.Contract.Right == "C")
                 {
@@ -255,7 +258,7 @@ namespace SsbHedger
                     SetCallPrice(positionMessage);
                     SetBullHedgeStrike(positionMessage);
 
-                    var newStrike = positionMessage.Contract.Strike + 1;
+                    var newStrike = GetHigherStrike(positionMessage.Contract.Strike);
                     var contractForHedge = CopyContractWithOtherStrike(positionMessage.Contract, newStrike);
                     _reqContractDetails++;
                     _ibClient.ClientSocket.reqContractDetails(_reqContractDetails, contractForHedge);
@@ -267,12 +270,22 @@ namespace SsbHedger
                     SetPutPrice(positionMessage);
                     SetBearHedgeStrike(positionMessage);
 
-                    var newStrike = positionMessage.Contract.Strike - 1;
+                    var newStrike = GetLowerStrike(positionMessage.Contract.Strike);
                     var contractForHedge = CopyContractWithOtherStrike(positionMessage.Contract, newStrike);
                     _reqContractDetails++;
                     _ibClient.ClientSocket.reqContractDetails(_reqContractDetails, contractForHedge);
                 }
             }
+        }
+
+        private double GetLowerStrike(double strike)
+        {
+            return strike - 1;
+        }
+
+        private double GetHigherStrike(double strike)
+        {
+            return strike + 1;
         }
 
         private void _ibClient_PositionEnd()
@@ -298,18 +311,25 @@ namespace SsbHedger
                 $"{contractDetailsMessage.ContractDetails.Contract.Right} " +
                 $"{contractDetailsMessage.ContractDetails.Contract.LastTradeDateOrContractMonth} " +
                 $"{contractDetailsMessage.ContractDetails.Contract.Strike} " +
-                $"{ contractDetailsMessage.ContractDetails.Contract.LocalSymbol }"));
+                $"{contractDetailsMessage.ContractDetails.Contract.LocalSymbol}"));
 
-            int reqMktDataId = contractDetailsMessage.ContractDetails.Contract.Right == "P"
-                ? REQ_MKT_DATA_BEAR_HEDGE_CALL_ID
-                : REQ_MKT_DATA_BULL_HEDGE_CALL_ID;
-            _ibClient.ClientSocket.reqMktData(
-                reqMktDataId,
-                contractDetailsMessage.ContractDetails.Contract,
-                "",
-                false,
-                false,
-                new List<TagValue>());
+            if (_reqIdStrikeDict.ContainsKey(contractDetailsMessage.RequestId))
+            {
+                _reqIdStrikeDict.Remove(contractDetailsMessage.RequestId);
+            }
+            else
+            {
+                int reqMktDataId = contractDetailsMessage.ContractDetails.Contract.Right == "P"
+                    ? REQ_MKT_DATA_BEAR_HEDGE_CALL_ID
+                    : REQ_MKT_DATA_BULL_HEDGE_CALL_ID;
+                _ibClient.ClientSocket.reqMktData(
+                    reqMktDataId,
+                    contractDetailsMessage.ContractDetails.Contract,
+                    "",
+                    false,
+                    false,
+                    new List<TagValue>());
+            }
         }
 
         private void _ibClient_ContractDetailsEnd(int obj)
@@ -368,19 +388,20 @@ namespace SsbHedger
 
         private Contract CopyContractWithOtherStrike(Contract contract, double newStrike)
         {
-            return new Contract { 
-                Symbol= contract.Symbol,
-                SecType= contract.SecType,  
-                LastTradeDateOrContractMonth= contract.LastTradeDateOrContractMonth,
+            return new Contract
+            {
+                Symbol = contract.Symbol,
+                SecType = contract.SecType,
+                LastTradeDateOrContractMonth = contract.LastTradeDateOrContractMonth,
                 Strike = newStrike,
                 Right = contract.Right,
-                Multiplier= contract.Multiplier,
-                Exchange= "SMART",    
-                Currency= contract.Currency
+                Multiplier = contract.Multiplier,
+                Exchange = "SMART",
+                Currency = contract.Currency
             };
         }
 
-        
+
         private void SetSize(PositionMessage positionMessage)
         {
             if (ViewModel == null)
@@ -390,7 +411,7 @@ namespace SsbHedger
 
             if (ViewModel.Size != -positionMessage.Position)
             {
-                ViewModel.Size = (int)-positionMessage.Position;  
+                ViewModel.Size = (int)-positionMessage.Position;
             }
         }
 
@@ -441,7 +462,7 @@ namespace SsbHedger
                 throw new ApplicationException("Unexpected! ViewModel is null");
             }
 
-            ViewModel.BearHedgeStrike = positionMessage.Contract.Strike -1;
+            ViewModel.BearHedgeStrike = positionMessage.Contract.Strike - 1;
         }
 
         private void SetBullHedgeStrike(PositionMessage positionMessage)
