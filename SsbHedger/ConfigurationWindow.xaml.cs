@@ -30,7 +30,7 @@ namespace SsbHedger
             txtPort.Text = _configuration.GetValue(Configuration.PORT).ToString();
             txtClientId.Text = _configuration.GetValue(Configuration.CLIENT_ID).ToString();
             txtUnderlyingSymbol.Text = (string)_configuration.GetValue(Configuration.UNDERLYING_SYMBOL);
-            txtSessionStart.Text = (string)_configuration.GetValue(Configuration.SESSION_END);
+            txtSessionStart.Text = (string)_configuration.GetValue(Configuration.SESSION_START);
             txtSessionEnd.Text = (string)_configuration.GetValue(Configuration.SESSION_END);
         }
 
