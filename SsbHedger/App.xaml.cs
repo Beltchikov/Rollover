@@ -6,6 +6,7 @@ using SsbHedger.Model;
 using SsbHedger.SsbChartControl;
 using SsbHedger.SsbConfiguration;
 using System;
+using System.Globalization;
 using System.Windows;
 
 namespace SsbHedger
@@ -44,7 +45,10 @@ namespace SsbHedger
                 (int)_configuration.GetValue(Configuration.CLIENT_ID),
                 (string)_configuration.GetValue(Configuration.UNDERLYING_SYMBOL),
                 (string)_configuration.GetValue(Configuration.SESSION_START),
-                (string)_configuration.GetValue(Configuration.SESSION_END)));
+                (string)_configuration.GetValue(Configuration.SESSION_END),
+                Convert.ToDouble(_configuration.GetValue(Configuration.BEAR_HEDGE_STRIKE), new CultureInfo("DE-de")),
+                Convert.ToDouble(_configuration.GetValue(Configuration.BULL_HEDGE_STRIKE), new CultureInfo("DE-de"))
+                ));
 
             _configuration.SetValue(Configuration.HOST, configurationdata.Host);
             _configuration.SetValue(Configuration.PORT, configurationdata.Port);
@@ -52,6 +56,8 @@ namespace SsbHedger
             _configuration.SetValue(Configuration.UNDERLYING_SYMBOL, configurationdata.UnderlyingSymbol);
             _configuration.SetValue(Configuration.SESSION_START, configurationdata.SessionStart);
             _configuration.SetValue(Configuration.SESSION_END, configurationdata.SessionEnd);
+            _configuration.SetValue(Configuration.BEAR_HEDGE_STRIKE, configurationdata.BearHedgeStrike);
+            _configuration.SetValue(Configuration.BULL_HEDGE_STRIKE, configurationdata.BullHedgeStrike);
 
             viewModel.SessionStart= configurationdata.SessionStart; 
             viewModel.SessionEnd= configurationdata.SessionEnd; 

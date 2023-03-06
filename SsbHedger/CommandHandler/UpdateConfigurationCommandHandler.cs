@@ -1,6 +1,7 @@
 ﻿using SsbHedger.Model;
 using SsbHedger.SsbConfiguration;
 using System;
+using System.Globalization;
 
 namespace SsbHedger.CommandHandler
 {
@@ -54,6 +55,8 @@ namespace SsbHedger.CommandHandler
                 throw new ApplicationException("Unexpected! sessionEnd is null");
             }
 
+            double bearHedgeStrike = Convert.ToDouble(parameters[6], new CultureInfo("DE-de"));
+            double bullHedgeStrike = Convert.ToDouble(parameters[7], new CultureInfo("DE-de"));
 
             _registryManager.WriteConfiguration(new ConfigurationData(
                 host,
@@ -61,7 +64,9 @@ namespace SsbHedger.CommandHandler
                 clientId,
                 underlyingSymbol,
                 sessionStart,
-                sessionEnd));
+                sessionEnd,
+                bearHedgeStrike,
+                bullHedgeStrike));
 
             _configuration.SetValue(Configuration.HOST, host);
             _configuration.SetValue(Configuration.PORT, port);
@@ -69,6 +74,8 @@ namespace SsbHedger.CommandHandler
             _configuration.SetValue(Configuration.UNDERLYING_SYMBOL, underlyingSymbol);
             _configuration.SetValue(Configuration.SESSION_START, sessionStart);
             _configuration.SetValue(Configuration.SESSION_END, sessionEnd);
+            _configuration.SetValue(Configuration.BEAR_HEDGE_STRIKE, bearHedgeStrike);
+            _configuration.SetValue(Configuration.BULL_HEDGE_STRIKE, bullHedgeStrike);
 
             _ibHost.Disconnect();
             _ibHost.ConnectAndStartReaderThread();

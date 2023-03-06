@@ -2,6 +2,7 @@
 using SsbHedger.SsbConfiguration;
 using System;
 using System.Collections.Specialized;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -40,6 +41,8 @@ namespace SsbHedger
                     _configurationWindow.txtUnderlyingSymbol.Text,
                     _configurationWindow.txtSessionStart.Text,
                     _configurationWindow.txtSessionEnd.Text,
+                    Convert.ToDouble(_configurationWindow.txtBearHedgeStrike.Text, new CultureInfo("DE-de")),
+                    Convert.ToDouble(_configurationWindow.txtBullHedgeStrike.Text, new CultureInfo("DE-de")),
                 };
                 ((MainWindowViewModel)DataContext).UpdateConfigurationCommand.Execute(commandParams);
             }

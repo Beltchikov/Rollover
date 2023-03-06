@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -32,6 +33,9 @@ namespace SsbHedger
             txtUnderlyingSymbol.Text = (string)_configuration.GetValue(Configuration.UNDERLYING_SYMBOL);
             txtSessionStart.Text = (string)_configuration.GetValue(Configuration.SESSION_START);
             txtSessionEnd.Text = (string)_configuration.GetValue(Configuration.SESSION_END);
+            txtBearHedgeStrike.Text = Convert.ToString(_configuration.GetValue(Configuration.BEAR_HEDGE_STRIKE), new CultureInfo("DE-de"));
+            txtBullHedgeStrike.Text = Convert.ToString(_configuration.GetValue(Configuration.BULL_HEDGE_STRIKE), new CultureInfo("DE-de"));
+
         }
 
         private void btCancel_Click(object sender, RoutedEventArgs e)
@@ -126,6 +130,34 @@ namespace SsbHedger
             btDone.IsEnabled = ConfigurationIsUpdated(textBoxesDict);
         }
 
+        private void txtBearHedgeStrike_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            double result;
+            if(!double.TryParse(((TextBox)sender).Text, out result))
+            {
+                UndoInput(e, (TextBox)sender);
+                return;
+            }
+
+            Dictionary<string, TextBox> textBoxesDict = BuildDefaultTextBoxesDictionary();
+            textBoxesDict["txtBearHedgeStrike"] = (TextBox)sender;
+            btDone.IsEnabled = ConfigurationIsUpdated(textBoxesDict);
+        }
+
+        private void txtBullHedgeStrike_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            double result;
+            if (!double.TryParse(((TextBox)sender).Text, out result))
+            {
+                UndoInput(e, (TextBox)sender);
+                return;
+            }
+
+            Dictionary<string, TextBox> textBoxesDict = BuildDefaultTextBoxesDictionary();
+            textBoxesDict["txtBeullHedgeStrike"] = (TextBox)sender;
+            btDone.IsEnabled = ConfigurationIsUpdated(textBoxesDict);
+        }
+
         private bool ConfigurationIsUpdated(Dictionary<string, TextBox> textBoxesDict)
         {
             if (string.IsNullOrWhiteSpace(textBoxesDict["txtHost"].Text)
@@ -133,7 +165,9 @@ namespace SsbHedger
                 || string.IsNullOrWhiteSpace(textBoxesDict["txtClientId"].Text)
                 || string.IsNullOrWhiteSpace(textBoxesDict["txtUnderlyingSymbol"].Text)
                 || string.IsNullOrWhiteSpace(textBoxesDict["txtSessionStart"].Text)
-                || string.IsNullOrWhiteSpace(textBoxesDict["txtSessionEnd"].Text))
+                || string.IsNullOrWhiteSpace(textBoxesDict["txtSessionEnd"].Text)
+                || string.IsNullOrWhiteSpace(textBoxesDict["txtBearHedgeStrike"].Text)
+                || string.IsNullOrWhiteSpace(textBoxesDict["txtBullHedgeStrike"].Text))
             {
                 return false;
             }
@@ -148,8 +182,13 @@ namespace SsbHedger
                 textBoxesDict["txtSessionStart"].Text, StringComparison.InvariantCultureIgnoreCase);
             bool newSessionEnd = !string.Equals((string)_configuration.GetValue(Configuration.SESSION_END), 
                 textBoxesDict["txtSessionEnd"].Text, StringComparison.InvariantCultureIgnoreCase);
+            bool newBearHedgeStrike = !string.Equals(Convert.ToString(_configuration.GetValue(Configuration.BEAR_HEDGE_STRIKE), new CultureInfo("DE-de")),
+                textBoxesDict["txtBearHedgeStrike"].Text, StringComparison.InvariantCultureIgnoreCase);
+            bool newBullHedgeStrike = !string.Equals(Convert.ToString(_configuration.GetValue(Configuration.BULL_HEDGE_STRIKE), new CultureInfo("DE-de")),
+                textBoxesDict["txtBullHedgeStrike"].Text, StringComparison.InvariantCultureIgnoreCase);
 
-            return newHost || newPort || newClientId || newUnderlyingSymbol || newSessionStart || newSessionEnd;
+            return newHost || newPort || newClientId || newUnderlyingSymbol || newSessionStart || newSessionEnd
+                || newBearHedgeStrike || newBullHedgeStrike;
         }
 
         private Dictionary<string, TextBox> BuildDefaultTextBoxesDictionary()
@@ -162,6 +201,8 @@ namespace SsbHedger
                 {"txtUnderlyingSymbol", txtUnderlyingSymbol},
                 {"txtSessionStart", txtSessionStart},
                 {"txtSessionEnd", txtSessionEnd },
+                {"txtBearHedgeStrike", txtBearHedgeStrike },
+                {"txtBullHedgeStrike", txtBullHedgeStrike },
             };
         }
 
@@ -185,5 +226,7 @@ namespace SsbHedger
             e.Handled = true;
             return;
         }
+
+       
     }
 }
