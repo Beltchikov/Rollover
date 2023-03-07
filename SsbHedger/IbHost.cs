@@ -1,15 +1,13 @@
-﻿using IbClient;
-using SsbHedger.Model;
-using System;
-using System.Linq;
+﻿using IBApi;
+using IbClient;
 using IbClient.messages;
+using SsbHedger.Model;
 using SsbHedger.SsbConfiguration;
-using IBApi;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
 using System.Globalization;
-using System.Net;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SsbHedger
 {
@@ -60,7 +58,6 @@ namespace SsbHedger
             };
 
             _contractUnderlying = _contractDict[(string)_configuration.GetValue(Configuration.UNDERLYING_SYMBOL)];
-
         }
 
         public MainWindowViewModel? ViewModel { get; set; }
@@ -172,6 +169,10 @@ namespace SsbHedger
             }
             ViewModel.Messages.Add(new Message(0, message.IsConnected ? "CONNECTED!" : "NOT CONNECTED!"));
             ViewModel.Connected = message.IsConnected;
+
+            ViewModel.BearHedgePrice = Convert.ToDouble(_configuration.GetValue(Configuration.BEAR_HEDGE_STRIKE), new CultureInfo("DE-de"));
+            ViewModel.BullHedgePrice = Convert.ToDouble(_configuration.GetValue(Configuration.BULL_HEDGE_STRIKE), new CultureInfo("DE-de"));
+
             UpdateConnectionMessage(message.IsConnected);
         }
 
