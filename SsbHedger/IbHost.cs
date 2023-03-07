@@ -247,6 +247,7 @@ namespace SsbHedger
                 $"{positionMessage.Contract.LocalSymbol} " +
                 $"{positionMessage.AverageCost} " +
                 $"{positionMessage.Position}"));
+            ViewModel.PositionsInfoMessage = "";
 
             if (positionMessage.Position != 0 && positionMessage.Contract != null)
             {

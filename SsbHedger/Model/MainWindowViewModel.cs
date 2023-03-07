@@ -28,6 +28,7 @@ namespace SsbHedger.Model
         private double bearHedgePrice;
         private double bullHedgeStrike;
         private double bullHedgePrice;
+        private string positionsInfoMessage;
 
         public MainWindowViewModel(
             IInitializeCommandHandler initializeCommandHandler,
@@ -204,6 +205,18 @@ namespace SsbHedger.Model
                 OnPropertyChanged(nameof(BullHedgePrice));
             }
         }
+
+        public string PositionsInfoMessage
+        {
+            get => positionsInfoMessage;
+            set
+            {
+                SetProperty(ref positionsInfoMessage, value);
+                OnPropertyChanged(nameof(PositionsInfoMessage));
+            }
+        }
+
+        
 
 
         public ObservableCollection<Bar> Bars

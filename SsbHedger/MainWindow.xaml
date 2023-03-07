@@ -99,6 +99,13 @@
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
+            <StackPanel Name="panelPositionsInfo" Orientation="Vertical" Grid.Row="0" Grid.Column="0">
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource Warning}"
+                           Text="{Binding Path=PositionsInfoMessage}"
+                           >No positions!</TextBlock>
+            </StackPanel>
+
             <StackPanel Name="panelSize" Orientation="Vertical" Grid.Row="0" Grid.Column="5">
                 <TextBlock HorizontalAlignment="Center" 
                            Style="{StaticResource TableHeader}">size</TextBlock>
