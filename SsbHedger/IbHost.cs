@@ -257,10 +257,9 @@ namespace SsbHedger
                     SetCallStrike(positionMessage);
                     SetCallPrice(positionMessage);
                     
-                    //var newStrike = GetHigherStrike(positionMessage.Contract.Strike);
-                    //var contractForHedge = CopyContractWithOtherStrike(positionMessage.Contract, newStrike);
-                    //_reqContractDetails++;
-                    //_ibClient.ClientSocket.reqContractDetails(_reqContractDetails, contractForHedge);
+                    var contractForHedge = CopyContractWithOtherStrike(positionMessage.Contract, ViewModel.BullHedgeStrike);
+                    _reqContractDetails++;
+                    _ibClient.ClientSocket.reqContractDetails(_reqContractDetails, contractForHedge);
                 }
                 // short put
                 if (positionMessage.Contract.Right == "P" && positionMessage.Position < 0)
@@ -269,22 +268,11 @@ namespace SsbHedger
                     SetPutStrike(positionMessage);
                     SetPutPrice(positionMessage);
                     
-                    //var newStrike = GetLowerStrike(positionMessage.Contract.Strike);
-                    //var contractForHedge = CopyContractWithOtherStrike(positionMessage.Contract, newStrike);
-                    //_reqContractDetails++;
-                    //_ibClient.ClientSocket.reqContractDetails(_reqContractDetails, contractForHedge);
+                    var contractForHedge = CopyContractWithOtherStrike(positionMessage.Contract, ViewModel.BearHedgeStrike);
+                    _reqContractDetails++;
+                    _ibClient.ClientSocket.reqContractDetails(_reqContractDetails, contractForHedge);
                 }
             }
-        }
-
-        private double GetLowerStrike(double strike)
-        {
-            return strike - 1;
-        }
-
-        private double GetHigherStrike(double strike)
-        {
-            return strike + 1;
         }
 
         private void _ibClient_PositionEnd()
