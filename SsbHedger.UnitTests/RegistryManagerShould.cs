@@ -43,7 +43,7 @@ namespace SsbHedger.UnitTests
             registryKey.GetValue(SsbConfiguration.Configuration.CLIENT_ID).Returns(222);
 
             registryCurrentUser.OpenSubKey(SOFTWARE_SSBHEDGER).Returns(registryKey);
-            var (host, _, _, _, _, _) = sut.ReadConfiguration(defaultConfigurationData);
+            var (host, _, _, _, _, _, _, _) = sut.ReadConfiguration(defaultConfigurationData);
 
             Assert.Equal(defaultConfigurationData.Host, host);
             registryKey.Received().SetValue(SsbConfiguration.Configuration.HOST, host);
@@ -62,7 +62,7 @@ namespace SsbHedger.UnitTests
             
             registryCurrentUser.OpenSubKey(SOFTWARE_SSBHEDGER).Returns(registryKey);
 
-            var (_, port, _,_,_,_) = sut.ReadConfiguration(defaultConfigurationData);
+            var (_, port, _,_,_,_,_,_) = sut.ReadConfiguration(defaultConfigurationData);
 
             Assert.Equal(defaultConfigurationData.Port, port);
             registryKey.Received().SetValue(SsbConfiguration.Configuration.PORT, port);
@@ -75,13 +75,13 @@ namespace SsbHedger.UnitTests
            [Frozen] IRegistryCurrentUserAbstraction registryCurrentUser,
            RegistryManager sut)
         {
-            registryKey.GetValue(SsbConfiguration.Configuration.HOST).Returns("aaa");
-            registryKey.GetValue(SsbConfiguration.Configuration.PORT).Returns(4444);
-            registryKey.GetValue(SsbConfiguration.Configuration.CLIENT_ID).Returns(-222);
+            registryKey.GetValue(Configuration.HOST).Returns("aaa");
+            registryKey.GetValue(Configuration.PORT).Returns(4444);
+            registryKey.GetValue(Configuration.CLIENT_ID).Returns(-222);
 
             registryCurrentUser.OpenSubKey(SOFTWARE_SSBHEDGER).Returns(registryKey);
 
-            var (_, _, clientId,_,_,_) = sut.ReadConfiguration(defaultConfigurationData);
+            var (_, _, clientId,_,_,_, _, _) = sut.ReadConfiguration(defaultConfigurationData);
 
             Assert.Equal(defaultConfigurationData.ClientId, clientId);
             registryKey.Received().SetValue(SsbConfiguration.Configuration.CLIENT_ID, clientId);

@@ -24,7 +24,6 @@ namespace SsbHedger
 
         int _reqIdHistoricalData = 1000;
         int _reqContractDetails = 2000;
-        Dictionary<int, double> _reqIdStrikeDict = null!;
         Dictionary<string, Contract> _contractDict = null!;
         Contract _contractUnderlying = null!;
         string _durationString = "1 D";
@@ -55,7 +54,6 @@ namespace SsbHedger
             _ibClient.TickPrice += _ibClient_TickPrice;
             _ibClient.TickString += _ibClient_TickString;
 
-            _reqIdStrikeDict = new Dictionary<int, double>();
             _contractDict = new Dictionary<string, Contract>
             {
                 {"SPY", new Contract(){Symbol = "SPY", SecType = "STK", Currency="USD", Exchange = "SMART"} }
@@ -315,23 +313,16 @@ namespace SsbHedger
                 $"{contractDetailsMessage.ContractDetails.Contract.Strike} " +
                 $"{contractDetailsMessage.ContractDetails.Contract.LocalSymbol}"));
 
-            if (_reqIdStrikeDict.ContainsKey(contractDetailsMessage.RequestId))
-            {
-                _reqIdStrikeDict.Remove(contractDetailsMessage.RequestId);
-            }
-            else
-            {
-                int reqMktDataId = contractDetailsMessage.ContractDetails.Contract.Right == "P"
-                    ? REQ_MKT_DATA_BEAR_HEDGE_CALL_ID
-                    : REQ_MKT_DATA_BULL_HEDGE_CALL_ID;
-                _ibClient.ClientSocket.reqMktData(
-                    reqMktDataId,
-                    contractDetailsMessage.ContractDetails.Contract,
-                    "",
-                    false,
-                    false,
-                    new List<TagValue>());
-            }
+            int reqMktDataId = contractDetailsMessage.ContractDetails.Contract.Right == "P"
+                ? REQ_MKT_DATA_BEAR_HEDGE_CALL_ID
+                : REQ_MKT_DATA_BULL_HEDGE_CALL_ID;
+            _ibClient.ClientSocket.reqMktData(
+                reqMktDataId,
+                contractDetailsMessage.ContractDetails.Contract,
+                "",
+                false,
+                false,
+                new List<TagValue>());
         }
 
         private void _ibClient_ContractDetailsEnd(int obj)
