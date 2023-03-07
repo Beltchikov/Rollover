@@ -45,6 +45,8 @@ namespace SsbHedger.Model
             putShortPrice = 3;
             callShortStrike = 105;
             callShortPrice = 2;
+
+            positionsInfoMessage = "No positions!";
         }
 
         public string ConnectionMessage

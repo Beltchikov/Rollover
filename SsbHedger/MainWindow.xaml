@@ -103,7 +103,7 @@
                 <TextBlock HorizontalAlignment="Center" 
                            Style="{StaticResource Warning}"
                            Text="{Binding Path=PositionsInfoMessage}"
-                           >No positions!</TextBlock>
+                           ></TextBlock>
             </StackPanel>
 
             <StackPanel Name="panelSize" Orientation="Vertical" Grid.Row="0" Grid.Column="5">
