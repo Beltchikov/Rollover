@@ -29,6 +29,13 @@ namespace SsbHedger.Model
         private double bullHedgeStrike;
         private double bullHedgePrice;
         private string positionsInfoMessage;
+        private double spreadWidthBear;
+        private double premiumOf3Bear;
+        private double maxLossBear;
+        private double spreadWidthBull;
+        private double premiumOf3Bull;
+        private double maxLossBull;
+
 
         public MainWindowViewModel(
             IInitializeCommandHandler initializeCommandHandler,
@@ -218,8 +225,65 @@ namespace SsbHedger.Model
             }
         }
 
-        
+        public double SpreadWidthBear
+        {
+            get => spreadWidthBear;
+            set
+            {
+                SetProperty(ref spreadWidthBear, value);
+                OnPropertyChanged(nameof(SpreadWidthBear));
+            }
+        }
 
+        public double PremiumOf3Bear
+        {
+            get => premiumOf3Bear;
+            set
+            {
+                SetProperty(ref premiumOf3Bear, value);
+                OnPropertyChanged(nameof(PremiumOf3Bear));
+            }
+        }
+
+        public double MaxLossBear
+        {
+            get => maxLossBear;
+            set
+            {
+                SetProperty(ref maxLossBear, value);
+                OnPropertyChanged(nameof(MaxLossBear));
+            }
+        }
+
+        public double SpreadWidthBull
+        {
+            get => spreadWidthBull;
+            set
+            {
+                SetProperty(ref spreadWidthBull, value);
+                OnPropertyChanged(nameof(SpreadWidthBull));
+            }
+        }
+
+        public double PremiumOf3Bull
+        {
+            get => premiumOf3Bull;
+            set
+            {
+                SetProperty(ref premiumOf3Bull, value);
+                OnPropertyChanged(nameof(PremiumOf3Bull));
+            }
+        }
+
+        public double MaxLossBull
+        {
+            get => maxLossBull;
+            set
+            {
+                SetProperty(ref maxLossBull, value);
+                OnPropertyChanged(nameof(MaxLossBull));
+            }
+        }
 
         public ObservableCollection<Bar> Bars
         {

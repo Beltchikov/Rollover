@@ -156,6 +156,33 @@
                            Text="{Binding Path=Premium, FallbackValue=0}">
                 </TextBlock>
             </StackPanel>
+            <StackPanel Name="panelMaxLossBear" Orientation="Vertical" 
+                        Grid.Row="3" Grid.Column="0">
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource TableHeader}">max loss</TextBlock>
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource NormalTextBlock}"
+                           Text="{Binding Path=MaxLossBear, FallbackValue=0}">
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Name="panelPremiumOf3Bear" Orientation="Vertical" 
+                        Grid.Row="3" Grid.Column="1">
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource TableHeader}">premium of 3</TextBlock>
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource NormalTextBlock}"
+                           Text="{Binding Path=PremiumOf3Bear, FallbackValue=0}">
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Name="panelSpreadWidthBear" Orientation="Vertical" 
+                        Grid.Row="3" Grid.Column="2">
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource TableHeader}">spread width</TextBlock>
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource NormalTextBlock}"
+                           Text="{Binding Path=SpreadWidthBear, FallbackValue=0}">
+                </TextBlock>
+            </StackPanel>
             <StackPanel Name="panelBearHedgePut" Orientation="Vertical" 
                         Grid.Row="3" Grid.Column="3">
                 <TextBlock HorizontalAlignment="Center" 
@@ -180,6 +207,33 @@
                 <TextBlock HorizontalAlignment="Center" 
                            Style="{StaticResource NormalTextBlock}"
                            Text="{Binding Path=BullHedgePrice, FallbackValue=0}">
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Name="panelSpreadWidthBull" Orientation="Vertical" 
+                        Grid.Row="3" Grid.Column="8">
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource TableHeader}">spread width</TextBlock>
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource NormalTextBlock}"
+                           Text="{Binding Path=SpreadWidthBull, FallbackValue=0}">
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Name="panelPremiumOf3Bull" Orientation="Vertical" 
+                        Grid.Row="3" Grid.Column="9">
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource TableHeader}">premium of 3</TextBlock>
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource NormalTextBlock}"
+                           Text="{Binding Path=PremiumOf3Bull, FallbackValue=0}">
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Name="panelMaxLossBull" Orientation="Vertical" 
+                        Grid.Row="3" Grid.Column="10">
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource TableHeader}">max loss</TextBlock>
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource NormalTextBlock}"
+                           Text="{Binding Path=MaxLossBull, FallbackValue=0}">
                 </TextBlock>
             </StackPanel>
         </Grid>
