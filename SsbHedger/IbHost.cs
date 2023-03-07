@@ -170,8 +170,8 @@ namespace SsbHedger
             ViewModel.Messages.Add(new Message(0, message.IsConnected ? "CONNECTED!" : "NOT CONNECTED!"));
             ViewModel.Connected = message.IsConnected;
 
-            ViewModel.BearHedgePrice = Convert.ToDouble(_configuration.GetValue(Configuration.BEAR_HEDGE_STRIKE), new CultureInfo("DE-de"));
-            ViewModel.BullHedgePrice = Convert.ToDouble(_configuration.GetValue(Configuration.BULL_HEDGE_STRIKE), new CultureInfo("DE-de"));
+            ViewModel.BearHedgeStrike= Convert.ToDouble(_configuration.GetValue(Configuration.BEAR_HEDGE_STRIKE), new CultureInfo("DE-de"));
+            ViewModel.BullHedgeStrike = Convert.ToDouble(_configuration.GetValue(Configuration.BULL_HEDGE_STRIKE), new CultureInfo("DE-de"));
 
             UpdateConnectionMessage(message.IsConnected);
         }
@@ -256,12 +256,11 @@ namespace SsbHedger
                     SetSize(positionMessage);
                     SetCallStrike(positionMessage);
                     SetCallPrice(positionMessage);
-                    SetBullHedgeStrike(positionMessage);
-
-                    var newStrike = GetHigherStrike(positionMessage.Contract.Strike);
-                    var contractForHedge = CopyContractWithOtherStrike(positionMessage.Contract, newStrike);
-                    _reqContractDetails++;
-                    _ibClient.ClientSocket.reqContractDetails(_reqContractDetails, contractForHedge);
+                    
+                    //var newStrike = GetHigherStrike(positionMessage.Contract.Strike);
+                    //var contractForHedge = CopyContractWithOtherStrike(positionMessage.Contract, newStrike);
+                    //_reqContractDetails++;
+                    //_ibClient.ClientSocket.reqContractDetails(_reqContractDetails, contractForHedge);
                 }
                 // short put
                 if (positionMessage.Contract.Right == "P" && positionMessage.Position < 0)
@@ -269,12 +268,11 @@ namespace SsbHedger
                     SetSize(positionMessage);
                     SetPutStrike(positionMessage);
                     SetPutPrice(positionMessage);
-                    SetBearHedgeStrike(positionMessage);
-
-                    var newStrike = GetLowerStrike(positionMessage.Contract.Strike);
-                    var contractForHedge = CopyContractWithOtherStrike(positionMessage.Contract, newStrike);
-                    _reqContractDetails++;
-                    _ibClient.ClientSocket.reqContractDetails(_reqContractDetails, contractForHedge);
+                    
+                    //var newStrike = GetLowerStrike(positionMessage.Contract.Strike);
+                    //var contractForHedge = CopyContractWithOtherStrike(positionMessage.Contract, newStrike);
+                    //_reqContractDetails++;
+                    //_ibClient.ClientSocket.reqContractDetails(_reqContractDetails, contractForHedge);
                 }
             }
         }
@@ -448,26 +446,5 @@ namespace SsbHedger
 
             ViewModel.PutShortPrice = Math.Round(positionMessage.AverageCost / MainWindowViewModel.MULTIPLIER, 3);
         }
-
-        private void SetBearHedgeStrike(PositionMessage positionMessage)
-        {
-            if (ViewModel == null)
-            {
-                throw new ApplicationException("Unexpected! ViewModel is null");
-            }
-
-            ViewModel.BearHedgeStrike = positionMessage.Contract.Strike - 1;
-        }
-
-        private void SetBullHedgeStrike(PositionMessage positionMessage)
-        {
-            if (ViewModel == null)
-            {
-                throw new ApplicationException("Unexpected! ViewModel is null");
-            }
-
-            ViewModel.BullHedgeStrike = positionMessage.Contract.Strike + 1;
-        }
-
     }
 }
