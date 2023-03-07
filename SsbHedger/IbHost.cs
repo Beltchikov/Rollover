@@ -251,7 +251,8 @@ namespace SsbHedger
 
             if (positionMessage.Position != 0 && positionMessage.Contract != null)
             {
-                if (positionMessage.Contract.Right == "C")
+                // short call
+                if (positionMessage.Contract.Right == "C" && positionMessage.Position < 0)
                 {
                     SetSize(positionMessage);
                     SetCallStrike(positionMessage);
@@ -263,7 +264,8 @@ namespace SsbHedger
                     _reqContractDetails++;
                     _ibClient.ClientSocket.reqContractDetails(_reqContractDetails, contractForHedge);
                 }
-                if (positionMessage.Contract.Right == "P")
+                // short put
+                if (positionMessage.Contract.Right == "P" && positionMessage.Position < 0)
                 {
                     SetSize(positionMessage);
                     SetPutStrike(positionMessage);
