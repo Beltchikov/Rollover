@@ -73,7 +73,7 @@
                     Click="btConfiguration_Click">...</Button>
         </StackPanel>
 
-        <Grid x:Name="maxLoss" Background="LightBlue" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3">
+        <!--<Grid x:Name="maxLoss" Background="LightBlue" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3">
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
@@ -236,8 +236,29 @@
                            Text="{Binding Path=MaxLossBull, FallbackValue=0}">
                 </TextBlock>
             </StackPanel>
-        </Grid>
+        </Grid>-->
 
+        <Grid x:Name="ssbAlert" Background="LightGreen" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+             </Grid.ColumnDefinitions>
+
+            <StackPanel Name="panelMaxLosse" Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource TableHeader}">Alert if max loss >=</TextBlock>
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource NormalTextBlock}"
+                           Text="TODO">
+                </TextBlock>
+            </StackPanel>
+        </Grid>
+              
+        
         <ListBox Name="listBoxMessages" Grid.Row="6" Grid.Column="1" 
                  Background="Azure" ItemsSource="{Binding Messages}"
                  Grid.ColumnSpan="3">
