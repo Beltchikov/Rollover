@@ -260,7 +260,7 @@
             <StackPanel Name="panelEnableAlert" Orientation="Horizontal" Grid.Row="2" Grid.Column="0">
                 <TextBlock HorizontalAlignment="Center" 
                            Style="{StaticResource TableHeader}" Padding="10 0 0 0">Enable alert</TextBlock>
-                <CheckBox x:Name="chkAlertEnabled"></CheckBox>
+                <CheckBox x:Name="chkAlertEnabled" VerticalAlignment="Center" Margin="10 0 0 0"></CheckBox>
              </StackPanel>
         </Grid>
               
