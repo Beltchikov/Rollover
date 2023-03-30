@@ -242,7 +242,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"></RowDefinition>
                 <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
@@ -250,12 +250,18 @@
 
             <StackPanel Name="panelMaxLosse" Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
                 <TextBlock HorizontalAlignment="Center" 
-                           Style="{StaticResource TableHeader}">Alert if max loss >=</TextBlock>
+                           Style="{StaticResource TableHeader}" Padding="10 0 0 0">Alert if max loss >=</TextBlock>
                 <TextBlock HorizontalAlignment="Center" 
                            Style="{StaticResource NormalTextBlock}"
                            Text="TODO">
                 </TextBlock>
             </StackPanel>
+
+            <StackPanel Name="panelEnableAlert" Orientation="Horizontal" Grid.Row="2" Grid.Column="0">
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource TableHeader}" Padding="10 0 0 0">Enable alert</TextBlock>
+                <CheckBox x:Name="chkAlertEnabled"></CheckBox>
+             </StackPanel>
         </Grid>
               
         
