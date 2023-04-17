@@ -1,6 +1,7 @@
 ﻿using IBApi;
 using IbClient;
 using IbClient.messages;
+using SsbHedger.MessageHelper;
 using SsbHedger.Model;
 using SsbHedger.SsbConfiguration;
 using System;
@@ -29,8 +30,9 @@ namespace SsbHedger
         string _whatToShow = "BID";
         int _useRTH = 0;
         bool _keepUpToDate = false;
+        private IPositionMessageBuffer _positionMessageBuffer;
 
-        public IbHost(IConfiguration configuration)
+        public IbHost(IConfiguration configuration, IPositionMessageBuffer positionMessageBuffer)
         {
             _configuration = configuration;
 
@@ -58,6 +60,7 @@ namespace SsbHedger
             };
 
             _contractUnderlying = _contractDict[(string)_configuration.GetValue(Configuration.UNDERLYING_SYMBOL)];
+            _positionMessageBuffer = positionMessageBuffer;
         }
 
         public MainWindowViewModel? ViewModel { get; set; }
@@ -249,6 +252,8 @@ namespace SsbHedger
                 $"{positionMessage.Position}"));
             ViewModel.PositionsInfoMessage = "";
 
+            // Old code
+            
             if (positionMessage.Position != 0 && positionMessage.Contract != null)
             {
                 // short call
@@ -274,6 +279,13 @@ namespace SsbHedger
                     _ibClient.ClientSocket.reqContractDetails(_reqContractDetails, contractForHedge);
                 }
             }
+
+            // End old code
+
+            if (positionMessage.Position != 0 && positionMessage.Contract != null)
+            {
+                _positionMessageBuffer.AddMessage(positionMessage);
+            }
         }
 
         private void _ibClient_PositionEnd()
@@ -282,6 +294,10 @@ namespace SsbHedger
             {
                 throw new ApplicationException("Unexpected! ViewModel is null");
             }
+
+            SetSize(_positionMessageBuffer);
+            _positionMessageBuffer.Reset();
+
             ViewModel.Messages.Add(new Message(0, $"PositionEnd"));
         }
 
@@ -393,6 +409,26 @@ namespace SsbHedger
             if (ViewModel.Size != -positionMessage.Position)
             {
                 ViewModel.Size = (int)-positionMessage.Position;
+            }
+        }
+
+        private void SetSize(IPositionMessageBuffer positionMessageBuffer)
+        {
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+
+            int? firstCallSize = positionMessageBuffer.FirstCallSize();
+            int? secondCallSize = positionMessageBuffer.SecondCallSize();
+
+            if (firstCallSize.HasValue && ViewModel.Size1 != -firstCallSize)
+            {
+                ViewModel.Size1 = -firstCallSize.Value;
+            }
+            if (secondCallSize.HasValue && ViewModel.Size2 != -secondCallSize)
+            {
+                ViewModel.Size2 = -secondCallSize.Value;
             }
         }
 

@@ -20,6 +20,8 @@ namespace SsbHedger.Model
         private string sessionStart;
         private string sessionEnd;
         private int size;
+        private int size1;
+        private int size2;
         private double putShortStrike;
         private double putShortPrice;
         private double callShortStrike;
@@ -110,6 +112,30 @@ namespace SsbHedger.Model
                 OnPropertyChanged(nameof(Size));
                 OnPropertyChanged(nameof(PremiumOnePosition));
                 OnPropertyChanged(nameof(Premium));
+            }
+        }
+
+        public int Size1
+        {
+            get => size1;
+            set
+            {
+                SetProperty(ref size1, value);
+                OnPropertyChanged(nameof(Size1));
+                //OnPropertyChanged(nameof(PremiumOnePosition));
+                //OnPropertyChanged(nameof(Premium));
+            }
+        }
+
+        public int Size2
+        {
+            get => size2;
+            set
+            {
+                SetProperty(ref size2, value);
+                OnPropertyChanged(nameof(Size2));
+                //OnPropertyChanged(nameof(PremiumOnePosition));
+                //OnPropertyChanged(nameof(Premium));
             }
         }
 

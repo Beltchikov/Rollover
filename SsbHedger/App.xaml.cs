@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using SsbHedger.Abstractions;
 using SsbHedger.CommandHandler;
+using SsbHedger.MessageHelper;
 using SsbHedger.Model;
 using SsbHedger.SsbChartControl;
 using SsbHedger.SsbConfiguration;
@@ -26,6 +27,7 @@ namespace SsbHedger
                 .AddSingleton<IIbHost, IbHost>()
                 .AddSingleton<IInitializeCommandHandler, InitializeCommandHandler>()
                 .AddSingleton<IUpdateConfigurationCommandHandler, UpdateConfigurationCommandHandler>()
+                .AddSingleton<IPositionMessageBuffer, PositionMessageBuffer>()
                 .AddMediatR(GetType().Assembly)
                 .BuildServiceProvider();
         }

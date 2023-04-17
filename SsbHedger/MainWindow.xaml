@@ -275,16 +275,20 @@
                            Style="{StaticResource TableHeader}">Size</TextBlock>
             <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="8" Grid.Column="2"
-                           Style="{StaticResource NormalTextBlock}">TODO</TextBlock>
+                           Style="{StaticResource NormalTextBlock}"
+                       Text="{Binding Path=Size1, FallbackValue=0}"></TextBlock>
             <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="8" Grid.Column="3"
-                           Style="{StaticResource NormalTextBlock}">TODO</TextBlock>
+                           Style="{StaticResource NormalTextBlock}"
+                       Text="{Binding Path=Size1, FallbackValue=0}"></TextBlock>
             <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="8" Grid.Column="5"
-                           Style="{StaticResource NormalTextBlock}">TODO</TextBlock>
+                           Style="{StaticResource NormalTextBlock}"
+                       Text="{Binding Path=Size2, FallbackValue=0}"></TextBlock>
             <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="8" Grid.Column="6"
-                           Style="{StaticResource NormalTextBlock}">TODO</TextBlock>
+                           Style="{StaticResource NormalTextBlock}"
+                       Text="{Binding Path=Size2, FallbackValue=0}"></TextBlock>
 
             <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="9" Grid.Column="0"
