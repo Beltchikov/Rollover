@@ -295,16 +295,20 @@
                            Style="{StaticResource TableHeader}">Strike</TextBlock>
             <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="9" Grid.Column="2"
-                           Style="{StaticResource NormalTextBlock}">TODO</TextBlock>
+                           Style="{StaticResource NormalTextBlock}"
+                       Text="{Binding Path=Strike1, FallbackValue=0}"></TextBlock>
             <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="9" Grid.Column="3"
-                           Style="{StaticResource NormalTextBlock}">TODO</TextBlock>
+                           Style="{StaticResource NormalTextBlock}"
+                       Text="{Binding Path=Strike1, FallbackValue=0}"></TextBlock>
             <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="9" Grid.Column="5"
-                           Style="{StaticResource NormalTextBlock}">TODO</TextBlock>
+                           Style="{StaticResource NormalTextBlock}"
+                       Text="{Binding Path=Strike2, FallbackValue=0}"></TextBlock>
             <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="9" Grid.Column="6"
-                           Style="{StaticResource NormalTextBlock}">TODO</TextBlock>
+                           Style="{StaticResource NormalTextBlock}"
+                       Text="{Binding Path=Strike2, FallbackValue=0}"></TextBlock>
 
             <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="10" Grid.Column="0"

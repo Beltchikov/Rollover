@@ -4,6 +4,7 @@ using SsbHedger.CommandHandler;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Windows.Ink;
 using System.Windows.Input;
 
 namespace SsbHedger.Model
@@ -22,6 +23,8 @@ namespace SsbHedger.Model
         private int size;
         private int size1;
         private int size2;
+        private double strike1;
+        private double strike2;
         private double putShortStrike;
         private double putShortPrice;
         private double callShortStrike;
@@ -134,6 +137,30 @@ namespace SsbHedger.Model
             {
                 SetProperty(ref size2, value);
                 OnPropertyChanged(nameof(Size2));
+                //OnPropertyChanged(nameof(PremiumOnePosition));
+                //OnPropertyChanged(nameof(Premium));
+            }
+        }
+
+        public double Strike1
+        {
+            get => strike1;
+            set
+            {
+                SetProperty(ref strike1, value);
+                OnPropertyChanged(nameof(Strike1));
+                //OnPropertyChanged(nameof(PremiumOnePosition));
+                //OnPropertyChanged(nameof(Premium));
+            }
+        }
+
+        public double Strike2
+        {
+            get => strike2;
+            set
+            {
+                SetProperty(ref strike2, value);
+                OnPropertyChanged(nameof(Strike2));
                 //OnPropertyChanged(nameof(PremiumOnePosition));
                 //OnPropertyChanged(nameof(Premium));
             }

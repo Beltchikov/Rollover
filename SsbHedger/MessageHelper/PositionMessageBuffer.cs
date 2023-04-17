@@ -28,6 +28,22 @@ namespace SsbHedger.MessageHelper
         }
 
 
+        public void Reset()
+        {
+            _messages.Clear();
+        }
+
+        int? IPositionMessageBuffer.FirstCallSize()
+        {
+            if (!_messages.Any())
+            {
+                return null;
+            }
+
+            var callPositions = _messages.Where(m => m.Contract.Right == "C");
+            return (int?)callPositions.First().Position;
+        }
+
         public int? SecondCallSize()
         {
             var callPositions = _messages.Where(m => m.Contract.Right == "C");
@@ -39,9 +55,26 @@ namespace SsbHedger.MessageHelper
             return (int?)callPositions.Skip(1).First().Position;
         }
 
-        public void Reset()
+        public double? FirstCallStrike()
         {
-            _messages.Clear();
+            if (!_messages.Any())
+            {
+                return null;
+            }
+
+            var callPositions = _messages.Where(m => m.Contract.Right == "C");
+            return (double?)callPositions.First().Contract?.Strike;
+        }
+
+        public double? SecondCallStrike()
+        {
+            var callPositions = _messages.Where(m => m.Contract.Right == "C");
+
+            if (callPositions.Count() < 2)
+            {
+                return null;
+            }
+            return (double?)callPositions.Skip(1).First().Contract?.Strike;
         }
     }
 }

@@ -296,6 +296,7 @@ namespace SsbHedger
             }
 
             SetSize(_positionMessageBuffer);
+            SetStrikes(_positionMessageBuffer);
             _positionMessageBuffer.Reset();
 
             ViewModel.Messages.Add(new Message(0, $"PositionEnd"));
@@ -429,6 +430,26 @@ namespace SsbHedger
             if (secondCallSize.HasValue && ViewModel.Size2 != -secondCallSize)
             {
                 ViewModel.Size2 = -secondCallSize.Value;
+            }
+        }
+
+        private void SetStrikes(IPositionMessageBuffer positionMessageBuffer)
+        {
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+
+            double? firstCallStrike = positionMessageBuffer.FirstCallStrike();
+            double? secondCallStrike = positionMessageBuffer.SecondCallStrike();
+
+            if (firstCallStrike.HasValue && ViewModel.Strike1 != firstCallStrike)
+            {
+                ViewModel.Strike1 = firstCallStrike.Value;
+            }
+            if (secondCallStrike.HasValue && ViewModel.Strike2 != secondCallStrike)
+            {
+                ViewModel.Strike2 = secondCallStrike.Value;
             }
         }
 
