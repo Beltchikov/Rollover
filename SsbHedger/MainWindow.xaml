@@ -80,11 +80,11 @@
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
@@ -236,6 +236,21 @@
                            Text="{Binding Path=MaxLossBull, FallbackValue=0}">
                 </TextBlock>
             </StackPanel>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="5" Grid.Column="0"
+                           Style="{StaticResource TableHeader}">Call or put</TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="5" Grid.Column="2"
+                           Style="{StaticResource PutHeader}">put</TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="5" Grid.Column="3"
+                           Style="{StaticResource CallHeader}">call</TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="5" Grid.Column="5"
+                           Style="{StaticResource PutHeader}">put</TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="5" Grid.Column="6"
+                           Style="{StaticResource CallHeader}">call</TextBlock>
         </Grid>
 
         <ListBox Name="listBoxMessages" Grid.Row="6" Grid.Column="1" 

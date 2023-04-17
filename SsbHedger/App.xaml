@@ -22,5 +22,17 @@
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Foreground" Value="Red" />
         </Style>
-    </Application.Resources>
+        <Style x:Key="PutHeader" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Background" Value="Salmon" />
+            <Setter Property="Foreground" Value="DarkRed" />
+        </Style>
+        <Style x:Key="CallHeader" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Background" Value="Chartreuse" />
+            <Setter Property="Foreground" Value="DarkGreen" />
+        </Style>
+     </Application.Resources>
 </Application>
