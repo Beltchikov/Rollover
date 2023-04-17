@@ -89,6 +89,9 @@
                 <RowDefinition Height="20"></RowDefinition>
                 <RowDefinition Height="20"></RowDefinition>
                 <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
@@ -353,6 +356,27 @@
             <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="12" Grid.Column="7"
                            Style="{StaticResource TableHeader}">TODO</TextBlock>
+
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="14" Grid.Column="3"
+                           Style="{StaticResource PutHeader}">TODO</TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="14" Grid.Column="4"
+                           Style="{StaticResource TableHeader}">Breakeven Range</TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="14" Grid.Column="5"
+                           Style="{StaticResource CallHeader}">TODO</TextBlock>
+
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="15" Grid.Column="3"
+                           Style="{StaticResource PutHeader}">TODO</TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="15" Grid.Column="4"
+                           Style="{StaticResource TableHeader}">NHBR</TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="15" Grid.Column="5"
+                           Style="{StaticResource CallHeader}">TODO</TextBlock>
+
         </Grid>
 
         <ListBox Name="listBoxMessages" Grid.Row="6" Grid.Column="1" 

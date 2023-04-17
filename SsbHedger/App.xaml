@@ -34,5 +34,5 @@
             <Setter Property="Background" Value="Chartreuse" />
             <Setter Property="Foreground" Value="DarkGreen" />
         </Style>
-     </Application.Resources>
+    </Application.Resources>
 </Application>
