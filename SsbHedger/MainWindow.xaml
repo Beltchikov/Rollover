@@ -92,6 +92,8 @@
                 <RowDefinition Height="20"></RowDefinition>
                 <RowDefinition Height="20"></RowDefinition>
                 <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
@@ -366,23 +368,63 @@
                            Style="{StaticResource TableHeader}">TODO</TextBlock>
 
             <TextBlock HorizontalAlignment="Center" 
-                           Grid.Row="14" Grid.Column="3"
-                           Style="{StaticResource PutHeader}">TODO</TextBlock>
+                           Grid.Row="14
+                       " Grid.Column="3"
+                           Style="{StaticResource TableHeader}" Margin="0,0,0,2" VerticalAlignment="Bottom">
+                Best Result</TextBlock>
             <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="14" Grid.Column="4"
-                           Style="{StaticResource TableHeader}">Breakeven Range</TextBlock>
+                           Style="{StaticResource TableHeader}">Breakeven From</TextBlock>
             <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="14" Grid.Column="5"
+                           Style="{StaticResource TableHeader}">Breakeven To</TextBlock>
+
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="15
+                       " Grid.Column="2"
+                           Style="{StaticResource TableHeader}" Margin="0,0,0,2" VerticalAlignment="Bottom">
+                Strike 1</TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="15" Grid.Column="3"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" VerticalAlignment="Bottom">
+                TODO</TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="15" Grid.Column="4"
+                           Style="{StaticResource PutHeader}" VerticalAlignment="Bottom">TODO</TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="15" Grid.Column="5"
                            Style="{StaticResource CallHeader}">TODO</TextBlock>
 
             <TextBlock HorizontalAlignment="Center" 
-                           Grid.Row="15" Grid.Column="3"
-                           Style="{StaticResource PutHeader}">TODO</TextBlock>
+                           Grid.Row="16
+                       " Grid.Column="2"
+                           Style="{StaticResource TableHeader}" Margin="0,0,0,2" VerticalAlignment="Bottom">
+                Strike 2</TextBlock>
             <TextBlock HorizontalAlignment="Center" 
-                           Grid.Row="15" Grid.Column="4"
-                           Style="{StaticResource TableHeader}">NHBR</TextBlock>
+                           Grid.Row="16" Grid.Column="3"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" VerticalAlignment="Bottom">
+                TODO</TextBlock>
             <TextBlock HorizontalAlignment="Center" 
-                           Grid.Row="15" Grid.Column="5"
+                           Grid.Row="16" Grid.Column="4"
+                           Style="{StaticResource PutHeader}" VerticalAlignment="Bottom">TODO</TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="16" Grid.Column="5"
+                           Style="{StaticResource CallHeader}">TODO</TextBlock>
+
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="17
+                       " Grid.Column="2"
+                           Style="{StaticResource TableHeader}" Margin="0,0,0,2" VerticalAlignment="Bottom">
+                Strike 3</TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="17" Grid.Column="3"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" VerticalAlignment="Bottom">
+                TODO</TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="17" Grid.Column="4"
+                           Style="{StaticResource PutHeader}" VerticalAlignment="Bottom">TODO</TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="17" Grid.Column="5"
                            Style="{StaticResource CallHeader}">TODO</TextBlock>
 
         </Grid>
