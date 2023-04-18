@@ -29,6 +29,7 @@ namespace SsbHedger.Model
         private double putShortPrice;
         private double callShortStrike;
         private double callShortPrice;
+        private double spyPrice;
         private double bearHedgeStrike;
         private double bearHedgePrice;
         private double bullHedgeStrike;
@@ -207,6 +208,16 @@ namespace SsbHedger.Model
                 OnPropertyChanged(nameof(CallShortPrice));
                 OnPropertyChanged(nameof(PremiumOnePosition));
                 OnPropertyChanged(nameof(Premium));
+            }
+        }
+
+        public double SpyPrice
+        {
+            get => spyPrice;
+            set
+            {
+                SetProperty(ref spyPrice, value);
+                OnPropertyChanged(nameof(SpyPrice));
             }
         }
 

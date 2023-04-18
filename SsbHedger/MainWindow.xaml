@@ -253,7 +253,8 @@
             <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="5" Grid.Column="4"
                            Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
-                       VerticalAlignment="Bottom">TODO</TextBlock>
+                        Text="{Binding Path=SpyPrice, FallbackValue=0}"
+                       VerticalAlignment="Bottom"></TextBlock>
 
             <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="7"

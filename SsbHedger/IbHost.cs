@@ -17,6 +17,7 @@ namespace SsbHedger
         private readonly int TIMEOUT = 2000;
         private readonly int REQ_MKT_DATA_BULL_HEDGE_CALL_ID = 3001;
         private readonly int REQ_MKT_DATA_BEAR_HEDGE_CALL_ID = 3002;
+        private readonly int REQ_MKT_DATA_SPY = 3003;
 
         IConfiguration _configuration;
         IIBClient _ibClient;
@@ -299,6 +300,14 @@ namespace SsbHedger
             SetStrikes(_positionMessageBuffer);
             _positionMessageBuffer.Reset();
 
+            _ibClient.ClientSocket.reqMktData(
+                REQ_MKT_DATA_SPY,
+                _contractUnderlying,
+                "",
+                false,
+                false,
+                new List<TagValue>());
+
             ViewModel.Messages.Add(new Message(0, $"PositionEnd"));
         }
 
@@ -380,6 +389,13 @@ namespace SsbHedger
                 if (tickPriceMessage.RequestId == REQ_MKT_DATA_BULL_HEDGE_CALL_ID)
                 {
                     ViewModel.BullHedgePrice = tickPriceMessage.Price;
+                }
+            }
+            if (tickPriceMessage.Field == 1)  // bid. Use 2 for ask
+            {
+                if (tickPriceMessage.RequestId == REQ_MKT_DATA_SPY)
+                {
+                    ViewModel.SpyPrice = tickPriceMessage.Price;
                 }
             }
         }
