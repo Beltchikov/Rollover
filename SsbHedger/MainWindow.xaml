@@ -177,7 +177,7 @@
             <StackPanel Name="panelPremiumOf3Bear" Orientation="Vertical" 
                         Grid.Row="3" Grid.Column="1">
                 <TextBlock HorizontalAlignment="Center" 
-                           Style="{StaticResource TableHeader}">premium of 3</TextBlock>
+                           Style="{StaticResource TableHeader}">premium</TextBlock>
                 <TextBlock HorizontalAlignment="Center" 
                            Style="{StaticResource NormalTextBlock}"
                            Text="{Binding Path=PremiumOf3Bear, FallbackValue=0}">
@@ -215,7 +215,7 @@
                 </TextBlock>
                 <TextBlock HorizontalAlignment="Center" 
                            Style="{StaticResource NormalTextBlock}"
-                           Text="TODO">
+                           Text="0,05">
                 </TextBlock>
             </StackPanel>
             <StackPanel Name="panelLongPut" Orientation="Vertical" 
@@ -228,7 +228,7 @@
                 </TextBlock>
                 <TextBlock HorizontalAlignment="Center" 
                            Style="{StaticResource NormalTextBlock}"
-                           Text="TODO">
+                           Text="0,05">
                 </TextBlock>
             </StackPanel>
             <StackPanel Name="panelShortPut" Orientation="Vertical" 
@@ -256,7 +256,7 @@
             <StackPanel Name="panelPremiumOf3Bull" Orientation="Vertical" 
                         Grid.Row="3" Grid.Column="9">
                 <TextBlock HorizontalAlignment="Center" 
-                           Style="{StaticResource TableHeader}">premium of 3</TextBlock>
+                           Style="{StaticResource TableHeader}">premium</TextBlock>
                 <TextBlock HorizontalAlignment="Center" 
                            Style="{StaticResource NormalTextBlock}"
                            Text="{Binding Path=PremiumOf3Bull, FallbackValue=0}">
