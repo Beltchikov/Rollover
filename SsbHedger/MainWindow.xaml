@@ -192,10 +192,10 @@
                            Text="{Binding Path=SpreadWidthBear, FallbackValue=0}">
                 </TextBlock>
             </StackPanel>
-            <StackPanel Name="panelBearHedgePut" Orientation="Vertical" 
+            <StackPanel Name="panelShortCall" Orientation="Vertical" 
                         Grid.Row="3" Grid.Column="3">
                 <TextBlock HorizontalAlignment="Center" 
-                           Style="{StaticResource TableHeader}">bear hedge (put)</TextBlock>
+                           Style="{StaticResource TableHeader}">short call</TextBlock>
                 <TextBlock HorizontalAlignment="Center" 
                            Style="{StaticResource NormalTextBlock}"
                            Text="{Binding Path=BearHedgeStrike, FallbackValue=0}">
@@ -205,10 +205,36 @@
                            Text="{Binding Path=BearHedgePrice, FallbackValue=0}">
                 </TextBlock>
             </StackPanel>
-            <StackPanel Name="panelBullHedgeCall" Orientation="Vertical" 
+            <StackPanel Name="panelLongCall" Orientation="Vertical" 
+                        Grid.Row="3" Grid.Column="4">
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource TableHeader}">long call</TextBlock>
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource NormalTextBlock}"
+                           Text="TODO">
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource NormalTextBlock}"
+                           Text="TODO">
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Name="panelLongPut" Orientation="Vertical" 
+                        Grid.Row="3" Grid.Column="6">
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource TableHeader}">long put</TextBlock>
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource NormalTextBlock}"
+                           Text="TODO">
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center" 
+                           Style="{StaticResource NormalTextBlock}"
+                           Text="TODO">
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Name="panelShortPut" Orientation="Vertical" 
                         Grid.Row="3" Grid.Column="7">
                 <TextBlock HorizontalAlignment="Center" 
-                           Style="{StaticResource TableHeader}">bull hedge (call)</TextBlock>
+                           Style="{StaticResource TableHeader}">short put</TextBlock>
                 <TextBlock HorizontalAlignment="Center" 
                            Style="{StaticResource NormalTextBlock}"
                            Text="{Binding Path=BullHedgeStrike, FallbackValue=0}">
