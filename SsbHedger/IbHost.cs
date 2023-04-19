@@ -15,8 +15,8 @@ namespace SsbHedger
     public class IbHost : IIbHost
     {
         private readonly int TIMEOUT = 2000;
-        private readonly int REQ_MKT_DATA_BULL_HEDGE_CALL_ID = 3001;
-        private readonly int REQ_MKT_DATA_BEAR_HEDGE_CALL_ID = 3002;
+        private readonly int REQ_MKT_DATA_SHORT_PUT_ID = 3001;
+        private readonly int REQ_MKT_DATA_SHORT_CALL_ID = 3002;
         private readonly int REQ_MKT_DATA_SPY = 3003;
 
         IConfiguration _configuration;
@@ -327,9 +327,9 @@ namespace SsbHedger
                 $"{contractDetailsMessage.ContractDetails.Contract.Strike} " +
                 $"{contractDetailsMessage.ContractDetails.Contract.LocalSymbol}"));
 
-            int reqMktDataId = contractDetailsMessage.ContractDetails.Contract.Right == "P"
-                ? REQ_MKT_DATA_BEAR_HEDGE_CALL_ID
-                : REQ_MKT_DATA_BULL_HEDGE_CALL_ID;
+            int reqMktDataId = contractDetailsMessage.ContractDetails.Contract.Right == "C"
+                ? REQ_MKT_DATA_SHORT_CALL_ID
+                : REQ_MKT_DATA_SHORT_PUT_ID;
             _ibClient.ClientSocket.reqMktData(
                 reqMktDataId,
                 contractDetailsMessage.ContractDetails.Contract,
@@ -382,11 +382,11 @@ namespace SsbHedger
 
             if (tickPriceMessage.Field == 2)  // ask. Use 1 for bid
             {
-                if (tickPriceMessage.RequestId == REQ_MKT_DATA_BEAR_HEDGE_CALL_ID)
+                if (tickPriceMessage.RequestId == REQ_MKT_DATA_SHORT_CALL_ID)
                 {
                     ViewModel.BearHedgePrice = tickPriceMessage.Price;
                 }
-                if (tickPriceMessage.RequestId == REQ_MKT_DATA_BULL_HEDGE_CALL_ID)
+                if (tickPriceMessage.RequestId == REQ_MKT_DATA_SHORT_PUT_ID)
                 {
                     ViewModel.BullHedgePrice = tickPriceMessage.Price;
                 }
@@ -408,7 +408,7 @@ namespace SsbHedger
                 SecType = contract.SecType,
                 LastTradeDateOrContractMonth = contract.LastTradeDateOrContractMonth,
                 Strike = newStrike,
-                Right = contract.Right,
+                Right = contract.Right == "C" ? "P" : "C",
                 Multiplier = contract.Multiplier,
                 Exchange = "SMART",
                 Currency = contract.Currency
