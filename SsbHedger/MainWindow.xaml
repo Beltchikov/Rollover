@@ -102,6 +102,10 @@
                 <RowDefinition Height="20"></RowDefinition>
                 <RowDefinition Height="20"></RowDefinition>
                 <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
@@ -547,6 +551,37 @@
             <CheckBox Grid.Row="24" Grid.Column="8" HorizontalAlignment="Center" />
             <CheckBox Grid.Row="24" Grid.Column="9" HorizontalAlignment="Center" />
             <CheckBox Grid.Row="24" Grid.Column="10" HorizontalAlignment="Center" />
+
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="25"
+                           Style="{StaticResource TableHeader}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom">Right</TextBlock>
+            <!--todo-->
+
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="26"
+                           Style="{StaticResource TableHeader}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom">Strike</TextBlock>
+            <!--todo-->
+
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="27"
+                           Style="{StaticResource TableHeader}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom">Price</TextBlock>
+            <!--todo-->
+
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="28"
+                           Style="{StaticResource TableHeader}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom">Qty</TextBlock>
+            <!--todo-->
+
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="29"
+                           Style="{StaticResource TableHeader}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom">Credit</TextBlock>
+            <!--todo-->
+
 
         </Grid>
 
