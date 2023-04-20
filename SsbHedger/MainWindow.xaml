@@ -94,6 +94,14 @@
                 <RowDefinition Height="20"></RowDefinition>
                 <RowDefinition Height="20"></RowDefinition>
                 <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
@@ -453,6 +461,150 @@
             <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="17" Grid.Column="5"
                            Style="{StaticResource CallHeader}">TODO</TextBlock>
+
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="20"
+                           Style="{StaticResource TableHeader}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom">Realized</TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="20" Grid.Column="1"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="TODO"></TextBlock>
+
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="22"
+                           Style="{StaticResource TableHeader}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom">Nr</TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="22" Grid.Column="1"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="1"></TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="22" Grid.Column="2"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="2"></TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="22" Grid.Column="3"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="3"></TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="22" Grid.Column="4"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="4"></TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="22" Grid.Column="5"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="5"></TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="22" Grid.Column="6"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="6"></TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="22" Grid.Column="7"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="7"></TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="22" Grid.Column="8"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="8"></TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="22" Grid.Column="9"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="9"></TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="22" Grid.Column="10"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="10"></TextBlock>
+
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="23"
+                           Style="{StaticResource TableHeader}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom">Strategy</TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="23" Grid.Column="1"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="1"></TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="23" Grid.Column="2"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="2"></TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="23" Grid.Column="3"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="3"></TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="23" Grid.Column="4"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="4"></TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="23" Grid.Column="5"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="5"></TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="23" Grid.Column="6"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="6"></TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="23" Grid.Column="7"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="7"></TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="23" Grid.Column="8"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="8"></TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="23" Grid.Column="9"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="9"></TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="23" Grid.Column="10"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="10"></TextBlock>
+
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="24"
+                           Style="{StaticResource TableHeader}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom">Active</TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="24" Grid.Column="1"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="1"></TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="24" Grid.Column="2"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="2"></TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="24" Grid.Column="3"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="3"></TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="24" Grid.Column="4"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="4"></TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="24" Grid.Column="5"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="5"></TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="24" Grid.Column="6"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="6"></TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="24" Grid.Column="7"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="7"></TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="24" Grid.Column="8"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="8"></TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="24" Grid.Column="9"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="9"></TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="24" Grid.Column="10"
+                           Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
+                       VerticalAlignment="Bottom" Text="10"></TextBlock>
 
         </Grid>
 
