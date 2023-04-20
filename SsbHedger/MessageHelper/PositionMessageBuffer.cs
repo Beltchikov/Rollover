@@ -9,8 +9,10 @@ namespace SsbHedger.MessageHelper
 {
     public class PositionMessageBuffer : IPositionMessageBuffer
     {
-        private List<PositionMessage> _messages = new List<PositionMessage>();    
-        
+        private List<PositionMessage> _messages = new List<PositionMessage>();
+
+        public List<PositionMessage> Messages { get => _messages; }
+
         public void AddMessage(PositionMessage positionMessage)
         {
             _messages.Add(positionMessage);

@@ -559,16 +559,16 @@
                            Grid.Row="25"
                            Style="{StaticResource TableHeader}" Margin="0,0,0,2" 
                        VerticalAlignment="Bottom">Right</TextBlock>
-            <TextBox Grid.Row="25" Grid.Column="1" TextAlignment="Center" Text="put" />
-            <TextBox Grid.Row="25" Grid.Column="2" TextAlignment="Center" Text="call" />
-            <TextBox Grid.Row="25" Grid.Column="3" TextAlignment="Center" Text="" />
-            <TextBox Grid.Row="25" Grid.Column="4" TextAlignment="Center" Text="" />
-            <TextBox Grid.Row="25" Grid.Column="5" TextAlignment="Center" Text="" />
-            <TextBox Grid.Row="25" Grid.Column="6" TextAlignment="Center" Text="" />
-            <TextBox Grid.Row="25" Grid.Column="7" TextAlignment="Center" Text="" />
-            <TextBox Grid.Row="25" Grid.Column="8" TextAlignment="Center" Text="" />
-            <TextBox Grid.Row="25" Grid.Column="9" TextAlignment="Center" Text="" />
-            <TextBox Grid.Row="25" Grid.Column="10" TextAlignment="Center" Text="" />
+            <TextBox Grid.Row="25" Grid.Column="1" TextAlignment="Center" Text="{Binding Right0}" />
+            <TextBox Grid.Row="25" Grid.Column="2" TextAlignment="Center" Text="{Binding Right1}" />
+            <TextBox Grid.Row="25" Grid.Column="3" TextAlignment="Center" Text="{Binding Right2}" />
+            <TextBox Grid.Row="25" Grid.Column="4" TextAlignment="Center" Text="{Binding Right3}" />
+            <TextBox Grid.Row="25" Grid.Column="5" TextAlignment="Center" Text="{Binding Right4}" />
+            <TextBox Grid.Row="25" Grid.Column="6" TextAlignment="Center" Text="{Binding Right5}" />
+            <TextBox Grid.Row="25" Grid.Column="7" TextAlignment="Center" Text="{Binding Right6}" />
+            <TextBox Grid.Row="25" Grid.Column="8" TextAlignment="Center" Text="{Binding Right7}" />
+            <TextBox Grid.Row="25" Grid.Column="9" TextAlignment="Center" Text="{Binding Right8}" />
+            <TextBox Grid.Row="25" Grid.Column="10" TextAlignment="Center" Text="{Binding Right9}" />
 
             <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="26"

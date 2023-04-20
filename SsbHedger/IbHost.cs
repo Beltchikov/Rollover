@@ -253,8 +253,7 @@ namespace SsbHedger
                 $"{positionMessage.Position}"));
             ViewModel.PositionsInfoMessage = "";
 
-            // Old code
-            
+            // old code
             if (positionMessage.Position != 0 && positionMessage.Contract != null)
             {
                 // short call
@@ -280,8 +279,7 @@ namespace SsbHedger
                     _ibClient.ClientSocket.reqContractDetails(_reqContractDetails, contractForHedge);
                 }
             }
-
-            // End old code
+            // end old code
 
             if (positionMessage.Position != 0 && positionMessage.Contract != null)
             {
@@ -296,6 +294,7 @@ namespace SsbHedger
                 throw new ApplicationException("Unexpected! ViewModel is null");
             }
 
+            SetRight(_positionMessageBuffer);
             SetSize(_positionMessageBuffer);
             SetStrikes(_positionMessageBuffer);
             _positionMessageBuffer.Reset();
@@ -426,6 +425,35 @@ namespace SsbHedger
             if (ViewModel.Size != -positionMessage.Position)
             {
                 ViewModel.Size = (int)-positionMessage.Position;
+            }
+        }
+
+        private void SetRight(IPositionMessageBuffer positionMessageBuffer)
+        {
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+
+            if (positionMessageBuffer.Messages.Count > 0 && ViewModel.Right0 != positionMessageBuffer.Messages[0]?.Contract?.Right)
+            {
+                ViewModel.Right0 = positionMessageBuffer.Messages[0]?.Contract?.Right;
+            }
+            if (positionMessageBuffer.Messages.Count > 1 && ViewModel.Right1 != positionMessageBuffer.Messages[1]?.Contract?.Right)
+            {
+                ViewModel.Right1 = positionMessageBuffer.Messages[1]?.Contract?.Right;
+            }
+            if (positionMessageBuffer.Messages.Count > 2 && ViewModel.Right2 != positionMessageBuffer.Messages[2]?.Contract?.Right)
+            {
+                ViewModel.Right2 = positionMessageBuffer.Messages[2]?.Contract?.Right;
+            }
+            if (positionMessageBuffer.Messages.Count > 3 && ViewModel.Right3 != positionMessageBuffer.Messages[3]?.Contract?.Right)
+            {
+                ViewModel.Right3 = positionMessageBuffer.Messages[3]?.Contract?.Right;
+            }
+            if (positionMessageBuffer.Messages.Count > 4 && ViewModel.Right4 != positionMessageBuffer.Messages[4]?.Contract?.Right)
+            {
+                ViewModel.Right4 = positionMessageBuffer.Messages[4]?.Contract?.Right;
             }
         }
 

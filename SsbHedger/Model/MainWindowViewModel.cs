@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows.Ink;
 using System.Windows.Input;
+using System.Windows.Media.Media3D;
 
 namespace SsbHedger.Model
 {
@@ -41,6 +42,16 @@ namespace SsbHedger.Model
         private double spreadWidthBull;
         private double premiumOf3Bull;
         private double maxLossBull;
+        private string right0;
+        private string right1;
+        private string right2;
+        private string right3;
+        private string right4;
+        private string right5;
+        private string right6;
+        private string right7;
+        private string right8;
+        private string right9;
 
 
         public MainWindowViewModel(
@@ -346,6 +357,106 @@ namespace SsbHedger.Model
             {
                 SetProperty(ref maxLossBull, value);
                 OnPropertyChanged(nameof(MaxLossBull));
+            }
+        }
+
+        public string Right0
+        {
+            get => right0;
+            set
+            {
+                SetProperty(ref right0, value);
+                OnPropertyChanged(nameof(Right0));
+            }
+        }
+
+        public string Right1
+        {
+            get => right1;
+            set
+            {
+                SetProperty(ref right1, value);
+                OnPropertyChanged(nameof(Right1));
+            }
+        }
+
+        public string Right2
+        {
+            get => right2;
+            set
+            {
+                SetProperty(ref right2, value);
+                OnPropertyChanged(nameof(Right2));
+            }
+        }
+
+        public string Right3
+        {
+            get => right3;
+            set
+            {
+                SetProperty(ref right3, value);
+                OnPropertyChanged(nameof(Right3));
+            }
+        }
+
+        public string Right4
+        {
+            get => right4;
+            set
+            {
+                SetProperty(ref right4, value);
+                OnPropertyChanged(nameof(Right4));
+            }
+        }
+
+        public string Right5
+        {
+            get => right5;
+            set
+            {
+                SetProperty(ref right5, value);
+                OnPropertyChanged(nameof(Right5));
+            }
+        }
+
+        public string Right6
+        {
+            get => right6;
+            set
+            {
+                SetProperty(ref right6, value);
+                OnPropertyChanged(nameof(Right6));
+            }
+        }
+
+        public string Right7
+        {
+            get => right7;
+            set
+            {
+                SetProperty(ref right7, value);
+                OnPropertyChanged(nameof(Right7));
+            }
+        }
+
+        public string Right8
+        {
+            get => right8;
+            set
+            {
+                SetProperty(ref right8, value);
+                OnPropertyChanged(nameof(Right8));
+            }
+        }
+
+        public string Right9
+        {
+            get => right9;
+            set
+            {
+                SetProperty(ref right9, value);
+                OnPropertyChanged(nameof(Right9));
             }
         }
 
