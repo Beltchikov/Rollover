@@ -109,6 +109,9 @@
                 <RowDefinition Height="20"></RowDefinition>
                 <RowDefinition Height="20"></RowDefinition>
                 <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
@@ -737,6 +740,48 @@
                            Style="{StaticResource NormalTextBlock}" Margin="0,0,0,2" 
                        VerticalAlignment="Bottom" Text=""></TextBlock>
 
+
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="32"
+                           Style="{StaticResource TableHeader}"  
+                       VerticalAlignment="Bottom">Alerts</TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="33"
+                           Style="{StaticResource TableHeader}"  
+                       VerticalAlignment="Bottom">Alert delta &lt;</TextBlock>
+            <TextBox Grid.Row="33" Grid.Column="1" TextAlignment="Center" Text="16" />
+            <CheckBox Grid.Row="33" Grid.Column="2" HorizontalAlignment="Center" 
+                      VerticalAlignment="Center"
+                      IsChecked="True" />
+            <Button Grid.Row="33" Grid.Column="3" Content="Deactivate" />
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="34"
+                           Style="{StaticResource TableHeader}"  
+                       VerticalAlignment="Bottom">Current Delta for</TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="34" Grid.Column="1"
+                           Style="{StaticResource NormalTextBlock}"  
+                       VerticalAlignment="Bottom">TODO</TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="34" Grid.Column="2"
+                           Style="{StaticResource NormalTextBlock}"  
+                       VerticalAlignment="Bottom">strike:</TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="34" Grid.Column="3"
+                           Style="{StaticResource NormalTextBlock}"  
+                       VerticalAlignment="Bottom">TODO</TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="34" Grid.Column="5"
+                           Style="{StaticResource NormalTextBlock}"  
+                       VerticalAlignment="Bottom">TODO</TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="34" Grid.Column="6"
+                           Style="{StaticResource NormalTextBlock}"  
+                       VerticalAlignment="Bottom">strike:</TextBlock>
+            <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="34" Grid.Column="7"
+                           Style="{StaticResource NormalTextBlock}"  
+                       VerticalAlignment="Bottom">TODO</TextBlock>
 
         </Grid>
 
