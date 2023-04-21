@@ -752,16 +752,15 @@
             <TextBox Grid.Row="33" Grid.Column="1" TextAlignment="Center" Text="16" />
             <CheckBox Grid.Row="33" Grid.Column="2" HorizontalAlignment="Center" 
                       VerticalAlignment="Center"
-                      IsChecked="True" />
+                      Command="{Binding DeltaAlertActivateCommand}"
+                      CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}"
+                      IsChecked="False" />
             <Button Grid.Row="33" Grid.Column="3" Content="Deactivate" />
             <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="34"
                            Style="{StaticResource TableHeader}"  
                        VerticalAlignment="Bottom">Current Delta for</TextBlock>
-            <TextBlock HorizontalAlignment="Center" 
-                           Grid.Row="34" Grid.Column="1"
-                           Style="{StaticResource NormalTextBlock}"  
-                       VerticalAlignment="Bottom">TODO</TextBlock>
+            <TextBox Grid.Row="34" Grid.Column="1" TextAlignment="Center" Text="{Binding BearNextInnerStrike}" />
             <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="34" Grid.Column="2"
                            Style="{StaticResource NormalTextBlock}"  
@@ -770,10 +769,7 @@
                            Grid.Row="34" Grid.Column="3"
                            Style="{StaticResource NormalTextBlock}"  
                        VerticalAlignment="Bottom">TODO</TextBlock>
-            <TextBlock HorizontalAlignment="Center" 
-                           Grid.Row="34" Grid.Column="5"
-                           Style="{StaticResource NormalTextBlock}"  
-                       VerticalAlignment="Bottom">TODO</TextBlock>
+            <TextBox Grid.Row="34" Grid.Column="5" TextAlignment="Center" Text="{Binding BullNextInnerStrike}" />
             <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="34" Grid.Column="6"
                            Style="{StaticResource NormalTextBlock}"  

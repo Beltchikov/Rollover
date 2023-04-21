@@ -18,7 +18,8 @@ namespace SsbHedger
         private readonly int REQ_MKT_DATA_SHORT_PUT_ID = 3001;
         private readonly int REQ_MKT_DATA_SHORT_CALL_ID = 3002;
         private readonly int REQ_MKT_DATA_SPY = 3003;
-
+        private readonly int BEAR_NEXT_INNER_OPTION_REQ_ID = 4001;
+        private readonly int BULL_NEXT_INNER_OPTION_REQ_ID = 4002;
         IConfiguration _configuration;
         IIBClient _ibClient;
 
@@ -54,6 +55,7 @@ namespace SsbHedger
             _ibClient.TickSize += _ibClient_TickSize;
             _ibClient.TickPrice += _ibClient_TickPrice;
             _ibClient.TickString += _ibClient_TickString;
+            _ibClient.TickOptionCommunication += _ibClient_TickOptionCommunication;
 
             _contractDict = new Dictionary<string, Contract>
             {
@@ -396,6 +398,23 @@ namespace SsbHedger
                 {
                     ViewModel.SpyPrice = tickPriceMessage.Price;
                 }
+            }
+        }
+
+        private void _ibClient_TickOptionCommunication(TickOptionMessage message)
+        {
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+
+            if(message.RequestId == BEAR_NEXT_INNER_OPTION_REQ_ID)
+            {
+                ViewModel.BearNextInnerDelta = message.Delta;
+            }
+            if (message.RequestId == BULL_NEXT_INNER_OPTION_REQ_ID)
+            {
+                ViewModel.BullNextInnerDelta = message.Delta;
             }
         }
 

@@ -52,14 +52,19 @@ namespace SsbHedger.Model
         private string right7;
         private string right8;
         private string right9;
-
+        private double bearNextInnerStrike;
+        private double bullNextInnerStrike;
+        private double bearNextInnerDelta;
+        private double bullNextInnerDelta;
 
         public MainWindowViewModel(
             IInitializeCommandHandler initializeCommandHandler,
-            IUpdateConfigurationCommandHandler updateConfigurationCommandHandler)
+            IUpdateConfigurationCommandHandler updateConfigurationCommandHandler,
+            IDeltaAlertActivateCommandHandler deltaAlertActivateCommandHandler)
         {
             InitializeCommand = new RelayCommand(() => initializeCommandHandler.HandleAsync(this));
             UpdateConfigurationCommand = new RelayCommand<object[]>((p) => updateConfigurationCommandHandler.Handle(this, p));
+            DeltaAlertActivateCommand = new RelayCommand<bool>((p) => deltaAlertActivateCommandHandler.HandleAsync(this, p));
 
             messages = new ObservableCollection<Message>();
             bars = new ObservableCollection<Bar>();
@@ -71,6 +76,10 @@ namespace SsbHedger.Model
             callShortPrice = 2;
 
             positionsInfoMessage = "No positions!";
+
+            // test remove later
+            bearNextInnerStrike = 400;
+            bullNextInnerStrike = 410;
         }
 
         public string ConnectionMessage
@@ -460,6 +469,47 @@ namespace SsbHedger.Model
             }
         }
 
+        public double BearNextInnerStrike
+        {
+            get => bearNextInnerStrike;
+            set
+            {
+                SetProperty(ref bearNextInnerStrike, value);
+                OnPropertyChanged(nameof(BearNextInnerStrike));
+            }
+        }
+
+        public double BullNextInnerStrike
+        {
+            get => bullNextInnerStrike;
+            set
+            {
+                SetProperty(ref bullNextInnerStrike, value);
+                OnPropertyChanged(nameof(BullNextInnerStrike));
+            }
+        }
+
+        public double BearNextInnerDelta
+        {
+            get => bearNextInnerDelta;
+            set
+            {
+                SetProperty(ref bearNextInnerDelta, value);
+                OnPropertyChanged(nameof(BearNextInnerDelta));
+            }
+        }
+
+        public double BullNextInnerDelta
+        {
+            get => bullNextInnerDelta;
+            set
+            {
+                SetProperty(ref bullNextInnerDelta, value);
+                OnPropertyChanged(nameof(BullNextInnerDelta));
+            }
+        }
+
+
         public ObservableCollection<Bar> Bars
         {
             get => bars;
@@ -468,5 +518,6 @@ namespace SsbHedger.Model
 
         public ICommand InitializeCommand { get; }
         public ICommand UpdateConfigurationCommand { get; }
+        public ICommand DeltaAlertActivateCommand { get; }
     }
 }
