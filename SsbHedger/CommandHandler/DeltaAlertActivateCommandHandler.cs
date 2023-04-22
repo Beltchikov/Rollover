@@ -16,8 +16,8 @@ namespace SsbHedger.CommandHandler
         public void Handle(MainWindowViewModel mainWindowViewModel, object[] parameters)
         {
             bool activate = (bool)parameters[0];
-            string bearStike = (string)parameters[1];
-            string boolStike = (string)parameters[2];
+            double bearStike = Convert.ToDouble(parameters[1]);
+            double boolStike = Convert.ToDouble(parameters[2]);
             
             mainWindowViewModel.DeltaAlertActive = activate;
 

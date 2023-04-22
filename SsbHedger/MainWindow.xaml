@@ -776,7 +776,7 @@
             <TextBlock x:Name="txtBearNextInnerStrike"  HorizontalAlignment="Center" 
                            Grid.Row="34" Grid.Column="3"
                            Style="{StaticResource NormalTextBlock}"  
-                       VerticalAlignment="Top" Margin="0,4,0,0">TODO1</TextBlock>
+                       VerticalAlignment="Top" Margin="0,4,0,0">300</TextBlock>
             <TextBox Grid.Row="34" Grid.Column="5" TextAlignment="Center" Text="{Binding BullNextInnerStrike}" />
             <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="34" Grid.Column="6"
@@ -785,7 +785,7 @@
             <TextBlock x:Name="txtBullNextInnerStrike" HorizontalAlignment="Center" 
                            Grid.Row="34" Grid.Column="7"
                            Style="{StaticResource NormalTextBlock}"  
-                       VerticalAlignment="Bottom">TODO2</TextBlock>
+                       VerticalAlignment="Bottom">400</TextBlock>
 
         </Grid>
 
