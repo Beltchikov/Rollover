@@ -16,15 +16,24 @@ namespace SsbHedger.CommandHandler
         public void Handle(MainWindowViewModel mainWindowViewModel, object[] parameters)
         {
             bool activate = (bool)parameters[0];
-            double bearStike = Convert.ToDouble(parameters[1]);
-            double boolStike = Convert.ToDouble(parameters[2]);
+            double putStike = Convert.ToDouble(parameters[1]);
+            double callStike = Convert.ToDouble(parameters[2]);
             
             mainWindowViewModel.DeltaAlertActive = activate;
 
-            //if (activate) 
-            //{ 
-            //   _ibHost.ReqMktData(_ibHost.BEAR_NEXT_INNER_OPTION_REQ_ID, right, strike)
-            //}
+            if (activate)
+            {
+                _ibHost.ReqMktDataNextPutOption(putStike);
+                _ibHost.ReqMktDataNextCallOption(callStike);
+            }
+            else
+            {
+                // TODO
+                
+                // https://interactivebrokers.github.io/tws-api/md_cancel.html
+                //_ibHost.CancelMktDataNextPutOption(putStike);
+                //_ibHost.CancelMktDataNextCalllOption(putStike);
+            }
         }
     }
 }

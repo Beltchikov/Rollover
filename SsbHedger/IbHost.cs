@@ -6,6 +6,7 @@ using SsbHedger.Model;
 using SsbHedger.SsbConfiguration;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,8 +19,8 @@ namespace SsbHedger
         private readonly int REQ_MKT_DATA_SHORT_PUT_ID = 3001;
         private readonly int REQ_MKT_DATA_SHORT_CALL_ID = 3002;
         private readonly int REQ_MKT_DATA_SPY = 3003;
-        public readonly int BEAR_NEXT_INNER_OPTION_REQ_ID = 4001;
-        public readonly int BULL_NEXT_INNER_OPTION_REQ_ID = 4002;
+        private readonly int NEXT_PUT_OPTION_REQ_ID = 4001;
+        private readonly int NEXT_CALL_OPTION_REQ_ID = 4002;
         IConfiguration _configuration;
         IIBClient _ibClient;
 
@@ -33,6 +34,8 @@ namespace SsbHedger
         int _useRTH = 0;
         bool _keepUpToDate = false;
         private IPositionMessageBuffer _positionMessageBuffer;
+        private Contract? _currentPutContract;
+        private Contract? _currentCallContract;
 
         public IbHost(IConfiguration configuration, IPositionMessageBuffer positionMessageBuffer)
         {
@@ -112,6 +115,41 @@ namespace SsbHedger
         public void ReqPositions()
         {
             _ibClient.ClientSocket.reqPositions();
+        }
+
+        public void ReqMktDataNextPutOption(double putStike)
+        {
+            if(_currentPutContract == null)
+            {
+                return;
+            }
+
+            var contract = CopyContractWithOtherStrike(_currentPutContract, putStike);
+            _ibClient.ClientSocket.reqMktData(
+               NEXT_PUT_OPTION_REQ_ID,
+               contract,
+               "",
+               false,
+               false,
+               new List<TagValue>());
+        }
+
+        public void ReqMktDataNextCallOption(double callStike)
+        {
+            if(_currentCallContract == null)
+            {
+                return;
+            }
+
+            var contract = CopyContractWithOtherStrike(_currentCallContract, callStike);
+
+            _ibClient.ClientSocket.reqMktData(
+               NEXT_CALL_OPTION_REQ_ID,
+               contract,
+               "",
+               false,
+               false,
+               new List<TagValue>());
         }
 
         public void ApplyDefaultHistoricalData()
@@ -264,8 +302,11 @@ namespace SsbHedger
                     SetSize(positionMessage);
                     SetCallStrike(positionMessage);
                     SetCallPrice(positionMessage);
-                    
-                    var contractForHedge = CopyContractWithOtherStrike(positionMessage.Contract, ViewModel.BullHedgeStrike);
+
+                    _currentPutContract = positionMessage.Contract.Right == "P" ? positionMessage.Contract : null;
+                    _currentCallContract = positionMessage.Contract.Right == "C" ? positionMessage.Contract : null;
+
+                    var contractForHedge = CopyContractWithOtherStrikeAndRight(positionMessage.Contract, ViewModel.BullHedgeStrike);
                     _reqContractDetails++;
                     _ibClient.ClientSocket.reqContractDetails(_reqContractDetails, contractForHedge);
                 }
@@ -276,7 +317,7 @@ namespace SsbHedger
                     SetPutStrike(positionMessage);
                     SetPutPrice(positionMessage);
                     
-                    var contractForHedge = CopyContractWithOtherStrike(positionMessage.Contract, ViewModel.BearHedgeStrike);
+                    var contractForHedge = CopyContractWithOtherStrikeAndRight(positionMessage.Contract, ViewModel.BearHedgeStrike);
                     _reqContractDetails++;
                     _ibClient.ClientSocket.reqContractDetails(_reqContractDetails, contractForHedge);
                 }
@@ -408,14 +449,29 @@ namespace SsbHedger
                 throw new ApplicationException("Unexpected! ViewModel is null");
             }
 
-            if(message.RequestId == BEAR_NEXT_INNER_OPTION_REQ_ID)
+            if(message.RequestId == NEXT_PUT_OPTION_REQ_ID)
             {
                 ViewModel.BearNextInnerDelta = message.Delta;
             }
-            if (message.RequestId == BULL_NEXT_INNER_OPTION_REQ_ID)
+            if (message.RequestId == NEXT_CALL_OPTION_REQ_ID)
             {
                 ViewModel.BullNextInnerDelta = message.Delta;
             }
+        }
+
+        private Contract CopyContractWithOtherStrikeAndRight(Contract contract, double newStrike)
+        {
+            return new Contract
+            {
+                Symbol = contract.Symbol,
+                SecType = contract.SecType,
+                LastTradeDateOrContractMonth = contract.LastTradeDateOrContractMonth,
+                Strike = newStrike,
+                Right = contract.Right == "C" ? "P" : "C",
+                Multiplier = contract.Multiplier,
+                Exchange = "SMART",
+                Currency = contract.Currency
+            };
         }
 
         private Contract CopyContractWithOtherStrike(Contract contract, double newStrike)
@@ -426,7 +482,7 @@ namespace SsbHedger
                 SecType = contract.SecType,
                 LastTradeDateOrContractMonth = contract.LastTradeDateOrContractMonth,
                 Strike = newStrike,
-                Right = contract.Right == "C" ? "P" : "C",
+                Right = contract.Right,
                 Multiplier = contract.Multiplier,
                 Exchange = "SMART",
                 Currency = contract.Currency

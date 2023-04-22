@@ -11,5 +11,7 @@ namespace SsbHedger
         public void ReqHistoricalData();
         void ApplyDefaultHistoricalData();
         void ReqPositions();
+        void ReqMktDataNextPutOption(double putStike);
+        void ReqMktDataNextCallOption(double callStike);
     }
 }
