@@ -13,8 +13,12 @@ namespace SsbHedger.CommandHandler
             _ibHost = ibHost;
         }
 
-        public void Handle(MainWindowViewModel mainWindowViewModel, bool activate)
+        public void Handle(MainWindowViewModel mainWindowViewModel, object[] parameters)
         {
+            bool activate = (bool)parameters[0];
+            string bearStike = (string)parameters[1];
+            string boolStike = (string)parameters[2];
+            
             mainWindowViewModel.DeltaAlertActive = activate;
 
             //if (activate) 

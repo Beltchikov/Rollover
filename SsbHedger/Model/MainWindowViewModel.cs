@@ -65,7 +65,7 @@ namespace SsbHedger.Model
         {
             InitializeCommand = new RelayCommand(() => initializeCommandHandler.HandleAsync(this));
             UpdateConfigurationCommand = new RelayCommand<object[]>((p) => updateConfigurationCommandHandler.Handle(this, p));
-            DeltaAlertActivateCommand = new RelayCommand<bool>((p) => deltaAlertActivateCommandHandler.Handle(this, p));
+            DeltaAlertActivateCommand = new RelayCommand<object[]>((p) => deltaAlertActivateCommandHandler.Handle(this, p));
 
             messages = new ObservableCollection<Message>();
             bars = new ObservableCollection<Bar>();

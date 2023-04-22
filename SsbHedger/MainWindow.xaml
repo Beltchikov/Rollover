@@ -20,6 +20,7 @@
     </b:Interaction.Triggers>
     <Window.Resources>
         <converters:TimeToDateTimeConverter x:Key="TimeToDateTimeConverter"/>
+        <converters:DeltaAlertActivateConverter x:Key="DeltaAlertActivateConverter"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -750,11 +751,18 @@
                            Style="{StaticResource TableHeader}"  
                        VerticalAlignment="Bottom">Alert delta &lt;</TextBlock>
             <TextBox Grid.Row="33" Grid.Column="1" TextAlignment="Center" Text="16" />
-            <CheckBox Grid.Row="33" Grid.Column="2" HorizontalAlignment="Center" 
+            <CheckBox x:Name="chkActivateAlert" Grid.Row="33" Grid.Column="2" HorizontalAlignment="Center" 
                       VerticalAlignment="Center"
                       Command="{Binding DeltaAlertActivateCommand}"
-                      CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}"
-                      IsChecked="False" />
+                      IsChecked="False" >
+                <CheckBox.CommandParameter>
+                    <MultiBinding Converter="{StaticResource DeltaAlertActivateConverter}" Mode="OneWay">
+                        <Binding Path="IsChecked" ElementName="chkActivateAlert"/>
+                        <Binding Path="Text" ElementName="txtBearNextInnerStrike"/>
+                        <Binding Path="Text" ElementName="txtBullNextInnerStrike"/>
+                    </MultiBinding>
+                </CheckBox.CommandParameter>
+            </CheckBox>
             <Button Grid.Row="33" Grid.Column="3" Content="Deactivate" />
             <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="34"
@@ -765,19 +773,19 @@
                            Grid.Row="34" Grid.Column="2"
                            Style="{StaticResource NormalTextBlock}"  
                        VerticalAlignment="Bottom">strike:</TextBlock>
-            <TextBlock HorizontalAlignment="Center" 
+            <TextBlock x:Name="txtBearNextInnerStrike"  HorizontalAlignment="Center" 
                            Grid.Row="34" Grid.Column="3"
                            Style="{StaticResource NormalTextBlock}"  
-                       VerticalAlignment="Bottom">TODO</TextBlock>
+                       VerticalAlignment="Top" Margin="0,4,0,0">TODO1</TextBlock>
             <TextBox Grid.Row="34" Grid.Column="5" TextAlignment="Center" Text="{Binding BullNextInnerStrike}" />
             <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="34" Grid.Column="6"
                            Style="{StaticResource NormalTextBlock}"  
                        VerticalAlignment="Bottom">strike:</TextBlock>
-            <TextBlock HorizontalAlignment="Center" 
+            <TextBlock x:Name="txtBullNextInnerStrike" HorizontalAlignment="Center" 
                            Grid.Row="34" Grid.Column="7"
                            Style="{StaticResource NormalTextBlock}"  
-                       VerticalAlignment="Bottom">TODO</TextBlock>
+                       VerticalAlignment="Bottom">TODO2</TextBlock>
 
         </Grid>
 
