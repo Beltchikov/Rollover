@@ -56,6 +56,7 @@ namespace SsbHedger.Model
         private double bullNextInnerStrike;
         private double bearNextInnerDelta;
         private double bullNextInnerDelta;
+        private bool deltaAlertActive;
 
         public MainWindowViewModel(
             IInitializeCommandHandler initializeCommandHandler,
@@ -64,7 +65,7 @@ namespace SsbHedger.Model
         {
             InitializeCommand = new RelayCommand(() => initializeCommandHandler.HandleAsync(this));
             UpdateConfigurationCommand = new RelayCommand<object[]>((p) => updateConfigurationCommandHandler.Handle(this, p));
-            DeltaAlertActivateCommand = new RelayCommand<bool>((p) => deltaAlertActivateCommandHandler.HandleAsync(this, p));
+            DeltaAlertActivateCommand = new RelayCommand<bool>((p) => deltaAlertActivateCommandHandler.Handle(this, p));
 
             messages = new ObservableCollection<Message>();
             bars = new ObservableCollection<Bar>();
@@ -508,7 +509,16 @@ namespace SsbHedger.Model
                 OnPropertyChanged(nameof(BullNextInnerDelta));
             }
         }
-
+        
+        public bool DeltaAlertActive
+        {
+            get => deltaAlertActive;
+            set
+            {
+                SetProperty(ref deltaAlertActive, value);
+                OnPropertyChanged(nameof(DeltaAlertActive));
+            }
+        }
 
         public ObservableCollection<Bar> Bars
         {

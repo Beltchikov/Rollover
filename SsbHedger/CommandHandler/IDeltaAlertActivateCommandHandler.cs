@@ -4,6 +4,6 @@ namespace SsbHedger.CommandHandler
 {
     public interface IDeltaAlertActivateCommandHandler
     {
-        Task HandleAsync(Model.MainWindowViewModel mainWindowViewModel, bool activate);
+        void Handle(Model.MainWindowViewModel mainWindowViewModel, bool activate);
     }
 }

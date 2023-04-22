@@ -18,8 +18,8 @@ namespace SsbHedger
         private readonly int REQ_MKT_DATA_SHORT_PUT_ID = 3001;
         private readonly int REQ_MKT_DATA_SHORT_CALL_ID = 3002;
         private readonly int REQ_MKT_DATA_SPY = 3003;
-        private readonly int BEAR_NEXT_INNER_OPTION_REQ_ID = 4001;
-        private readonly int BULL_NEXT_INNER_OPTION_REQ_ID = 4002;
+        public readonly int BEAR_NEXT_INNER_OPTION_REQ_ID = 4001;
+        public readonly int BULL_NEXT_INNER_OPTION_REQ_ID = 4002;
         IConfiguration _configuration;
         IIBClient _ibClient;
 

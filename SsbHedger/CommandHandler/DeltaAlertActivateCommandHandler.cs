@@ -1,14 +1,26 @@
 ﻿using SsbHedger.Model;
 using System;
+using System.Security.RightsManagement;
 using System.Threading.Tasks;
 
 namespace SsbHedger.CommandHandler
 {
     public class DeltaAlertActivateCommandHandler : IDeltaAlertActivateCommandHandler
     {
-        public Task HandleAsync(MainWindowViewModel mainWindowViewModel, bool activate)
+        private IIbHost _ibHost = null!;
+        public DeltaAlertActivateCommandHandler(IIbHost ibHost)
         {
-            throw new NotImplementedException();
+            _ibHost = ibHost;
+        }
+
+        public void Handle(MainWindowViewModel mainWindowViewModel, bool activate)
+        {
+            mainWindowViewModel.DeltaAlertActive = activate;
+
+            //if (activate) 
+            //{ 
+            //   _ibHost.ReqMktData(_ibHost.BEAR_NEXT_INNER_OPTION_REQ_ID, right, strike)
+            //}
         }
     }
 }
