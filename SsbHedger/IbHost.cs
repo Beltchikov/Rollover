@@ -6,7 +6,6 @@ using SsbHedger.Model;
 using SsbHedger.SsbConfiguration;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -150,6 +149,17 @@ namespace SsbHedger
                false,
                false,
                new List<TagValue>());
+        }
+
+
+        public void CancelMktDataNextPutOption()
+        {
+            _ibClient.ClientSocket.cancelMktData(NEXT_PUT_OPTION_REQ_ID);
+        }
+
+        public void CancelMktDataNextCalllOption()
+        {
+            _ibClient.ClientSocket.cancelMktData(NEXT_CALL_OPTION_REQ_ID);
         }
 
         public void ApplyDefaultHistoricalData()

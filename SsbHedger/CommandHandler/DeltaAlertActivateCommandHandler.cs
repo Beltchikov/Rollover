@@ -28,11 +28,8 @@ namespace SsbHedger.CommandHandler
             }
             else
             {
-                // TODO
-                
-                // https://interactivebrokers.github.io/tws-api/md_cancel.html
-                //_ibHost.CancelMktDataNextPutOption(putStike);
-                //_ibHost.CancelMktDataNextCalllOption(putStike);
+                _ibHost.CancelMktDataNextPutOption();
+                _ibHost.CancelMktDataNextCalllOption();
             }
         }
     }
