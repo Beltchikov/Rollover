@@ -78,9 +78,11 @@ namespace SsbHedger.Model
 
             positionsInfoMessage = "No positions!";
 
-            // test remove later
-            bearNextInnerStrike = 400;
-            bullNextInnerStrike = 410;
+            // TOD0 test remove later
+            //bearNextInnerStrike = 400;
+            //bullNextInnerStrike = 410;
+            //nextPutDelta = -28.4;
+            //NextCallDelta = 75.97;
         }
 
         public string ConnectionMessage
