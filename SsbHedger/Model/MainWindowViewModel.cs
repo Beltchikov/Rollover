@@ -54,8 +54,8 @@ namespace SsbHedger.Model
         private string right9;
         private double bearNextInnerStrike;
         private double bullNextInnerStrike;
-        private double bearNextInnerDelta;
-        private double bullNextInnerDelta;
+        private double nextPutDelta;
+        private double nextCallDelta;
         private bool deltaAlertActive;
 
         public MainWindowViewModel(
@@ -490,23 +490,23 @@ namespace SsbHedger.Model
             }
         }
 
-        public double BearNextInnerDelta
+        public double NextPutDelta
         {
-            get => bearNextInnerDelta;
+            get => nextPutDelta;
             set
             {
-                SetProperty(ref bearNextInnerDelta, value);
-                OnPropertyChanged(nameof(BearNextInnerDelta));
+                SetProperty(ref nextPutDelta, value);
+                OnPropertyChanged(nameof(NextPutDelta));
             }
         }
 
-        public double BullNextInnerDelta
+        public double NextCallDelta
         {
-            get => bullNextInnerDelta;
+            get => nextCallDelta;
             set
             {
-                SetProperty(ref bullNextInnerDelta, value);
-                OnPropertyChanged(nameof(BullNextInnerDelta));
+                SetProperty(ref nextCallDelta, value);
+                OnPropertyChanged(nameof(NextCallDelta));
             }
         }
         

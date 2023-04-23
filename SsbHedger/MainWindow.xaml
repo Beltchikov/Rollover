@@ -773,7 +773,7 @@
                            Grid.Row="34" Grid.Column="2"
                            Style="{StaticResource NormalTextBlock}"  
                        VerticalAlignment="Bottom">strike:</TextBlock>
-            <TextBlock x:Name="txtBearNextInnerStrike"  HorizontalAlignment="Center" 
+            <TextBlock x:Name="txtPutNextStrike"  HorizontalAlignment="Center" 
                            Grid.Row="34" Grid.Column="3"
                            Style="{StaticResource NormalTextBlock}"  
                        VerticalAlignment="Top" Margin="0,4,0,0">300</TextBlock>
@@ -782,7 +782,7 @@
                            Grid.Row="34" Grid.Column="6"
                            Style="{StaticResource NormalTextBlock}"  
                        VerticalAlignment="Bottom">strike:</TextBlock>
-            <TextBlock x:Name="txtBullNextInnerStrike" HorizontalAlignment="Center" 
+            <TextBlock x:Name="txtCallNextStrike" HorizontalAlignment="Center" 
                            Grid.Row="34" Grid.Column="7"
                            Style="{StaticResource NormalTextBlock}"  
                        VerticalAlignment="Bottom">400</TextBlock>

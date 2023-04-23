@@ -428,14 +428,14 @@ namespace SsbHedger
                 {
                     ViewModel.BearHedgePrice = tickPriceMessage.Price;
                 }
-                if (tickPriceMessage.RequestId == REQ_MKT_DATA_SHORT_PUT_ID)
-                {
-                    ViewModel.BullHedgePrice = tickPriceMessage.Price;
-                }
             }
             if (tickPriceMessage.Field == 1)  // bid. Use 2 for ask
             {
                 if (tickPriceMessage.RequestId == REQ_MKT_DATA_SPY)
+                {
+                    ViewModel.SpyPrice = tickPriceMessage.Price;
+                }
+                if (tickPriceMessage.RequestId == NEXT_PUT_OPTION_REQ_ID)
                 {
                     ViewModel.SpyPrice = tickPriceMessage.Price;
                 }
@@ -451,11 +451,11 @@ namespace SsbHedger
 
             if(message.RequestId == NEXT_PUT_OPTION_REQ_ID)
             {
-                ViewModel.BearNextInnerDelta = message.Delta;
+                ViewModel.NextPutDelta = message.Delta;
             }
             if (message.RequestId == NEXT_CALL_OPTION_REQ_ID)
             {
-                ViewModel.BullNextInnerDelta = message.Delta;
+                ViewModel.NextCallDelta = message.Delta;
             }
         }
 
