@@ -11,7 +11,7 @@ namespace SsbHedger.CommandHandler
     public class DeltaAlertActivateCommandHandler : IDeltaAlertActivateCommandHandler
     {
         private IIbHost _ibHost = null!;
-        private MainWindowViewModel _mainWindowViewModel;
+        private MainWindowViewModel _mainWindowViewModel = null!;
 
         public DeltaAlertActivateCommandHandler(IIbHost ibHost)
         {
