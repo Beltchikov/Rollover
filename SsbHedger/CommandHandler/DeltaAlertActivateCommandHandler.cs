@@ -56,7 +56,7 @@ namespace SsbHedger.CommandHandler
             {
                 SoundPlayer player = new SoundPlayer(Properties.Resources.DeltaAlert);
                 player.Play();
-                Thread.Sleep(5000);
+                Thread.Sleep(10000);
             }
         }
     }

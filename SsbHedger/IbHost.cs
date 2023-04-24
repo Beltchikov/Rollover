@@ -459,7 +459,14 @@ namespace SsbHedger
                 throw new ApplicationException("Unexpected! ViewModel is null");
             }
 
-            if(message.RequestId == NEXT_PUT_OPTION_REQ_ID)
+            ViewModel.Messages.Add(new Message(0,
+                $"TickOptionCommunication: RequestId:{message.RequestId} Field:{message.Field} " +
+                $"ImpliedVolatility:{message.ImpliedVolatility} Delta:{message.Delta} " +
+                $"OptPrice:{message.OptPrice} PvDividend:{message.PvDividend} " +
+                $"Gamma: {message.Gamma} Vega:{message.Vega} " +
+                $"Theta:{message.Theta} UndPrice: {message.UndPrice}"));
+
+            if (message.RequestId == NEXT_PUT_OPTION_REQ_ID)
             {
                 ViewModel.NextPutDelta = message.Delta;
             }
