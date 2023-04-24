@@ -485,12 +485,12 @@ namespace SsbHedger
                 ViewModel.NextCallDelta = message.Delta;
             }
 
-            if (Math.Abs(ViewModel.NextPutDelta) <= ViewModel.DeltaThreshold
-                || Math.Abs(ViewModel.NextCallDelta) <= ViewModel.DeltaThreshold)
+            if (Math.Abs(ViewModel.NextPutDelta) <= ViewModel.DeltaThreshold/100
+                || Math.Abs(ViewModel.NextCallDelta) <= ViewModel.DeltaThreshold/100)
                 if (_alertThread == null)
                 {
                     {
-                        _alertThread = new Thread(new ThreadStart(AlertFunction));
+                        _alertThread = new Thread(new ThreadStart(AlertFunction)) { IsBackground = true };
                         _alertThread.Start();
                     }
                 }
