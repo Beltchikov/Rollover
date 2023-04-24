@@ -1,6 +1,9 @@
 ﻿using SsbHedger.Model;
 using System;
+using System.IO;
+using System.Media;
 using System.Security.RightsManagement;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SsbHedger.CommandHandler
@@ -8,6 +11,8 @@ namespace SsbHedger.CommandHandler
     public class DeltaAlertActivateCommandHandler : IDeltaAlertActivateCommandHandler
     {
         private IIbHost _ibHost = null!;
+        private MainWindowViewModel _mainWindowViewModel;
+
         public DeltaAlertActivateCommandHandler(IIbHost ibHost)
         {
             _ibHost = ibHost;
@@ -18,8 +23,9 @@ namespace SsbHedger.CommandHandler
             bool activate = (bool)parameters[0];
             double putStike = Convert.ToDouble(parameters[1]);
             double callStike = Convert.ToDouble(parameters[2]);
-            
-            mainWindowViewModel.DeltaAlertActive = activate;
+
+            _mainWindowViewModel = mainWindowViewModel;
+            _mainWindowViewModel.DeltaAlertActive = activate;
 
             if (activate)
             {
@@ -30,6 +36,19 @@ namespace SsbHedger.CommandHandler
             {
                 _ibHost.CancelMktDataNextPutOption();
                 _ibHost.CancelMktDataNextCalllOption();
+            }
+
+            Thread alertThread = new Thread(new ThreadStart(AlertFunction));
+            alertThread.Start();
+        }
+
+        private void AlertFunction()
+        {
+            while (_mainWindowViewModel.DeltaAlertActive) 
+            {
+                SoundPlayer player = new SoundPlayer(Properties.Resources.DeltaAlert);
+                player.Play();
+                Thread.Sleep(5000);
             }
         }
     }

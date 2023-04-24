@@ -758,8 +758,8 @@
                 <CheckBox.CommandParameter>
                     <MultiBinding Converter="{StaticResource DeltaAlertActivateConverter}" Mode="OneWay">
                         <Binding Path="IsChecked" ElementName="chkActivateAlert"/>
-                        <Binding Path="Text" ElementName="txtBearNextInnerStrike"/>
-                        <Binding Path="Text" ElementName="txtBullNextInnerStrike"/>
+                        <Binding Path="Text" ElementName="txtPutStrike"/>
+                        <Binding Path="Text" ElementName="txtCallStrike"/>
                     </MultiBinding>
                 </CheckBox.CommandParameter>
             </CheckBox>
@@ -768,7 +768,8 @@
                            Grid.Row="34"
                            Style="{StaticResource TableHeader}"  
                        VerticalAlignment="Bottom">Current Delta for</TextBlock>
-            <TextBox Grid.Row="34" Grid.Column="1" TextAlignment="Center" Text="{Binding BearNextInnerStrike}" />
+            <TextBox x:Name="txtPutStrike" Grid.Row="34" Grid.Column="1" TextAlignment="Center" 
+                     Text="{Binding BearNextInnerStrike, FallbackValue=0}" />
             <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="34" Grid.Column="2"
                            Style="{StaticResource NormalTextBlock}"  
@@ -778,7 +779,8 @@
                            Style="{StaticResource NormalTextBlock}"  
                        VerticalAlignment="Top" Margin="0,4,0,0"
                        Text="{Binding NextPutDelta, FallbackValue=100}"></TextBlock>
-            <TextBox Grid.Row="34" Grid.Column="5" TextAlignment="Center" Text="{Binding BullNextInnerStrike}" />
+            <TextBox x:Name="txtCallStrike" Grid.Row="34" Grid.Column="5" TextAlignment="Center" 
+                     Text="{Binding BullNextInnerStrike, FallbackValue=0}" />
             <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="34" Grid.Column="6"
                            Style="{StaticResource NormalTextBlock}"  
