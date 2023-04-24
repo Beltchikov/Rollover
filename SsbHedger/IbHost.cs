@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Media;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SsbHedger
@@ -35,6 +37,7 @@ namespace SsbHedger
         private IPositionMessageBuffer _positionMessageBuffer;
         private Contract? _currentPutContract;
         private Contract? _currentCallContract;
+        Thread _alertThread = null!;
 
         public IbHost(IConfiguration configuration, IPositionMessageBuffer positionMessageBuffer)
         {
@@ -480,6 +483,31 @@ namespace SsbHedger
             if (message.RequestId == NEXT_CALL_OPTION_REQ_ID)
             {
                 ViewModel.NextCallDelta = message.Delta;
+            }
+
+            if (Math.Abs(ViewModel.NextPutDelta) <= ViewModel.DeltaThreshold
+                || Math.Abs(ViewModel.NextCallDelta) <= ViewModel.DeltaThreshold)
+                if (_alertThread == null)
+                {
+                    {
+                        _alertThread = new Thread(new ThreadStart(AlertFunction));
+                        _alertThread.Start();
+                    }
+                }
+        }
+
+        private void AlertFunction()
+        {
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+
+            while (ViewModel.DeltaAlertActive)
+            {
+                SoundPlayer player = new SoundPlayer(Properties.Resources.DeltaAlert);
+                player.Play();
+                Thread.Sleep(10000);
             }
         }
 

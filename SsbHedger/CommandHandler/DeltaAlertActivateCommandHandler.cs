@@ -12,8 +12,7 @@ namespace SsbHedger.CommandHandler
     {
         private IIbHost _ibHost = null!;
         private MainWindowViewModel _mainWindowViewModel = null!;
-        Thread _alertThread = null!;
-
+       
         public DeltaAlertActivateCommandHandler(IIbHost ibHost)
         {
             _ibHost = ibHost;
@@ -39,25 +38,7 @@ namespace SsbHedger.CommandHandler
                 _ibHost.CancelMktDataNextCalllOption();
             }
 
-            if (Math.Abs(_mainWindowViewModel.NextPutDelta) <= _mainWindowViewModel.DeltaThreshold
-                || Math.Abs(_mainWindowViewModel.NextCallDelta) <= _mainWindowViewModel.DeltaThreshold)
-                if (_alertThread == null)
-                {
-                    {
-                        _alertThread = new Thread(new ThreadStart(AlertFunction));
-                        _alertThread.Start();
-                    }
-                }
-        }
-
-        private void AlertFunction()
-        {
-            while (_mainWindowViewModel.DeltaAlertActive)
-            {
-                SoundPlayer player = new SoundPlayer(Properties.Resources.DeltaAlert);
-                player.Play();
-                Thread.Sleep(10000);
-            }
+            
         }
     }
 }
