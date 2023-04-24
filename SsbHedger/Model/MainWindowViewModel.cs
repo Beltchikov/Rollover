@@ -79,12 +79,10 @@ namespace SsbHedger.Model
 
             positionsInfoMessage = "No positions!";
             deltaThreshold = 16;
-
-            // TOD0 test remove later
-            //bearNextInnerStrike = 400;
-            //bullNextInnerStrike = 410;
-            //nextPutDelta = -28.4;
-            //NextCallDelta = 75.97;
+            nextPutStrike = 0;
+            nextCallStrike = 0;
+            nextPutDelta= -50;
+            nextCallDelta= 50;
         }
 
         public string ConnectionMessage
@@ -248,7 +246,7 @@ namespace SsbHedger.Model
 
         public double PremiumOnePosition
         {
-            get => Math.Round(putShortPrice + callShortPrice,3);
+            get => Math.Round(putShortPrice + callShortPrice, 3);
             set
             {
                 OnPropertyChanged(nameof(PremiumOnePosition));
@@ -513,7 +511,7 @@ namespace SsbHedger.Model
                 OnPropertyChanged(nameof(NextCallDelta));
             }
         }
-        
+
         public bool DeltaAlertActive
         {
             get => deltaAlertActive;
@@ -534,7 +532,7 @@ namespace SsbHedger.Model
             }
         }
 
-        
+
 
         public ObservableCollection<Bar> Bars
         {

@@ -770,27 +770,27 @@
                            Style="{StaticResource TableHeader}"  
                        VerticalAlignment="Bottom">Current Delta for</TextBlock>
             <TextBox x:Name="txtPutStrike" Grid.Row="34" Grid.Column="1" TextAlignment="Center" 
-                     Text="{Binding NextPutStrike}" />
+                     Text="{Binding NextPutStrike, FallbackValue=0}" />
             <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="34" Grid.Column="2"
                            Style="{StaticResource NormalTextBlock}"  
                        VerticalAlignment="Bottom">strike:</TextBlock>
-            <TextBlock x:Name="txtPutNextStrike"  HorizontalAlignment="Center" 
+            <TextBlock x:Name="txtNextPutDelta"  HorizontalAlignment="Center" 
                            Grid.Row="34" Grid.Column="3"
                            Style="{StaticResource NormalTextBlock}"  
                        VerticalAlignment="Top" Margin="0,4,0,0"
-                       Text="{Binding NextPutDelta, FallbackValue=100}"></TextBlock>
+                       Text="{Binding NextPutDelta, FallbackValue=-50}"></TextBlock>
             <TextBox x:Name="txtCallStrike" Grid.Row="34" Grid.Column="5" TextAlignment="Center" 
-                     Text="{Binding NextCallStrike}" />
+                     Text="{Binding NextCallStrike, FallbackValue=0}" />
             <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="34" Grid.Column="6"
                            Style="{StaticResource NormalTextBlock}"  
                        VerticalAlignment="Bottom">strike:</TextBlock>
-            <TextBlock x:Name="txtCallNextStrike" HorizontalAlignment="Center" 
+            <TextBlock x:Name="txtNextCallDelta" HorizontalAlignment="Center" 
                            Grid.Row="34" Grid.Column="7"
                            Style="{StaticResource NormalTextBlock}"  
                        VerticalAlignment="Bottom"
-                       Text="{Binding NextCallDelta, FallbackValue=200}"></TextBlock>
+                       Text="{Binding NextCallDelta, FallbackValue=50}"></TextBlock>
 
         </Grid>
 
