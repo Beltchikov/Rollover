@@ -478,11 +478,11 @@ namespace SsbHedger
 
             if (message.RequestId == NEXT_PUT_OPTION_REQ_ID)
             {
-                ViewModel.NextPutDelta = message.Delta;
+                ViewModel.NextPutDelta = Math.Round(message.Delta,3);
             }
             if (message.RequestId == NEXT_CALL_OPTION_REQ_ID)
             {
-                ViewModel.NextCallDelta = message.Delta;
+                ViewModel.NextCallDelta = Math.Round(message.Delta,3);
             }
 
             if (Math.Abs(ViewModel.NextPutDelta) <= ViewModel.DeltaThreshold/100
