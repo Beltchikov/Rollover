@@ -128,7 +128,6 @@
                     </MultiBinding>
                 </CheckBox.CommandParameter>
             </CheckBox>
-            <Button Grid.Row="3" Grid.Column="3" Content="Deactivate" />
             <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="4"
                            Style="{StaticResource TableHeader}"  
