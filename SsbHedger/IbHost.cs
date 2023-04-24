@@ -313,9 +313,6 @@ namespace SsbHedger
                     SetCallStrike(positionMessage);
                     SetCallPrice(positionMessage);
 
-                    _currentPutContract = positionMessage.Contract.Right == "P" ? positionMessage.Contract : null;
-                    _currentCallContract = positionMessage.Contract.Right == "C" ? positionMessage.Contract : null;
-
                     var contractForHedge = CopyContractWithOtherStrikeAndRight(positionMessage.Contract, ViewModel.BullHedgeStrike);
                     _reqContractDetails++;
                     _ibClient.ClientSocket.reqContractDetails(_reqContractDetails, contractForHedge);
@@ -336,6 +333,16 @@ namespace SsbHedger
 
             if (positionMessage.Position != 0 && positionMessage.Contract != null)
             {
+                if(positionMessage.Contract.Right == "P")
+                {
+                    _currentPutContract = positionMessage.Contract;
+                }
+                if (positionMessage.Contract.Right == "C")
+                {
+                    _currentCallContract = positionMessage.Contract;
+                }
+
+
                 _positionMessageBuffer.AddMessage(positionMessage);
             }
         }
