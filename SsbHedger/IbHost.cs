@@ -304,31 +304,31 @@ namespace SsbHedger
             ViewModel.PositionsInfoMessage = "";
 
             // old code
-            if (positionMessage.Position != 0 && positionMessage.Contract != null)
-            {
-                // short call
-                if (positionMessage.Contract.Right == "C" && positionMessage.Position < 0)
-                {
-                    SetSize(positionMessage);
-                    SetCallStrike(positionMessage);
-                    SetCallPrice(positionMessage);
+            //if (positionMessage.Position != 0 && positionMessage.Contract != null)
+            //{
+            //    // short call
+            //    if (positionMessage.Contract.Right == "C" && positionMessage.Position < 0)
+            //    {
+            //        SetSize(positionMessage);
+            //        SetCallStrike(positionMessage);
+            //        SetCallPrice(positionMessage);
 
-                    var contractForHedge = CopyContractWithOtherStrikeAndRight(positionMessage.Contract, ViewModel.BullHedgeStrike);
-                    _reqContractDetails++;
-                    _ibClient.ClientSocket.reqContractDetails(_reqContractDetails, contractForHedge);
-                }
-                // short put
-                if (positionMessage.Contract.Right == "P" && positionMessage.Position < 0)
-                {
-                    SetSize(positionMessage);
-                    SetPutStrike(positionMessage);
-                    SetPutPrice(positionMessage);
+            //        var contractForHedge = CopyContractWithOtherStrikeAndRight(positionMessage.Contract, ViewModel.BullHedgeStrike);
+            //        _reqContractDetails++;
+            //        _ibClient.ClientSocket.reqContractDetails(_reqContractDetails, contractForHedge);
+            //    }
+            //    // short put
+            //    if (positionMessage.Contract.Right == "P" && positionMessage.Position < 0)
+            //    {
+            //        SetSize(positionMessage);
+            //        SetPutStrike(positionMessage);
+            //        SetPutPrice(positionMessage);
                     
-                    var contractForHedge = CopyContractWithOtherStrikeAndRight(positionMessage.Contract, ViewModel.BearHedgeStrike);
-                    _reqContractDetails++;
-                    _ibClient.ClientSocket.reqContractDetails(_reqContractDetails, contractForHedge);
-                }
-            }
+            //        var contractForHedge = CopyContractWithOtherStrikeAndRight(positionMessage.Contract, ViewModel.BearHedgeStrike);
+            //        _reqContractDetails++;
+            //        _ibClient.ClientSocket.reqContractDetails(_reqContractDetails, contractForHedge);
+            //    }
+            //}
             // end old code
 
             if (positionMessage.Position != 0 && positionMessage.Contract != null)
@@ -354,18 +354,18 @@ namespace SsbHedger
                 throw new ApplicationException("Unexpected! ViewModel is null");
             }
 
-            SetRight(_positionMessageBuffer);
-            SetSize(_positionMessageBuffer);
-            SetStrikes(_positionMessageBuffer);
-            _positionMessageBuffer.Reset();
+            //SetRight(_positionMessageBuffer);
+            //SetSize(_positionMessageBuffer);
+            //SetStrikes(_positionMessageBuffer);
+            //_positionMessageBuffer.Reset();
 
-            _ibClient.ClientSocket.reqMktData(
-                REQ_MKT_DATA_SPY,
-                _contractUnderlying,
-                "",
-                false,
-                false,
-                new List<TagValue>());
+            //_ibClient.ClientSocket.reqMktData(
+            //    REQ_MKT_DATA_SPY,
+            //    _contractUnderlying,
+            //    "",
+            //    false,
+            //    false,
+            //    new List<TagValue>());
 
             ViewModel.Messages.Add(new Message(0, $"PositionEnd"));
         }
