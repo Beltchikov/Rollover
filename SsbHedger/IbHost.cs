@@ -409,54 +409,54 @@ namespace SsbHedger
 
         private void _ibClient_TickString(int tickerId, int tickType, string value)
         {
-            if (ViewModel == null)
-            {
-                throw new ApplicationException("Unexpected! ViewModel is null");
-            }
+            //if (ViewModel == null)
+            //{
+            //    throw new ApplicationException("Unexpected! ViewModel is null");
+            //}
 
-            ViewModel.Messages.Add(new Message(0,
-                $"TickString: {tickerId} {tickType} {value}"));
+            //ViewModel.Messages.Add(new Message(0,
+            //    $"TickString: {tickerId} {tickType} {value}"));
         }
 
         private void _ibClient_TickSize(TickSizeMessage tickSizeMessage)
         {
-            if (ViewModel == null)
-            {
-                throw new ApplicationException("Unexpected! ViewModel is null");
-            }
+            //if (ViewModel == null)
+            //{
+            //    throw new ApplicationException("Unexpected! ViewModel is null");
+            //}
 
-            ViewModel.Messages.Add(new Message(0,
-                $"TickSize: {tickSizeMessage.Field} {tickSizeMessage.Size}"));
+            //ViewModel.Messages.Add(new Message(0,
+            //    $"TickSize: {tickSizeMessage.Field} {tickSizeMessage.Size}"));
         }
 
         private void _ibClient_TickPrice(TickPriceMessage tickPriceMessage)
         {
-            if (ViewModel == null)
-            {
-                throw new ApplicationException("Unexpected! ViewModel is null");
-            }
+            //if (ViewModel == null)
+            //{
+            //    throw new ApplicationException("Unexpected! ViewModel is null");
+            //}
 
-            ViewModel.Messages.Add(new Message(0,
-                $"TickPrice: {tickPriceMessage.Field} {tickPriceMessage.Price}"));
+            //ViewModel.Messages.Add(new Message(0,
+            //    $"TickPrice: {tickPriceMessage.Field} {tickPriceMessage.Price}"));
 
-            if (tickPriceMessage.Field == 2)  // ask. Use 1 for bid
-            {
-                if (tickPriceMessage.RequestId == REQ_MKT_DATA_SHORT_CALL_ID)
-                {
-                    ViewModel.BearHedgePrice = tickPriceMessage.Price;
-                }
-            }
-            if (tickPriceMessage.Field == 1)  // bid. Use 2 for ask
-            {
-                if (tickPriceMessage.RequestId == REQ_MKT_DATA_SPY)
-                {
-                    ViewModel.SpyPrice = tickPriceMessage.Price;
-                }
-                if (tickPriceMessage.RequestId == NEXT_PUT_OPTION_REQ_ID)
-                {
-                    ViewModel.SpyPrice = tickPriceMessage.Price;
-                }
-            }
+            //if (tickPriceMessage.Field == 2)  // ask. Use 1 for bid
+            //{
+            //    if (tickPriceMessage.RequestId == REQ_MKT_DATA_SHORT_CALL_ID)
+            //    {
+            //        ViewModel.BearHedgePrice = tickPriceMessage.Price;
+            //    }
+            //}
+            //if (tickPriceMessage.Field == 1)  // bid. Use 2 for ask
+            //{
+            //    if (tickPriceMessage.RequestId == REQ_MKT_DATA_SPY)
+            //    {
+            //        ViewModel.SpyPrice = tickPriceMessage.Price;
+            //    }
+            //    if (tickPriceMessage.RequestId == NEXT_PUT_OPTION_REQ_ID)
+            //    {
+            //        ViewModel.SpyPrice = tickPriceMessage.Price;
+            //    }
+            //}
         }
 
         private void _ibClient_TickOptionCommunication(TickOptionMessage message)
