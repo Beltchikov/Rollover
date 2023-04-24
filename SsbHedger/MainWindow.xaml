@@ -750,7 +750,8 @@
                            Grid.Row="33"
                            Style="{StaticResource TableHeader}"  
                        VerticalAlignment="Bottom">Alert delta &lt;</TextBlock>
-            <TextBox Grid.Row="33" Grid.Column="1" TextAlignment="Center" Text="16" />
+            <TextBox Grid.Row="33" Grid.Column="1" TextAlignment="Center" 
+                     Text="{Binding DeltaThreshold, FallbackValue=16}" />
             <CheckBox x:Name="chkActivateAlert" Grid.Row="33" Grid.Column="2" HorizontalAlignment="Center" 
                       VerticalAlignment="Center"
                       Command="{Binding DeltaAlertActivateCommand}"

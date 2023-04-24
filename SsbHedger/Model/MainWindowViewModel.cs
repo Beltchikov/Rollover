@@ -57,6 +57,7 @@ namespace SsbHedger.Model
         private double nextPutDelta;
         private double nextCallDelta;
         private bool deltaAlertActive;
+        private double deltaThreshold;
 
         public MainWindowViewModel(
             IInitializeCommandHandler initializeCommandHandler,
@@ -77,6 +78,7 @@ namespace SsbHedger.Model
             callShortPrice = 2;
 
             positionsInfoMessage = "No positions!";
+            deltaThreshold = 16;
 
             // TOD0 test remove later
             //bearNextInnerStrike = 400;
@@ -521,6 +523,18 @@ namespace SsbHedger.Model
                 OnPropertyChanged(nameof(DeltaAlertActive));
             }
         }
+
+        public double DeltaThreshold
+        {
+            get => deltaThreshold;
+            set
+            {
+                SetProperty(ref deltaThreshold, value);
+                OnPropertyChanged(nameof(DeltaThreshold));
+            }
+        }
+
+        
 
         public ObservableCollection<Bar> Bars
         {
