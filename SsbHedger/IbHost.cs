@@ -487,13 +487,10 @@ namespace SsbHedger
 
             if (Math.Abs(ViewModel.NextPutDelta) <= ViewModel.DeltaThreshold/100
                 || Math.Abs(ViewModel.NextCallDelta) <= ViewModel.DeltaThreshold/100)
-                if (_alertThread == null)
                 {
-                    {
-                        _alertThread = new Thread(new ThreadStart(AlertFunction)) { IsBackground = true };
-                        _alertThread.Start();
-                    }
-                }
+                    _alertThread = new Thread(new ThreadStart(AlertFunction)) { IsBackground = true };
+                    _alertThread.Start();
+            }
         }
 
         private void AlertFunction()
