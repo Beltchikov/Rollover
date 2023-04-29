@@ -104,10 +104,12 @@
                         <RowDefinition Height="20"></RowDefinition>
                         <RowDefinition Height="20"></RowDefinition>
                         <RowDefinition Height="20"></RowDefinition>
+                        <RowDefinition Height="20"></RowDefinition>
+                        <RowDefinition Height="20"></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="130"></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
@@ -117,17 +119,44 @@
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <TextBlock HorizontalAlignment="Center" 
-                           Grid.Row="2"
-                           Style="{StaticResource TableHeader}"  
-                       VerticalAlignment="Bottom">Alerts</TextBlock>
-                    <TextBlock HorizontalAlignment="Center" 
-                           Grid.Row="3"
-                           Style="{StaticResource TableHeader}"  
-                       VerticalAlignment="Bottom">Alert delta &lt;</TextBlock>
-                    <TextBox Grid.Row="3" Grid.Column="1" TextAlignment="Center" 
+                    <TextBlock Grid.Row="1"
+                           Style="{StaticResource Label}"  
+                       VerticalAlignment="Bottom">Alert if delta below</TextBlock>
+                    <TextBox Grid.Row="1" Grid.Column="1" TextAlignment="Center" 
                      Text="{Binding DeltaThreshold, FallbackValue=16}" />
-                    <CheckBox x:Name="chkActivateAlert" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Center" 
+                   
+                    <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="3" Grid.Column="1"
+                           Style="{StaticResource NormalTextBlock}"  
+                       VerticalAlignment="Bottom">Strike</TextBlock>
+                    <TextBlock HorizontalAlignment="Center" 
+                           Grid.Row="3" Grid.Column="2"
+                           Style="{StaticResource NormalTextBlock}"  
+                       VerticalAlignment="Bottom">Delta</TextBlock>
+
+                    <TextBlock Grid.Row="4" Style="{StaticResource Label}"  
+                       VerticalAlignment="Bottom">Call</TextBlock>
+                    <TextBox x:Name="txtCallStrike" Grid.Row="4" Grid.Column="1" TextAlignment="Center" 
+                     Text="{Binding NextCallStrike, FallbackValue=0}" />
+                    <TextBlock x:Name="txtNextCallDelta" HorizontalAlignment="Center" 
+                           Grid.Row="4" Grid.Column="2"
+                           Style="{StaticResource NormalTextBlock}"  
+                       VerticalAlignment="Bottom"
+                       Text="{Binding NextCallDelta, FallbackValue=50}"></TextBlock>
+
+                    <TextBlock Grid.Row="5" Style="{StaticResource Label}"  
+                       VerticalAlignment="Bottom">Put</TextBlock>
+                    <TextBox x:Name="txtPutStrike" Grid.Row="5" Grid.Column="1" TextAlignment="Center" 
+                     Text="{Binding NextPutStrike, FallbackValue=0}" />
+                    <TextBlock x:Name="txtNextPutDelta"  HorizontalAlignment="Center" 
+                           Grid.Row="5" Grid.Column="2"
+                           Style="{StaticResource NormalTextBlock}"  
+                       VerticalAlignment="Top" Margin="0,4,0,0"
+                       Text="{Binding NextPutDelta, FallbackValue=-50}"></TextBlock>
+
+                    <TextBlock Grid.Row="7" Style="{StaticResource Label}" 
+                       VerticalAlignment="Bottom">Enable alert</TextBlock>
+                    <CheckBox x:Name="chkActivateAlert" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Center" 
                       VerticalAlignment="Center"
                       Command="{Binding DeltaAlertActivateCommand}"
                       IsChecked="False" >
@@ -139,38 +168,12 @@
                             </MultiBinding>
                         </CheckBox.CommandParameter>
                     </CheckBox>
-                    <TextBlock HorizontalAlignment="Center" 
-                           Grid.Row="4"
-                           Style="{StaticResource TableHeader}"  
-                       VerticalAlignment="Bottom">Current Delta for</TextBlock>
-                    <TextBox x:Name="txtPutStrike" Grid.Row="4" Grid.Column="1" TextAlignment="Center" 
-                     Text="{Binding NextPutStrike, FallbackValue=0}" />
-                    <TextBlock HorizontalAlignment="Center" 
-                           Grid.Row="4" Grid.Column="2"
-                           Style="{StaticResource NormalTextBlock}"  
-                       VerticalAlignment="Bottom">strike:</TextBlock>
-                    <TextBlock x:Name="txtNextPutDelta"  HorizontalAlignment="Center" 
-                           Grid.Row="4" Grid.Column="3"
-                           Style="{StaticResource NormalTextBlock}"  
-                       VerticalAlignment="Top" Margin="0,4,0,0"
-                       Text="{Binding NextPutDelta, FallbackValue=-50}"></TextBlock>
-                    <TextBox x:Name="txtCallStrike" Grid.Row="4" Grid.Column="5" TextAlignment="Center" 
-                     Text="{Binding NextCallStrike, FallbackValue=0}" />
-                    <TextBlock HorizontalAlignment="Center" 
-                           Grid.Row="4" Grid.Column="6"
-                           Style="{StaticResource NormalTextBlock}"  
-                       VerticalAlignment="Bottom">strike:</TextBlock>
-                    <TextBlock x:Name="txtNextCallDelta" HorizontalAlignment="Center" 
-                           Grid.Row="4" Grid.Column="7"
-                           Style="{StaticResource NormalTextBlock}"  
-                       VerticalAlignment="Bottom"
-                       Text="{Binding NextCallDelta, FallbackValue=50}"></TextBlock>
                 </Grid>
             </GroupBox>
 
-            
-            
-            
+
+
+
 
         </Grid>
 
