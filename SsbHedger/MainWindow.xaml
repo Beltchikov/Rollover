@@ -77,25 +77,13 @@
         <Grid x:Name="maxLoss" Background="LightBlue" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3">
             <Grid.RowDefinitions>
                 <RowDefinition Height="20"></RowDefinition>
-                <RowDefinition Height="20"></RowDefinition>
-                <RowDefinition Height="20"></RowDefinition>
-                <RowDefinition Height="20"></RowDefinition>
-                <RowDefinition Height="20"></RowDefinition>
-                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="200"></RowDefinition>
                 <RowDefinition Height="20"></RowDefinition>
                 <RowDefinition Height="20"></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="700"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
@@ -106,54 +94,86 @@
                            ></TextBlock>
             </StackPanel>
 
-            <TextBlock HorizontalAlignment="Center" 
+            <GroupBox Header="Delta Alert" Grid.Row="1" Style="{StaticResource GroupBoxHeader}" >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"></RowDefinition>
+                        <RowDefinition Height="20"></RowDefinition>
+                        <RowDefinition Height="20"></RowDefinition>
+                        <RowDefinition Height="20"></RowDefinition>
+                        <RowDefinition Height="20"></RowDefinition>
+                        <RowDefinition Height="20"></RowDefinition>
+                        <RowDefinition Height="20"></RowDefinition>
+                        <RowDefinition Height="20"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="2"
                            Style="{StaticResource TableHeader}"  
                        VerticalAlignment="Bottom">Alerts</TextBlock>
-            <TextBlock HorizontalAlignment="Center" 
+                    <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="3"
                            Style="{StaticResource TableHeader}"  
                        VerticalAlignment="Bottom">Alert delta &lt;</TextBlock>
-            <TextBox Grid.Row="3" Grid.Column="1" TextAlignment="Center" 
+                    <TextBox Grid.Row="3" Grid.Column="1" TextAlignment="Center" 
                      Text="{Binding DeltaThreshold, FallbackValue=16}" />
-            <CheckBox x:Name="chkActivateAlert" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Center" 
+                    <CheckBox x:Name="chkActivateAlert" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Center" 
                       VerticalAlignment="Center"
                       Command="{Binding DeltaAlertActivateCommand}"
                       IsChecked="False" >
-                <CheckBox.CommandParameter>
-                    <MultiBinding Converter="{StaticResource DeltaAlertActivateConverter}" Mode="OneWay">
-                        <Binding Path="IsChecked" ElementName="chkActivateAlert"/>
-                        <Binding Path="Text" ElementName="txtPutStrike"/>
-                        <Binding Path="Text" ElementName="txtCallStrike"/>
-                    </MultiBinding>
-                </CheckBox.CommandParameter>
-            </CheckBox>
-            <TextBlock HorizontalAlignment="Center" 
+                        <CheckBox.CommandParameter>
+                            <MultiBinding Converter="{StaticResource DeltaAlertActivateConverter}" Mode="OneWay">
+                                <Binding Path="IsChecked" ElementName="chkActivateAlert"/>
+                                <Binding Path="Text" ElementName="txtPutStrike"/>
+                                <Binding Path="Text" ElementName="txtCallStrike"/>
+                            </MultiBinding>
+                        </CheckBox.CommandParameter>
+                    </CheckBox>
+                    <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="4"
                            Style="{StaticResource TableHeader}"  
                        VerticalAlignment="Bottom">Current Delta for</TextBlock>
-            <TextBox x:Name="txtPutStrike" Grid.Row="4" Grid.Column="1" TextAlignment="Center" 
+                    <TextBox x:Name="txtPutStrike" Grid.Row="4" Grid.Column="1" TextAlignment="Center" 
                      Text="{Binding NextPutStrike, FallbackValue=0}" />
-            <TextBlock HorizontalAlignment="Center" 
+                    <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="4" Grid.Column="2"
                            Style="{StaticResource NormalTextBlock}"  
                        VerticalAlignment="Bottom">strike:</TextBlock>
-            <TextBlock x:Name="txtNextPutDelta"  HorizontalAlignment="Center" 
+                    <TextBlock x:Name="txtNextPutDelta"  HorizontalAlignment="Center" 
                            Grid.Row="4" Grid.Column="3"
                            Style="{StaticResource NormalTextBlock}"  
                        VerticalAlignment="Top" Margin="0,4,0,0"
                        Text="{Binding NextPutDelta, FallbackValue=-50}"></TextBlock>
-            <TextBox x:Name="txtCallStrike" Grid.Row="4" Grid.Column="5" TextAlignment="Center" 
+                    <TextBox x:Name="txtCallStrike" Grid.Row="4" Grid.Column="5" TextAlignment="Center" 
                      Text="{Binding NextCallStrike, FallbackValue=0}" />
-            <TextBlock HorizontalAlignment="Center" 
+                    <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="4" Grid.Column="6"
                            Style="{StaticResource NormalTextBlock}"  
                        VerticalAlignment="Bottom">strike:</TextBlock>
-            <TextBlock x:Name="txtNextCallDelta" HorizontalAlignment="Center" 
+                    <TextBlock x:Name="txtNextCallDelta" HorizontalAlignment="Center" 
                            Grid.Row="4" Grid.Column="7"
                            Style="{StaticResource NormalTextBlock}"  
                        VerticalAlignment="Bottom"
                        Text="{Binding NextCallDelta, FallbackValue=50}"></TextBlock>
+                </Grid>
+            </GroupBox>
+
+            
+            
+            
 
         </Grid>
 
