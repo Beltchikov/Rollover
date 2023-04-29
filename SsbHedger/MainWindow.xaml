@@ -94,7 +94,8 @@
                            ></TextBlock>
             </StackPanel>
 
-            <GroupBox Header="Delta Alert" Grid.Row="1" Style="{StaticResource GroupBoxHeader}" >
+            <GroupBox Header="Delta Alert" Grid.Row="1" Style="{StaticResource GroupBoxHeader}"
+                      VerticalAlignment="Top">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20"></RowDefinition>
