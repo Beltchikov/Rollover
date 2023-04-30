@@ -8,6 +8,19 @@ namespace ChartControls.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
+            if (values[0].GetType() != typeof(DateTime)) 
+            {
+                throw new NotImplementedException($"Not implements for the type {values.GetType()}");
+            }
+
+            var time = (DateTime)values[0]; 
+            var width = (double)values[1];
+
+            if(width == 0)
+            {
+                return 0.0;
+            }
+            
             // TODO
             return 20.0;
         }
