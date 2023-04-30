@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Data;
 
 namespace ChartControls.Converters
@@ -14,7 +16,8 @@ namespace ChartControls.Converters
             }
 
             var time = (DateTime)values[0]; 
-            var width = (double)values[1];
+            var timeCollection= ((ObservableCollection<object>)values[1]).Cast<DateTime>();
+            var width = (double)values[2];
 
             if(width == 0)
             {

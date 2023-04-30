@@ -12,7 +12,7 @@
         <converters:XValuesConverter x:Key="XValuesConverter"/>
     </UserControl.Resources>
     <Canvas Background="LightGreen">
-        <ItemsControl ItemsSource="{Binding ElementName=ucChart, Path=XValues}">
+        <ItemsControl x:Name="itemsControlChart" ItemsSource="{Binding ElementName=ucChart, Path=XValues}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Canvas>
@@ -22,6 +22,7 @@
                                 <MultiBinding Converter="{StaticResource XValuesConverter}">
                                     <MultiBinding.Bindings>
                                         <Binding/>
+                                        <Binding ElementName="itemsControlChart" Path="ItemsSource"/>
                                         <Binding ElementName="ucChart" Path="ActualWidth"/>
                                     </MultiBinding.Bindings>
                                 </MultiBinding>
