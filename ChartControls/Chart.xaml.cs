@@ -21,7 +21,7 @@ namespace ChartControls
     /// </summary>
     public partial class Chart : UserControl
     {
-        public List<object> XValues { get; set; }
+        //public List<object> XValues { get; set; }
         
 
         public string Rrr
@@ -33,6 +33,20 @@ namespace ChartControls
         // Using a DependencyProperty as the backing store for Rrr.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty RrrProperty =
             DependencyProperty.Register("Rrr", typeof(string), typeof(Chart), new PropertyMetadata(""));
+
+
+
+        public List<object> XValues
+        {
+            get { return (List<object>)GetValue(XValuesProperty); }
+            set { SetValue(XValuesProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for XValues.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty XValuesProperty =
+            DependencyProperty.Register("XValues", typeof(List<object>), typeof(Chart), new PropertyMetadata(new List<object>()));
+
+
 
 
 
