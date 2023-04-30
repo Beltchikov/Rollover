@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,21 +11,21 @@ namespace ChartControls
     /// </summary>
     public partial class Chart : UserControl
     {
-        public List<object> XValues
+        public ObservableCollection<object> XValues
         {
-            get { return (List<object>)GetValue(XValuesProperty); }
+            get { return (ObservableCollection<object>)GetValue(XValuesProperty); }
             set { SetValue(XValuesProperty, value); }
         }
 
         public static readonly DependencyProperty XValuesProperty =
-            DependencyProperty.Register("XValues", typeof(List<object>), typeof(Chart), new PropertyMetadata(new List<object>()));
+            DependencyProperty.Register("XValues", typeof(ObservableCollection<object>), typeof(Chart), new PropertyMetadata(new ObservableCollection<object>()));
 
         public Chart()
         {
             InitializeComponent();
             //DataContext = this;
             
-            XValues = new List<object>();
+            XValues = new ObservableCollection<object>();
 
             // TODO remove later
             XValues.Add(DateTime.Parse("30.04.2023 15:30", new CultureInfo("de-DE")));  
