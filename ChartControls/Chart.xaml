@@ -4,10 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ChartControls"
+             xmlns:converters="clr-namespace:ChartControls.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             x:Name="ucChart"
-             mc:Ignorable="d">
+             x:Name="ucChart">
+    <UserControl.Resources>
+        <converters:XValuesConverter x:Key="XValuesConverter"/>
+    </UserControl.Resources>
     <Canvas Background="LightGreen">
         <!--<TextBox Width="200" Height="50" Text="{Binding ElementName=ucChart, Path=Rrr}"
                  d:Text="Rrr!"/>-->
@@ -18,13 +21,26 @@
                         <Ellipse Width="10" Height="10"
                             Fill="Blue"
                             Canvas.Top="25" >
-                        </Ellipse>
                         <Canvas.Left>
-                            <MultiBinding Converter="{StaticResource barCanvasLeftConverter}">
+                            <MultiBinding Converter="{StaticResource XValuesConverter}">
                                 <MultiBinding.Bindings>
+                                    <Binding/>
+                                   <!--<Binding>
+                                        <Binding.RelativeSource>
+                                            <RelativeSource>
+                                                <RelativeSource.AncestorType>
+                                                    <x:Type TypeName="UserControl"></x:Type>
+                                                </RelativeSource.AncestorType>
+                                            </RelativeSource>
+                                        </Binding.RelativeSource>
+                                        <Binding.Path>Value</Binding.Path>
+                                    </Binding>-->
+                                    <Binding ElementName="ucChart" Path="ActualWidth"/>
+                                    <Binding ElementName="ucChart" Path="ActualHeight"/>
                                 </MultiBinding.Bindings>
                             </MultiBinding>
                         </Canvas.Left>
+                        </Ellipse>
                     </Canvas>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
