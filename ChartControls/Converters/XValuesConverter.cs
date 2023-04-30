@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
@@ -16,16 +17,23 @@ namespace ChartControls.Converters
             }
 
             var time = (DateTime)values[0]; 
-            var timeCollection= ((ObservableCollection<object>)values[1]).Cast<DateTime>();
+            var timeCollection= ((ObservableCollection<object>)values[1]).Cast<DateTime>().ToList();
             var width = (double)values[2];
 
             if(width == 0)
             {
                 return 0.0;
             }
-            
+
+            int index = timeCollection.IndexOf(time);
+            var range = (timeCollection.Max() - timeCollection.Min()).Ticks * (timeCollection.Count +1) / timeCollection.Count;
+            double koef = width / range;
+            var offset = (time - timeCollection[0]).Ticks;
+
+            var result = index * koef * offset;
+
             // TODO
-            return 20.0;
+            return result;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
