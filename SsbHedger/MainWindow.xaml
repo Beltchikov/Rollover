@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:SsbHedger"
         xmlns:model="clr-namespace:SsbHedger.Model"
         xmlns:converters="clr-namespace:SsbHedger.Converters"
+        xmlns:chartControls="clr-namespace:ChartControls;assembly=ChartControls"
         xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="MainWindow" Height="1000" Width="1600" WindowState="Maximized" 
@@ -241,10 +242,10 @@
                         </CheckBox.CommandParameter>
                     </CheckBox>
 
-                    <Canvas x:Name="cnvIv" Grid.Row="1" Grid.Column="3" Grid.RowSpan="10"
-                            Background="Bisque" >
+                    <chartControls:Chart Grid.Row="1" Grid.Column="3" Grid.RowSpan="10">
                         
-                    </Canvas>
+                    </chartControls:Chart>
+                    
                 </Grid>
             </GroupBox>
 
