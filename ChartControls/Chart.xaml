@@ -16,17 +16,16 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Canvas>
-                        <Ellipse Width="10" Height="10"
-                            Fill="Blue"
+                        <Ellipse Width="5" Height="5" Fill="Blue"
                             Canvas.Top="25" >
-                        <Canvas.Left>
-                            <MultiBinding Converter="{StaticResource XValuesConverter}">
-                                <MultiBinding.Bindings>
-                                    <Binding/>
-                                    <Binding ElementName="ucChart" Path="ActualWidth"/>
-                                </MultiBinding.Bindings>
-                            </MultiBinding>
-                        </Canvas.Left>
+                            <Canvas.Left>
+                                <MultiBinding Converter="{StaticResource XValuesConverter}">
+                                    <MultiBinding.Bindings>
+                                        <Binding/>
+                                        <Binding ElementName="ucChart" Path="ActualWidth"/>
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </Canvas.Left>
                         </Ellipse>
                     </Canvas>
                 </DataTemplate>
