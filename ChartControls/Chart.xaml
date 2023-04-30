@@ -12,8 +12,6 @@
         <converters:XValuesConverter x:Key="XValuesConverter"/>
     </UserControl.Resources>
     <Canvas Background="LightGreen">
-        <!--<TextBox Width="200" Height="50" Text="{Binding ElementName=ucChart, Path=Rrr}"
-                 d:Text="Rrr!"/>-->
         <ItemsControl ItemsSource="{Binding ElementName=ucChart, Path=XValues}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
@@ -25,18 +23,7 @@
                             <MultiBinding Converter="{StaticResource XValuesConverter}">
                                 <MultiBinding.Bindings>
                                     <Binding/>
-                                   <!--<Binding>
-                                        <Binding.RelativeSource>
-                                            <RelativeSource>
-                                                <RelativeSource.AncestorType>
-                                                    <x:Type TypeName="UserControl"></x:Type>
-                                                </RelativeSource.AncestorType>
-                                            </RelativeSource>
-                                        </Binding.RelativeSource>
-                                        <Binding.Path>Value</Binding.Path>
-                                    </Binding>-->
                                     <Binding ElementName="ucChart" Path="ActualWidth"/>
-                                    <Binding ElementName="ucChart" Path="ActualHeight"/>
                                 </MultiBinding.Bindings>
                             </MultiBinding>
                         </Canvas.Left>

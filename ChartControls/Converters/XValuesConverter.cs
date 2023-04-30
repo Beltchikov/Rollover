@@ -8,7 +8,7 @@ namespace ChartControls.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            //throw new NotImplementedException();
+            // TODO
             return 20;
         }
 
