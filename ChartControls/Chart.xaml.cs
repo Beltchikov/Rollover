@@ -11,47 +11,39 @@ namespace ChartControls
     /// </summary>
     public partial class Chart : UserControl
     {
-        //public ObservableCollection<object> XValues
-        //{
-        //    get { return (ObservableCollection<object>)GetValue(XValuesProperty); }
-        //    set { SetValue(XValuesProperty, value); }
-        //}
-        //public static readonly DependencyProperty XValuesProperty =
-        //    DependencyProperty.Register("XValues", typeof(ObservableCollection<object>), typeof(Chart), new PropertyMetadata(new ObservableCollection<object>()));
-        public ObservableCollection<ObservableCollection<object>> XValues
+        public ObservableCollection<ObservableCollection<DataPoint>> XValues
         {
-            get { return (ObservableCollection<ObservableCollection<object>>)GetValue(XValuesProperty); }
+            get { return (ObservableCollection<ObservableCollection<DataPoint>>)GetValue(XValuesProperty); }
             set { SetValue(XValuesProperty, value); }
         }
         public static readonly DependencyProperty XValuesProperty =
-            DependencyProperty.Register("XValues", typeof(ObservableCollection<ObservableCollection<object>>), 
-                typeof(Chart), new PropertyMetadata(new ObservableCollection<ObservableCollection<object>>()));
-
-        public double DotSize
-        {
-            get { return (double)GetValue(DotSizeProperty); }
-            set { SetValue(DotSizeProperty, value); }
-        }
-        public static readonly DependencyProperty DotSizeProperty =
-            DependencyProperty.Register("DotSize", typeof(double), typeof(Chart), new PropertyMetadata(.0));
-
-
+            DependencyProperty.Register("XValues", typeof(ObservableCollection<ObservableCollection<DataPoint>>), 
+                typeof(Chart), new PropertyMetadata(new ObservableCollection<ObservableCollection<DataPoint>>()));
 
         public Chart()
         {
             InitializeComponent();
-            //DataContext = this;
-            
-            XValues = new ObservableCollection<ObservableCollection<object>>();
+                        
+            XValues = new ObservableCollection<ObservableCollection<DataPoint>>();
 
             // TODO remove later
-            var dataRow1 = new ObservableCollection<object>();
-            dataRow1.Add(DateTime.Parse("30.04.2023 15:30", new CultureInfo("de-DE")));
-            dataRow1.Add(DateTime.Parse("30.04.2023 15:35", new CultureInfo("de-DE")));
-            dataRow1.Add(DateTime.Parse("30.04.2023 15:40", new CultureInfo("de-DE")));
-            XValues.Add(dataRow1);  
+            var dataRow1 = new ObservableCollection<DataPoint>();
+            dataRow1.Add(new DataPoint {
+                Value= DateTime.Parse("30.04.2023 15:30", new CultureInfo("de-DE")), 
+                DotSize = 5 });
+            dataRow1.Add(new DataPoint
+            {
+                Value = DateTime.Parse("30.04.2023 15:35", new CultureInfo("de-DE")),
+                DotSize = 5
+            });
+            dataRow1.Add(new DataPoint
+            {
+                Value = DateTime.Parse("30.04.2023 15:40", new CultureInfo("de-DE")),
+                DotSize = 5
+            });
 
-            DotSize = 5;
+
+            XValues.Add(dataRow1);  
 
         }
     }
