@@ -15,21 +15,27 @@
         <ItemsControl x:Name="itemsControlChart" ItemsSource="{Binding ElementName=ucChart, Path=XValues}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Canvas>
-                        <Ellipse Width="{Binding ElementName=ucChart, Path=DotSize}" 
+                    <ItemsControl x:Name="itemsControlChart" ItemsSource="{Binding}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Canvas>
+                                    <Ellipse Width="{Binding ElementName=ucChart, Path=DotSize}" 
                                  Height="{Binding ElementName=ucChart, Path=DotSize}" Fill="Blue"
                             Canvas.Top="25" >
-                            <Canvas.Left>
-                                <MultiBinding Converter="{StaticResource XValuesConverter}">
-                                    <MultiBinding.Bindings>
-                                        <Binding/>
-                                        <Binding ElementName="itemsControlChart" Path="ItemsSource"/>
-                                        <Binding ElementName="ucChart" Path="ActualWidth"/>
-                                    </MultiBinding.Bindings>
-                                </MultiBinding>
-                            </Canvas.Left>
-                        </Ellipse>
-                    </Canvas>
+                                        <Canvas.Left>
+                                            <MultiBinding Converter="{StaticResource XValuesConverter}">
+                                                <MultiBinding.Bindings>
+                                                    <Binding/>
+                                                    <Binding ElementName="itemsControlChart" Path="ItemsSource"/>
+                                                    <Binding ElementName="ucChart" Path="ActualWidth"/>
+                                                </MultiBinding.Bindings>
+                                            </MultiBinding>
+                                        </Canvas.Left>
+                                    </Ellipse>
+                                </Canvas>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
