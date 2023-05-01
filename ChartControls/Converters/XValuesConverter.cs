@@ -31,6 +31,9 @@ namespace ChartControls.Converters
             var offset = (time - timeCollection[0]).Ticks;
 
             return index == 0 ? 0 : koef * offset;
+
+            //
+            //var result = _mathUtility.GetCoordinate(chartWidth, datapoints, idx, startOffset, endOffset);
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
