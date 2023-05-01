@@ -16,9 +16,19 @@ namespace ChartControls
             get { return (ObservableCollection<object>)GetValue(XValuesProperty); }
             set { SetValue(XValuesProperty, value); }
         }
-
         public static readonly DependencyProperty XValuesProperty =
             DependencyProperty.Register("XValues", typeof(ObservableCollection<object>), typeof(Chart), new PropertyMetadata(new ObservableCollection<object>()));
+
+        public double DotSize
+        {
+            get { return (double)GetValue(DotSizeProperty); }
+            set { SetValue(DotSizeProperty, value); }
+        }
+
+        public static readonly DependencyProperty DotSizeProperty =
+            DependencyProperty.Register("DotSize", typeof(double), typeof(Chart), new PropertyMetadata(.0));
+
+
 
         public Chart()
         {
@@ -31,6 +41,8 @@ namespace ChartControls
             XValues.Add(DateTime.Parse("30.04.2023 15:30", new CultureInfo("de-DE")));  
             XValues.Add(DateTime.Parse("30.04.2023 15:35", new CultureInfo("de-DE")));  
             XValues.Add(DateTime.Parse("30.04.2023 15:40", new CultureInfo("de-DE")));
+
+            DotSize = 5;
 
         }
     }

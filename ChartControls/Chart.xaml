@@ -16,7 +16,8 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Canvas>
-                        <Ellipse Width="5" Height="5" Fill="Blue"
+                        <Ellipse Width="{Binding ElementName=ucChart, Path=DotSize}" 
+                                 Height="{Binding ElementName=ucChart, Path=DotSize}" Fill="Blue"
                             Canvas.Top="25" >
                             <Canvas.Left>
                                 <MultiBinding Converter="{StaticResource XValuesConverter}">
