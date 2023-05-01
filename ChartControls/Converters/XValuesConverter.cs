@@ -30,10 +30,7 @@ namespace ChartControls.Converters
             double koef = width / range;
             var offset = (time - timeCollection[0]).Ticks;
 
-            var result = index * koef * offset;
-
-            // TODO
-            return result;
+            return index == 0 ? 0 : koef * offset;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
