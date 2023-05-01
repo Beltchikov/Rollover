@@ -24,7 +24,6 @@ namespace ChartControls
             get { return (double)GetValue(DotSizeProperty); }
             set { SetValue(DotSizeProperty, value); }
         }
-
         public static readonly DependencyProperty DotSizeProperty =
             DependencyProperty.Register("DotSize", typeof(double), typeof(Chart), new PropertyMetadata(.0));
 
