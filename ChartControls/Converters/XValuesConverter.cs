@@ -33,7 +33,7 @@ namespace ChartControls.Converters
             return index == 0 ? 0 : koef * offset;
 
             //
-            //var result = _mathUtility.GetCoordinate(chartWidth, datapoints, idx, startOffset, endOffset);
+            //var result = _mathUtility.GetDiagramCoordinate(diagramWidth, datapoints, idx, startOffset, endOffset);
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
