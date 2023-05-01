@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace ChartControls
 {
@@ -30,19 +31,21 @@ namespace ChartControls
             var dataRow1 = new ObservableCollection<DataPoint>();
             dataRow1.Add(new DataPoint {
                 Value= DateTime.Parse("30.04.2023 15:30", new CultureInfo("de-DE")), 
-                DotSize = 5 });
+                DotSize = 5,
+                Fill = Brushes.Red});
             dataRow1.Add(new DataPoint
             {
                 Value = DateTime.Parse("30.04.2023 15:35", new CultureInfo("de-DE")),
-                DotSize = 5
+                DotSize = 5,
+                Fill = Brushes.Red
             });
             dataRow1.Add(new DataPoint
             {
                 Value = DateTime.Parse("30.04.2023 15:40", new CultureInfo("de-DE")),
-                DotSize = 5
+                DotSize = 5,
+                Fill = Brushes.Red
             });
-
-
+         
             XValues.Add(dataRow1);  
 
         }

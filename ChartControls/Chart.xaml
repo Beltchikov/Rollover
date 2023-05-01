@@ -20,7 +20,7 @@
                             <DataTemplate>
                                 <Canvas>
                                     <Ellipse Width="{Binding Path=DotSize}" 
-                                 Height="{Binding Path=DotSize}" Fill="Blue"
+                                 Height="{Binding Path=DotSize}" Fill="{Binding Path=Fill}"
                             Canvas.Top="25" >
                                         <Canvas.Left>
                                             <MultiBinding Converter="{StaticResource XValuesConverter}">
