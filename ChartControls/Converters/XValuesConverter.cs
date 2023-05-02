@@ -32,17 +32,11 @@ namespace ChartControls.Converters
                 return 0.0;
             }
 
-            //int index = timeCollection.IndexOf(time);
-            //var range = (timeCollection.Max() - timeCollection.Min()).Ticks * (timeCollection.Count +1) / timeCollection.Count;
-            //double koef = width / range;
-            //var offset = (time - timeCollection[0]).Ticks;
-
-            //return index == 0 ? 0 : koef * offset;
-
-            //
-            return _mathUtility.GetDiagramCoordinate(width, timeCollection.Select(t => (t - new DateTime(1970, 1, 1)).TotalMilliseconds)
+            var valuesForDiagram = timeCollection.Select(t => (t - new DateTime(1970, 1, 1)).TotalMilliseconds)
                                                                           .Cast<double>()
-                                                                          .ToList(), timeCollection.IndexOf(time), 0, 25);
+                                                                          .ToList();
+            var endOffset = (valuesForDiagram.Max() - valuesForDiagram.Min()) * 0.2;
+            return _mathUtility.GetDiagramCoordinate(width, valuesForDiagram, timeCollection.IndexOf(time), 0, endOffset);
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

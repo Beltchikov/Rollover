@@ -24,15 +24,24 @@ namespace ChartControls
         public Chart()
         {
             InitializeComponent();
+            
+            // TODO remove later
+            TestData();
 
+        }
+
+        private void TestData()
+        {
             XValues = new ObservableCollection<ObservableCollection<DataPoint>>();
 
             // TODO remove later
             var dataRow1 = new ObservableCollection<DataPoint>();
-            dataRow1.Add(new DataPoint {
-                Value= DateTime.Parse("30.04.2023 15:30", new CultureInfo("de-DE")), 
+            dataRow1.Add(new DataPoint
+            {
+                Value = DateTime.Parse("30.04.2023 15:30", new CultureInfo("de-DE")),
                 DotSize = 5,
-                Fill = Brushes.Red});
+                Fill = Brushes.Red
+            });
             dataRow1.Add(new DataPoint
             {
                 Value = DateTime.Parse("30.04.2023 15:35", new CultureInfo("de-DE")),
@@ -45,9 +54,8 @@ namespace ChartControls
                 DotSize = 5,
                 Fill = Brushes.Red
             });
-         
-            XValues.Add(dataRow1);  
 
+            XValues.Add(dataRow1);
         }
     }
 }
