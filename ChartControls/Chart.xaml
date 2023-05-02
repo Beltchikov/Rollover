@@ -25,7 +25,7 @@
                                         <Canvas.Left>
                                             <MultiBinding Converter="{StaticResource XValuesConverter}">
                                                 <MultiBinding.Bindings>
-                                                    <Binding Path="Value"/>
+                                                    <Binding Path="XValue"/>
                                                     <Binding ElementName="itemsControlChart2" Path="ItemsSource"/>
                                                     <Binding ElementName="ucChart" Path="ActualWidth"/>
                                                 </MultiBinding.Bindings>

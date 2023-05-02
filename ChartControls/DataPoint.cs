@@ -4,7 +4,8 @@ namespace ChartControls
 {
     public class DataPoint
     {
-        public object? Value { get; set; }
+        public object? XValue { get; set; }
+        public object? YValue { get; set; }
         public double DotSize { get; set; }
         public Brush? Fill { get; set; }
     }

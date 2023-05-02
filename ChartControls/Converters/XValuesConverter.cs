@@ -24,7 +24,7 @@ namespace ChartControls.Converters
             }
 
             var time = (DateTime)values[0]; 
-            var timeCollection= ((ObservableCollection<DataPoint>)values[1]).Select(c => c.Value).Cast<DateTime>().ToList();
+            var timeCollection= ((ObservableCollection<DataPoint>)values[1]).Select(c => c.XValue).Cast<DateTime>().ToList();
             var width = (double)values[2];
 
             if(width == 0)
