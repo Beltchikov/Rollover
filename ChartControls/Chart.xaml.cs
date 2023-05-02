@@ -24,7 +24,7 @@ namespace ChartControls
         public Chart()
         {
             InitializeComponent();
-                        
+
             XValues = new ObservableCollection<ObservableCollection<DataPoint>>();
 
             // TODO remove later

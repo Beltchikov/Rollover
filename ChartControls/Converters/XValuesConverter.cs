@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualBasic;
+﻿using ChartControls.Utilities;
 using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -9,6 +9,13 @@ namespace ChartControls.Converters
 {
     public class XValuesConverter : IMultiValueConverter
     {
+        private IMathUtility _mathUtility;
+
+        public XValuesConverter()
+        {
+            _mathUtility = new MathUtility();
+        }
+
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             if (values[0].GetType() != typeof(DateTime)) 
@@ -25,15 +32,17 @@ namespace ChartControls.Converters
                 return 0.0;
             }
 
-            int index = timeCollection.IndexOf(time);
-            var range = (timeCollection.Max() - timeCollection.Min()).Ticks * (timeCollection.Count +1) / timeCollection.Count;
-            double koef = width / range;
-            var offset = (time - timeCollection[0]).Ticks;
+            //int index = timeCollection.IndexOf(time);
+            //var range = (timeCollection.Max() - timeCollection.Min()).Ticks * (timeCollection.Count +1) / timeCollection.Count;
+            //double koef = width / range;
+            //var offset = (time - timeCollection[0]).Ticks;
 
-            return index == 0 ? 0 : koef * offset;
+            //return index == 0 ? 0 : koef * offset;
 
             //
-            //var result = _mathUtility.GetDiagramCoordinate(diagramWidth, datapoints, idx, startOffset, endOffset);
+            return _mathUtility.GetDiagramCoordinate(width, timeCollection.Select(t => (t - new DateTime(1970, 1, 1)).TotalMilliseconds)
+                                                                          .Cast<double>()
+                                                                          .ToList(), timeCollection.IndexOf(time), 0, 25);
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
