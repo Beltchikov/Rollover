@@ -12,7 +12,7 @@ namespace ChartControls
     /// </summary>
     public partial class Chart : UserControl
     {
-        public ObservableCollection<ObservableCollection<DataPoint>> XValues
+        public ObservableCollection<ObservableCollection<DataPoint>> DataPointsCollection
         {
             get { return (ObservableCollection<ObservableCollection<DataPoint>>)GetValue(XValuesProperty); }
             set { SetValue(XValuesProperty, value); }
@@ -32,7 +32,7 @@ namespace ChartControls
 
         private void TestData()
         {
-            XValues = new ObservableCollection<ObservableCollection<DataPoint>>();
+            DataPointsCollection = new ObservableCollection<ObservableCollection<DataPoint>>();
 
             // TODO remove later
             var dataRow1 = new ObservableCollection<DataPoint>();
@@ -55,7 +55,7 @@ namespace ChartControls
                 Fill = Brushes.Red
             });
 
-            XValues.Add(dataRow1);
+            DataPointsCollection.Add(dataRow1);
         }
     }
 }
