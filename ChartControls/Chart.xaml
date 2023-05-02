@@ -15,7 +15,7 @@
         <ItemsControl x:Name="itemsControlChart" ItemsSource="{Binding ElementName=ucChart, Path=XValues}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <ItemsControl x:Name="itemsControlChart" ItemsSource="{Binding}">
+                    <ItemsControl x:Name="itemsControlChart2" ItemsSource="{Binding}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Canvas>
@@ -26,7 +26,7 @@
                                             <MultiBinding Converter="{StaticResource XValuesConverter}">
                                                 <MultiBinding.Bindings>
                                                     <Binding Path="Value"/>
-                                                    <Binding ElementName="itemsControlChart" Path="ItemsSource"/>
+                                                    <Binding ElementName="itemsControlChart2" Path="ItemsSource"/>
                                                     <Binding ElementName="ucChart" Path="ActualWidth"/>
                                                 </MultiBinding.Bindings>
                                             </MultiBinding>
