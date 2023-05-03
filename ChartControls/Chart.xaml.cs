@@ -39,18 +39,21 @@ namespace ChartControls
             dataRow1.Add(new DataPoint
             {
                 XValue = DateTime.Parse("30.04.2023 15:30", new CultureInfo("de-DE")),
+                YValue = 300d,
                 DotSize = 5,
                 Fill = Brushes.Red
             });
             dataRow1.Add(new DataPoint
             {
                 XValue = DateTime.Parse("30.04.2023 15:35", new CultureInfo("de-DE")),
+                YValue = 320d,
                 DotSize = 5,
                 Fill = Brushes.Red
             });
             dataRow1.Add(new DataPoint
             {
                 XValue = DateTime.Parse("30.04.2023 15:40", new CultureInfo("de-DE")),
+                YValue = 310d,
                 DotSize = 5,
                 Fill = Brushes.Red
             });

@@ -10,6 +10,7 @@
              x:Name="ucChart">
     <UserControl.Resources>
         <converters:XValuesConverter x:Key="XValuesConverter"/>
+        <converters:YValuesConverter x:Key="YValuesConverter"/>
     </UserControl.Resources>
     <Canvas Background="LightGreen">
         <ItemsControl x:Name="itemsControlChart" ItemsSource="{Binding ElementName=ucChart, Path=DataPointsCollection}">
@@ -20,8 +21,7 @@
                             <DataTemplate>
                                 <Canvas>
                                     <Ellipse Width="{Binding Path=DotSize}" 
-                                 Height="{Binding Path=DotSize}" Fill="{Binding Path=Fill}"
-                            Canvas.Top="25" >
+                                 Height="{Binding Path=DotSize}" Fill="{Binding Path=Fill}">
                                         <Canvas.Left>
                                             <MultiBinding Converter="{StaticResource XValuesConverter}">
                                                 <MultiBinding.Bindings>
@@ -31,6 +31,15 @@
                                                 </MultiBinding.Bindings>
                                             </MultiBinding>
                                         </Canvas.Left>
+                                        <Canvas.Top>
+                                            <MultiBinding Converter="{StaticResource YValuesConverter}">
+                                                <MultiBinding.Bindings>
+                                                    <Binding Path="YValue"/>
+                                                    <Binding ElementName="itemsControlChart2" Path="ItemsSource"/>
+                                                    <Binding ElementName="ucChart" Path="ActualHeight"/>
+                                                </MultiBinding.Bindings>
+                                            </MultiBinding>
+                                        </Canvas.Top>
                                     </Ellipse>
                                 </Canvas>
                             </DataTemplate>
