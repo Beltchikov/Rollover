@@ -14,11 +14,11 @@ namespace ChartControls
     {
         public ObservableCollection<ObservableCollection<DataPoint>> DataPointsCollection
         {
-            get { return (ObservableCollection<ObservableCollection<DataPoint>>)GetValue(XValuesProperty); }
-            set { SetValue(XValuesProperty, value); }
+            get { return (ObservableCollection<ObservableCollection<DataPoint>>)GetValue(DataPointsCollectionProperty); }
+            set { SetValue(DataPointsCollectionProperty, value); }
         }
-        public static readonly DependencyProperty XValuesProperty =
-            DependencyProperty.Register("XValues", typeof(ObservableCollection<ObservableCollection<DataPoint>>), 
+        public static readonly DependencyProperty DataPointsCollectionProperty =
+            DependencyProperty.Register("DataPointsCollection", typeof(ObservableCollection<ObservableCollection<DataPoint>>), 
                 typeof(Chart), new PropertyMetadata(new ObservableCollection<ObservableCollection<DataPoint>>()));
 
         public Chart()
