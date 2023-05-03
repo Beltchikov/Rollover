@@ -23,8 +23,8 @@ namespace ChartControls.Converters
                 throw new NotImplementedException($"Not implements for the type {values.GetType()}");
             }
 
-            var time = (double)values[0];
-            var timeCollection = ((ObservableCollection<DataPoint>)values[1]).Select(c => c.YValue).Cast<double>().ToList();
+            var yValue = (double)values[0];
+            var dataPointCollection = ((ObservableCollection<DataPoint>)values[1]).Select(c => c.YValue).Cast<double>().ToList();
             var height = (double)values[2];
 
             if (height == 0)
@@ -32,7 +32,16 @@ namespace ChartControls.Converters
                 return 0.0;
             }
 
+            var startOffset = (dataPointCollection.Max() - dataPointCollection.Min()) * 0.1;
+            var endOffset = startOffset;
+            return _mathUtility.GetDiagramCoordinate(
+                height,
+                dataPointCollection,
+                dataPointCollection.IndexOf(yValue),
+                startOffset,
+                endOffset);
 
+            
             throw new NotImplementedException();
 
             //if (values[0].GetType() != typeof(DateTime)) 
