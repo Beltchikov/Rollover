@@ -34,7 +34,7 @@ namespace ChartControls.Converters
 
             var startOffset = (dataPointCollection.Max() - dataPointCollection.Min()) * 0.1;
             var endOffset = startOffset;
-            return _mathUtility.GetDiagramX(
+            return _mathUtility.GetDiagramY(
                 height,
                 dataPointCollection,
                 dataPointCollection.IndexOf(yValue),
