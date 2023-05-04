@@ -11,7 +11,7 @@ namespace ChartControls.Utilities
             double koef = diagramWidth / range;
             var scaledDistance = datapoints[idx] - datapoints[0];
 
-            return idx == 0 ? startOffset : startOffset + koef * scaledDistance;
+            return idx == 0 ? startOffset* koef : startOffset* koef + koef * scaledDistance;
         }
     }
 }
