@@ -5,7 +5,7 @@ namespace ChartControls.Utilities
 {
     public class MathUtility : IMathUtility
     {
-        public double GetDiagramCoordinate(double diagramWidth, List<double> datapoints, int idx, double startOffset, double endOffset)
+        public double GetDiagramX(double diagramWidth, List<double> datapoints, int idx, double startOffset, double endOffset)
         {
             var range = (datapoints.Max() - datapoints.Min()) + startOffset + endOffset;
             double koef = diagramWidth / range;

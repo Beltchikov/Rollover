@@ -36,7 +36,7 @@ namespace ChartControls.Converters
                                                                           .Cast<double>()
                                                                           .ToList();
             var endOffset = (valuesForDiagram.Max() - valuesForDiagram.Min()) * 0.2;
-            return _mathUtility.GetDiagramCoordinate(width, valuesForDiagram, timeCollection.IndexOf(time), 0, endOffset);
+            return _mathUtility.GetDiagramX(width, valuesForDiagram, timeCollection.IndexOf(time), 0, endOffset);
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
