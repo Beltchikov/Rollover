@@ -1,5 +1,6 @@
 ﻿using ChartControls.Utilities;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
@@ -33,19 +34,34 @@ namespace ChartControls.Converters
                 return 0.0;
             }
 
+            List<List<double>> valuesOfAllDataRows = GenerateDataRowsCollection(dataRowsCollection);
             var startOffset = (dataRow.Max() - dataRow.Min()) * 0.1;
             var endOffset = startOffset;
+            
             return _mathUtility.GetDiagramY(
                 height,
+                valuesOfAllDataRows,
                 dataRow,
                 dataRow.IndexOf(yValue),
-                startOffset,
-                endOffset);
+                startOffset, endOffset);
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
+        }
+
+        private List<List<double>> GenerateDataRowsCollection(ObservableCollection<ObservableCollection<DataPoint>> dataRowsCollection)
+        {
+            List<List<double>> resultListOfLists = new List<List<double>>();
+
+            foreach (var dataRow in dataRowsCollection)
+            {
+                var resultList = dataRow.Select(c => c.YValue).Cast<double>().ToList();
+                resultListOfLists.Add(resultList);
+            }
+
+            return resultListOfLists;
         }
     }
 }
