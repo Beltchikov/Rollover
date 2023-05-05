@@ -24,20 +24,21 @@ namespace ChartControls.Converters
             }
 
             var yValue = (double)values[0];
-            var dataPointCollection = ((ObservableCollection<DataPoint>)values[1]).Select(c => c.YValue).Cast<double>().ToList();
-            var height = (double)values[2];
+            var dataRow = ((ObservableCollection<DataPoint>)values[1]).Select(c => c.YValue).Cast<double>().ToList();
+            var dataRowsCollection = ((ObservableCollection<ObservableCollection<DataPoint>>)values[2]);
+            var height = (double)values[3];
 
             if (height == 0)
             {
                 return 0.0;
             }
 
-            var startOffset = (dataPointCollection.Max() - dataPointCollection.Min()) * 0.1;
+            var startOffset = (dataRow.Max() - dataRow.Min()) * 0.1;
             var endOffset = startOffset;
             return _mathUtility.GetDiagramY(
                 height,
-                dataPointCollection,
-                dataPointCollection.IndexOf(yValue),
+                dataRow,
+                dataRow.IndexOf(yValue),
                 startOffset,
                 endOffset);
         }

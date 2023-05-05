@@ -27,6 +27,7 @@
                                                 <MultiBinding.Bindings>
                                                     <Binding Path="XValue"/>
                                                     <Binding ElementName="itemsControlChart2" Path="ItemsSource"/>
+                                                    <Binding ElementName="itemsControlChart" Path="ItemsSource"/>
                                                     <Binding ElementName="ucChart" Path="ActualWidth"/>
                                                 </MultiBinding.Bindings>
                                             </MultiBinding>
@@ -36,6 +37,7 @@
                                                 <MultiBinding.Bindings>
                                                     <Binding Path="YValue"/>
                                                     <Binding ElementName="itemsControlChart2" Path="ItemsSource"/>
+                                                    <Binding ElementName="itemsControlChart" Path="ItemsSource"/>
                                                     <Binding ElementName="ucChart" Path="ActualHeight"/>
                                                 </MultiBinding.Bindings>
                                             </MultiBinding>

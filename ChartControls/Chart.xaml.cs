@@ -34,7 +34,7 @@ namespace ChartControls
         {
             DataPointsCollection = new ObservableCollection<ObservableCollection<DataPoint>>();
 
-            // TODO remove later
+            // 
             var dataRow1 = new ObservableCollection<DataPoint>();
             dataRow1.Add(new DataPoint
             {
@@ -59,6 +59,32 @@ namespace ChartControls
             });
 
             DataPointsCollection.Add(dataRow1);
+
+            // 
+            var dataRow2 = new ObservableCollection<DataPoint>();
+            dataRow2.Add(new DataPoint
+            {
+                XValue = DateTime.Parse("30.04.2023 15:30", new CultureInfo("de-DE")),
+                YValue = 400d,
+                DotSize = 5,
+                Fill = Brushes.Green
+            });
+            dataRow2.Add(new DataPoint
+            {
+                XValue = DateTime.Parse("30.04.2023 15:35", new CultureInfo("de-DE")),
+                YValue = 420d,
+                DotSize = 5,
+                Fill = Brushes.Green
+            });
+            dataRow2.Add(new DataPoint
+            {
+                XValue = DateTime.Parse("30.04.2023 15:40", new CultureInfo("de-DE")),
+                YValue = 410d,
+                DotSize = 5,
+                Fill = Brushes.Green
+            });
+
+            DataPointsCollection.Add(dataRow2);
         }
     }
 }
