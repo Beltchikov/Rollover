@@ -558,7 +558,7 @@ namespace SsbHedger.Model
 
             if(firstAtmCandidate > UnderlyingPrice)
             {
-                return new double[] { firstAtmCandidate, firstAtmCandidate  - STRIKES_STEP , firstAtmCandidate - 2*STRIKES_STEP };
+                return new double[] { firstAtmCandidate, firstAtmCandidate  - STRIKES_STEP , firstAtmCandidate - 2 * STRIKES_STEP };
             }
 
             return new double[] { firstAtmCandidate, firstAtmCandidate + STRIKES_STEP, firstAtmCandidate + 2 * STRIKES_STEP };
