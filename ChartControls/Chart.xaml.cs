@@ -35,22 +35,22 @@ namespace ChartControls
             DataPointsCollection = new ObservableCollection<ObservableCollection<DataPoint>>();
 
             // 
-            var dataRow1 = new ObservableCollection<DataPoint>();
-            dataRow1.Add(new DataPoint
+            var series1 = new ObservableCollection<DataPoint>();
+            series1.Add(new DataPoint
             {
                 XValue = DateTime.Parse("30.04.2023 15:30", new CultureInfo("de-DE")),
                 YValue = 300d,
                 DotSize = 5,
                 Fill = Brushes.Red
             });
-            dataRow1.Add(new DataPoint
+            series1.Add(new DataPoint
             {
                 XValue = DateTime.Parse("30.04.2023 15:35", new CultureInfo("de-DE")),
                 YValue = 320d,
                 DotSize = 5,
                 Fill = Brushes.Red
             });
-            dataRow1.Add(new DataPoint
+            series1.Add(new DataPoint
             {
                 XValue = DateTime.Parse("30.04.2023 15:40", new CultureInfo("de-DE")),
                 YValue = 310d,
@@ -58,25 +58,25 @@ namespace ChartControls
                 Fill = Brushes.Red
             });
 
-            DataPointsCollection.Add(dataRow1);
+            DataPointsCollection.Add(series1);
 
             // 
-            var dataRow2 = new ObservableCollection<DataPoint>();
-            dataRow2.Add(new DataPoint
+            var series2 = new ObservableCollection<DataPoint>();
+            series2.Add(new DataPoint
             {
                 XValue = DateTime.Parse("30.04.2023 15:30", new CultureInfo("de-DE")),
                 YValue = 400d,
                 DotSize = 5,
                 Fill = Brushes.Green
             });
-            dataRow2.Add(new DataPoint
+            series2.Add(new DataPoint
             {
                 XValue = DateTime.Parse("30.04.2023 15:35", new CultureInfo("de-DE")),
                 YValue = 420d,
                 DotSize = 5,
                 Fill = Brushes.Green
             });
-            dataRow2.Add(new DataPoint
+            series2.Add(new DataPoint
             {
                 XValue = DateTime.Parse("30.04.2023 15:40", new CultureInfo("de-DE")),
                 YValue = 410d,
@@ -84,7 +84,7 @@ namespace ChartControls
                 Fill = Brushes.Green
             });
 
-            DataPointsCollection.Add(dataRow2);
+            DataPointsCollection.Add(series2);
         }
     }
 }
