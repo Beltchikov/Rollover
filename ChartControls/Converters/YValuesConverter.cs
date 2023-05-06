@@ -43,7 +43,7 @@ namespace ChartControls.Converters
                 valuesOfAllDataRows,
                 dataRow,
                 dataRow.IndexOf(yValue),
-                0, 0);
+                startOffset, endOffset);
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
