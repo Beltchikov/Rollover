@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ChartControls.Utilities
@@ -15,7 +16,6 @@ namespace ChartControls.Utilities
         {
             var range = (dataRowsCollection.SelectMany(x => x).Max() - dataRowsCollection.SelectMany(x => x).Min()) + startOffset + endOffset;
             double koef = diagramWidth / range;
-            //var scaledDistance = datarow[idx] - datarow[0];
             var scaledDistance = datarow[idx] - dataRowsCollection.SelectMany(x => x).Min();
 
             return idx == 0 ? startOffset* koef : startOffset* koef + koef * scaledDistance;
@@ -29,11 +29,16 @@ namespace ChartControls.Utilities
             double startOffset,
             double endOffset)
         {
-            var range = (dataRowsCollection.SelectMany(x => x).Max() - dataRowsCollection.SelectMany(x => x).Min()) + startOffset + endOffset;
+            var minValue = dataRowsCollection.SelectMany(x => x).Min();
+            var range = (dataRowsCollection.SelectMany(x => x).Max() - minValue) + startOffset + endOffset;
+            //double koef = Math.Floor((diagramHeight / range)*100) / 100;
             double koef = diagramHeight / range;
-            var scaledDistance = datarow[idx] - dataRowsCollection.SelectMany(x => x).Min();
+            var scaledDistance = datarow[idx] - minValue;
 
-            var result = idx == 0 ? diagramHeight - startOffset * koef : diagramHeight - koef * (startOffset + scaledDistance);
+            var value = datarow[idx];
+            //var result = idx == 0 ? diagramHeight - startOffset * koef : diagramHeight - koef * (startOffset + scaledDistance);
+            var result = diagramHeight - koef * (startOffset + scaledDistance);
+            
             return result;
         }
     }
