@@ -15,5 +15,7 @@ namespace SsbHedger
         void ReqMktDataNextCallOption(double callStike);
         void CancelMktDataNextPutOption();
         void CancelMktDataNextCalllOption();
+        void ReqMktUnderlying();
+        void CancelMktUnderlying();
     }
 }

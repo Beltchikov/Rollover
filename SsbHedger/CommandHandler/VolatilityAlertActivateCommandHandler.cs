@@ -21,11 +21,11 @@ namespace SsbHedger.CommandHandler
 
             if (activate)
             {
-               // TODO
+                _ibHost.ReqMktUnderlying();
             }
             else
             {
-                // TODO
+                _ibHost.CancelMktUnderlying();
             }
         }
     }

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Media;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,7 +20,7 @@ namespace SsbHedger
         private readonly int TIMEOUT = 2000;
         private readonly int REQ_MKT_DATA_SHORT_PUT_ID = 3001;
         private readonly int REQ_MKT_DATA_SHORT_CALL_ID = 3002;
-        private readonly int REQ_MKT_DATA_SPY = 3003;
+        private readonly int REQ_MKT_DATA_UNDERLYING = 3003;
         private readonly int NEXT_PUT_OPTION_REQ_ID = 4001;
         private readonly int NEXT_CALL_OPTION_REQ_ID = 4002;
         IConfiguration _configuration;
@@ -136,6 +137,11 @@ namespace SsbHedger
                new List<TagValue>());
         }
 
+        public void CancelMktDataNextPutOption()
+        {
+            _ibClient.ClientSocket.cancelMktData(NEXT_PUT_OPTION_REQ_ID);
+        }
+
         public void ReqMktDataNextCallOption(double callStike)
         {
             if(_currentCallContract == null)
@@ -154,15 +160,30 @@ namespace SsbHedger
                new List<TagValue>());
         }
 
-
-        public void CancelMktDataNextPutOption()
-        {
-            _ibClient.ClientSocket.cancelMktData(NEXT_PUT_OPTION_REQ_ID);
-        }
-
         public void CancelMktDataNextCalllOption()
         {
             _ibClient.ClientSocket.cancelMktData(NEXT_CALL_OPTION_REQ_ID);
+        }
+
+        public void ReqMktUnderlying()
+        {
+            if (_contractUnderlying == null)
+            {
+                return;
+            }
+
+            _ibClient.ClientSocket.reqMktData(
+               REQ_MKT_DATA_UNDERLYING,
+               _contractUnderlying,
+               "",
+               false,
+               false,
+               new List<TagValue>());
+        }
+
+        public void CancelMktUnderlying()
+        {
+            _ibClient.ClientSocket.cancelMktData(REQ_MKT_DATA_UNDERLYING);
         }
 
         public void ApplyDefaultHistoricalData()
@@ -434,10 +455,22 @@ namespace SsbHedger
 
         private void _ibClient_TickPrice(TickPriceMessage tickPriceMessage)
         {
-            //if (ViewModel == null)
-            //{
-            //    throw new ApplicationException("Unexpected! ViewModel is null");
-            //}
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+
+            if (tickPriceMessage.Field == 1)  // bid. Use 2 for ask
+            {
+                if (tickPriceMessage.RequestId == REQ_MKT_DATA_UNDERLYING)
+                {
+                    ViewModel.SpyPrice = tickPriceMessage.Price;
+                }
+                if (tickPriceMessage.RequestId == NEXT_PUT_OPTION_REQ_ID)
+                {
+                    ViewModel.SpyPrice = tickPriceMessage.Price;
+                }
+            }
 
             //ViewModel.Messages.Add(new Message(0,
             //    $"TickPrice: {tickPriceMessage.Field} {tickPriceMessage.Price}"));
