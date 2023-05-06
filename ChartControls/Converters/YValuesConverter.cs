@@ -26,7 +26,7 @@ namespace ChartControls.Converters
 
             var yValue = (double)values[0];
             var dataRow = ((ObservableCollection<DataPoint>)values[1]).Select(c => c.YValue).Cast<double>().ToList();
-            var dataRowsCollection = ((ObservableCollection<ObservableCollection<DataPoint>>)values[2]);
+            var seriesCollection = ((ObservableCollection<ObservableCollection<DataPoint>>)values[2]);
             var height = (double)values[3];
 
             if (height == 0)
@@ -34,13 +34,13 @@ namespace ChartControls.Converters
                 return 0.0;
             }
 
-            List<List<double>> valuesOfAllDataRows = GenerateDataRowsCollection(dataRowsCollection);
-            var startOffset = (valuesOfAllDataRows.SelectMany(x => x).Max() - valuesOfAllDataRows.SelectMany(x => x).Min()) * 0.1;
+            List<List<double>> valuesOfAllSeries = GenerateDataRowsCollection(seriesCollection);
+            var startOffset = (valuesOfAllSeries.SelectMany(x => x).Max() - valuesOfAllSeries.SelectMany(x => x).Min()) * 0.1;
             var endOffset = startOffset;
             
             return _mathUtility.GetDiagramY(
                 height,
-                valuesOfAllDataRows,
+                valuesOfAllSeries,
                 dataRow,
                 dataRow.IndexOf(yValue),
                 startOffset, endOffset);

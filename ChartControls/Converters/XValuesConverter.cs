@@ -26,7 +26,7 @@ namespace ChartControls.Converters
 
             var time = (DateTime)values[0]; 
             var timeCollection= ((ObservableCollection<DataPoint>)values[1]).Select(c => c.XValue).Cast<DateTime>().ToList();
-            var dataRowsCollection = ((ObservableCollection<ObservableCollection<DataPoint>>)values[2]);
+            var seriesCollection = ((ObservableCollection<ObservableCollection<DataPoint>>)values[2]);
             var width = (double)values[3];
 
             if(width == 0)
@@ -34,7 +34,7 @@ namespace ChartControls.Converters
                 return 0.0;
             }
 
-            List<List<double>> valuesOfAllDataRows = GenerateDataRowsCollection(dataRowsCollection);
+            List<List<double>> valuesOfAllSeries = GenerateDataRowsCollection(seriesCollection);
             var valuesForDiagram = timeCollection.Select(t => (t - new DateTime(1970, 1, 1)).TotalMilliseconds)
                                                                           .Cast<double>()
                                                                           .ToList();
@@ -42,7 +42,7 @@ namespace ChartControls.Converters
             var startOffset = (valuesForDiagram.Max() - valuesForDiagram.Min()) * 0.02;
             return _mathUtility.GetDiagramX(
                 width,
-                valuesOfAllDataRows,
+                valuesOfAllSeries,
                 valuesForDiagram,
                 timeCollection.IndexOf(time),
                 startOffset,
