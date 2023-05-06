@@ -153,13 +153,13 @@
 
                     <TextBlock Grid.Row="7" Style="{StaticResource Label}" 
                        VerticalAlignment="Bottom">Enable alert</TextBlock>
-                    <CheckBox x:Name="chkActivateAlert" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Center" 
+                    <CheckBox x:Name="chkActivateDeltaAlert" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Center" 
                       VerticalAlignment="Center"
                       Command="{Binding DeltaAlertActivateCommand}"
                       IsChecked="False" >
                         <CheckBox.CommandParameter>
                             <MultiBinding Converter="{StaticResource DeltaAlertActivateConverter}" Mode="OneWay">
-                                <Binding Path="IsChecked" ElementName="chkActivateAlert"/>
+                                <Binding Path="IsChecked" ElementName="chkActivateDeltaAlert"/>
                                 <Binding Path="Text" ElementName="txtPutStrike"/>
                                 <Binding Path="Text" ElementName="txtCallStrike"/>
                             </MultiBinding>
