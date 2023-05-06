@@ -464,11 +464,11 @@ namespace SsbHedger
             {
                 if (tickPriceMessage.RequestId == REQ_MKT_DATA_UNDERLYING)
                 {
-                    ViewModel.SpyPrice = tickPriceMessage.Price;
+                    ViewModel.UnderlyingPrice = tickPriceMessage.Price;
                 }
                 if (tickPriceMessage.RequestId == NEXT_PUT_OPTION_REQ_ID)
                 {
-                    ViewModel.SpyPrice = tickPriceMessage.Price;
+                    ViewModel.UnderlyingPrice = tickPriceMessage.Price;
                 }
             }
 
