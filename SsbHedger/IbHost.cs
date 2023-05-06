@@ -23,6 +23,7 @@ namespace SsbHedger
         private readonly int REQ_MKT_DATA_UNDERLYING = 3003;
         private readonly int NEXT_PUT_OPTION_REQ_ID = 4001;
         private readonly int NEXT_CALL_OPTION_REQ_ID = 4002;
+        private readonly int CHECK_OPTION_STRIKE_REQ_ID = 10000;
         IConfiguration _configuration;
         IIBClient _ibClient;
 
@@ -39,6 +40,7 @@ namespace SsbHedger
         private Contract? _currentPutContract;
         private Contract? _currentCallContract;
         Thread _alertThread = null!;
+        private double _atmStrikeCandidate;
 
         public IbHost(IConfiguration configuration, IPositionMessageBuffer positionMessageBuffer)
         {
@@ -184,6 +186,24 @@ namespace SsbHedger
         public void CancelMktUnderlying()
         {
             _ibClient.ClientSocket.cancelMktData(REQ_MKT_DATA_UNDERLYING);
+        }
+
+        private void ReqCheckOptionsStrike(double atmStrikeCandidate)
+        {
+            if (_currentCallContract == null)
+            {
+                return;
+            }
+
+            var contract = CopyContractWithOtherStrike(_currentCallContract, atmStrikeCandidate);
+
+            _ibClient.ClientSocket.reqMktData(
+               CHECK_OPTION_STRIKE_REQ_ID,
+               contract,
+               "",
+               true,
+               false,
+               new List<TagValue>());
         }
 
         public void ApplyDefaultHistoricalData()
@@ -465,10 +485,27 @@ namespace SsbHedger
                 if (tickPriceMessage.RequestId == REQ_MKT_DATA_UNDERLYING)
                 {
                     ViewModel.UnderlyingPrice = tickPriceMessage.Price;
-                }
-                if (tickPriceMessage.RequestId == NEXT_PUT_OPTION_REQ_ID)
-                {
-                    ViewModel.UnderlyingPrice = tickPriceMessage.Price;
+                    if (tickPriceMessage.Price > 0)
+                    {
+                        ViewModel.AtmStrike = -1;
+                        var atmStrikeCandidates = ViewModel.AtmStrikeCandidate(tickPriceMessage.Price);
+                        foreach(var atmStrikeCandidate in  atmStrikeCandidates)
+                        {
+                            _atmStrikeCandidate = atmStrikeCandidate;
+                            ReqCheckOptionsStrike(atmStrikeCandidate);
+                            var startTime = DateTime.Now;
+                            while ((DateTime.Now - startTime).TotalMilliseconds < TIMEOUT && ViewModel.AtmStrike <= 0) { }
+                            if(ViewModel.AtmStrike > 0)
+                            {
+                                break;
+                            }
+                        }
+
+                        if(ViewModel.AtmStrike <= 0)
+                        {
+                            throw new ApplicationException("Unexpected! ATM strike could not be found.");
+                        }
+                    }
                 }
             }
 
@@ -517,7 +554,11 @@ namespace SsbHedger
             {
                 ViewModel.NextCallDelta = Math.Round(message.Delta,3);
             }
-
+            if (message.RequestId == CHECK_OPTION_STRIKE_REQ_ID)
+            {
+                ViewModel.AtmStrike = _atmStrikeCandidate;
+            }
+            
             if (Math.Abs(ViewModel.NextPutDelta) <= ViewModel.DeltaThreshold/100
                 || Math.Abs(ViewModel.NextCallDelta) <= ViewModel.DeltaThreshold/100)
                 {

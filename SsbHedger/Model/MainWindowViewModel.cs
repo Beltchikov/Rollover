@@ -551,15 +551,22 @@ namespace SsbHedger.Model
             set => SetProperty(ref bars, value);
         }
 
-        public double AtmStrike { 
-            get
-            {
-                var decimalPlaces = STRIKES_STEP.ToString().Length - ((int)STRIKES_STEP).ToString().Length == 0 
-                    ? STRIKES_STEP.ToString().Length - ((int)STRIKES_STEP).ToString().Length 
-                    : STRIKES_STEP.ToString().Length - ((int)STRIKES_STEP).ToString().Length - 1;
-                return Math.Round(UnderlyingPrice / STRIKES_STEP, 0) / (decimalPlaces + 1);
-            } 
+        public double[] AtmStrikeCandidate(double underlyingPrice)
+        {
+            int decimalPlaces = DecimalPlaces(STRIKES_STEP);
+            var firstAtmCandidate = Math.Round(UnderlyingPrice / STRIKES_STEP, 0) / (decimalPlaces + 1);
+
+            return new double[] { firstAtmCandidate };
         }
+
+        private static int DecimalPlaces(double value)
+        {
+            return value.ToString().Length - ((int)value).ToString().Length == 0
+                     ? value.ToString().Length - ((int)value).ToString().Length
+                     : value.ToString().Length - ((int)value).ToString().Length - 1;
+        }
+
+        public double AtmStrike {get; set;}
 
         public ICommand InitializeCommand { get; }
         public ICommand UpdateConfigurationCommand { get; }
