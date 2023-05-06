@@ -22,6 +22,7 @@
     <Window.Resources>
         <converters:TimeToDateTimeConverter x:Key="TimeToDateTimeConverter"/>
         <converters:DeltaAlertActivateConverter x:Key="DeltaAlertActivateConverter"/>
+        <converters:VolatilityAlertActivateConverter x:Key="VolatilityAlertActivateConverter"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -120,7 +121,7 @@
                        VerticalAlignment="Bottom">Alert if delta below</TextBlock>
                     <TextBox Grid.Row="1" Grid.Column="1" TextAlignment="Center" 
                      Text="{Binding DeltaThreshold, FallbackValue=16}" />
-                   
+
                     <TextBlock HorizontalAlignment="Center" 
                            Grid.Row="3" Grid.Column="1"
                            Style="{StaticResource NormalTextBlock}"  
@@ -201,7 +202,7 @@
                        VerticalAlignment="Bottom">Underlying Price</TextBlock>
                     <TextBox x:Name="txtUnderlyingPrice" Grid.Row="3" Grid.Column="1" TextAlignment="Center" 
                      Text="TODO" />
-                    
+
                     <TextBlock Grid.Row="4" Style="{StaticResource Label}"  
                        VerticalAlignment="Bottom">Current ATM Strike</TextBlock>
                     <TextBox x:Name="txtCurrentAtmStrike" Grid.Row="4" Grid.Column="1" TextAlignment="Center" 
@@ -235,18 +236,16 @@
                       Command="{Binding VolatilityAlertActivateCommand}"
                       IsChecked="False" >
                         <CheckBox.CommandParameter>
-                            <MultiBinding Converter="{StaticResource DeltaAlertActivateConverter}" Mode="OneWay">
-                                <Binding Path="IsChecked" ElementName="chkActivateAlert"/>
-                                <Binding Path="Text" ElementName="txtPutStrike"/>
-                                <Binding Path="Text" ElementName="txtCallStrike"/>
+                            <MultiBinding Converter="{StaticResource VolatilityAlertActivateConverter}" Mode="OneWay">
+                                <Binding Path="IsChecked" ElementName="chkActivateVolatilityAlert"/>
                             </MultiBinding>
                         </CheckBox.CommandParameter>
                     </CheckBox>
 
                     <chartControls:Chart Grid.Row="1" Grid.Column="3" Grid.RowSpan="10">
-                        
+
                     </chartControls:Chart>
-                    
+
                 </Grid>
             </GroupBox>
 

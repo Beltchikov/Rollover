@@ -58,6 +58,7 @@ namespace SsbHedger.Model
         private double nextCallDelta;
         private bool deltaAlertActive;
         private double deltaThreshold;
+        private bool volatilityAlertActive;
 
         public MainWindowViewModel(
             IInitializeCommandHandler initializeCommandHandler,
@@ -531,6 +532,16 @@ namespace SsbHedger.Model
             {
                 SetProperty(ref deltaThreshold, value);
                 OnPropertyChanged(nameof(DeltaThreshold));
+            }
+        }
+
+        public bool VolatilityAlertActive
+        {
+            get => volatilityAlertActive;
+            set
+            {
+                SetProperty(ref volatilityAlertActive, value);
+                OnPropertyChanged(nameof(VolatilityAlertActive));
             }
         }
 
