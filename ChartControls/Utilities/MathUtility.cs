@@ -8,32 +8,32 @@ namespace ChartControls.Utilities
     {
         public double GetDiagramX(
             double diagramWidth,
-            List<List<double>> dataRowsCollection,
-            List<double> datarow,
+            List<List<double>> seriesCollection,
+            List<double> series,
             int idx,
             double startOffset,
             double endOffset)
         {
-            var minValue = dataRowsCollection.SelectMany(x => x).Min();
-            var range = (dataRowsCollection.SelectMany(x => x).Max() - minValue) + startOffset + endOffset;
+            var minValue = seriesCollection.SelectMany(x => x).Min();
+            var range = (seriesCollection.SelectMany(x => x).Max() - minValue) + startOffset + endOffset;
             double koef = diagramWidth / range;
-            var scaledDistance = datarow[idx] - minValue;
+            var scaledDistance = series[idx] - minValue;
 
             return startOffset* koef + koef * scaledDistance;
         }
 
         public double GetDiagramY(
             double diagramHeight,
-            List<List<double>> dataRowsCollection,
-            List<double> datarow,
+            List<List<double>> seriesCollection,
+            List<double> series,
             int idx,
             double startOffset,
             double endOffset)
         {
-            var minValue = dataRowsCollection.SelectMany(x => x).Min();
-            var range = (dataRowsCollection.SelectMany(x => x).Max() - minValue) + startOffset + endOffset;
+            var minValue = seriesCollection.SelectMany(x => x).Min();
+            var range = (seriesCollection.SelectMany(x => x).Max() - minValue) + startOffset + endOffset;
             double koef = diagramHeight / range;
-            var scaledDistance = datarow[idx] - minValue;
+            var scaledDistance = series[idx] - minValue;
 
             return diagramHeight - koef * (startOffset + scaledDistance); 
         }

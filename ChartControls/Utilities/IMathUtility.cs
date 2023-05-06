@@ -6,15 +6,15 @@ namespace ChartControls.Utilities
     {
         double GetDiagramX(
             double diagramWidth,
-            List<List<double>> dataRowsCollection,
-            List<double> datarow,
+            List<List<double>> seriesCollection,
+            List<double> series,
             int idx,
             double startOffset,
             double endOffset);
         double GetDiagramY(
             double diagramHeight,
-            List<List<double>> dataRowsCollection,
-            List<double> datarow,
+            List<List<double>> seriesCollection,
+            List<double> series,
             int idx,
             double startOffset,
             double endOffset);
