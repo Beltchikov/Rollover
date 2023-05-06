@@ -488,7 +488,7 @@ namespace SsbHedger
                     if (tickPriceMessage.Price > 0)
                     {
                         ViewModel.AtmStrike = -1;
-                        var atmStrikeCandidates = ViewModel.AtmStrikeCandidate(tickPriceMessage.Price);
+                        var atmStrikeCandidates = ViewModel.AtmStrikeCandidates(tickPriceMessage.Price);
                         foreach(var atmStrikeCandidate in  atmStrikeCandidates)
                         {
                             _atmStrikeCandidate = atmStrikeCandidate;

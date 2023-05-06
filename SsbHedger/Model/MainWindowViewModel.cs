@@ -551,12 +551,17 @@ namespace SsbHedger.Model
             set => SetProperty(ref bars, value);
         }
 
-        public double[] AtmStrikeCandidate(double underlyingPrice)
+        public double[] AtmStrikeCandidates(double underlyingPrice)
         {
             int decimalPlaces = DecimalPlaces(STRIKES_STEP);
             var firstAtmCandidate = Math.Round(UnderlyingPrice / STRIKES_STEP, 0) / (decimalPlaces + 1);
 
-            return new double[] { firstAtmCandidate };
+            if(firstAtmCandidate > UnderlyingPrice)
+            {
+                return new double[] { firstAtmCandidate, firstAtmCandidate  - STRIKES_STEP , firstAtmCandidate - 2*STRIKES_STEP };
+            }
+
+            return new double[] { firstAtmCandidate, firstAtmCandidate + STRIKES_STEP, firstAtmCandidate + 2 * STRIKES_STEP };
         }
 
         private static int DecimalPlaces(double value)
