@@ -206,7 +206,7 @@
                     <TextBlock Grid.Row="4" Style="{StaticResource Label}"  
                        VerticalAlignment="Bottom">Current ATM Strike</TextBlock>
                     <TextBox x:Name="txtCurrentAtmStrike" Grid.Row="4" Grid.Column="1" TextAlignment="Center" 
-                     Text="{Binding NextPutStrike, FallbackValue=0}" />
+                     Text="{Binding AtmStrike, Mode=OneWay}" />
 
                     <TextBlock Grid.Row="5" Style="{StaticResource Label}"  
                        VerticalAlignment="Bottom">Call IV</TextBlock>

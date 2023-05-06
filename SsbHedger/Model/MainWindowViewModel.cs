@@ -4,9 +4,7 @@ using SsbHedger.CommandHandler;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Windows.Ink;
 using System.Windows.Input;
-using System.Windows.Media.Media3D;
 
 namespace SsbHedger.Model
 {
@@ -14,6 +12,7 @@ namespace SsbHedger.Model
     public class MainWindowViewModel : ObservableObject
     {
         public const double MULTIPLIER = 100;
+        public const double STRIKES_STEP = 0.5;
 
         private ObservableCollection<Message> messages;
         private ObservableCollection<Bar> bars;
@@ -70,7 +69,7 @@ namespace SsbHedger.Model
             UpdateConfigurationCommand = new RelayCommand<object[]>((p) => updateConfigurationCommandHandler.Handle(this, p));
             DeltaAlertActivateCommand = new RelayCommand<object[]>((p) => deltaAlertActivateCommandHandler.Handle(this, p));
             VolatilityAlertActivateCommand = new RelayCommand<object[]>((p) => volatilityAlertActivateCommandHandler.Handle(this, p));
-            
+
             messages = new ObservableCollection<Message>();
             bars = new ObservableCollection<Bar>();
 
@@ -84,8 +83,8 @@ namespace SsbHedger.Model
             deltaThreshold = 16;
             nextPutStrike = 0;
             nextCallStrike = 0;
-            nextPutDelta= -50;
-            nextCallDelta= 50;
+            nextPutDelta = -50;
+            nextCallDelta = 50;
         }
 
         public string ConnectionMessage
@@ -244,6 +243,7 @@ namespace SsbHedger.Model
             {
                 SetProperty(ref underlyingPrice, value);
                 OnPropertyChanged(nameof(UnderlyingPrice));
+                OnPropertyChanged(nameof(AtmStrike));
             }
         }
 
@@ -545,12 +545,20 @@ namespace SsbHedger.Model
             }
         }
 
-
-
         public ObservableCollection<Bar> Bars
         {
             get => bars;
             set => SetProperty(ref bars, value);
+        }
+
+        public double AtmStrike { 
+            get
+            {
+                var decimalPlaces = STRIKES_STEP.ToString().Length - ((int)STRIKES_STEP).ToString().Length == 0 
+                    ? STRIKES_STEP.ToString().Length - ((int)STRIKES_STEP).ToString().Length 
+                    : STRIKES_STEP.ToString().Length - ((int)STRIKES_STEP).ToString().Length - 1;
+                return Math.Round(UnderlyingPrice / STRIKES_STEP, 0) / (decimalPlaces + 1);
+            } 
         }
 
         public ICommand InitializeCommand { get; }
