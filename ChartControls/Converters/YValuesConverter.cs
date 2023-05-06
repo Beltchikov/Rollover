@@ -35,7 +35,7 @@ namespace ChartControls.Converters
             }
 
             List<List<double>> valuesOfAllDataRows = GenerateDataRowsCollection(dataRowsCollection);
-            var startOffset = (dataRow.Max() - dataRow.Min()) * 0.1;
+            var startOffset = (valuesOfAllDataRows.SelectMany(x => x).Max() - valuesOfAllDataRows.SelectMany(x => x).Min()) * 0.1;
             var endOffset = startOffset;
             
             return _mathUtility.GetDiagramY(
