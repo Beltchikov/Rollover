@@ -13,7 +13,7 @@
         <converters:YValuesConverter x:Key="YValuesConverter"/>
     </UserControl.Resources>
     <Canvas Background="LightGreen">
-        <ItemsControl x:Name="itemsControlChart" ItemsSource="{Binding ElementName=ucChart, Path=DataPointsCollection}">
+        <ItemsControl x:Name="itemsControlChart" ItemsSource="{Binding ElementName=ucChart, Path=SeriesCollection}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <ItemsControl x:Name="itemsControlChart2" ItemsSource="{Binding}">

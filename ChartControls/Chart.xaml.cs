@@ -12,13 +12,13 @@ namespace ChartControls
     /// </summary>
     public partial class Chart : UserControl
     {
-        public ObservableCollection<ObservableCollection<DataPoint>> DataPointsCollection
+        public ObservableCollection<ObservableCollection<DataPoint>> SeriesCollection
         {
-            get { return (ObservableCollection<ObservableCollection<DataPoint>>)GetValue(DataPointsCollectionProperty); }
-            set { SetValue(DataPointsCollectionProperty, value); }
+            get { return (ObservableCollection<ObservableCollection<DataPoint>>)GetValue(SeriesCollectionProperty); }
+            set { SetValue(SeriesCollectionProperty, value); }
         }
-        public static readonly DependencyProperty DataPointsCollectionProperty =
-            DependencyProperty.Register("DataPointsCollection", typeof(ObservableCollection<ObservableCollection<DataPoint>>), 
+        public static readonly DependencyProperty SeriesCollectionProperty =
+            DependencyProperty.Register("SeriesCollection", typeof(ObservableCollection<ObservableCollection<DataPoint>>), 
                 typeof(Chart), new PropertyMetadata(new ObservableCollection<ObservableCollection<DataPoint>>()));
 
         public Chart()
@@ -32,7 +32,7 @@ namespace ChartControls
 
         private void TestData()
         {
-            DataPointsCollection = new ObservableCollection<ObservableCollection<DataPoint>>();
+            SeriesCollection = new ObservableCollection<ObservableCollection<DataPoint>>();
 
             // 
             var series1 = new ObservableCollection<DataPoint>();
@@ -58,7 +58,7 @@ namespace ChartControls
                 Fill = Brushes.Red
             });
 
-            DataPointsCollection.Add(series1);
+            SeriesCollection.Add(series1);
 
             // 
             var series2 = new ObservableCollection<DataPoint>();
@@ -84,7 +84,7 @@ namespace ChartControls
                 Fill = Brushes.Green
             });
 
-            DataPointsCollection.Add(series2);
+            SeriesCollection.Add(series2);
         }
     }
 }
