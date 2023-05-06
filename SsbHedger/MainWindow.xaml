@@ -201,7 +201,7 @@
                     <TextBlock Grid.Row="3" Style="{StaticResource Label}"  
                        VerticalAlignment="Bottom">Underlying Price</TextBlock>
                     <TextBox x:Name="txtUnderlyingPrice" Grid.Row="3" Grid.Column="1" TextAlignment="Center" 
-                     Text="TODO" />
+                     Text="{Binding SpyPrice}" />
 
                     <TextBlock Grid.Row="4" Style="{StaticResource Label}"  
                        VerticalAlignment="Bottom">Current ATM Strike</TextBlock>
