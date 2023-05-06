@@ -28,6 +28,7 @@ namespace SsbHedger
                 .AddSingleton<IInitializeCommandHandler, InitializeCommandHandler>()
                 .AddSingleton<IUpdateConfigurationCommandHandler, UpdateConfigurationCommandHandler>()
                 .AddSingleton<IDeltaAlertActivateCommandHandler, DeltaAlertActivateCommandHandler>()
+                .AddSingleton<IVolatilityAlertActivateCommandHandler, VolatilityAlertActivateCommandHandler>()
                 .AddSingleton<IPositionMessageBuffer, PositionMessageBuffer>()
                 .AddMediatR(GetType().Assembly)
                 .BuildServiceProvider();
@@ -39,7 +40,8 @@ namespace SsbHedger
             var viewModel = new MainWindowViewModel(
                     Services.GetRequiredService<IInitializeCommandHandler>(),
                     Services.GetRequiredService<IUpdateConfigurationCommandHandler>(),
-                    Services.GetRequiredService<IDeltaAlertActivateCommandHandler>());
+                    Services.GetRequiredService<IDeltaAlertActivateCommandHandler>(),
+                    Services.GetRequiredService<IVolatilityAlertActivateCommandHandler>());
 
             var _registryManager = Services.GetRequiredService<IRegistryManager>();
             var _configuration = Services.GetRequiredService<IConfiguration>();

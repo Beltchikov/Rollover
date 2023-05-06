@@ -229,9 +229,10 @@
 
                     <TextBlock Grid.Row="10" Style="{StaticResource Label}" 
                        VerticalAlignment="Bottom">Enable alert</TextBlock>
-                    <CheckBox x:Name="chkActivateAlert2" Grid.Row="10" Grid.Column="1" HorizontalAlignment="Center" 
+                    <CheckBox x:Name="chkActivateVolatilityAlert" Grid.Row="10" Grid.Column="1" 
+                              HorizontalAlignment="Center" 
                       VerticalAlignment="Center"
-                      Command="{Binding DeltaAlertActivateCommand}"
+                      Command="{Binding VolatilityAlertActivateCommand}"
                       IsChecked="False" >
                         <CheckBox.CommandParameter>
                             <MultiBinding Converter="{StaticResource DeltaAlertActivateConverter}" Mode="OneWay">

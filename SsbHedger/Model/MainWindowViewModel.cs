@@ -62,12 +62,14 @@ namespace SsbHedger.Model
         public MainWindowViewModel(
             IInitializeCommandHandler initializeCommandHandler,
             IUpdateConfigurationCommandHandler updateConfigurationCommandHandler,
-            IDeltaAlertActivateCommandHandler deltaAlertActivateCommandHandler)
+            IDeltaAlertActivateCommandHandler deltaAlertActivateCommandHandler,
+            IVolatilityAlertActivateCommandHandler volatilityAlertActivateCommandHandler)
         {
             InitializeCommand = new RelayCommand(() => initializeCommandHandler.HandleAsync(this));
             UpdateConfigurationCommand = new RelayCommand<object[]>((p) => updateConfigurationCommandHandler.Handle(this, p));
             DeltaAlertActivateCommand = new RelayCommand<object[]>((p) => deltaAlertActivateCommandHandler.Handle(this, p));
-
+            VolatilityAlertActivateCommand = new RelayCommand<object[]>((p) => volatilityAlertActivateCommandHandler.Handle(this, p));
+            
             messages = new ObservableCollection<Message>();
             bars = new ObservableCollection<Bar>();
 
@@ -543,5 +545,6 @@ namespace SsbHedger.Model
         public ICommand InitializeCommand { get; }
         public ICommand UpdateConfigurationCommand { get; }
         public ICommand DeltaAlertActivateCommand { get; }
+        public ICommand VolatilityAlertActivateCommand { get; }
     }
 }
