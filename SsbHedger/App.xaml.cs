@@ -30,6 +30,7 @@ namespace SsbHedger
                 .AddSingleton<IDeltaAlertActivateCommandHandler, DeltaAlertActivateCommandHandler>()
                 .AddSingleton<IVolatilityAlertActivateCommandHandler, VolatilityAlertActivateCommandHandler>()
                 .AddSingleton<IPositionMessageBuffer, PositionMessageBuffer>()
+                .AddSingleton<IAtmStrikeUtility, AtmStrikeUtility>()
                 .AddMediatR(GetType().Assembly)
                 .BuildServiceProvider();
         }

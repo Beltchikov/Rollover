@@ -41,10 +41,16 @@ namespace SsbHedger
         private Contract? _currentCallContract;
         Thread _alertThread = null!;
         private double _atmStrikeCandidate;
+        private IAtmStrikeUtility _atmStrikeUtility;
 
-        public IbHost(IConfiguration configuration, IPositionMessageBuffer positionMessageBuffer)
+        public IbHost(
+            IConfiguration configuration,
+            IPositionMessageBuffer positionMessageBuffer,
+            IAtmStrikeUtility atmStrikeUtility)
         {
             _configuration = configuration;
+            _positionMessageBuffer = positionMessageBuffer;
+            _atmStrikeUtility = atmStrikeUtility;
 
             _ibClient = IBClient.CreateClient();
 
@@ -71,7 +77,6 @@ namespace SsbHedger
             };
 
             _contractUnderlying = _contractDict[(string)_configuration.GetValue(Configuration.UNDERLYING_SYMBOL)];
-            _positionMessageBuffer = positionMessageBuffer;
         }
 
         public MainWindowViewModel? ViewModel { get; set; }
@@ -124,7 +129,7 @@ namespace SsbHedger
 
         public void ReqMktDataNextPutOption(double putStike)
         {
-            if(_currentPutContract == null)
+            if (_currentPutContract == null)
             {
                 return;
             }
@@ -146,7 +151,7 @@ namespace SsbHedger
 
         public void ReqMktDataNextCallOption(double callStike)
         {
-            if(_currentCallContract == null)
+            if (_currentCallContract == null)
             {
                 return;
             }
@@ -268,7 +273,7 @@ namespace SsbHedger
             ViewModel.Messages.Add(new Message(0, message.IsConnected ? "CONNECTED!" : "NOT CONNECTED!"));
             ViewModel.Connected = message.IsConnected;
 
-            ViewModel.BearHedgeStrike= Convert.ToDouble(_configuration.GetValue(Configuration.BEAR_HEDGE_STRIKE), new CultureInfo("DE-de"));
+            ViewModel.BearHedgeStrike = Convert.ToDouble(_configuration.GetValue(Configuration.BEAR_HEDGE_STRIKE), new CultureInfo("DE-de"));
             ViewModel.BullHedgeStrike = Convert.ToDouble(_configuration.GetValue(Configuration.BULL_HEDGE_STRIKE), new CultureInfo("DE-de"));
 
             UpdateConnectionMessage(message.IsConnected);
@@ -367,7 +372,7 @@ namespace SsbHedger
             //        SetSize(positionMessage);
             //        SetPutStrike(positionMessage);
             //        SetPutPrice(positionMessage);
-                    
+
             //        var contractForHedge = CopyContractWithOtherStrikeAndRight(positionMessage.Contract, ViewModel.BearHedgeStrike);
             //        _reqContractDetails++;
             //        _ibClient.ClientSocket.reqContractDetails(_reqContractDetails, contractForHedge);
@@ -377,7 +382,7 @@ namespace SsbHedger
 
             if (positionMessage.Position != 0 && positionMessage.Contract != null)
             {
-                if(positionMessage.Contract.Right == "P")
+                if (positionMessage.Contract.Right == "P")
                 {
                     _currentPutContract = positionMessage.Contract;
                 }
@@ -488,7 +493,7 @@ namespace SsbHedger
                     if (tickPriceMessage.Price > 0)
                     {
                         ViewModel.AtmStrike = -1;
-                        var atmStrikeCandidates = ViewModel.AtmStrikeCandidates(tickPriceMessage.Price);
+                        var atmStrikeCandidates = _atmStrikeUtility.AtmStrikeCandidates(tickPriceMessage.Price, MainWindowViewModel.STRIKES_STEP);
 
                         if (atmStrikeCandidates.Count() == 1)
                         {
@@ -556,22 +561,22 @@ namespace SsbHedger
 
             if (message.RequestId == NEXT_PUT_OPTION_REQ_ID)
             {
-                ViewModel.NextPutDelta = Math.Round(message.Delta,3);
+                ViewModel.NextPutDelta = Math.Round(message.Delta, 3);
             }
             if (message.RequestId == NEXT_CALL_OPTION_REQ_ID)
             {
-                ViewModel.NextCallDelta = Math.Round(message.Delta,3);
+                ViewModel.NextCallDelta = Math.Round(message.Delta, 3);
             }
             if (message.RequestId == CHECK_OPTION_STRIKE_REQ_ID)
             {
                 ViewModel.AtmStrike = _atmStrikeCandidate;
             }
-            
-            if (Math.Abs(ViewModel.NextPutDelta) <= ViewModel.DeltaThreshold/100
-                || Math.Abs(ViewModel.NextCallDelta) <= ViewModel.DeltaThreshold/100)
-                {
-                    _alertThread = new Thread(new ThreadStart(AlertFunction)) { IsBackground = true };
-                    _alertThread.Start();
+
+            if (Math.Abs(ViewModel.NextPutDelta) <= ViewModel.DeltaThreshold / 100
+                || Math.Abs(ViewModel.NextCallDelta) <= ViewModel.DeltaThreshold / 100)
+            {
+                _alertThread = new Thread(new ThreadStart(AlertFunction)) { IsBackground = true };
+                _alertThread.Start();
             }
         }
 

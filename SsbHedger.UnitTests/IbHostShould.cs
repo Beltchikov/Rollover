@@ -1,6 +1,6 @@
 ﻿using IbClient.messages;
 using NSubstitute;
-using SsbHedger.MessageHelper;
+using SsbHedger.Utilities;
 using SsbHedger.Model;
 using SsbHedger.SsbConfiguration;
 using System.Collections.ObjectModel;
@@ -21,7 +21,7 @@ namespace SsbHedger.UnitTests
             IConfiguration configuration = Substitute.For<IConfiguration>();
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");  
 
-            var sut = new IbHost(configuration, new PositionMessageBuffer());
+            var sut = new IbHost(configuration, new PositionMessageBuffer(), new AtmStrikeUtility());
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
             viewModel.Messages = new ObservableCollection<Message>();
@@ -47,7 +47,7 @@ namespace SsbHedger.UnitTests
             IConfiguration configuration = Substitute.For<IConfiguration>();
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
-            var sut = new IbHost(configuration, new PositionMessageBuffer());
+            var sut = new IbHost(configuration, new PositionMessageBuffer(), new AtmStrikeUtility());
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
             viewModel.Messages = new ObservableCollection<Message>();
@@ -73,7 +73,7 @@ namespace SsbHedger.UnitTests
             IConfiguration configuration = Substitute.For<IConfiguration>();
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
-            var sut = new IbHost(configuration, new PositionMessageBuffer());
+            var sut = new IbHost(configuration, new PositionMessageBuffer(), new AtmStrikeUtility());
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
             viewModel.Messages = new ObservableCollection<Message>();
@@ -100,7 +100,7 @@ namespace SsbHedger.UnitTests
             IConfiguration configuration = Substitute.For<IConfiguration>();
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
-            var sut = new IbHost(configuration, new PositionMessageBuffer());
+            var sut = new IbHost(configuration, new PositionMessageBuffer(), new AtmStrikeUtility());
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
             viewModel.Messages = new ObservableCollection<Message>();
@@ -128,7 +128,7 @@ namespace SsbHedger.UnitTests
             IConfiguration configuration = Substitute.For<IConfiguration>();
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
-            var sut = new IbHost(configuration, new PositionMessageBuffer());
+            var sut = new IbHost(configuration, new PositionMessageBuffer(), new AtmStrikeUtility());
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
             viewModel.Messages = new ObservableCollection<Message>();

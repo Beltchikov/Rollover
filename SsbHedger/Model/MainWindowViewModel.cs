@@ -551,40 +551,6 @@ namespace SsbHedger.Model
             set => SetProperty(ref bars, value);
         }
 
-        public double[] AtmStrikeCandidates(double underlyingPrice)
-        {
-            int decimalPlaces = DecimalPlaces(STRIKES_STEP);
-            var firstAtmCandidate = Math.Round(underlyingPrice / STRIKES_STEP, 0) / (decimalPlaces + 1);
-
-            if(firstAtmCandidate > underlyingPrice)
-            {
-                return new double[]
-                {
-                    firstAtmCandidate,
-                    firstAtmCandidate - STRIKES_STEP,
-                    firstAtmCandidate - 2 * STRIKES_STEP
-                };
-            }
-            else if (firstAtmCandidate < underlyingPrice)
-            {
-                return new double[]
-                {
-                    firstAtmCandidate,
-                    firstAtmCandidate + STRIKES_STEP,
-                    firstAtmCandidate + 2 * STRIKES_STEP
-                };
-            }
-
-            return new double[] {firstAtmCandidate};
-        }
-
-        private static int DecimalPlaces(double value)
-        {
-            return value.ToString().Length - ((int)value).ToString().Length == 0
-                     ? value.ToString().Length - ((int)value).ToString().Length
-                     : value.ToString().Length - ((int)value).ToString().Length - 1;
-        }
-
         public double AtmStrike {get; set;}
 
         public ICommand InitializeCommand { get; }
