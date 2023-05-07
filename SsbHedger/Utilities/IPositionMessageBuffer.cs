@@ -1,8 +1,7 @@
 ﻿using IbClient.messages;
 using System.Collections.Generic;
-using System.Windows.Documents;
 
-namespace SsbHedger.MessageHelper
+namespace SsbHedger.Utilities
 {
     public interface IPositionMessageBuffer
     {

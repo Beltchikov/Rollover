@@ -1,11 +1,8 @@
 ﻿using IbClient.messages;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SsbHedger.MessageHelper
+namespace SsbHedger.Utilities
 {
     public class PositionMessageBuffer : IPositionMessageBuffer
     {
@@ -20,7 +17,7 @@ namespace SsbHedger.MessageHelper
 
         public int? FirstCallSize()
         {
-            if(!_messages.Any())
+            if (!_messages.Any())
             {
                 return null;
             }
@@ -65,7 +62,7 @@ namespace SsbHedger.MessageHelper
             }
 
             var callPositions = _messages.Where(m => m.Contract.Right == "C");
-            return (double?)callPositions.First().Contract?.Strike;
+            return callPositions.First().Contract?.Strike;
         }
 
         public double? SecondCallStrike()
@@ -76,7 +73,7 @@ namespace SsbHedger.MessageHelper
             {
                 return null;
             }
-            return (double?)callPositions.Skip(1).First().Contract?.Strike;
+            return callPositions.Skip(1).First().Contract?.Strike;
         }
     }
 }

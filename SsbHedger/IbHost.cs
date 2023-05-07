@@ -1,9 +1,9 @@
 ﻿using IBApi;
 using IbClient;
 using IbClient.messages;
-using SsbHedger.MessageHelper;
 using SsbHedger.Model;
 using SsbHedger.SsbConfiguration;
+using SsbHedger.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

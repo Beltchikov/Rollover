@@ -2,10 +2,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using SsbHedger.Abstractions;
 using SsbHedger.CommandHandler;
-using SsbHedger.MessageHelper;
 using SsbHedger.Model;
 using SsbHedger.SsbChartControl;
 using SsbHedger.SsbConfiguration;
+using SsbHedger.Utilities;
 using System;
 using System.Globalization;
 using System.Windows;
