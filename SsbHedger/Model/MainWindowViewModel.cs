@@ -558,10 +558,24 @@ namespace SsbHedger.Model
 
             if(firstAtmCandidate > underlyingPrice)
             {
-                return new double[] { firstAtmCandidate, firstAtmCandidate  - STRIKES_STEP , firstAtmCandidate - 2 * STRIKES_STEP };
+                return new double[]
+                {
+                    firstAtmCandidate,
+                    firstAtmCandidate - STRIKES_STEP,
+                    firstAtmCandidate - 2 * STRIKES_STEP
+                };
+            }
+            else if (firstAtmCandidate < underlyingPrice)
+            {
+                return new double[]
+                {
+                    firstAtmCandidate,
+                    firstAtmCandidate + STRIKES_STEP,
+                    firstAtmCandidate + 2 * STRIKES_STEP
+                };
             }
 
-            return new double[] { firstAtmCandidate, firstAtmCandidate + STRIKES_STEP, firstAtmCandidate + 2 * STRIKES_STEP };
+            return new double[] {firstAtmCandidate};
         }
 
         private static int DecimalPlaces(double value)

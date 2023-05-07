@@ -489,21 +489,29 @@ namespace SsbHedger
                     {
                         ViewModel.AtmStrike = -1;
                         var atmStrikeCandidates = ViewModel.AtmStrikeCandidates(tickPriceMessage.Price);
-                        foreach(var atmStrikeCandidate in  atmStrikeCandidates)
-                        {
-                            _atmStrikeCandidate = atmStrikeCandidate;
-                            ReqCheckOptionsStrike(atmStrikeCandidate);
-                            var startTime = DateTime.Now;
-                            while ((DateTime.Now - startTime).TotalMilliseconds < TIMEOUT && ViewModel.AtmStrike <= 0) { }
-                            if(ViewModel.AtmStrike > 0)
-                            {
-                                break;
-                            }
-                        }
 
-                        if(ViewModel.AtmStrike <= 0)
+                        if (atmStrikeCandidates.Count() == 1)
                         {
-                            throw new ApplicationException("Unexpected! ATM strike could not be found.");
+                            ViewModel.AtmStrike = atmStrikeCandidates.First();
+                        }
+                        else
+                        {
+                            foreach (var atmStrikeCandidate in atmStrikeCandidates)
+                            {
+                                _atmStrikeCandidate = atmStrikeCandidate;
+                                ReqCheckOptionsStrike(atmStrikeCandidate);
+                                var startTime = DateTime.Now;
+                                while ((DateTime.Now - startTime).TotalMilliseconds < TIMEOUT && ViewModel.AtmStrike <= 0) { }
+                                if (ViewModel.AtmStrike > 0)
+                                {
+                                    break;
+                                }
+                            }
+
+                            if (ViewModel.AtmStrike <= 0)
+                            {
+                                throw new ApplicationException("Unexpected! ATM strike could not be found.");
+                            }
                         }
                     }
                 }
