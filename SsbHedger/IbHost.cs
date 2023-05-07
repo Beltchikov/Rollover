@@ -492,12 +492,12 @@ namespace SsbHedger
                     ViewModel.UnderlyingPrice = tickPriceMessage.Price;
                     if (tickPriceMessage.Price > 0)
                     {
-                        ViewModel.AtmStrike = -1;
+                        ViewModel.NextAtmStrike = -1;
                         var atmStrikeCandidates = _atmStrikeUtility.AtmStrikeCandidates(tickPriceMessage.Price, MainWindowViewModel.STRIKES_STEP);
 
                         if (atmStrikeCandidates.Count() == 1)
                         {
-                            ViewModel.AtmStrike = atmStrikeCandidates.First();
+                            ViewModel.NextAtmStrike = atmStrikeCandidates.First();
                         }
                         else
                         {
@@ -506,14 +506,14 @@ namespace SsbHedger
                                 _atmStrikeCandidate = atmStrikeCandidate;
                                 ReqCheckOptionsStrike(atmStrikeCandidate);
                                 var startTime = DateTime.Now;
-                                while ((DateTime.Now - startTime).TotalMilliseconds < TIMEOUT && ViewModel.AtmStrike <= 0) { }
-                                if (ViewModel.AtmStrike > 0)
+                                while ((DateTime.Now - startTime).TotalMilliseconds < TIMEOUT && ViewModel.NextAtmStrike <= 0) { }
+                                if (ViewModel.NextAtmStrike > 0)
                                 {
                                     break;
                                 }
                             }
 
-                            if (ViewModel.AtmStrike <= 0)
+                            if (ViewModel.NextAtmStrike <= 0)
                             {
                                 throw new ApplicationException("Unexpected! ATM strike could not be found.");
                             }
@@ -569,7 +569,7 @@ namespace SsbHedger
             }
             if (message.RequestId == CHECK_OPTION_STRIKE_REQ_ID)
             {
-                ViewModel.AtmStrike = _atmStrikeCandidate;
+                ViewModel.NextAtmStrike = _atmStrikeCandidate;
             }
 
             if (Math.Abs(ViewModel.NextPutDelta) <= ViewModel.DeltaThreshold / 100

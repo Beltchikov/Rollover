@@ -208,12 +208,12 @@
                     <TextBlock Grid.Row="4" Style="{StaticResource Label}"  
                        VerticalAlignment="Bottom" Grid.Column="1">Next ATM Strike</TextBlock>
                     <TextBox x:Name="txtNextAtmStrike" Grid.Row="4" Grid.Column="2" TextAlignment="Center" 
-                     Text="{Binding AtmStrike, Mode=OneWay}" />
+                     Text="{Binding NextAtmStrike, Mode=OneWay}" />
 
                     <TextBlock Grid.Row="5" Style="{StaticResource Label}"  
                        VerticalAlignment="Bottom" Grid.Column="1">Second ATM Strike</TextBlock>
                     <TextBox x:Name="txtSecondAtmStrike" Grid.Row="5" Grid.Column="2" TextAlignment="Center" 
-                     Text="{Binding AtmStrike, Mode=OneWay}" />
+                     Text="{Binding SecondAtmStrike, Mode=OneWay}" />
 
                     <TextBlock Grid.Row="6" Style="{StaticResource Label}"  
                        VerticalAlignment="Bottom" Grid.Column="1">Call IV</TextBlock>

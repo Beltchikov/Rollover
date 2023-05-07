@@ -243,7 +243,7 @@ namespace SsbHedger.Model
             {
                 SetProperty(ref underlyingPrice, value);
                 OnPropertyChanged(nameof(UnderlyingPrice));
-                OnPropertyChanged(nameof(AtmStrike));
+                OnPropertyChanged(nameof(NextAtmStrike));
             }
         }
 
@@ -551,7 +551,8 @@ namespace SsbHedger.Model
             set => SetProperty(ref bars, value);
         }
 
-        public double AtmStrike {get; set;}
+        public double NextAtmStrike {get; set;}
+        public double SecondAtmStrike {get; set;}
 
         public ICommand InitializeCommand { get; }
         public ICommand UpdateConfigurationCommand { get; }
