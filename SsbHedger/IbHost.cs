@@ -511,6 +511,10 @@ namespace SsbHedger
                 if (tickPriceMessage.RequestId == REQ_MKT_DATA_UNDERLYING)
                 {
                     ViewModel.UnderlyingPrice = tickPriceMessage.Price;
+
+                    // TODO
+                    // _atmStrikeUtility.SetAtmStrikesInViewModel(this, viewModel, underlyingPrice);
+
                     if (tickPriceMessage.Price > 0)
                     {
                         ViewModel.NextAtmStrike = -1;
