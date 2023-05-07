@@ -498,6 +498,7 @@ namespace SsbHedger
                         if (atmStrikeCandidates.Count() == 1)
                         {
                             ViewModel.NextAtmStrike = atmStrikeCandidates.First();
+                            ViewModel.SecondAtmStrike = atmStrikeCandidates.First();
                         }
                         else
                         {
