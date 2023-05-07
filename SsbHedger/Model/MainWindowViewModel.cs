@@ -554,9 +554,9 @@ namespace SsbHedger.Model
         public double[] AtmStrikeCandidates(double underlyingPrice)
         {
             int decimalPlaces = DecimalPlaces(STRIKES_STEP);
-            var firstAtmCandidate = Math.Round(UnderlyingPrice / STRIKES_STEP, 0) / (decimalPlaces + 1);
+            var firstAtmCandidate = Math.Round(underlyingPrice / STRIKES_STEP, 0) / (decimalPlaces + 1);
 
-            if(firstAtmCandidate > UnderlyingPrice)
+            if(firstAtmCandidate > underlyingPrice)
             {
                 return new double[] { firstAtmCandidate, firstAtmCandidate  - STRIKES_STEP , firstAtmCandidate - 2 * STRIKES_STEP };
             }
