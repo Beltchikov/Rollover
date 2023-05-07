@@ -17,7 +17,7 @@ namespace SsbHedger
 {
     public class IbHost : IIbHost
     {
-        private readonly int TIMEOUT = 2000;
+        public readonly int TIMEOUT = 2000;
         private readonly int REQ_MKT_DATA_SHORT_PUT_ID = 3001;
         private readonly int REQ_MKT_DATA_SHORT_CALL_ID = 3002;
         private readonly int REQ_MKT_DATA_UNDERLYING = 3003;
@@ -42,7 +42,6 @@ namespace SsbHedger
         private Contract? _currentPutContract;
         private Contract? _currentCallContract;
         Thread _alertThread = null!;
-        private AtmStrikes _atmStrikesCandidate;
         private IAtmStrikeUtility _atmStrikeUtility;
 
         public IbHost(
@@ -82,6 +81,7 @@ namespace SsbHedger
         }
 
         public MainWindowViewModel? ViewModel { get; set; }
+        internal AtmStrikes AtmStrikesCandidate { get; set; }
 
         public async Task<bool> ConnectAndStartReaderThread()
         {
@@ -195,7 +195,7 @@ namespace SsbHedger
             _ibClient.ClientSocket.cancelMktData(REQ_MKT_DATA_UNDERLYING);
         }
 
-        private void ReqCheckNextOptionsStrike(double atmStrikeCandidate)
+        public void ReqCheckNextOptionsStrike(double atmStrikeCandidate)
         {
             if (_currentCallContract == null)
             {
@@ -213,7 +213,7 @@ namespace SsbHedger
                new List<TagValue>());
         }
 
-        private void ReqCheckSecondOptionsStrike(double atmStrikeCandidate)
+        public void ReqCheckSecondOptionsStrike(double atmStrikeCandidate)
         {
             if (_currentCallContract == null)
             {
@@ -511,51 +511,7 @@ namespace SsbHedger
                 if (tickPriceMessage.RequestId == REQ_MKT_DATA_UNDERLYING)
                 {
                     ViewModel.UnderlyingPrice = tickPriceMessage.Price;
-
-                    // TODO
-                    // _atmStrikeUtility.SetAtmStrikesInViewModel(this, viewModel, underlyingPrice);
-
-                    if (tickPriceMessage.Price > 0)
-                    {
-                        ViewModel.NextAtmStrike = -1;
-                        ViewModel.SecondAtmStrike = -1;
-                        var atmStrikesCandidates = _atmStrikeUtility.AtmStrikeCandidates(tickPriceMessage.Price, MainWindowViewModel.STRIKES_STEP);
-
-                        if (atmStrikesCandidates.Count() == 1)
-                        {
-                            ViewModel.NextAtmStrike = atmStrikesCandidates.First().NextAtmStrike;
-                            ViewModel.SecondAtmStrike = atmStrikesCandidates.First().SecondAtmStrike;
-                        }
-                        else
-                        {
-                            foreach (var atmStrikesCandidate in atmStrikesCandidates)
-                            {
-                                _atmStrikesCandidate = atmStrikesCandidate;
-                                ReqCheckNextOptionsStrike(_atmStrikesCandidate.NextAtmStrike);
-                                ReqCheckSecondOptionsStrike(_atmStrikesCandidate.SecondAtmStrike);
-                                var startTime = DateTime.Now;
-                                while ((DateTime.Now - startTime).TotalMilliseconds < TIMEOUT 
-                                    && ViewModel.NextAtmStrike <= 0
-                                    && ViewModel.SecondAtmStrike <= 0) { }
-                                if (ViewModel.NextAtmStrike > 0 && ViewModel.SecondAtmStrike > 0)
-                                {
-                                    break;
-                                }
-                                else
-                                {
-                                    ViewModel.NextAtmStrike = -1;
-                                    ViewModel.SecondAtmStrike = -1;
-                                }
-                            }
-
-                            if (ViewModel.NextAtmStrike <= 0  || ViewModel.SecondAtmStrike <= 0)
-                            {
-                                throw new ApplicationException($"Unexpected! ATM strike could not be found. " +
-                                    $"NextAtmStrike:{ViewModel.NextAtmStrike} " +
-                                    $"SecondAtmStrike:{ViewModel.SecondAtmStrike}");
-                            }
-                        }
-                    }
+                    _atmStrikeUtility.SetAtmStrikesInViewModel(this, tickPriceMessage.Price);
                 }
             }
 
@@ -606,11 +562,11 @@ namespace SsbHedger
             }
             if (message.RequestId == CHECK_OPTION_NEXT_STRIKE_REQ_ID)
             {
-                ViewModel.NextAtmStrike = _atmStrikesCandidate.NextAtmStrike;
+                ViewModel.NextAtmStrike = AtmStrikesCandidate.NextAtmStrike;
             }
             if (message.RequestId == CHECK_OPTION_SECOND_STRIKE_REQ_ID)
             {
-                ViewModel.SecondAtmStrike = _atmStrikesCandidate.SecondAtmStrike;
+                ViewModel.SecondAtmStrike = AtmStrikesCandidate.SecondAtmStrike;
             }
 
             if (Math.Abs(ViewModel.NextPutDelta) <= ViewModel.DeltaThreshold / 100
