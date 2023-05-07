@@ -40,7 +40,7 @@ namespace SsbHedger
         private Contract? _currentPutContract;
         private Contract? _currentCallContract;
         Thread _alertThread = null!;
-        private double _atmStrikeCandidate;
+        private double _nextAtmStrikeCandidate;
         private IAtmStrikeUtility _atmStrikeUtility;
 
         public IbHost(
@@ -505,7 +505,7 @@ namespace SsbHedger
                         {
                             foreach (var atmStrikeCandidate in atmStrikeCandidates)
                             {
-                                _atmStrikeCandidate = atmStrikeCandidate;
+                                _nextAtmStrikeCandidate = atmStrikeCandidate;
                                 ReqCheckOptionsStrike(atmStrikeCandidate);
                                 var startTime = DateTime.Now;
                                 while ((DateTime.Now - startTime).TotalMilliseconds < TIMEOUT && ViewModel.NextAtmStrike <= 0) { }
@@ -571,7 +571,7 @@ namespace SsbHedger
             }
             if (message.RequestId == CHECK_OPTION_STRIKE_REQ_ID)
             {
-                ViewModel.NextAtmStrike = _atmStrikeCandidate;
+                ViewModel.NextAtmStrike = _nextAtmStrikeCandidate;
             }
 
             if (Math.Abs(ViewModel.NextPutDelta) <= ViewModel.DeltaThreshold / 100
