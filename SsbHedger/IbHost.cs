@@ -493,6 +493,7 @@ namespace SsbHedger
                     if (tickPriceMessage.Price > 0)
                     {
                         ViewModel.NextAtmStrike = -1;
+                        ViewModel.SecondAtmStrike = -1;
                         var atmStrikeCandidates = _atmStrikeUtility.AtmStrikeCandidates(tickPriceMessage.Price, MainWindowViewModel.STRIKES_STEP);
 
                         if (atmStrikeCandidates.Count() == 1)
