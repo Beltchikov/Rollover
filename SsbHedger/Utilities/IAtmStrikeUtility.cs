@@ -2,6 +2,6 @@
 {
     public interface IAtmStrikeUtility
     {
-        double[] AtmStrikeCandidates(double underlyingPrice, double strikesStep);
+        AtmStrikes[] AtmStrikeCandidates(double underlyingPrice, double strikesStep);
     }
 }

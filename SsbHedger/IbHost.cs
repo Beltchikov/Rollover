@@ -23,7 +23,9 @@ namespace SsbHedger
         private readonly int REQ_MKT_DATA_UNDERLYING = 3003;
         private readonly int NEXT_PUT_OPTION_REQ_ID = 4001;
         private readonly int NEXT_CALL_OPTION_REQ_ID = 4002;
-        private readonly int CHECK_OPTION_STRIKE_REQ_ID = 10000;
+        private readonly int CHECK_OPTION_NEXT_STRIKE_REQ_ID = 10000;
+        private readonly int CHECK_OPTION_SECOND_STRIKE_REQ_ID = 20000;
+        
         IConfiguration _configuration;
         IIBClient _ibClient;
 
@@ -40,7 +42,7 @@ namespace SsbHedger
         private Contract? _currentPutContract;
         private Contract? _currentCallContract;
         Thread _alertThread = null!;
-        private double _nextAtmStrikeCandidate;
+        private AtmStrikes _atmStrikesCandidate;
         private IAtmStrikeUtility _atmStrikeUtility;
 
         public IbHost(
@@ -193,7 +195,7 @@ namespace SsbHedger
             _ibClient.ClientSocket.cancelMktData(REQ_MKT_DATA_UNDERLYING);
         }
 
-        private void ReqCheckOptionsStrike(double atmStrikeCandidate)
+        private void ReqCheckNextOptionsStrike(double atmStrikeCandidate)
         {
             if (_currentCallContract == null)
             {
@@ -203,13 +205,32 @@ namespace SsbHedger
             var contract = CopyContractWithOtherStrike(_currentCallContract, atmStrikeCandidate);
 
             _ibClient.ClientSocket.reqMktData(
-               CHECK_OPTION_STRIKE_REQ_ID,
+               CHECK_OPTION_NEXT_STRIKE_REQ_ID,
                contract,
                "",
                true,
                false,
                new List<TagValue>());
         }
+
+        private void ReqCheckSecondOptionsStrike(double atmStrikeCandidate)
+        {
+            if (_currentCallContract == null)
+            {
+                return;
+            }
+
+            var contract = CopyContractWithOtherStrike(_currentCallContract, atmStrikeCandidate);
+
+            _ibClient.ClientSocket.reqMktData(
+               CHECK_OPTION_SECOND_STRIKE_REQ_ID,
+               contract,
+               "",
+               true,
+               false,
+               new List<TagValue>());
+        }
+
 
         public void ApplyDefaultHistoricalData()
         {
@@ -494,30 +515,40 @@ namespace SsbHedger
                     {
                         ViewModel.NextAtmStrike = -1;
                         ViewModel.SecondAtmStrike = -1;
-                        var atmStrikeCandidates = _atmStrikeUtility.AtmStrikeCandidates(tickPriceMessage.Price, MainWindowViewModel.STRIKES_STEP);
+                        var atmStrikesCandidates = _atmStrikeUtility.AtmStrikeCandidates(tickPriceMessage.Price, MainWindowViewModel.STRIKES_STEP);
 
-                        if (atmStrikeCandidates.Count() == 1)
+                        if (atmStrikesCandidates.Count() == 1)
                         {
-                            ViewModel.NextAtmStrike = atmStrikeCandidates.First();
-                            ViewModel.SecondAtmStrike = atmStrikeCandidates.First();
+                            ViewModel.NextAtmStrike = atmStrikesCandidates.First().NextAtmStrike;
+                            ViewModel.SecondAtmStrike = atmStrikesCandidates.First().SecondAtmStrike;
                         }
                         else
                         {
-                            foreach (var atmStrikeCandidate in atmStrikeCandidates)
+                            foreach (var atmStrikesCandidate in atmStrikesCandidates)
                             {
-                                _nextAtmStrikeCandidate = atmStrikeCandidate;
-                                ReqCheckOptionsStrike(atmStrikeCandidate);
+                                _atmStrikesCandidate = atmStrikesCandidate;
+                                ReqCheckNextOptionsStrike(_atmStrikesCandidate.NextAtmStrike);
+                                ReqCheckSecondOptionsStrike(_atmStrikesCandidate.SecondAtmStrike);
                                 var startTime = DateTime.Now;
-                                while ((DateTime.Now - startTime).TotalMilliseconds < TIMEOUT && ViewModel.NextAtmStrike <= 0) { }
-                                if (ViewModel.NextAtmStrike > 0)
+                                while ((DateTime.Now - startTime).TotalMilliseconds < TIMEOUT 
+                                    && ViewModel.NextAtmStrike <= 0
+                                    && ViewModel.SecondAtmStrike <= 0) { }
+                                if (ViewModel.NextAtmStrike > 0 && ViewModel.SecondAtmStrike > 0)
                                 {
                                     break;
                                 }
+                                else
+                                {
+                                    ViewModel.NextAtmStrike = -1;
+                                    ViewModel.SecondAtmStrike = -1;
+                                }
                             }
 
-                            if (ViewModel.NextAtmStrike <= 0)
+                            if (ViewModel.NextAtmStrike <= 0  || ViewModel.SecondAtmStrike <= 0)
                             {
-                                throw new ApplicationException("Unexpected! ATM strike could not be found.");
+                                throw new ApplicationException($"Unexpected! ATM strike could not be found. " +
+                                    $"NextAtmStrike:{ViewModel.NextAtmStrike} " +
+                                    $"SecondAtmStrike:{ViewModel.SecondAtmStrike}");
                             }
                         }
                     }
@@ -569,9 +600,13 @@ namespace SsbHedger
             {
                 ViewModel.NextCallDelta = Math.Round(message.Delta, 3);
             }
-            if (message.RequestId == CHECK_OPTION_STRIKE_REQ_ID)
+            if (message.RequestId == CHECK_OPTION_NEXT_STRIKE_REQ_ID)
             {
-                ViewModel.NextAtmStrike = _nextAtmStrikeCandidate;
+                ViewModel.NextAtmStrike = _atmStrikesCandidate.NextAtmStrike;
+            }
+            if (message.RequestId == CHECK_OPTION_SECOND_STRIKE_REQ_ID)
+            {
+                ViewModel.SecondAtmStrike = _atmStrikesCandidate.SecondAtmStrike;
             }
 
             if (Math.Abs(ViewModel.NextPutDelta) <= ViewModel.DeltaThreshold / 100
