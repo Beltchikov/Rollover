@@ -79,7 +79,7 @@
         <Grid x:Name="maxLoss" Background="LightBlue" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3">
             <Grid.RowDefinitions>
                 <RowDefinition Height="20"></RowDefinition>
-                <RowDefinition Height="250"></RowDefinition>
+                <RowDefinition Height="270"></RowDefinition>
                 <RowDefinition Height="20"></RowDefinition>
                 <RowDefinition Height="20"></RowDefinition>
                 <RowDefinition></RowDefinition>
@@ -183,10 +183,12 @@
                         <RowDefinition Height="20"></RowDefinition>
                         <RowDefinition Height="20"></RowDefinition>
                         <RowDefinition Height="20"></RowDefinition>
+                        <RowDefinition Height="20"></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="130"></ColumnDefinition>
+                        <ColumnDefinition Width="13"></ColumnDefinition>
+                        <ColumnDefinition Width="117"/>
                         <ColumnDefinition Width="70"></ColumnDefinition>
                         <ColumnDefinition Width="10"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
@@ -194,43 +196,48 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Row="1"
                            Style="{StaticResource Label}"  
-                       VerticalAlignment="Bottom">Alert if IV ROC below</TextBlock>
-                    <TextBox Grid.Row="1" Grid.Column="1" TextAlignment="Center" 
+                       VerticalAlignment="Bottom" Grid.ColumnSpan="2">Alert if IV ROC below</TextBlock>
+                    <TextBox Grid.Row="1" Grid.Column="2" TextAlignment="Center" 
                      Text="TODO" />
 
                     <TextBlock Grid.Row="3" Style="{StaticResource Label}"  
-                       VerticalAlignment="Bottom">Underlying Price</TextBlock>
-                    <TextBox x:Name="txtUnderlyingPrice" Grid.Row="3" Grid.Column="1" TextAlignment="Center" 
+                       VerticalAlignment="Bottom" Grid.Column="1">Underlying Price</TextBlock>
+                    <TextBox x:Name="txtUnderlyingPrice" Grid.Row="3" Grid.Column="2" TextAlignment="Center" 
                      Text="{Binding UnderlyingPrice}" />
 
                     <TextBlock Grid.Row="4" Style="{StaticResource Label}"  
-                       VerticalAlignment="Bottom">Current ATM Strike</TextBlock>
-                    <TextBox x:Name="txtCurrentAtmStrike" Grid.Row="4" Grid.Column="1" TextAlignment="Center" 
+                       VerticalAlignment="Bottom" Grid.Column="1">Next ATM Strike</TextBlock>
+                    <TextBox x:Name="txtNextAtmStrike" Grid.Row="4" Grid.Column="2" TextAlignment="Center" 
                      Text="{Binding AtmStrike, Mode=OneWay}" />
 
                     <TextBlock Grid.Row="5" Style="{StaticResource Label}"  
-                       VerticalAlignment="Bottom">Call IV</TextBlock>
-                    <TextBox x:Name="txtCallIv" Grid.Row="5" Grid.Column="1" TextAlignment="Center" 
-                     Text="{Binding NextPutStrike, FallbackValue=0}" />
+                       VerticalAlignment="Bottom" Grid.Column="1">Second ATM Strike</TextBlock>
+                    <TextBox x:Name="txtSecondAtmStrike" Grid.Row="5" Grid.Column="2" TextAlignment="Center" 
+                     Text="{Binding AtmStrike, Mode=OneWay}" />
 
                     <TextBlock Grid.Row="6" Style="{StaticResource Label}"  
-                       VerticalAlignment="Bottom">Put IV</TextBlock>
-                    <TextBox x:Name="txtPutIv" Grid.Row="6" Grid.Column="1" TextAlignment="Center" 
+                       VerticalAlignment="Bottom" Grid.Column="1">Call IV</TextBlock>
+                    <TextBox x:Name="txtCallIv" Grid.Row="6" Grid.Column="2" TextAlignment="Center" 
                      Text="{Binding NextPutStrike, FallbackValue=0}" />
 
                     <TextBlock Grid.Row="7" Style="{StaticResource Label}"  
-                       VerticalAlignment="Bottom">Average IV</TextBlock>
-                    <TextBox x:Name="txtAverageIv" Grid.Row="7" Grid.Column="1" TextAlignment="Center" 
+                       VerticalAlignment="Bottom" Grid.Column="1">Put IV</TextBlock>
+                    <TextBox x:Name="txtPutIv" Grid.Row="7" Grid.Column="2" TextAlignment="Center" 
                      Text="{Binding NextPutStrike, FallbackValue=0}" />
 
                     <TextBlock Grid.Row="8" Style="{StaticResource Label}"  
-                       VerticalAlignment="Bottom">Average Weighted IV</TextBlock>
-                    <TextBox x:Name="txtAverageWeightedIv" Grid.Row="8" Grid.Column="1" TextAlignment="Center" 
+                       VerticalAlignment="Bottom" Grid.Column="1">Average IV</TextBlock>
+                    <TextBox x:Name="txtAverageIv" Grid.Row="8" Grid.Column="2" TextAlignment="Center" 
                      Text="{Binding NextPutStrike, FallbackValue=0}" />
 
-                    <TextBlock Grid.Row="10" Style="{StaticResource Label}" 
-                       VerticalAlignment="Bottom">Enable alert</TextBlock>
-                    <CheckBox x:Name="chkActivateVolatilityAlert" Grid.Row="10" Grid.Column="1" 
+                    <TextBlock Grid.Row="9" Style="{StaticResource Label}"  
+                       VerticalAlignment="Bottom" Grid.ColumnSpan="2">Average Weighted IV</TextBlock>
+                    <TextBox x:Name="txtAverageWeightedIv" Grid.Row="9" Grid.Column="2" TextAlignment="Center" 
+                     Text="{Binding NextPutStrike, FallbackValue=0}" />
+
+                    <TextBlock Grid.Row="11" Style="{StaticResource Label}" 
+                       VerticalAlignment="Bottom" Grid.Column="1">Enable alert</TextBlock>
+                    <CheckBox x:Name="chkActivateVolatilityAlert" Grid.Row="11" Grid.Column="2" 
                               HorizontalAlignment="Center" 
                       VerticalAlignment="Center"
                       Command="{Binding VolatilityAlertActivateCommand}"
@@ -242,7 +249,7 @@
                         </CheckBox.CommandParameter>
                     </CheckBox>
 
-                    <chartControls:Chart Grid.Row="1" Grid.Column="3" Grid.RowSpan="10">
+                    <chartControls:Chart Grid.Row="1" Grid.Column="4" Grid.RowSpan="11">
 
                     </chartControls:Chart>
 
