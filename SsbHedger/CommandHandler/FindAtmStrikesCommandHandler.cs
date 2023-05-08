@@ -29,10 +29,13 @@ namespace SsbHedger.CommandHandler
             _ibHost.ViewModel.SecondAtmStrike = -1;
             var atmStrikesCandidates = _atmStrikeUtility.AtmStrikeCandidates(underlyingPrice, MainWindowViewModel.STRIKES_STEP);
 
+            //_ibHost.AtmStrikesCandidate = new AtmStrikes(Math.Round(underlyingPrice, 0), Math.Round(underlyingPrice, 0));
             //_ibHost.ReqCheckNextOptionsStrike(Math.Round(underlyingPrice,0));
+
+            // Duplicate ticket exception
             _ibHost.AtmStrikesCandidate = atmStrikesCandidates[0];
             _ibHost.ReqCheckNextOptionsStrike(Math.Round(atmStrikesCandidates[0].NextAtmStrike, 0));
-            
+
             //_atmStrikeUtility.SetAtmStrikesInViewModel(_ibHost, underlyingPrice);
         }
     }
