@@ -3,6 +3,6 @@
     public interface IAtmStrikeUtility
     {
         AtmStrikes[] AtmStrikeCandidates(double underlyingPrice, double strikesStep);
-        void SetAtmStrikesInViewModel(IbHost ibHost, double underlyingPrice);
+        void SetAtmStrikesInViewModel(IIbHost ibHost, double underlyingPrice);
     }
 }

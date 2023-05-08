@@ -17,7 +17,7 @@ namespace SsbHedger
 {
     public class IbHost : IIbHost
     {
-        public readonly int TIMEOUT = 2000;
+        private readonly int TIMEOUT = 2000;
         private readonly int REQ_MKT_DATA_SHORT_PUT_ID = 3001;
         private readonly int REQ_MKT_DATA_SHORT_CALL_ID = 3002;
         private readonly int REQ_MKT_DATA_UNDERLYING = 3003;
@@ -80,9 +80,11 @@ namespace SsbHedger
             _contractUnderlying = _contractDict[(string)_configuration.GetValue(Configuration.UNDERLYING_SYMBOL)];
         }
 
-        public MainWindowViewModel? ViewModel { get; set; }
-        internal AtmStrikes AtmStrikesCandidate { get; set; }
+        public int Timeout => TIMEOUT;
 
+        public MainWindowViewModel? ViewModel { get; set; }
+        public AtmStrikes AtmStrikesCandidate { get; set; }
+        
         public async Task<bool> ConnectAndStartReaderThread()
         {
             return await Task.Run(() =>

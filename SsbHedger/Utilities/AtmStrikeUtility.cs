@@ -51,7 +51,7 @@ namespace SsbHedger.Utilities
                      : value.ToString().Length - ((int)value).ToString().Length - 1;
         }
 
-        public void SetAtmStrikesInViewModel(IbHost ibHost, double underlyingPrice)
+        public void SetAtmStrikesInViewModel(IIbHost ibHost, double underlyingPrice)
         {
 
             if (underlyingPrice > 0)
@@ -78,8 +78,14 @@ namespace SsbHedger.Utilities
                         ibHost.AtmStrikesCandidate = atmStrikesCandidate;
                         ibHost.ReqCheckNextOptionsStrike(ibHost.AtmStrikesCandidate.NextAtmStrike);
                         ibHost.ReqCheckSecondOptionsStrike(ibHost.AtmStrikesCandidate.SecondAtmStrike);
+
+                        //ibHost.ReqMktDataNextCallOption(ibHost.AtmStrikesCandidate.NextAtmStrike);
+                        //ibHost.ReqMktDataNextPutOption(ibHost.AtmStrikesCandidate.SecondAtmStrike);
+
+
+
                         var startTime = DateTime.Now;
-                        while ((DateTime.Now - startTime).TotalMilliseconds < ibHost.TIMEOUT) { }
+                        while ((DateTime.Now - startTime).TotalMilliseconds < ibHost.Timeout) { }
                         if (viewModel.NextAtmStrike > 0 && viewModel.SecondAtmStrike > 0)
                         {
                             break;
