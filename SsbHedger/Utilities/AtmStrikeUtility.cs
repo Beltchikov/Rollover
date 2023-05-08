@@ -16,7 +16,8 @@ namespace SsbHedger.Utilities
             {
                 return new AtmStrikes[]
                 {
-                    new AtmStrikes(firstAtmCandidate, firstAtmCandidate),
+                    new AtmStrikes(firstAtmCandidate, firstAtmCandidate - strikesStep),
+                    new AtmStrikes(firstAtmCandidate, firstAtmCandidate - 2*strikesStep),
 
                     new AtmStrikes(firstAtmCandidate - strikesStep, firstAtmCandidate + strikesStep),
                     new AtmStrikes(firstAtmCandidate - strikesStep, firstAtmCandidate + 2*strikesStep),
@@ -29,7 +30,8 @@ namespace SsbHedger.Utilities
             {
                 return new AtmStrikes[]
                {
-                    new AtmStrikes(firstAtmCandidate, firstAtmCandidate),
+                    new AtmStrikes(firstAtmCandidate, firstAtmCandidate + strikesStep),
+                    new AtmStrikes(firstAtmCandidate, firstAtmCandidate + 2*strikesStep),
 
                     new AtmStrikes(firstAtmCandidate + strikesStep, firstAtmCandidate - strikesStep),
                     new AtmStrikes(firstAtmCandidate + strikesStep, firstAtmCandidate - 2*strikesStep),
