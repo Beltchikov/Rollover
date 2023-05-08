@@ -511,7 +511,7 @@ namespace SsbHedger
                 if (tickPriceMessage.RequestId == REQ_MKT_DATA_UNDERLYING)
                 {
                     ViewModel.UnderlyingPrice = tickPriceMessage.Price;
-                    _atmStrikeUtility.SetAtmStrikesInViewModel(this, tickPriceMessage.Price);
+                    //_atmStrikeUtility.SetAtmStrikesInViewModel(this, tickPriceMessage.Price);
                 }
             }
 
