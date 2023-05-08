@@ -77,9 +77,7 @@ namespace SsbHedger.Utilities
                         ibHost.ReqCheckNextOptionsStrike(ibHost.AtmStrikesCandidate.NextAtmStrike);
                         ibHost.ReqCheckSecondOptionsStrike(ibHost.AtmStrikesCandidate.SecondAtmStrike);
                         var startTime = DateTime.Now;
-                        while ((DateTime.Now - startTime).TotalMilliseconds < ibHost.TIMEOUT
-                            && viewModel.NextAtmStrike <= 0
-                            && viewModel.SecondAtmStrike <= 0) { }
+                        while ((DateTime.Now - startTime).TotalMilliseconds < ibHost.TIMEOUT) { }
                         if (viewModel.NextAtmStrike > 0 && viewModel.SecondAtmStrike > 0)
                         {
                             break;
@@ -96,6 +94,10 @@ namespace SsbHedger.Utilities
                         throw new ApplicationException($"Unexpected! ATM strike could not be found. " +
                             $"NextAtmStrike:{viewModel.NextAtmStrike} " +
                             $"SecondAtmStrike:{viewModel.SecondAtmStrike}");
+
+                        //viewModel.PositionsInfoMessage = $"Unexpected! ATM strike could not be found. " +
+                        //    $"NextAtmStrike:{viewModel.NextAtmStrike} " +
+                        //    $"SecondAtmStrike:{viewModel.SecondAtmStrike}";
                     }
                 }
             }
