@@ -246,6 +246,7 @@ namespace SsbHedger.Model
                 SetProperty(ref underlyingPrice, value);
                 OnPropertyChanged(nameof(UnderlyingPrice));
                 OnPropertyChanged(nameof(NextAtmStrike));
+                
                 FindAtmStrikesCommand.Execute(new object[] { value });
             }
         }
