@@ -13,9 +13,11 @@ namespace SsbHedger.Model
     {
         public const double MULTIPLIER = 100;
         public const double STRIKES_STEP = 0.5;
+        public const int STRIKES_COUNT = 20;
 
         private ObservableCollection<Message> messages;
         private ObservableCollection<Bar> bars;
+        private ObservableCollection<double> strikes;
         private string connectionMessage = "Connecting...";
         private bool connected;
         private string sessionStart;
@@ -74,6 +76,7 @@ namespace SsbHedger.Model
 
             messages = new ObservableCollection<Message>();
             bars = new ObservableCollection<Bar>();
+            strikes = new ObservableCollection<double>();
 
             size = 10;
             putShortStrike = 95;
@@ -553,6 +556,12 @@ namespace SsbHedger.Model
         {
             get => bars;
             set => SetProperty(ref bars, value);
+        }
+
+        public ObservableCollection<double> Strikes
+        {
+            get => strikes;
+            set => SetProperty(ref strikes, value);
         }
 
         public double NextAtmStrike {get; set;}
