@@ -2,7 +2,6 @@
 using SsbHedger.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Windows.Documents;
 
 namespace SsbHedger.CommandHandler
 {
@@ -27,14 +26,19 @@ namespace SsbHedger.CommandHandler
             if (viewModel == null)
             { throw new ApplicationException("Unexpected! viewModel is null"); }
 
+            if (viewModel.AtmStrikeDown <= underlyingPrice && underlyingPrice <= viewModel.AtmStrikeUp)
+            {
+                return;
+            }
 
             var strikesList = new List<double>();
-            var firstStrikeUp = (int)Math.Ceiling(underlyingPrice);
+            viewModel.AtmStrikeUp = (int)Math.Ceiling(underlyingPrice);
+            viewModel.AtmStrikeDown = (int)Math.Floor(underlyingPrice);
             for (int i = 0; i < (int)Math.Ceiling((double)MainWindowViewModel.STRIKES_COUNT/2); i++) 
             { 
-                var nextStrikeUp = firstStrikeUp + i;
+                var nextStrikeUp = viewModel.AtmStrikeUp + i;
                 strikesList.Add(nextStrikeUp);
-                var nextStrikeDown = firstStrikeUp - (i+1);
+                var nextStrikeDown = viewModel.AtmStrikeDown - i;
                 strikesList.Add(nextStrikeDown);
             }
 

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SsbHedger.CommandHandler;
+using SsbHedger.Utilities;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
@@ -60,6 +61,9 @@ namespace SsbHedger.Model
         private bool deltaAlertActive;
         private double deltaThreshold;
         private bool volatilityAlertActive;
+        private double atmStrikeUp;
+        private double atmStrikeDown;
+        
 
         public MainWindowViewModel(
             IInitializeCommandHandler initializeCommandHandler,
@@ -549,6 +553,26 @@ namespace SsbHedger.Model
             {
                 SetProperty(ref volatilityAlertActive, value);
                 OnPropertyChanged(nameof(VolatilityAlertActive));
+            }
+        }
+
+        public double AtmStrikeUp
+        {
+            get => atmStrikeUp;
+            set
+            {
+                SetProperty(ref atmStrikeUp, value);
+                OnPropertyChanged(nameof(AtmStrikeUp));
+            }
+        }
+
+        public double AtmStrikeDown
+        {
+            get => atmStrikeDown;
+            set
+            {
+                SetProperty(ref atmStrikeDown, value);
+                OnPropertyChanged(nameof(AtmStrikeDown));
             }
         }
 
