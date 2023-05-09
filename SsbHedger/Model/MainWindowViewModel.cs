@@ -70,13 +70,18 @@ namespace SsbHedger.Model
             IUpdateConfigurationCommandHandler updateConfigurationCommandHandler,
             IDeltaAlertActivateCommandHandler deltaAlertActivateCommandHandler,
             IVolatilityAlertActivateCommandHandler volatilityAlertActivateCommandHandler,
-            IFindStrikesCommandHandler findAtmStrikesCommandHandler)
+            IFindStrikesCommandHandler findAtmStrikesCommandHandler,
+            IUpdateReqMktDataAtmStrikeUpCommandHandler updateReqMktDataAtmStrikeUpCommandHandler,
+            IUpdateReqMktDataAtmStrikeDownCommandHandler updateReqMktDataAtmStrikeDownCommandHandler)
         {
             InitializeCommand = new RelayCommand(() => initializeCommandHandler.HandleAsync(this));
             UpdateConfigurationCommand = new RelayCommand<object[]>((p) => updateConfigurationCommandHandler.Handle(this, p));
             DeltaAlertActivateCommand = new RelayCommand<object[]>((p) => deltaAlertActivateCommandHandler.Handle(this, p));
             VolatilityAlertActivateCommand = new RelayCommand<object[]>((p) => volatilityAlertActivateCommandHandler.Handle(this, p));
             FindStrikesCommand = new RelayCommand<object[]>((p) => findAtmStrikesCommandHandler.Handle(this, p));
+            UpdateReqMktDataAtmStrikeUpCommand = new RelayCommand<object[]>((p) => updateReqMktDataAtmStrikeUpCommandHandler.Handle(this, p));
+            UpdateReqMktDataAtmStrikeDownCommand = new RelayCommand<object[]>((p) => updateReqMktDataAtmStrikeDownCommandHandler.Handle(this, p));
+
 
             messages = new ObservableCollection<Message>();
             bars = new ObservableCollection<Bar>();
@@ -563,6 +568,8 @@ namespace SsbHedger.Model
             {
                 SetProperty(ref atmStrikeUp, value);
                 OnPropertyChanged(nameof(AtmStrikeUp));
+
+                UpdateReqMktDataAtmStrikeUpCommand.Execute(new object[] { value });
             }
         }
 
@@ -573,6 +580,8 @@ namespace SsbHedger.Model
             {
                 SetProperty(ref atmStrikeDown, value);
                 OnPropertyChanged(nameof(AtmStrikeDown));
+
+                UpdateReqMktDataAtmStrikeDownCommand.Execute(new object[] { value });
             }
         }
 
@@ -596,5 +605,7 @@ namespace SsbHedger.Model
         public ICommand DeltaAlertActivateCommand { get; }
         public ICommand VolatilityAlertActivateCommand { get; }
         public ICommand FindStrikesCommand { get; }
+        public ICommand UpdateReqMktDataAtmStrikeUpCommand { get; }
+        public ICommand UpdateReqMktDataAtmStrikeDownCommand { get; }
     }
 }
