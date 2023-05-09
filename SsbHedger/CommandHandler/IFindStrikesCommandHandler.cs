@@ -1,6 +1,6 @@
 ﻿namespace SsbHedger.CommandHandler
 {
-    public interface IFindAtmStrikesCommandHandler
+    public interface IFindStrikesCommandHandler
     {
         void Handle(Model.MainWindowViewModel mainWindowViewModel, object[] parameters);
     }

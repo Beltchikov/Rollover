@@ -4,12 +4,12 @@ using System;
 
 namespace SsbHedger.CommandHandler
 {
-    public class FindAtmStrikesCommandHandler : IFindAtmStrikesCommandHandler
+    public class FindStrikesCommandHandler : IFindStrikesCommandHandler
     {
         private IIbHost _ibHost = null!;
         private IAtmStrikeUtility _atmStrikeUtility;
 
-        public FindAtmStrikesCommandHandler(IIbHost ibHost, IAtmStrikeUtility atmStrikeUtility)
+        public FindStrikesCommandHandler(IIbHost ibHost, IAtmStrikeUtility atmStrikeUtility)
         {
             _ibHost = ibHost;
             _atmStrikeUtility = atmStrikeUtility;

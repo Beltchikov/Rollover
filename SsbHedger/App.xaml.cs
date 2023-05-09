@@ -29,7 +29,7 @@ namespace SsbHedger
                 .AddSingleton<IUpdateConfigurationCommandHandler, UpdateConfigurationCommandHandler>()
                 .AddSingleton<IDeltaAlertActivateCommandHandler, DeltaAlertActivateCommandHandler>()
                 .AddSingleton<IVolatilityAlertActivateCommandHandler, VolatilityAlertActivateCommandHandler>()
-                .AddSingleton<IFindAtmStrikesCommandHandler, FindAtmStrikesCommandHandler>()
+                .AddSingleton<IFindStrikesCommandHandler, FindStrikesCommandHandler>()
                 .AddSingleton<IPositionMessageBuffer, PositionMessageBuffer>()
                 .AddSingleton<IAtmStrikeUtility, AtmStrikeUtility>()
                 .AddMediatR(GetType().Assembly)
@@ -44,7 +44,7 @@ namespace SsbHedger
                     Services.GetRequiredService<IUpdateConfigurationCommandHandler>(),
                     Services.GetRequiredService<IDeltaAlertActivateCommandHandler>(),
                     Services.GetRequiredService<IVolatilityAlertActivateCommandHandler>(),
-                    Services.GetRequiredService<IFindAtmStrikesCommandHandler>());
+                    Services.GetRequiredService<IFindStrikesCommandHandler>());
 
             var _registryManager = Services.GetRequiredService<IRegistryManager>();
             var _configuration = Services.GetRequiredService<IConfiguration>();

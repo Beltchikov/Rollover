@@ -64,13 +64,13 @@ namespace SsbHedger.Model
             IUpdateConfigurationCommandHandler updateConfigurationCommandHandler,
             IDeltaAlertActivateCommandHandler deltaAlertActivateCommandHandler,
             IVolatilityAlertActivateCommandHandler volatilityAlertActivateCommandHandler,
-            IFindAtmStrikesCommandHandler findAtmStrikesCommandHandler)
+            IFindStrikesCommandHandler findAtmStrikesCommandHandler)
         {
             InitializeCommand = new RelayCommand(() => initializeCommandHandler.HandleAsync(this));
             UpdateConfigurationCommand = new RelayCommand<object[]>((p) => updateConfigurationCommandHandler.Handle(this, p));
             DeltaAlertActivateCommand = new RelayCommand<object[]>((p) => deltaAlertActivateCommandHandler.Handle(this, p));
             VolatilityAlertActivateCommand = new RelayCommand<object[]>((p) => volatilityAlertActivateCommandHandler.Handle(this, p));
-            FindAtmStrikesCommand = new RelayCommand<object[]>((p) => findAtmStrikesCommandHandler.Handle(this, p));
+            FindStrikesCommand = new RelayCommand<object[]>((p) => findAtmStrikesCommandHandler.Handle(this, p));
 
             messages = new ObservableCollection<Message>();
             bars = new ObservableCollection<Bar>();
@@ -247,7 +247,7 @@ namespace SsbHedger.Model
                 OnPropertyChanged(nameof(UnderlyingPrice));
                 OnPropertyChanged(nameof(NextAtmStrike));
                 
-                FindAtmStrikesCommand.Execute(new object[] { value });
+                FindStrikesCommand.Execute(new object[] { value });
             }
         }
 
@@ -562,6 +562,6 @@ namespace SsbHedger.Model
         public ICommand UpdateConfigurationCommand { get; }
         public ICommand DeltaAlertActivateCommand { get; }
         public ICommand VolatilityAlertActivateCommand { get; }
-        public ICommand FindAtmStrikesCommand { get; }
+        public ICommand FindStrikesCommand { get; }
     }
 }
