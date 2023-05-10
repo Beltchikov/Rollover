@@ -228,7 +228,7 @@
                     <TextBlock Grid.Row="8" Style="{StaticResource Label}"  
                        VerticalAlignment="Bottom" Grid.Column="1">Average IV</TextBlock>
                     <TextBox x:Name="txtAverageIv" Grid.Row="8" Grid.Column="2" TextAlignment="Center" 
-                     Text="{Binding NextPutStrike, FallbackValue=0}" />
+                     Text="{Binding IvAverage, FallbackValue=0,Mode=OneWay}" />
 
                     <TextBlock Grid.Row="9" Style="{StaticResource Label}"  
                        VerticalAlignment="Bottom" Grid.ColumnSpan="2">Average Weighted IV</TextBlock>

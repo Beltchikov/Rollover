@@ -65,6 +65,7 @@ namespace SsbHedger.Model
         private double atmStrikeDown;
         private double ivCall;
         private double ivPut;
+        private double ivAverage;
         
         public MainWindowViewModel(
             IInitializeCommandHandler initializeCommandHandler,
@@ -593,6 +594,7 @@ namespace SsbHedger.Model
             {
                 SetProperty(ref ivCall, value);
                 OnPropertyChanged(nameof(IvCall));
+                OnPropertyChanged(nameof(IvAverage));
             }
         }
 
@@ -603,6 +605,15 @@ namespace SsbHedger.Model
             {
                 SetProperty(ref ivPut, value);
                 OnPropertyChanged(nameof(IvPut));
+                OnPropertyChanged(nameof(IvAverage));
+            }
+        }
+
+        public double IvAverage
+        {
+            get 
+            { 
+                return (IvCall + IvPut)/ 2;
             }
         }
 
