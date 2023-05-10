@@ -1,17 +1,28 @@
 ﻿using SsbHedger.Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SsbHedger.CommandHandler
 {
     public class UpdateReqMktDataAtmStrikeDownCommandHandler : IUpdateReqMktDataAtmStrikeDownCommandHandler
     {
+        private IIbHost _ibHost = null!;
+        bool _requestSent;
+
+        public UpdateReqMktDataAtmStrikeDownCommandHandler(IIbHost ibHost)
+        {
+            _ibHost = ibHost;
+        }
+
         public void Handle(MainWindowViewModel viewModel, object[] parameters)
         {
-            throw new NotImplementedException();
+            double putStike = Convert.ToDouble(parameters[0]);
+            if (_requestSent)
+            {
+                _ibHost.CancelMktDataNextPutOption();
+            }
+
+            _ibHost.ReqMktDataNextPutOption(putStike);
+            _requestSent = true;
         }
     }
 }
