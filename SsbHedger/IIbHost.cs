@@ -22,5 +22,9 @@ namespace SsbHedger
         void CancelMktUnderlying();
         void ReqCheckNextOptionsStrike(double nextAtmStrike);
         void ReqCheckSecondOptionsStrike(double secondAtmStrike);
+        void ReqMktDataCallOptionIV(double callStike);
+        void ReqMktDataPutOptionIV(double putStike);
+        void CancelMktCallOptionIV();
+        void CancelMktPutOptionIV();
     }
 }

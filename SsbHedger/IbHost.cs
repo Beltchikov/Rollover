@@ -23,9 +23,11 @@ namespace SsbHedger
         private readonly int REQ_MKT_DATA_UNDERLYING = 3003;
         private readonly int NEXT_PUT_OPTION_REQ_ID = 4001;
         private readonly int NEXT_CALL_OPTION_REQ_ID = 4002;
+        private readonly int CALL_OPTION_IV_REQ_ID = 5001;
+        private readonly int PUT_OPTION_IV_REQ_ID = 5002;
         private readonly int CHECK_OPTION_NEXT_STRIKE_REQ_ID = 10000;
         private readonly int CHECK_OPTION_SECOND_STRIKE_REQ_ID = 20000;
-        
+
         IConfiguration _configuration;
         IIBClient _ibClient;
 
@@ -84,7 +86,7 @@ namespace SsbHedger
 
         public MainWindowViewModel? ViewModel { get; set; }
         public AtmStrikes AtmStrikesCandidate { get; set; }
-        
+
         public async Task<bool> ConnectAndStartReaderThread()
         {
             return await Task.Run(() =>
@@ -174,6 +176,53 @@ namespace SsbHedger
         public void CancelMktDataNextCalllOption()
         {
             _ibClient.ClientSocket.cancelMktData(NEXT_CALL_OPTION_REQ_ID);
+        }
+
+
+        public void ReqMktDataCallOptionIV(double callStike)
+        {
+            if (_currentCallContract == null)
+            {
+                return;
+            }
+
+            var contract = CopyContractWithOtherStrike(_currentCallContract, callStike);
+
+            _ibClient.ClientSocket.reqMktData(
+               CALL_OPTION_IV_REQ_ID,
+               contract,
+               "",
+               false,
+               false,
+               new List<TagValue>());
+        }
+
+
+        public void CancelMktCallOptionIV()
+        {
+            _ibClient.ClientSocket.cancelMktData(CALL_OPTION_IV_REQ_ID);
+        }
+
+        public void ReqMktDataPutOptionIV(double putStike)
+        {
+            if (_currentPutContract == null)
+            {
+                return;
+            }
+
+            var contract = CopyContractWithOtherStrike(_currentPutContract, putStike);
+            _ibClient.ClientSocket.reqMktData(
+               PUT_OPTION_IV_REQ_ID,
+               contract,
+               "",
+               false,
+               false,
+               new List<TagValue>());
+        }
+
+        public void CancelMktPutOptionIV()
+        {
+            _ibClient.ClientSocket.cancelMktData(PUT_OPTION_IV_REQ_ID);
         }
 
         public void ReqMktUnderlying()
@@ -557,12 +606,11 @@ namespace SsbHedger
             if (message.RequestId == NEXT_PUT_OPTION_REQ_ID)
             {
                 ViewModel.NextPutDelta = Math.Round(message.Delta, 3);
-                ViewModel.IvPut = Math.Round(message.ImpliedVolatility, 3);
             }
             if (message.RequestId == NEXT_CALL_OPTION_REQ_ID)
             {
                 ViewModel.NextCallDelta = Math.Round(message.Delta, 3);
-                ViewModel.IvCall = Math.Round(message.ImpliedVolatility, 3);
+
             }
             if (message.RequestId == CHECK_OPTION_NEXT_STRIKE_REQ_ID)
             {
@@ -572,6 +620,25 @@ namespace SsbHedger
             {
                 ViewModel.SecondAtmStrike = AtmStrikesCandidate.SecondAtmStrike;
             }
+            if (message.RequestId == CALL_OPTION_IV_REQ_ID)
+            {
+                // Computed Greeks and implied volatility based on the underlying stock price and the option model price. Correspond to greeks shown in TWS. See Option Greeks
+                // https://interactivebrokers.github.io/tws-api/tick_types.html
+                if (message.Field == 13)
+                {
+                    ViewModel.IvCall = Math.Round(message.ImpliedVolatility, 3);
+                }
+            }
+            if (message.RequestId == PUT_OPTION_IV_REQ_ID)
+            {
+                // Computed Greeks and implied volatility based on the underlying stock price and the option model price. Correspond to greeks shown in TWS. See Option Greeks
+                // https://interactivebrokers.github.io/tws-api/tick_types.html
+                if (message.Field == 13)
+                {
+                    ViewModel.IvPut = Math.Round(message.ImpliedVolatility, 3);
+                }
+            }
+
 
             if (Math.Abs(ViewModel.NextPutDelta) <= ViewModel.DeltaThreshold / 100
                 || Math.Abs(ViewModel.NextCallDelta) <= ViewModel.DeltaThreshold / 100)
