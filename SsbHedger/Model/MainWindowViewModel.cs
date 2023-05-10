@@ -65,7 +65,6 @@ namespace SsbHedger.Model
         private double atmStrikeDown;
         private double ivCall;
         private double ivPut;
-        private double ivAverage;
         
         public MainWindowViewModel(
             IInitializeCommandHandler initializeCommandHandler,
@@ -260,7 +259,8 @@ namespace SsbHedger.Model
                 SetProperty(ref underlyingPrice, value);
                 OnPropertyChanged(nameof(UnderlyingPrice));
                 OnPropertyChanged(nameof(NextAtmStrike));
-                
+                OnPropertyChanged(nameof(IvAverageWeghted));
+
                 FindStrikesCommand.Execute(new object[] { value });
             }
         }
@@ -570,6 +570,7 @@ namespace SsbHedger.Model
             {
                 SetProperty(ref atmStrikeUp, value);
                 OnPropertyChanged(nameof(AtmStrikeUp));
+                OnPropertyChanged(nameof(IvAverageWeghted));
 
                 UpdateReqMktDataAtmStrikeUpCommand.Execute(new object[] { value });
             }
@@ -582,6 +583,7 @@ namespace SsbHedger.Model
             {
                 SetProperty(ref atmStrikeDown, value);
                 OnPropertyChanged(nameof(AtmStrikeDown));
+                OnPropertyChanged(nameof(IvAverageWeghted));
 
                 UpdateReqMktDataAtmStrikeDownCommand.Execute(new object[] { value });
             }
@@ -595,6 +597,7 @@ namespace SsbHedger.Model
                 SetProperty(ref ivCall, value);
                 OnPropertyChanged(nameof(IvCall));
                 OnPropertyChanged(nameof(IvAverage));
+                OnPropertyChanged(nameof(IvAverageWeghted));
             }
         }
 
@@ -606,6 +609,7 @@ namespace SsbHedger.Model
                 SetProperty(ref ivPut, value);
                 OnPropertyChanged(nameof(IvPut));
                 OnPropertyChanged(nameof(IvAverage));
+                OnPropertyChanged(nameof(IvAverageWeghted));
             }
         }
 
@@ -614,6 +618,17 @@ namespace SsbHedger.Model
             get 
             { 
                 return (IvCall + IvPut)/ 2;
+            }
+        }
+
+        public double IvAverageWeghted
+        {
+            get
+            {
+                var range = AtmStrikeDown - AtmStrikeUp;
+                var weight = (UnderlyingPrice - AtmStrikeDown) / range;
+                var ivAverageWeghted = IvCall + (IvCall - IvPut) * weight;
+                return Math.Round(ivAverageWeghted, 3);
             }
         }
 

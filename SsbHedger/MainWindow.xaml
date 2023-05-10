@@ -233,7 +233,7 @@
                     <TextBlock Grid.Row="9" Style="{StaticResource Label}"  
                        VerticalAlignment="Bottom" Grid.ColumnSpan="2">Average Weighted IV</TextBlock>
                     <TextBox x:Name="txtAverageWeightedIv" Grid.Row="9" Grid.Column="2" TextAlignment="Center" 
-                     Text="{Binding NextPutStrike, FallbackValue=0}" />
+                     Text="{Binding IvAverageWeghted, FallbackValue=0, Mode=OneWay}" />
 
                     <TextBlock Grid.Row="11" Style="{StaticResource Label}" 
                        VerticalAlignment="Bottom" Grid.Column="1">Enable alert</TextBlock>
