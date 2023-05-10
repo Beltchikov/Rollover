@@ -557,10 +557,12 @@ namespace SsbHedger
             if (message.RequestId == NEXT_PUT_OPTION_REQ_ID)
             {
                 ViewModel.NextPutDelta = Math.Round(message.Delta, 3);
+                ViewModel.IvPut = Math.Round(message.ImpliedVolatility, 3);
             }
             if (message.RequestId == NEXT_CALL_OPTION_REQ_ID)
             {
                 ViewModel.NextCallDelta = Math.Round(message.Delta, 3);
+                ViewModel.IvCall = Math.Round(message.ImpliedVolatility, 3);
             }
             if (message.RequestId == CHECK_OPTION_NEXT_STRIKE_REQ_ID)
             {

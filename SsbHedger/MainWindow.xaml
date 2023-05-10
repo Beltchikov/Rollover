@@ -218,12 +218,12 @@
                     <TextBlock Grid.Row="6" Style="{StaticResource Label}"  
                        VerticalAlignment="Bottom" Grid.Column="1">Call IV</TextBlock>
                     <TextBox x:Name="txtCallIv" Grid.Row="6" Grid.Column="2" TextAlignment="Center" 
-                     Text="{Binding NextPutStrike, FallbackValue=0}" />
+                     Text="{Binding IvCall, FallbackValue=0}" />
 
                     <TextBlock Grid.Row="7" Style="{StaticResource Label}"  
                        VerticalAlignment="Bottom" Grid.Column="1">Put IV</TextBlock>
                     <TextBox x:Name="txtPutIv" Grid.Row="7" Grid.Column="2" TextAlignment="Center" 
-                     Text="{Binding NextPutStrike, FallbackValue=0}" />
+                     Text="{Binding IvPut, FallbackValue=0}" />
 
                     <TextBlock Grid.Row="8" Style="{StaticResource Label}"  
                        VerticalAlignment="Bottom" Grid.Column="1">Average IV</TextBlock>

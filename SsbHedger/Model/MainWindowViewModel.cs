@@ -63,8 +63,9 @@ namespace SsbHedger.Model
         private bool volatilityAlertActive;
         private double atmStrikeUp;
         private double atmStrikeDown;
+        private double ivCall;
+        private double ivPut;
         
-
         public MainWindowViewModel(
             IInitializeCommandHandler initializeCommandHandler,
             IUpdateConfigurationCommandHandler updateConfigurationCommandHandler,
@@ -582,6 +583,26 @@ namespace SsbHedger.Model
                 OnPropertyChanged(nameof(AtmStrikeDown));
 
                 UpdateReqMktDataAtmStrikeDownCommand.Execute(new object[] { value });
+            }
+        }
+
+        public double IvCall
+        {
+            get => ivCall;
+            set
+            {
+                SetProperty(ref ivCall, value);
+                OnPropertyChanged(nameof(IvCall));
+            }
+        }
+
+        public double IvPut
+        {
+            get => ivPut;
+            set
+            {
+                SetProperty(ref ivPut, value);
+                OnPropertyChanged(nameof(IvPut));
             }
         }
 
