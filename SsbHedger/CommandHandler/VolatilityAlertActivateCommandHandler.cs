@@ -17,7 +17,7 @@ namespace SsbHedger.CommandHandler
         {
             bool activate = (bool)parameters[0];
            _mainWindowViewModel = mainWindowViewModel;
-           _mainWindowViewModel.DeltaAlertActive = activate;
+           _mainWindowViewModel.VolatilityAlertActive = activate;
 
             if (activate)
             {

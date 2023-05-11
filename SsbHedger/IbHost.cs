@@ -639,16 +639,18 @@ namespace SsbHedger
                 }
             }
 
-
+            // Delta alert
             if (Math.Abs(ViewModel.NextPutDelta) <= ViewModel.DeltaThreshold / 100
                 || Math.Abs(ViewModel.NextCallDelta) <= ViewModel.DeltaThreshold / 100)
             {
-                _alertThread = new Thread(new ThreadStart(AlertFunction)) { IsBackground = true };
+                _alertThread = new Thread(new ThreadStart(AlertFunctionDelta)) { IsBackground = true };
                 _alertThread.Start();
             }
+
+            // Volatility alert
         }
 
-        private void AlertFunction()
+        private void AlertFunctionDelta()
         {
             if (ViewModel == null)
             {

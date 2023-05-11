@@ -544,16 +544,6 @@ namespace SsbHedger.Model
             }
         }
 
-        public double DeltaThreshold
-        {
-            get => deltaThreshold;
-            set
-            {
-                SetProperty(ref deltaThreshold, value);
-                OnPropertyChanged(nameof(DeltaThreshold));
-            }
-        }
-
         public bool VolatilityAlertActive
         {
             get => volatilityAlertActive;
@@ -561,6 +551,16 @@ namespace SsbHedger.Model
             {
                 SetProperty(ref volatilityAlertActive, value);
                 OnPropertyChanged(nameof(VolatilityAlertActive));
+            }
+        }
+
+        public double DeltaThreshold
+        {
+            get => deltaThreshold;
+            set
+            {
+                SetProperty(ref deltaThreshold, value);
+                OnPropertyChanged(nameof(DeltaThreshold));
             }
         }
 
