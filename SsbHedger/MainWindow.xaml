@@ -196,9 +196,9 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Row="1"
                            Style="{StaticResource Label}"  
-                       VerticalAlignment="Bottom" Grid.ColumnSpan="2">Alert if IV ROC below</TextBlock>
+                       VerticalAlignment="Bottom" Grid.ColumnSpan="2">Alert if IV above</TextBlock>
                     <TextBox Grid.Row="1" Grid.Column="2" TextAlignment="Center" 
-                     Text="TODO" />
+                     Text="{Binding IvThreshold}" />
 
                     <TextBlock Grid.Row="3" Style="{StaticResource Label}"  
                        VerticalAlignment="Bottom" Grid.Column="1">Underlying Price</TextBlock>

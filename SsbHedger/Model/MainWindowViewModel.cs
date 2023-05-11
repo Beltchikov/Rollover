@@ -65,6 +65,7 @@ namespace SsbHedger.Model
         private double atmStrikeDown;
         private double ivCall;
         private double ivPut;
+        private double ivThreshold;
         
         public MainWindowViewModel(
             IInitializeCommandHandler initializeCommandHandler,
@@ -629,6 +630,16 @@ namespace SsbHedger.Model
                 var weight = (UnderlyingPrice - AtmStrikeDown) / range;
                 var ivAverageWeghted = IvCall + (IvCall - IvPut) * weight;
                 return Math.Round(ivAverageWeghted, 3);
+            }
+        }
+
+        public double IvThreshold
+        {
+            get => ivThreshold;
+            set
+            {
+                SetProperty(ref ivThreshold, value);
+                OnPropertyChanged(nameof(IvThreshold));
             }
         }
 
