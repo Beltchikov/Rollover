@@ -648,6 +648,11 @@ namespace SsbHedger
             }
 
             // Volatility alert
+            if (ViewModel.IvAverage > ViewModel.IvThreshold)
+            {
+                _alertThread = new Thread(new ThreadStart(AlertFunctionIv)) { IsBackground = true };
+                _alertThread.Start();
+            }
         }
 
         private void AlertFunctionDelta()
@@ -658,6 +663,21 @@ namespace SsbHedger
             }
 
             while (ViewModel.DeltaAlertActive)
+            {
+                SoundPlayer player = new SoundPlayer(Properties.Resources.DeltaAlert);
+                player.Play();
+                Thread.Sleep(10000);
+            }
+        }
+
+        private void AlertFunctionIv()
+        {
+            if (ViewModel == null)
+            {
+                throw new ApplicationException("Unexpected! ViewModel is null");
+            }
+
+            while (ViewModel.VolatilityAlertActive)
             {
                 SoundPlayer player = new SoundPlayer(Properties.Resources.DeltaAlert);
                 player.Play();
