@@ -616,8 +616,8 @@ namespace SsbHedger.Model
         public double IvAverage
         {
             get 
-            { 
-                return (IvCall + IvPut)/ 2;
+            {
+                return Math.Round((IvCall + IvPut)/ 2,3);
             }
         }
 
