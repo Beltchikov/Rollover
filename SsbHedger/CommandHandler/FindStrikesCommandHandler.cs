@@ -26,19 +26,19 @@ namespace SsbHedger.CommandHandler
             if (viewModel == null)
             { throw new ApplicationException("Unexpected! viewModel is null"); }
 
-            if (viewModel.AtmStrikeDown <= underlyingPrice && underlyingPrice <= viewModel.AtmStrikeUp)
+            if (viewModel.AtmStrikeCall <= underlyingPrice && underlyingPrice <= viewModel.AtmStrikePut)
             {
                 return;
             }
 
             var strikesList = new List<double>();
-            viewModel.AtmStrikeUp = (int)Math.Floor(underlyingPrice);    // In option table up is down and down is up
-            viewModel.AtmStrikeDown = (int)Math.Ceiling(underlyingPrice);// In option table up is down and down is up
+            viewModel.AtmStrikePut = (int)Math.Ceiling(underlyingPrice);    // In option table up is down and down is up
+            viewModel.AtmStrikeCall = (int)Math.Floor(underlyingPrice);// In option table up is down and down is up
             for (int i = 0; i < (int)Math.Ceiling((double)MainWindowViewModel.STRIKES_COUNT/2); i++) 
             { 
-                var nextStrikeUp = viewModel.AtmStrikeUp + i;
+                var nextStrikeUp = viewModel.AtmStrikePut + i;
                 strikesList.Add(nextStrikeUp);
-                var nextStrikeDown = viewModel.AtmStrikeDown - i;
+                var nextStrikeDown = viewModel.AtmStrikeCall - i;
                 strikesList.Add(nextStrikeDown);
             }
 

@@ -61,8 +61,8 @@ namespace SsbHedger.Model
         private bool deltaAlertActive;
         private double deltaThreshold;
         private bool volatilityAlertActive;
-        private double atmStrikeUp;
-        private double atmStrikeDown;
+        private double atmStrikePut;
+        private double atmStrikeCall;
         private double ivCall;
         private double ivPut;
         private double ivThreshold;
@@ -564,26 +564,26 @@ namespace SsbHedger.Model
             }
         }
 
-        public double AtmStrikeUp
+        public double AtmStrikePut
         {
-            get => atmStrikeUp;
+            get => atmStrikePut;
             set
             {
-                SetProperty(ref atmStrikeUp, value);
-                OnPropertyChanged(nameof(AtmStrikeUp));
+                SetProperty(ref atmStrikePut, value);
+                OnPropertyChanged(nameof(AtmStrikePut));
                 OnPropertyChanged(nameof(IvAverageWeghted));
 
                 UpdateReqMktDataAtmStrikeUpCommand.Execute(new object[] { value });
             }
         }
 
-        public double AtmStrikeDown
+        public double AtmStrikeCall
         {
-            get => atmStrikeDown;
+            get => atmStrikeCall;
             set
             {
-                SetProperty(ref atmStrikeDown, value);
-                OnPropertyChanged(nameof(AtmStrikeDown));
+                SetProperty(ref atmStrikeCall, value);
+                OnPropertyChanged(nameof(AtmStrikeCall));
                 OnPropertyChanged(nameof(IvAverageWeghted));
 
                 UpdateReqMktDataAtmStrikeDownCommand.Execute(new object[] { value });
@@ -626,8 +626,8 @@ namespace SsbHedger.Model
         {
             get
             {
-                var range = AtmStrikeDown - AtmStrikeUp;
-                var weight = (UnderlyingPrice - AtmStrikeDown) / range;
+                var range = AtmStrikeCall - AtmStrikePut;
+                var weight = (UnderlyingPrice - AtmStrikeCall) / range;
                 var ivAverageWeghted = IvCall + (IvCall - IvPut) * weight;
                 return Math.Round(ivAverageWeghted, 3);
             }
