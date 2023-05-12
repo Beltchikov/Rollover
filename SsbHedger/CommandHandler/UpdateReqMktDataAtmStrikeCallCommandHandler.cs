@@ -3,12 +3,12 @@ using System;
 
 namespace SsbHedger.CommandHandler
 {
-    public class UpdateReqMktDataAtmStrikeDownCommandHandler : IUpdateReqMktDataAtmStrikeDownCommandHandler
+    public class UpdateReqMktDataAtmStrikeCallCommandHandler : IUpdateReqMktDataAtmStrikeDownCommandHandler
     {
         private IIbHost _ibHost = null!;
         bool _requestSent;
 
-        public UpdateReqMktDataAtmStrikeDownCommandHandler(IIbHost ibHost)
+        public UpdateReqMktDataAtmStrikeCallCommandHandler(IIbHost ibHost)
         {
             _ibHost = ibHost;
         }
