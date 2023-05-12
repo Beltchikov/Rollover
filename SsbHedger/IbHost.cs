@@ -626,7 +626,7 @@ namespace SsbHedger
                 // https://interactivebrokers.github.io/tws-api/tick_types.html
                 if (message.Field == 13)
                 {
-                    ViewModel.IvCall = Math.Round(message.ImpliedVolatility, 3);
+                    ViewModel.IvCall = Math.Round(message.ImpliedVolatility, 4);
                 }
             }
             if (message.RequestId == PUT_OPTION_IV_REQ_ID)
@@ -635,7 +635,7 @@ namespace SsbHedger
                 // https://interactivebrokers.github.io/tws-api/tick_types.html
                 if (message.Field == 13)
                 {
-                    ViewModel.IvPut = Math.Round(message.ImpliedVolatility, 3);
+                    ViewModel.IvPut = Math.Round(message.ImpliedVolatility, 4);
                 }
             }
 

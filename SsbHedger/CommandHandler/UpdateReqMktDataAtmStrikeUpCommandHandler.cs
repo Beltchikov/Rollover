@@ -18,10 +18,10 @@ namespace SsbHedger.CommandHandler
             double callStike = Convert.ToDouble(parameters[0]);
             if(_requestSent)
             {
-                _ibHost.CancelMktCallOptionIV();
+                _ibHost.CancelMktPutOptionIV();
             }
 
-            _ibHost.ReqMktDataCallOptionIV(callStike);
+            _ibHost.ReqMktDataPutOptionIV(callStike);
             _requestSent = true;
         }
     }

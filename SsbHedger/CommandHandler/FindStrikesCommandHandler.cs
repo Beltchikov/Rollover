@@ -32,8 +32,8 @@ namespace SsbHedger.CommandHandler
             }
 
             var strikesList = new List<double>();
-            viewModel.AtmStrikeUp = (int)Math.Ceiling(underlyingPrice);
-            viewModel.AtmStrikeDown = (int)Math.Floor(underlyingPrice);
+            viewModel.AtmStrikeUp = (int)Math.Floor(underlyingPrice);    // In option table up is down and down is up
+            viewModel.AtmStrikeDown = (int)Math.Ceiling(underlyingPrice);// In option table up is down and down is up
             for (int i = 0; i < (int)Math.Ceiling((double)MainWindowViewModel.STRIKES_COUNT/2); i++) 
             { 
                 var nextStrikeUp = viewModel.AtmStrikeUp + i;
