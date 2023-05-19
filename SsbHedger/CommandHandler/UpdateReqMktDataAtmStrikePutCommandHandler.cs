@@ -6,7 +6,7 @@ namespace SsbHedger.CommandHandler
     public class UpdateReqMktDataAtmStrikePutCommandHandler : IUpdateReqMktDataAtmStrikePutCommandHandler
     {
         private IIbHost _ibHost = null!;
-        bool _requestSent;
+        double _lastPutStrike = 0;
 
         public UpdateReqMktDataAtmStrikePutCommandHandler(IIbHost ibHost)
         {
@@ -15,14 +15,15 @@ namespace SsbHedger.CommandHandler
 
         public void Handle(MainWindowViewModel viewModel, object[] parameters)
         {
-            double callStike = Convert.ToDouble(parameters[0]);
-            if (_requestSent)
+            double putStike = Convert.ToDouble(parameters[0]);
+            if (_lastPutStrike == putStike)
             {
-                _ibHost.CancelMktPutOptionIV();
+                return;
             }
 
-            _ibHost.ReqMktDataPutOptionIV(callStike);
-            _requestSent = true;
+            _ibHost.CancelMktCallOptionIV();
+            _ibHost.ReqMktDataCallOptionIV(putStike);
+            _lastPutStrike = putStike;
         }
     }
 }

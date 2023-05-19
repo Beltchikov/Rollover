@@ -1,12 +1,13 @@
 ﻿using SsbHedger.Model;
 using System;
+using System.Runtime.CompilerServices;
 
 namespace SsbHedger.CommandHandler
 {
     public class UpdateReqMktDataAtmStrikeCallCommandHandler : IUpdateReqMktDataAtmStrikeCallCommandHandler
     {
         private IIbHost _ibHost = null!;
-        bool _requestSent;
+        double _lastCallStrike = 0;
 
         public UpdateReqMktDataAtmStrikeCallCommandHandler(IIbHost ibHost)
         {
@@ -15,14 +16,15 @@ namespace SsbHedger.CommandHandler
 
         public void Handle(MainWindowViewModel viewModel, object[] parameters)
         {
-            double putStike = Convert.ToDouble(parameters[0]);
-            if (_requestSent)
+            double callStike = Convert.ToDouble(parameters[0]);
+            if (_lastCallStrike == callStike)
             {
-                _ibHost.CancelMktCallOptionIV();
+                return;
             }
 
-            _ibHost.ReqMktDataCallOptionIV(putStike);
-            _requestSent = true;
+            _ibHost.CancelMktPutOptionIV();
+            _ibHost.ReqMktDataPutOptionIV(callStike);
+            _lastCallStrike = callStike;
         }
     }
 }
