@@ -73,8 +73,8 @@ namespace SsbHedger.Model
             IDeltaAlertActivateCommandHandler deltaAlertActivateCommandHandler,
             IVolatilityAlertActivateCommandHandler volatilityAlertActivateCommandHandler,
             IFindStrikesCommandHandler findAtmStrikesCommandHandler,
-            IUpdateReqMktDataAtmStrikeUpCommandHandler updateReqMktDataAtmStrikeUpCommandHandler,
-            IUpdateReqMktDataAtmStrikeDownCommandHandler updateReqMktDataAtmStrikeDownCommandHandler)
+            IUpdateReqMktDataAtmStrikePutCommandHandler updateReqMktDataAtmStrikeUpCommandHandler,
+            IUpdateReqMktDataAtmStrikeCallCommandHandler updateReqMktDataAtmStrikeDownCommandHandler)
         {
             InitializeCommand = new RelayCommand(() => initializeCommandHandler.HandleAsync(this));
             UpdateConfigurationCommand = new RelayCommand<object[]>((p) => updateConfigurationCommandHandler.Handle(this, p));

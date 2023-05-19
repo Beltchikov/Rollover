@@ -2,7 +2,7 @@
 
 namespace SsbHedger.CommandHandler
 {
-    public interface IUpdateReqMktDataAtmStrikeDownCommandHandler
+    public interface IUpdateReqMktDataAtmStrikePutCommandHandler
     {
         void Handle(MainWindowViewModel viewModel, object[] parameters);
     }

@@ -3,7 +3,7 @@ using System;
 
 namespace SsbHedger.CommandHandler
 {
-    public class UpdateReqMktDataAtmStrikeCallCommandHandler : IUpdateReqMktDataAtmStrikeDownCommandHandler
+    public class UpdateReqMktDataAtmStrikeCallCommandHandler : IUpdateReqMktDataAtmStrikeCallCommandHandler
     {
         private IIbHost _ibHost = null!;
         bool _requestSent;
