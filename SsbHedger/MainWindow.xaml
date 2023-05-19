@@ -206,14 +206,14 @@
                      Text="{Binding UnderlyingPrice}" />
 
                     <TextBlock Grid.Row="4" Style="{StaticResource Label}"  
-                       VerticalAlignment="Bottom" Grid.Column="1">ATM Strike Put</TextBlock>
+                       VerticalAlignment="Bottom" Grid.Column="1">ATM Strike Call</TextBlock>
                     <TextBox x:Name="txtAtmStrikeUp" Grid.Row="4" Grid.Column="2" TextAlignment="Center" 
-                     Text="{Binding AtmStrikePut, Mode=OneWay}" />
+                     Text="{Binding AtmStrikeCall, Mode=OneWay}" />
 
                     <TextBlock Grid.Row="5" Style="{StaticResource Label}"  
-                       VerticalAlignment="Bottom" Grid.Column="1">ATM Strike Call</TextBlock>
+                       VerticalAlignment="Bottom" Grid.Column="1">ATM Strike Put</TextBlock>
                     <TextBox x:Name="txtAtmStrikeDown" Grid.Row="5" Grid.Column="2" TextAlignment="Center" 
-                     Text="{Binding AtmStrikeCall, Mode=OneWay}" />
+                     Text="{Binding AtmStrikePut, Mode=OneWay}" />
 
                     <TextBlock Grid.Row="6" Style="{StaticResource Label}"  
                        VerticalAlignment="Bottom" Grid.Column="1">Call IV</TextBlock>
