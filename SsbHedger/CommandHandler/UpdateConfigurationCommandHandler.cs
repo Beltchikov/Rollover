@@ -78,7 +78,7 @@ namespace SsbHedger.CommandHandler
             _configuration.SetValue(Configuration.BULL_HEDGE_STRIKE, bullHedgeStrike);
 
             _ibHost.Disconnect();
-            _ibHost.ConnectAndStartReaderThread();
+            _ibHost.ConnectAndStartReaderThreadOld();
         }
     }
 }

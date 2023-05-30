@@ -87,7 +87,8 @@ namespace SsbHedger
         public MainWindowViewModel? ViewModel { get; set; }
         public AtmStrikes AtmStrikesCandidate { get; set; }
 
-        public async Task<bool> ConnectAndStartReaderThread()
+        [Obsolete]
+        public async Task<bool> ConnectAndStartReaderThreadOld()
         {
             return await Task.Run(() =>
             {
