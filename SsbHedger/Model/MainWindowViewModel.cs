@@ -101,6 +101,7 @@ namespace SsbHedger.Model
             nextCallStrike = 0;
             nextPutDelta = -50;
             nextCallDelta = 50;
+            ivThreshold = 0.5;
         }
 
         public string ConnectionMessage
