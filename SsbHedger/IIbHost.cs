@@ -9,7 +9,7 @@ namespace SsbHedger
         public MainWindowViewModel? ViewModel { get; set; }
         AtmStrikes AtmStrikesCandidate { get; set; }
         public int Timeout { get; }
-        public Task<bool> ConnectAndStartReaderThread();
+        public bool ConnectAndStartReaderThread();
         public void Disconnect();
         public void ReqHistoricalData();
         void ApplyDefaultHistoricalData();
