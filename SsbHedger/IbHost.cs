@@ -108,6 +108,20 @@ namespace SsbHedger
             });
         }
 
+        public async Task<bool> ConnectAndStartReaderThread()
+        {
+            return await Task.Run(() =>
+            {
+                if (ViewModel == null)
+                {
+                    throw new ApplicationException("Unexpected! ViewModel is null");
+                }
+
+                // todo
+                return false;
+            });
+        }
+
         public void Disconnect()
         {
             _ibClient.Disconnect();
