@@ -27,5 +27,6 @@ namespace SsbHedger
         void ReqMktDataPutOptionIV(double putStike);
         void CancelMktCallOptionIV();
         void CancelMktPutOptionIV();
+        void GetStrikes(string v1, string v2, int v3);
     }
 }

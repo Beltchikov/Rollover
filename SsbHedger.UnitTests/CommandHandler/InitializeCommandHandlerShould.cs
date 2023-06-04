@@ -27,7 +27,7 @@ namespace SsbHedger.UnitTests.CommandHandler
             configuration.GetValue(Configuration.SESSION_END).Returns("");
 
             registryManager.ReadConfiguration(Arg.Any<ConfigurationData>())
-                .ReturnsForAnyArgs(new ConfigurationData( host,  port,  clientId, "", "", ""));
+                .ReturnsForAnyArgs(new ConfigurationData( host,  port,  clientId, "", "", "", "", 10));
 
             await sut.HandleAsync(viewModel);
             
@@ -53,7 +53,7 @@ namespace SsbHedger.UnitTests.CommandHandler
             configuration.GetValue(Configuration.SESSION_END).Returns("");
 
             registryManager.ReadConfiguration(Arg.Any<ConfigurationData>())
-                .ReturnsForAnyArgs(new ConfigurationData(host, port, clientId, "", "", ""));
+                .ReturnsForAnyArgs(new ConfigurationData(host, port, clientId, "", "", "", "", 10));
             ibHost.ConnectAndStartReaderThread().Returns(false);
 
             await sut.HandleAsync(viewModel);
@@ -80,7 +80,7 @@ namespace SsbHedger.UnitTests.CommandHandler
             configuration.GetValue(Configuration.SESSION_END).Returns("");
 
             registryManager.ReadConfiguration(Arg.Any<ConfigurationData>())
-                .ReturnsForAnyArgs(new ConfigurationData(host, port, clientId, "", "", ""));
+                .ReturnsForAnyArgs(new ConfigurationData(host, port, clientId, "", "", "", "", 10));
             ibHost.ConnectAndStartReaderThread().Returns(true);
 
             await sut.HandleAsync(viewModel);
@@ -107,7 +107,7 @@ namespace SsbHedger.UnitTests.CommandHandler
             configuration.GetValue(Configuration.SESSION_END).Returns("");
 
             registryManager.ReadConfiguration(Arg.Any<ConfigurationData>())
-                .ReturnsForAnyArgs(new ConfigurationData(host, port, clientId, "", "", ""));
+                .ReturnsForAnyArgs(new ConfigurationData(host, port, clientId, "", "", "", "", 10));
             ibHost.ConnectAndStartReaderThread().Returns(false);
 
             await sut.HandleAsync(viewModel);

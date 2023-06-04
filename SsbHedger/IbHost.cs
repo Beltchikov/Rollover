@@ -345,9 +345,6 @@ namespace SsbHedger
             ViewModel.Messages.Add(new Message(0, message.IsConnected ? "CONNECTED!" : "NOT CONNECTED!"));
             ViewModel.Connected = message.IsConnected;
 
-            ViewModel.BearHedgeStrike = Convert.ToDouble(_configuration.GetValue(Configuration.BEAR_HEDGE_STRIKE), new CultureInfo("DE-de"));
-            ViewModel.BullHedgeStrike = Convert.ToDouble(_configuration.GetValue(Configuration.BULL_HEDGE_STRIKE), new CultureInfo("DE-de"));
-
             UpdateConnectionMessage(message.IsConnected);
         }
 
@@ -836,6 +833,11 @@ namespace SsbHedger
             }
 
             ViewModel.PutShortPrice = Math.Round(positionMessage.AverageCost / MainWindowViewModel.MULTIPLIER, 3);
+        }
+
+        public void GetStrikes(string v1, string v2, int v3)
+        {
+            throw new NotImplementedException();
         }
     }
 }

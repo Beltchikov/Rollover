@@ -33,8 +33,8 @@ namespace SsbHedger
             txtUnderlyingSymbol.Text = (string)_configuration.GetValue(Configuration.UNDERLYING_SYMBOL);
             txtSessionStart.Text = (string)_configuration.GetValue(Configuration.SESSION_START);
             txtSessionEnd.Text = (string)_configuration.GetValue(Configuration.SESSION_END);
-            txtBearHedgeStrike.Text = Convert.ToString(_configuration.GetValue(Configuration.BEAR_HEDGE_STRIKE), new CultureInfo("DE-de"));
-            txtBullHedgeStrike.Text = Convert.ToString(_configuration.GetValue(Configuration.BULL_HEDGE_STRIKE), new CultureInfo("DE-de"));
+            txtLastTradeDateOrContractMonth.Text = (string)_configuration.GetValue(Configuration.LAST_TRADE_DATE_OR_CONTRACT_MONTH);
+            txtNumberOfStrikes.Text = Convert.ToString(_configuration.GetValue(Configuration.NUMBER_OF_STRIKES));
 
         }
 
@@ -140,7 +140,7 @@ namespace SsbHedger
             }
 
             Dictionary<string, TextBox> textBoxesDict = BuildDefaultTextBoxesDictionary();
-            textBoxesDict["txtBearHedgeStrike"] = (TextBox)sender;
+            textBoxesDict["txtLastTradeDateOrContractMonth"] = (TextBox)sender;
             btDone.IsEnabled = ConfigurationIsUpdated(textBoxesDict);
         }
 
@@ -166,7 +166,7 @@ namespace SsbHedger
                 || string.IsNullOrWhiteSpace(textBoxesDict["txtUnderlyingSymbol"].Text)
                 || string.IsNullOrWhiteSpace(textBoxesDict["txtSessionStart"].Text)
                 || string.IsNullOrWhiteSpace(textBoxesDict["txtSessionEnd"].Text)
-                || string.IsNullOrWhiteSpace(textBoxesDict["txtBearHedgeStrike"].Text)
+                || string.IsNullOrWhiteSpace(textBoxesDict["txtLastTradeDateOrContractMonth"].Text)
                 || string.IsNullOrWhiteSpace(textBoxesDict["txtBullHedgeStrike"].Text))
             {
                 return false;
@@ -182,13 +182,13 @@ namespace SsbHedger
                 textBoxesDict["txtSessionStart"].Text, StringComparison.InvariantCultureIgnoreCase);
             bool newSessionEnd = !string.Equals((string)_configuration.GetValue(Configuration.SESSION_END), 
                 textBoxesDict["txtSessionEnd"].Text, StringComparison.InvariantCultureIgnoreCase);
-            bool newBearHedgeStrike = !string.Equals(Convert.ToString(_configuration.GetValue(Configuration.BEAR_HEDGE_STRIKE), new CultureInfo("DE-de")),
-                textBoxesDict["txtBearHedgeStrike"].Text, StringComparison.InvariantCultureIgnoreCase);
-            bool newBullHedgeStrike = !string.Equals(Convert.ToString(_configuration.GetValue(Configuration.BULL_HEDGE_STRIKE), new CultureInfo("DE-de")),
-                textBoxesDict["txtBullHedgeStrike"].Text, StringComparison.InvariantCultureIgnoreCase);
+            bool lastTradeDateOrContractMonth = !string.Equals((string)_configuration.GetValue(Configuration.LAST_TRADE_DATE_OR_CONTRACT_MONTH),
+                textBoxesDict["txtLastTradeDateOrContractMonth"].Text, StringComparison.InvariantCultureIgnoreCase);
+            bool numberOfStrikes = !string.Equals(Convert.ToString(_configuration.GetValue(Configuration.NUMBER_OF_STRIKES), new CultureInfo("DE-de")),
+                textBoxesDict["txtNumberOfStrikes"].Text, StringComparison.InvariantCultureIgnoreCase);
 
             return newHost || newPort || newClientId || newUnderlyingSymbol || newSessionStart || newSessionEnd
-                || newBearHedgeStrike || newBullHedgeStrike;
+                || lastTradeDateOrContractMonth || numberOfStrikes;
         }
 
         private Dictionary<string, TextBox> BuildDefaultTextBoxesDictionary()
@@ -201,8 +201,8 @@ namespace SsbHedger
                 {"txtUnderlyingSymbol", txtUnderlyingSymbol},
                 {"txtSessionStart", txtSessionStart},
                 {"txtSessionEnd", txtSessionEnd },
-                {"txtBearHedgeStrike", txtBearHedgeStrike },
-                {"txtBullHedgeStrike", txtBullHedgeStrike },
+                {"txtLastTradeDateOrContractMonth", txtLastTradeDateOrContractMonth },
+                {"txtNumberOfStrikes", txtNumberOfStrikes },
             };
         }
 

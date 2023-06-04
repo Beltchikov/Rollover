@@ -58,7 +58,9 @@ namespace SsbHedger
                 (int)_configuration.GetValue(Configuration.CLIENT_ID),
                 (string)_configuration.GetValue(Configuration.UNDERLYING_SYMBOL),
                 (string)_configuration.GetValue(Configuration.SESSION_START),
-                (string)_configuration.GetValue(Configuration.SESSION_END)));
+                (string)_configuration.GetValue(Configuration.SESSION_END),
+                (string)_configuration.GetValue(Configuration.LAST_TRADE_DATE_OR_CONTRACT_MONTH),
+                (int)_configuration.GetValue(Configuration.NUMBER_OF_STRIKES)));
 
             _configuration.SetValue(Configuration.HOST, configurationdata.Host);
             _configuration.SetValue(Configuration.PORT, configurationdata.Port);
@@ -66,6 +68,8 @@ namespace SsbHedger
             _configuration.SetValue(Configuration.UNDERLYING_SYMBOL, configurationdata.UnderlyingSymbol);
             _configuration.SetValue(Configuration.SESSION_START, configurationdata.SessionStart);
             _configuration.SetValue(Configuration.SESSION_END, configurationdata.SessionEnd);
+            _configuration.SetValue(Configuration.LAST_TRADE_DATE_OR_CONTRACT_MONTH, configurationdata.LastTradeDateOrContractMonth);
+            _configuration.SetValue(Configuration.NUMBER_OF_STRIKES, configurationdata.NumberOfStrikes);
 
             viewModel.SessionStart= configurationdata.SessionStart; 
             viewModel.SessionEnd= configurationdata.SessionEnd; 

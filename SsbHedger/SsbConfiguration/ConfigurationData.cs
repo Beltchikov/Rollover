@@ -5,7 +5,9 @@
         int ClientId,
         string UnderlyingSymbol,
         string SessionStart,
-        string SessionEnd)
+        string SessionEnd,
+        string LastTradeDateOrContractMonth,
+        int NumberOfStrikes)
     {
         public static implicit operator (
             string host, 
@@ -13,14 +15,18 @@
             int clientId, 
             string underlyingSymbol, 
             string sessionStart, 
-            string sessionEnd)
+            string sessionEnd,
+            string lastTradeDateOrContractMonth,
+            int numberOfStrikes)
             (ConfigurationData value) => (
             value.Host, 
             value.Port, 
             value.ClientId, 
             value.UnderlyingSymbol, 
             value.SessionStart, 
-            value.SessionEnd);
+            value.SessionEnd,
+            value.LastTradeDateOrContractMonth,
+            value.NumberOfStrikes);
 
         public static implicit operator ConfigurationData((
             string host, 
@@ -30,12 +36,16 @@
             string sessionStart, 
             string sessionEnd,
             double bearHedgeStrike,
-            double bullHedgeStrike) value) => new ConfigurationData(
+            double bullHedgeStrike,
+            string lastTradeDateOrContractMonth,
+            int numberOfStrikes) value) => new ConfigurationData(
                 value.host, 
                 value.port, 
                 value.clientId, 
                 value.underlyingSymbol, 
                 value.sessionStart, 
-                value.sessionEnd);
+                value.sessionEnd,
+                value.lastTradeDateOrContractMonth,
+            value.numberOfStrikes);
     }
 }

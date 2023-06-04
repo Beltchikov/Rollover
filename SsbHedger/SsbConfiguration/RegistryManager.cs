@@ -26,6 +26,8 @@ namespace SsbHedger.SsbConfiguration
                 subKey.SetValue(Configuration.UNDERLYING_SYMBOL, defaultConfigurationData.UnderlyingSymbol);
                 subKey.SetValue(Configuration.SESSION_START, defaultConfigurationData.SessionStart);
                 subKey.SetValue(Configuration.SESSION_END, defaultConfigurationData.SessionEnd);
+                subKey.SetValue(Configuration.LAST_TRADE_DATE_OR_CONTRACT_MONTH, defaultConfigurationData.LastTradeDateOrContractMonth);
+                subKey.SetValue(Configuration.NUMBER_OF_STRIKES, defaultConfigurationData.NumberOfStrikes);
 
                 return new ConfigurationData(
                     defaultConfigurationData.Host,
@@ -33,7 +35,9 @@ namespace SsbHedger.SsbConfiguration
                     defaultConfigurationData.ClientId,
                     defaultConfigurationData.UnderlyingSymbol,
                     defaultConfigurationData.SessionStart,
-                    defaultConfigurationData.SessionEnd);
+                    defaultConfigurationData.SessionEnd,
+                    defaultConfigurationData.LastTradeDateOrContractMonth,
+                    defaultConfigurationData.NumberOfStrikes);
             }
 
             var defaultOrFromRegistryConfigData = new ConfigurationData();
@@ -104,13 +108,37 @@ namespace SsbHedger.SsbConfiguration
                 subKey?.SetValue(Configuration.SESSION_END, defaultConfigurationData.SessionEnd);
             }
 
+            var lastTradeDateOrContractMonth = subKey?.GetValue(Configuration.LAST_TRADE_DATE_OR_CONTRACT_MONTH)?.ToString();
+            if (!string.IsNullOrWhiteSpace(lastTradeDateOrContractMonth))
+            {
+                defaultOrFromRegistryConfigData.LastTradeDateOrContractMonth = lastTradeDateOrContractMonth;
+            }
+            else
+            {
+                defaultOrFromRegistryConfigData.LastTradeDateOrContractMonth = defaultConfigurationData.LastTradeDateOrContractMonth;
+                subKey?.SetValue(Configuration.LAST_TRADE_DATE_OR_CONTRACT_MONTH, defaultConfigurationData.LastTradeDateOrContractMonth);
+            }
+
+            var numberOfStrikes = (int?)subKey?.GetValue(Configuration.NUMBER_OF_STRIKES);
+            if (numberOfStrikes != null && numberOfStrikes > 0)
+            {
+                defaultOrFromRegistryConfigData.NumberOfStrikes = (int)numberOfStrikes;
+            }
+            else
+            {
+                defaultOrFromRegistryConfigData.NumberOfStrikes = defaultConfigurationData.NumberOfStrikes;
+                subKey?.SetValue(Configuration.NUMBER_OF_STRIKES, defaultConfigurationData.NumberOfStrikes);
+            }
+
             return new ConfigurationData(
                    defaultOrFromRegistryConfigData.Host,
                    defaultOrFromRegistryConfigData.Port,
                    defaultOrFromRegistryConfigData.ClientId,
                    defaultOrFromRegistryConfigData.UnderlyingSymbol,
                    defaultOrFromRegistryConfigData.SessionStart,
-                   defaultOrFromRegistryConfigData.SessionEnd);
+                   defaultOrFromRegistryConfigData.SessionEnd,
+                   defaultOrFromRegistryConfigData.LastTradeDateOrContractMonth,
+                   defaultOrFromRegistryConfigData.NumberOfStrikes);
         }
 
         public void WriteConfiguration(ConfigurationData defaultConfigurationData)
@@ -124,6 +152,8 @@ namespace SsbHedger.SsbConfiguration
             subKey.SetValue(Configuration.UNDERLYING_SYMBOL, defaultConfigurationData.UnderlyingSymbol);
             subKey.SetValue(Configuration.SESSION_START, defaultConfigurationData.SessionStart);
             subKey.SetValue(Configuration.SESSION_END, defaultConfigurationData.SessionEnd);
+            subKey.SetValue(Configuration.LAST_TRADE_DATE_OR_CONTRACT_MONTH, defaultConfigurationData.LastTradeDateOrContractMonth);
+            subKey.SetValue(Configuration.NUMBER_OF_STRIKES, defaultConfigurationData.NumberOfStrikes);
         }
     }
 }

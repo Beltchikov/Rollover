@@ -21,10 +21,18 @@ namespace SsbHedger.CommandHandler
 
         public void Handle(MainWindowViewModel mainWindowViewModel, object[] parameters)
         {
+            //if (_ibHost == null)
+            //{ throw new ApplicationException("Unexpected! _ibHost is null"); }
+            //var viewModel = _ibHost.ViewModel;
+            //if (viewModel == null)
+            //{ throw new ApplicationException("Unexpected! viewModel is null"); }
 
-            // TODO
-            // viewModel.Strikes = _ibHost.GetStrikes(underlying, expiration, numberOfStrikes);
 
+            //viewModel.Strikes = _ibHost.GetStrikes(underlying, lastTradeDateOrContractMonth, numberOfStrikes);
+
+
+
+            // OLD IMPLEMENTATION
             var underlyingPrice = (double)parameters[0];
             var viewModel = _ibHost.ViewModel;
 

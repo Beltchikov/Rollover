@@ -87,7 +87,7 @@
                    Margin="0,0,5,0"
                    Style="{StaticResource NormalTextBlock}">
         </TextBlock>
-        <TextBox Name="txtBearHedgeStrike" Grid.Column="2" Grid.Row="6"
+        <TextBox Name="txtLastTradeDateOrContractMonth" Grid.Column="2" Grid.Row="6"
                  Style="{StaticResource NormalTextBox}"
                  Text="" TextChanged="txtBearHedgeStrike_TextChanged" BorderBrush="#FFABADB3" ></TextBox>
 
@@ -96,7 +96,7 @@
                    Margin="0,0,5,0"
                    Style="{StaticResource NormalTextBlock}">
         </TextBlock>
-        <TextBox Name="txtBullHedgeStrike" Grid.Column="2" Grid.Row="7"
+        <TextBox Name="txtNumberOfStrikes" Grid.Column="2" Grid.Row="7"
                  Style="{StaticResource NormalTextBox}"
                  Text="" TextChanged="txtBullHedgeStrike_TextChanged" BorderBrush="#FFABADB3" ></TextBox>
 
