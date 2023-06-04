@@ -21,10 +21,14 @@ namespace SsbHedger.CommandHandler
 
         public void Handle(MainWindowViewModel mainWindowViewModel, object[] parameters)
         {
+
+            // TODO
+            // viewModel.Strikes = _ibHost.GetStrikes(underlying, expiration, numberOfStrikes);
+
             var underlyingPrice = (double)parameters[0];
             var viewModel = _ibHost.ViewModel;
 
-            if(_ibHost == null) 
+            if (_ibHost == null)
             { throw new ApplicationException("Unexpected! _ibHost is null"); }
             if (viewModel == null)
             { throw new ApplicationException("Unexpected! viewModel is null"); }
@@ -37,8 +41,8 @@ namespace SsbHedger.CommandHandler
             var strikesList = new List<double>();
             viewModel.AtmStrikePut = (int)Math.Ceiling(underlyingPrice);    // In option table up is down and down is up
             viewModel.AtmStrikeCall = (int)Math.Floor(underlyingPrice);// In option table up is down and down is up
-            for (int i = 0; i < (int)Math.Ceiling((double)MainWindowViewModel.STRIKES_COUNT/2); i++) 
-            { 
+            for (int i = 0; i < (int)Math.Ceiling((double)MainWindowViewModel.STRIKES_COUNT / 2); i++)
+            {
                 var nextStrikeUp = viewModel.AtmStrikePut + i;
                 strikesList.Add(nextStrikeUp);
                 var nextStrikeDown = viewModel.AtmStrikeCall - i;
@@ -46,11 +50,11 @@ namespace SsbHedger.CommandHandler
             }
 
             strikesList.Sort();
-            foreach(var strike in strikesList)
+            foreach (var strike in strikesList)
             {
                 viewModel.Strikes.Add(strike);
             }
-            
+
 
 
             // TODO logic for 0.5 strikes

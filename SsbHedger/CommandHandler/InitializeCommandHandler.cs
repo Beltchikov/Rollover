@@ -25,7 +25,7 @@ namespace SsbHedger.CommandHandler
             }
             else
             {
-                //_ibHost.ApplyDefaultHistoricalData();
+                _ibHost.ApplyDefaultHistoricalData();
             }
         }
     }
