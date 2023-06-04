@@ -1,4 +1,5 @@
 ﻿using SsbHedger.Model;
+using SsbHedger.SsbConfiguration;
 using SsbHedger.Utilities;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,13 @@ namespace SsbHedger.CommandHandler
     {
         private IIbHost _ibHost = null!;
         private IAtmStrikeUtility _atmStrikeUtility;
+        private IConfiguration _configuration = null!;
 
-        public FindStrikesCommandHandler(IIbHost ibHost, IAtmStrikeUtility atmStrikeUtility)
+        public FindStrikesCommandHandler(IIbHost ibHost, IAtmStrikeUtility atmStrikeUtility, IConfiguration configuration)
         {
             _ibHost = ibHost;
             _atmStrikeUtility = atmStrikeUtility;
+            _configuration = configuration;
         }
 
         public void Handle(MainWindowViewModel mainWindowViewModel, object[] parameters)
