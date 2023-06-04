@@ -87,8 +87,7 @@ namespace SsbHedger
         public MainWindowViewModel? ViewModel { get; set; }
         public AtmStrikes AtmStrikesCandidate { get; set; }
 
-        [Obsolete]
-        public async Task<bool> ConnectAndStartReaderThreadOld()
+        public async Task<bool> ConnectAndStartReaderThread()
         {
             return await Task.Run(() =>
             {
@@ -105,20 +104,6 @@ namespace SsbHedger
                 var startTime = DateTime.Now;
                 while ((DateTime.Now - startTime).TotalMilliseconds < TIMEOUT && !ViewModel.Connected) { }
                 return ViewModel.Connected;
-            });
-        }
-
-        public async Task<bool> ConnectAndStartReaderThread()
-        {
-            return await Task.Run(() =>
-            {
-                if (ViewModel == null)
-                {
-                    throw new ApplicationException("Unexpected! ViewModel is null");
-                }
-
-                // todo
-                return false;
             });
         }
 

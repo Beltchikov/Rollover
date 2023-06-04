@@ -31,7 +31,7 @@ namespace SsbHedger.UnitTests.CommandHandler
 
             await sut.HandleAsync(viewModel);
             
-            await ibHost.Received().ConnectAndStartReaderThreadOld();
+            await ibHost.Received().ConnectAndStartReaderThread();
         }
 
         [Theory, AutoNSubstituteData]
@@ -54,7 +54,7 @@ namespace SsbHedger.UnitTests.CommandHandler
 
             registryManager.ReadConfiguration(Arg.Any<ConfigurationData>())
                 .ReturnsForAnyArgs(new ConfigurationData(host, port, clientId, "", "", "", 0, 0));
-            ibHost.ConnectAndStartReaderThreadOld().Returns(false);
+            ibHost.ConnectAndStartReaderThread().Returns(false);
 
             await sut.HandleAsync(viewModel);
 
@@ -81,7 +81,7 @@ namespace SsbHedger.UnitTests.CommandHandler
 
             registryManager.ReadConfiguration(Arg.Any<ConfigurationData>())
                 .ReturnsForAnyArgs(new ConfigurationData(host, port, clientId, "", "", "", 0, 0));
-            ibHost.ConnectAndStartReaderThreadOld().Returns(true);
+            ibHost.ConnectAndStartReaderThread().Returns(true);
 
             await sut.HandleAsync(viewModel);
 
@@ -108,7 +108,7 @@ namespace SsbHedger.UnitTests.CommandHandler
 
             registryManager.ReadConfiguration(Arg.Any<ConfigurationData>())
                 .ReturnsForAnyArgs(new ConfigurationData(host, port, clientId, "", "", "", 0, 0));
-            ibHost.ConnectAndStartReaderThreadOld().Returns(false);
+            ibHost.ConnectAndStartReaderThread().Returns(false);
 
             await sut.HandleAsync(viewModel);
 

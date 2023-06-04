@@ -16,7 +16,7 @@ namespace SsbHedger.CommandHandler
         {
             _ibHost.ViewModel = viewModel;
             
-            var connected = await _ibHost.ConnectAndStartReaderThreadOld();
+            var connected = await _ibHost.ConnectAndStartReaderThread();
             if(connected)
             {
                 //_ibHost.ReqHistoricalData();
