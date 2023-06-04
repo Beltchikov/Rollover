@@ -5,9 +5,7 @@
         int ClientId,
         string UnderlyingSymbol,
         string SessionStart,
-        string SessionEnd,
-        double BearHedgeStrike,
-        double BullHedgeStrike)
+        string SessionEnd)
     {
         public static implicit operator (
             string host, 
@@ -15,18 +13,14 @@
             int clientId, 
             string underlyingSymbol, 
             string sessionStart, 
-            string sessionEnd,
-            double bearHedgeStrike,
-            double bullHedgeStrike)
+            string sessionEnd)
             (ConfigurationData value) => (
             value.Host, 
             value.Port, 
             value.ClientId, 
             value.UnderlyingSymbol, 
             value.SessionStart, 
-            value.SessionEnd, 
-            value.BearHedgeStrike, 
-            value.BullHedgeStrike);
+            value.SessionEnd);
 
         public static implicit operator ConfigurationData((
             string host, 
@@ -42,8 +36,6 @@
                 value.clientId, 
                 value.underlyingSymbol, 
                 value.sessionStart, 
-                value.sessionEnd,
-                value.bearHedgeStrike,
-                value.bullHedgeStrike);
+                value.sessionEnd);
     }
 }

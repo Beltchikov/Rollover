@@ -26,8 +26,6 @@ namespace SsbHedger.SsbConfiguration
                 subKey.SetValue(Configuration.UNDERLYING_SYMBOL, defaultConfigurationData.UnderlyingSymbol);
                 subKey.SetValue(Configuration.SESSION_START, defaultConfigurationData.SessionStart);
                 subKey.SetValue(Configuration.SESSION_END, defaultConfigurationData.SessionEnd);
-                subKey.SetValue(Configuration.BEAR_HEDGE_STRIKE, defaultConfigurationData.BearHedgeStrike);
-                subKey.SetValue(Configuration.BULL_HEDGE_STRIKE, defaultConfigurationData.BullHedgeStrike);
 
                 return new ConfigurationData(
                     defaultConfigurationData.Host,
@@ -35,9 +33,7 @@ namespace SsbHedger.SsbConfiguration
                     defaultConfigurationData.ClientId,
                     defaultConfigurationData.UnderlyingSymbol,
                     defaultConfigurationData.SessionStart,
-                    defaultConfigurationData.SessionEnd,
-                    defaultConfigurationData.BearHedgeStrike,
-                    defaultConfigurationData.BullHedgeStrike);
+                    defaultConfigurationData.SessionEnd);
             }
 
             var defaultOrFromRegistryConfigData = new ConfigurationData();
@@ -108,37 +104,13 @@ namespace SsbHedger.SsbConfiguration
                 subKey?.SetValue(Configuration.SESSION_END, defaultConfigurationData.SessionEnd);
             }
 
-            var bearHedgeStrikeFromRegistry = subKey?.GetValue(Configuration.BEAR_HEDGE_STRIKE)?.ToString();
-            if (!string.IsNullOrWhiteSpace(bearHedgeStrikeFromRegistry))
-            {
-                defaultOrFromRegistryConfigData.BearHedgeStrike = Convert.ToDouble(bearHedgeStrikeFromRegistry, new CultureInfo("DE-de"));
-            }
-            else
-            {
-                defaultOrFromRegistryConfigData.BearHedgeStrike = defaultConfigurationData.BearHedgeStrike;
-                subKey?.SetValue(Configuration.BEAR_HEDGE_STRIKE, defaultConfigurationData.BearHedgeStrike);
-            }
-
-            var bullHedgeStrikeFromRegistry = subKey?.GetValue(Configuration.BULL_HEDGE_STRIKE)?.ToString();
-            if (!string.IsNullOrWhiteSpace(bullHedgeStrikeFromRegistry))
-            {
-                defaultOrFromRegistryConfigData.BullHedgeStrike = Convert.ToDouble(bullHedgeStrikeFromRegistry, new CultureInfo("DE-de"));
-            }
-            else
-            {
-                defaultOrFromRegistryConfigData.BullHedgeStrike = defaultConfigurationData.BullHedgeStrike;
-                subKey?.SetValue(Configuration.BULL_HEDGE_STRIKE, defaultConfigurationData.BullHedgeStrike);
-            }
-
             return new ConfigurationData(
                    defaultOrFromRegistryConfigData.Host,
                    defaultOrFromRegistryConfigData.Port,
                    defaultOrFromRegistryConfigData.ClientId,
                    defaultOrFromRegistryConfigData.UnderlyingSymbol,
                    defaultOrFromRegistryConfigData.SessionStart,
-                   defaultOrFromRegistryConfigData.SessionEnd,
-                   defaultOrFromRegistryConfigData.BearHedgeStrike,
-                   defaultOrFromRegistryConfigData.BullHedgeStrike);
+                   defaultOrFromRegistryConfigData.SessionEnd);
         }
 
         public void WriteConfiguration(ConfigurationData defaultConfigurationData)
@@ -152,8 +124,6 @@ namespace SsbHedger.SsbConfiguration
             subKey.SetValue(Configuration.UNDERLYING_SYMBOL, defaultConfigurationData.UnderlyingSymbol);
             subKey.SetValue(Configuration.SESSION_START, defaultConfigurationData.SessionStart);
             subKey.SetValue(Configuration.SESSION_END, defaultConfigurationData.SessionEnd);
-            subKey.SetValue(Configuration.BEAR_HEDGE_STRIKE, defaultConfigurationData.BearHedgeStrike);
-            subKey.SetValue(Configuration.BULL_HEDGE_STRIKE, defaultConfigurationData.BullHedgeStrike);
         }
     }
 }
