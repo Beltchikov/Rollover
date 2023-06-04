@@ -14,7 +14,7 @@
         <converters:HorizontalGridLineConverter x:Key="horizontalGridLineConverter"/>
         <converters:XAxisLabelPositionConverter x:Key="xAxisLabelPositionConverter"/>
         <converters:BarCanvasLeftConverter x:Key="barCanvasLeftConverter"/>
-        <converters:BarPricesConverter x:Key="barPricesConverter"/>
+        <!--<converters:BarPricesConverter x:Key="barPricesConverter"/>-->
 
 
         <DrawingBrush x:Key="GridTile" Stretch="None" TileMode="Tile" 
@@ -205,7 +205,7 @@
         </Canvas>
 
         <Canvas x:Name="yAxis" Grid.Column="0" Grid.Row="0">
-            <ItemsControl Width="{Binding RelativeSource=
+            <!--<ItemsControl Width="{Binding RelativeSource=
                                     {RelativeSource FindAncestor,
                                         AncestorType={x:Type UIElement}},
                                         Path=ActualWidth}"
@@ -245,7 +245,7 @@
                         </TextBlock>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
-            </ItemsControl>
+            </ItemsControl>-->
         </Canvas>
     </Grid>
 </UserControl>
