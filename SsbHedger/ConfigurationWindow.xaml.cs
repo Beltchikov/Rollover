@@ -33,7 +33,7 @@ namespace SsbHedger
             txtUnderlyingSymbol.Text = (string)_configuration.GetValue(Configuration.UNDERLYING_SYMBOL);
             txtSessionStart.Text = (string)_configuration.GetValue(Configuration.SESSION_START);
             txtSessionEnd.Text = (string)_configuration.GetValue(Configuration.SESSION_END);
-            txtLastTradeDateOrContractMonth.Text = (string)_configuration.GetValue(Configuration.LAST_TRADE_DATE_OR_CONTRACT_MONTH);
+            txtDte.Text = _configuration.GetValue(Configuration.DTE).ToString();
             txtNumberOfStrikes.Text = Convert.ToString(_configuration.GetValue(Configuration.NUMBER_OF_STRIKES));
 
         }
@@ -167,7 +167,7 @@ namespace SsbHedger
                 || string.IsNullOrWhiteSpace(textBoxesDict["txtSessionStart"].Text)
                 || string.IsNullOrWhiteSpace(textBoxesDict["txtSessionEnd"].Text)
                 || string.IsNullOrWhiteSpace(textBoxesDict["txtLastTradeDateOrContractMonth"].Text)
-                || string.IsNullOrWhiteSpace(textBoxesDict["txtBullHedgeStrike"].Text))
+                || string.IsNullOrWhiteSpace(textBoxesDict["txtNumberOfStrikes"].Text))
             {
                 return false;
             }
@@ -182,8 +182,7 @@ namespace SsbHedger
                 textBoxesDict["txtSessionStart"].Text, StringComparison.InvariantCultureIgnoreCase);
             bool newSessionEnd = !string.Equals((string)_configuration.GetValue(Configuration.SESSION_END), 
                 textBoxesDict["txtSessionEnd"].Text, StringComparison.InvariantCultureIgnoreCase);
-            bool lastTradeDateOrContractMonth = !string.Equals((string)_configuration.GetValue(Configuration.LAST_TRADE_DATE_OR_CONTRACT_MONTH),
-                textBoxesDict["txtLastTradeDateOrContractMonth"].Text, StringComparison.InvariantCultureIgnoreCase);
+            bool lastTradeDateOrContractMonth = (int)_configuration.GetValue(Configuration.DTE) != Convert.ToInt32(textBoxesDict["txtLastTradeDateOrContractMonth"].Text);
             bool numberOfStrikes = !string.Equals(Convert.ToString(_configuration.GetValue(Configuration.NUMBER_OF_STRIKES), new CultureInfo("DE-de")),
                 textBoxesDict["txtNumberOfStrikes"].Text, StringComparison.InvariantCultureIgnoreCase);
 
@@ -201,7 +200,7 @@ namespace SsbHedger
                 {"txtUnderlyingSymbol", txtUnderlyingSymbol},
                 {"txtSessionStart", txtSessionStart},
                 {"txtSessionEnd", txtSessionEnd },
-                {"txtLastTradeDateOrContractMonth", txtLastTradeDateOrContractMonth },
+                {"txtLastTradeDateOrContractMonth", txtDte },
                 {"txtNumberOfStrikes", txtNumberOfStrikes },
             };
         }

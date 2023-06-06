@@ -15,14 +15,16 @@ namespace SsbHedger.UnitTests.CommandHandler
             MainWindowViewModel viewModel,
             UpdateConfigurationCommandHandler sut)
         {
-            sut.Handle(viewModel, new object[] 
-            { 
-                configurationData.Host, 
+            sut.Handle(viewModel, new object[]
+            {
+                configurationData.Host,
                 configurationData.Port,
                 configurationData.ClientId,
                 configurationData.UnderlyingSymbol,
                 configurationData.SessionStart,
-                configurationData.SessionEnd
+                configurationData.SessionEnd,
+                configurationData.Dte,
+                configurationData.NumberOfStrikes
             });
             registryManager.Received().WriteConfiguration(configurationData);
         }
@@ -41,7 +43,9 @@ namespace SsbHedger.UnitTests.CommandHandler
                 configurationData.ClientId,
                 configurationData.UnderlyingSymbol,
                 configurationData.SessionStart,
-                configurationData.SessionEnd
+                configurationData.SessionEnd,
+                configurationData.Dte,
+                configurationData.NumberOfStrikes
             });
 
             configuration.Received().SetValue(
@@ -72,7 +76,9 @@ namespace SsbHedger.UnitTests.CommandHandler
                 configurationData.ClientId,
                 configurationData.UnderlyingSymbol,
                 configurationData.SessionStart,
-                configurationData.SessionEnd
+                configurationData.SessionEnd,
+                configurationData.Dte,
+                configurationData.NumberOfStrikes
             });
 
             ibHost.Received().Disconnect();

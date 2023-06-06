@@ -82,16 +82,16 @@
                  Style="{StaticResource NormalTextBox}"
                  Text="" TextChanged="txtSessionEnd_TextChanged" BorderBrush="#FFABADB3" ></TextBox>
 
-        <TextBlock Grid.Column="1" Grid.Row="6"  Text="Bear Hedge Strike:"
+        <TextBlock Grid.Column="1" Grid.Row="6"  Text="DTE:"
                    HorizontalAlignment="Right"
                    Margin="0,0,5,0"
                    Style="{StaticResource NormalTextBlock}">
         </TextBlock>
-        <TextBox Name="txtLastTradeDateOrContractMonth" Grid.Column="2" Grid.Row="6"
+        <TextBox Name="txtDte" Grid.Column="2" Grid.Row="6"
                  Style="{StaticResource NormalTextBox}"
                  Text="" TextChanged="txtBearHedgeStrike_TextChanged" BorderBrush="#FFABADB3" ></TextBox>
 
-        <TextBlock Grid.Column="1" Grid.Row="7"  Text="Bull Hedge Strike:"
+        <TextBlock Grid.Column="1" Grid.Row="7"  Text="Number of Strikes:"
                    HorizontalAlignment="Right"
                    Margin="0,0,5,0"
                    Style="{StaticResource NormalTextBlock}">

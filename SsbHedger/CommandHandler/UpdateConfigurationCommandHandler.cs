@@ -55,12 +55,8 @@ namespace SsbHedger.CommandHandler
                 throw new ApplicationException("Unexpected! sessionEnd is null");
             }
 
-            string? lastTradeDateOrContractMonth = parameters[6]?.ToString();
-            if (lastTradeDateOrContractMonth == null)
-            {
-                throw new ApplicationException("Unexpected! lastTradeDateOrContractMonth is null");
-            }
-
+            int dte = Convert.ToInt32(parameters[6]);
+            
             int numberOfStrikes = Convert.ToInt32(parameters[7]);
 
             _registryManager.WriteConfiguration(new ConfigurationData(
@@ -70,7 +66,7 @@ namespace SsbHedger.CommandHandler
                 underlyingSymbol,
                 sessionStart,
                 sessionEnd,
-                lastTradeDateOrContractMonth,
+                dte,
                 numberOfStrikes));
 
             _configuration.SetValue(Configuration.HOST, host);
@@ -79,7 +75,7 @@ namespace SsbHedger.CommandHandler
             _configuration.SetValue(Configuration.UNDERLYING_SYMBOL, underlyingSymbol);
             _configuration.SetValue(Configuration.SESSION_START, sessionStart);
             _configuration.SetValue(Configuration.SESSION_END, sessionEnd);
-            _configuration.SetValue(Configuration.LAST_TRADE_DATE_OR_CONTRACT_MONTH, lastTradeDateOrContractMonth);
+            _configuration.SetValue(Configuration.DTE, dte);
             _configuration.SetValue(Configuration.NUMBER_OF_STRIKES, numberOfStrikes);
 
             _ibHost.Disconnect();

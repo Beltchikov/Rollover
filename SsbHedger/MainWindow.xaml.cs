@@ -41,7 +41,7 @@ namespace SsbHedger
                     _configurationWindow.txtUnderlyingSymbol.Text,
                     _configurationWindow.txtSessionStart.Text,
                     _configurationWindow.txtSessionEnd.Text,
-                    Convert.ToDouble(_configurationWindow.txtLastTradeDateOrContractMonth.Text, new CultureInfo("DE-de")),
+                    Convert.ToDouble(_configurationWindow.txtDte.Text, new CultureInfo("DE-de")),
                     Convert.ToDouble(_configurationWindow.txtNumberOfStrikes.Text, new CultureInfo("DE-de")),
                 };
                 ((MainWindowViewModel)DataContext).UpdateConfigurationCommand.Execute(commandParams);
