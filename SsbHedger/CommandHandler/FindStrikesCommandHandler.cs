@@ -3,6 +3,7 @@ using SsbHedger.SsbConfiguration;
 using SsbHedger.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace SsbHedger.CommandHandler
 {
@@ -11,57 +12,70 @@ namespace SsbHedger.CommandHandler
         private IIbHost _ibHost = null!;
         private IAtmStrikeUtility _atmStrikeUtility;
         private IConfiguration _configuration = null!;
+        private ILastTradeDateConverter _lastTradeDateConverter;
 
-        public FindStrikesCommandHandler(IIbHost ibHost, IAtmStrikeUtility atmStrikeUtility, IConfiguration configuration)
+        public FindStrikesCommandHandler(
+            IIbHost ibHost,
+            IAtmStrikeUtility atmStrikeUtility,
+            IConfiguration configuration,
+            ILastTradeDateConverter lastTradeDateConverter)
         {
             _ibHost = ibHost;
             _atmStrikeUtility = atmStrikeUtility;
             _configuration = configuration;
+            _lastTradeDateConverter = lastTradeDateConverter;
         }
 
         public void Handle(MainWindowViewModel mainWindowViewModel, object[] parameters)
         {
-            //if (_ibHost == null)
-            //{ throw new ApplicationException("Unexpected! _ibHost is null"); }
-            //var viewModel = _ibHost.ViewModel;
-            //if (viewModel == null)
-            //{ throw new ApplicationException("Unexpected! viewModel is null"); }
-
-
-            //viewModel.Strikes = _ibHost.GetStrikes(underlying, lastTradeDateOrContractMonth, numberOfStrikes);
+            if (_ibHost == null)
+            { 
+                throw new ApplicationException("Unexpected! _ibHost is null"); 
+            }
+            var viewModel = _ibHost.ViewModel 
+                ?? throw new ApplicationException("Unexpected! viewModel is null");
+            var underlying = _configuration.GetValue(Configuration.UNDERLYING_SYMBOL).ToString() 
+                ?? throw new ApplicationException("Unexpected! underlying is null");
+            
+            int dte = (int)_configuration.GetValue(Configuration.DTE);
+            string lastTradeDate = _lastTradeDateConverter.FromDte(dte);
+            int numberOfStrikes = (int)_configuration.GetValue(Configuration.NUMBER_OF_STRIKES);
+          
+            var strikes = _ibHost.GetStrikes(underlying, lastTradeDate, numberOfStrikes);
+            viewModel.Strikes = new ObservableCollection<double>(strikes);
 
 
 
             // OLD IMPLEMENTATION
-            var underlyingPrice = (double)parameters[0];
-            var viewModel = _ibHost.ViewModel;
+            //var underlyingPrice = (double)parameters[0];
+            //var viewModel = _ibHost.ViewModel;
 
-            if (_ibHost == null)
-            { throw new ApplicationException("Unexpected! _ibHost is null"); }
-            if (viewModel == null)
-            { throw new ApplicationException("Unexpected! viewModel is null"); }
+            //if (_ibHost == null)
+            //{ throw new ApplicationException("Unexpected! _ibHost is null"); }
+            //if (viewModel == null)
+            //{ throw new ApplicationException("Unexpected! viewModel is null"); }
 
-            if (viewModel.AtmStrikeCall <= underlyingPrice && underlyingPrice <= viewModel.AtmStrikePut)
-            {
-                return;
-            }
+            //if (viewModel.AtmStrikeCall <= underlyingPrice && underlyingPrice <= viewModel.AtmStrikePut)
+            //{
+            //    return;
+            //}
 
-            var strikesList = new List<double>();
-            viewModel.AtmStrikePut = (int)Math.Ceiling(underlyingPrice);    // In option table up is down and down is up
-            viewModel.AtmStrikeCall = (int)Math.Floor(underlyingPrice);// In option table up is down and down is up
-            for (int i = 0; i < (int)Math.Ceiling((double)MainWindowViewModel.STRIKES_COUNT / 2); i++)
-            {
-                var nextStrikeUp = viewModel.AtmStrikePut + i;
-                strikesList.Add(nextStrikeUp);
-                var nextStrikeDown = viewModel.AtmStrikeCall - i;
-                strikesList.Add(nextStrikeDown);
-            }
+            //var strikesList = new List<double>();
+            //viewModel.AtmStrikePut = (int)Math.Ceiling(underlyingPrice);    // In option table up is down and down is up
+            //viewModel.AtmStrikeCall = (int)Math.Floor(underlyingPrice);// In option table up is down and down is up
+            //for (int i = 0; i < (int)Math.Ceiling((double)MainWindowViewModel.STRIKES_COUNT / 2); i++)
+            //{
+            //    var nextStrikeUp = viewModel.AtmStrikePut + i;
+            //    strikesList.Add(nextStrikeUp);
+            //    var nextStrikeDown = viewModel.AtmStrikeCall - i;
+            //    strikesList.Add(nextStrikeDown);
+            //}
 
-            strikesList.Sort();
-            foreach (var strike in strikesList)
-            {
-                viewModel.Strikes.Add(strike);
-            }
+            //strikesList.Sort();
+            //foreach (var strike in strikesList)
+            //{
+            //    viewModel.Strikes.Add(strike);
+            //}
 
 
 

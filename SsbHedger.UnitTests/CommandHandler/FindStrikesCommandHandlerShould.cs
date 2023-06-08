@@ -1,29 +1,37 @@
-﻿using NSubstitute;
+﻿using AutoFixture.Xunit2;
+using NSubstitute;
 using SsbHedger.CommandHandler;
 using SsbHedger.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Documents;
+using SsbHedger.SsbConfiguration;
+using SsbHedger.Utilities;
 
 namespace SsbHedger.UnitTests.CommandHandler
 {
     public class FindStrikesCommandHandlerShould
     {
-
         [Theory]
         [AutoNSubstituteData]
         public void CallGetStrikes(
+            string underlying,
+            int dte,
+            int numberOfStrikes,
             MainWindowViewModel viewModel,
             object[] parameters,
-            IIbHost ibHost,
-            IIbHost configuration,
+            [Frozen] IIbHost ibHost,
+            [Frozen] IConfiguration configuration,
+            [Frozen] ILastTradeDateConverter lastTradeDateConverter,
             FindStrikesCommandHandler sut)
         {
+            string lastTradeDate = "20170120";
+
+            configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns(underlying);
+            configuration.GetValue(Configuration.DTE).Returns(dte);
+            configuration.GetValue(Configuration.NUMBER_OF_STRIKES).Returns(numberOfStrikes);
+
+            lastTradeDateConverter.FromDte(dte).Returns(lastTradeDate);
+
             sut.Handle(viewModel, parameters);
-            ibHost.Received().GetStrikes(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>());
+            ibHost.Received().GetStrikes(underlying, lastTradeDate, numberOfStrikes);
         }
     }
 }

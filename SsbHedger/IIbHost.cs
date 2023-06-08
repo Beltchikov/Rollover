@@ -1,6 +1,6 @@
 ﻿using SsbHedger.Model;
 using SsbHedger.Utilities;
-using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SsbHedger
@@ -27,6 +27,9 @@ namespace SsbHedger
         void ReqMktDataPutOptionIV(double putStike);
         void CancelMktCallOptionIV();
         void CancelMktPutOptionIV();
-        void GetStrikes(string v1, string v2, int v3);
+        IEnumerable<double> GetStrikes(
+            string underlying,
+            string lastTradeDateOrContractMonth,
+            int numberOfStrikes);
     }
 }

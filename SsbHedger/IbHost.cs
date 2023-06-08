@@ -835,7 +835,7 @@ namespace SsbHedger
             ViewModel.PutShortPrice = Math.Round(positionMessage.AverageCost / MainWindowViewModel.MULTIPLIER, 3);
         }
 
-        public void GetStrikes(string v1, string v2, int v3)
+        public IEnumerable<double> GetStrikes(string underlying, string lastTradeDateOrContractMonth, int numberOfStrikes)
         {
             throw new NotImplementedException();
         }

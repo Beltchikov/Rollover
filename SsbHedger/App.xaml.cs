@@ -34,6 +34,7 @@ namespace SsbHedger
                 .AddSingleton<IUpdateReqMktDataAtmStrikeCallCommandHandler, UpdateReqMktDataAtmStrikeCallCommandHandler>()
                 .AddSingleton<IPositionMessageBuffer, PositionMessageBuffer>()
                 .AddSingleton<IAtmStrikeUtility, AtmStrikeUtility>()
+                .AddSingleton<ILastTradeDateConverter, LastTradeDateConverter>()
                 .AddMediatR(GetType().Assembly)
                 .BuildServiceProvider();
         }
