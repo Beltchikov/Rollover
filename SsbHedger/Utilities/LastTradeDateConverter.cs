@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
 
 namespace SsbHedger.Utilities
 {
     public class LastTradeDateConverter : ILastTradeDateConverter
     {
-        public string FromDte(int dte)
+        public string FromDateTime(DateTime dateTime)
         {
-            throw new NotImplementedException();
+            return dateTime.ToString("yy", CultureInfo.InvariantCulture)
+                + dateTime.ToString("MM", CultureInfo.InvariantCulture)
+                + dateTime.ToString("dd", CultureInfo.InvariantCulture);
         }
     }
 }

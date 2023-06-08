@@ -28,7 +28,7 @@ namespace SsbHedger.UnitTests.CommandHandler
             configuration.GetValue(Configuration.DTE).Returns(dte);
             configuration.GetValue(Configuration.NUMBER_OF_STRIKES).Returns(numberOfStrikes);
 
-            lastTradeDateConverter.FromDte(dte).Returns(lastTradeDate);
+            lastTradeDateConverter.FromDateTime(DateTime.Now.AddDays(dte)).Returns(lastTradeDate);
 
             sut.Handle(viewModel, parameters);
             ibHost.Received().GetStrikes(underlying, lastTradeDate, numberOfStrikes);

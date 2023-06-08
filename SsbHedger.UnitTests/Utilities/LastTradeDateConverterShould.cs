@@ -1,25 +1,24 @@
 ﻿using AutoFixture;
 using SsbHedger.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
 
 namespace SsbHedger.UnitTests.Utilities
 {
     public class LastTradeDateConverterShould
     {
         [Theory]
-        [InlineData(0)]
-        [InlineData(2)]
-        public void ConvertInProperFormat(int dte)
+        [InlineData("02.02.2023", "230202")]
+        [InlineData("02.11.2023", "231102")]
+        [InlineData("12.10.1999", "991012")]
+        public void ConvertInProperFormat(string dateTimeString, string expected)
         {
-            var expirationDate = DateTime.Now.AddDays(dte);
-
+            var dateTime = DateTime.Parse(dateTimeString, new CultureInfo("DE-de"));
+            
             var sut = (new Fixture()).Create<LastTradeDateConverter>();
-            var lastTradeDate = sut.FromDte(dte);
-            // TODO Assert
+            var lastTradeDateString = sut.FromDateTime(dateTime);
+
+            Assert.IsType<string>(lastTradeDateString);
+            Assert.Equal(expected, lastTradeDateString);
         }
     }
 }

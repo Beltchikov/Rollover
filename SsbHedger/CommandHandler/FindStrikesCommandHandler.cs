@@ -38,7 +38,8 @@ namespace SsbHedger.CommandHandler
                 ?? throw new ApplicationException("Unexpected! underlying is null");
             
             int dte = (int)_configuration.GetValue(Configuration.DTE);
-            string lastTradeDate = _lastTradeDateConverter.FromDte(dte);
+            var dteDateTime = DateTime.Now.AddDays(dte);
+            string lastTradeDate = _lastTradeDateConverter.FromDateTime(dteDateTime);
             int numberOfStrikes = (int)_configuration.GetValue(Configuration.NUMBER_OF_STRIKES);
           
             var strikes = _ibHost.GetStrikes(underlying, lastTradeDate, numberOfStrikes);

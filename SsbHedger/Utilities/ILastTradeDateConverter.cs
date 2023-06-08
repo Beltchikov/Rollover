@@ -1,7 +1,9 @@
-﻿namespace SsbHedger.Utilities
+﻿using System;
+
+namespace SsbHedger.Utilities
 {
     public interface ILastTradeDateConverter
     {
-        string FromDte(int dte);
+        string FromDateTime(DateTime dateTime);
     }
 }
