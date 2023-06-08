@@ -31,5 +31,6 @@ namespace SsbHedger
             string underlying,
             string lastTradeDateOrContractMonth,
             int numberOfStrikes);
+        IEnumerable<double> GetStrikesSpy(string lastTradeDate, int numberOfStrikes);
     }
 }

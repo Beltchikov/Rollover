@@ -12,8 +12,7 @@ namespace SsbHedger.UnitTests.CommandHandler
     {
         [Theory]
         [AutoNSubstituteData]
-        public void CallGetStrikes(
-            string underlying,
+        public void CallGetStrikesSpy(
             int dte,
             int numberOfStrikes,
             MainWindowViewModel viewModel,
@@ -23,6 +22,7 @@ namespace SsbHedger.UnitTests.CommandHandler
             [Frozen] ILastTradeDateConverter lastTradeDateConverter,
             FindStrikesCommandHandler sut)
         {
+            string underlying = "SPY";
             string lastTradeDate = "20170120";
             DateTime lastTradeDateTime = DateTime.Parse("20.01.2017", new CultureInfo("DE-de"));
 
@@ -35,7 +35,7 @@ namespace SsbHedger.UnitTests.CommandHandler
 
 
             sut.Handle(viewModel, parameters);
-            ibHost.Received().GetStrikes(underlying, lastTradeDate, numberOfStrikes);
+            ibHost.Received().GetStrikesSpy(lastTradeDate, numberOfStrikes);
         }
     }
 }
