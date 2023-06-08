@@ -38,7 +38,7 @@ namespace SsbHedger.CommandHandler
                 ?? throw new ApplicationException("Unexpected! underlying is null");
             
             int dte = (int)_configuration.GetValue(Configuration.DTE);
-            var dteDateTime = DateTime.Now.AddDays(dte);
+            var dteDateTime = _lastTradeDateConverter.DateTimeFromDte(dte);
             string lastTradeDate = _lastTradeDateConverter.FromDateTime(dteDateTime);
             int numberOfStrikes = (int)_configuration.GetValue(Configuration.NUMBER_OF_STRIKES);
           
