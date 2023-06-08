@@ -840,7 +840,10 @@ namespace SsbHedger
             throw new NotImplementedException();
         }
 
-        public IEnumerable<double> GetStrikesSpy(string lastTradeDate, int numberOfStrikes)
+        public IEnumerable<double> GetStrikesSpy(
+            double underlyingPrice,
+            string lastTradeDate,
+            int numberOfStrikes)
         {
             throw new NotImplementedException();
 

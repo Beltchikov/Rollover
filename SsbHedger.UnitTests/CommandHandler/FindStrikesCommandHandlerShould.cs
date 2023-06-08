@@ -15,8 +15,8 @@ namespace SsbHedger.UnitTests.CommandHandler
         public void CallGetStrikesSpy(
             int dte,
             int numberOfStrikes,
+            double underlyingPrice,
             MainWindowViewModel viewModel,
-            object[] parameters,
             [Frozen] IIbHost ibHost,
             [Frozen] IConfiguration configuration,
             [Frozen] ILastTradeDateConverter lastTradeDateConverter,
@@ -25,6 +25,7 @@ namespace SsbHedger.UnitTests.CommandHandler
             string underlying = "SPY";
             string lastTradeDate = "20170120";
             DateTime lastTradeDateTime = DateTime.Parse("20.01.2017", new CultureInfo("DE-de"));
+            object[] parameters = new object[] { underlyingPrice };
 
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns(underlying);
             configuration.GetValue(Configuration.DTE).Returns(dte);
@@ -35,7 +36,7 @@ namespace SsbHedger.UnitTests.CommandHandler
 
 
             sut.Handle(viewModel, parameters);
-            ibHost.Received().GetStrikesSpy(lastTradeDate, numberOfStrikes);
+            ibHost.Received().GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes);
         }
     }
 }

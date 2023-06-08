@@ -46,8 +46,9 @@ namespace SsbHedger.CommandHandler
             var dteDateTime = _lastTradeDateConverter.DateTimeFromDte(dte);
             string lastTradeDate = _lastTradeDateConverter.FromDateTime(dteDateTime);
             int numberOfStrikes = (int)_configuration.GetValue(Configuration.NUMBER_OF_STRIKES);
-          
-            var strikes = _ibHost.GetStrikesSpy(lastTradeDate, numberOfStrikes);
+
+            var underlyingPrice = (double)parameters[0];
+            var strikes = _ibHost.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes);
             viewModel.Strikes = new ObservableCollection<double>(strikes);
         }
     }
