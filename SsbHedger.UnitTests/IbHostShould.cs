@@ -5,6 +5,7 @@ using SsbHedger.Model;
 using SsbHedger.SsbConfiguration;
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
+using AutoFixture.Xunit2;
 
 namespace SsbHedger.UnitTests
 {
@@ -19,7 +20,7 @@ namespace SsbHedger.UnitTests
             Exception exception = new Exception("4");
 
             IConfiguration configuration = Substitute.For<IConfiguration>();
-            configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");  
+            configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
             var sut = new IbHost(configuration, new PositionMessageBuffer(), new AtmStrikeUtility());
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
@@ -31,10 +32,10 @@ namespace SsbHedger.UnitTests
                 sut,
                 "_ibClient_Error",
                 new object[] { reqId, code, message, exception });
-            
+
             Assert.Single(viewModel.Messages);
             Assert.Equal(reqId, viewModel.Messages.First().ReqId);
-            Assert.Equal($"Code:{code} message:{message} exception:{exception}", 
+            Assert.Equal($"Code:{code} message:{message} exception:{exception}",
                 viewModel.Messages.First().Body);
         }
 
@@ -62,7 +63,7 @@ namespace SsbHedger.UnitTests
             Assert.Equal(0, viewModel.Messages.First().ReqId);
             var expectedBody = $"Managed accounts: " +
                 $"{message.ManagedAccounts.Aggregate((r, n) => r + "," + n)}";
-            Assert.Equal(expectedBody,viewModel.Messages.First().Body);
+            Assert.Equal(expectedBody, viewModel.Messages.First().Body);
         }
 
         [Fact]
@@ -150,5 +151,34 @@ namespace SsbHedger.UnitTests
             Assert.StartsWith(expectedBody, viewModel.ConnectionMessage);
             Assert.False(viewModel.Connected);
         }
+
+        [Fact]
+        public void ReturnCorrectNumberOfSpyStrikes()
+        {
+            var underlyingPrice = 380d;
+            var lastTradeDate = "221111";
+            int numberOfStrikes = 10;
+
+            IConfiguration configuration = Substitute.For<IConfiguration>();
+            configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
+
+            var sut = new IbHost(configuration, new PositionMessageBuffer(), new AtmStrikeUtility());
+            
+            var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes);
+            
+            Assert.IsType<List<double>>(strikes);
+            Assert.Equal(numberOfStrikes, strikes.Count());
+        }
+
+        //ReturnSpyStrikesSortedAndUnique
+
+        //ReturnSpyStrikesCenteredAroundUnderlyingPrice
+
+        //CallIsValidStrikeForEveryStrike
+
+        // ExcludeNotValidStrikes
+
+        // ThrowIfTooManyInvalidStrikes
+
     }
 }

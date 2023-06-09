@@ -27,6 +27,7 @@ namespace SsbHedger
         private readonly int PUT_OPTION_IV_REQ_ID = 5002;
         private readonly int CHECK_OPTION_NEXT_STRIKE_REQ_ID = 10000;
         private readonly int CHECK_OPTION_SECOND_STRIKE_REQ_ID = 20000;
+        private readonly double STRIKE_STEP_SPY = 0.5;
 
         IConfiguration _configuration;
         IIBClient _ibClient;
@@ -845,7 +846,26 @@ namespace SsbHedger
             string lastTradeDate,
             int numberOfStrikes)
         {
-            throw new NotImplementedException();
+            var resultList = new List<double>();
+
+            //throw new NotImplementedException();
+
+            var atmPutStrike = Math.Ceiling(underlyingPrice);    // In option table up is down and down is up
+            var atmCallStrike = Math.Floor(underlyingPrice);// In option table up is down and down is up
+
+            for (int i = 0; i < (int)Math.Ceiling((double)numberOfStrikes / 2); i++)
+            {
+                var nextStrikeUp = atmPutStrike + i * STRIKE_STEP_SPY;
+                resultList.Add(nextStrikeUp);
+                var nextStrikeDown = atmCallStrike - i * STRIKE_STEP_SPY;
+                resultList.Add(nextStrikeDown);
+            }
+
+            // Function or/and helper ReplaceInvalidStrike
+
+            return resultList;
+
+
 
             // OLD IMPLEMENTATION
             //var underlyingPrice = (double)parameters[0];
