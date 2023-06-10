@@ -848,10 +848,13 @@ namespace SsbHedger
         {
             var resultList = new List<double>();
 
-            //throw new NotImplementedException();
-
             var atmPutStrike = Math.Ceiling(underlyingPrice);    // In option table up is down and down is up
             var atmCallStrike = Math.Floor(underlyingPrice);// In option table up is down and down is up
+            
+            if(atmCallStrike == atmPutStrike) // If underlying price is exact at a strike
+            {
+                atmCallStrike -= STRIKE_STEP_SPY;
+            }
 
             for (int i = 0; i < (int)Math.Ceiling((double)numberOfStrikes / 2); i++)
             {
@@ -860,6 +863,8 @@ namespace SsbHedger
                 var nextStrikeDown = atmCallStrike - i * STRIKE_STEP_SPY;
                 resultList.Add(nextStrikeDown);
             }
+
+            resultList.Sort();
 
             // Function or/and helper ReplaceInvalidStrike
 
