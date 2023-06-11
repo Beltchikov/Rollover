@@ -193,25 +193,20 @@ namespace SsbHedger.UnitTests
             Assert.Equal(numberOfStrikes, strikes.Count());
         }
 
-        [Fact]
-        public void ReturnSpyStrikesSortedAndUnique()
+        [Theory, AutoNSubstituteData]
+        public void ReturnSpyStrikesSortedAndUnique(
+            double underlyingPrice,
+            int numberOfStrikes,
+            [Frozen] IConfiguration configuration,
+            IbHost sut)
         {
-            var underlyingPrice = 380d;
             var lastTradeDate = "221111";
-            int numberOfStrikes = 10;
 
             // Prepare
-            IConfiguration configuration = Substitute.For<IConfiguration>();
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
             // Act
-            var sut = new IbHost(
-                configuration,
-                new PositionMessageBuffer(),
-                new AtmStrikeUtility(),
-                new ContractSpy());
-            var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes)
-                .ToList();
+            var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes).ToList();
 
             // Verify
             // Check ASC sort
@@ -221,8 +216,6 @@ namespace SsbHedger.UnitTests
             // Check uniqueness
             Assert.Equal(strikes.Distinct().Count(), strikes.Count());
         }
-
-        //
 
         //ReturnSpyStrikesCenteredAroundUnderlyingPrice
 
