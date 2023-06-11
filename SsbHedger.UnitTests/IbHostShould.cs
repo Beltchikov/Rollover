@@ -205,7 +205,91 @@ namespace SsbHedger.UnitTests
             Assert.Equal(strikes.Distinct().Count(), strikes.Count());
         }
 
-        //ReturnSpyStrikesCenteredAroundUnderlyingPrice
+        [Theory, AutoNSubstituteData]
+        public void ReturnSpyStrikesCenteredAroundUnderlyingPriceEvenNumberOfStrikes(
+            [Frozen] IConfiguration configuration,
+            IbHost sut)
+        {
+            double underlyingPrice = 209.4;
+            var lastTradeDate = "221111";
+            int numberOfStrikes = 10;
+
+            // Prepare
+            configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
+
+            // Act
+            var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes).ToList();
+
+            // Verify
+            var countAboveUnderlying = strikes.Where(r => r >= underlyingPrice).Count();
+            var countBelowUnderlying = strikes.Where(r => r < underlyingPrice).Count();
+            Assert.Equal(countAboveUnderlying, countBelowUnderlying);
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void ReturnSpyStrikesCenteredAroundUnderlyingPriceOddNumberOfStrikes(
+            [Frozen] IConfiguration configuration,
+            IbHost sut)
+        {
+            double underlyingPrice = 209.4;
+            var lastTradeDate = "221111";
+            int numberOfStrikes = 11;
+
+            // Prepare
+            configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
+
+            // Act
+            var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes).ToList();
+
+            // Verify
+            var countAboveUnderlying = strikes.Where(r => r >= underlyingPrice).Count();
+            var countBelowUnderlying = strikes.Where(r => r < underlyingPrice).Count();
+            Assert.Equal(countAboveUnderlying, countBelowUnderlying + 1);
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void ReturnSpyStrikesCenteredAroundUnderlyingPriceAtmEvenNumberOfStrikes(
+            [Frozen] IConfiguration configuration,
+            IbHost sut)
+        {
+            double underlyingPrice = 210;
+            var lastTradeDate = "221111";
+            int numberOfStrikes = 10;
+            
+            // Prepare
+            configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
+
+            // Act
+            var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes).ToList();
+
+            // Verify
+            var countAboveUnderlying = strikes.Where(r => r >= underlyingPrice).Count();
+            var countBelowUnderlying = strikes.Where(r => r < underlyingPrice).Count();
+            Assert.Equal(countAboveUnderlying, countBelowUnderlying);
+        }
+
+        [Theory, AutoNSubstituteData]
+        public void ReturnSpyStrikesCenteredAroundUnderlyingPriceAtmOddNumberOfStrikes(
+            [Frozen] IConfiguration configuration,
+            IbHost sut)
+        {
+            double underlyingPrice = 210;
+            var lastTradeDate = "221111";
+            int numberOfStrikes = 11;
+
+            // Prepare
+            configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
+
+            // Act
+            var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes).ToList();
+
+            // Verify
+            var countAboveUnderlying = strikes.Where(r => r >= underlyingPrice).Count();
+            var countBelowUnderlying = strikes.Where(r => r < underlyingPrice).Count();
+            Assert.Equal(countAboveUnderlying , countBelowUnderlying + 1);
+        }
+
+        //
 
         //CallIsValidStrikeForEveryStrike
 
