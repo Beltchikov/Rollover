@@ -137,25 +137,21 @@ namespace SsbHedger.UnitTests
             Assert.False(viewModel.Connected);
         }
 
-        [Fact]
-        public void AddConnectionStatusMessageOnDisconnect()
+        [Theory, AutoNSubstituteData]
+        public void AddConnectionStatusMessageOnDisconnect(
+            [Frozen] IConfiguration configuration,
+            IbHost sut)
         {
-            ConnectionStatusMessage messageNotConnected = new ConnectionStatusMessage(false);
+            // Prepare
             ConnectionStatusMessage messageConnected = new ConnectionStatusMessage(true);
-
-            IConfiguration configuration = Substitute.For<IConfiguration>();
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
-            var sut = new IbHost(
-                configuration,
-                new PositionMessageBuffer(),
-                new AtmStrikeUtility(),
-                new ContractSpy());
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
             viewModel.Messages = new ObservableCollection<Message>();
             sut.ViewModel = viewModel;
 
+            // Act
             Reflection.CallMethod(
                 sut,
                 "_ibClient_NextValidId",
@@ -165,6 +161,7 @@ namespace SsbHedger.UnitTests
                 "_ibClient_ConnectionClosed",
                 new object[] { });
 
+            // Verify
             Assert.Equal(2, viewModel.Messages.Count);
             Assert.Equal(0, viewModel.Messages.Last().ReqId);
             var expectedBody = "DISCONNECTED!";
