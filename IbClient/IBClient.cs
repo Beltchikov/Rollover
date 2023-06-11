@@ -171,6 +171,14 @@ namespace IbClient
             return res.Task;
         }
 
+        public bool IsValidStrike(string underlying, string lastTradeDate, double strike)
+        {
+            // TODO
+            return false;
+
+            //throw new NotImplementedException();
+        }
+
         public int ClientId
         {
             get { return clientId; }

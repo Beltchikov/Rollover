@@ -16,6 +16,8 @@ namespace IbClient
         Task<Contract> ResolveContractAsync(int conId, string refExch);
         Task<Contract[]> ResolveContractAsync(string secType, string symbol, string currency, string exchange);
 
+        bool IsValidStrike(string underlying, string lastTradeDate, double strike);
+
         event Action<AccountDownloadEndMessage> AccountDownloadEnd;
         event Action<AccountSummaryMessage> AccountSummary;
         event Action<AccountSummaryEndMessage> AccountSummaryEnd;

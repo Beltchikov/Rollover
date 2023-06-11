@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Media;
+using System.Net;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,7 +30,7 @@ namespace SsbHedger
         private readonly int CHECK_OPTION_NEXT_STRIKE_REQ_ID = 10000;
         private readonly int CHECK_OPTION_SECOND_STRIKE_REQ_ID = 20000;
         private readonly double STRIKE_STEP_SPY = 0.5;
-
+        private readonly string SPY = "SPY";
         IConfiguration _configuration;
         IIBClient _ibClient;
 
@@ -865,6 +866,12 @@ namespace SsbHedger
             if (numberOfStrikes % 2 == 1)
             {
                 resultList = resultList.Skip(1).ToList();
+            }
+
+            // Verify, that strikes are valid
+            foreach(var strike in  resultList)
+            {
+                _ibClient.IsValidStrike(SPY, lastTradeDate, strike);    
             }
 
             // Function or/and helper ReplaceInvalidStrike

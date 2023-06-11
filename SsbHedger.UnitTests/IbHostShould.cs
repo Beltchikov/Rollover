@@ -1,9 +1,11 @@
 ﻿using AutoFixture.Xunit2;
+using IbClient;
 using IbClient.messages;
 using NSubstitute;
 using SsbHedger.Model;
 using SsbHedger.SsbConfiguration;
 using System.Collections.ObjectModel;
+using System.Net;
 using System.Runtime.Serialization;
 
 namespace SsbHedger.UnitTests
@@ -289,9 +291,31 @@ namespace SsbHedger.UnitTests
             Assert.Equal(countAboveUnderlying , countBelowUnderlying + 1);
         }
 
-        //
+        [Theory, AutoNSubstituteData]
+        public void CallIsValidStrikeForEveryStrikeFromGetStrikesSpy(
+            [Frozen] IIBClient ibClient,
+            [Frozen] IConfiguration configuration,
+            IbHost sut)
+        {
+            double underlyingPrice = 210;
+            var lastTradeDate = "221111";
+            int numberOfStrikes = 11;
 
-        //CallIsValidStrikeForEveryStrike
+            // Prepare
+            configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
+            Reflection.SetFiledValue(sut, "_ibClient", ibClient);
+
+            // Act
+            var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes).ToList();
+
+            // Verify
+            foreach (var strike in strikes)
+            {
+                ibClient.Received().IsValidStrike("SPY", lastTradeDate, strike);
+            }
+        }
+
+
 
         // ExcludeNotValidStrikes
 
