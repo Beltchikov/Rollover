@@ -44,30 +44,29 @@ namespace SsbHedger.UnitTests
                 viewModel.Messages.First().Body);
         }
 
-        [Fact]
-        public void AddManagedAccountsMessageToViewModel()
+        [Theory, AutoNSubstituteData]
+        public void AddManagedAccountsMessageToViewModel(
+            [Frozen] IConfiguration configuration,
+            IbHost sut)
         {
+            // Prepare
             var accounts = "acc1 ,acc2";
             ManagedAccountsMessage message = new ManagedAccountsMessage(accounts);
-
-            IConfiguration configuration = Substitute.For<IConfiguration>();
+            
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
-            var sut = new IbHost(
-                configuration,
-                new PositionMessageBuffer(),
-                new AtmStrikeUtility(),
-                new ContractSpy());
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
             viewModel.Messages = new ObservableCollection<Message>();
             sut.ViewModel = viewModel;
 
+            // Act
             Reflection.CallMethod(
                 sut,
                 "_ibClient_ManagedAccounts",
                 new object[] { message });
 
+            // Verify
             Assert.Single(viewModel.Messages);
             Assert.Equal(0, viewModel.Messages.First().ReqId);
             var expectedBody = $"Managed accounts: " +
@@ -75,29 +74,27 @@ namespace SsbHedger.UnitTests
             Assert.Equal(expectedBody, viewModel.Messages.First().Body);
         }
 
-        [Fact]
-        public void AddConnectionStatusMessageToViewModel()
+        [Theory, AutoNSubstituteData]
+        public void AddConnectionStatusMessageToViewModel(
+            [Frozen] IConfiguration configuration,
+            IbHost sut)
         {
+            // Prepare
             ConnectionStatusMessage message = new ConnectionStatusMessage(true);
-
-            IConfiguration configuration = Substitute.For<IConfiguration>();
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
-            var sut = new IbHost(
-                configuration,
-                new PositionMessageBuffer(),
-                new AtmStrikeUtility(),
-                new ContractSpy());
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
             viewModel.Messages = new ObservableCollection<Message>();
             sut.ViewModel = viewModel;
 
+            // Act
             Reflection.CallMethod(
                 sut,
                 "_ibClient_NextValidId",
                 new object[] { message });
 
+            // Verify
             Assert.Single(viewModel.Messages);
             Assert.Equal(0, viewModel.Messages.First().ReqId);
             var expectedBody = "CONNECTED!";
