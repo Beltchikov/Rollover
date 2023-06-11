@@ -106,29 +106,27 @@ namespace SsbHedger.UnitTests
             Assert.True(viewModel.Connected);
         }
 
-        [Fact]
-        public void AddConnectionStatusMessageToViewModelNegative()
+        [Theory, AutoNSubstituteData]
+        public void AddConnectionStatusMessageToViewModelNegative(
+            [Frozen] IConfiguration configuration,
+            IbHost sut)
         {
+            // Prepare
             ConnectionStatusMessage message = new ConnectionStatusMessage(false);
-
-            IConfiguration configuration = Substitute.For<IConfiguration>();
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
-            var sut = new IbHost(
-                configuration,
-                new PositionMessageBuffer(),
-                new AtmStrikeUtility(),
-                new ContractSpy());
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
             viewModel.Messages = new ObservableCollection<Message>();
             sut.ViewModel = viewModel;
 
+            // Act
             Reflection.CallMethod(
                 sut,
                 "_ibClient_NextValidId",
                 new object[] { message });
 
+            // Verify
             Assert.Single(viewModel.Messages);
             Assert.Equal(0, viewModel.Messages.First().ReqId);
             var expectedBody = "NOT CONNECTED!";
