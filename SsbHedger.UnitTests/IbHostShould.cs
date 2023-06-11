@@ -173,47 +173,25 @@ namespace SsbHedger.UnitTests
             Assert.False(viewModel.Connected);
         }
 
-        [Fact]
-        public void ReturnCorrectNumberOfSpyStrikes()
+        [Theory, AutoNSubstituteData]
+        public void ReturnCorrectNumberOfSpyStrikes(
+            double underlyingPrice,
+            int numberOfStrikes,
+            [Frozen] IConfiguration configuration,
+            IbHost sut)
         {
-            var underlyingPrice = 380d;
             var lastTradeDate = "221111";
-            int numberOfStrikes = 10;
-
-            IConfiguration configuration = Substitute.For<IConfiguration>();
+            
+            // Prepare
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
-            var sut = new IbHost(
-                configuration,
-                new PositionMessageBuffer(),
-                new AtmStrikeUtility(),
-                new ContractSpy());
-
+            // Act
             var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes);
 
+            // Verify
             Assert.IsType<List<double>>(strikes);
             Assert.Equal(numberOfStrikes, strikes.Count());
         }
-
-        //[Theory, AutoNSubstituteData]
-        //public void ReturnCorrectNumberOfSpyStrikes2(
-        //    [Frozen] IConfiguration configuration,
-        //    IbHost sut)
-        //{
-        //    var underlyingPrice = 380d;
-        //    var lastTradeDate = "221111";
-        //    int numberOfStrikes = 10;
-
-        //    //IConfiguration configuration = Substitute.For<IConfiguration>();
-        //    configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
-
-        //    //var sut = new IbHost(configuration, new PositionMessageBuffer(), new AtmStrikeUtility());
-
-        //    var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes);
-
-        //    Assert.IsType<List<double>>(strikes);
-        //    Assert.Equal(numberOfStrikes, strikes.Count());
-        //}
 
         [Fact]
         public void ReturnSpyStrikesSortedAndUnique()

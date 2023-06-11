@@ -861,6 +861,12 @@ namespace SsbHedger
 
             resultList.Sort();
 
+            // Case uneven number of strikes
+            if (numberOfStrikes % 2 == 1)
+            {
+                resultList = resultList.Skip(1).ToList();
+            }
+
             // Function or/and helper ReplaceInvalidStrike
 
             return resultList;
