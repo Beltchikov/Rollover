@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using SsbHedger.Abstractions;
 using SsbHedger.CommandHandler;
+using SsbHedger.IbModel;
 using SsbHedger.Model;
 using SsbHedger.SsbChartControl;
 using SsbHedger.SsbConfiguration;
@@ -35,6 +36,7 @@ namespace SsbHedger
                 .AddSingleton<IPositionMessageBuffer, PositionMessageBuffer>()
                 .AddSingleton<IAtmStrikeUtility, AtmStrikeUtility>()
                 .AddSingleton<ILastTradeDateConverter, LastTradeDateConverter>()
+                .AddSingleton<IContractSpy, ContractSpy>()
                 .AddMediatR(GetType().Assembly)
                 .BuildServiceProvider();
         }

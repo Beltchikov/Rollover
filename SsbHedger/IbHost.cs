@@ -1,6 +1,7 @@
 ﻿using IBApi;
 using IbClient;
 using IbClient.messages;
+using SsbHedger.IbModel;
 using SsbHedger.Model;
 using SsbHedger.SsbConfiguration;
 using SsbHedger.Utilities;
@@ -34,8 +35,7 @@ namespace SsbHedger
 
         int _reqIdHistoricalData = 1000;
         int _reqContractDetails = 2000;
-        Dictionary<string, Contract> _contractDict = null!;
-        Contract _contractUnderlying = null!;
+        IContractSpy _contractSpy = null!;
         string _durationString = "1 D";
         string _barSizeSetting = "5 mins";
         string _whatToShow = "BID";
@@ -50,7 +50,8 @@ namespace SsbHedger
         public IbHost(
             IConfiguration configuration,
             IPositionMessageBuffer positionMessageBuffer,
-            IAtmStrikeUtility atmStrikeUtility)
+            IAtmStrikeUtility atmStrikeUtility,
+            IContractSpy contractSpy)
         {
             _configuration = configuration;
             _positionMessageBuffer = positionMessageBuffer;
@@ -74,13 +75,7 @@ namespace SsbHedger
             _ibClient.TickPrice += _ibClient_TickPrice;
             _ibClient.TickString += _ibClient_TickString;
             _ibClient.TickOptionCommunication += _ibClient_TickOptionCommunication;
-
-            _contractDict = new Dictionary<string, Contract>
-            {
-                {"SPY", new Contract(){Symbol = "SPY", SecType = "STK", Currency="USD", Exchange = "SMART"} }
-            };
-
-            _contractUnderlying = _contractDict[(string)_configuration.GetValue(Configuration.UNDERLYING_SYMBOL)];
+            _contractSpy = contractSpy;
         }
 
         public int Timeout => TIMEOUT;
@@ -118,7 +113,7 @@ namespace SsbHedger
             _reqIdHistoricalData++;
             _ibClient.ClientSocket.reqHistoricalData(
                 _reqIdHistoricalData,
-                _contractUnderlying,
+                _contractSpy as Contract,
                 GetEndDateTime(),
                 _durationString,
                 _barSizeSetting,
@@ -228,14 +223,14 @@ namespace SsbHedger
 
         public void ReqMktUnderlying()
         {
-            if (_contractUnderlying == null)
+            if (_contractSpy == null)
             {
                 return;
             }
 
             _ibClient.ClientSocket.reqMktData(
                REQ_MKT_DATA_UNDERLYING,
-               _contractUnderlying,
+               _contractSpy as Contract,
                "",
                false,
                false,

@@ -6,6 +6,7 @@ using SsbHedger.SsbConfiguration;
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 using AutoFixture.Xunit2;
+using SsbHedger.IbModel;
 
 namespace SsbHedger.UnitTests
 {
@@ -22,7 +23,11 @@ namespace SsbHedger.UnitTests
             IConfiguration configuration = Substitute.For<IConfiguration>();
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
-            var sut = new IbHost(configuration, new PositionMessageBuffer(), new AtmStrikeUtility());
+            var sut = new IbHost(
+                configuration,
+                new PositionMessageBuffer(),
+                new AtmStrikeUtility(),
+                new ContractSpy());
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
             viewModel.Messages = new ObservableCollection<Message>();
@@ -48,7 +53,11 @@ namespace SsbHedger.UnitTests
             IConfiguration configuration = Substitute.For<IConfiguration>();
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
-            var sut = new IbHost(configuration, new PositionMessageBuffer(), new AtmStrikeUtility());
+            var sut = new IbHost(
+                configuration,
+                new PositionMessageBuffer(),
+                new AtmStrikeUtility(),
+                new ContractSpy());
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
             viewModel.Messages = new ObservableCollection<Message>();
@@ -74,7 +83,11 @@ namespace SsbHedger.UnitTests
             IConfiguration configuration = Substitute.For<IConfiguration>();
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
-            var sut = new IbHost(configuration, new PositionMessageBuffer(), new AtmStrikeUtility());
+            var sut = new IbHost(
+                configuration,
+                new PositionMessageBuffer(),
+                new AtmStrikeUtility(),
+                new ContractSpy());
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
             viewModel.Messages = new ObservableCollection<Message>();
@@ -101,7 +114,11 @@ namespace SsbHedger.UnitTests
             IConfiguration configuration = Substitute.For<IConfiguration>();
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
-            var sut = new IbHost(configuration, new PositionMessageBuffer(), new AtmStrikeUtility());
+            var sut = new IbHost(
+                configuration,
+                new PositionMessageBuffer(),
+                new AtmStrikeUtility(),
+                new ContractSpy());
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
             viewModel.Messages = new ObservableCollection<Message>();
@@ -129,7 +146,11 @@ namespace SsbHedger.UnitTests
             IConfiguration configuration = Substitute.For<IConfiguration>();
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
-            var sut = new IbHost(configuration, new PositionMessageBuffer(), new AtmStrikeUtility());
+            var sut = new IbHost(
+                configuration,
+                new PositionMessageBuffer(),
+                new AtmStrikeUtility(),
+                new ContractSpy());
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
             viewModel.Messages = new ObservableCollection<Message>();
@@ -162,13 +183,37 @@ namespace SsbHedger.UnitTests
             IConfiguration configuration = Substitute.For<IConfiguration>();
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
-            var sut = new IbHost(configuration, new PositionMessageBuffer(), new AtmStrikeUtility());
-            
+            var sut = new IbHost(
+                configuration,
+                new PositionMessageBuffer(),
+                new AtmStrikeUtility(),
+                new ContractSpy());
+
             var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes);
-            
+
             Assert.IsType<List<double>>(strikes);
             Assert.Equal(numberOfStrikes, strikes.Count());
         }
+
+        //[Theory, AutoNSubstituteData]
+        //public void ReturnCorrectNumberOfSpyStrikes2(
+        //    [Frozen] IConfiguration configuration,
+        //    IbHost sut)
+        //{
+        //    var underlyingPrice = 380d;
+        //    var lastTradeDate = "221111";
+        //    int numberOfStrikes = 10;
+
+        //    //IConfiguration configuration = Substitute.For<IConfiguration>();
+        //    configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
+
+        //    //var sut = new IbHost(configuration, new PositionMessageBuffer(), new AtmStrikeUtility());
+
+        //    var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes);
+
+        //    Assert.IsType<List<double>>(strikes);
+        //    Assert.Equal(numberOfStrikes, strikes.Count());
+        //}
 
         [Fact]
         public void ReturnSpyStrikesSortedAndUnique()
@@ -182,14 +227,18 @@ namespace SsbHedger.UnitTests
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
             // Act
-            var sut = new IbHost(configuration, new PositionMessageBuffer(), new AtmStrikeUtility());
+            var sut = new IbHost(
+                configuration,
+                new PositionMessageBuffer(),
+                new AtmStrikeUtility(),
+                new ContractSpy());
             var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes)
                 .ToList();
 
             // Verify
             // Check ASC sort
             var zipped = strikes.Zip(strikes.Skip(1), (r, n) => n - r);
-            Assert.True(zipped.All(r => r >=0));
+            Assert.True(zipped.All(r => r >= 0));
 
             // Check uniqueness
             Assert.Equal(strikes.Distinct().Count(), strikes.Count());
