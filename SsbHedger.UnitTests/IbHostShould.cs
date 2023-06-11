@@ -1,43 +1,39 @@
-﻿using IbClient.messages;
+﻿using AutoFixture.Xunit2;
+using IbClient.messages;
 using NSubstitute;
-using SsbHedger.Utilities;
 using SsbHedger.Model;
 using SsbHedger.SsbConfiguration;
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
-using AutoFixture.Xunit2;
-using SsbHedger.IbModel;
 
 namespace SsbHedger.UnitTests
 {
     public class IbHostShould
     {
-        [Fact]
-        public void AddErrorMessageToViewModel()
+        [Theory, AutoNSubstituteData]
+        public void AddErrorMessageToViewModel(
+            int reqId,
+            int code,
+            string message,
+            Exception exception,
+            [Frozen] IConfiguration configuration,
+            IbHost sut)
         {
-            int reqId = 1;
-            int code = 2;
-            string message = "3";
-            Exception exception = new Exception("4");
-
-            IConfiguration configuration = Substitute.For<IConfiguration>();
+            // Prepare
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
-            var sut = new IbHost(
-                configuration,
-                new PositionMessageBuffer(),
-                new AtmStrikeUtility(),
-                new ContractSpy());
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
             viewModel.Messages = new ObservableCollection<Message>();
             sut.ViewModel = viewModel;
 
+            // Act
             Reflection.CallMethod(
                 sut,
                 "_ibClient_Error",
                 new object[] { reqId, code, message, exception });
 
+            // Verify
             Assert.Single(viewModel.Messages);
             Assert.Equal(reqId, viewModel.Messages.First().ReqId);
             Assert.Equal($"Code:{code} message:{message} exception:{exception}",
