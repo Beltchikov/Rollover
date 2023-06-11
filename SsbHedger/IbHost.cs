@@ -869,9 +869,14 @@ namespace SsbHedger
             }
 
             // Verify, that strikes are valid
-            foreach(var strike in  resultList)
+            var resultListCopy = new List<double>(resultList);    
+            foreach (var strike in resultListCopy)
             {
-                _ibClient.IsValidStrike(SPY, lastTradeDate, strike);    
+                if(!_ibClient.IsValidStrike(SPY, lastTradeDate, strike))
+                {
+                    // TODO
+                    //_atmStrikeUtility.ReplaceInvalidStrike(resultList, strike); // TODO rename _atmStrikeUtility
+                }
             }
 
             // Function or/and helper ReplaceInvalidStrike

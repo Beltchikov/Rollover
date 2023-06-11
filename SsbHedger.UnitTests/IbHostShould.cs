@@ -306,13 +306,13 @@ namespace SsbHedger.UnitTests
             Reflection.SetFiledValue(sut, "_ibClient", ibClient);
 
             // Act
-            var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes).ToList();
+            sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes).ToList();
 
             // Verify
-            foreach (var strike in strikes)
-            {
-                ibClient.Received().IsValidStrike("SPY", lastTradeDate, strike);
-            }
+            ibClient.Received(numberOfStrikes).IsValidStrike(
+                "SPY",
+                lastTradeDate,
+                Arg.Any<double>());
         }
 
 
