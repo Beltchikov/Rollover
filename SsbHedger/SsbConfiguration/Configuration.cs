@@ -13,6 +13,7 @@ namespace SsbHedger.SsbConfiguration
         public const string SESSION_END = "SessionEnd";
         public const string DTE = "Dte";
         public const string NUMBER_OF_STRIKES = "NumberOfStrikes";
+        public const string STRIKE_STEP = "StrikeStep";
 
         private Dictionary<string, object> _configuration;
 
@@ -28,6 +29,7 @@ namespace SsbHedger.SsbConfiguration
                 {SESSION_END, "22:15" },
                 {DTE, 0},
                 {NUMBER_OF_STRIKES, 10 },
+                {STRIKE_STEP, 0.5 },
             };
         }
 

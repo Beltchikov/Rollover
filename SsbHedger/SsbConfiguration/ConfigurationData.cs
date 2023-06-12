@@ -7,7 +7,8 @@
         string SessionStart,
         string SessionEnd,
         int Dte,
-        int NumberOfStrikes)
+        int NumberOfStrikes,
+        double StrikeStep)
     {
         public static implicit operator (
             string host, 
@@ -17,7 +18,8 @@
             string sessionStart, 
             string sessionEnd,
             int dte,
-            int numberOfStrikes)
+            int numberOfStrikes,
+            double strikeStep)
             (ConfigurationData value) => (
             value.Host, 
             value.Port, 
@@ -26,7 +28,8 @@
             value.SessionStart, 
             value.SessionEnd,
             value.Dte,
-            value.NumberOfStrikes);
+            value.NumberOfStrikes,
+            value.StrikeStep);
 
         public static implicit operator ConfigurationData((
             string host, 
@@ -36,7 +39,8 @@
             string sessionStart, 
             string sessionEnd,
             int dte,
-            int numberOfStrikes) value) => new ConfigurationData(
+            int numberOfStrikes,
+            double strikeStep) value) => new ConfigurationData(
                 value.host, 
                 value.port, 
                 value.clientId, 
@@ -44,6 +48,7 @@
                 value.sessionStart, 
                 value.sessionEnd,
                 value.dte,
-                value.numberOfStrikes);
+                value.numberOfStrikes,
+                value.strikeStep);
     }
 }

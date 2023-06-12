@@ -1,7 +1,6 @@
 ﻿using SsbHedger.Model;
 using SsbHedger.SsbConfiguration;
 using System;
-using System.Globalization;
 
 namespace SsbHedger.CommandHandler
 {
@@ -59,6 +58,8 @@ namespace SsbHedger.CommandHandler
             
             int numberOfStrikes = Convert.ToInt32(parameters[7]);
 
+            double strikeStep = Convert.ToDouble(parameters[8]);
+
             _registryManager.WriteConfiguration(new ConfigurationData(
                 host,
                 port,
@@ -67,7 +68,8 @@ namespace SsbHedger.CommandHandler
                 sessionStart,
                 sessionEnd,
                 dte,
-                numberOfStrikes));
+                numberOfStrikes,
+                strikeStep));
 
             _configuration.SetValue(Configuration.HOST, host);
             _configuration.SetValue(Configuration.PORT, port);
@@ -77,6 +79,7 @@ namespace SsbHedger.CommandHandler
             _configuration.SetValue(Configuration.SESSION_END, sessionEnd);
             _configuration.SetValue(Configuration.DTE, dte);
             _configuration.SetValue(Configuration.NUMBER_OF_STRIKES, numberOfStrikes);
+            _configuration.SetValue(Configuration.STRIKE_STEP, strikeStep);
 
             _ibHost.Disconnect();
             _ibHost.ConnectAndStartReaderThread();

@@ -63,7 +63,8 @@ namespace SsbHedger
                 (string)_configuration.GetValue(Configuration.SESSION_START),
                 (string)_configuration.GetValue(Configuration.SESSION_END),
                 (int)_configuration.GetValue(Configuration.DTE),
-                (int)_configuration.GetValue(Configuration.NUMBER_OF_STRIKES)));
+                (int)_configuration.GetValue(Configuration.NUMBER_OF_STRIKES),
+                (double)_configuration.GetValue(Configuration.STRIKE_STEP)));
 
             _configuration.SetValue(Configuration.HOST, configurationdata.Host);
             _configuration.SetValue(Configuration.PORT, configurationdata.Port);
@@ -73,6 +74,7 @@ namespace SsbHedger
             _configuration.SetValue(Configuration.SESSION_END, configurationdata.SessionEnd);
             _configuration.SetValue(Configuration.DTE, configurationdata.Dte);
             _configuration.SetValue(Configuration.NUMBER_OF_STRIKES, configurationdata.NumberOfStrikes);
+            _configuration.SetValue(Configuration.STRIKE_STEP, configurationdata.StrikeStep);
 
             viewModel.SessionStart= configurationdata.SessionStart; 
             viewModel.SessionEnd= configurationdata.SessionEnd; 

@@ -28,6 +28,7 @@ namespace SsbHedger.SsbConfiguration
                 subKey.SetValue(Configuration.SESSION_END, defaultConfigurationData.SessionEnd);
                 subKey.SetValue(Configuration.DTE, defaultConfigurationData.Dte);
                 subKey.SetValue(Configuration.NUMBER_OF_STRIKES, defaultConfigurationData.NumberOfStrikes);
+                subKey.SetValue(Configuration.STRIKE_STEP, defaultConfigurationData.StrikeStep);
 
                 return new ConfigurationData(
                     defaultConfigurationData.Host,
@@ -37,7 +38,8 @@ namespace SsbHedger.SsbConfiguration
                     defaultConfigurationData.SessionStart,
                     defaultConfigurationData.SessionEnd,
                     defaultConfigurationData.Dte,
-                    defaultConfigurationData.NumberOfStrikes);
+                    defaultConfigurationData.NumberOfStrikes,
+                    defaultConfigurationData.StrikeStep);
             }
 
             var defaultOrFromRegistryConfigData = new ConfigurationData();
@@ -130,6 +132,17 @@ namespace SsbHedger.SsbConfiguration
                 subKey?.SetValue(Configuration.NUMBER_OF_STRIKES, defaultConfigurationData.NumberOfStrikes);
             }
 
+            var strikeStep = Convert.ToDouble(subKey?.GetValue(Configuration.STRIKE_STEP), new CultureInfo("DE-de"));
+            if (strikeStep > 0)
+            {
+                defaultOrFromRegistryConfigData.StrikeStep = (double)strikeStep;
+            }
+            else
+            {
+                defaultOrFromRegistryConfigData.StrikeStep = defaultConfigurationData.StrikeStep;
+                subKey?.SetValue(Configuration.STRIKE_STEP, defaultConfigurationData.StrikeStep);
+            }
+
             return new ConfigurationData(
                    defaultOrFromRegistryConfigData.Host,
                    defaultOrFromRegistryConfigData.Port,
@@ -138,7 +151,8 @@ namespace SsbHedger.SsbConfiguration
                    defaultOrFromRegistryConfigData.SessionStart,
                    defaultOrFromRegistryConfigData.SessionEnd,
                    defaultOrFromRegistryConfigData.Dte,
-                   defaultOrFromRegistryConfigData.NumberOfStrikes);
+                   defaultOrFromRegistryConfigData.NumberOfStrikes,
+                   defaultOrFromRegistryConfigData.StrikeStep);
         }
 
         public void WriteConfiguration(ConfigurationData defaultConfigurationData)
@@ -154,6 +168,7 @@ namespace SsbHedger.SsbConfiguration
             subKey.SetValue(Configuration.SESSION_END, defaultConfigurationData.SessionEnd);
             subKey.SetValue(Configuration.DTE, defaultConfigurationData.Dte);
             subKey.SetValue(Configuration.NUMBER_OF_STRIKES, defaultConfigurationData.NumberOfStrikes);
+            subKey.SetValue(Configuration.STRIKE_STEP, defaultConfigurationData.StrikeStep);
         }
     }
 }

@@ -130,7 +130,7 @@ namespace SsbHedger
             btDone.IsEnabled = ConfigurationIsUpdated(textBoxesDict);
         }
 
-        private void txtBearHedgeStrike_TextChanged(object sender, TextChangedEventArgs e)
+        private void txtDte_TextChanged(object sender, TextChangedEventArgs e)
         {
             double result;
             if(!double.TryParse(((TextBox)sender).Text, out result))
@@ -140,11 +140,11 @@ namespace SsbHedger
             }
 
             Dictionary<string, TextBox> textBoxesDict = BuildDefaultTextBoxesDictionary();
-            textBoxesDict["txtLastTradeDateOrContractMonth"] = (TextBox)sender;
+            textBoxesDict["txtDte"] = (TextBox)sender;
             btDone.IsEnabled = ConfigurationIsUpdated(textBoxesDict);
         }
 
-        private void txtBullHedgeStrike_TextChanged(object sender, TextChangedEventArgs e)
+        private void txtNumberOfStrikes_TextChanged(object sender, TextChangedEventArgs e)
         {
             double result;
             if (!double.TryParse(((TextBox)sender).Text, out result))
@@ -154,7 +154,21 @@ namespace SsbHedger
             }
 
             Dictionary<string, TextBox> textBoxesDict = BuildDefaultTextBoxesDictionary();
-            textBoxesDict["txtBeullHedgeStrike"] = (TextBox)sender;
+            textBoxesDict["txtNumberOfStrikes"] = (TextBox)sender;
+            btDone.IsEnabled = ConfigurationIsUpdated(textBoxesDict);
+        }
+
+        private void txtStrikeStep_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            double result;
+            if (!double.TryParse(((TextBox)sender).Text, out result))
+            {
+                UndoInput(e, (TextBox)sender);
+                return;
+            }
+
+            Dictionary<string, TextBox> textBoxesDict = BuildDefaultTextBoxesDictionary();
+            textBoxesDict["txtStrikeStep"] = (TextBox)sender;
             btDone.IsEnabled = ConfigurationIsUpdated(textBoxesDict);
         }
 
@@ -166,8 +180,9 @@ namespace SsbHedger
                 || string.IsNullOrWhiteSpace(textBoxesDict["txtUnderlyingSymbol"].Text)
                 || string.IsNullOrWhiteSpace(textBoxesDict["txtSessionStart"].Text)
                 || string.IsNullOrWhiteSpace(textBoxesDict["txtSessionEnd"].Text)
-                || string.IsNullOrWhiteSpace(textBoxesDict["txtLastTradeDateOrContractMonth"].Text)
-                || string.IsNullOrWhiteSpace(textBoxesDict["txtNumberOfStrikes"].Text))
+                || string.IsNullOrWhiteSpace(textBoxesDict["txtDte"].Text)
+                || string.IsNullOrWhiteSpace(textBoxesDict["txtNumberOfStrikes"].Text)
+                || string.IsNullOrWhiteSpace(textBoxesDict["txtStrikeStep"].Text))
             {
                 return false;
             }
@@ -182,12 +197,14 @@ namespace SsbHedger
                 textBoxesDict["txtSessionStart"].Text, StringComparison.InvariantCultureIgnoreCase);
             bool newSessionEnd = !string.Equals((string)_configuration.GetValue(Configuration.SESSION_END), 
                 textBoxesDict["txtSessionEnd"].Text, StringComparison.InvariantCultureIgnoreCase);
-            bool lastTradeDateOrContractMonth = (int)_configuration.GetValue(Configuration.DTE) != Convert.ToInt32(textBoxesDict["txtLastTradeDateOrContractMonth"].Text);
+            bool dte = (int)_configuration.GetValue(Configuration.DTE) != Convert.ToInt32(textBoxesDict["txtDte"].Text);
             bool numberOfStrikes = !string.Equals(Convert.ToString(_configuration.GetValue(Configuration.NUMBER_OF_STRIKES), new CultureInfo("DE-de")),
                 textBoxesDict["txtNumberOfStrikes"].Text, StringComparison.InvariantCultureIgnoreCase);
+            bool strikeStep = !string.Equals(Convert.ToString(_configuration.GetValue(Configuration.STRIKE_STEP), new CultureInfo("DE-de")),
+                textBoxesDict["txtStrikeStep"].Text, StringComparison.InvariantCultureIgnoreCase);
 
             return newHost || newPort || newClientId || newUnderlyingSymbol || newSessionStart || newSessionEnd
-                || lastTradeDateOrContractMonth || numberOfStrikes;
+                || dte || numberOfStrikes || strikeStep;
         }
 
         private Dictionary<string, TextBox> BuildDefaultTextBoxesDictionary()
@@ -200,8 +217,9 @@ namespace SsbHedger
                 {"txtUnderlyingSymbol", txtUnderlyingSymbol},
                 {"txtSessionStart", txtSessionStart},
                 {"txtSessionEnd", txtSessionEnd },
-                {"txtLastTradeDateOrContractMonth", txtDte },
+                {"txtDte", txtDte },
                 {"txtNumberOfStrikes", txtNumberOfStrikes },
+                {"txtStrikeStep", txtStrikeStep },
             };
         }
 
@@ -225,7 +243,5 @@ namespace SsbHedger
             e.Handled = true;
             return;
         }
-
-       
     }
 }

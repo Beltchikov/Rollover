@@ -4,11 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Configuration" Height="290" Width="230" 
+        Title="Configuration" Height="320" Width="230" 
         SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterOwner">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
@@ -89,7 +90,7 @@
         </TextBlock>
         <TextBox Name="txtDte" Grid.Column="2" Grid.Row="6"
                  Style="{StaticResource NormalTextBox}"
-                 Text="" TextChanged="txtBearHedgeStrike_TextChanged" BorderBrush="#FFABADB3" ></TextBox>
+                 Text="" TextChanged="txtDte_TextChanged" BorderBrush="#FFABADB3" ></TextBox>
 
         <TextBlock Grid.Column="1" Grid.Row="7"  Text="Number of Strikes:"
                    HorizontalAlignment="Right"
@@ -98,10 +99,19 @@
         </TextBlock>
         <TextBox Name="txtNumberOfStrikes" Grid.Column="2" Grid.Row="7"
                  Style="{StaticResource NormalTextBox}"
-                 Text="" TextChanged="txtBullHedgeStrike_TextChanged" BorderBrush="#FFABADB3" ></TextBox>
+                 Text="" TextChanged="txtNumberOfStrikes_TextChanged" BorderBrush="#FFABADB3" ></TextBox>
+
+        <TextBlock Grid.Column="1" Grid.Row="8"  Text="Strike Step"
+                   HorizontalAlignment="Right"
+                   Margin="0,0,5,0"
+                   Style="{StaticResource NormalTextBlock}">
+        </TextBlock>
+        <TextBox Name="txtStrikeStep" Grid.Column="2" Grid.Row="8"
+                 Style="{StaticResource NormalTextBox}"
+                 Text="" TextChanged="txtStrikeStep_TextChanged" BorderBrush="#FFABADB3" ></TextBox>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
-                    Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="2">
+                    Grid.Column="1" Grid.Row="9" Grid.ColumnSpan="2">
             <Button Name="btCancel" Margin="0,3,0,3" Padding="5,0,5,0" Click="btCancel_Click" IsCancel="True">Cancel</Button>
             <Button Name="btDone" Margin="10,3,0,3" Padding="5,0,5,0" Click="btDone_Click" 
                     IsDefault="True"
