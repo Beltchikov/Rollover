@@ -114,7 +114,7 @@ namespace SsbHedger
             _reqIdHistoricalData++;
             _ibClient.ClientSocket.reqHistoricalData(
                 _reqIdHistoricalData,
-                _contractSpy as Contract,
+                _contractSpy.AsContract(),
                 GetEndDateTime(),
                 _durationString,
                 _barSizeSetting,
@@ -231,7 +231,7 @@ namespace SsbHedger
 
             _ibClient.ClientSocket.reqMktData(
                REQ_MKT_DATA_UNDERLYING,
-               _contractSpy as Contract,
+               _contractSpy.AsContract(),
                "",
                false,
                false,

@@ -24,6 +24,7 @@ namespace SsbHedger.IbModel
         string Symbol { get; set; }
         string TradingClass { get; set; }
 
+        Contract AsContract();
         string ToString();
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using IBApi;
+using System.Collections.Generic;
 
 namespace SsbHedger.IbModel
 {
@@ -41,6 +42,17 @@ namespace SsbHedger.IbModel
         public double Strike { get; set; }
         public string Symbol { get; set; }
         public string TradingClass { get; set; }
+
+        public Contract AsContract()
+        {
+            return new Contract()
+            {
+                Symbol = this.Symbol,
+                SecType = this.SecType,
+                Currency = this.Currency,
+                Exchange = this.Exchange
+            };
+        }
 
         public override string ToString()
         {
