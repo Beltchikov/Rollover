@@ -110,10 +110,10 @@ namespace SsbHedger.SsbConfiguration
                 subKey?.SetValue(Configuration.SESSION_END, defaultConfigurationData.SessionEnd);
             }
 
-            var dte = (int?)subKey?.GetValue(Configuration.DTE);
-            if (dte != null && dte > 0)
+            var dteFromRegistry = (int?)subKey?.GetValue(Configuration.DTE);
+            if (dteFromRegistry != null && dteFromRegistry > 0)
             {
-                defaultOrFromRegistryConfigData.Dte = (int)dte;
+                defaultOrFromRegistryConfigData.Dte = (int)dteFromRegistry;
             }
             else
             {
@@ -121,10 +121,10 @@ namespace SsbHedger.SsbConfiguration
                 subKey?.SetValue(Configuration.DTE, defaultConfigurationData.Dte);
             }
 
-            var numberOfStrikes = (int?)subKey?.GetValue(Configuration.NUMBER_OF_STRIKES);
-            if (numberOfStrikes != null && numberOfStrikes > 0)
+            var numberOfStrikesFromRegistry = (int?)subKey?.GetValue(Configuration.NUMBER_OF_STRIKES);
+            if (numberOfStrikesFromRegistry != null && numberOfStrikesFromRegistry > 0)
             {
-                defaultOrFromRegistryConfigData.NumberOfStrikes = (int)numberOfStrikes;
+                defaultOrFromRegistryConfigData.NumberOfStrikes = (int)numberOfStrikesFromRegistry;
             }
             else
             {
@@ -132,10 +132,11 @@ namespace SsbHedger.SsbConfiguration
                 subKey?.SetValue(Configuration.NUMBER_OF_STRIKES, defaultConfigurationData.NumberOfStrikes);
             }
 
-            var strikeStep = Convert.ToDouble(subKey?.GetValue(Configuration.STRIKE_STEP), new CultureInfo("DE-de"));
-            if (strikeStep > 0)
+            
+            var strikeStepFromRegistry = subKey?.GetValue(Configuration.STRIKE_STEP)?.ToString();
+            if (!string.IsNullOrWhiteSpace(strikeStepFromRegistry))
             {
-                defaultOrFromRegistryConfigData.StrikeStep = (double)strikeStep;
+                defaultOrFromRegistryConfigData.StrikeStep = strikeStepFromRegistry;
             }
             else
             {

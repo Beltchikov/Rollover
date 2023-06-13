@@ -43,7 +43,7 @@ namespace SsbHedger
                     _configurationWindow.txtSessionEnd.Text,
                     Convert.ToDouble(_configurationWindow.txtDte.Text, new CultureInfo("DE-de")),
                     Convert.ToDouble(_configurationWindow.txtNumberOfStrikes.Text, new CultureInfo("DE-de")),
-                    Convert.ToDouble(_configurationWindow.txtStrikeStep.Text, new CultureInfo("DE-de")),
+                    _configurationWindow.txtStrikeStep.Text, new CultureInfo("DE-de"),
                 };
                 ((MainWindowViewModel)DataContext).UpdateConfigurationCommand.Execute(commandParams);
             }

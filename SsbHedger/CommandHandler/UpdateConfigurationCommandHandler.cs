@@ -58,7 +58,11 @@ namespace SsbHedger.CommandHandler
             
             int numberOfStrikes = Convert.ToInt32(parameters[7]);
 
-            double strikeStep = Convert.ToDouble(parameters[8]);
+            string? strikeStep = parameters[8]?.ToString();
+            if (strikeStep == null)
+            {
+                throw new ApplicationException("Unexpected! strikeStep is null");
+            }
 
             _registryManager.WriteConfiguration(new ConfigurationData(
                 host,

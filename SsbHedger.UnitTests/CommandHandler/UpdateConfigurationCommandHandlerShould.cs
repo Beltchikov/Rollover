@@ -24,7 +24,8 @@ namespace SsbHedger.UnitTests.CommandHandler
                 configurationData.SessionStart,
                 configurationData.SessionEnd,
                 configurationData.Dte,
-                configurationData.NumberOfStrikes
+                configurationData.NumberOfStrikes,
+                configurationData.StrikeStep
             });
             registryManager.Received().WriteConfiguration(configurationData);
         }
@@ -45,21 +46,22 @@ namespace SsbHedger.UnitTests.CommandHandler
                 configurationData.SessionStart,
                 configurationData.SessionEnd,
                 configurationData.Dte,
-                configurationData.NumberOfStrikes
+                configurationData.NumberOfStrikes,
+                configurationData.StrikeStep
             });
 
             configuration.Received().SetValue(
-                SsbConfiguration.Configuration.HOST, configurationData.Host);
+                Configuration.HOST, configurationData.Host);
             configuration.Received().SetValue(
-                SsbConfiguration.Configuration.PORT, configurationData.Port);
+                Configuration.PORT, configurationData.Port);
             configuration.Received().SetValue(
-                SsbConfiguration.Configuration.CLIENT_ID, configurationData.ClientId);
+                Configuration.CLIENT_ID, configurationData.ClientId);
             configuration.Received().SetValue(
-                SsbConfiguration.Configuration.UNDERLYING_SYMBOL, configurationData.UnderlyingSymbol);
+                Configuration.UNDERLYING_SYMBOL, configurationData.UnderlyingSymbol);
             configuration.Received().SetValue(
-                SsbConfiguration.Configuration.SESSION_START, configurationData.SessionStart);
+                Configuration.SESSION_START, configurationData.SessionStart);
             configuration.Received().SetValue(
-                SsbConfiguration.Configuration.SESSION_END, configurationData.SessionEnd);
+                Configuration.SESSION_END, configurationData.SessionEnd);
         }
 
         [Theory, AutoNSubstituteData]
@@ -78,7 +80,8 @@ namespace SsbHedger.UnitTests.CommandHandler
                 configurationData.SessionStart,
                 configurationData.SessionEnd,
                 configurationData.Dte,
-                configurationData.NumberOfStrikes
+                configurationData.NumberOfStrikes,
+                configurationData.StrikeStep
             });
 
             ibHost.Received().Disconnect();

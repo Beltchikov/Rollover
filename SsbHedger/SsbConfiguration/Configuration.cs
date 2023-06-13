@@ -29,7 +29,7 @@ namespace SsbHedger.SsbConfiguration
                 {SESSION_END, "22:15" },
                 {DTE, 0},
                 {NUMBER_OF_STRIKES, 10 },
-                {STRIKE_STEP, 0.5 },
+                {STRIKE_STEP, "0.5" },
             };
         }
 

@@ -35,6 +35,7 @@ namespace SsbHedger
             txtSessionEnd.Text = (string)_configuration.GetValue(Configuration.SESSION_END);
             txtDte.Text = _configuration.GetValue(Configuration.DTE).ToString();
             txtNumberOfStrikes.Text = Convert.ToString(_configuration.GetValue(Configuration.NUMBER_OF_STRIKES));
+            txtStrikeStep.Text = Convert.ToString(_configuration.GetValue(Configuration.STRIKE_STEP));
 
         }
 

@@ -64,7 +64,7 @@ namespace SsbHedger
                 (string)_configuration.GetValue(Configuration.SESSION_END),
                 (int)_configuration.GetValue(Configuration.DTE),
                 (int)_configuration.GetValue(Configuration.NUMBER_OF_STRIKES),
-                (double)_configuration.GetValue(Configuration.STRIKE_STEP)));
+                (string)_configuration.GetValue(Configuration.STRIKE_STEP)));
 
             _configuration.SetValue(Configuration.HOST, configurationdata.Host);
             _configuration.SetValue(Configuration.PORT, configurationdata.Port);
