@@ -844,10 +844,10 @@ namespace SsbHedger
         {
             var resultList = new List<double>();
 
-            var atmPutStrike = Math.Ceiling(underlyingPrice);    // In option table up is down and down is up
-            var atmCallStrike = Math.Floor(underlyingPrice);// In option table up is down and down is up
-            
-            if(atmCallStrike == atmPutStrike) // If underlying price is exact at a strike
+            var atmPutStrike = RoundUpToStep(underlyingPrice, strikeStep);    // In option table up is down and down is up
+            var atmCallStrike = RoundDownToStep(underlyingPrice, strikeStep); // In option table up is down and down is up
+
+            if (atmCallStrike == atmPutStrike) // If underlying price is exact at a strike
             {
                 atmCallStrike -= strikeStep;
             }
@@ -932,6 +932,16 @@ namespace SsbHedger
             //_ibHost.ReqCheckNextOptionsStrike(Math.Round(atmStrikesCandidates[0].NextAtmStrike, 0));
 
             ////_atmStrikeUtility.SetAtmStrikesInViewModel(_ibHost, underlyingPrice);
+        }
+
+        private double RoundDownToStep(double underlyingPrice, double strikeStep)
+        {
+            return Math.Floor(underlyingPrice);
+        }
+
+        private double RoundUpToStep(double underlyingPrice, double strikeStep)
+        {
+            return Math.Ceiling(underlyingPrice);
         }
     }
 }
