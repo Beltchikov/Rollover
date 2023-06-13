@@ -29,7 +29,6 @@ namespace SsbHedger
         private readonly int PUT_OPTION_IV_REQ_ID = 5002;
         private readonly int CHECK_OPTION_NEXT_STRIKE_REQ_ID = 10000;
         private readonly int CHECK_OPTION_SECOND_STRIKE_REQ_ID = 20000;
-        private readonly double STRIKE_STEP_SPY = 0.5;
         private readonly string SPY = "SPY";
         IConfiguration _configuration;
         IIBClient _ibClient;
@@ -850,14 +849,14 @@ namespace SsbHedger
             
             if(atmCallStrike == atmPutStrike) // If underlying price is exact at a strike
             {
-                atmCallStrike -= STRIKE_STEP_SPY;
+                atmCallStrike -= strikeStep;
             }
 
             for (int i = 0; i < (int)Math.Ceiling((double)numberOfStrikes / 2); i++)
             {
-                var nextStrikeUp = atmPutStrike + i * STRIKE_STEP_SPY;
+                var nextStrikeUp = atmPutStrike + i * strikeStep;
                 resultList.Add(nextStrikeUp);
-                var nextStrikeDown = atmCallStrike - i * STRIKE_STEP_SPY;
+                var nextStrikeDown = atmCallStrike - i * strikeStep;
                 resultList.Add(nextStrikeDown);
             }
 

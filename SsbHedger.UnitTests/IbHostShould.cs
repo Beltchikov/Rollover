@@ -235,10 +235,6 @@ namespace SsbHedger.UnitTests
             var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes, strikeStep).ToList();
 
             // Verify
-            //var countAboveUnderlying = strikes.Where(r => r >= underlyingPrice).Count();
-            //var countBelowUnderlying = strikes.Where(r => r < underlyingPrice).Count();
-            //Assert.Equal(countAboveUnderlying, countBelowUnderlying);
-
             var expectedStrikes = strikesString.Split(new char[] { ',' }).Select(d => Convert.ToDouble(d, CultureInfo.InvariantCulture));
             Assert.True(expectedStrikes.SequenceEqual(strikes));
 
