@@ -8,6 +8,8 @@ using NSubstitute;
 using SsbHedger.Model;
 using SsbHedger.SsbConfiguration;
 using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
 using System.Net;
 using System.Runtime.Serialization;
 
@@ -213,12 +215,13 @@ namespace SsbHedger.UnitTests
         }
 
         [Theory]
-        [InlineData(209.4, "221111", 10,1)]
+        [InlineData(209.4, "221111", 4, 1, "208, 209, 210, 211")]
         public void ReturnSpyStrikesCorrectly(
             double underlyingPrice,
             string lastTradeDate,
             int numberOfStrikes,
-            double strikeStep)
+            double strikeStep,
+            string strikesString)
         {
             // Prepare
             var fixture = new Fixture();
@@ -232,9 +235,13 @@ namespace SsbHedger.UnitTests
             var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes, strikeStep).ToList();
 
             // Verify
-            var countAboveUnderlying = strikes.Where(r => r >= underlyingPrice).Count();
-            var countBelowUnderlying = strikes.Where(r => r < underlyingPrice).Count();
-            Assert.Equal(countAboveUnderlying, countBelowUnderlying);
+            //var countAboveUnderlying = strikes.Where(r => r >= underlyingPrice).Count();
+            //var countBelowUnderlying = strikes.Where(r => r < underlyingPrice).Count();
+            //Assert.Equal(countAboveUnderlying, countBelowUnderlying);
+
+            var expectedStrikes = strikesString.Split(new char[] { ',' }).Select(d => Convert.ToDouble(d, CultureInfo.InvariantCulture));
+            Assert.True(expectedStrikes.SequenceEqual(strikes));
+
         }
 
         //[Theory, AutoNSubstituteData]
