@@ -840,7 +840,8 @@ namespace SsbHedger
         public IEnumerable<double> GetStrikesSpy(
             double underlyingPrice,
             string lastTradeDate,
-            int numberOfStrikes)
+            int numberOfStrikes, 
+            double strikeStep)
         {
             var resultList = new List<double>();
 

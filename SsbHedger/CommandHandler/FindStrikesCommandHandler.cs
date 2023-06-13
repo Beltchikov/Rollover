@@ -4,6 +4,7 @@ using SsbHedger.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 
 namespace SsbHedger.CommandHandler
 {
@@ -46,9 +47,12 @@ namespace SsbHedger.CommandHandler
             var dteDateTime = _lastTradeDateConverter.DateTimeFromDte(dte);
             string lastTradeDate = _lastTradeDateConverter.FromDateTime(dteDateTime);
             int numberOfStrikes = (int)_configuration.GetValue(Configuration.NUMBER_OF_STRIKES);
+            double strikeStep = Convert.ToDouble(
+                _configuration.GetValue(Configuration.STRIKE_STEP), 
+                CultureInfo.InvariantCulture);
 
             var underlyingPrice = (double)parameters[0];
-            var strikes = _ibHost.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes);
+            var strikes = _ibHost.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes, strikeStep);
             viewModel.Strikes = new ObservableCollection<double>(strikes);
         }
     }

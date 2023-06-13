@@ -24,19 +24,21 @@ namespace SsbHedger.UnitTests.CommandHandler
         {
             string underlying = "SPY";
             string lastTradeDate = "20170120";
+            double strikeStep = 1;
             DateTime lastTradeDateTime = DateTime.Parse("20.01.2017", new CultureInfo("DE-de"));
             object[] parameters = new object[] { underlyingPrice };
 
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns(underlying);
             configuration.GetValue(Configuration.DTE).Returns(dte);
             configuration.GetValue(Configuration.NUMBER_OF_STRIKES).Returns(numberOfStrikes);
+            configuration.GetValue(Configuration.STRIKE_STEP).Returns(strikeStep);
 
             lastTradeDateConverter.DateTimeFromDte(dte).Returns(lastTradeDateTime);
             lastTradeDateConverter.FromDateTime(lastTradeDateTime).Returns(lastTradeDate);
 
 
             sut.Handle(viewModel, parameters);
-            ibHost.Received().GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes);
+            ibHost.Received().GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes, strikeStep);
         }
     }
 }

@@ -167,6 +167,7 @@ namespace SsbHedger.UnitTests
         public void ReturnCorrectNumberOfSpyStrikes(
             double underlyingPrice,
             int numberOfStrikes,
+            double strikeStep,
             [Frozen] IConfiguration configuration,
             IbHost sut)
         {
@@ -176,7 +177,7 @@ namespace SsbHedger.UnitTests
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
             // Act
-            var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes);
+            var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes, strikeStep);
 
             // Verify
             Assert.IsType<List<double>>(strikes);
@@ -187,6 +188,7 @@ namespace SsbHedger.UnitTests
         public void ReturnSpyStrikesSortedAndUnique(
             double underlyingPrice,
             int numberOfStrikes,
+            double strikeStep,
             [Frozen] IConfiguration configuration,
             IbHost sut)
         {
@@ -196,7 +198,7 @@ namespace SsbHedger.UnitTests
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
             // Act
-            var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes).ToList();
+            var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes, strikeStep).ToList();
 
             // Verify
             // Check ASC sort
@@ -215,12 +217,13 @@ namespace SsbHedger.UnitTests
             double underlyingPrice = 209.4;
             var lastTradeDate = "221111";
             int numberOfStrikes = 10;
+            double strikeStep = 1;
 
             // Prepare
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
             // Act
-            var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes).ToList();
+            var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes, strikeStep).ToList();
 
             // Verify
             var countAboveUnderlying = strikes.Where(r => r >= underlyingPrice).Count();
@@ -236,12 +239,13 @@ namespace SsbHedger.UnitTests
             double underlyingPrice = 209.4;
             var lastTradeDate = "221111";
             int numberOfStrikes = 11;
+            double strikeStep = 1;
 
             // Prepare
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
             // Act
-            var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes).ToList();
+            var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes, strikeStep).ToList();
 
             // Verify
             var countAboveUnderlying = strikes.Where(r => r >= underlyingPrice).Count();
@@ -257,12 +261,13 @@ namespace SsbHedger.UnitTests
             double underlyingPrice = 210;
             var lastTradeDate = "221111";
             int numberOfStrikes = 10;
-            
+            double strikeStep = 1;
+
             // Prepare
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
             // Act
-            var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes).ToList();
+            var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes, strikeStep).ToList();
 
             // Verify
             var countAboveUnderlying = strikes.Where(r => r >= underlyingPrice).Count();
@@ -278,12 +283,13 @@ namespace SsbHedger.UnitTests
             double underlyingPrice = 210;
             var lastTradeDate = "221111";
             int numberOfStrikes = 11;
+            double strikeStep = 1;
 
             // Prepare
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
             // Act
-            var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes).ToList();
+            var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes, strikeStep).ToList();
 
             // Verify
             var countAboveUnderlying = strikes.Where(r => r >= underlyingPrice).Count();
@@ -300,13 +306,14 @@ namespace SsbHedger.UnitTests
             double underlyingPrice = 210;
             var lastTradeDate = "221111";
             int numberOfStrikes = 11;
+            double strikeStep = 1;
 
             // Prepare
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
             Reflection.SetFiledValue(sut, "_ibClient", ibClient);
 
             // Act
-            sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes).ToList();
+            sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes, strikeStep).ToList();
 
             // Verify
             ibClient.Received(numberOfStrikes).IsValidStrike(
