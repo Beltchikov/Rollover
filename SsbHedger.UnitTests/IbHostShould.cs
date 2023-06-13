@@ -218,6 +218,7 @@ namespace SsbHedger.UnitTests
         [InlineData(209.4, "221111", 4, 1, "208, 209, 210, 211")]
         [InlineData(209.4, "221111", 3, 1, "209, 210, 211")]
         [InlineData(210, "221111", 4, 1, "208, 209, 210, 211")]
+        [InlineData(210, "221111", 3, 1, "209, 210, 211")]
         public void ReturnSpyStrikesCorrectly(
             double underlyingPrice,
             string lastTradeDate,
@@ -241,28 +242,6 @@ namespace SsbHedger.UnitTests
             Assert.True(expectedStrikes.SequenceEqual(strikes));
 
         }
-
-        //[Theory, AutoNSubstituteData]
-        //public void ReturnSpyStrikesCenteredAroundUnderlyingPriceAtmOddNumberOfStrikes(
-        //    [Frozen] IConfiguration configuration,
-        //    IbHost sut)
-        //{
-        //    double underlyingPrice = 210;
-        //    var lastTradeDate = "221111";
-        //    int numberOfStrikes = 11;
-        //    double strikeStep = 1;
-
-        //    // Prepare
-        //    configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
-
-        //    // Act
-        //    var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes, strikeStep).ToList();
-
-        //    // Verify
-        //    var countAboveUnderlying = strikes.Where(r => r >= underlyingPrice).Count();
-        //    var countBelowUnderlying = strikes.Where(r => r < underlyingPrice).Count();
-        //    Assert.Equal(countAboveUnderlying , countBelowUnderlying + 1);
-        //}
 
         [Theory, AutoNSubstituteData]
         public void CallIsValidStrikeForEveryStrikeFromGetStrikesSpy(
