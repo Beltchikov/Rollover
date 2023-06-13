@@ -936,12 +936,16 @@ namespace SsbHedger
 
         private double RoundDownToStep(double underlyingPrice, double strikeStep)
         {
-            return Math.Floor(underlyingPrice);
+            var temp = underlyingPrice / strikeStep;
+            temp = Math.Floor(temp);
+            return temp * strikeStep;
         }
 
         private double RoundUpToStep(double underlyingPrice, double strikeStep)
         {
-            return Math.Ceiling(underlyingPrice);
+            var temp = underlyingPrice / strikeStep;
+            temp = Math.Ceiling(temp);
+            return temp * strikeStep;
         }
     }
 }
