@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace SsbHedger.Utilities
 {
-    public class AtmStrikeUtility : IAtmStrikeUtility
+    public class StrikeUtility : IStrikeUtility
     {
         public AtmStrikes[] AtmStrikeCandidates(double underlyingPrice, double strikesStep)
         {

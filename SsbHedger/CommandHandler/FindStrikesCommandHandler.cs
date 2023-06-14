@@ -11,13 +11,13 @@ namespace SsbHedger.CommandHandler
     public class FindStrikesCommandHandler : IFindStrikesCommandHandler
     {
         private IIbHost _ibHost = null!;
-        private IAtmStrikeUtility _atmStrikeUtility;
+        private IStrikeUtility _atmStrikeUtility;
         private IConfiguration _configuration = null!;
         private ILastTradeDateConverter _lastTradeDateConverter;
 
         public FindStrikesCommandHandler(
             IIbHost ibHost,
-            IAtmStrikeUtility atmStrikeUtility,
+            IStrikeUtility atmStrikeUtility,
             IConfiguration configuration,
             ILastTradeDateConverter lastTradeDateConverter)
         {

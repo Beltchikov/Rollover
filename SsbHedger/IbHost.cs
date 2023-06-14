@@ -45,17 +45,17 @@ namespace SsbHedger
         private Contract? _currentPutContract;
         private Contract? _currentCallContract;
         Thread _alertThread = null!;
-        private IAtmStrikeUtility _atmStrikeUtility;
+        private IStrikeUtility _strikeUtility;
 
         public IbHost(
             IConfiguration configuration,
             IPositionMessageBuffer positionMessageBuffer,
-            IAtmStrikeUtility atmStrikeUtility,
+            IStrikeUtility atmStrikeUtility,
             IContractSpy contractSpy)
         {
             _configuration = configuration;
             _positionMessageBuffer = positionMessageBuffer;
-            _atmStrikeUtility = atmStrikeUtility;
+            _strikeUtility = atmStrikeUtility;
 
             _ibClient = IBClient.CreateClient();
 

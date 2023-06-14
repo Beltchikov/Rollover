@@ -1,6 +1,6 @@
 ﻿namespace SsbHedger.Utilities
 {
-    public interface IAtmStrikeUtility
+    public interface IStrikeUtility
     {
         AtmStrikes[] AtmStrikeCandidates(double underlyingPrice, double strikesStep);
         void SetAtmStrikesInViewModel(IIbHost ibHost, double underlyingPrice);
