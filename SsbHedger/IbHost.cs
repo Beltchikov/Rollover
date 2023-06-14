@@ -875,7 +875,8 @@ namespace SsbHedger
                 if(!_ibClient.IsValidStrike(SPY, lastTradeDate, strike))
                 {
                     // TODO
-                    //_atmStrikeUtility.ReplaceInvalidStrike(resultList, strike); // TODO rename _atmStrikeUtility
+                    //resultList = _strikeUtility.ReplaceInvalidStrike(
+                    //    resultList, strike, underlyingPrice, strikeStep); 
                 }
             }
 

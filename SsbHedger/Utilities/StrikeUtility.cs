@@ -1,5 +1,6 @@
 ﻿using SsbHedger.Model;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
@@ -111,6 +112,10 @@ namespace SsbHedger.Utilities
             }
         }
 
+        public List<double> ReplaceInvalidStrike(List<double> resultList, double strike, double underlyingPrice, double strikeStep)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public record AtmStrikes(double NextAtmStrike, double SecondAtmStrike);
