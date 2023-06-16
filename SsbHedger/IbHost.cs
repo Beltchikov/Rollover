@@ -10,8 +10,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Media;
-using System.Net;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -874,9 +872,8 @@ namespace SsbHedger
             {
                 if(!_ibClient.IsValidStrike(SPY, lastTradeDate, strike))
                 {
-                    // TODO
-                    //resultList = _strikeUtility.ReplaceInvalidStrike(
-                    //    resultList, strike, underlyingPrice, strikeStep); 
+                    resultList = _strikeUtility.ReplaceInvalidStrike(
+                       resultList, strike, underlyingPrice, strikeStep);
                 }
             }
 

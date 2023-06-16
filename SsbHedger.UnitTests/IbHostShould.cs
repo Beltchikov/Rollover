@@ -1,16 +1,13 @@
-﻿using AutoFixture;
-using AutoFixture.AutoMoq;
-using AutoFixture.Kernel;
-using AutoFixture.Xunit2;
+﻿using AutoFixture.Xunit2;
 using IbClient;
 using IbClient.messages;
 using NSubstitute;
+using SsbHedger.IbModel;
 using SsbHedger.Model;
 using SsbHedger.SsbConfiguration;
+using SsbHedger.Utilities;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using System.Linq;
-using System.Net;
 using System.Runtime.Serialization;
 
 namespace SsbHedger.UnitTests
@@ -174,12 +171,20 @@ namespace SsbHedger.UnitTests
             int numberOfStrikes,
             double strikeStep,
             [Frozen] IConfiguration configuration,
+            [Frozen] IStrikeUtility strikeUtility,
             IbHost sut)
         {
             var lastTradeDate = "221111";
             
             // Prepare
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
+
+            strikeUtility.ReplaceInvalidStrike(
+                new List<double>(),
+                default,
+                default,
+                default)
+                .ReturnsForAnyArgs(args => args[0]);
 
             // Act
             var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes, strikeStep);
@@ -195,12 +200,20 @@ namespace SsbHedger.UnitTests
             int numberOfStrikes,
             double strikeStep,
             [Frozen] IConfiguration configuration,
+            [Frozen] IStrikeUtility strikeUtility,
             IbHost sut)
         {
             var lastTradeDate = "221111";
 
             // Prepare
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
+
+            strikeUtility.ReplaceInvalidStrike(
+                new List<double>(),
+                default,
+                default,
+                default)
+                .ReturnsForAnyArgs(args => args[0]);
 
             // Act
             var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes, strikeStep).ToList();
@@ -231,18 +244,27 @@ namespace SsbHedger.UnitTests
             string strikesString)
         {
             // Prepare
-            var fixture = new Fixture();
-            fixture.Customize(new AutoMoqCustomization { ConfigureMembers = true });
+            var expectedStrikes = strikesString.Split(new char[] { ',' })
+                .Select(d => Convert.ToDouble(d, CultureInfo.InvariantCulture))
+                .ToList();
 
             IConfiguration configuration = Substitute.For<IConfiguration>();
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
-            IbHost sut = fixture.Create<IbHost>();
+            
+            IStrikeUtility strikeUtility = Substitute.For<IStrikeUtility>();
+            strikeUtility.ReplaceInvalidStrike(
+                expectedStrikes,
+                default,
+                default,
+                default)
+                .ReturnsForAnyArgs(args => args[0]);
+
+            IIbHost sut = new IbHost(configuration, null, strikeUtility, null);
 
             // Act
             var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes, strikeStep).ToList();
 
             // Verify
-            var expectedStrikes = strikesString.Split(new char[] { ',' }).Select(d => Convert.ToDouble(d, CultureInfo.InvariantCulture));
             Assert.True(expectedStrikes.SequenceEqual(strikes));
 
         }
