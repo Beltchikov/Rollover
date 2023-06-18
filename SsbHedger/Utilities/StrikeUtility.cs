@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 
 namespace SsbHedger.Utilities
 {
@@ -112,9 +111,17 @@ namespace SsbHedger.Utilities
             }
         }
 
-        public List<double> ReplaceInvalidStrike(List<double> resultList, double strike, double underlyingPrice, double strikeStep)
+        public List<double> ReplaceInvalidStrike(
+            List<double> strikeList,
+            double strike,
+            double underlyingPrice,
+            double strikeStep)
         {
-            throw new NotImplementedException();
+            List<double> resultList = new List<double>();
+
+            // TODO
+
+            return resultList;
         }
     }
 

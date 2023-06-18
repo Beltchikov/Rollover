@@ -6,7 +6,7 @@ namespace SsbHedger.Utilities
     {
         AtmStrikes[] AtmStrikeCandidates(double underlyingPrice, double strikesStep);
         List<double> ReplaceInvalidStrike(
-            List<double> resultList,
+            List<double> strikeList,
             double strike,
             double underlyingPrice,
             double strikeStep);
