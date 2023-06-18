@@ -14,15 +14,16 @@ namespace SsbHedger.UnitTests.Utilities
     {
         [Theory]
         [InlineData("9.5, 10, 10.5", 10.5, 9.9, 0.5, "9.5, 10, 11")]
+        [InlineData("9.5, 10, 10.5", 9.5, 9.9, 0.5, "9, 10, 11")]
         public void ReplaceInvalidStrikeCorrectly(
-            string inputListString,
+            string inputStrikesString,
             double invalidStrike,
             double underlyingPrice,
             double strikesStep,
             string expectedOutputListString)
         {
             // Prepare
-            List<double> inputList = inputListString.Split(new char[] { ',' })
+            List<double> inputList = inputStrikesString.Split(new char[] { ',' })
                 .Select(e => Convert.ToDouble(e, CultureInfo.InvariantCulture))
                 .ToList();
             List<double> expectedOutputList = expectedOutputListString.Split(new char[] { ',' })

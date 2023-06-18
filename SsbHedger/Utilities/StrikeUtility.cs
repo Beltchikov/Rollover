@@ -130,7 +130,7 @@ namespace SsbHedger.Utilities
                     }
                     else if (strike < underlyingPrice)
                     {
-                        // TODO
+                        resultList.Add(strike - strikeStep);
                     }
                     else
                     {
