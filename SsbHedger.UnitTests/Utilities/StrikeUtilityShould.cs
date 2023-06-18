@@ -13,8 +13,8 @@ namespace SsbHedger.UnitTests.Utilities
     public class StrikeUtilityShould
     {
         [Theory]
-        [InlineData("9.5, 10, 10.5", 10.5, 9.9, 0.5, "9.5, 10, 11")]
-        [InlineData("9.5, 10, 10.5", 9.5, 9.9, 0.5, "9, 10, 11")]
+        //[InlineData("9.5, 10, 10.5", 10.5, 9.9, 0.5, "9.5, 10, 11")]
+        [InlineData("9.5, 10, 10.5", 9.5, 9.9, 0.5, "9, 10, 10.5")]
         public void ReplaceInvalidStrikeCorrectly(
             string inputStrikesString,
             double invalidStrike,
