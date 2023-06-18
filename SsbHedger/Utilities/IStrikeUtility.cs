@@ -7,7 +7,7 @@ namespace SsbHedger.Utilities
         AtmStrikes[] AtmStrikeCandidates(double underlyingPrice, double strikesStep);
         List<double> ReplaceInvalidStrike(
             List<double> strikeList,
-            double strike,
+            double invalidStrike,
             double underlyingPrice,
             double strikeStep);
         void SetAtmStrikesInViewModel(IIbHost ibHost, double underlyingPrice);
