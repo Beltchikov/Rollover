@@ -848,110 +848,46 @@ namespace SsbHedger
             {
                 if (numberOfStrikes % 2 == 0)
                 {
-                    // Loop up
-                    var firstStrikeUp = RoundUpToStep(underlyingPrice, strikeStep);
-                    var strike = firstStrikeUp;
-                    while (resultList.Count() < numberOfStrikes / 2) //TODO param
-                    {
-                        if (_ibClient.IsValidStrike(SPY, lastTradeDate, strike))
-                        {
-                            resultList.Add(strike);
-                        }
-                        strike += strikeStep;
-                    }
-                    // Loop down
-                    var firstStrikeDown = firstStrikeUp - strikeStep; //TODO param
-                    strike = firstStrikeDown;
-                    while (resultList.Count() < numberOfStrikes)
-                    {
-                        if (_ibClient.IsValidStrike(SPY, lastTradeDate, strike))
-                        {
-                            resultList.Add(strike);
-                        }
-                        strike -= strikeStep;
-                    }
-                    resultList.Sort();
+                   FillStrikeList(
+                        underlyingPrice,
+                        lastTradeDate,
+                        numberOfStrikes,
+                        strikeStep,
+                        resultList,
+                        (rc, n) => rc < n / 2);
                 }
                 else
                 {
-                    // Loop up
-                    var firstStrikeUp = RoundUpToStep(underlyingPrice, strikeStep);
-                    var strike = firstStrikeUp;
-                    while (resultList.Count() < (int)Math.Ceiling((double)numberOfStrikes / 2)) //TODO param
-                    {
-                        if (_ibClient.IsValidStrike(SPY, lastTradeDate, strike))
-                        {
-                            resultList.Add(strike);
-                        }
-                        strike += strikeStep;
-                    }
-                    // Loop down
-                    var firstStrikeDown = firstStrikeUp - strikeStep; // TODO param
-                    strike = firstStrikeDown;
-                    while (resultList.Count() < numberOfStrikes)
-                    {
-                        if (_ibClient.IsValidStrike(SPY, lastTradeDate, strike))
-                        {
-                            resultList.Add(strike);
-                        }
-                        strike -= strikeStep;
-                    }
-                    resultList.Sort();
+                   FillStrikeList(
+                       underlyingPrice,
+                       lastTradeDate,
+                       numberOfStrikes,
+                       strikeStep,
+                       resultList,
+                       (rc, n) => rc < (int)Math.Ceiling((double)numberOfStrikes / 2));
                 }
             }
             else
             {
                 if(numberOfStrikes % 2 == 0)
                 {
-                    // Loop up
-                    var firstStrikeUp = RoundUpToStep(underlyingPrice, strikeStep);
-                    var strike = firstStrikeUp;
-                    while(resultList.Count() < numberOfStrikes / 2) //TODO param
-                    {
-                        if (_ibClient.IsValidStrike(SPY, lastTradeDate, strike))
-                        {
-                            resultList.Add(strike);
-                        }
-                        strike += strikeStep;
-                    }
-                    // Loop down
-                    var firstStrikeDown = RoundDownToStep(underlyingPrice, strikeStep); //TODO param
-                    strike = firstStrikeDown;
-                    while (resultList.Count() < numberOfStrikes)
-                    {
-                        if (_ibClient.IsValidStrike(SPY, lastTradeDate, strike))
-                        {
-                            resultList.Add(strike);
-                        }
-                        strike -= strikeStep;
-                    }
-                    resultList.Sort();
+                    FillStrikeList(
+                        underlyingPrice,
+                        lastTradeDate,
+                        numberOfStrikes,
+                        strikeStep,
+                        resultList,
+                        (rc, n) =>  rc < n / 2);
                 }
                 else
                 {
-                    // Loop up
-                    var firstStrikeUp = RoundUpToStep(underlyingPrice, strikeStep);
-                    var strike = firstStrikeUp;
-                    while (resultList.Count() < (int)Math.Ceiling((double)numberOfStrikes / 2)) //TODO param
-                    {
-                        if (_ibClient.IsValidStrike(SPY, lastTradeDate, strike))
-                        {
-                            resultList.Add(strike);
-                        }
-                        strike += strikeStep;
-                    }
-                    // Loop down
-                    var firstStrikeDown = RoundDownToStep(underlyingPrice, strikeStep); //TODO param
-                    strike = firstStrikeDown;
-                    while (resultList.Count() < numberOfStrikes)
-                    {
-                        if (_ibClient.IsValidStrike(SPY, lastTradeDate, strike))
-                        {
-                            resultList.Add(strike);
-                        }
-                        strike -= strikeStep;
-                    }
-                    resultList.Sort();
+                    FillStrikeList(
+                        underlyingPrice,
+                        lastTradeDate,
+                        numberOfStrikes,
+                        strikeStep,
+                        resultList,
+                        (rc, n) => rc < (int)Math.Ceiling((double)numberOfStrikes / 2));
                 }
             }
             // TODO
@@ -1003,6 +939,39 @@ namespace SsbHedger
             //return resultList;
 
 
+        }
+
+        private void FillStrikeList(
+            double underlyingPrice,
+            string lastTradeDate,
+            int numberOfStrikes,
+            double strikeStep,
+            List<double> resultList,
+            Func<int, int, bool> loopUpExitFunc)
+        {
+            // Loop up
+            var firstStrikeUp = RoundUpToStep(underlyingPrice, strikeStep);
+            var strike = firstStrikeUp;
+            while (loopUpExitFunc(resultList.Count(), numberOfStrikes)) 
+            {
+                if (_ibClient.IsValidStrike(SPY, lastTradeDate, strike))
+                {
+                    resultList.Add(strike);
+                }
+                strike += strikeStep;
+            }
+            // Loop down
+            var firstStrikeDown = firstStrikeUp - strikeStep;
+            strike = firstStrikeDown;
+            while (resultList.Count() < numberOfStrikes)
+            {
+                if (_ibClient.IsValidStrike(SPY, lastTradeDate, strike))
+                {
+                    resultList.Add(strike);
+                }
+                strike -= strikeStep;
+            }
+            resultList.Sort();
         }
 
         private double RoundDownToStep(double underlyingPrice, double strikeStep)
