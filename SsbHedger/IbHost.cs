@@ -12,6 +12,7 @@ using System.Linq;
 using System.Media;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Ink;
 
 namespace SsbHedger
 {
@@ -840,96 +841,91 @@ namespace SsbHedger
             int numberOfStrikes, 
             double strikeStep)
         {
+
             var resultList = new List<double>();
 
-            var atmPutStrike = RoundUpToStep(underlyingPrice, strikeStep);    // In option table up is down and down is up
-            var atmCallStrike = RoundDownToStep(underlyingPrice, strikeStep); // In option table up is down and down is up
-
-            if (atmCallStrike == atmPutStrike) // If underlying price is exact at a strike
+            if(underlyingPrice % strikeStep == 0)
             {
-                atmCallStrike -= strikeStep;
-            }
-
-            for (int i = 0; i < (int)Math.Ceiling((double)numberOfStrikes / 2); i++)
-            {
-                var nextStrikeUp = atmPutStrike + i * strikeStep;
-                resultList.Add(nextStrikeUp);
-                var nextStrikeDown = atmCallStrike - i * strikeStep;
-                resultList.Add(nextStrikeDown);
-            }
-
-            resultList.Sort();
-
-            // Case uneven number of strikes
-            if (numberOfStrikes % 2 == 1)
-            {
-                resultList = resultList.Skip(1).ToList();
-            }
-
-            // Verify, that strikes are valid
-            var resultListCopy = new List<double>(resultList);    
-            foreach (var strike in resultListCopy)
-            {
-                if(!_ibClient.IsValidStrike(SPY, lastTradeDate, strike))
+                if (numberOfStrikes % 2 == 0)
                 {
-                    resultList = _strikeUtility.ReplaceInvalidStrike(
-                       resultList, strike, underlyingPrice, strikeStep);
+                    var t = 9;
+                }
+                else
+                {
+                    var t = 9;
                 }
             }
+            else
+            {
+                if(numberOfStrikes % 2 == 0)
+                {
+                    var firstStrikeUp = RoundUpToStep(underlyingPrice, strikeStep);
+                    var strike = firstStrikeUp;
+                    while(resultList.Count() < numberOfStrikes / 2)
+                    {
+                        if (_ibClient.IsValidStrike(SPY, lastTradeDate, strike))
+                        {
+                            resultList.Add(strike);
+                        }
+                        strike += strikeStep;
+                    }
+                    // TODO down loop
 
-            // Function or/and helper ReplaceInvalidStrike
-
+                }
+                else
+                {
+                    var t = 9;
+                }
+            }
+            // TODO
             return resultList;
 
-
+            /////////////////////////////////////////
 
             // OLD IMPLEMENTATION
-            //var underlyingPrice = (double)parameters[0];
-            //var viewModel = _ibHost.ViewModel;
 
-            //if (_ibHost == null)
-            //{ throw new ApplicationException("Unexpected! _ibHost is null"); }
-            //if (viewModel == null)
-            //{ throw new ApplicationException("Unexpected! viewModel is null"); }
+            //var resultList = new List<double>();
 
-            //if (viewModel.AtmStrikeCall <= underlyingPrice && underlyingPrice <= viewModel.AtmStrikePut)
+            //var atmPutStrike = RoundUpToStep(underlyingPrice, strikeStep);    // In option table up is down and down is up
+            //var atmCallStrike = RoundDownToStep(underlyingPrice, strikeStep); // In option table up is down and down is up
+
+            //if (atmCallStrike == atmPutStrike) // If underlying price is exact at a strike
             //{
-            //    return;
+            //    atmCallStrike -= strikeStep;
             //}
 
-            //var strikesList = new List<double>();
-            //viewModel.AtmStrikePut = (int)Math.Ceiling(underlyingPrice);    // In option table up is down and down is up
-            //viewModel.AtmStrikeCall = (int)Math.Floor(underlyingPrice);// In option table up is down and down is up
-            //for (int i = 0; i < (int)Math.Ceiling((double)MainWindowViewModel.STRIKES_COUNT / 2); i++)
+            //for (int i = 0; i < (int)Math.Ceiling((double)numberOfStrikes / 2); i++)
             //{
-            //    var nextStrikeUp = viewModel.AtmStrikePut + i;
-            //    strikesList.Add(nextStrikeUp);
-            //    var nextStrikeDown = viewModel.AtmStrikeCall - i;
-            //    strikesList.Add(nextStrikeDown);
+            //    var nextStrikeUp = atmPutStrike + i * strikeStep;
+            //    resultList.Add(nextStrikeUp);
+            //    var nextStrikeDown = atmCallStrike - i * strikeStep;
+            //    resultList.Add(nextStrikeDown);
             //}
 
-            //strikesList.Sort();
-            //foreach (var strike in strikesList)
+            //resultList.Sort();
+
+            //// Case uneven number of strikes
+            //if (numberOfStrikes % 2 == 1)
             //{
-            //    viewModel.Strikes.Add(strike);
+            //    resultList = resultList.Skip(1).ToList();
             //}
 
+            //// Verify, that strikes are valid
+            //var resultListCopy = new List<double>(resultList);    
+            //foreach (var strike in resultListCopy)
+            //{
+            //    if(!_ibClient.IsValidStrike(SPY, lastTradeDate, strike))
+            //    {
+            //        resultList = _strikeUtility.ReplaceInvalidStrike(
+            //           resultList, strike, underlyingPrice, strikeStep);
+            //    }
+            //}
+
+            //// Function or/and helper ReplaceInvalidStrike
+
+            //return resultList;
 
 
-            // TODO logic for 0.5 strikes
-
-            //_ibHost.ViewModel.NextAtmStrike = -1;
-            //_ibHost.ViewModel.SecondAtmStrike = -1;
-            //var atmStrikesCandidates = _atmStrikeUtility.AtmStrikeCandidates(underlyingPrice, MainWindowViewModel.STRIKES_STEP);
-
-            ////_ibHost.AtmStrikesCandidate = new AtmStrikes(Math.Round(underlyingPrice, 0), Math.Round(underlyingPrice, 0));
-            ////_ibHost.ReqCheckNextOptionsStrike(Math.Round(underlyingPrice,0));
-
-            //// Duplicate ticket exception
-            //_ibHost.AtmStrikesCandidate = atmStrikesCandidates[0];
-            //_ibHost.ReqCheckNextOptionsStrike(Math.Round(atmStrikesCandidates[0].NextAtmStrike, 0));
-
-            ////_atmStrikeUtility.SetAtmStrikesInViewModel(_ibHost, underlyingPrice);
         }
 
         private double RoundDownToStep(double underlyingPrice, double strikeStep)

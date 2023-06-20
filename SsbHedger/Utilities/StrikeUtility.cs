@@ -134,7 +134,7 @@ namespace SsbHedger.Utilities
                     }
                     else
                     {
-                        // TDOO
+                        resultList.Add(strike + strikeStep);
                     }
                 }
                 else 
