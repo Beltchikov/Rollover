@@ -298,7 +298,7 @@ namespace SsbHedger.UnitTests
         [InlineData(209.4, "221111", 4, 1, "208, 209, 210, 211")] // StrikeAsPrice=0  EvenNumberOfStrikes=1
         [InlineData(209.4, "221111", 3, 1, "209, 210, 211")]  // StrikeAsPrice=0  EvenNumberOfStrikes=0
         [InlineData(210, "221111", 4, 1, "208, 209, 210, 211")] // StrikeAsPrice=1  EvenNumberOfStrikes=1
-        //[InlineData(210, "221111", 3, 1, "209, 210, 211")]
+        [InlineData(210, "221111", 3, 1, "209, 210, 211")]
         //[InlineData(10.4, "221111", 4, 0.5, "9.5, 10, 10.5, 11")]
         //[InlineData(10.4, "221111", 3, 0.5, "10, 10.5, 11")]
         //[InlineData(10.5, "221111", 4, 0.5, "9.5, 10, 10.5, 11")]
