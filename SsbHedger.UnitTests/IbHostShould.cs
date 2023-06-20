@@ -330,8 +330,8 @@ namespace SsbHedger.UnitTests
 
             // Verify
             Assert.IsType<List<double>>(strikes);
-            Assert.True(strikes.Count() == numberOfStrikes/*/2*/);
-            //Assert.True(expectedStrikes.SequenceEqual(strikes));
+            Assert.True(strikes.Count() == numberOfStrikes);
+            Assert.True(expectedStrikes.SequenceEqual(strikes));
 
         }
 

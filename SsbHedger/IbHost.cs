@@ -859,6 +859,7 @@ namespace SsbHedger
             {
                 if(numberOfStrikes % 2 == 0)
                 {
+                    // Loop up
                     var firstStrikeUp = RoundUpToStep(underlyingPrice, strikeStep);
                     var strike = firstStrikeUp;
                     while(resultList.Count() < numberOfStrikes / 2)
@@ -869,8 +870,18 @@ namespace SsbHedger
                         }
                         strike += strikeStep;
                     }
-                    // TODO down loop
-
+                    // Loop down
+                    var firstStrikeDown = RoundDownToStep(underlyingPrice, strikeStep);
+                    strike = firstStrikeDown;
+                    while (resultList.Count() < numberOfStrikes)
+                    {
+                        if (_ibClient.IsValidStrike(SPY, lastTradeDate, strike))
+                        {
+                            resultList.Add(strike);
+                        }
+                        strike -= strikeStep;
+                    }
+                    resultList.Sort();
                 }
                 else
                 {
