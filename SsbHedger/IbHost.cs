@@ -841,55 +841,39 @@ namespace SsbHedger
             int numberOfStrikes, 
             double strikeStep)
         {
-
             var resultList = new List<double>();
+            Func<int, int, bool> loopUpExitFuncion = null!;
 
             if(underlyingPrice % strikeStep == 0)
             {
                 if (numberOfStrikes % 2 == 0)
                 {
-                   FillStrikeList(
-                        underlyingPrice,
-                        lastTradeDate,
-                        numberOfStrikes,
-                        strikeStep,
-                        resultList,
-                        (rc, n) => rc < n / 2);
+                    loopUpExitFuncion = (rc, n) => rc < n / 2;
                 }
                 else
                 {
-                   FillStrikeList(
-                       underlyingPrice,
-                       lastTradeDate,
-                       numberOfStrikes,
-                       strikeStep,
-                       resultList,
-                       (rc, n) => rc < (int)Math.Ceiling((double)numberOfStrikes / 2));
+                    loopUpExitFuncion = (rc, n) => rc < (int)Math.Ceiling((double)numberOfStrikes / 2);
                 }
             }
             else
             {
                 if(numberOfStrikes % 2 == 0)
                 {
-                    FillStrikeList(
-                        underlyingPrice,
-                        lastTradeDate,
-                        numberOfStrikes,
-                        strikeStep,
-                        resultList,
-                        (rc, n) =>  rc < n / 2);
+                    loopUpExitFuncion = (rc, n) => rc < n / 2;
                 }
                 else
                 {
-                    FillStrikeList(
-                        underlyingPrice,
-                        lastTradeDate,
-                        numberOfStrikes,
-                        strikeStep,
-                        resultList,
-                        (rc, n) => rc < (int)Math.Ceiling((double)numberOfStrikes / 2));
+                    loopUpExitFuncion = (rc, n) => rc < (int)Math.Ceiling((double)numberOfStrikes / 2);
                 }
             }
+            FillStrikeList(
+                resultList,
+                underlyingPrice,
+                lastTradeDate,
+                numberOfStrikes,
+                strikeStep,
+                loopUpExitFuncion);
+
             // TODO
             return resultList;
 
@@ -942,11 +926,11 @@ namespace SsbHedger
         }
 
         private void FillStrikeList(
+            List<double> resultList,
             double underlyingPrice,
             string lastTradeDate,
             int numberOfStrikes,
             double strikeStep,
-            List<double> resultList,
             Func<int, int, bool> loopUpExitFunc)
         {
             // Loop up
