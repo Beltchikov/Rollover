@@ -874,55 +874,7 @@ namespace SsbHedger
                 strikeStep,
                 loopUpExitFuncion);
 
-            // TODO
             return resultList;
-
-            /////////////////////////////////////////
-
-            // OLD IMPLEMENTATION
-
-            //var resultList = new List<double>();
-
-            //var atmPutStrike = RoundUpToStep(underlyingPrice, strikeStep);    // In option table up is down and down is up
-            //var atmCallStrike = RoundDownToStep(underlyingPrice, strikeStep); // In option table up is down and down is up
-
-            //if (atmCallStrike == atmPutStrike) // If underlying price is exact at a strike
-            //{
-            //    atmCallStrike -= strikeStep;
-            //}
-
-            //for (int i = 0; i < (int)Math.Ceiling((double)numberOfStrikes / 2); i++)
-            //{
-            //    var nextStrikeUp = atmPutStrike + i * strikeStep;
-            //    resultList.Add(nextStrikeUp);
-            //    var nextStrikeDown = atmCallStrike - i * strikeStep;
-            //    resultList.Add(nextStrikeDown);
-            //}
-
-            //resultList.Sort();
-
-            //// Case uneven number of strikes
-            //if (numberOfStrikes % 2 == 1)
-            //{
-            //    resultList = resultList.Skip(1).ToList();
-            //}
-
-            //// Verify, that strikes are valid
-            //var resultListCopy = new List<double>(resultList);    
-            //foreach (var strike in resultListCopy)
-            //{
-            //    if(!_ibClient.IsValidStrike(SPY, lastTradeDate, strike))
-            //    {
-            //        resultList = _strikeUtility.ReplaceInvalidStrike(
-            //           resultList, strike, underlyingPrice, strikeStep);
-            //    }
-            //}
-
-            //// Function or/and helper ReplaceInvalidStrike
-
-            //return resultList;
-
-
         }
 
         private void FillStrikeList(
