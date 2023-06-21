@@ -335,17 +335,10 @@ namespace SsbHedger.UnitTests
         }
 
         [Theory]
-        //[InlineData(10.4, "221111", 4, 0.5, "9.5, 10, 10.5, 11")]
         [InlineData(10.4, "221111", 4, 0.5, "9.5, 10, 11, 12", "10.5,11.5")]
-
-        //[InlineData(10.4, "221111", 3, 0.5, "10, 10.5, 11")]
         [InlineData(10.4, "221111", 3, 0.5, "10, 11, 12", "10.5")]
-
-
-
-        //[InlineData(10.5, "221111", 4, 0.5, "9.5, 10, 10.5, 11")]
-        //[InlineData(10.5, "221111", 3, 0.5, "10, 10.5, 11")]
-
+        [InlineData(10.5, "221111", 4, 0.5, "9.5, 10, 11, 11.5", "10.5")]
+        [InlineData(10.5, "221111", 3, 0.5, "10, 11, 12", "10.5")]
         public void ExcludeNotValidStrikes(
            double underlyingPrice,
            string lastTradeDate,
