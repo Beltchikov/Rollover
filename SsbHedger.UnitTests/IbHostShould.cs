@@ -332,14 +332,56 @@ namespace SsbHedger.UnitTests
             Assert.IsType<List<double>>(strikes);
             Assert.True(strikes.Count() == numberOfStrikes);
             Assert.True(expectedStrikes.SequenceEqual(strikes));
-
         }
 
+        [Theory]
+        //[InlineData(10.4, "221111", 4, 0.5, "9.5, 10, 10.5, 11")]
+        [InlineData(10.4, "221111", 4, 0.5, "9.5, 10, 11, 12", "10.5,11.5")]
+
+        //[InlineData(10.4, "221111", 3, 0.5, "10, 10.5, 11")]
+        [InlineData(10.4, "221111", 3, 0.5, "10, 11, 12", "10.5")]
 
 
-        // ExcludeNotValidStrikes
 
-        // ThrowIfTooManyInvalidStrikes
+        //[InlineData(10.5, "221111", 4, 0.5, "9.5, 10, 10.5, 11")]
+        //[InlineData(10.5, "221111", 3, 0.5, "10, 10.5, 11")]
 
+        public void ExcludeNotValidStrikes(
+           double underlyingPrice,
+           string lastTradeDate,
+           int numberOfStrikes,
+           double strikeStep,
+           string strikesString,
+           string notValidStrikesString)
+        {
+            // Prepare
+            var expectedStrikes = strikesString.Split(new char[] { ',' })
+                .Select(d => Convert.ToDouble(d, CultureInfo.InvariantCulture))
+                .ToList();
+            var notValidStrikes = notValidStrikesString.Split(new char[] { ',' })
+                .Select(d => Convert.ToDouble(d, CultureInfo.InvariantCulture))
+                .ToList();
+
+            IConfiguration configuration = Substitute.For<IConfiguration>();
+            configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
+
+            IIBClient ibClient = Substitute.For<IIBClient>();
+            foreach(var strike in expectedStrikes) 
+            {
+                ibClient.IsValidStrike(Arg.Any<string>(), Arg.Any<string>(), strike)
+                .Returns(!notValidStrikes.Contains(strike));
+            }
+            
+            IIbHost sut = new IbHost(configuration, null, null, null);
+            Reflection.SetFiledValue(sut, "_ibClient", ibClient);
+
+            // Act
+            var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes, strikeStep).ToList();
+
+            // Verify
+            Assert.IsType<List<double>>(strikes);
+            Assert.True(strikes.Count() == numberOfStrikes);
+            Assert.True(expectedStrikes.SequenceEqual(strikes));
+        }
     }
 }
