@@ -110,41 +110,6 @@ namespace SsbHedger.Utilities
                 }
             }
         }
-
-        public List<double> ReplaceInvalidStrike(
-            List<double> strikeList,
-            double invalidStrike,
-            double underlyingPrice,
-            double strikeStep)
-        {
-            List<double> resultList = new List<double>();
-
-            // TODO
-            foreach(var strike in strikeList)
-            {
-                if(strike == invalidStrike)
-                {
-                    if(strike > underlyingPrice)
-                    {
-                        resultList.Add(strike + strikeStep);
-                    }
-                    else if (strike < underlyingPrice)
-                    {
-                        resultList.Add(strike - strikeStep);
-                    }
-                    else
-                    {
-                        resultList.Add(strike + strikeStep);
-                    }
-                }
-                else 
-                { 
-                    resultList.Add(strike); 
-                }
-            }
-
-            return resultList;
-        }
     }
 
     public record AtmStrikes(double NextAtmStrike, double SecondAtmStrike);
