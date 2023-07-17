@@ -7,6 +7,11 @@ using System.Threading;
 
 namespace IbClient
 {
+    /// <summary>
+    /// IbClient class implements the EWrapper interface.
+    /// It contains connection and disconnection logic.
+    /// It also contains response handlers for all requests sent to the server.
+    /// </summary>
     public class IBClient : EWrapper, IIBClient
     {
         private EClientSocket clientSocket;
