@@ -1,9 +1,9 @@
 namespace IbClient.UnitTests
 {
-    public class UnitTest1
+    public class IbClientShould
     {
         [Fact]
-        public void Test1()
+        public void CallClientSocketEConnect()
         {
 
         }
