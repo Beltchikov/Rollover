@@ -22,4 +22,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\IbClient\IbClient.csproj" />
+  </ItemGroup>
+
 </Project>
