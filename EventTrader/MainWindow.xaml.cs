@@ -13,11 +13,10 @@ namespace EventTrader
         public MainWindow(IWebScraper webScraper)
         {
             _webScraper = webScraper;
-
             InitializeComponent();
         }
 
-        private void btTestAud_Click(object sender, RoutedEventArgs e)
+        private void btTestAudIr_Click(object sender, RoutedEventArgs e)
         {
             double ir = _webScraper.AudInterestRate();
             MessageBox.Show(ir.ToString(new CultureInfo("DE-de")));
