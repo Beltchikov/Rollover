@@ -20,18 +20,23 @@
                         <RowDefinition Height="10"></RowDefinition>
                         <RowDefinition Height="25"></RowDefinition>
                         <RowDefinition Height="25"></RowDefinition>
+                        <RowDefinition Height="25"></RowDefinition>
                         <RowDefinition Height="10"></RowDefinition>
                     </Grid.RowDefinitions>
 
                     <Label Content="URL:" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right"></Label>
-                    <TextBox Text="https://www.rba.gov.au/cash-rate-target-overview.html" 
+                    <TextBox x:Name="txtUrlAud"  Text="https://www.rba.gov.au/cash-rate-target-overview.html" 
                              Grid.Column="2" 
                              Grid.Row="1"></TextBox>
 
                     <Label Content="Pattern:" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right"></Label>
-                    <TextBox Text="TODO"
+                    <TextBox x:Name="txtPatternAud"
+                             Text="TODO"
                              Grid.Column="2" 
                              Grid.Row="2"></TextBox>
+
+                    <Button Padding="10 0 10 0" 
+                            Margin="0 0 1 0" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Right" Click="Button_Click">Test</Button>
                 </Grid>
             </TabItem>
             <TabItem Header="TabItem">
