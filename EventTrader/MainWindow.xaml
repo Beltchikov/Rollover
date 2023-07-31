@@ -1,0 +1,43 @@
+﻿<Window x:Class="EventTrader.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EventTrader"
+        mc:Ignorable="d"
+        Title="Event Trader" Height="450" Width="800">
+    <Grid>
+        <TabControl x:Name="tabControl">
+            <TabItem Header="AUD">
+                <Grid Background="#FFE0CD52">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10"></ColumnDefinition>
+                        <ColumnDefinition Width="60"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="10"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10"></RowDefinition>
+                        <RowDefinition Height="25"></RowDefinition>
+                        <RowDefinition Height="25"></RowDefinition>
+                        <RowDefinition Height="10"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Label Content="URL:" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right"></Label>
+                    <TextBox Text="https://www.rba.gov.au/cash-rate-target-overview.html" 
+                             Grid.Column="2" 
+                             Grid.Row="1"></TextBox>
+
+                    <Label Content="Pattern:" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right"></Label>
+                    <TextBox Text="TODO"
+                             Grid.Column="2" 
+                             Grid.Row="2"></TextBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="TabItem">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Window>
