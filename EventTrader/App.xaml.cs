@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Windows;
 
 namespace EventTrader
@@ -13,5 +9,19 @@ namespace EventTrader
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            Services = new ServiceCollection()
+                .AddSingleton<IWebScraper, WebScraper>()
+                .BuildServiceProvider();
+        }
+
+        public IServiceProvider Services { get; }
+
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            MainWindow mainWindow = new(Services.GetRequiredService<IWebScraper>());
+            mainWindow.Show();
+        }
     }
 }

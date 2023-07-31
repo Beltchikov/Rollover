@@ -1,19 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Net.WebSockets;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace EventTrader
 {
@@ -22,16 +8,16 @@ namespace EventTrader
     /// </summary>
     public partial class MainWindow : Window
     {
-        WebScraper _webScraper; 
-        
-        public MainWindow()
-        {
-            InitializeComponent();
+        IWebScraper _webScraper;
 
-            _webScraper = new WebScraper();
+        public MainWindow(IWebScraper webScraper)
+        {
+            _webScraper = webScraper;
+
+            InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void btTestAud_Click(object sender, RoutedEventArgs e)
         {
             double ir = _webScraper.AudInterestRate();
             MessageBox.Show(ir.ToString(new CultureInfo("DE-de")));

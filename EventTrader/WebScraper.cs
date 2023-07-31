@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace EventTrader
+﻿namespace EventTrader
 {
-    internal class WebScraper
+    public class WebScraper : IWebScraper
     {
-        internal double AudInterestRate()
+        public double AudInterestRate()
         {
             //throw new NotImplementedException();
 
