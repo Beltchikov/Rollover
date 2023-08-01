@@ -19,7 +19,13 @@ namespace EventTrader
         private void btTestAudIr_Click(object sender, RoutedEventArgs e)
         {
             double ir = _webScraper.AudInterestRate();
-            MessageBox.Show(ir.ToString(new CultureInfo("DE-de")));
+            MessageBox.Show("AUD "+ ir.ToString(new CultureInfo("DE-de")));
+        }
+
+        private void btTestUsdIr_Click(object sender, RoutedEventArgs e)
+        {
+            double ir = _webScraper.UsdInterestRate();
+            MessageBox.Show("USD " + ir.ToString(new CultureInfo("DE-de")));
         }
     }
 }

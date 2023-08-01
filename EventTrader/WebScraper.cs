@@ -9,5 +9,12 @@
             // TODO
             return 33.44;
         }
+
+        public double UsdInterestRate()
+        {
+            //throw new System.NotImplementedException();
+            // TODO
+            return 5.25;
+        }
     }
 }
