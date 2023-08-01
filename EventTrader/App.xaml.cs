@@ -13,6 +13,8 @@ namespace EventTrader
         public App()
         {
             Services = new ServiceCollection()
+                .AddSingleton<IBrowserWrapper, BrowserWrapper>()
+                .AddSingleton<ISimpleBrowser, WebScraping.SimpleBrowser>()
                 .AddSingleton<IWebScraper, WebScraper>()
                 .BuildServiceProvider();
         }
