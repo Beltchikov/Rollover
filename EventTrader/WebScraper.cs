@@ -2,7 +2,7 @@
 {
     public class WebScraper : IWebScraper
     {
-        public double AudInterestRate()
+        public double AudInterestRate(string url, string pattern)
         {
             //throw new NotImplementedException();
 
@@ -10,7 +10,7 @@
             return 33.44;
         }
 
-        public double UsdInterestRate()
+        public double UsdInterestRate(string url, string pattern)
         {
             //throw new System.NotImplementedException();
             // TODO
