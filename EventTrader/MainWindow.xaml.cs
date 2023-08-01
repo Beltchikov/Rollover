@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using EventTrader.WebScraping;
+using System.Globalization;
 using System.Windows;
 
 namespace EventTrader

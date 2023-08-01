@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using EventTrader.WebScraping;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows;
 

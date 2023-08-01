@@ -1,4 +1,4 @@
-﻿namespace EventTrader
+﻿namespace EventTrader.WebScraping
 {
     public interface IWebScraper
     {
