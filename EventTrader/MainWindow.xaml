@@ -160,10 +160,10 @@
                                 <TextBox Width="60" Text="0,2"></TextBox>
                             </StackPanel>
 
-                            <Button Padding="10 0 10 0" 
+                            <Button x:Name="btStartSession" Padding="10 0 10 0" 
                                     Margin="0,0,1,0" Grid.Column="4" Grid.Row="4" 
                                     HorizontalAlignment="Right" Height="25" 
-                                    VerticalAlignment="Top" Click="btTestUsdIr_Click">
+                                    VerticalAlignment="Top" Click="btStartSession_Click">
                                 Start Trading Session</Button>
 
                         </Grid>

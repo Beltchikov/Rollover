@@ -16,5 +16,10 @@ namespace EventTrader
         {
             MessageBox.Show("USD ");
         }
+
+        private void btStartSession_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
