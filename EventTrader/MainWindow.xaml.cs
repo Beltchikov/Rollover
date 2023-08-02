@@ -1,6 +1,4 @@
-﻿using EventTrader.WebScraping;
-using System.Globalization;
-using System.Windows;
+﻿using System.Windows;
 
 namespace EventTrader
 {
@@ -9,18 +7,14 @@ namespace EventTrader
     /// </summary>
     public partial class MainWindow : Window
     {
-        IWebScraper _webScraper;
-
-        public MainWindow(IWebScraper webScraper)
+        public MainWindow()
         {
-            _webScraper = webScraper;
             InitializeComponent();
         }
 
         private void btTestUsdIr_Click(object sender, RoutedEventArgs e)
         {
-            double ir = _webScraper.UsdInterestRate(txtUrlUsdIr.Text, txtPatternUsdIr.Text);
-            MessageBox.Show("USD " + ir.ToString(new CultureInfo("DE-de")));
+            MessageBox.Show("USD ");
         }
     }
 }

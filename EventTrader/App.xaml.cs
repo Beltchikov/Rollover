@@ -14,8 +14,6 @@ namespace EventTrader
         {
             Services = new ServiceCollection()
                 .AddSingleton<IBrowserWrapper, BrowserWrapper>()
-                .AddSingleton<ISimpleBrowser, WebScraping.SimpleBrowser>()
-                .AddSingleton<IWebScraper, WebScraper>()
                 .BuildServiceProvider();
         }
 
@@ -23,7 +21,7 @@ namespace EventTrader
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            MainWindow mainWindow = new(Services.GetRequiredService<IWebScraper>());
+            MainWindow mainWindow = new();
             mainWindow.Show();
         }
     }
