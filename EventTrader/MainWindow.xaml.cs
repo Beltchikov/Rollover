@@ -17,12 +17,6 @@ namespace EventTrader
             InitializeComponent();
         }
 
-        private void btTestAudIr_Click(object sender, RoutedEventArgs e)
-        {
-            double ir = _webScraper.AudInterestRate(txtUrlAudIr.Text, txtPatternAudIr.Text);
-            MessageBox.Show("AUD "+ ir.ToString(new CultureInfo("DE-de")));
-        }
-
         private void btTestUsdIr_Click(object sender, RoutedEventArgs e)
         {
             double ir = _webScraper.UsdInterestRate(txtUrlUsdIr.Text, txtPatternUsdIr.Text);
