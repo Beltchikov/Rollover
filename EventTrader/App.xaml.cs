@@ -23,7 +23,10 @@ namespace EventTrader
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            MainWindow mainWindow = new(Services.GetRequiredService<IEconomicDataTrader>());
+            MainWindow mainWindow = new(Services.GetRequiredService<IEconomicDataTrader>())
+            {
+                DataContext = new ViewModel()
+            };
             mainWindow.Show();
         }
     }
