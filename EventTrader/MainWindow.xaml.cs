@@ -25,7 +25,7 @@ namespace EventTrader
         private void btStartSession_Click(object sender, RoutedEventArgs e)
         {
             EconomicDataTrade trade = new EconomicDataTrade();
-            _trader.StartSession(trade);
+            _trader.StartSessionAsync(trade);
         }
     }
 }

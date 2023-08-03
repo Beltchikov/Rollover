@@ -1,12 +1,13 @@
-﻿using System.Windows;
+﻿using System.Threading.Tasks;
+using System.Windows;
 
 namespace EventTrader.EconomicData
 {
     public class EconomicDataTrader : IEconomicDataTrader
     {
-        public void StartSession(EconomicDataTrade trade)
+        public async Task StartSessionAsync(EconomicDataTrade trade)
         {
-            MessageBox.Show("Not implemented yet");
+            await Task.Run(() => MessageBox.Show("Not implemented yet"));
         }
     }
 }

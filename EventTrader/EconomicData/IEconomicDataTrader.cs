@@ -1,7 +1,9 @@
-﻿namespace EventTrader.EconomicData
+﻿using System.Threading.Tasks;
+
+namespace EventTrader.EconomicData
 {
     public interface IEconomicDataTrader
     {
-        void StartSession(EconomicDataTrade trade);
+        Task StartSessionAsync(EconomicDataTrade trade);
     }
 }
