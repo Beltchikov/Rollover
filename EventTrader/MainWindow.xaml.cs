@@ -17,11 +17,6 @@ namespace EventTrader
             InitializeComponent();
         }
 
-        private void btTestUsdIr_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("USD ");
-        }
-
         private void btStartSession_Click(object sender, RoutedEventArgs e)
         {
             EconomicDataTrade trade = new EconomicDataTrade();

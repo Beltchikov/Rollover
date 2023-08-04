@@ -57,7 +57,8 @@
                              Grid.Row="2"></TextBox>
 
                             <Button x:Name="btTestUsdIr" Padding="10 0 10 0" 
-                            Margin="0,0,1,0" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Right" Height="25" VerticalAlignment="Top" Click="btTestUsdIr_Click">Test</Button>
+                            Margin="0,0,1,0" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Right" Height="25" 
+                                    VerticalAlignment="Top">Test</Button>
 
                         </Grid>
                     </GroupBox>
@@ -105,7 +106,7 @@
 
                             <Button Padding="10 0 10 0" 
                             Margin="0,0,1,0" Grid.Column="9" Grid.Row="2" 
-                                    HorizontalAlignment="Right" Height="25" VerticalAlignment="Top" Click="btTestUsdIr_Click">Test</Button>
+                                    HorizontalAlignment="Right" Height="25" VerticalAlignment="Top">Test</Button>
 
 
                         </Grid>
@@ -170,7 +171,7 @@
 
                             <Button x:Name="btStartSession" Padding="10 0 10 0" 
                                     Margin="0,0,1,0" Grid.Column="4" Grid.Row="4" 
-                                    HorizontalAlignment="Right" Click="btStartSession_Click">
+                                    HorizontalAlignment="Right" Command="{Binding StartSessionCommand}">
                                 Start Trading Session</Button>
 
                         </Grid>
