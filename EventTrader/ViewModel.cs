@@ -11,6 +11,7 @@ namespace EventTrader
         private IInfiniteLoop _requestLoop;
 
         public ICommand StartSessionCommand { get; }
+        public ICommand StopSessionCommand { get; }
         public ICommand TestDataSourceCommand { get; }
         public ICommand TestConnectionCommand { get; }
 
@@ -20,6 +21,7 @@ namespace EventTrader
             _requestLoop.Status += _requestLoop_Status;
 
             StartSessionCommand = new RelayCommand(() => _requestLoop.Start(() => { }, new object[] {}));
+            StopSessionCommand = new RelayCommand(() => _requestLoop.Stopped = true, () => _requestLoop.IsRunning);
             TestDataSourceCommand = new RelayCommand(() => MessageBox.Show("TestDataSourceCommand"));
             TestConnectionCommand = new RelayCommand(() => MessageBox.Show("TestConnectionCommand"));
         }

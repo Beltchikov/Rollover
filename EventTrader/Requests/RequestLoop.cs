@@ -19,6 +19,7 @@ namespace EventTrader.Requests
 
                 while (!Stopped)
                 {
+                    IsRunning = true;
                     action();
                     Status?.Invoke($"Loop {i}");
                     i++;
