@@ -220,17 +220,17 @@
                                HorizontalAlignment="Center"
                                Foreground="White"></Label>
                             <TextBox Text="" Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="2"></TextBox>
-                            
+
                             <Label Content="Actual" Grid.Column="4" Grid.Row="3" 
                                HorizontalAlignment="Center"
                                Foreground="White"></Label>
                             <TextBox Text="" Grid.Column="4" Grid.Row="4"></TextBox>
-                            
+
                             <Label Content="Forecast" Grid.Column="5" Grid.Row="3" 
                                HorizontalAlignment="Center"
                                Foreground="White"></Label>
                             <TextBox Text="" Grid.Column="5" Grid.Row="4"></TextBox>
-                            
+
                             <Label Content="Previous" Grid.Column="6" Grid.Row="3" 
                                HorizontalAlignment="Center"
                                Foreground="White"></Label>
@@ -239,10 +239,10 @@
                             <Label Content="Trade Status:" Grid.Column="1" Grid.Row="6" 
                                HorizontalAlignment="Right"
                                Foreground="White"></Label>
-                            <TextBox Text="" Grid.Column="2" Grid.Row="6" Grid.ColumnSpan="5">
-                                
+                            <TextBox Text="{Binding TradeStatus}" Grid.Column="2" Grid.Row="6" 
+                                     Grid.ColumnSpan="5">
                             </TextBox>
-                       
+
                         </Grid>
                     </GroupBox>
 

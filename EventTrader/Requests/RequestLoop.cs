@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace EventTrader.Requests
 {
@@ -10,7 +11,7 @@ namespace EventTrader.Requests
 
         public event Action<string> Status = null!;
 
-        public void Start(Action action, object[] parameters)
+        public async Task Start(Action action, object[] parameters)
         {
             if(!IsRunning)
             {
@@ -19,11 +20,14 @@ namespace EventTrader.Requests
 
                 while (!Stopped)
                 {
-                    IsRunning = true;
-                    action();
-                    Status?.Invoke($"Loop {i}");
-                    i++;
-                    Thread.Sleep(frequency);    
+                    await Task.Run(() => {
+                        IsRunning = true;
+                        action();
+                        Status?.Invoke($"Loop {i}");
+                        i++;
+                        Thread.Sleep(frequency);
+                    });
+                    
                 }
             }
         }
