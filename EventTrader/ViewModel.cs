@@ -27,14 +27,16 @@ namespace EventTrader
             _frequency = 2000;
 
             StartSessionCommand = new RelayCommand(
-                () => _requestLoop.StartAsync(() => { }, new object[] { _frequency }), 
+                () => _requestLoop.StartAsync(() => { }, new object[] { Frequency }), 
                 () => !_requestLoop.IsRunning);
-            StopSessionCommand = new RelayCommand(() => _requestLoop.Stopped = true, () => _requestLoop.IsRunning);
+            StopSessionCommand = new RelayCommand(
+                () => { _requestLoop.Stopped = true; TradeStatus = "Stopped!"; }, 
+                () => _requestLoop.IsRunning);
             TestDataSourceCommand = new RelayCommand(() => MessageBox.Show("TestDataSourceCommand"));
             TestConnectionCommand = new RelayCommand(() => MessageBox.Show("TestConnectionCommand"));
         }
 
-        public int c
+        public int Frequency
         {
             get => _frequency;
             set
