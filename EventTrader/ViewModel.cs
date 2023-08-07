@@ -13,6 +13,7 @@ namespace EventTrader
         private string _tradeStatus = "";
         private Dispatcher _dispatcher;
         private int _frequency;
+        private bool _stopSessionEnabled;
 
         public RelayCommand StartSessionCommand { get; }
         public RelayCommand StopSessionCommand { get; }
@@ -27,11 +28,16 @@ namespace EventTrader
             _frequency = 2000;
 
             StartSessionCommand = new RelayCommand(
-                () => _requestLoop.StartAsync(() => { }, new object[] { Frequency }),
+                () =>
+                {
+                    _requestLoop.StartAsync(() => { }, new object[] { Frequency });
+                    StopSessionEnabled = true;
+                },
                 () => !_requestLoop.IsRunning);
             StopSessionCommand = new RelayCommand(
                 () =>
                 {
+                    StopSessionEnabled = false;
                     _requestLoop.Stopped = true;
                     StopSessionCommand?.NotifyCanExecuteChanged();
                     StartSessionCommand.NotifyCanExecuteChanged();
@@ -47,6 +53,15 @@ namespace EventTrader
             set
             {
                 SetProperty(ref _frequency, value);
+            }
+        }
+
+        public bool StopSessionEnabled
+        {
+            get => _stopSessionEnabled;
+            set
+            {
+                SetProperty(ref _stopSessionEnabled, value);
             }
         }
 

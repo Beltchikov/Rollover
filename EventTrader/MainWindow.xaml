@@ -178,7 +178,8 @@
 
                             <Button x:Name="btStopSession" Padding="10 0 10 0" 
                                     Margin="0,0,1,0" Grid.Column="4" Grid.Row="4" 
-                                    HorizontalAlignment="Right" Command="{Binding StopSessionCommand}">
+                                    HorizontalAlignment="Right" Command="{Binding StopSessionCommand}"
+                                    IsEnabled="{Binding StopSessionEnabled}">
                                 Stop Trading Session</Button>
 
                         </Grid>
