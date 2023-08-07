@@ -12,6 +12,7 @@ namespace EventTrader
         private IInfiniteLoop _requestLoop;
         private string _tradeStatus = "";
         private Dispatcher _dispatcher;
+        private int _frequency;
 
         public RelayCommand StartSessionCommand { get; }
         public RelayCommand StopSessionCommand { get; }
@@ -23,11 +24,23 @@ namespace EventTrader
             _requestLoop = requestLoop;
             _requestLoop.Status += _requestLoop_Status;
             _dispatcher = Dispatcher.CurrentDispatcher;
+            _frequency = 2000;
 
-            StartSessionCommand = new RelayCommand(() => _requestLoop.StartAsync(() => { }, new object[] { }), () => !_requestLoop.IsRunning);
+            StartSessionCommand = new RelayCommand(
+                () => _requestLoop.StartAsync(() => { }, new object[] { _frequency }), 
+                () => !_requestLoop.IsRunning);
             StopSessionCommand = new RelayCommand(() => _requestLoop.Stopped = true, () => _requestLoop.IsRunning);
             TestDataSourceCommand = new RelayCommand(() => MessageBox.Show("TestDataSourceCommand"));
             TestConnectionCommand = new RelayCommand(() => MessageBox.Show("TestConnectionCommand"));
+        }
+
+        public int c
+        {
+            get => _frequency;
+            set
+            {
+                SetProperty(ref _frequency, value);
+            }
         }
 
         #region Critical section - called from other thread

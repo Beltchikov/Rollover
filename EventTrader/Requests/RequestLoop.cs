@@ -16,7 +16,7 @@ namespace EventTrader.Requests
             if(!IsRunning)
             {
                 int i = 0;
-                int frequency = 1000;  // TODO from parameters
+                int frequency = Convert.ToInt32(parameters[0]);  
 
                 while (!Stopped)
                 {
