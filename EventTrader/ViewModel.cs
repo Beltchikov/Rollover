@@ -12,8 +12,8 @@ namespace EventTrader
         private IInfiniteLoop _requestLoop;
         private string _tradeStatus = "";
         private Dispatcher _dispatcher;
-        
-        public ICommand StartSessionCommand { get; }
+
+        public RelayCommand StartSessionCommand { get; }
         public RelayCommand StopSessionCommand { get; }
         public ICommand TestDataSourceCommand { get; }
         public ICommand TestConnectionCommand { get; }
@@ -22,9 +22,9 @@ namespace EventTrader
         {
             _requestLoop = requestLoop;
             _requestLoop.Status += _requestLoop_Status;
-            _dispatcher = Dispatcher.CurrentDispatcher; 
+            _dispatcher = Dispatcher.CurrentDispatcher;
 
-            StartSessionCommand = new RelayCommand(() => _requestLoop.StartAsync(() => { }, new object[] { }));
+            StartSessionCommand = new RelayCommand(() => _requestLoop.StartAsync(() => { }, new object[] { }), () => !_requestLoop.IsRunning);
             StopSessionCommand = new RelayCommand(() => _requestLoop.Stopped = true, () => _requestLoop.IsRunning);
             TestDataSourceCommand = new RelayCommand(() => MessageBox.Show("TestDataSourceCommand"));
             TestConnectionCommand = new RelayCommand(() => MessageBox.Show("TestConnectionCommand"));
@@ -40,11 +40,15 @@ namespace EventTrader
                 SetProperty(ref _tradeStatus, value);
             }
         }
-                
+
         private void _requestLoop_Status(string message)
         {
-            _dispatcher.Invoke(() => StopSessionCommand.NotifyCanExecuteChanged());
-            TradeStatus = message;
+            _dispatcher.Invoke(() =>
+            {
+                StopSessionCommand.NotifyCanExecuteChanged();
+                StartSessionCommand.NotifyCanExecuteChanged();
+                TradeStatus = message;
+            });
         }
 
         #endregion
