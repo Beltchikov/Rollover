@@ -33,7 +33,6 @@ namespace EventTrader
                 () =>
                 {
                     _requestLoop.Stopped = true;
-                    //TradeStatus = "Stopped!";
                     StopSessionCommand?.NotifyCanExecuteChanged();
                     StartSessionCommand.NotifyCanExecuteChanged();
                 },
