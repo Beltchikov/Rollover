@@ -29,6 +29,9 @@ namespace EventTrader.Requests
                     });
                     
                 }
+                IsRunning = false;
+                Stopped = false;
+                Status?.Invoke("Stopped!");
             }
         }
     }
