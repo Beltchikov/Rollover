@@ -1,5 +1,4 @@
-﻿using EventTrader.EconomicData;
-using EventTrader.Requests;
+﻿using EventTrader.Requests;
 using EventTrader.WebScraping;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -16,7 +15,6 @@ namespace EventTrader
         {
             Services = new ServiceCollection()
                 .AddSingleton<IBrowserWrapper, BrowserWrapper>()
-                .AddSingleton<IEconomicDataTrader, EconomicDataTrader>()
                 .AddSingleton<IInfiniteLoop, RequestLoop>()
                 .BuildServiceProvider();
         }
@@ -25,7 +23,7 @@ namespace EventTrader
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            MainWindow mainWindow = new(Services.GetRequiredService<IEconomicDataTrader>())
+            MainWindow mainWindow = new()
             {
                 DataContext = new ViewModel(Services.GetRequiredService<IInfiniteLoop>())
             };

@@ -1,5 +1,4 @@
-﻿using EventTrader.EconomicData;
-using System.Windows;
+﻿using System.Windows;
 
 namespace EventTrader
 {
@@ -8,19 +7,9 @@ namespace EventTrader
     /// </summary>
     public partial class MainWindow : Window
     {
-        IEconomicDataTrader _trader;
-
-        public MainWindow(IEconomicDataTrader trader)
+        public MainWindow()
         {
-            _trader = trader;
-
             InitializeComponent();
-        }
-
-        private void btStartSession_Click(object sender, RoutedEventArgs e)
-        {
-            EconomicDataTrade trade = new EconomicDataTrade();
-            _trader.StartSessionAsync(trade);
         }
     }
 }
