@@ -11,7 +11,7 @@ namespace EventTrader.Requests
 
         public event Action<string> Status = null!;
 
-        public async Task Start(Action action, object[] parameters)
+        public async Task StartAsync(Action action, object[] parameters)
         {
             if(!IsRunning)
             {

@@ -5,7 +5,7 @@ namespace EventTrader.Requests
 {
     public interface IInfiniteLoop
     {
-        Task Start(Action action, object[] parameters);
+        Task StartAsync(Action action, object[] parameters);
         
         event Action<string> Status;
         bool Stopped { get; set; }
