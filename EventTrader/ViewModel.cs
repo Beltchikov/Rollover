@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using EventTrader.EconomicData;
 using EventTrader.Requests;
 using System.Windows;
 using System.Windows.Input;
@@ -14,6 +15,7 @@ namespace EventTrader
         private Dispatcher _dispatcher;
         private int _frequency;
         private bool _stopSessionEnabled;
+        private Countries _countries;
 
         public RelayCommand StartSessionCommand { get; }
         public RelayCommand StopSessionCommand { get; }
@@ -26,6 +28,7 @@ namespace EventTrader
             _requestLoop.Status += _requestLoop_Status;
             _dispatcher = Dispatcher.CurrentDispatcher;
             _frequency = 2000;
+            _countries = new Countries();
 
             StartSessionCommand = new RelayCommand(
                 () =>
