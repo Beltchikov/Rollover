@@ -19,6 +19,7 @@ namespace EventTrader
         private int _frequency;
         private bool _stopSessionEnabled;
         private Countries _countries;
+        private string _dataTypeUs;
 
         public RelayCommand StartSessionCommand { get; }
         public RelayCommand StopSessionCommand { get; }
@@ -32,6 +33,7 @@ namespace EventTrader
             _dispatcher = Dispatcher.CurrentDispatcher;
             _frequency = 2000;
             _countries = new Countries();
+            _dataTypeUs = DataTypeEnum.AdpNonFarmEmploymentChange.ToString();
 
             StartSessionCommand = new RelayCommand(
                 () =>
@@ -71,9 +73,18 @@ namespace EventTrader
             }
         }
 
-        public List<string> DataTypesUS => _countries.All.First(c => c.Symbol == "US")
+        public List<string> DataTypesUs => _countries.All.First(c => c.Symbol == "US")
             .DataList.Select(l => l.Type.ToString()).ToList();
-       
+
+        public string DataTypeUs
+        {
+            get => _dataTypeUs;
+            set
+            {
+                SetProperty(ref _dataTypeUs, value);
+            }
+        }
+
         #region Critical section - called from other thread
 
         public string TradeStatus
