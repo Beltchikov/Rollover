@@ -2,7 +2,10 @@
 using CommunityToolkit.Mvvm.Input;
 using EventTrader.EconomicData;
 using EventTrader.Requests;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -68,6 +71,9 @@ namespace EventTrader
             }
         }
 
+        public List<string> DataTypesUS => _countries.All.First(c => c.Symbol == "US")
+            .DataList.Select(l => l.Type.ToString()).ToList();
+       
         #region Critical section - called from other thread
 
         public string TradeStatus
