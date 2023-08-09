@@ -5,7 +5,6 @@ using EventTrader.Requests;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -73,8 +72,9 @@ namespace EventTrader
             }
         }
 
-        public List<string> DataTypesUs => _countries.All.First(c => c.Symbol == "US")
-            .DataList.Select(l => l.Type.ToString()).ToList();
+        public Dictionary<string, string> DataTypesUs => _countries.All.First(c => c.Symbol == "US")
+           .DataList.Select(l => new { Key = l.Type.ToString(), Value = l.Name })
+            .ToDictionary(o=>o.Key, o=>o.Value);
 
         public string DataTypeUs
         {
