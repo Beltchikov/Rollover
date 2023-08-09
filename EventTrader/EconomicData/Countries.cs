@@ -11,7 +11,11 @@ namespace EventTrader.EconomicData
                 new Country("US"),
                 new Country("EU"),
                 new Country("JP"),
-                new Country("GB")
+                new Country("GB"),
+                new Country("CA"),
+                new Country("AU"),
+                new Country("CH"),
+                new Country("NZ")
             };
         }
 
