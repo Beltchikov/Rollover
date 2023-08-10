@@ -1,10 +1,18 @@
-﻿using System;
+﻿using EventTrader.Requests;
+using System;
 using System.Threading.Tasks;
 
 namespace EventTrader.EconomicData
 {
     public class EconDataLoop : IEconDataLoop
     {
+        private IInfiniteLoop _requestLoop;
+
+        public EconDataLoop(IInfiniteLoop requestLoop)
+        {
+            _requestLoop = requestLoop;
+        }
+
         public bool Stopped { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public bool IsRunning { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
