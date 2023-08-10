@@ -18,7 +18,7 @@ namespace EventTrader
         private int _frequency;
         private bool _stopSessionEnabled;
         private Countries _countries;
-        private string _dataTypeUs;
+        private string _dataType;
 
         public RelayCommand StartSessionCommand { get; }
         public RelayCommand StopSessionCommand { get; }
@@ -32,7 +32,7 @@ namespace EventTrader
             _dispatcher = Dispatcher.CurrentDispatcher;
             _frequency = 2000;
             _countries = new Countries();
-            _dataTypeUs = DataTypeEnum.AdpNonFarmEmploymentChange.ToString();
+            _dataType = DataTypeEnum.AdpNonFarmEmploymentChange.ToString();
 
             StartSessionCommand = new RelayCommand(
                 () =>
@@ -76,12 +76,12 @@ namespace EventTrader
            .DataList.Select(l => new { Key = l.Type.ToString(), Value = l.Name })
             .ToDictionary(o=>o.Key, o=>o.Value);
 
-        public string DataTypeUs
+        public string DataType
         {
-            get => _dataTypeUs;
+            get => _dataType;
             set
             {
-                SetProperty(ref _dataTypeUs, value);
+                SetProperty(ref _dataType, value);
             }
         }
 
