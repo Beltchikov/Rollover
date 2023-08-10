@@ -11,16 +11,21 @@ namespace EventTrader.EconomicData
         public EconDataLoop(IInfiniteLoop requestLoop)
         {
             _requestLoop = requestLoop;
+            _requestLoop.Status += _requestLoop_Status;
         }
+        public bool Stopped { get => _requestLoop.Stopped; set => _requestLoop.Stopped = value; }
+        public bool IsRunning { get => _requestLoop.IsRunning; set => _requestLoop.IsRunning = value; }
 
-        public bool Stopped { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool IsRunning { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public event Action<string> Status = null!;
 
-        public event Action<string> Status;
-
-        public Task StartAsync(int frequency, string dataType)
+        public async Task StartAsync(int frequency, string dataType)
         {
-            throw new NotImplementedException();
+            // TODO Strategy pattern IEconomicDataProvider
+            await _requestLoop.StartAsync(() => { }, new object[] { frequency});
+        }
+        private void _requestLoop_Status(string obj)
+        {
+            Status.Invoke(obj); 
         }
     }
 }
