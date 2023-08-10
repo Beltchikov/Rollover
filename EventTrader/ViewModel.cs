@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EventTrader.EconomicData;
-using EventTrader.Requests;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -12,7 +11,7 @@ namespace EventTrader
 {
     public class ViewModel : ObservableObject
     {
-        private IInfiniteLoop _requestLoop;
+        private IEconDataLoop _econDataLoop;
         private string _tradeStatus = "";
         private Dispatcher _dispatcher;
         private int _frequency;
@@ -25,10 +24,10 @@ namespace EventTrader
         public ICommand TestDataSourceCommand { get; }
         public ICommand TestConnectionCommand { get; }
 
-        public ViewModel(IInfiniteLoop requestLoop)
+        public ViewModel(IEconDataLoop econDataLoop)
         {
-            _requestLoop = requestLoop;
-            _requestLoop.Status += _requestLoop_Status;
+            _econDataLoop = econDataLoop;
+            _econDataLoop.Status += _requestLoop_Status;
             _dispatcher = Dispatcher.CurrentDispatcher;
             _frequency = 2000;
             _countries = new Countries();
@@ -37,19 +36,19 @@ namespace EventTrader
             StartSessionCommand = new RelayCommand(
                 () =>
                 {
-                    _requestLoop.StartAsync(() => { }, new object[] { Frequency });
+                    _econDataLoop.StartAsync(Frequency, DataType);
                     StopSessionEnabled = true;
                 },
-                () => !_requestLoop.IsRunning);
+                () => !_econDataLoop.IsRunning);
             StopSessionCommand = new RelayCommand(
                 () =>
                 {
                     StopSessionEnabled = false;
-                    _requestLoop.Stopped = true;
+                    _econDataLoop.Stopped = true;
                     StopSessionCommand?.NotifyCanExecuteChanged();
                     StartSessionCommand.NotifyCanExecuteChanged();
                 },
-                () => _requestLoop.IsRunning);
+                () => _econDataLoop.IsRunning);
             TestDataSourceCommand = new RelayCommand(() => MessageBox.Show("TestDataSourceCommand"));
             TestConnectionCommand = new RelayCommand(() => MessageBox.Show("TestConnectionCommand"));
         }
