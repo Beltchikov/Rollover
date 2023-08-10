@@ -18,6 +18,7 @@ namespace EventTrader
                 .AddSingleton<IBrowserWrapper, BrowserWrapper>()
                 .AddSingleton<IInfiniteLoop, RequestLoop>()
                 .AddSingleton<IEconDataLoop, EconDataLoop>()
+                .AddSingleton<IDataProviderContext, DataProviderContext>()
                 .BuildServiceProvider();
         }
 
