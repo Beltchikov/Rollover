@@ -7,7 +7,7 @@ namespace EventTrader.EconomicData
     {
         IEconomicDataProvider _provider = null!;
 
-        (double, double, double) IDataProviderContext.GetData()
+        (double?, double?, double?) IDataProviderContext.GetData()
         {
             return _provider.GetData();
         }

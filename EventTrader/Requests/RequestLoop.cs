@@ -22,7 +22,7 @@ namespace EventTrader.Requests
                 {
                     await Task.Run(() => {
                         IsRunning = true;
-                        (var a, var e, var p) = (ValueTuple<double, double, double>)function();
+                        (var a, var e, var p) = (ValueTuple<double?, double?, double?>)function();
                         Status?.Invoke($"Request {i+1}. Actual:{a}  Expected:{e}  Previous:{p}");
                         i++;
                         Thread.Sleep(frequency);
