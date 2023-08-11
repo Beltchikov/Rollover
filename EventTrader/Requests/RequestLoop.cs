@@ -11,23 +11,23 @@ namespace EventTrader.Requests
 
         public event Action<string> Status = null!;
 
-        public async Task StartAsync(Action action, object[] parameters)
+        public async Task StartAsync(Func<object> function, object[] parameters)
         {
-            if(!IsRunning)
+            if (!IsRunning)
             {
                 int i = 0;
-                int frequency = Convert.ToInt32(parameters[0]);  
+                int frequency = Convert.ToInt32(parameters[0]);
 
                 while (!Stopped)
                 {
                     await Task.Run(() => {
                         IsRunning = true;
-                        action();
-                        Status?.Invoke($"Loop {i}");
+                        (var a, var e, var p) = (ValueTuple<double, double, double>)function();
+                        Status?.Invoke($"Request {i+1}. Actual:{a}  Expected:{e}  Previous:{p}");
                         i++;
                         Thread.Sleep(frequency);
                     });
-                    
+
                 }
                 IsRunning = false;
                 Stopped = false;
