@@ -2,6 +2,6 @@
 {
     public interface IEconomicDataProvider
     {
-        (double, double, double) GetData(string url, object[] parameters);
+        (double, double, double) GetData();
     }
 }

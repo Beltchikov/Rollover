@@ -2,7 +2,7 @@
 {
     public interface IDataProviderContext
     {
-        void GetData();
+        (double, double, double) GetData();
         void SetStrategy(string dataType);
     }
 }

@@ -23,10 +23,10 @@ namespace EventTrader.EconomicData
         public async Task StartAsync(int frequency, string dataType)
         {
             // TODO Strategy pattern IEconomicDataProvider
-            //_dataProviderContext.SetStrategy(dataType);
-            //await _requestLoop.StartAsync(() => { _dataProviderContext.GetData(); }, new object[] { frequency});
+            _dataProviderContext.SetStrategy(dataType);
+            await _requestLoop.StartAsync(() => { _dataProviderContext.GetData(); }, new object[] { frequency});
 
-            await _requestLoop.StartAsync(() => { }, new object[] { frequency});
+            //await _requestLoop.StartAsync(() => { }, new object[] { frequency});
         }
         private void _requestLoop_Status(string obj)
         {

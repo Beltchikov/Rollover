@@ -31,7 +31,7 @@ namespace EventTrader
             _dispatcher = Dispatcher.CurrentDispatcher;
             _frequency = 2000;
             _countries = new Countries();
-            _dataType = DataTypeEnum.AdpNonFarmEmploymentChange.ToString();
+            _dataType = DataTypeEnum.NonFarmEmploymentChange.ToString();
 
             StartSessionCommand = new RelayCommand(
                 () =>
