@@ -27,7 +27,6 @@ namespace EventTrader.EconomicData
                 case DataTypeEnum.NonFarmEmploymentChange:
                     {
                         //_provider = new FakedDataProvider();
-                        // TODO
                         _provider = new NonFarmEmploymentChangeProvider(_browserWrapper);
                         break;
                     }
