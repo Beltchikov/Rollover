@@ -1,4 +1,5 @@
 ﻿using EventTrader.EconomicData.Strategies;
+using EventTrader.WebScraping;
 using System;
 
 namespace EventTrader.EconomicData
@@ -6,6 +7,12 @@ namespace EventTrader.EconomicData
     public class DataProviderContext : IDataProviderContext
     {
         IEconomicDataProvider _provider = null!;
+        IBrowserWrapper _browserWrapper;
+
+        public DataProviderContext(IBrowserWrapper browserWrapper)
+        {
+            _browserWrapper = browserWrapper;
+        }
 
         (double?, double?, double?) IDataProviderContext.GetData()
         {
@@ -19,7 +26,9 @@ namespace EventTrader.EconomicData
             {
                 case DataTypeEnum.NonFarmEmploymentChange:
                     {
-                        _provider = new FakedDataProvider(); // TODO
+                        _provider = new FakedDataProvider();
+                        // TODO
+                        //_provider = new NonFarmEmploymentChangeProvider(_browserWrapper);
                         break;
                     }
                 default:
