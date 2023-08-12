@@ -11,7 +11,7 @@ namespace EventTrader.EconomicData.Strategies
     {
         IBrowserWrapper _browserWrapper;
         XmlNamespaceManager _xmlNamespaceManager;
-        
+
         public NonFarmEmploymentChangeProvider(IBrowserWrapper browserWrapper)
         {
             _browserWrapper = browserWrapper;
@@ -27,6 +27,14 @@ namespace EventTrader.EconomicData.Strategies
             string xPathPrevious,
             string nullPlaceholder)
         {
+            // TODO remove later
+            url = "https://www.investing.com/economic-calendar/";
+            xPathActual = "//*[@id=\"eventActual_479390\"]";
+            xPathExpected = "//*[@id=\"eventForecast_479390\"]";
+            xPathPrevious = "//*[@id=\"eventPrevious_479390\"]";
+            nullPlaceholder = "&nbsp;";
+
+
             if (!_browserWrapper.Navigate(url))
             {
                 throw new ApplicationException($"Can not navigate to {url}");
@@ -54,13 +62,13 @@ namespace EventTrader.EconomicData.Strategies
 
         private double? ParseDouble(string doubleAsText, string nullPlaceholder, ParseOptions parseOptions)
         {
-            if(doubleAsText.Trim().ToLower() == nullPlaceholder.Trim().ToLower())
+            if (doubleAsText.Trim().ToLower() == nullPlaceholder.Trim().ToLower())
             {
                 return null;
             }
 
-            string preProcessed = doubleAsText;  
-            if (parseOptions == ParseOptions.RemoveLastCharacter) 
+            string preProcessed = doubleAsText;
+            if (parseOptions == ParseOptions.RemoveLastCharacter)
             {
                 preProcessed = preProcessed[..^1];
             }
