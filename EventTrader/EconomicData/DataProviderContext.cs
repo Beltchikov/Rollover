@@ -1,11 +1,13 @@
 ﻿using EventTrader.EconomicData.Strategies;
 using EventTrader.WebScraping;
 using System;
+using System.Linq;
 
 namespace EventTrader.EconomicData
 {
     public class DataProviderContext : IDataProviderContext
     {
+        DataTypeEnum _dataTypeAsEnum;
         IEconomicDataProvider _provider = null!;
         IBrowserWrapper _browserWrapper;
 
@@ -14,15 +16,10 @@ namespace EventTrader.EconomicData
             _browserWrapper = browserWrapper;
         }
 
-        (double?, double?, double?) IDataProviderContext.GetData()
-        {
-            return _provider.GetData();
-        }
-
         public void SetStrategy(string dataType)
         {
-            DataTypeEnum dataTypeAsEnum = (DataTypeEnum)Enum.Parse(typeof(DataTypeEnum), dataType);
-            switch (dataTypeAsEnum)
+            _dataTypeAsEnum = (DataTypeEnum)Enum.Parse(typeof(DataTypeEnum), dataType);
+            switch (_dataTypeAsEnum)
             {
                 case DataTypeEnum.NonFarmEmploymentChange:
                     {
@@ -36,6 +33,12 @@ namespace EventTrader.EconomicData
                     }
             }
 
+        }
+
+        (double?, double?, double?) IDataProviderContext.GetData()
+        {
+            // TODO
+            return _provider.GetData("todo", "todo", "todo", "todo", "todo");
         }
     }
 }

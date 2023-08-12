@@ -2,9 +2,9 @@
 
 namespace EventTrader.EconomicData
 {
-    public class Countries
+    public static class Countries
     {
-        public Countries()
+        static Countries()
         {
             All = new List<Country>()
             {
@@ -19,6 +19,6 @@ namespace EventTrader.EconomicData
             };
         }
 
-        public List<Country> All { get; private set; }
+        public static List<Country> All { get; private set; }
     }
 }

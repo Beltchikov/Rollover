@@ -16,7 +16,6 @@ namespace EventTrader
         private Dispatcher _dispatcher;
         private int _frequency;
         private bool _stopSessionEnabled;
-        private Countries _countries;
         private string _dataType;
 
         public RelayCommand StartSessionCommand { get; }
@@ -30,7 +29,6 @@ namespace EventTrader
             _econDataLoop.Status += _requestLoop_Status;
             _dispatcher = Dispatcher.CurrentDispatcher;
             _frequency = 2000;
-            _countries = new Countries();
             _dataType = DataTypeEnum.NonFarmEmploymentChange.ToString();
 
             StartSessionCommand = new RelayCommand(
@@ -71,7 +69,7 @@ namespace EventTrader
             }
         }
 
-        public Dictionary<string, string> DataTypesUs => _countries.All.First(c => c.Symbol == "US")
+        public Dictionary<string, string> DataTypesUs => Countries.All.First(c => c.Symbol == "US")
            .DataList.Select(l => new { Key = l.Type.ToString(), Value = l.Name })
             .ToDictionary(o=>o.Key, o=>o.Value);
 

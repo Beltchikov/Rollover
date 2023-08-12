@@ -11,12 +11,7 @@ namespace EventTrader.EconomicData.Strategies
     {
         IBrowserWrapper _browserWrapper;
         XmlNamespaceManager _xmlNamespaceManager;
-        const string URL = "https://www.investing.com/economic-calendar/";
-        const string XPATH_ACTUAL = "//*[@id=\"eventActual_479390\"]";
-        const string XPATH_EXPECTED = "//*[@id=\"eventForecast_479390\"]";
-        const string XPATH_PREVIOUS = "//*[@id=\"eventPrevious_479390\"]";
-        const string NULL_PLACEHOLDER = "&nbsp;";
-
+        
         public NonFarmEmploymentChangeProvider(IBrowserWrapper browserWrapper)
         {
             _browserWrapper = browserWrapper;
@@ -24,30 +19,36 @@ namespace EventTrader.EconomicData.Strategies
             _xmlNamespaceManager.AddNamespace("empty", "http://bel.com/2023/bel-schema");
         }
 
-        public (double?, double?, double?) GetData()
+
+        public (double?, double?, double?) GetData(
+            string url,
+            string xPathActual,
+            string xPathExpected,
+            string xPathPrevious,
+            string nullPlaceholder)
         {
-            if (!_browserWrapper.Navigate(URL))
+            if (!_browserWrapper.Navigate(url))
             {
-                throw new ApplicationException($"Can not navigate to {URL}");
+                throw new ApplicationException($"Can not navigate to {url}");
             }
 
             var xDocument = _browserWrapper.XDocument;
 
-            double? actual = GetDoubleValueByXPath(xDocument, XPATH_ACTUAL);
-            double? expected = GetDoubleValueByXPath(xDocument, XPATH_EXPECTED);
-            double? previous = GetDoubleValueByXPath(xDocument, XPATH_PREVIOUS);
+            double? actual = GetDoubleValueByXPath(xDocument, xPathActual, nullPlaceholder);
+            double? expected = GetDoubleValueByXPath(xDocument, xPathExpected, nullPlaceholder);
+            double? previous = GetDoubleValueByXPath(xDocument, xPathPrevious, nullPlaceholder);
 
             return (actual, expected, previous);
         }
 
-        private double? GetDoubleValueByXPath(XDocument xDocument, string xPath)
+        private double? GetDoubleValueByXPath(XDocument xDocument, string xPath, string nullPlaceholder)
         {
             double? actual;
             var xElementActual = xDocument.XPathSelectElement(xPath, _xmlNamespaceManager)
                             ?? throw new ApplicationException($"Can not find XPath element: {xPath}");
             var stringValueActual = xElementActual.Value.Trim()
                 ?? throw new ApplicationException($"The value of the XElement is null.");
-            actual = ParseDouble(stringValueActual, NULL_PLACEHOLDER, ParseOptions.RemoveLastCharacter);
+            actual = ParseDouble(stringValueActual, nullPlaceholder, ParseOptions.RemoveLastCharacter);
             return actual;
         }
 
