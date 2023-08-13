@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EventTrader.EconomicData;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -17,6 +19,11 @@ namespace EventTrader
         private int _frequency;
         private bool _stopSessionEnabled;
         private string _dataType;
+        private string _url;
+        private string _xPathActual;
+        private string _xPathExpected;
+        private string _xPathPrevious;
+        private string _nullPlaceholder;
 
         public RelayCommand StartSessionCommand { get; }
         public RelayCommand StopSessionCommand { get; }
@@ -34,8 +41,14 @@ namespace EventTrader
             StartSessionCommand = new RelayCommand(
                 () =>
                 {
-                    // TODO URL, XPath, etc. from GUI
-                    _econDataLoop.StartAsync(Frequency, DataType, "TODO", "TODO", "TODO", "TODO", "TODO");
+                    _econDataLoop.StartAsync(
+                        Frequency,
+                        DataType,
+                        Url,
+                        XPathActual,
+                        XPathExpected,
+                        XPathPrevious,
+                        NullPlaceholder);
                     StopSessionEnabled = true;
                 },
                 () => !_econDataLoop.IsRunning);
@@ -81,6 +94,56 @@ namespace EventTrader
             {
                 SetProperty(ref _dataType, value);
             }
+        }
+
+        public string Url
+        {
+            get => _url;
+            set
+            {
+                SetProperty(ref _url, value);
+            }
+        }
+
+        public string XPathActual
+        {
+            get => _xPathActual;
+            set
+            {
+                SetProperty(ref _xPathActual, value);
+            }
+        }
+
+        public string XPathExpected
+        {
+            get => _xPathExpected;
+            set
+            {
+                SetProperty(ref _xPathExpected, value);
+            }
+        }
+
+        public string XPathPrevious
+        {
+            get => _xPathPrevious;
+            set
+            {
+                SetProperty(ref _xPathPrevious, value);
+            }
+        }
+
+        public string NullPlaceholder
+        {
+            get => _nullPlaceholder;
+            set
+            {
+                SetProperty(ref _nullPlaceholder, value);
+            }
+        }
+
+        private void SetProperty(ref object nullPlaceHolder, string value)
+        {
+            throw new NotImplementedException();
         }
 
         #region Critical section - called from other thread
