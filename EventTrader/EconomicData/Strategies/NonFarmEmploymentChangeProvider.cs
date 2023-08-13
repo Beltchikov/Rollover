@@ -27,14 +27,6 @@ namespace EventTrader.EconomicData.Strategies
             string xPathPrevious,
             string nullPlaceholder)
         {
-            // TODO remove later
-            url = "https://www.investing.com/economic-calendar/";
-            xPathActual = "//*[@id=\"eventActual_479408\"]";
-            xPathExpected = "//*[@id=\"eventForecast_479408\"]";
-            xPathPrevious = "//*[@id=\"eventPrevious_479408\"]";
-            nullPlaceholder = "&nbsp;";
-
-
             if (!_browserWrapper.Navigate(url))
             {
                 throw new ApplicationException($"Can not navigate to {url}");

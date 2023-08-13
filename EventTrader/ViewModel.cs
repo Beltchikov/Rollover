@@ -63,6 +63,13 @@ namespace EventTrader
                 () => _econDataLoop.IsRunning);
             TestDataSourceCommand = new RelayCommand(() => MessageBox.Show("TestDataSourceCommand"));
             TestConnectionCommand = new RelayCommand(() => MessageBox.Show("TestConnectionCommand"));
+
+            // TODO DEV remove later
+            Url = "https://www.investing.com/economic-calendar/";
+            XPathActual = "//*[@id=\"eventActual_479408\"]";
+            XPathExpected = "//*[@id=\"eventForecast_479408\"]";
+            XPathPrevious = "//*[@id=\"eventPrevious_479408\"]";
+            NullPlaceholder = "&nbsp;";
         }
 
         public int Frequency

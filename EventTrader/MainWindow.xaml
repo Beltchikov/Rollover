@@ -144,7 +144,7 @@
                                    HorizontalAlignment="Right"
                                    Foreground="White"></Label>
                             <TextBox Grid.Column="2" Grid.Row="6" Grid.ColumnSpan="3" 
-                                     Text="{Binding XPathPreviuos}">
+                                     Text="{Binding XPathPrevious}">
                             </TextBox>
 
                             <Label Content="Null Placeholder:" 
