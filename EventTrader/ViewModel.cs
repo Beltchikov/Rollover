@@ -34,7 +34,8 @@ namespace EventTrader
             StartSessionCommand = new RelayCommand(
                 () =>
                 {
-                    _econDataLoop.StartAsync(Frequency, DataType);
+                    // TODO URL, XPath, etc. from GUI
+                    _econDataLoop.StartAsync(Frequency, DataType, "TODO", "TODO", "TODO", "TODO", "TODO");
                     StopSessionEnabled = true;
                 },
                 () => !_econDataLoop.IsRunning);

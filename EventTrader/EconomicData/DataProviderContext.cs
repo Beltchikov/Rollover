@@ -1,7 +1,6 @@
 ﻿using EventTrader.EconomicData.Strategies;
 using EventTrader.WebScraping;
 using System;
-using System.Linq;
 
 namespace EventTrader.EconomicData
 {
@@ -14,6 +13,16 @@ namespace EventTrader.EconomicData
         public DataProviderContext(IBrowserWrapper browserWrapper)
         {
             _browserWrapper = browserWrapper;
+        }
+
+        public (double?, double?, double?) GetData(
+            string url,
+            string xPathActual,
+            string xPathExpected,
+            string xPathPrevious,
+            string nullPlaceholder)
+        {
+            return _provider.GetData(url, xPathActual, xPathExpected, xPathPrevious, nullPlaceholder);
         }
 
         public void SetStrategy(string dataType)
@@ -33,12 +42,6 @@ namespace EventTrader.EconomicData
                     }
             }
 
-        }
-
-        (double?, double?, double?) IDataProviderContext.GetData()
-        {
-            // TODO
-            return _provider.GetData("todo", "todo", "todo", "todo", "todo");
         }
     }
 }

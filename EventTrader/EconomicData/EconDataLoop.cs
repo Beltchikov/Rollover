@@ -1,5 +1,6 @@
 ﻿using EventTrader.Requests;
 using System;
+using System.Security.Policy;
 using System.Threading.Tasks;
 
 namespace EventTrader.EconomicData
@@ -20,14 +21,28 @@ namespace EventTrader.EconomicData
 
         public event Action<string> Status = null!;
 
-        public async Task StartAsync(int frequency, string dataType)
+        public async Task StartAsync(
+            int frequency,
+            string dataType,
+            string url,
+            string xPathActual,
+            string xPathExpected,
+            string xPathPrevious,
+            string nullPlaceholder)
         {
             _dataProviderContext.SetStrategy(dataType);
-            await _requestLoop.StartAsync(() => { return _dataProviderContext.GetData(); }, new object[] { frequency});
+            await _requestLoop.StartAsync(
+                () => { return _dataProviderContext.GetData(
+                    url,
+                    xPathActual,
+                    xPathExpected,
+                    xPathPrevious,
+                    nullPlaceholder); },
+                new object[] { frequency });
         }
         private void _requestLoop_Status(string obj)
         {
-            Status.Invoke(obj); 
+            Status.Invoke(obj);
         }
     }
 }

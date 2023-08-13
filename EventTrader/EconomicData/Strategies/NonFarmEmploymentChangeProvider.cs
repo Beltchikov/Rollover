@@ -29,9 +29,9 @@ namespace EventTrader.EconomicData.Strategies
         {
             // TODO remove later
             url = "https://www.investing.com/economic-calendar/";
-            xPathActual = "//*[@id=\"eventActual_479390\"]";
-            xPathExpected = "//*[@id=\"eventForecast_479390\"]";
-            xPathPrevious = "//*[@id=\"eventPrevious_479390\"]";
+            xPathActual = "//*[@id=\"eventActual_479408\"]";
+            xPathExpected = "//*[@id=\"eventForecast_479408\"]";
+            xPathPrevious = "//*[@id=\"eventPrevious_479408\"]";
             nullPlaceholder = "&nbsp;";
 
 
