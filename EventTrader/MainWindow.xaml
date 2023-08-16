@@ -1,0 +1,284 @@
+﻿<Window x:Class="EventTrader.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EventTrader"
+        mc:Ignorable="d"
+        Title="Event Trader" Height="700" Width="800">
+    <Grid>
+        <TabControl x:Name="tabControl">
+            <TabItem Header="USD">
+                <Grid Background="#FF1A26DA">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="10"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10"></RowDefinition>
+                        <RowDefinition Height="100"></RowDefinition>
+                        <RowDefinition Height="330"></RowDefinition>
+                        <RowDefinition Height="180"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="10"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <GroupBox Grid.Column="1" Grid.Row="1" Header="Platform Connection"
+                              Foreground="White">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="10"></ColumnDefinition>
+                                <ColumnDefinition Width="140"></ColumnDefinition>
+                                <ColumnDefinition Width="200"></ColumnDefinition>
+                                <ColumnDefinition Width="60"></ColumnDefinition>
+                                <ColumnDefinition Width="60"></ColumnDefinition>
+                                <ColumnDefinition Width="60"></ColumnDefinition>
+                                <ColumnDefinition Width="60"></ColumnDefinition>
+                                <ColumnDefinition Width="60"></ColumnDefinition>
+                                <ColumnDefinition Width="60"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="10"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="10"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="10"></RowDefinition>
+                            </Grid.RowDefinitions>
+
+                            <Label Content="Host:" Grid.Column="1" Grid.Row="1" 
+                               HorizontalAlignment="Right"
+                               Foreground="White"></Label>
+                            <TextBox Text=""
+                             Grid.Column="2" Grid.Row="1"></TextBox>
+
+                            <Label Content="Port:" Grid.Column="4" Grid.Row="1" 
+                               HorizontalAlignment="Right"
+                               Foreground="White"></Label>
+                            <TextBox Text=""
+                             Grid.Column="5" Grid.Row="1"></TextBox>
+
+                            <Label Content="Client ID:" Grid.Column="7" Grid.Row="1" 
+                               HorizontalAlignment="Right"
+                               Foreground="White"></Label>
+                            <TextBox Text=""
+                             Grid.Column="8" Grid.Row="1" Grid.ColumnSpan="2"></TextBox>
+
+                            <Button Padding="10 0 10 0" 
+                            Margin="0,0,1,0" Grid.Column="8" Grid.Row="2" Grid.ColumnSpan="2"
+                                    HorizontalAlignment="Right" Height="25" 
+                                    VerticalAlignment="Top" 
+                                    Command="{Binding TestConnectionCommand}">Test</Button>
+
+                        </Grid>
+                    </GroupBox>
+
+                    <GroupBox Grid.Column="1" Grid.Row="2" Header="Trade"
+                              Foreground="White">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="10"></ColumnDefinition>
+                                <ColumnDefinition Width="140"></ColumnDefinition>
+                                <ColumnDefinition Width="320"></ColumnDefinition>
+                                <ColumnDefinition Width="60"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="10"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="10"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="10"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="10"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="10"></RowDefinition>
+                            </Grid.RowDefinitions>
+
+                            <Label Content="Kind of Economic Data:" 
+                                   Grid.Column="1" Grid.Row="1" 
+                                   HorizontalAlignment="Right"
+                                   Foreground="White"></Label>
+                            <ComboBox Grid.Column="2" Grid.Row="1" ItemsSource="{Binding DataTypesUs}" 
+                                      SelectedValue="{Binding DataType}"
+                                      DisplayMemberPath="Value" SelectedValuePath="Key"></ComboBox>
+                            <Label Content="Time:" 
+                                   Grid.Column="3" Grid.Row="1" 
+                                   HorizontalAlignment="Right"
+                                   Foreground="White"></Label>
+                            <DatePicker Grid.Column="4" Grid.Row="1" ></DatePicker>
+
+                            <Label Content="URL:" 
+                                   Grid.Column="1" Grid.Row="3" 
+                                   HorizontalAlignment="Right"
+                                   Foreground="White"></Label>
+                            <TextBox Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="3" 
+                                     Text="{Binding Url}">
+                            </TextBox>
+
+                            <Label Content="XPath Actual:" 
+                                   Grid.Column="1" Grid.Row="4" 
+                                   HorizontalAlignment="Right"
+                                   Foreground="White"></Label>
+                            <TextBox Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="3" 
+                                     Text="{Binding XPathActual}">
+                            </TextBox>
+
+                            <Label Content="XPath Expected:" 
+                                   Grid.Column="1" Grid.Row="5" 
+                                   HorizontalAlignment="Right"
+                                   Foreground="White"></Label>
+                            <TextBox Grid.Column="2" Grid.Row="5" Grid.ColumnSpan="3" 
+                                     Text="{Binding XPathExpected}">
+                            </TextBox>
+
+                            <Label Content="XPath Previous:" 
+                                   Grid.Column="1" Grid.Row="6" 
+                                   HorizontalAlignment="Right"
+                                   Foreground="White"></Label>
+                            <TextBox Grid.Column="2" Grid.Row="6" Grid.ColumnSpan="3" 
+                                     Text="{Binding XPathPrevious}">
+                            </TextBox>
+
+                            <Label Content="Null Placeholder:" 
+                                   Grid.Column="1" Grid.Row="7" 
+                                   HorizontalAlignment="Right"
+                                   Foreground="White"></Label>
+                            <TextBox Grid.Column="2" Grid.Row="7" Text="{Binding NullPlaceholder}">
+                            </TextBox>
+
+
+                            <Label Content="Long Trade Condition:" 
+                                   Grid.Column="1" Grid.Row="9" 
+                                   HorizontalAlignment="Right"
+                                   Foreground="White"></Label>
+                            <StackPanel Grid.Column="2" Grid.Row="9" Orientation="Horizontal">
+                                <ComboBox Width="60"></ComboBox>
+                                <TextBox Width="60" Text="0,2"></TextBox>
+                            </StackPanel>
+
+                            <Label Content="Short Trade Condition:" 
+                                   Grid.Column="1" Grid.Row="10" 
+                                   HorizontalAlignment="Right"
+                                   Foreground="White"></Label>
+                            <StackPanel Grid.Column="2" Grid.Row="10" Orientation="Horizontal">
+                                <ComboBox Width="60"></ComboBox>
+                                <TextBox Width="60" Text="0,2"></TextBox>
+                            </StackPanel>
+
+                            <Button x:Name="btStartSession" Padding="10 0 10 0" 
+                                    Margin="0,0,1,0" Grid.Column="4" Grid.Row="10" 
+                                    HorizontalAlignment="Right" Command="{Binding StartSessionCommand}">
+                                Start Trading Session</Button>
+
+                            <Label Content="Request Frequency (ms):" 
+                                   Grid.Column="1" Grid.Row="11" 
+                                   HorizontalAlignment="Right"
+                                   Foreground="White"></Label>
+                            <TextBox Grid.Column="2" Grid.Row="11"  Width="60" Text="{Binding Frequency}"
+                                     HorizontalAlignment="Left"></TextBox>
+
+                            <Button x:Name="btStopSession" Padding="10 0 10 0" 
+                                    Margin="0,0,1,0" Grid.Column="4" Grid.Row="11" 
+                                    HorizontalAlignment="Right" Command="{Binding StopSessionCommand}"
+                                    IsEnabled="{Binding StopSessionEnabled}">
+                                Stop Trading Session</Button>
+
+                        </Grid>
+                    </GroupBox>
+
+                    <GroupBox Grid.Column="1" Grid.Row="3" Header="Information"
+                              Foreground="White">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="10"></ColumnDefinition>
+                                <ColumnDefinition Width="140"></ColumnDefinition>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="10"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="10"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="10"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="10"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="10"></RowDefinition>
+                            </Grid.RowDefinitions>
+
+                            <Label Content="Last Request sent at:" Grid.Column="1" Grid.Row="1" 
+                               HorizontalAlignment="Right"
+                               Foreground="White"></Label>
+                            <TextBox Text="" Width="60" HorizontalAlignment="Left"
+                             Grid.Column="2" Grid.Row="1"></TextBox>
+
+                            <Label Content="Event" Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="2"
+                               HorizontalAlignment="Center"
+                               Foreground="White"></Label>
+                            <TextBox Text="" Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="2"></TextBox>
+
+                            <Label Content="Actual" Grid.Column="4" Grid.Row="3" 
+                               HorizontalAlignment="Center"
+                               Foreground="White"></Label>
+                            <TextBox Text="" Grid.Column="4" Grid.Row="4"></TextBox>
+
+                            <Label Content="Forecast" Grid.Column="5" Grid.Row="3" 
+                               HorizontalAlignment="Center"
+                               Foreground="White"></Label>
+                            <TextBox Text="" Grid.Column="5" Grid.Row="4"></TextBox>
+
+                            <Label Content="Previous" Grid.Column="6" Grid.Row="3" 
+                               HorizontalAlignment="Center"
+                               Foreground="White"></Label>
+                            <TextBox Text="" Grid.Column="6" Grid.Row="4"></TextBox>
+
+                            <Label Content="Trade Status:" Grid.Column="1" Grid.Row="6" 
+                               HorizontalAlignment="Right"
+                               Foreground="White"></Label>
+                            <TextBox Text="{Binding TradeStatus}" Grid.Column="2" Grid.Row="6" 
+                                     Grid.ColumnSpan="5">
+                            </TextBox>
+
+                        </Grid>
+                    </GroupBox>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="AUD">
+                <Grid Background="#FFE0CD52">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10"></ColumnDefinition>
+                        <ColumnDefinition Width="60"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="10"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10"></RowDefinition>
+                        <RowDefinition Height="25"></RowDefinition>
+                        <RowDefinition Height="25"></RowDefinition>
+                        <RowDefinition Height="25"></RowDefinition>
+                        <RowDefinition Height="10"></RowDefinition>
+                    </Grid.RowDefinitions>
+                </Grid>
+            </TabItem>
+            <TabItem Header="TabItem">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Window>

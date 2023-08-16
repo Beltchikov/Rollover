@@ -54,6 +54,15 @@ namespace SsbHedger.CommandHandler
                 throw new ApplicationException("Unexpected! sessionEnd is null");
             }
 
+            int dte = Convert.ToInt32(parameters[6]);
+            
+            int numberOfStrikes = Convert.ToInt32(parameters[7]);
+
+            string? strikeStep = parameters[8]?.ToString();
+            if (strikeStep == null)
+            {
+                throw new ApplicationException("Unexpected! strikeStep is null");
+            }
 
             _registryManager.WriteConfiguration(new ConfigurationData(
                 host,
@@ -61,7 +70,10 @@ namespace SsbHedger.CommandHandler
                 clientId,
                 underlyingSymbol,
                 sessionStart,
-                sessionEnd));
+                sessionEnd,
+                dte,
+                numberOfStrikes,
+                strikeStep));
 
             _configuration.SetValue(Configuration.HOST, host);
             _configuration.SetValue(Configuration.PORT, port);
@@ -69,6 +81,9 @@ namespace SsbHedger.CommandHandler
             _configuration.SetValue(Configuration.UNDERLYING_SYMBOL, underlyingSymbol);
             _configuration.SetValue(Configuration.SESSION_START, sessionStart);
             _configuration.SetValue(Configuration.SESSION_END, sessionEnd);
+            _configuration.SetValue(Configuration.DTE, dte);
+            _configuration.SetValue(Configuration.NUMBER_OF_STRIKES, numberOfStrikes);
+            _configuration.SetValue(Configuration.STRIKE_STEP, strikeStep);
 
             _ibHost.Disconnect();
             _ibHost.ConnectAndStartReaderThread();

@@ -1,88 +1,100 @@
-﻿using IbClient.messages;
+﻿using AutoFixture.Xunit2;
+using IbClient;
+using IbClient.messages;
 using NSubstitute;
+using SsbHedger.IbModel;
 using SsbHedger.Model;
 using SsbHedger.SsbConfiguration;
+using SsbHedger.Utilities;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Runtime.Serialization;
 
 namespace SsbHedger.UnitTests
 {
     public class IbHostShould
     {
-        [Fact]
-        public void AddErrorMessageToViewModel()
+        [Theory, AutoNSubstituteData]
+        public void AddErrorMessageToViewModel(
+            int reqId,
+            int code,
+            string message,
+            Exception exception,
+            [Frozen] IConfiguration configuration,
+            IbHost sut)
         {
-            int reqId = 1;
-            int code = 2;
-            string message = "3";
-            Exception exception = new Exception("4");
+            // Prepare
+            configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
-            IConfiguration configuration = Substitute.For<IConfiguration>();
-            configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");  
-
-            var sut = new IbHost(configuration);
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
             viewModel.Messages = new ObservableCollection<Message>();
             sut.ViewModel = viewModel;
 
+            // Act
             Reflection.CallMethod(
                 sut,
                 "_ibClient_Error",
                 new object[] { reqId, code, message, exception });
-            
+
+            // Verify
             Assert.Single(viewModel.Messages);
             Assert.Equal(reqId, viewModel.Messages.First().ReqId);
-            Assert.Equal($"Code:{code} message:{message} exception:{exception}", 
+            Assert.Equal($"Code:{code} message:{message} exception:{exception}",
                 viewModel.Messages.First().Body);
         }
 
-        [Fact]
-        public void AddManagedAccountsMessageToViewModel()
+        [Theory, AutoNSubstituteData]
+        public void AddManagedAccountsMessageToViewModel(
+            [Frozen] IConfiguration configuration,
+            IbHost sut)
         {
+            // Prepare
             var accounts = "acc1 ,acc2";
             ManagedAccountsMessage message = new ManagedAccountsMessage(accounts);
-
-            IConfiguration configuration = Substitute.For<IConfiguration>();
+            
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
-            var sut = new IbHost(configuration);
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
             viewModel.Messages = new ObservableCollection<Message>();
             sut.ViewModel = viewModel;
 
+            // Act
             Reflection.CallMethod(
                 sut,
                 "_ibClient_ManagedAccounts",
                 new object[] { message });
 
+            // Verify
             Assert.Single(viewModel.Messages);
             Assert.Equal(0, viewModel.Messages.First().ReqId);
             var expectedBody = $"Managed accounts: " +
                 $"{message.ManagedAccounts.Aggregate((r, n) => r + "," + n)}";
-            Assert.Equal(expectedBody,viewModel.Messages.First().Body);
+            Assert.Equal(expectedBody, viewModel.Messages.First().Body);
         }
 
-        [Fact]
-        public void AddConnectionStatusMessageToViewModel()
+        [Theory, AutoNSubstituteData]
+        public void AddConnectionStatusMessageToViewModel(
+            [Frozen] IConfiguration configuration,
+            IbHost sut)
         {
+            // Prepare
             ConnectionStatusMessage message = new ConnectionStatusMessage(true);
-
-            IConfiguration configuration = Substitute.For<IConfiguration>();
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
-            var sut = new IbHost(configuration);
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
             viewModel.Messages = new ObservableCollection<Message>();
             sut.ViewModel = viewModel;
 
+            // Act
             Reflection.CallMethod(
                 sut,
                 "_ibClient_NextValidId",
                 new object[] { message });
 
+            // Verify
             Assert.Single(viewModel.Messages);
             Assert.Equal(0, viewModel.Messages.First().ReqId);
             var expectedBody = "CONNECTED!";
@@ -91,25 +103,27 @@ namespace SsbHedger.UnitTests
             Assert.True(viewModel.Connected);
         }
 
-        [Fact]
-        public void AddConnectionStatusMessageToViewModelNegative()
+        [Theory, AutoNSubstituteData]
+        public void AddConnectionStatusMessageToViewModelNegative(
+            [Frozen] IConfiguration configuration,
+            IbHost sut)
         {
+            // Prepare
             ConnectionStatusMessage message = new ConnectionStatusMessage(false);
-
-            IConfiguration configuration = Substitute.For<IConfiguration>();
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
-            var sut = new IbHost(configuration);
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
             viewModel.Messages = new ObservableCollection<Message>();
             sut.ViewModel = viewModel;
 
+            // Act
             Reflection.CallMethod(
                 sut,
                 "_ibClient_NextValidId",
                 new object[] { message });
 
+            // Verify
             Assert.Single(viewModel.Messages);
             Assert.Equal(0, viewModel.Messages.First().ReqId);
             var expectedBody = "NOT CONNECTED!";
@@ -118,21 +132,21 @@ namespace SsbHedger.UnitTests
             Assert.False(viewModel.Connected);
         }
 
-        [Fact]
-        public void AddConnectionStatusMessageOnDisconnect()
+        [Theory, AutoNSubstituteData]
+        public void AddConnectionStatusMessageOnDisconnect(
+            [Frozen] IConfiguration configuration,
+            IbHost sut)
         {
-            ConnectionStatusMessage messageNotConnected = new ConnectionStatusMessage(false);
+            // Prepare
             ConnectionStatusMessage messageConnected = new ConnectionStatusMessage(true);
-
-            IConfiguration configuration = Substitute.For<IConfiguration>();
             configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
-            var sut = new IbHost(configuration);
             MainWindowViewModel viewModel = (MainWindowViewModel)FormatterServices
                 .GetUninitializedObject(typeof(MainWindowViewModel));
             viewModel.Messages = new ObservableCollection<Message>();
             sut.ViewModel = viewModel;
 
+            // Act
             Reflection.CallMethod(
                 sut,
                 "_ibClient_NextValidId",
@@ -142,12 +156,225 @@ namespace SsbHedger.UnitTests
                 "_ibClient_ConnectionClosed",
                 new object[] { });
 
+            // Verify
             Assert.Equal(2, viewModel.Messages.Count);
             Assert.Equal(0, viewModel.Messages.Last().ReqId);
             var expectedBody = "DISCONNECTED!";
             Assert.Equal(expectedBody, viewModel.Messages.Last().Body);
             Assert.StartsWith(expectedBody, viewModel.ConnectionMessage);
             Assert.False(viewModel.Connected);
+        }
+
+        //[Theory, AutoNSubstituteData]
+        //public void ReturnCorrectNumberOfSpyStrikes(
+        //    double underlyingPrice,
+        //    int numberOfStrikes,
+        //    double strikeStep,
+        //    [Frozen] IConfiguration configuration,
+        //    [Frozen] IStrikeUtility strikeUtility,
+        //    IbHost sut)
+        //{
+        //    var lastTradeDate = "221111";
+
+        //    // Prepare
+        //    configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
+
+        //    strikeUtility.ReplaceInvalidStrike(
+        //        new List<double>(),
+        //        default,
+        //        default,
+        //        default)
+        //        .ReturnsForAnyArgs(args => args[0]);
+
+        //    // Act
+        //    var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes, strikeStep);
+
+        //    // Verify
+        //    Assert.IsType<List<double>>(strikes);
+        //    Assert.Equal(numberOfStrikes, strikes.Count());
+        //}
+
+        //[Theory, AutoNSubstituteData]
+        //public void ReturnSpyStrikesSortedAndUnique(
+        //    double underlyingPrice,
+        //    int numberOfStrikes,
+        //    double strikeStep,
+        //    [Frozen] IConfiguration configuration,
+        //    [Frozen] IStrikeUtility strikeUtility,
+        //    IbHost sut)
+        //{
+        //    var lastTradeDate = "221111";
+
+        //    // Prepare
+        //    configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
+
+        //    strikeUtility.ReplaceInvalidStrike(
+        //        new List<double>(),
+        //        default,
+        //        default,
+        //        default)
+        //        .ReturnsForAnyArgs(args => args[0]);
+
+        //    // Act
+        //    var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes, strikeStep).ToList();
+
+        //    // Verify
+        //    // Check ASC sort
+        //    var zipped = strikes.Zip(strikes.Skip(1), (r, n) => n - r);
+        //    Assert.True(zipped.All(r => r >= 0));
+
+        //    // Check uniqueness
+        //    Assert.Equal(strikes.Distinct().Count(), strikes.Count());
+        //}
+
+        //[Theory]
+        //[InlineData(209.4, "221111", 4, 1, "208, 209, 210, 211")]
+        //[InlineData(209.4, "221111", 3, 1, "209, 210, 211")]
+        //[InlineData(210, "221111", 4, 1, "208, 209, 210, 211")]
+        //[InlineData(210, "221111", 3, 1, "209, 210, 211")]
+        //[InlineData(10.4, "221111", 4, 0.5, "9.5, 10, 10.5, 11")]
+        //[InlineData(10.4, "221111", 3, 0.5, "10, 10.5, 11")]
+        //[InlineData(10.5, "221111", 4, 0.5, "9.5, 10, 10.5, 11")]
+        //[InlineData(10.5, "221111", 3, 0.5, "10, 10.5, 11")]
+        //public void ReturnSpyStrikesCorrectly(
+        //    double underlyingPrice,
+        //    string lastTradeDate,
+        //    int numberOfStrikes,
+        //    double strikeStep,
+        //    string strikesString)
+        //{
+        //    // Prepare
+        //    var expectedStrikes = strikesString.Split(new char[] { ',' })
+        //        .Select(d => Convert.ToDouble(d, CultureInfo.InvariantCulture))
+        //        .ToList();
+
+        //    IConfiguration configuration = Substitute.For<IConfiguration>();
+        //    configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
+
+        //    IStrikeUtility strikeUtility = Substitute.For<IStrikeUtility>();
+        //    strikeUtility.ReplaceInvalidStrike(
+        //        expectedStrikes,
+        //        default,
+        //        default,
+        //        default)
+        //        .ReturnsForAnyArgs(args => args[0]);
+
+        //    IIbHost sut = new IbHost(configuration, null, strikeUtility, null);
+
+        //    // Act
+        //    var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes, strikeStep).ToList();
+
+        //    // Verify
+        //    Assert.True(expectedStrikes.SequenceEqual(strikes));
+
+        //}
+
+        //[Theory, AutoNSubstituteData]
+        //public void CallIsValidStrikeForEveryStrikeFromGetStrikesSpy(
+        //    [Frozen] IIBClient ibClient,
+        //    [Frozen] IConfiguration configuration,
+        //    IbHost sut)
+        //{
+        //    double underlyingPrice = 210;
+        //    var lastTradeDate = "221111";
+        //    int numberOfStrikes = 11;
+        //    double strikeStep = 1;
+
+        //    // Prepare
+        //    configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
+        //    Reflection.SetFiledValue(sut, "_ibClient", ibClient);
+
+        //    // Act
+        //    sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes, strikeStep).ToList();
+
+        //    // Verify
+        //    ibClient.Received(numberOfStrikes).IsValidStrike(
+        //        "SPY",
+        //        lastTradeDate,
+        //        Arg.Any<double>());
+        //}
+
+        [Theory]
+        [InlineData(209.4, "221111", 4, 1, "208, 209, 210, 211")] // StrikeAsPrice=0  EvenNumberOfStrikes=1
+        [InlineData(209.4, "221111", 3, 1, "209, 210, 211")]  // StrikeAsPrice=0  EvenNumberOfStrikes=0
+        [InlineData(210, "221111", 4, 1, "208, 209, 210, 211")] // StrikeAsPrice=1  EvenNumberOfStrikes=1
+        [InlineData(210, "221111", 3, 1, "209, 210, 211")] // StrikeAsPrice=1  EvenNumberOfStrikes=0
+        [InlineData(10.4, "221111", 4, 0.5, "9.5, 10, 10.5, 11")]
+        [InlineData(10.4, "221111", 3, 0.5, "10, 10.5, 11")]
+        [InlineData(10.5, "221111", 4, 0.5, "9.5, 10, 10.5, 11")]
+        [InlineData(10.5, "221111", 3, 0.5, "10, 10.5, 11")]
+        public void ReturnSpyStrikesCorrectlyIfAllStrikesAreValid(
+            double underlyingPrice,
+            string lastTradeDate,
+            int numberOfStrikes,
+            double strikeStep,
+            string strikesString)
+        {
+            // Prepare
+            var expectedStrikes = strikesString.Split(new char[] { ',' })
+                .Select(d => Convert.ToDouble(d, CultureInfo.InvariantCulture))
+                .ToList();
+
+            IConfiguration configuration = Substitute.For<IConfiguration>();
+            configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
+
+            IIBClient ibClient = Substitute.For<IIBClient>();
+            ibClient.IsValidStrike(default, default, default)
+                .ReturnsForAnyArgs(true);
+
+            IIbHost sut = new IbHost(configuration, null, null, null);
+            Reflection.SetFiledValue(sut, "_ibClient", ibClient);
+
+            // Act
+            var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes, strikeStep).ToList();
+
+            // Verify
+            Assert.IsType<List<double>>(strikes);
+            Assert.True(strikes.Count() == numberOfStrikes);
+            Assert.True(expectedStrikes.SequenceEqual(strikes));
+        }
+
+        [Theory]
+        [InlineData(10.4, "221111", 4, 0.5, "9.5, 10, 11, 12", "10.5,11.5")]
+        [InlineData(10.4, "221111", 3, 0.5, "10, 11, 12", "10.5")]
+        [InlineData(10.5, "221111", 4, 0.5, "9.5, 10, 11, 11.5", "10.5")]
+        [InlineData(10.5, "221111", 3, 0.5, "10, 11, 12", "10.5")]
+        public void ExcludeNotValidStrikes(
+           double underlyingPrice,
+           string lastTradeDate,
+           int numberOfStrikes,
+           double strikeStep,
+           string strikesString,
+           string notValidStrikesString)
+        {
+            // Prepare
+            var expectedStrikes = strikesString.Split(new char[] { ',' })
+                .Select(d => Convert.ToDouble(d, CultureInfo.InvariantCulture))
+                .ToList();
+            var notValidStrikes = notValidStrikesString.Split(new char[] { ',' })
+                .Select(d => Convert.ToDouble(d, CultureInfo.InvariantCulture))
+                .ToList();
+
+            IConfiguration configuration = Substitute.For<IConfiguration>();
+            configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
+
+            IIBClient ibClient = Substitute.For<IIBClient>();
+            foreach(var strike in expectedStrikes) 
+            {
+                ibClient.IsValidStrike(Arg.Any<string>(), Arg.Any<string>(), strike)
+                .Returns(!notValidStrikes.Contains(strike));
+            }
+            
+            IIbHost sut = new IbHost(configuration, null, null, null);
+            Reflection.SetFiledValue(sut, "_ibClient", ibClient);
+
+            // Act
+            var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes, strikeStep).ToList();
+
+            // Verify
+            Assert.IsType<List<double>>(strikes);
+            Assert.True(strikes.Count() == numberOfStrikes);
+            Assert.True(expectedStrikes.SequenceEqual(strikes));
         }
     }
 }

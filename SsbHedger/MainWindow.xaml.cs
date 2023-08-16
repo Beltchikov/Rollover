@@ -1,7 +1,11 @@
 ﻿using SsbHedger.Model;
 using SsbHedger.SsbConfiguration;
 using System;
+using System.Collections.Specialized;
+using System.Globalization;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace SsbHedger
 {
@@ -16,6 +20,9 @@ namespace SsbHedger
         {
             InitializeComponent();
             _configuration = configuration;
+
+            var listBoxMessagesSource = (INotifyCollectionChanged)listBoxMessages.Items.SourceCollection;
+            listBoxMessagesSource.CollectionChanged += ListBoxMessagesSource_CollectionChanged;
         }
 
         private void btConfiguration_Click(object sender, RoutedEventArgs e)
@@ -34,9 +41,19 @@ namespace SsbHedger
                     _configurationWindow.txtUnderlyingSymbol.Text,
                     _configurationWindow.txtSessionStart.Text,
                     _configurationWindow.txtSessionEnd.Text,
+                    Convert.ToDouble(_configurationWindow.txtDte.Text, new CultureInfo("DE-de")),
+                    Convert.ToDouble(_configurationWindow.txtNumberOfStrikes.Text, new CultureInfo("DE-de")),
+                    _configurationWindow.txtStrikeStep.Text, new CultureInfo("DE-de"),
                 };
                 ((MainWindowViewModel)DataContext).UpdateConfigurationCommand.Execute(commandParams);
             }
+        }
+
+        private void ListBoxMessagesSource_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            var border = (Decorator)VisualTreeHelper.GetChild(listBoxMessages, 0);
+            var scrollViewer = (ScrollViewer)border.Child;
+            scrollViewer.ScrollToEnd();
         }
     }
 }

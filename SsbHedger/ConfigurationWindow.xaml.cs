@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -30,8 +31,12 @@ namespace SsbHedger
             txtPort.Text = _configuration.GetValue(Configuration.PORT).ToString();
             txtClientId.Text = _configuration.GetValue(Configuration.CLIENT_ID).ToString();
             txtUnderlyingSymbol.Text = (string)_configuration.GetValue(Configuration.UNDERLYING_SYMBOL);
-            txtSessionStart.Text = (string)_configuration.GetValue(Configuration.SESSION_END);
+            txtSessionStart.Text = (string)_configuration.GetValue(Configuration.SESSION_START);
             txtSessionEnd.Text = (string)_configuration.GetValue(Configuration.SESSION_END);
+            txtDte.Text = _configuration.GetValue(Configuration.DTE).ToString();
+            txtNumberOfStrikes.Text = Convert.ToString(_configuration.GetValue(Configuration.NUMBER_OF_STRIKES));
+            txtStrikeStep.Text = Convert.ToString(_configuration.GetValue(Configuration.STRIKE_STEP));
+
         }
 
         private void btCancel_Click(object sender, RoutedEventArgs e)
@@ -126,6 +131,48 @@ namespace SsbHedger
             btDone.IsEnabled = ConfigurationIsUpdated(textBoxesDict);
         }
 
+        private void txtDte_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            double result;
+            if(!double.TryParse(((TextBox)sender).Text, out result))
+            {
+                UndoInput(e, (TextBox)sender);
+                return;
+            }
+
+            Dictionary<string, TextBox> textBoxesDict = BuildDefaultTextBoxesDictionary();
+            textBoxesDict["txtDte"] = (TextBox)sender;
+            btDone.IsEnabled = ConfigurationIsUpdated(textBoxesDict);
+        }
+
+        private void txtNumberOfStrikes_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            double result;
+            if (!double.TryParse(((TextBox)sender).Text, out result))
+            {
+                UndoInput(e, (TextBox)sender);
+                return;
+            }
+
+            Dictionary<string, TextBox> textBoxesDict = BuildDefaultTextBoxesDictionary();
+            textBoxesDict["txtNumberOfStrikes"] = (TextBox)sender;
+            btDone.IsEnabled = ConfigurationIsUpdated(textBoxesDict);
+        }
+
+        private void txtStrikeStep_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            double result;
+            if (!double.TryParse(((TextBox)sender).Text, out result))
+            {
+                UndoInput(e, (TextBox)sender);
+                return;
+            }
+
+            Dictionary<string, TextBox> textBoxesDict = BuildDefaultTextBoxesDictionary();
+            textBoxesDict["txtStrikeStep"] = (TextBox)sender;
+            btDone.IsEnabled = ConfigurationIsUpdated(textBoxesDict);
+        }
+
         private bool ConfigurationIsUpdated(Dictionary<string, TextBox> textBoxesDict)
         {
             if (string.IsNullOrWhiteSpace(textBoxesDict["txtHost"].Text)
@@ -133,7 +180,10 @@ namespace SsbHedger
                 || string.IsNullOrWhiteSpace(textBoxesDict["txtClientId"].Text)
                 || string.IsNullOrWhiteSpace(textBoxesDict["txtUnderlyingSymbol"].Text)
                 || string.IsNullOrWhiteSpace(textBoxesDict["txtSessionStart"].Text)
-                || string.IsNullOrWhiteSpace(textBoxesDict["txtSessionEnd"].Text))
+                || string.IsNullOrWhiteSpace(textBoxesDict["txtSessionEnd"].Text)
+                || string.IsNullOrWhiteSpace(textBoxesDict["txtDte"].Text)
+                || string.IsNullOrWhiteSpace(textBoxesDict["txtNumberOfStrikes"].Text)
+                || string.IsNullOrWhiteSpace(textBoxesDict["txtStrikeStep"].Text))
             {
                 return false;
             }
@@ -148,8 +198,14 @@ namespace SsbHedger
                 textBoxesDict["txtSessionStart"].Text, StringComparison.InvariantCultureIgnoreCase);
             bool newSessionEnd = !string.Equals((string)_configuration.GetValue(Configuration.SESSION_END), 
                 textBoxesDict["txtSessionEnd"].Text, StringComparison.InvariantCultureIgnoreCase);
+            bool dte = (int)_configuration.GetValue(Configuration.DTE) != Convert.ToInt32(textBoxesDict["txtDte"].Text);
+            bool numberOfStrikes = !string.Equals(Convert.ToString(_configuration.GetValue(Configuration.NUMBER_OF_STRIKES), new CultureInfo("DE-de")),
+                textBoxesDict["txtNumberOfStrikes"].Text, StringComparison.InvariantCultureIgnoreCase);
+            bool strikeStep = !string.Equals(Convert.ToString(_configuration.GetValue(Configuration.STRIKE_STEP), new CultureInfo("DE-de")),
+                textBoxesDict["txtStrikeStep"].Text, StringComparison.InvariantCultureIgnoreCase);
 
-            return newHost || newPort || newClientId || newUnderlyingSymbol || newSessionStart || newSessionEnd;
+            return newHost || newPort || newClientId || newUnderlyingSymbol || newSessionStart || newSessionEnd
+                || dte || numberOfStrikes || strikeStep;
         }
 
         private Dictionary<string, TextBox> BuildDefaultTextBoxesDictionary()
@@ -162,6 +218,9 @@ namespace SsbHedger
                 {"txtUnderlyingSymbol", txtUnderlyingSymbol},
                 {"txtSessionStart", txtSessionStart},
                 {"txtSessionEnd", txtSessionEnd },
+                {"txtDte", txtDte },
+                {"txtNumberOfStrikes", txtNumberOfStrikes },
+                {"txtStrikeStep", txtStrikeStep },
             };
         }
 

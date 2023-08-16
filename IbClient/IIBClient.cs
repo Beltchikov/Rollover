@@ -2,7 +2,6 @@
 using IbClient.messages;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace IbClient
 {
@@ -13,8 +12,7 @@ namespace IbClient
         EClientSocket ClientSocket { get; }
         void ConnectAndStartReaderThread(string host, int port, int clientId);
         void Disconnect();
-        Task<Contract> ResolveContractAsync(int conId, string refExch);
-        Task<Contract[]> ResolveContractAsync(string secType, string symbol, string currency, string exchange);
+        bool IsValidStrike(string underlying, string lastTradeDate, double strike);
 
         event Action<AccountDownloadEndMessage> AccountDownloadEnd;
         event Action<AccountSummaryMessage> AccountSummary;

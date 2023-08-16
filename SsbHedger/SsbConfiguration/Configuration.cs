@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SsbHedger.SsbConfiguration
 {
@@ -10,6 +11,9 @@ namespace SsbHedger.SsbConfiguration
         public const string UNDERLYING_SYMBOL = "UnderlyingSymbol";
         public const string SESSION_START = "SessionStart";
         public const string SESSION_END = "SessionEnd";
+        public const string DTE = "Dte";
+        public const string NUMBER_OF_STRIKES = "NumberOfStrikes";
+        public const string STRIKE_STEP = "StrikeStep";
 
         private Dictionary<string, object> _configuration;
 
@@ -23,6 +27,9 @@ namespace SsbHedger.SsbConfiguration
                 {UNDERLYING_SYMBOL, "SPY" },
                 {SESSION_START, "15:30" },
                 {SESSION_END, "22:15" },
+                {DTE, 0},
+                {NUMBER_OF_STRIKES, 10 },
+                {STRIKE_STEP, "0.5" },
             };
         }
 
