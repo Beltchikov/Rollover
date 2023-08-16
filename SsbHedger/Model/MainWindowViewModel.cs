@@ -264,7 +264,7 @@ namespace SsbHedger.Model
                 OnPropertyChanged(nameof(NextAtmStrike));
                 OnPropertyChanged(nameof(IvAverageWeghted));
 
-                FindStrikesCommand.Execute(new object[] { value });
+                //FindStrikesCommand.Execute(new object[] { value });
             }
         }
 
