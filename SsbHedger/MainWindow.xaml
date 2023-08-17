@@ -30,6 +30,7 @@
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="10"></RowDefinition>
+            <RowDefinition Height="330"></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="10"></RowDefinition>
             <RowDefinition Height="200"></RowDefinition>
@@ -256,6 +257,14 @@
                 </Grid>
             </GroupBox>
 
+        </Grid>
+
+        <Grid Background="LightCoral" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3">
+            <Grid.RowDefinitions>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+            </Grid.ColumnDefinitions>
+            <GroupBox Grid.Row="1" Grid.Column="1" Header="TTP"></GroupBox>
         </Grid>
 
         <ListBox Name="listBoxMessages" Grid.Row="6" Grid.Column="1" 
