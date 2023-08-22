@@ -96,8 +96,9 @@
                            ></TextBlock>
             </StackPanel>
 
-           <GroupBox Header="IV Alert" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
-                     Style="{StaticResource GroupBoxHeader}" >
+            <!--<GroupBox Header="IV Alert" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+                     Style="{StaticResource GroupBoxHeader}" >-->
+            <GroupBox Header="Entry" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" >
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20"></RowDefinition>
@@ -177,13 +178,13 @@
                             </MultiBinding>
                         </CheckBox.CommandParameter>
                     </CheckBox>
-
-                    <chartControls:Chart Grid.Row="1" Grid.Column="4" Grid.RowSpan="11">
-
-                    </chartControls:Chart>
-
                 </Grid>
             </GroupBox>
+            <GroupBox Grid.Row="1" Grid.Column="4" Header="Chart">
+                <chartControls:Chart >
+                </chartControls:Chart>
+            </GroupBox>
+
 
         </Grid>
 
