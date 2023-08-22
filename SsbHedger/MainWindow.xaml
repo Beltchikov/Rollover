@@ -124,46 +124,11 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="10"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Row="1"
-                           Style="{StaticResource Label}"  
-                       VerticalAlignment="Bottom" Grid.ColumnSpan="2">Alert if IV above</TextBlock>
-                    <TextBox Grid.Row="1" Grid.Column="2" TextAlignment="Center" 
-                     Text="{Binding IvThreshold}" />
-
+                    
                     <TextBlock Grid.Row="3" Style="{StaticResource Label}"  
                        VerticalAlignment="Bottom" Grid.Column="1">Underlying Price</TextBlock>
                     <TextBox x:Name="txtUnderlyingPrice" Grid.Row="3" Grid.Column="2" TextAlignment="Center" 
                      Text="{Binding UnderlyingPrice}" />
-
-                    <TextBlock Grid.Row="4" Style="{StaticResource Label}"  
-                       VerticalAlignment="Bottom" Grid.Column="1">ATM Strike Call</TextBlock>
-                    <TextBox x:Name="txtAtmStrikeUp" Grid.Row="4" Grid.Column="2" TextAlignment="Center" 
-                     Text="{Binding AtmStrikeCall, Mode=OneWay}" />
-
-                    <TextBlock Grid.Row="5" Style="{StaticResource Label}"  
-                       VerticalAlignment="Bottom" Grid.Column="1">ATM Strike Put</TextBlock>
-                    <TextBox x:Name="txtAtmStrikeDown" Grid.Row="5" Grid.Column="2" TextAlignment="Center" 
-                     Text="{Binding AtmStrikePut, Mode=OneWay}" />
-
-                    <TextBlock Grid.Row="6" Style="{StaticResource Label}"  
-                       VerticalAlignment="Bottom" Grid.Column="1">Call IV</TextBlock>
-                    <TextBox x:Name="txtCallIv" Grid.Row="6" Grid.Column="2" TextAlignment="Center" 
-                     Text="{Binding IvCall, FallbackValue=0}" />
-
-                    <TextBlock Grid.Row="7" Style="{StaticResource Label}"  
-                       VerticalAlignment="Bottom" Grid.Column="1">Put IV</TextBlock>
-                    <TextBox x:Name="txtPutIv" Grid.Row="7" Grid.Column="2" TextAlignment="Center" 
-                     Text="{Binding IvPut, FallbackValue=0}" />
-
-                    <TextBlock Grid.Row="8" Style="{StaticResource Label}"  
-                       VerticalAlignment="Bottom" Grid.Column="1">Average IV</TextBlock>
-                    <TextBox x:Name="txtAverageIv" Grid.Row="8" Grid.Column="2" TextAlignment="Center" 
-                     Text="{Binding IvAverage, FallbackValue=0,Mode=OneWay}" />
-
-                    <TextBlock Grid.Row="9" Style="{StaticResource Label}"  
-                       VerticalAlignment="Bottom" Grid.ColumnSpan="2">Average Weighted IV</TextBlock>
-                    <TextBox x:Name="txtAverageWeightedIv" Grid.Row="9" Grid.Column="2" TextAlignment="Center" 
-                     Text="{Binding IvAverageWeghted, FallbackValue=0, Mode=OneWay}" />
 
                     <TextBlock Grid.Row="11" Style="{StaticResource Label}" 
                        VerticalAlignment="Bottom" Grid.Column="1">Enable alert</TextBlock>
