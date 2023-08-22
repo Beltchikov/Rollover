@@ -30,8 +30,7 @@
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="10"></RowDefinition>
-            <RowDefinition Height="330"></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="10"></RowDefinition>
             <RowDefinition Height="200"></RowDefinition>
             <RowDefinition Height="10"></RowDefinition>
@@ -97,7 +96,8 @@
                            ></TextBlock>
             </StackPanel>
 
-           <GroupBox Header="IV Alert" Grid.Row="1" Grid.Column="1" Style="{StaticResource GroupBoxHeader}" >
+           <GroupBox Header="IV Alert" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+                     Style="{StaticResource GroupBoxHeader}" >
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20"></RowDefinition>
@@ -187,7 +187,7 @@
 
         </Grid>
 
-        <ListBox Name="listBoxMessages" Grid.Row="7" Grid.Column="1" 
+        <ListBox Name="listBoxMessages" Grid.Row="6" Grid.Column="1" 
                  Background="Azure" ItemsSource="{Binding Messages}"
                  Grid.ColumnSpan="3">
             <ListBox.ItemTemplate>
