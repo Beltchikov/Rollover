@@ -97,79 +97,7 @@
                            ></TextBlock>
             </StackPanel>
 
-            <GroupBox Header="Delta Alert" Grid.Row="1" Style="{StaticResource GroupBoxHeader}"
-                      VerticalAlignment="Top">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="20"></RowDefinition>
-                        <RowDefinition Height="20"></RowDefinition>
-                        <RowDefinition Height="20"></RowDefinition>
-                        <RowDefinition Height="20"></RowDefinition>
-                        <RowDefinition Height="20"></RowDefinition>
-                        <RowDefinition Height="20"></RowDefinition>
-                        <RowDefinition Height="20"></RowDefinition>
-                        <RowDefinition Height="20"></RowDefinition>
-                        <RowDefinition Height="20"></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="130"></ColumnDefinition>
-                        <ColumnDefinition Width="70"></ColumnDefinition>
-                        <ColumnDefinition Width="70"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Row="1"
-                           Style="{StaticResource Label}"  
-                       VerticalAlignment="Bottom">Alert if delta below</TextBlock>
-                    <TextBox Grid.Row="1" Grid.Column="1" TextAlignment="Center" 
-                     Text="{Binding DeltaThreshold, FallbackValue=16}" />
-
-                    <TextBlock HorizontalAlignment="Center" 
-                           Grid.Row="3" Grid.Column="1"
-                           Style="{StaticResource NormalTextBlock}"  
-                       VerticalAlignment="Bottom">Strike</TextBlock>
-                    <TextBlock HorizontalAlignment="Center" 
-                           Grid.Row="3" Grid.Column="2"
-                           Style="{StaticResource NormalTextBlock}"  
-                       VerticalAlignment="Bottom">Delta</TextBlock>
-
-                    <TextBlock Grid.Row="4" Style="{StaticResource Label}"  
-                       VerticalAlignment="Bottom">Call</TextBlock>
-                    <TextBox x:Name="txtCallStrike" Grid.Row="4" Grid.Column="1" TextAlignment="Center" 
-                     Text="{Binding NextCallStrike, FallbackValue=0}" />
-                    <TextBlock x:Name="txtNextCallDelta" HorizontalAlignment="Center" 
-                           Grid.Row="4" Grid.Column="2"
-                           Style="{StaticResource NormalTextBlock}"  
-                       VerticalAlignment="Bottom"
-                       Text="{Binding NextCallDelta, FallbackValue=50}"></TextBlock>
-
-                    <TextBlock Grid.Row="5" Style="{StaticResource Label}"  
-                       VerticalAlignment="Bottom">Put</TextBlock>
-                    <TextBox x:Name="txtPutStrike" Grid.Row="5" Grid.Column="1" TextAlignment="Center" 
-                     Text="{Binding NextPutStrike, FallbackValue=0}" />
-                    <TextBlock x:Name="txtNextPutDelta"  HorizontalAlignment="Center" 
-                           Grid.Row="5" Grid.Column="2"
-                           Style="{StaticResource NormalTextBlock}"  
-                       VerticalAlignment="Top" Margin="0,4,0,0"
-                       Text="{Binding NextPutDelta, FallbackValue=-50}"></TextBlock>
-
-                    <TextBlock Grid.Row="7" Style="{StaticResource Label}" 
-                       VerticalAlignment="Bottom">Enable alert</TextBlock>
-                    <CheckBox x:Name="chkActivateDeltaAlert" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Center" 
-                      VerticalAlignment="Center"
-                      Command="{Binding DeltaAlertActivateCommand}"
-                      IsChecked="False" >
-                        <CheckBox.CommandParameter>
-                            <MultiBinding Converter="{StaticResource DeltaAlertActivateConverter}" Mode="OneWay">
-                                <Binding Path="IsChecked" ElementName="chkActivateDeltaAlert"/>
-                                <Binding Path="Text" ElementName="txtPutStrike"/>
-                                <Binding Path="Text" ElementName="txtCallStrike"/>
-                            </MultiBinding>
-                        </CheckBox.CommandParameter>
-                    </CheckBox>
-                </Grid>
-            </GroupBox>
-
-            <GroupBox Header="IV Alert" Grid.Row="1" Grid.Column="1" Style="{StaticResource GroupBoxHeader}" >
+           <GroupBox Header="IV Alert" Grid.Row="1" Grid.Column="1" Style="{StaticResource GroupBoxHeader}" >
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20"></RowDefinition>
@@ -259,32 +187,7 @@
 
         </Grid>
 
-        <Grid Background="LightBlue" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3">
-            <Grid.RowDefinitions>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="46*"/>
-                <ColumnDefinition Width="33*"/>
-            </Grid.ColumnDefinitions>
-            <GroupBox Header="TTP" Grid.Column="0"/>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="25"/>
-                    <RowDefinition Height="25"/>
-                    <RowDefinition Height="167*"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="10"/>
-                    <ColumnDefinition Width="111*"/>
-                    <ColumnDefinition Width="349*"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Row="1" Grid.Column="1" Height="25">
-                    Positions:</TextBlock>
-                <ComboBox Grid.Row="1" Grid.Column="2"></ComboBox>
-            </Grid>
-        </Grid>
-
-        <ListBox Name="listBoxMessages" Grid.Row="6" Grid.Column="1" 
+        <ListBox Name="listBoxMessages" Grid.Row="7" Grid.Column="1" 
                  Background="Azure" ItemsSource="{Binding Messages}"
                  Grid.ColumnSpan="3">
             <ListBox.ItemTemplate>
