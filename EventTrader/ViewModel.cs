@@ -28,8 +28,6 @@ namespace Dsmn
         public RelayCommand StartSessionCommand { get; }
         public RelayCommand StopSessionCommand { get; }
         public ICommand TestDataSourceCommand { get; }
-        public ICommand TestConnectionCommand { get; }
-
         public ViewModel(IEconDataLoop econDataLoop)
         {
             _econDataLoop = econDataLoop;
@@ -62,8 +60,7 @@ namespace Dsmn
                 },
                 () => _econDataLoop.IsRunning);
             TestDataSourceCommand = new RelayCommand(() => MessageBox.Show("TestDataSourceCommand"));
-            TestConnectionCommand = new RelayCommand(() => MessageBox.Show("TestConnectionCommand"));
-
+            
             // TODO DEV remove later
             Url = "https://www.investing.com/economic-calendar/";
             XPathActual = "//*[@id=\"eventActual_479408\"]";
