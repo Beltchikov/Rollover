@@ -25,7 +25,7 @@ namespace Dsmn
         private string _xPathExpected;
         private string _xPathPrevious;
         private string _nullPlaceholder;
-        private List<string> _tickerList;
+        private string _tickerString;
         private List<string> _tickerListWithExpectedEps;
 
         public RelayCommand StartSessionCommand { get; }
@@ -68,11 +68,15 @@ namespace Dsmn
             ExpectedEpsCommand = new RelayCommand(() => TickerListWithExpectedEps = investingProvider.ExpectedEps(TickerList));
 
             // TODO DEV remove later
-            Url = "https://www.investing.com/economic-calendar/";
-            XPathActual = "//*[@id=\"eventActual_479408\"]";
-            XPathExpected = "//*[@id=\"eventForecast_479408\"]";
-            XPathPrevious = "//*[@id=\"eventPrevious_479408\"]";
-            NullPlaceholder = "&nbsp;";
+            //Url = "https://www.investing.com/economic-calendar/";
+            //XPathActual = "//*[@id=\"eventActual_479408\"]";
+            //XPathExpected = "//*[@id=\"eventForecast_479408\"]";
+            //XPathPrevious = "//*[@id=\"eventPrevious_479408\"]";
+            //NullPlaceholder = "&nbsp;";
+
+            TickerString = "PFS\r\nSLCA\r\n WT";
+            //TickerString = "PFS";
+
         }
 
         public int Frequency
@@ -153,10 +157,15 @@ namespace Dsmn
 
         public List<string> TickerList
         {
-            get => _tickerList;
+            get => TickerString.Split("\r\n", StringSplitOptions.TrimEntries).ToList();
+        }
+
+        public string TickerString
+        {
+            get => _tickerString;
             set
             {
-                SetProperty(ref _tickerList, value);
+                SetProperty(ref _tickerString, value);
             }
         }
 

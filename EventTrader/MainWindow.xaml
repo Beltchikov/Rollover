@@ -47,7 +47,7 @@
                             <Label Content="Tickers:" Grid.Column="1" Grid.Row="1" 
                                    HorizontalAlignment="Left"
                                     Foreground="White"></Label>
-                            <TextBox Text="" Grid.Column="1" Grid.Row="2" Grid.RowSpan="3"
+                            <TextBox Text="{Binding TickerString}" Grid.Column="1" Grid.Row="2" Grid.RowSpan="3"
                                       AcceptsReturn="True"
                                         VerticalScrollBarVisibility="Visible"></TextBox>
 
