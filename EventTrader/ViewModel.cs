@@ -20,8 +20,8 @@ namespace Dsmn
         private int _frequency;
         private bool _stopSessionEnabled;
         private string _dataType;
-        private string _url;
-        private string _xPathActual;
+        private string _urlEpsExpected;
+        private string _xPathEpsExpected;
         private string _xPathExpected;
         private string _xPathPrevious;
         private string _nullPlaceholder;
@@ -47,11 +47,11 @@ namespace Dsmn
                     _econDataLoop.StartAsync(
                         Frequency,
                         DataType,
-                        Url,
-                        XPathActual,
+                        UrlEpsExpected,
+                        XPathEpsExpected,
                         XPathExpected,
                         XPathPrevious,
-                        NullPlaceholder);
+                        NullPlaceholderEpsExpected);
                     StopSessionEnabled = true;
                 },
                 () => !_econDataLoop.IsRunning);
@@ -75,7 +75,9 @@ namespace Dsmn
             //NullPlaceholder = "&nbsp;";
 
             TickerString = "PFS\r\nSLCA\r\n WT";
-            //TickerString = "PFS";
+            UrlEpsExpected = "https://www.investing.com/earnings-calendar/";
+            XPathEpsExpected = "//*[@id=\"earningsCalendarData\"]";
+            NullPlaceholderEpsExpected = "&nbsp;";
 
         }
 
@@ -110,21 +112,21 @@ namespace Dsmn
             }
         }
 
-        public string Url
+        public string UrlEpsExpected
         {
-            get => _url;
+            get => _urlEpsExpected;
             set
             {
-                SetProperty(ref _url, value);
+                SetProperty(ref _urlEpsExpected, value);
             }
         }
 
-        public string XPathActual
+        public string XPathEpsExpected
         {
-            get => _xPathActual;
+            get => _xPathEpsExpected;
             set
             {
-                SetProperty(ref _xPathActual, value);
+                SetProperty(ref _xPathEpsExpected, value);
             }
         }
 
@@ -146,7 +148,7 @@ namespace Dsmn
             }
         }
 
-        public string NullPlaceholder
+        public string NullPlaceholderEpsExpected
         {
             get => _nullPlaceholder;
             set

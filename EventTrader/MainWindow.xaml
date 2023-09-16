@@ -57,19 +57,19 @@
                             <Label Content="URL:" Grid.Column="2" Grid.Row="1" 
                                HorizontalAlignment="Right"
                                Foreground="White"></Label>
-                            <TextBox Text=""
+                            <TextBox Text="{Binding UrlEpsExpected}"
                              Grid.Column="3" Grid.Row="1"></TextBox>
 
                             <Label Content="XPath:" Grid.Column="2" Grid.Row="2" 
                                HorizontalAlignment="Right"
                                Foreground="White"></Label>
-                            <TextBox Text=""
+                            <TextBox Text="{Binding XPathEpsExpected}"
                              Grid.Column="3" Grid.Row="2"></TextBox>
 
                             <Label Content="Null Placeholder:" Grid.Column="2" Grid.Row="3" 
                                 HorizontalAlignment="Right"
                                 Foreground="White"></Label>
-                            <TextBox Text="" Grid.Column="3" Grid.Row="3"></TextBox>
+                            <TextBox Text="{Binding NullPlaceholderEpsExpected}" Grid.Column="3" Grid.Row="3"></TextBox>
 
                             <Button Padding="10 0 10 0" 
                             Margin="0,0,1,0" Grid.Column="3" Grid.Row="6" 
@@ -121,22 +121,6 @@
                                    HorizontalAlignment="Right"
                                    Foreground="White"></Label>
                             <DatePicker Grid.Column="4" Grid.Row="1" ></DatePicker>
-
-                            <Label Content="URL:" 
-                                   Grid.Column="1" Grid.Row="3" 
-                                   HorizontalAlignment="Right"
-                                   Foreground="White"></Label>
-                            <TextBox Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="3" 
-                                     Text="{Binding Url}">
-                            </TextBox>
-
-                            <Label Content="XPath Actual:" 
-                                   Grid.Column="1" Grid.Row="4" 
-                                   HorizontalAlignment="Right"
-                                   Foreground="White"></Label>
-                            <TextBox Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="3" 
-                                     Text="{Binding XPathActual}">
-                            </TextBox>
 
                             <Label Content="XPath Expected:" 
                                    Grid.Column="1" Grid.Row="5" 
