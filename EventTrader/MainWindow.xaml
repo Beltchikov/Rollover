@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Dsmn"
         mc:Ignorable="d"
-        Title="Event Trader" Height="700" Width="800">
+        Title="DSMN" Height="700" Width="800">
     <Grid>
         <TabControl x:Name="tabControl">
-            <TabItem Header="USD">
+            <TabItem Header="Investing.com">
                 <Grid Background="#FF1A26DA">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="10"></ColumnDefinition>
@@ -258,7 +258,7 @@
 
                 </Grid>
             </TabItem>
-            <TabItem Header="AUD">
+            <TabItem Header="Yahoo Finance">
                 <Grid Background="#FFE0CD52">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="10"></ColumnDefinition>
