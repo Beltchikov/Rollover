@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace EventTrader.Requests
+namespace Dsmn.Requests
 {
     public interface IInfiniteLoop
     {

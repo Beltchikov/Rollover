@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System;
 
-namespace EventTrader
+namespace Dsmn
 {
     public interface IEconDataLoop
     {

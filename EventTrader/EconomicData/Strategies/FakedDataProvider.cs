@@ -1,4 +1,4 @@
-﻿namespace EventTrader.EconomicData.Strategies
+﻿namespace Dsmn.EconomicData.Strategies
 {
     /// <summary>
     /// Returns actual data on the 4-th request

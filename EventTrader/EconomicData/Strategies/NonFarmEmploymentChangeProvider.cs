@@ -1,11 +1,11 @@
-﻿using EventTrader.WebScraping;
+﻿using Dsmn.WebScraping;
 using System;
 using System.Globalization;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-namespace EventTrader.EconomicData.Strategies
+namespace Dsmn.EconomicData.Strategies
 {
     public class NonFarmEmploymentChangeProvider : IEconomicDataProvider
     {

@@ -1,9 +1,9 @@
-﻿using EventTrader.Requests;
+﻿using Dsmn.Requests;
 using System;
 using System.Security.Policy;
 using System.Threading.Tasks;
 
-namespace EventTrader.EconomicData
+namespace Dsmn.EconomicData
 {
     public class EconDataLoop : IEconDataLoop
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace EventTrader.EconomicData
+namespace Dsmn.EconomicData
 {
     public static class Countries
     {

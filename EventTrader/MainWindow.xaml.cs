@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace EventTrader
+namespace Dsmn
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

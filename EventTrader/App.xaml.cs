@@ -1,11 +1,11 @@
-﻿using EventTrader.EconomicData;
-using EventTrader.Requests;
-using EventTrader.WebScraping;
+﻿using Dsmn.EconomicData;
+using Dsmn.Requests;
+using Dsmn.WebScraping;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows;
 
-namespace EventTrader
+namespace Dsmn
 {
     /// <summary>
     /// Interaction logic for App.xaml

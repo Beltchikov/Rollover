@@ -1,4 +1,4 @@
-﻿namespace EventTrader.EconomicData.Strategies
+﻿namespace Dsmn.EconomicData.Strategies
 {
     public interface IEconomicDataProvider
     {

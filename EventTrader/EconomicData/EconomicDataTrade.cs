@@ -1,4 +1,4 @@
-﻿namespace EventTrader.EconomicData
+﻿namespace Dsmn.EconomicData
 {
     public class EconomicDataTrade
     {

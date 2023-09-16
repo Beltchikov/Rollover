@@ -1,8 +1,8 @@
-﻿using EventTrader.EconomicData.Strategies;
-using EventTrader.WebScraping;
+﻿using Dsmn.EconomicData.Strategies;
+using Dsmn.WebScraping;
 using System;
 
-namespace EventTrader.EconomicData
+namespace Dsmn.EconomicData
 {
     public class DataProviderContext : IDataProviderContext
     {
