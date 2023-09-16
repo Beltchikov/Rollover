@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Dsmn.DataProviders;
 using Dsmn.EconomicData;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,13 +25,15 @@ namespace Dsmn
         private string _xPathExpected;
         private string _xPathPrevious;
         private string _nullPlaceholder;
+        private List<string> _tickerList;
+        private List<string> _tickerListWithExpectedEps;
 
         public RelayCommand StartSessionCommand { get; }
         public RelayCommand StopSessionCommand { get; }
         public ICommand TestDataSourceCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
 
-        public ViewModel(IEconDataLoop econDataLoop)
+        public ViewModel(IEconDataLoop econDataLoop, IInvestingDataProvider investingProvider)
         {
             _econDataLoop = econDataLoop;
             _econDataLoop.Status += _requestLoop_Status;
@@ -61,7 +65,7 @@ namespace Dsmn
                 },
                 () => _econDataLoop.IsRunning);
             TestDataSourceCommand = new RelayCommand(() => MessageBox.Show("TestDataSourceCommand"));
-            ExpectedEpsCommand = new RelayCommand(() => MessageBox.Show("ExpectedEpsCommand"));
+            ExpectedEpsCommand = new RelayCommand(() => TickerListWithExpectedEps = investingProvider.ExpectedEps(TickerList));
 
             // TODO DEV remove later
             Url = "https://www.investing.com/economic-calendar/";
@@ -147,6 +151,24 @@ namespace Dsmn
             }
         }
 
+        public List<string> TickerList
+        {
+            get => _tickerList;
+            set
+            {
+                SetProperty(ref _tickerList, value);
+            }
+        }
+
+        public List<string> TickerListWithExpectedEps
+        {
+            get => _tickerListWithExpectedEps;
+            set
+            {
+                SetProperty(ref _tickerListWithExpectedEps, value);
+            }
+        }
+        
         private void SetProperty(ref object nullPlaceHolder, string value)
         {
             throw new NotImplementedException();

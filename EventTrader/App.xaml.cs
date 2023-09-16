@@ -1,4 +1,5 @@
-﻿using Dsmn.EconomicData;
+﻿using Dsmn.DataProviders;
+using Dsmn.EconomicData;
 using Dsmn.Requests;
 using Dsmn.WebScraping;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +21,7 @@ namespace Dsmn
                 .AddSingleton<IEconDataLoop, EconDataLoop>()
                 .AddSingleton<IBrowserWrapper, BrowserWrapper>()
                 .AddSingleton<IDataProviderContext, DataProviderContext>()
+                .AddSingleton<IInvestingDataProvider, InvestingDataProvider>()
                 .BuildServiceProvider();
         }
 
@@ -29,7 +31,8 @@ namespace Dsmn
         {
             MainWindow mainWindow = new()
             {
-                DataContext = new ViewModel(Services.GetRequiredService<IEconDataLoop>())
+                DataContext = new ViewModel(Services.GetRequiredService<IEconDataLoop>(),
+                                            Services.GetRequiredService<IInvestingDataProvider>())
             };
             mainWindow.Show();
         }
