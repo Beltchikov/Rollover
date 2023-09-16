@@ -1,5 +1,7 @@
 ﻿using Dsmn.WebScraping;
+using System;
 using System.Collections.Generic;
+using System.Security.Policy;
 using System.Windows;
 
 namespace Dsmn.DataProviders
@@ -22,8 +24,15 @@ namespace Dsmn.DataProviders
             //{
 
             //}
-            
-            
+
+            if (!_browserWrapper.Navigate(urlEpsExpected))
+            {
+                throw new ApplicationException($"Can not navigate to {urlEpsExpected}");
+            }
+
+            var xDocument = _browserWrapper.XDocument;
+
+
             //TODO
             MessageBox.Show("ExpectedEps");
             return tickerList;
