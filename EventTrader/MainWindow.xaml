@@ -17,14 +17,14 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="100"></RowDefinition>
+                        <RowDefinition Height="200"></RowDefinition>
                         <RowDefinition Height="330"></RowDefinition>
-                        <RowDefinition Height="180"></RowDefinition>
+                        <RowDefinition Height="80"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="10"></RowDefinition>
                     </Grid.RowDefinitions>
 
-                    <GroupBox Grid.Column="1" Grid.Row="1" Header="Platform Connection"
+                    <GroupBox Grid.Column="1" Grid.Row="1" Header="Expected EPS"
                               Foreground="White">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -47,29 +47,23 @@
                                 <RowDefinition Height="10"></RowDefinition>
                             </Grid.RowDefinitions>
 
-                            <Label Content="Host:" Grid.Column="1" Grid.Row="1" 
+                            <Label Content="URL:" Grid.Column="1" Grid.Row="1" 
                                HorizontalAlignment="Right"
                                Foreground="White"></Label>
                             <TextBox Text=""
                              Grid.Column="2" Grid.Row="1"></TextBox>
 
-                            <Label Content="Port:" Grid.Column="4" Grid.Row="1" 
+                            <Label Content="XPath:" Grid.Column="4" Grid.Row="1" 
                                HorizontalAlignment="Right"
                                Foreground="White"></Label>
                             <TextBox Text=""
                              Grid.Column="5" Grid.Row="1"></TextBox>
 
-                            <Label Content="Client ID:" Grid.Column="7" Grid.Row="1" 
-                               HorizontalAlignment="Right"
-                               Foreground="White"></Label>
-                            <TextBox Text=""
-                             Grid.Column="8" Grid.Row="1" Grid.ColumnSpan="2"></TextBox>
-
                             <Button Padding="10 0 10 0" 
                             Margin="0,0,1,0" Grid.Column="8" Grid.Row="2" Grid.ColumnSpan="2"
                                     HorizontalAlignment="Right" Height="25" 
                                     VerticalAlignment="Top" 
-                                    Command="{Binding TestConnectionCommand}">Test</Button>
+                                    Command="{Binding TestConnectionCommand}">Get it!</Button>
 
                         </Grid>
                     </GroupBox>
@@ -199,59 +193,14 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="10"></ColumnDefinition>
-                                <ColumnDefinition Width="140"></ColumnDefinition>
-                                <ColumnDefinition Width="100"></ColumnDefinition>
-                                <ColumnDefinition Width="100"></ColumnDefinition>
-                                <ColumnDefinition Width="100"></ColumnDefinition>
-                                <ColumnDefinition Width="100"></ColumnDefinition>
-                                <ColumnDefinition Width="100"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="10"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="10"></RowDefinition>
-                                <RowDefinition Height="25"></RowDefinition>
-                                <RowDefinition Height="10"></RowDefinition>
-                                <RowDefinition Height="25"></RowDefinition>
-                                <RowDefinition Height="25"></RowDefinition>
-                                <RowDefinition Height="10"></RowDefinition>
-                                <RowDefinition Height="25"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="10"></RowDefinition>
                             </Grid.RowDefinitions>
-
-                            <Label Content="Last Request sent at:" Grid.Column="1" Grid.Row="1" 
-                               HorizontalAlignment="Right"
-                               Foreground="White"></Label>
-                            <TextBox Text="" Width="60" HorizontalAlignment="Left"
-                             Grid.Column="2" Grid.Row="1"></TextBox>
-
-                            <Label Content="Event" Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="2"
-                               HorizontalAlignment="Center"
-                               Foreground="White"></Label>
-                            <TextBox Text="" Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="2"></TextBox>
-
-                            <Label Content="Actual" Grid.Column="4" Grid.Row="3" 
-                               HorizontalAlignment="Center"
-                               Foreground="White"></Label>
-                            <TextBox Text="" Grid.Column="4" Grid.Row="4"></TextBox>
-
-                            <Label Content="Forecast" Grid.Column="5" Grid.Row="3" 
-                               HorizontalAlignment="Center"
-                               Foreground="White"></Label>
-                            <TextBox Text="" Grid.Column="5" Grid.Row="4"></TextBox>
-
-                            <Label Content="Previous" Grid.Column="6" Grid.Row="3" 
-                               HorizontalAlignment="Center"
-                               Foreground="White"></Label>
-                            <TextBox Text="" Grid.Column="6" Grid.Row="4"></TextBox>
-
-                            <Label Content="Trade Status:" Grid.Column="1" Grid.Row="6" 
-                               HorizontalAlignment="Right"
-                               Foreground="White"></Label>
-                            <TextBox Text="{Binding TradeStatus}" Grid.Column="2" Grid.Row="6" 
-                                     Grid.ColumnSpan="5">
-                            </TextBox>
 
                         </Grid>
                     </GroupBox>

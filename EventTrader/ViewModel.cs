@@ -14,7 +14,6 @@ namespace Dsmn
     public class ViewModel : ObservableObject
     {
         private IEconDataLoop _econDataLoop;
-        private string _tradeStatus = "";
         private Dispatcher _dispatcher;
         private int _frequency;
         private bool _stopSessionEnabled;
@@ -155,22 +154,12 @@ namespace Dsmn
 
         #region Critical section - called from other thread
 
-        public string TradeStatus
-        {
-            get => _tradeStatus;
-            set
-            {
-                SetProperty(ref _tradeStatus, value);
-            }
-        }
-
         private void _requestLoop_Status(string message)
         {
             _dispatcher.Invoke(() =>
             {
                 StopSessionCommand.NotifyCanExecuteChanged();
                 StartSessionCommand.NotifyCanExecuteChanged();
-                TradeStatus = message;
             });
         }
 
