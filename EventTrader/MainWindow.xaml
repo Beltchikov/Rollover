@@ -29,8 +29,8 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="10"></ColumnDefinition>
-                                <ColumnDefinition Width="140"></ColumnDefinition>
-                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                                <ColumnDefinition Width="120"></ColumnDefinition>
                                 <ColumnDefinition Width="500"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="10"></ColumnDefinition>
@@ -40,6 +40,8 @@
                                 <RowDefinition Height="25"></RowDefinition>
                                 <RowDefinition Height="25"></RowDefinition>
                                 <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="10"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="10"></RowDefinition>
                             </Grid.RowDefinitions>
@@ -47,7 +49,8 @@
                             <Label Content="Tickers:" Grid.Column="1" Grid.Row="1" 
                                    HorizontalAlignment="Left"
                                     Foreground="White"></Label>
-                            <TextBox Text="{Binding TickerString}" Grid.Column="1" Grid.Row="2" Grid.RowSpan="3"
+                            <TextBox Text="{Binding TickerString}" Grid.Column="1" Grid.Row="2" 
+                                     Grid.RowSpan="5"
                                       AcceptsReturn="True"
                                         VerticalScrollBarVisibility="Visible"></TextBox>
 
@@ -63,10 +66,16 @@
                             <TextBox Text=""
                              Grid.Column="3" Grid.Row="2"></TextBox>
 
+                            <Label Content="Null Placeholder:" Grid.Column="2" Grid.Row="3" 
+                                HorizontalAlignment="Right"
+                                Foreground="White"></Label>
+                            <TextBox Text="" Grid.Column="3" Grid.Row="3"></TextBox>
+
                             <Button Padding="10 0 10 0" 
-                            Margin="0,0,1,0" Grid.Column="3" Grid.Row="3" 
+                            Margin="0,0,1,0" Grid.Column="3" Grid.Row="6" 
+                                    Grid.ColumnSpan="2"
                                     HorizontalAlignment="Right" Height="25" 
-                                    VerticalAlignment="Top" 
+                                    VerticalAlignment="Bottom" 
                                     Command="{Binding ExpectedEpsCommand}">Get it!</Button>
 
                         </Grid>
