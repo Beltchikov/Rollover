@@ -27,7 +27,7 @@ namespace Dsmn
         public RelayCommand StartSessionCommand { get; }
         public RelayCommand StopSessionCommand { get; }
         public ICommand TestDataSourceCommand { get; }
-        public ICommand TestConnectionCommand { get; }
+        public ICommand ExpectedEpsCommand { get; }
 
         public ViewModel(IEconDataLoop econDataLoop)
         {
@@ -61,7 +61,7 @@ namespace Dsmn
                 },
                 () => _econDataLoop.IsRunning);
             TestDataSourceCommand = new RelayCommand(() => MessageBox.Show("TestDataSourceCommand"));
-            TestConnectionCommand = new RelayCommand(() => MessageBox.Show("TestConnectionCommand"));
+            ExpectedEpsCommand = new RelayCommand(() => MessageBox.Show("ExpectedEpsCommand"));
 
             // TODO DEV remove later
             Url = "https://www.investing.com/economic-calendar/";

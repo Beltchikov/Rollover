@@ -67,7 +67,7 @@
                             Margin="0,0,1,0" Grid.Column="3" Grid.Row="3" 
                                     HorizontalAlignment="Right" Height="25" 
                                     VerticalAlignment="Top" 
-                                    Command="{Binding TestConnectionCommand}">Get it!</Button>
+                                    Command="{Binding ExpectedEpsCommand}">Get it!</Button>
 
                         </Grid>
                     </GroupBox>
