@@ -12,7 +12,11 @@ namespace Dsmn.DataProviders
         {
             _browserWrapper = browserWrapper;
         }
-        public List<string> ExpectedEps(List<string> tickerList)
+        public List<string> ExpectedEps(
+            string urlEpsExpected,
+            string xPathEpsExpected,
+            string nullPlaceholderEpsExpected,
+            List<string> tickerList)
         {
             //foreach (string ticker in tickerList)
             //{

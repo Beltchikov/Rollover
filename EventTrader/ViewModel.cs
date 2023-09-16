@@ -65,7 +65,10 @@ namespace Dsmn
                 },
                 () => _econDataLoop.IsRunning);
             TestDataSourceCommand = new RelayCommand(() => MessageBox.Show("TestDataSourceCommand"));
-            ExpectedEpsCommand = new RelayCommand(() => TickerListWithExpectedEps = investingProvider.ExpectedEps(TickerList));
+            ExpectedEpsCommand = new RelayCommand(() => TickerListWithExpectedEps = investingProvider.ExpectedEps(UrlEpsExpected,
+                                                                                                                  XPathEpsExpected,
+                                                                                                                  NullPlaceholderEpsExpected,
+                                                                                                                  TickerList));
 
             // TODO DEV remove later
             //Url = "https://www.investing.com/economic-calendar/";
