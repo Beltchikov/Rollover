@@ -33,7 +33,10 @@ namespace Dsmn
             _dataType = DataTypeEnum.NonFarmEmploymentChange.ToString();
 
             TestDataSourceCommand = new RelayCommand(() => MessageBox.Show("TestDataSourceCommand"));
-            ExpectedEpsCommand = new RelayCommand(() => TickerListWithExpectedEps = new ObservableCollection<string>( investingProvider.ExpectedEps(TickerList)));
+            ExpectedEpsCommand = new RelayCommand(async () =>
+            {
+                TickerListWithExpectedEps = new ObservableCollection<string>(await investingProvider.ExpectedEpsAsync(TickerList));
+            });
 
             // TODO DEV remove later
             TickerString = " SKX\r\nPFS\r\nSLCA\r\n WT";

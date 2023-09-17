@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Dsmn.DataProviders
 {
     public interface IYahooProvider
     {
-        List<string> ExpectedEps(List<string> tickerList);
+        Task<List<string>> ExpectedEpsAsync(List<string> tickerList);
     }
 }
