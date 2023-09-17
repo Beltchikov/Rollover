@@ -30,7 +30,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="10"></ColumnDefinition>
                                 <ColumnDefinition Width="100"></ColumnDefinition>
-                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                                <ColumnDefinition Width="150"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="10"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
@@ -48,12 +48,24 @@
                                      AcceptsReturn="True"
                                         VerticalScrollBarVisibility="Visible"></TextBox>
 
-                            <Button Padding="10 0 10 0" 
-                            Margin="10,0,10,0" Grid.Column="2" Grid.Row="2" 
-                                    HorizontalAlignment="Center"  Height="25" 
-                                    VerticalAlignment="Center" 
-                                    Command="{Binding ExpectedEpsCommand}">Get it! >></Button>
+                            <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="2" >
+                                <Button Padding="10 0 10 0" 
+                                    Margin="10,0,10,0" 
+                                              Height="25" 
+                                        HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Center" 
+                                            Command="{Binding LastEpsCommand}">Last EPS >>
+                                </Button>
+                                <Button Padding="10 0 10 0" 
+                                    Margin="10,0,10,0" 
+                                            HorizontalAlignment="Stretch"  Height="25" 
+                                            VerticalAlignment="Center" 
+                                        Command="{Binding ExpectedEpsCommand}">Expected EPS >>
+                                </Button> 
 
+                            </StackPanel>
+                            
+                            
                             <Label Content="Results:" Grid.Column="3" Grid.Row="1" 
                                    HorizontalAlignment="Left"
                                     Foreground="White"></Label>
