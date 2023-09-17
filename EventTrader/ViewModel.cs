@@ -42,55 +42,6 @@ namespace Dsmn
             TickerString = " SKX\r\nPFS\r\nSLCA\r\n WT";
         }
 
-        public int Frequency
-        {
-            get => _frequency;
-            set
-            {
-                SetProperty(ref _frequency, value);
-            }
-        }
-
-        public bool StopSessionEnabled
-        {
-            get => _stopSessionEnabled;
-            set
-            {
-                SetProperty(ref _stopSessionEnabled, value);
-            }
-        }
-
-        public Dictionary<string, string> DataTypesUs => Countries.All.First(c => c.Symbol == "US")
-           .DataList.Select(l => new { Key = l.Type.ToString(), Value = l.Name })
-            .ToDictionary(o=>o.Key, o=>o.Value);
-
-        public string DataType
-        {
-            get => _dataType;
-            set
-            {
-                SetProperty(ref _dataType, value);
-            }
-        }
-
-        public string XPathExpected
-        {
-            get => _xPathExpected;
-            set
-            {
-                SetProperty(ref _xPathExpected, value);
-            }
-        }
-
-        public string XPathPrevious
-        {
-            get => _xPathPrevious;
-            set
-            {
-                SetProperty(ref _xPathPrevious, value);
-            }
-        }
-
         public List<string> TickerList
         {
             get => TickerString.Split("\r\n", StringSplitOptions.TrimEntries).ToList();
