@@ -77,7 +77,7 @@ namespace Dsmn
             //XPathPrevious = "//*[@id=\"eventPrevious_479408\"]";
             //NullPlaceholder = "&nbsp;";
 
-            TickerString = "PFS\r\nSLCA\r\n WT";
+            TickerString = " SKX\r\nPFS\r\nSLCA\r\n WT";
             UrlEpsExpected = "https://www.investing.com/earnings-calendar/";
             XPathEpsExpected = "//*[@id=\"earningsCalendarData\"]";
             NullPlaceholderEpsExpected = "&nbsp;";
