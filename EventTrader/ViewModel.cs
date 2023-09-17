@@ -12,19 +12,24 @@ namespace Dsmn
     public class ViewModel : ObservableObject
     {
         private string _tickerString;
-        private ObservableCollection<string> _tickerListWithExpectedEps;
+        private ObservableCollection<string> _resultList;
         private string _message;
 
-        public ICommand TestDataSourceCommand { get; }
+        public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
 
         public ViewModel(IYahooProvider investingProvider)
         {
             investingProvider.Status += InvestingProvider_Status;
 
+            LastEpsCommand = new RelayCommand(async () =>
+            {
+                ResultList = new ObservableCollection<string>(await investingProvider.ExpectedEpsAsync(TickerList));
+            });
+
             ExpectedEpsCommand = new RelayCommand(async () =>
             {
-                TickerListWithExpectedEps = new ObservableCollection<string>(await investingProvider.ExpectedEpsAsync(TickerList));
+                ResultList = new ObservableCollection<string>(await investingProvider.ExpectedEpsAsync(TickerList));
             });
 
             // TODO DEV remove later
@@ -45,19 +50,19 @@ namespace Dsmn
             }
         }
 
-        public ObservableCollection<string> TickerListWithExpectedEps
+        public ObservableCollection<string> ResultList
         {
-            get => _tickerListWithExpectedEps;
+            get => _resultList;
             set
             {
-                SetProperty(ref _tickerListWithExpectedEps, value);
-                OnPropertyChanged(nameof(TickerWithExpectedEps));
+                SetProperty(ref _resultList, value);
+                OnPropertyChanged(nameof(ResultString));
             }
         }
 
-        public string TickerWithExpectedEps
+        public string ResultString
         {
-            get => TickerListWithExpectedEps?.Aggregate((r,n) => r + "\r\n" +n);
+            get => ResultList?.Aggregate((r,n) => r + "\r\n" +n);
         }
 
         public string Message

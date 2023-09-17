@@ -69,7 +69,7 @@
                             <Label Content="Results:" Grid.Column="3" Grid.Row="1" 
                                    HorizontalAlignment="Left"
                                     Foreground="White"></Label>
-                            <TextBox Text="{Binding TickerWithExpectedEps, Mode=OneWay}" Grid.Column="3" Grid.Row="2" 
+                            <TextBox Text="{Binding ResultString, Mode=OneWay}" Grid.Column="3" Grid.Row="2" 
                                      AcceptsReturn="True"
                                         VerticalScrollBarVisibility="Visible"></TextBox>
 
