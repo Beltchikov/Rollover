@@ -2,12 +2,10 @@
 using CommunityToolkit.Mvvm.Input;
 using Dsmn.DataProviders;
 using Dsmn.EconomicData;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Security.Policy;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -20,11 +18,8 @@ namespace Dsmn
         private int _frequency;
         private bool _stopSessionEnabled;
         private string _dataType;
-        private string _urlEpsExpected;
-        private string _xPathEpsExpected;
         private string _xPathExpected;
         private string _xPathPrevious;
-        private string _nullPlaceholder;
         private string _tickerString;
         private ObservableCollection<string> _tickerListWithExpectedEps;
 
@@ -41,15 +36,7 @@ namespace Dsmn
             ExpectedEpsCommand = new RelayCommand(() => TickerListWithExpectedEps = new ObservableCollection<string>( investingProvider.ExpectedEps(TickerList)));
 
             // TODO DEV remove later
-            //Url = "https://www.investing.com/economic-calendar/";
-            //XPathActual = "//*[@id=\"eventActual_479408\"]";
-            //XPathExpected = "//*[@id=\"eventForecast_479408\"]";
-            //XPathPrevious = "//*[@id=\"eventPrevious_479408\"]";
-            //NullPlaceholder = "&nbsp;";
-
             TickerString = " SKX\r\nPFS\r\nSLCA\r\n WT";
-            
-
         }
 
         public int Frequency
@@ -129,14 +116,5 @@ namespace Dsmn
         {
             get => TickerListWithExpectedEps?.Aggregate((r,n) => r + "\r\n" +n);
         }
-
-        private void SetProperty(ref object nullPlaceHolder, string value)
-        {
-            throw new NotImplementedException();
-        }
-
-        #region Critical section - called from other thread
-
-        #endregion
     }
 }
