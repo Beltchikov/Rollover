@@ -1,14 +1,10 @@
 ﻿using Dsmn.WebScraping;
 using System;
 using System.Collections.Generic;
-using System.Security.Policy;
-using System.Windows;
-using System.Xml.XPath;
-using System.Xml;
 using System.Linq;
-using System.Xml.Linq;
-using System.Runtime.Intrinsics.X86;
 using System.Text.RegularExpressions;
+using System.Windows;
+using System.Xml;
 
 namespace Dsmn.DataProviders
 {
@@ -24,11 +20,7 @@ namespace Dsmn.DataProviders
             _xmlNamespaceManager = new XmlNamespaceManager(new NameTable());
             _xmlNamespaceManager.AddNamespace("empty", "http://bel.com/2023/bel-schema");
 }
-        public List<string> ExpectedEps(
-            string urlEpsExpected,
-            string xPathEpsExpected,
-            string nullPlaceholderEpsExpected,
-            List<string> tickerList)
+        public List<string> ExpectedEps(List<string> tickerList)
         {
             foreach (string ticker in tickerList)
             {
@@ -43,9 +35,9 @@ namespace Dsmn.DataProviders
                 var text = _browserWrapper.CurrentHtml;
                 var lines = text.Split("\r\n").ToList();
                 var line = lines.FirstOrDefault(l => l.Contains("Avg. Estimate"));
-                var line2 = line.Substring(line.IndexOf("<tbody>"), line.IndexOf("</tbody>") - line.IndexOf("<tbody>"));
-                var line3 = line2.Substring(line2.IndexOf("Avg. Estimate"));
-                var line4 = line3.Substring(line3.IndexOf("<td class=\"Ta(end)\">"));
+                var line2 = line?.Substring(line.IndexOf("<tbody>"), line.IndexOf("</tbody>") - line.IndexOf("<tbody>"));
+                var line3 = line2?.Substring(line2.IndexOf("Avg. Estimate"));
+                var line4 = line3?.Substring(line3.IndexOf("<td class=\"Ta(end)\">"));
 
                 var pattern1 = @"\d[\.\d]+";
                 var rx = new Regex(pattern1, RegexOptions.Compiled | RegexOptions.IgnoreCase);

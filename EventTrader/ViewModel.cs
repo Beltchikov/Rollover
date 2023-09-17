@@ -15,7 +15,6 @@ namespace Dsmn
 {
     public class ViewModel : ObservableObject
     {
-        private IEconDataLoop _econDataLoop;
         private Dispatcher _dispatcher;
         private int _frequency;
         private bool _stopSessionEnabled;
@@ -28,47 +27,17 @@ namespace Dsmn
         private string _tickerString;
         private List<string> _tickerListWithExpectedEps;
 
-        public RelayCommand StartSessionCommand { get; }
-        public RelayCommand StopSessionCommand { get; }
         public ICommand TestDataSourceCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
 
-        public ViewModel(IEconDataLoop econDataLoop, IYahooProvider investingProvider)
+        public ViewModel(IYahooProvider investingProvider)
         {
-            _econDataLoop = econDataLoop;
-            _econDataLoop.Status += _requestLoop_Status;
             _dispatcher = Dispatcher.CurrentDispatcher;
             _frequency = 2000;
             _dataType = DataTypeEnum.NonFarmEmploymentChange.ToString();
 
-            StartSessionCommand = new RelayCommand(
-                () =>
-                {
-                    _econDataLoop.StartAsync(
-                        Frequency,
-                        DataType,
-                        UrlEpsExpected,
-                        XPathEpsExpected,
-                        XPathExpected,
-                        XPathPrevious,
-                        NullPlaceholderEpsExpected);
-                    StopSessionEnabled = true;
-                },
-                () => !_econDataLoop.IsRunning);
-            StopSessionCommand = new RelayCommand(
-                () =>
-                {
-                    StopSessionEnabled = false;
-                    _econDataLoop.Stopped = true;
-                    StopSessionCommand?.NotifyCanExecuteChanged();
-                    StartSessionCommand.NotifyCanExecuteChanged();
-                },
-                () => _econDataLoop.IsRunning);
             TestDataSourceCommand = new RelayCommand(() => MessageBox.Show("TestDataSourceCommand"));
-            ExpectedEpsCommand = new RelayCommand(() => TickerListWithExpectedEps = investingProvider.ExpectedEps(UrlEpsExpected,
-                                                                                                                  XPathEpsExpected,
-                                                                                                                  NullPlaceholderEpsExpected,
-                                                                                                                  TickerList));
+            ExpectedEpsCommand = new RelayCommand(() => TickerListWithExpectedEps = investingProvider.ExpectedEps(TickerList));
 
             // TODO DEV remove later
             //Url = "https://www.investing.com/economic-calendar/";
@@ -78,9 +47,7 @@ namespace Dsmn
             //NullPlaceholder = "&nbsp;";
 
             TickerString = " SKX\r\nPFS\r\nSLCA\r\n WT";
-            UrlEpsExpected = "https://www.investing.com/earnings-calendar/";
-            XPathEpsExpected = "//*[@id=\"earningsCalendarData\"]";
-            NullPlaceholderEpsExpected = "&nbsp;";
+            
 
         }
 
@@ -115,24 +82,6 @@ namespace Dsmn
             }
         }
 
-        public string UrlEpsExpected
-        {
-            get => _urlEpsExpected;
-            set
-            {
-                SetProperty(ref _urlEpsExpected, value);
-            }
-        }
-
-        public string XPathEpsExpected
-        {
-            get => _xPathEpsExpected;
-            set
-            {
-                SetProperty(ref _xPathEpsExpected, value);
-            }
-        }
-
         public string XPathExpected
         {
             get => _xPathExpected;
@@ -148,15 +97,6 @@ namespace Dsmn
             set
             {
                 SetProperty(ref _xPathPrevious, value);
-            }
-        }
-
-        public string NullPlaceholderEpsExpected
-        {
-            get => _nullPlaceholder;
-            set
-            {
-                SetProperty(ref _nullPlaceholder, value);
             }
         }
 
@@ -189,15 +129,6 @@ namespace Dsmn
         }
 
         #region Critical section - called from other thread
-
-        private void _requestLoop_Status(string message)
-        {
-            _dispatcher.Invoke(() =>
-            {
-                StopSessionCommand.NotifyCanExecuteChanged();
-                StartSessionCommand.NotifyCanExecuteChanged();
-            });
-        }
 
         #endregion
     }

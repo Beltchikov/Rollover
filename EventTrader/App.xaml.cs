@@ -1,6 +1,5 @@
 ﻿using Dsmn.DataProviders;
 using Dsmn.EconomicData;
-using Dsmn.Requests;
 using Dsmn.WebScraping;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -17,8 +16,6 @@ namespace Dsmn
         {
             Services = new ServiceCollection()
                 .AddSingleton<IBrowserWrapper, BrowserWrapper>()
-                .AddSingleton<IInfiniteLoop, RequestLoop>()
-                .AddSingleton<IEconDataLoop, EconDataLoop>()
                 .AddSingleton<IBrowserWrapper, BrowserWrapper>()
                 .AddSingleton<IDataProviderContext, DataProviderContext>()
                 .AddSingleton<IYahooProvider, YahooProvider>()
@@ -31,8 +28,7 @@ namespace Dsmn
         {
             MainWindow mainWindow = new()
             {
-                DataContext = new ViewModel(Services.GetRequiredService<IEconDataLoop>(),
-                                            Services.GetRequiredService<IYahooProvider>())
+                DataContext = new ViewModel(Services.GetRequiredService<IYahooProvider>())
             };
             mainWindow.Show();
         }
