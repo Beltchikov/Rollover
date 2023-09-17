@@ -13,12 +13,15 @@ namespace Dsmn
     {
         private string _tickerString;
         private ObservableCollection<string> _tickerListWithExpectedEps;
+        private string _message;
 
         public ICommand TestDataSourceCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
 
         public ViewModel(IYahooProvider investingProvider)
         {
+            investingProvider.Status += InvestingProvider_Status;
+
             ExpectedEpsCommand = new RelayCommand(async () =>
             {
                 TickerListWithExpectedEps = new ObservableCollection<string>(await investingProvider.ExpectedEpsAsync(TickerList));
@@ -55,6 +58,20 @@ namespace Dsmn
         public string TickerWithExpectedEps
         {
             get => TickerListWithExpectedEps?.Aggregate((r,n) => r + "\r\n" +n);
+        }
+
+        public string Message
+        {
+            get => _message;
+            set
+            {
+                SetProperty(ref _message, value);
+            }
+        }
+
+        private void InvestingProvider_Status(string message)
+        {
+            Message = message;
         }
     }
 }

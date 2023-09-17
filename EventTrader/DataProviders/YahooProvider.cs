@@ -14,6 +14,8 @@ namespace Dsmn.DataProviders
         XmlNamespaceManager _xmlNamespaceManager;
         string urlTemplate = $"https://finance.yahoo.com/quote/TICKER/analysis?p=TICKER";
 
+        public event Action<string> Status;
+
         public YahooProvider(IBrowserWrapper browserWrapper)
         {
             _browserWrapper = browserWrapper;
@@ -28,6 +30,7 @@ namespace Dsmn.DataProviders
             {
                 await Task.Run(() =>
                 {
+                    Status.Invoke(ticker);
                     var url = urlTemplate.Replace("TICKER", ticker);
 
                     if (!_browserWrapper.Navigate(url))
