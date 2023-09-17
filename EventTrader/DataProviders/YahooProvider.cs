@@ -26,11 +26,12 @@ namespace Dsmn.DataProviders
         {
             var result = new List<string>();
 
+            int cnt = 1;
             foreach (string ticker in tickerList)
             {
                 await Task.Run(() =>
                 {
-                    Status.Invoke(ticker);
+                    Status.Invoke($"Retrieving data for {ticker} {cnt++}/{tickerList.Count}");
                     var url = urlTemplate.Replace("TICKER", ticker);
 
                     if (!_browserWrapper.Navigate(url))
