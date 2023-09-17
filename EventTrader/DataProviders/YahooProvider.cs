@@ -22,6 +22,8 @@ namespace Dsmn.DataProviders
 }
         public List<string> ExpectedEps(List<string> tickerList)
         {
+            var result = new List<string>();
+            
             foreach (string ticker in tickerList)
             {
                 var url = urlTemplate.Replace("TICKER", ticker);
@@ -44,7 +46,8 @@ namespace Dsmn.DataProviders
                 var matchCollection1 = rx.Matches(line4).ToList();
                 var epsExpected = matchCollection1[0];
 
-                MessageBox.Show($"{ticker}: {epsExpected}");
+                //MessageBox.Show($"{ticker}: {epsExpected}");
+                result.Add($"{ticker}\t{epsExpected}");
             }
 
 
@@ -60,7 +63,7 @@ namespace Dsmn.DataProviders
 
             //TODO
             
-            return tickerList;
+            return result;
         }
     }
 }

@@ -5,6 +5,7 @@ using Dsmn.EconomicData;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security.Policy;
 using System.Windows;
@@ -25,7 +26,7 @@ namespace Dsmn
         private string _xPathPrevious;
         private string _nullPlaceholder;
         private string _tickerString;
-        private List<string> _tickerListWithExpectedEps;
+        private ObservableCollection<string> _tickerListWithExpectedEps;
 
         public ICommand TestDataSourceCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
@@ -37,7 +38,7 @@ namespace Dsmn
             _dataType = DataTypeEnum.NonFarmEmploymentChange.ToString();
 
             TestDataSourceCommand = new RelayCommand(() => MessageBox.Show("TestDataSourceCommand"));
-            ExpectedEpsCommand = new RelayCommand(() => TickerListWithExpectedEps = investingProvider.ExpectedEps(TickerList));
+            ExpectedEpsCommand = new RelayCommand(() => TickerListWithExpectedEps = new ObservableCollection<string>( investingProvider.ExpectedEps(TickerList)));
 
             // TODO DEV remove later
             //Url = "https://www.investing.com/economic-calendar/";
@@ -114,15 +115,21 @@ namespace Dsmn
             }
         }
 
-        public List<string> TickerListWithExpectedEps
+        public ObservableCollection<string> TickerListWithExpectedEps
         {
             get => _tickerListWithExpectedEps;
             set
             {
                 SetProperty(ref _tickerListWithExpectedEps, value);
+                OnPropertyChanged(nameof(TickerWithExpectedEps));
             }
         }
-        
+
+        public string TickerWithExpectedEps
+        {
+            get => TickerListWithExpectedEps?.Aggregate((r,n) => r + "\r\n" +n);
+        }
+
         private void SetProperty(ref object nullPlaceHolder, string value)
         {
             throw new NotImplementedException();
