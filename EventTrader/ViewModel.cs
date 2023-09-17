@@ -33,7 +33,7 @@ namespace Dsmn
         public ICommand TestDataSourceCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
 
-        public ViewModel(IEconDataLoop econDataLoop, IInvestingDataProvider investingProvider)
+        public ViewModel(IEconDataLoop econDataLoop, IYahooProvider investingProvider)
         {
             _econDataLoop = econDataLoop;
             _econDataLoop.Status += _requestLoop_Status;

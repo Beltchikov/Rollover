@@ -2,7 +2,7 @@
 
 namespace Dsmn.DataProviders
 {
-    public interface IInvestingDataProvider
+    public interface IYahooProvider
     {
         List<string> ExpectedEps(string urlEpsExpected, string xPathEpsExpected, string nullPlaceholderEpsExpected, List<string> tickerList);
     }

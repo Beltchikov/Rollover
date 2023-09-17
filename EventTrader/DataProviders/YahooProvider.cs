@@ -12,12 +12,12 @@ using System.Text.RegularExpressions;
 
 namespace Dsmn.DataProviders
 {
-    public class InvestingDataProvider : IInvestingDataProvider
+    public class YahooProvider : IYahooProvider
     {
         IBrowserWrapper _browserWrapper;
         XmlNamespaceManager _xmlNamespaceManager;
 
-        public InvestingDataProvider(IBrowserWrapper browserWrapper)
+        public YahooProvider(IBrowserWrapper browserWrapper)
         {
             _browserWrapper = browserWrapper;
             _xmlNamespaceManager = new XmlNamespaceManager(new NameTable());

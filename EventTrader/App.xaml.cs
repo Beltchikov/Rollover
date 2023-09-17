@@ -21,7 +21,7 @@ namespace Dsmn
                 .AddSingleton<IEconDataLoop, EconDataLoop>()
                 .AddSingleton<IBrowserWrapper, BrowserWrapper>()
                 .AddSingleton<IDataProviderContext, DataProviderContext>()
-                .AddSingleton<IInvestingDataProvider, InvestingDataProvider>()
+                .AddSingleton<IYahooProvider, YahooProvider>()
                 .BuildServiceProvider();
         }
 
@@ -32,7 +32,7 @@ namespace Dsmn
             MainWindow mainWindow = new()
             {
                 DataContext = new ViewModel(Services.GetRequiredService<IEconDataLoop>(),
-                                            Services.GetRequiredService<IInvestingDataProvider>())
+                                            Services.GetRequiredService<IYahooProvider>())
             };
             mainWindow.Show();
         }
