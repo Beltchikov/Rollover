@@ -8,38 +8,33 @@
         Title="DSMN" Height="700" Width="800">
     <Grid>
         <TabControl x:Name="tabControl">
-            <TabItem Header="Investing.com">
+            <TabItem Header="Yahoo Finance">
                 <Grid Background="#FF1A26DA">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="10"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="63*"></ColumnDefinition>
+                        <ColumnDefinition Width="82*"/>
+                        <ColumnDefinition Width="242*"/>
                         <ColumnDefinition Width="10"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="200"></RowDefinition>
-                        <RowDefinition Height="330"></RowDefinition>
-                        <RowDefinition Height="80"></RowDefinition>
+                        <RowDefinition Height="530"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="10"></RowDefinition>
                     </Grid.RowDefinitions>
 
                     <GroupBox Grid.Column="1" Grid.Row="1" Header="Expected EPS"
-                              Foreground="White">
+                              Foreground="White" Grid.ColumnSpan="3">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="10"></ColumnDefinition>
                                 <ColumnDefinition Width="100"></ColumnDefinition>
-                                <ColumnDefinition Width="120"></ColumnDefinition>
-                                <ColumnDefinition Width="500"></ColumnDefinition>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="10"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="10"></RowDefinition>
-                                <RowDefinition Height="25"></RowDefinition>
-                                <RowDefinition Height="25"></RowDefinition>
-                                <RowDefinition Height="25"></RowDefinition>
                                 <RowDefinition Height="10"></RowDefinition>
                                 <RowDefinition Height="25"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
@@ -50,31 +45,27 @@
                                    HorizontalAlignment="Left"
                                     Foreground="White"></Label>
                             <TextBox Text="{Binding TickerString}" Grid.Column="1" Grid.Row="2" 
-                                     Grid.RowSpan="5"
-                                      AcceptsReturn="True"
+                                     AcceptsReturn="True"
                                         VerticalScrollBarVisibility="Visible"></TextBox>
 
                             <Button Padding="10 0 10 0" 
-                            Margin="0,0,1,0" Grid.Column="2" Grid.Row="3" 
+                            Margin="10,0,10,0" Grid.Column="2" Grid.Row="2" 
                                     HorizontalAlignment="Center"  Height="25" 
-                                    VerticalAlignment="Bottom" 
-                                    Command="{Binding ExpectedEpsCommand}">Get it!</Button>
-
+                                    VerticalAlignment="Center" 
+                                    Command="{Binding ExpectedEpsCommand}">Get it! >></Button>
 
                             <Label Content="Results:" Grid.Column="3" Grid.Row="1" 
                                    HorizontalAlignment="Left"
                                     Foreground="White"></Label>
                             <TextBox Text="{Binding TickerWithExpectedEps, Mode=OneWay}" Grid.Column="3" Grid.Row="2" 
-                                     Grid.RowSpan="5"
-                                      AcceptsReturn="True"
+                                     AcceptsReturn="True"
                                         VerticalScrollBarVisibility="Visible"></TextBox>
-
 
                         </Grid>
                     </GroupBox>
 
-                    <GroupBox Grid.Column="1" Grid.Row="3" Header="Information"
-                              Foreground="White">
+                    <GroupBox Grid.Column="1" Grid.Row="2" Header="Information"
+                              Foreground="White" Grid.ColumnSpan="3">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="10"></ColumnDefinition>
@@ -92,7 +83,7 @@
 
                 </Grid>
             </TabItem>
-            <TabItem Header="Yahoo Finance">
+            <TabItem Header="Investing.com">
                 <Grid Background="#FFE0CD52">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="10"></ColumnDefinition>
