@@ -12,7 +12,7 @@ namespace Dsmn.DataProviders
     {
         IBrowserWrapper _browserWrapper;
         XmlNamespaceManager _xmlNamespaceManager;
-        string urlTemplate = $"https://finance.yahoo.com/quote/TICKER/analysis?p=TICKER";
+        string urlExpectedEpsTemplate = $"https://finance.yahoo.com/quote/TICKER/analysis?p=TICKER";
 
         public event Action<string> Status;
 
@@ -22,6 +22,12 @@ namespace Dsmn.DataProviders
             _xmlNamespaceManager = new XmlNamespaceManager(new NameTable());
             _xmlNamespaceManager.AddNamespace("empty", "http://bel.com/2023/bel-schema");
         }
+
+        public Task<List<string>> LastEpsAsync(List<string> tickerList)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<List<string>> ExpectedEpsAsync(List<string> tickerList)
         {
             var result = new List<string>();
@@ -32,7 +38,7 @@ namespace Dsmn.DataProviders
                 await Task.Run(() =>
                 {
                     Status.Invoke($"Retrieving data for {ticker} {cnt++}/{tickerList.Count}");
-                    var url = urlTemplate.Replace("TICKER", ticker);
+                    var url = urlExpectedEpsTemplate.Replace("TICKER", ticker);
 
                     if (!_browserWrapper.Navigate(url))
                     {

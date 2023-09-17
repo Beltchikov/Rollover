@@ -24,7 +24,7 @@ namespace Dsmn
 
             LastEpsCommand = new RelayCommand(async () =>
             {
-                ResultList = new ObservableCollection<string>(await investingProvider.ExpectedEpsAsync(TickerList));
+                ResultList = new ObservableCollection<string>(await investingProvider.LastEpsAsync(TickerList));
             });
 
             ExpectedEpsCommand = new RelayCommand(async () =>
