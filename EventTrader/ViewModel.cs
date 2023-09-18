@@ -25,13 +25,13 @@ namespace Dsmn
             LastEpsCommand = new RelayCommand(async () =>
             {
                 DecimalSeparatorSelectedIndex = 0;
-                ResultList = new ObservableCollection<string>(await investingProvider.LastEpsAsync(TickerList));
+                ResultList = new ObservableCollection<string>(await investingProvider.LastEpsAsync(TickerList, 5));
             });
 
             ExpectedEpsCommand = new RelayCommand(async () =>
             {
                 DecimalSeparatorSelectedIndex = 0;
-                ResultList = new ObservableCollection<string>(await investingProvider.ExpectedEpsAsync(TickerList));
+                ResultList = new ObservableCollection<string>(await investingProvider.ExpectedEpsAsync(TickerList, 5));
             });
 
            TickerString = " SKX\r\nPFS\r\nSLCA\r\n WT";

@@ -7,7 +7,7 @@ namespace Dsmn.DataProviders
     public interface IYahooProvider
     {
         public event Action<string> Status;
-        Task<List<string>> ExpectedEpsAsync(List<string> tickerList);
-        Task<List<string>> LastEpsAsync(List<string> tickerList);
+        Task<List<string>> ExpectedEpsAsync(List<string> tickerList, int delay);
+        Task<List<string>> LastEpsAsync(List<string> tickerList, int delay);
     }
 }

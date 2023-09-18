@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -23,7 +24,7 @@ namespace Dsmn.DataProviders
             _xmlNamespaceManager.AddNamespace("empty", "http://bel.com/2023/bel-schema");
         }
 
-        public async Task<List<string>> LastEpsAsync(List<string> tickerList)
+        public async Task<List<string>> LastEpsAsync(List<string> tickerList, int delay)
         {
             var result = new List<string>();
 
@@ -50,13 +51,15 @@ namespace Dsmn.DataProviders
 
                         AddDataToResultList(result, ticker, line4);
                     }
+
+                    Thread.Sleep(delay);
                 });
             }
 
             return result;
         }
 
-        public async Task<List<string>> ExpectedEpsAsync(List<string> tickerList)
+        public async Task<List<string>> ExpectedEpsAsync(List<string> tickerList, int delay)
         {
             var result = new List<string>();
 
@@ -83,6 +86,8 @@ namespace Dsmn.DataProviders
 
                         AddDataToResultList(result, ticker, line4);
                     }
+
+                    Thread.Sleep(delay);
                 });
                 
             }
