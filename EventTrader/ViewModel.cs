@@ -17,11 +17,10 @@ namespace Dsmn
 
         public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
-
         public ViewModel(IYahooProvider investingProvider)
         {
             investingProvider.Status += InvestingProvider_Status;
-
+           
             LastEpsCommand = new RelayCommand(async () =>
             {
                 ResultList = new ObservableCollection<string>(await investingProvider.LastEpsAsync(TickerList));
@@ -32,8 +31,7 @@ namespace Dsmn
                 ResultList = new ObservableCollection<string>(await investingProvider.ExpectedEpsAsync(TickerList));
             });
 
-            // TODO DEV remove later
-            TickerString = " SKX\r\nPFS\r\nSLCA\r\n WT";
+           TickerString = " SKX\r\nPFS\r\nSLCA\r\n WT";
         }
 
         public List<string> TickerList
@@ -62,7 +60,12 @@ namespace Dsmn
 
         public string ResultString
         {
-            get => ResultList?.Aggregate((r,n) => r + "\r\n" +n);
+            get
+            {
+                return ResultList == null 
+                    ? string.Empty 
+                    : ResultList.Aggregate((r, n) => r + "\r\n" + n);
+            }
         }
 
         public string Message

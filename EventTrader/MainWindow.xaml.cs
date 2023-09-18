@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace Dsmn
 {
@@ -7,9 +9,35 @@ namespace Dsmn
     /// </summary>
     public partial class MainWindow : Window
     {
+        const string DOT = ".";
+        const string COMMA = ",";
+        
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(txtResults.Text == string.Empty)
+            {
+                return;
+            }
+
+            var selectedItem = ((ComboBox)sender).SelectedItem;
+            var decimalSeparator = ((ComboBoxItem)selectedItem).Content.ToString();
+            if (decimalSeparator == DOT)
+            {
+                txtResults.Text = txtResults.Text.Replace(COMMA, DOT);
+            }
+            else if (decimalSeparator == ",")
+            {
+                txtResults.Text = txtResults.Text.Replace(DOT, COMMA);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }
