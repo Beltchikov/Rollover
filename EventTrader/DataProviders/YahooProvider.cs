@@ -89,8 +89,10 @@ namespace Dsmn.DataProviders
         private static string RegexMatch(string text, string regexPattern, int index)
         {
             var rx = new Regex(regexPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
-            _ = rx.Matches(text).ToList();
-            return rx.Matches(text).ToList()[index].ToString();
+            var matches = rx.Matches(text).ToList();
+            return matches.Count <= 0 
+                ? string.Empty 
+                : matches[index].ToString();
         }
 
         private static void AddDataToResultList(List<string> result, string ticker, string? text)
