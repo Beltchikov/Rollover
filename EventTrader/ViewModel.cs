@@ -14,6 +14,7 @@ namespace Dsmn
         private string _tickerString;
         private ObservableCollection<string> _resultList;
         private string _message;
+        private int _decimalSeparatorSelectedIndex;
 
         public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
@@ -23,11 +24,13 @@ namespace Dsmn
            
             LastEpsCommand = new RelayCommand(async () =>
             {
+                DecimalSeparatorSelectedIndex = 0;
                 ResultList = new ObservableCollection<string>(await investingProvider.LastEpsAsync(TickerList));
             });
 
             ExpectedEpsCommand = new RelayCommand(async () =>
             {
+                DecimalSeparatorSelectedIndex = 0;
                 ResultList = new ObservableCollection<string>(await investingProvider.ExpectedEpsAsync(TickerList));
             });
 
@@ -79,6 +82,15 @@ namespace Dsmn
             set
             {
                 SetProperty(ref _message, value);
+            }
+        }
+
+        public int DecimalSeparatorSelectedIndex
+        {
+            get => _decimalSeparatorSelectedIndex;
+            set
+            {
+                SetProperty(ref _decimalSeparatorSelectedIndex, value);
             }
         }
 

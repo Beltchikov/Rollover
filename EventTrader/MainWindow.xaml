@@ -79,7 +79,7 @@
                                 HorizontalAlignment="Left"
                                  Foreground="White">
                                 </Label>
-                                <ComboBox SelectedIndex="0" SelectionChanged="ComboBox_SelectionChanged">
+                                <ComboBox SelectedIndex="{Binding DecimalSeparatorSelectedIndex}" SelectionChanged="ComboBox_SelectionChanged">
                                     <ComboBoxItem>.</ComboBoxItem>
                                     <ComboBoxItem>,</ComboBoxItem>
                                 </ComboBox>
