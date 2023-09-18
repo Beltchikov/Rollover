@@ -16,7 +16,6 @@ namespace Dsmn
         {
             Services = new ServiceCollection()
                 .AddSingleton<IBrowserWrapper, BrowserWrapper>()
-                .AddSingleton<IBrowserWrapper, BrowserWrapper>()
                 .AddSingleton<IDataProviderContext, DataProviderContext>()
                 .AddSingleton<IYahooProvider, YahooProvider>()
                 .BuildServiceProvider();
