@@ -65,9 +65,21 @@ namespace Dsmn
         {
             get
             {
-                return ResultList == null 
-                    ? string.Empty 
-                    : ResultList.Aggregate((r, n) => r + "\r\n" + n);
+                if (ResultList == null)
+                {
+                    return string.Empty;
+                }
+                else
+                {
+                    if (!ResultList.Any())
+                    {
+                        return string.Empty;
+                    }
+                    else
+                    {
+                        return ResultList.Aggregate((r, n) => r + "\r\n" + n);
+                    }
+                }
             }
             set
             {
