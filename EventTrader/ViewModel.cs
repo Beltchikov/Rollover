@@ -66,6 +66,11 @@ namespace Dsmn
                     ? string.Empty 
                     : ResultList.Aggregate((r, n) => r + "\r\n" + n);
             }
+            set
+            {
+                SetProperty(ref _resultList, new ObservableCollection<string>());
+                OnPropertyChanged(nameof(ResultList));
+            }
         }
 
         public string Message
