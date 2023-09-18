@@ -47,11 +47,7 @@ namespace Dsmn.DataProviders
                     var line3 = line2?.Substring(0, line2.IndexOf("</tr>"));
                     var line4 = line3?.Substring(line3.LastIndexOf("Ta(end)"));
 
-                    if (line4 != null)
-                    {
-                        var lastEps = RegexMatch(line4, @"\d[\.\d]+", 0);
-                        result.Add($"{ticker}\t{lastEps}");
-                    }
+                    AddDataToResultList(result, ticker, line4);
                 });
             }
 
@@ -81,12 +77,8 @@ namespace Dsmn.DataProviders
                     var line2 = line?.Substring(line.IndexOf("<tbody>"), line.IndexOf("</tbody>") - line.IndexOf("<tbody>"));
                     var line3 = line2?.Substring(line2.IndexOf("Avg. Estimate"));
                     var line4 = line3?.Substring(line3.IndexOf("<td class=\"Ta(end)\">"));
-                    
-                    if (line4 != null)
-                    {
-                        var epsExpected = RegexMatch(line4, @"\d[\.\d]+", 0);
-                        result.Add($"{ticker}\t{epsExpected}");
-                    }
+
+                    AddDataToResultList(result, ticker, line4);
                 });
                 
             }
@@ -99,6 +91,19 @@ namespace Dsmn.DataProviders
             var rx = new Regex(regexPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
             _ = rx.Matches(text).ToList();
             return rx.Matches(text).ToList()[index].ToString();
+        }
+
+        private static void AddDataToResultList(List<string> result, string ticker, string? text)
+        {
+            if (text != null)
+            {
+                var data = RegexMatch(text, @"\d[\.\d]+", 0);
+                result.Add($"{ticker}\t{data}");
+            }
+            else
+            {
+                result.Add($"{ticker}\t ");
+            }
         }
     }
 }
