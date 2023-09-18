@@ -12,8 +12,8 @@ namespace Dsmn.DataProviders
     {
         IBrowserWrapper _browserWrapper;
         XmlNamespaceManager _xmlNamespaceManager;
-        string urlExpectedEpsTemplate = $"https://finance.yahoo.com/quote/TICKER/analysis?p=TICKER";
-
+        string urlEpsTemplate = $"https://finance.yahoo.com/quote/TICKER/analysis?p=TICKER";
+        
         public event Action<string> Status;
 
         public YahooProvider(IBrowserWrapper browserWrapper)
@@ -23,9 +23,32 @@ namespace Dsmn.DataProviders
             _xmlNamespaceManager.AddNamespace("empty", "http://bel.com/2023/bel-schema");
         }
 
-        public Task<List<string>> LastEpsAsync(List<string> tickerList)
+        public async Task<List<string>> LastEpsAsync(List<string> tickerList)
         {
-            throw new NotImplementedException();
+            var result = new List<string>();
+
+            foreach (string ticker in tickerList)
+            {
+                await Task.Run(() =>
+                {
+                    var url = urlEpsTemplate.Replace("TICKER", ticker);
+
+                    if (!_browserWrapper.Navigate(url))
+                    {
+                        throw new ApplicationException($"Can not navigate to {url}");
+                    }
+
+                    var xDocument = _browserWrapper.XDocument;
+                    var text = _browserWrapper.CurrentHtml;
+                    var lines = text.Split("\r\n").ToList();
+                    var line = lines.FirstOrDefault(l => l.Contains("Earnings History"));
+                    var line2 = line?.Substring(line.IndexOf("EPS Actual"));
+                    var line3 = line2?.Substring(0, line2.IndexOf("</tr>"));
+                    var t = 0;
+                });
+            }
+
+            return result;
         }
 
         public async Task<List<string>> ExpectedEpsAsync(List<string> tickerList)
@@ -38,7 +61,7 @@ namespace Dsmn.DataProviders
                 await Task.Run(() =>
                 {
                     Status.Invoke($"Retrieving data for {ticker} {cnt++}/{tickerList.Count}");
-                    var url = urlExpectedEpsTemplate.Replace("TICKER", ticker);
+                    var url = urlEpsTemplate.Replace("TICKER", ticker);
 
                     if (!_browserWrapper.Navigate(url))
                     {
