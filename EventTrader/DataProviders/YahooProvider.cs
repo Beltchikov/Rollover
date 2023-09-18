@@ -44,7 +44,17 @@ namespace Dsmn.DataProviders
                     var line = lines.FirstOrDefault(l => l.Contains("Earnings History"));
                     var line2 = line?.Substring(line.IndexOf("EPS Actual"));
                     var line3 = line2?.Substring(0, line2.IndexOf("</tr>"));
-                    var t = 0;
+                    var line4 = line3?.Substring(line3.LastIndexOf("Ta(end)"));
+
+                    if (line4 != null)
+                    {
+                        var regexPattern = @"\d[\.\d]+";
+                        var rx = new Regex(regexPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                        var matchCollection1 = rx.Matches(line4).ToList();
+                        var epsExpected = matchCollection1[0];
+
+                        result.Add($"{ticker}\t{epsExpected}");
+                    }
                 });
             }
 
@@ -75,13 +85,16 @@ namespace Dsmn.DataProviders
                     var line2 = line?.Substring(line.IndexOf("<tbody>"), line.IndexOf("</tbody>") - line.IndexOf("<tbody>"));
                     var line3 = line2?.Substring(line2.IndexOf("Avg. Estimate"));
                     var line4 = line3?.Substring(line3.IndexOf("<td class=\"Ta(end)\">"));
+                    
+                    if (line4 != null)
+                    {
+                        var regexPattern = @"\d[\.\d]+";
+                        var rx = new Regex(regexPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                        var matchCollection1 = rx.Matches(line4).ToList();
+                        var epsExpected = matchCollection1[0];
 
-                    var pattern1 = @"\d[\.\d]+";
-                    var rx = new Regex(pattern1, RegexOptions.Compiled | RegexOptions.IgnoreCase);
-                    var matchCollection1 = rx.Matches(line4).ToList();
-                    var epsExpected = matchCollection1[0];
-
-                    result.Add($"{ticker}\t{epsExpected}");
+                        result.Add($"{ticker}\t{epsExpected}");
+                    }
                 });
                 
             }
