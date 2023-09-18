@@ -108,7 +108,7 @@ namespace Dsmn.DataProviders
         {
             if (text != null)
             {
-                var data = RegexMatch(text, @"\d[\.\d]+", 0);
+                var data = RegexMatch(text, @"-?\d[\.\d]+", 0);
                 result.Add($"{ticker}\t{data}");
             }
             else
