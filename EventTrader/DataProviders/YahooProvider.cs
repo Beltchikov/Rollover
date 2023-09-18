@@ -27,10 +27,12 @@ namespace Dsmn.DataProviders
         {
             var result = new List<string>();
 
+            int cnt = 1;
             foreach (string ticker in tickerList)
             {
                 await Task.Run(() =>
                 {
+                    Status.Invoke($"Retrieving last EPS for {ticker} {cnt++}/{tickerList.Count}");
                     var url = urlEpsTemplate.Replace("TICKER", ticker);
 
                     if (!_browserWrapper.Navigate(url))
@@ -38,7 +40,6 @@ namespace Dsmn.DataProviders
                         throw new ApplicationException($"Can not navigate to {url}");
                     }
 
-                    var xDocument = _browserWrapper.XDocument;
                     var text = _browserWrapper.CurrentHtml;
                     var lines = text.Split("\r\n").ToList();
                     var line = lines.FirstOrDefault(l => l.Contains("Earnings History"));
@@ -70,7 +71,7 @@ namespace Dsmn.DataProviders
             {
                 await Task.Run(() =>
                 {
-                    Status.Invoke($"Retrieving data for {ticker} {cnt++}/{tickerList.Count}");
+                    Status.Invoke($"Retrieving expected EPS for {ticker} {cnt++}/{tickerList.Count}");
                     var url = urlEpsTemplate.Replace("TICKER", ticker);
 
                     if (!_browserWrapper.Navigate(url))
@@ -78,7 +79,6 @@ namespace Dsmn.DataProviders
                         throw new ApplicationException($"Can not navigate to {url}");
                     }
 
-                    var xDocument = _browserWrapper.XDocument;
                     var text = _browserWrapper.CurrentHtml;
                     var lines = text.Split("\r\n").ToList();
                     var line = lines.FirstOrDefault(l => l.Contains("Avg. Estimate"));
