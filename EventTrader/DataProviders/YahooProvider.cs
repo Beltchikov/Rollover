@@ -10,11 +10,11 @@ namespace Dsmn.DataProviders
 {
     public class YahooProvider : IYahooProvider
     {
-        IBrowserWrapper _browserWrapper;
-        XmlNamespaceManager _xmlNamespaceManager;
-        string urlEpsTemplate = $"https://finance.yahoo.com/quote/TICKER/analysis?p=TICKER";
+        readonly IBrowserWrapper _browserWrapper;
+        readonly XmlNamespaceManager _xmlNamespaceManager;
+        readonly string urlEpsTemplate = $"https://finance.yahoo.com/quote/TICKER/analysis?p=TICKER";
         
-        public event Action<string> Status;
+        public event Action<string> Status = null!;
 
         public YahooProvider(IBrowserWrapper browserWrapper)
         {
@@ -49,12 +49,8 @@ namespace Dsmn.DataProviders
 
                     if (line4 != null)
                     {
-                        var regexPattern = @"\d[\.\d]+";
-                        var rx = new Regex(regexPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
-                        var matchCollection1 = rx.Matches(line4).ToList();
-                        var epsExpected = matchCollection1[0];
-
-                        result.Add($"{ticker}\t{epsExpected}");
+                        var lastEps = RegexMatch(line4, @"\d[\.\d]+", 0);
+                        result.Add($"{ticker}\t{lastEps}");
                     }
                 });
             }
@@ -88,11 +84,7 @@ namespace Dsmn.DataProviders
                     
                     if (line4 != null)
                     {
-                        var regexPattern = @"\d[\.\d]+";
-                        var rx = new Regex(regexPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
-                        var matchCollection1 = rx.Matches(line4).ToList();
-                        var epsExpected = matchCollection1[0];
-
+                        var epsExpected = RegexMatch(line4, @"\d[\.\d]+", 0);
                         result.Add($"{ticker}\t{epsExpected}");
                     }
                 });
@@ -100,6 +92,13 @@ namespace Dsmn.DataProviders
             }
 
             return result;
+        }
+
+        private static string RegexMatch(string text, string regexPattern, int index)
+        {
+            var rx = new Regex(regexPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            _ = rx.Matches(text).ToList();
+            return rx.Matches(text).ToList()[index].ToString();
         }
     }
 }
