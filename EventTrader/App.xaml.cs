@@ -1,5 +1,4 @@
 ﻿using Dsmn.DataProviders;
-using Dsmn.EconomicData;
 using Dsmn.WebScraping;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -16,7 +15,6 @@ namespace Dsmn
         {
             Services = new ServiceCollection()
                 .AddSingleton<IBrowserWrapper, BrowserWrapper>()
-                .AddSingleton<IDataProviderContext, DataProviderContext>()
                 .AddSingleton<IYahooProvider, YahooProvider>()
                 .AddSingleton<IOptionStratProvider, OptionStratProvider>()
                 .BuildServiceProvider();
