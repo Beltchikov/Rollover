@@ -1,5 +1,7 @@
 ﻿using Dsmn.WebScraping;
 using System;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml;
 
 namespace Dsmn.DataProviders
@@ -21,6 +23,15 @@ namespace Dsmn.DataProviders
         public void TriggerStatus(string message)
         {
             Status.Invoke(message);
+        }
+
+        protected string RegexMatch(string text, string regexPattern, int index)
+        {
+            var rx = new Regex(regexPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            var matches = rx.Matches(text).ToList();
+            return matches.Count <= 0
+                ? string.Empty
+                : matches[index].ToString();
         }
     }
 }

@@ -83,16 +83,7 @@ namespace Dsmn.DataProviders
             return result;
         }
 
-        private static string RegexMatch(string text, string regexPattern, int index)
-        {
-            var rx = new Regex(regexPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
-            var matches = rx.Matches(text).ToList();
-            return matches.Count <= 0 
-                ? string.Empty 
-                : matches[index].ToString();
-        }
-
-        private static void AddDataToResultList(List<string> result, string ticker, string? text)
+        private void AddDataToResultList(List<string> result, string ticker, string? text)
         {
             if (text != null)
             {
