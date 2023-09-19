@@ -1,5 +1,4 @@
 ﻿using Dsmn.WebScraping;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -11,9 +10,6 @@ namespace Dsmn.DataProviders
     public class YahooProvider : ProviderBase, IYahooProvider
     {
         readonly string urlEpsTemplate = $"https://finance.yahoo.com/quote/TICKER/analysis?p=TICKER";
-        
-        public event Action<string> Status = null!;
-
         public YahooProvider(IBrowserWrapper browserWrapper) : base(browserWrapper) {}
 
         public async Task<List<string>> LastEpsAsync(List<string> tickerList, int delay)
@@ -25,7 +21,7 @@ namespace Dsmn.DataProviders
             {
                 await Task.Run(() =>
                 {
-                    Status.Invoke($"Retrieving last EPS for {ticker} {cnt++}/{tickerList.Count}");
+                    TriggerStatus($"Retrieving last EPS for {ticker} {cnt++}/{tickerList.Count}");
                     var url = urlEpsTemplate.Replace("TICKER", ticker);
 
                     if (!_browserWrapper.Navigate(url))
@@ -60,7 +56,7 @@ namespace Dsmn.DataProviders
             {
                 await Task.Run(() =>
                 {
-                    Status.Invoke($"Retrieving expected EPS for {ticker} {cnt++}/{tickerList.Count}");
+                    TriggerStatus($"Retrieving expected EPS for {ticker} {cnt++}/{tickerList.Count}");
                     var url = urlEpsTemplate.Replace("TICKER", ticker);
 
                     if (!_browserWrapper.Navigate(url))
