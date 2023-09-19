@@ -30,13 +30,13 @@ namespace Dsmn
             LastEpsCommand = new RelayCommand(async () =>
             {
                 DecimalSeparatorSelectedIndex = 0;
-                ResultListYahoo = new ObservableCollection<string>(await investingProvider.LastEpsAsync(TickerList, 5));
+                ResultListYahoo = new ObservableCollection<string>(await investingProvider.LastEpsAsync(TickerListYahoo, 5));
             });
 
             ExpectedEpsCommand = new RelayCommand(async () =>
             {
                 DecimalSeparatorSelectedIndex = 0;
-                ResultListYahoo = new ObservableCollection<string>(await investingProvider.ExpectedEpsAsync(TickerList, 5));
+                ResultListYahoo = new ObservableCollection<string>(await investingProvider.ExpectedEpsAsync(TickerListYahoo, 5));
             });
 
             OptionsWarningsCommand = new RelayCommand(async () =>
@@ -48,7 +48,7 @@ namespace Dsmn
             TickerStringYahoo = " SKX\r\nPFS\r\nSLCA\r\n WT";
         }
 
-        public List<string> TickerList
+        public List<string> TickerListYahoo
         {
             get => TickerStringYahoo.Split("\r\n", StringSplitOptions.TrimEntries).ToList();
         }
