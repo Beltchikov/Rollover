@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Dsmn
@@ -20,6 +21,7 @@ namespace Dsmn
 
         public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
+        public ICommand OptionsWarningsCommand { get; }
         public ViewModel(IYahooProvider investingProvider)
         {
             investingProvider.Status += InvestingProvider_Status;
@@ -34,6 +36,12 @@ namespace Dsmn
             {
                 DecimalSeparatorSelectedIndex = 0;
                 ResultListYahoo = new ObservableCollection<string>(await investingProvider.ExpectedEpsAsync(TickerList, 5));
+            });
+
+            OptionsWarningsCommand = new RelayCommand(async () =>
+            {
+                MessageBox.Show("OptionsWarningsCommand");
+                //ResultListOptionStrat= new ObservableCollection<string>(await investingProvider.ExpectedEpsAsync(TickerList, 5));
             });
 
             TickerStringYahoo = " SKX\r\nPFS\r\nSLCA\r\n WT";

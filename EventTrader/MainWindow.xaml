@@ -132,7 +132,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="10"></ColumnDefinition>
                                 <ColumnDefinition Width="100"></ColumnDefinition>
-                                <ColumnDefinition Width="150"></ColumnDefinition>
+                                <ColumnDefinition Width="155"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="10"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
@@ -158,15 +158,8 @@
                                Height="25" 
                          HorizontalAlignment="Stretch"
                              VerticalAlignment="Center" 
-                             Command="{Binding LastEpsCommand}">Last EPS >>
+                             Command="{Binding OptionsWarningsCommand}">Options Warnings >>"
                                 </Button>
-                                <Button Padding="10 0 10 0" 
-                     Margin="10,0,10,0" 
-                             HorizontalAlignment="Stretch"  Height="25" 
-                             VerticalAlignment="Center" 
-                         Command="{Binding ExpectedEpsCommand}">Expected EPS >>
-                                </Button>
-
                             </StackPanel>
 
                             <Label Content="Results:" Grid.Column="3" Grid.Row="1" 
