@@ -126,6 +126,8 @@ namespace Dsmn
 
         #endregion  Yahoo
 
+        #region OptionStrat
+
         public string TickerStringOptionStrat
         {
             get => _tickerStringOptionStrat;
@@ -143,5 +145,7 @@ namespace Dsmn
                 SetProperty(ref _messageOptionStrat, value);
             }
         }
+
+        #endregion OptionStrat
     }
 }
