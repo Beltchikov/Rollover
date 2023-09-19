@@ -48,6 +48,7 @@ namespace Dsmn
             });
 
             TickerStringYahoo = " SKX\r\nPFS\r\nSLCA\r\n WT";
+            TickerStringOptionStrat= " VALE\r\nEDU\r\nMSFT\r\n GOOG";
         }
 
         #region Yahoo
@@ -190,9 +191,9 @@ namespace Dsmn
             }
         }
 
-        private void OptionStratProvider_Status(string obj)
+        private void OptionStratProvider_Status(string message)
         {
-            throw new NotImplementedException();
+            MessageOptionStrat = message;
         }
 
         #endregion OptionStrat
