@@ -1,5 +1,6 @@
 ﻿using Dsmn.WebScraping;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,27 +24,40 @@ namespace Dsmn.DataProviders
                     TriggerStatus($"Retrieving critical warnings EPS for {ticker} {cnt++}/{tickerList.Count}");
                     var url = urlWarningTemplate.Replace("TICKER", ticker);
 
-                    //if (!_browserWrapper.Navigate(url))
-                    //{
-                    //    AddDataToResultList(result, ticker, null);
-                    //}
-                    //else
-                    //{
-                    //    var text = _browserWrapper.CurrentHtml;
-                    //    var lines = text.Split("\r\n").ToList();
-                    //    var line = lines.FirstOrDefault(l => l.Contains("Earnings History"));
-                    //    var line2 = line?.Substring(line.IndexOf("EPS Actual"));
-                    //    var line3 = line2?.Substring(0, line2.IndexOf("</tr>"));
-                    //    var line4 = line3?.Substring(line3.LastIndexOf("Ta(end)"));
+                    if (!_browserWrapper.Navigate(url))
+                    {
+                        AddDataToResultList(result, ticker, null);
+                    }
+                    else
+                    {
+                        var text = _browserWrapper.CurrentHtml;
+                        //var lines = text.Split("\r\n").ToList();
+                        //var line = lines.FirstOrDefault(l => l.Contains("Earnings History"));
+                        //var line2 = line?.Substring(line.IndexOf("EPS Actual"));
+                        //var line3 = line2?.Substring(0, line2.IndexOf("</tr>"));
+                        //var line4 = line3?.Substring(line3.LastIndexOf("Ta(end)"));
 
-                    //    AddDataToResultList(result, ticker, line4);
-                    //}
+                        //AddDataToResultList(result, ticker, line4);
+                    }
 
                     Thread.Sleep(delay);
                 });
             }
 
             return result;
+        }
+
+        private void AddDataToResultList(List<string> result, string ticker, string? text)
+        {
+            if (text != null)
+            {
+                //var data = RegexMatch(text, @"-?\d[\.\d]+", 0);
+                result.Add($"{ticker}\t{text}");
+            }
+            else
+            {
+                result.Add($"{ticker}\t ");
+            }
         }
     }
 }

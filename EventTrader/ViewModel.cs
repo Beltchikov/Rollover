@@ -48,7 +48,7 @@ namespace Dsmn
             });
 
             TickerStringYahoo = " SKX\r\nPFS\r\nSLCA\r\n WT";
-            TickerStringOptionStrat= " VALE\r\nEDU\r\nMSFT\r\n GOOG";
+            TickerStringOptionStrat= " EDU \r\nVALE\r\nMSFT\r\n GOOG";
         }
 
         #region Yahoo
