@@ -1,21 +1,15 @@
 ﻿using Dsmn.WebScraping;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml;
 
 namespace Dsmn.DataProviders
 {
-    public class OptionStratProvider : IOptionStratProvider
+    public class OptionStratProvider : ProviderBase, IOptionStratProvider
     {
-        readonly IBrowserWrapper _browserWrapper;
-        readonly XmlNamespaceManager _xmlNamespaceManager;
-        readonly string urlEpsTemplate = $"https://optionstrat.com/build/bull-call-spread/TICKER";
+        readonly string urlWarningTemplate = $"https://optionstrat.com/build/bull-call-spread/TICKER";
 
-        public event Action<string> Status = null!;
+        public OptionStratProvider(IBrowserWrapper browserWrapper) : base(browserWrapper) { }
 
         public async Task<List<string>> HasCriticalWarningsAsync(List<string> tickerList, int delay)
         {
@@ -26,8 +20,8 @@ namespace Dsmn.DataProviders
             {
                 await Task.Run(() =>
                 {
-                    Status.Invoke($"Retrieving critical warnings EPS for {ticker} {cnt++}/{tickerList.Count}");
-                    var url = urlEpsTemplate.Replace("TICKER", ticker);
+                    TriggerStatus($"Retrieving critical warnings EPS for {ticker} {cnt++}/{tickerList.Count}");
+                    var url = urlWarningTemplate.Replace("TICKER", ticker);
 
                     //if (!_browserWrapper.Navigate(url))
                     //{
