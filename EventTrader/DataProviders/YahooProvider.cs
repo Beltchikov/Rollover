@@ -5,24 +5,16 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml;
 
 namespace Dsmn.DataProviders
 {
-    public class YahooProvider : IYahooProvider
+    public class YahooProvider : ProviderBase, IYahooProvider
     {
-        readonly IBrowserWrapper _browserWrapper;
-        readonly XmlNamespaceManager _xmlNamespaceManager;
         readonly string urlEpsTemplate = $"https://finance.yahoo.com/quote/TICKER/analysis?p=TICKER";
         
         public event Action<string> Status = null!;
 
-        public YahooProvider(IBrowserWrapper browserWrapper)
-        {
-            _browserWrapper = browserWrapper;
-            _xmlNamespaceManager = new XmlNamespaceManager(new NameTable());
-            _xmlNamespaceManager.AddNamespace("empty", "http://bel.com/2023/bel-schema");
-        }
+        public YahooProvider(IBrowserWrapper browserWrapper) : base(browserWrapper) {}
 
         public async Task<List<string>> LastEpsAsync(List<string> tickerList, int delay)
         {
