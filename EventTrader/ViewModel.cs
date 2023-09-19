@@ -12,12 +12,13 @@ namespace Dsmn
 {
     public class ViewModel : ObservableObject
     {
-        private string _tickerStringYahoo;
-        private ObservableCollection<string> _resultListYahoo;
-        private string _messageYahoo;
+        private string _tickerStringYahoo = null!;
+        private ObservableCollection<string> _resultListYahoo = null!;
+        private string _messageYahoo = null!;
         private int _decimalSeparatorSelectedIndex;
-        private string _tickerStringOptionStrat;
-        private string _messageOptionStrat;
+
+        private string _tickerStringOptionStrat = null!;
+        private string _messageOptionStrat = null!;
 
         public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
