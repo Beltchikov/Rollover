@@ -20,7 +20,7 @@ namespace Dsmn.DataProviders
             _xmlNamespaceManager.AddNamespace("empty", "http://bel.com/2023/bel-schema");
         }
 
-        public void TriggerStatus(string message)
+        protected void TriggerStatus(string message)
         {
             Status.Invoke(message);
         }
