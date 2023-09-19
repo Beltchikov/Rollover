@@ -12,29 +12,30 @@ namespace Dsmn
     public class ViewModel : ObservableObject
     {
         private string _tickerStringYahoo;
-        private ObservableCollection<string> _resultList;
+        private ObservableCollection<string> _resultListYahoo;
         private string _messageYahoo;
         private int _decimalSeparatorSelectedIndex;
+        private string _tickerStringOptionStrat;
 
         public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
         public ViewModel(IYahooProvider investingProvider)
         {
             investingProvider.Status += InvestingProvider_Status;
-           
+
             LastEpsCommand = new RelayCommand(async () =>
             {
                 DecimalSeparatorSelectedIndex = 0;
-                ResultList = new ObservableCollection<string>(await investingProvider.LastEpsAsync(TickerList, 5));
+                ResultListYahoo = new ObservableCollection<string>(await investingProvider.LastEpsAsync(TickerList, 5));
             });
 
             ExpectedEpsCommand = new RelayCommand(async () =>
             {
                 DecimalSeparatorSelectedIndex = 0;
-                ResultList = new ObservableCollection<string>(await investingProvider.ExpectedEpsAsync(TickerList, 5));
+                ResultListYahoo = new ObservableCollection<string>(await investingProvider.ExpectedEpsAsync(TickerList, 5));
             });
 
-           TickerStringYahoo = " SKX\r\nPFS\r\nSLCA\r\n WT";
+            TickerStringYahoo = " SKX\r\nPFS\r\nSLCA\r\n WT";
         }
 
         public List<string> TickerList
@@ -51,12 +52,21 @@ namespace Dsmn
             }
         }
 
-        public ObservableCollection<string> ResultList
+        public string TickerStringOptionStrat
         {
-            get => _resultList;
+            get => _tickerStringOptionStrat;
             set
             {
-                SetProperty(ref _resultList, value);
+                SetProperty(ref _tickerStringOptionStrat, value);
+            }
+        }
+
+        public ObservableCollection<string> ResultListYahoo
+        {
+            get => _resultListYahoo;
+            set
+            {
+                SetProperty(ref _resultListYahoo, value);
                 OnPropertyChanged(nameof(ResultStringYahoo));
             }
         }
@@ -65,26 +75,26 @@ namespace Dsmn
         {
             get
             {
-                if (ResultList == null)
+                if (ResultListYahoo == null)
                 {
                     return string.Empty;
                 }
                 else
                 {
-                    if (!ResultList.Any())
+                    if (!ResultListYahoo.Any())
                     {
                         return string.Empty;
                     }
                     else
                     {
-                        return ResultList.Aggregate((r, n) => r + "\r\n" + n);
+                        return ResultListYahoo.Aggregate((r, n) => r + "\r\n" + n);
                     }
                 }
             }
             set
             {
-                SetProperty(ref _resultList, new ObservableCollection<string>());
-                OnPropertyChanged(nameof(ResultList));
+                SetProperty(ref _resultListYahoo, new ObservableCollection<string>());
+                OnPropertyChanged(nameof(ResultListYahoo));
             }
         }
 
