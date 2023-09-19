@@ -19,13 +19,16 @@ namespace Dsmn
 
         private string _tickerStringOptionStrat = null!;
         private string _messageOptionStrat = null!;
+        private ObservableCollection<string> _resultListOptionStrat = null!;
 
         public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
         public ICommand OptionsWarningsCommand { get; }
-        public ViewModel(IYahooProvider yahooProvider)
+        public ViewModel(IYahooProvider yahooProvider,
+                         IOptionStratProvider optionStratProvider)
         {
             yahooProvider.Status += YahooProvider_Status;
+            optionStratProvider.Status += OptionStratProvider_Status;
 
             LastEpsCommand = new RelayCommand(async () =>
             {
@@ -41,8 +44,7 @@ namespace Dsmn
 
             OptionsWarningsCommand = new RelayCommand(async () =>
             {
-                MessageBox.Show("OptionsWarningsCommand");
-                //ResultListOptionStrat= new ObservableCollection<string>(await investingProvider.ExpectedEpsAsync(TickerList, 5));
+                ResultListOptionStrat= new ObservableCollection<string>(await optionStratProvider.HasCriticalWarningsAsync(TickerListOptionStrat, 5));
             });
 
             TickerStringYahoo = " SKX\r\nPFS\r\nSLCA\r\n WT";
@@ -128,6 +130,11 @@ namespace Dsmn
 
         #region OptionStrat
 
+        public List<string> TickerListOptionStrat
+        {
+            get => TickerStringOptionStrat.Split("\r\n", StringSplitOptions.TrimEntries).ToList();
+        }
+
         public string TickerStringOptionStrat
         {
             get => _tickerStringOptionStrat;
@@ -144,6 +151,48 @@ namespace Dsmn
             {
                 SetProperty(ref _messageOptionStrat, value);
             }
+        }
+
+        public ObservableCollection<string> ResultListOptionStrat
+        {
+            get => _resultListOptionStrat;
+            set
+            {
+                SetProperty(ref _resultListOptionStrat, value);
+                OnPropertyChanged(nameof(ResultStringOptionStrat));
+            }
+        }
+
+        public string ResultStringOptionStrat
+        {
+            get
+            {
+                if (ResultListOptionStrat == null)
+                {
+                    return string.Empty;
+                }
+                else
+                {
+                    if (!ResultListOptionStrat.Any())
+                    {
+                        return string.Empty;
+                    }
+                    else
+                    {
+                        return ResultListOptionStrat.Aggregate((r, n) => r + "\r\n" + n);
+                    }
+                }
+            }
+            set
+            {
+                SetProperty(ref _resultListOptionStrat, new ObservableCollection<string>());
+                OnPropertyChanged(nameof(ResultListOptionStrat));
+            }
+        }
+
+        private void OptionStratProvider_Status(string obj)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion OptionStrat

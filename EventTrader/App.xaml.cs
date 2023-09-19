@@ -18,6 +18,7 @@ namespace Dsmn
                 .AddSingleton<IBrowserWrapper, BrowserWrapper>()
                 .AddSingleton<IDataProviderContext, DataProviderContext>()
                 .AddSingleton<IYahooProvider, YahooProvider>()
+                .AddSingleton<IOptionStratProvider, OptionStratProvider>()
                 .BuildServiceProvider();
         }
 
@@ -27,7 +28,9 @@ namespace Dsmn
         {
             MainWindow mainWindow = new()
             {
-                DataContext = new ViewModel(Services.GetRequiredService<IYahooProvider>())
+                DataContext = new ViewModel(
+                    Services.GetRequiredService<IYahooProvider>(),
+                    Services.GetRequiredService<IOptionStratProvider>())
             };
             mainWindow.Show();
         }
