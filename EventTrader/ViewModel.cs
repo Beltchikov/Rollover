@@ -11,9 +11,9 @@ namespace Dsmn
 {
     public class ViewModel : ObservableObject
     {
-        private string _tickerString;
+        private string _tickerStringYahoo;
         private ObservableCollection<string> _resultList;
-        private string _message;
+        private string _messageYahoo;
         private int _decimalSeparatorSelectedIndex;
 
         public ICommand LastEpsCommand { get; }
@@ -34,20 +34,20 @@ namespace Dsmn
                 ResultList = new ObservableCollection<string>(await investingProvider.ExpectedEpsAsync(TickerList, 5));
             });
 
-           TickerString = " SKX\r\nPFS\r\nSLCA\r\n WT";
+           TickerStringYahoo = " SKX\r\nPFS\r\nSLCA\r\n WT";
         }
 
         public List<string> TickerList
         {
-            get => TickerString.Split("\r\n", StringSplitOptions.TrimEntries).ToList();
+            get => TickerStringYahoo.Split("\r\n", StringSplitOptions.TrimEntries).ToList();
         }
 
-        public string TickerString
+        public string TickerStringYahoo
         {
-            get => _tickerString;
+            get => _tickerStringYahoo;
             set
             {
-                SetProperty(ref _tickerString, value);
+                SetProperty(ref _tickerStringYahoo, value);
             }
         }
 
@@ -88,12 +88,12 @@ namespace Dsmn
             }
         }
 
-        public string Message
+        public string MessageYahoo
         {
-            get => _message;
+            get => _messageYahoo;
             set
             {
-                SetProperty(ref _message, value);
+                SetProperty(ref _messageYahoo, value);
             }
         }
 
@@ -108,7 +108,7 @@ namespace Dsmn
 
         private void InvestingProvider_Status(string message)
         {
-            Message = message;
+            MessageYahoo = message;
         }
     }
 }
