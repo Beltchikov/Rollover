@@ -79,7 +79,7 @@
                                 HorizontalAlignment="Left"
                                  Foreground="White">
                                 </Label>
-                                <ComboBox SelectedIndex="{Binding DecimalSeparatorSelectedIndex}" SelectionChanged="ComboBox_SelectionChanged">
+                                <ComboBox SelectedIndex="{Binding DecimalSeparatorSelectedIndexYahoo}" SelectionChanged="ComboBox_SelectionChanged">
                                     <ComboBoxItem>.</ComboBoxItem>
                                     <ComboBoxItem>,</ComboBoxItem>
                                 </ComboBox>
@@ -174,7 +174,7 @@
                  HorizontalAlignment="Left"
                   Foreground="White">
                                 </Label>
-                                <ComboBox SelectedIndex="{Binding DecimalSeparatorSelectedIndex}" SelectionChanged="ComboBox_SelectionChanged">
+                                <ComboBox SelectedIndex="{Binding DecimalSeparatorSelectedIndexYahoo}" SelectionChanged="ComboBox_SelectionChanged">
                                     <ComboBoxItem>.</ComboBoxItem>
                                     <ComboBoxItem>,</ComboBoxItem>
                                 </ComboBox>

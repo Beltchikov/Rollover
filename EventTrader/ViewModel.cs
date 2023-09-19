@@ -15,7 +15,7 @@ namespace Dsmn
         private string _tickerStringYahoo = null!;
         private ObservableCollection<string> _resultListYahoo = null!;
         private string _messageYahoo = null!;
-        private int _decimalSeparatorSelectedIndex;
+        private int _decimalSeparatorSelectedIndexYahoo;
 
         private string _tickerStringOptionStrat = null!;
         private string _messageOptionStrat = null!;
@@ -29,13 +29,13 @@ namespace Dsmn
 
             LastEpsCommand = new RelayCommand(async () =>
             {
-                DecimalSeparatorSelectedIndex = 0;
+                DecimalSeparatorSelectedIndexYahoo = 0;
                 ResultListYahoo = new ObservableCollection<string>(await investingProvider.LastEpsAsync(TickerListYahoo, 5));
             });
 
             ExpectedEpsCommand = new RelayCommand(async () =>
             {
-                DecimalSeparatorSelectedIndex = 0;
+                DecimalSeparatorSelectedIndexYahoo = 0;
                 ResultListYahoo = new ObservableCollection<string>(await investingProvider.ExpectedEpsAsync(TickerListYahoo, 5));
             });
 
@@ -126,12 +126,12 @@ namespace Dsmn
             }
         }
 
-        public int DecimalSeparatorSelectedIndex
+        public int DecimalSeparatorSelectedIndexYahoo
         {
-            get => _decimalSeparatorSelectedIndex;
+            get => _decimalSeparatorSelectedIndexYahoo;
             set
             {
-                SetProperty(ref _decimalSeparatorSelectedIndex, value);
+                SetProperty(ref _decimalSeparatorSelectedIndexYahoo, value);
             }
         }
 
