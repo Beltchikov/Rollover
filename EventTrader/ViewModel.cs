@@ -48,6 +48,8 @@ namespace Dsmn
             TickerStringYahoo = " SKX\r\nPFS\r\nSLCA\r\n WT";
         }
 
+        #region Yahoo
+
         public List<string> TickerListYahoo
         {
             get => TickerStringYahoo.Split("\r\n", StringSplitOptions.TrimEntries).ToList();
@@ -59,15 +61,6 @@ namespace Dsmn
             set
             {
                 SetProperty(ref _tickerStringYahoo, value);
-            }
-        }
-
-        public string TickerStringOptionStrat
-        {
-            get => _tickerStringOptionStrat;
-            set
-            {
-                SetProperty(ref _tickerStringOptionStrat, value);
             }
         }
 
@@ -117,21 +110,32 @@ namespace Dsmn
             }
         }
 
-        public string MessageOptionStrat
-        {
-            get => _messageOptionStrat;
-            set
-            {
-                SetProperty(ref _messageOptionStrat, value);
-            }
-        }
-
         public int DecimalSeparatorSelectedIndexYahoo
         {
             get => _decimalSeparatorSelectedIndexYahoo;
             set
             {
                 SetProperty(ref _decimalSeparatorSelectedIndexYahoo, value);
+            }
+        }
+
+        #endregion  Yahoo
+
+        public string TickerStringOptionStrat
+        {
+            get => _tickerStringOptionStrat;
+            set
+            {
+                SetProperty(ref _tickerStringOptionStrat, value);
+            }
+        }
+        
+        public string MessageOptionStrat
+        {
+            get => _messageOptionStrat;
+            set
+            {
+                SetProperty(ref _messageOptionStrat, value);
             }
         }
 
