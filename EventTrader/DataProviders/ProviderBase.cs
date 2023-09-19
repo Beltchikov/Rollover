@@ -13,7 +13,7 @@ namespace Dsmn.DataProviders
 
         public event Action<string> Status = null!;
 
-        public ProviderBase(IBrowserWrapper browserWrapper)
+        protected ProviderBase(IBrowserWrapper browserWrapper)
         {
             _browserWrapper = browserWrapper;
             _xmlNamespaceManager = new XmlNamespaceManager(new NameTable());
