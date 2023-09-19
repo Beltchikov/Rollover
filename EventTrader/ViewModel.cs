@@ -23,20 +23,20 @@ namespace Dsmn
         public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
         public ICommand OptionsWarningsCommand { get; }
-        public ViewModel(IYahooProvider investingProvider)
+        public ViewModel(IYahooProvider yahooProvider)
         {
-            investingProvider.Status += InvestingProvider_Status;
+            yahooProvider.Status += YahooProvider_Status;
 
             LastEpsCommand = new RelayCommand(async () =>
             {
                 DecimalSeparatorSelectedIndexYahoo = 0;
-                ResultListYahoo = new ObservableCollection<string>(await investingProvider.LastEpsAsync(TickerListYahoo, 5));
+                ResultListYahoo = new ObservableCollection<string>(await yahooProvider.LastEpsAsync(TickerListYahoo, 5));
             });
 
             ExpectedEpsCommand = new RelayCommand(async () =>
             {
                 DecimalSeparatorSelectedIndexYahoo = 0;
-                ResultListYahoo = new ObservableCollection<string>(await investingProvider.ExpectedEpsAsync(TickerListYahoo, 5));
+                ResultListYahoo = new ObservableCollection<string>(await yahooProvider.ExpectedEpsAsync(TickerListYahoo, 5));
             });
 
             OptionsWarningsCommand = new RelayCommand(async () =>
@@ -119,6 +119,11 @@ namespace Dsmn
             }
         }
 
+        private void YahooProvider_Status(string message)
+        {
+            MessageYahoo = message;
+        }
+
         #endregion  Yahoo
 
         public string TickerStringOptionStrat
@@ -137,11 +142,6 @@ namespace Dsmn
             {
                 SetProperty(ref _messageOptionStrat, value);
             }
-        }
-
-        private void InvestingProvider_Status(string message)
-        {
-            MessageYahoo = message;
         }
     }
 }
