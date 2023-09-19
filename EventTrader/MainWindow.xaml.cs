@@ -19,7 +19,7 @@ namespace Dsmn
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(txtResults.Text == string.Empty)
+            if(txtResultsYahoo.Text == string.Empty)
             {
                 return;
             }
@@ -28,11 +28,11 @@ namespace Dsmn
             var decimalSeparator = ((ComboBoxItem)selectedItem).Content.ToString();
             if (decimalSeparator == DOT)
             {
-                txtResults.Text = txtResults.Text.Replace(COMMA, DOT);
+                txtResultsYahoo.Text = txtResultsYahoo.Text.Replace(COMMA, DOT);
             }
             else if (decimalSeparator == ",")
             {
-                txtResults.Text = txtResults.Text.Replace(DOT, COMMA);
+                txtResultsYahoo.Text = txtResultsYahoo.Text.Replace(DOT, COMMA);
             }
             else
             {

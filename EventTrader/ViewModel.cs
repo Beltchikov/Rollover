@@ -57,11 +57,11 @@ namespace Dsmn
             set
             {
                 SetProperty(ref _resultList, value);
-                OnPropertyChanged(nameof(ResultString));
+                OnPropertyChanged(nameof(ResultStringYahoo));
             }
         }
 
-        public string ResultString
+        public string ResultStringYahoo
         {
             get
             {
