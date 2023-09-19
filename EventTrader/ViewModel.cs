@@ -16,6 +16,7 @@ namespace Dsmn
         private string _messageYahoo;
         private int _decimalSeparatorSelectedIndex;
         private string _tickerStringOptionStrat;
+        private string _messageOptionStrat;
 
         public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
@@ -104,6 +105,15 @@ namespace Dsmn
             set
             {
                 SetProperty(ref _messageYahoo, value);
+            }
+        }
+
+        public string MessageOptionStrat
+        {
+            get => _messageOptionStrat;
+            set
+            {
+                SetProperty(ref _messageOptionStrat, value);
             }
         }
 

@@ -204,7 +204,7 @@
                                 <RowDefinition Height="10"></RowDefinition>
                             </Grid.RowDefinitions>
 
-                            <TextBox Text="{Binding Message, Mode=OneWay}" 
+                            <TextBox Text="{Binding MessageOptionStrat, Mode=OneWay}" 
                       Grid.Column="1" Grid.Row="1" ></TextBox>
 
                         </Grid>
