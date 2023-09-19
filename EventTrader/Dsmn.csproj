@@ -13,4 +13,8 @@
     <PackageReference Include="SimpleBrowser" Version="0.6.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\IbClient\IbClient.csproj" />
+  </ItemGroup>
+
 </Project>
