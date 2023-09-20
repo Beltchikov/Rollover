@@ -26,12 +26,10 @@ namespace Dsmn
         public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
         public ICommand ConnectToTwsCommand { get; }
-        public ViewModel(IYahooProvider yahooProvider,
-                         IOptionStratProvider optionStratProvider)
+        public ViewModel(IYahooProvider yahooProvider)
         {
             yahooProvider.Status += YahooProvider_Status;
-            optionStratProvider.Status += OptionStratProvider_Status;
-
+            
             LastEpsCommand = new RelayCommand(async () =>
             {
                 DecimalSeparatorSelectedIndexYahoo = 0;
@@ -50,7 +48,6 @@ namespace Dsmn
             });
 
             TickerStringYahoo = " SKX\r\nPFS\r\nSLCA\r\n WT";
-            TickerStringOptionStrat= " EDU \r\nVALE\r\nMSFT\r\n GOOG";
         }
 
         #region Yahoo
@@ -130,75 +127,6 @@ namespace Dsmn
         }
 
         #endregion  Yahoo
-
-        #region OptionStrat
-
-        public List<string> TickerListOptionStrat
-        {
-            get => TickerStringOptionStrat.Split("\r\n", StringSplitOptions.TrimEntries).ToList();
-        }
-
-        public string TickerStringOptionStrat
-        {
-            get => _tickerStringOptionStrat;
-            set
-            {
-                SetProperty(ref _tickerStringOptionStrat, value);
-            }
-        }
-        
-        public string MessageOptionStrat
-        {
-            get => _messageOptionStrat;
-            set
-            {
-                SetProperty(ref _messageOptionStrat, value);
-            }
-        }
-
-        public ObservableCollection<string> ResultListOptionStrat
-        {
-            get => _resultListOptionStrat;
-            set
-            {
-                SetProperty(ref _resultListOptionStrat, value);
-                OnPropertyChanged(nameof(ResultStringOptionStrat));
-            }
-        }
-
-        public string ResultStringOptionStrat
-        {
-            get
-            {
-                if (ResultListOptionStrat == null)
-                {
-                    return string.Empty;
-                }
-                else
-                {
-                    if (!ResultListOptionStrat.Any())
-                    {
-                        return string.Empty;
-                    }
-                    else
-                    {
-                        return ResultListOptionStrat.Aggregate((r, n) => r + "\r\n" + n);
-                    }
-                }
-            }
-            set
-            {
-                SetProperty(ref _resultListOptionStrat, new ObservableCollection<string>());
-                OnPropertyChanged(nameof(ResultListOptionStrat));
-            }
-        }
-
-        private void OptionStratProvider_Status(string message)
-        {
-            MessageOptionStrat = message;
-        }
-
-        #endregion OptionStrat
 
         #region TWS
         public bool ConnectedToTws
