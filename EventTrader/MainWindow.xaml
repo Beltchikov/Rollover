@@ -159,7 +159,7 @@ Foreground="White" Grid.ColumnSpan="3">
                                 <RowDefinition Height="10"></RowDefinition>
                             </Grid.RowDefinitions>
 
-                            <TextBox Text="{Binding Messages, Mode=OneWay}" 
+                            <TextBox Text="{Binding TwsMessages, Mode=OneWay}" 
           Grid.Column="1" Grid.Row="1" ></TextBox>
 
                         </Grid>

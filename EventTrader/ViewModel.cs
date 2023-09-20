@@ -22,7 +22,7 @@ namespace Dsmn
         private int _port = 4001;
         private int _clientId = 1;
         private bool _connectedToTws;
-        private List<string>? _messages;
+        private List<string>? _twsMessages;
 
         public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
@@ -169,18 +169,45 @@ namespace Dsmn
             }
         }
 
-        public List<string>? Messages
+        public List<string>? TwsMessages
         {
-            get => _messages;
+            get => _twsMessages;
             set
             {
-                SetProperty(ref _messages, value);
+                SetProperty(ref _twsMessages, value);
             }
         }
 
+        //public string MessagesAsString
+        //{
+        //    get
+        //    {
+        //        if (ResultListYahoo == null)
+        //        {
+        //            return string.Empty;
+        //        }
+        //        else
+        //        {
+        //            if (!ResultListYahoo.Any())
+        //            {
+        //                return string.Empty;
+        //            }
+        //            else
+        //            {
+        //                return ResultListYahoo.Aggregate((r, n) => r + "\r\n" + n);
+        //            }
+        //        }
+        //    }
+        //    set
+        //    {
+        //        SetProperty(ref _resultListYahoo, new ObservableCollection<string>());
+        //        OnPropertyChanged(nameof(ResultListYahoo));
+        //    }
+        //}
+
         //bool IIbConsumer.ConnectedToTws { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         //List<string>? IIbConsumer.Messages { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        
+
         #endregion TWS
     }
 }
