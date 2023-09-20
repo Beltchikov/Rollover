@@ -25,7 +25,7 @@ namespace Dsmn
 
         public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
-        public ICommand OptionsWarningsCommand { get; }
+        public ICommand ConnectToTwsCommand { get; }
         public ViewModel(IYahooProvider yahooProvider,
                          IOptionStratProvider optionStratProvider)
         {
@@ -44,9 +44,9 @@ namespace Dsmn
                 ResultListYahoo = new ObservableCollection<string>(await yahooProvider.ExpectedEpsAsync(TickerListYahoo, 5));
             });
 
-            OptionsWarningsCommand = new RelayCommand(async () =>
+            ConnectToTwsCommand = new RelayCommand(() =>
             {
-                ResultListOptionStrat= new ObservableCollection<string>(await optionStratProvider.HasCriticalWarningsAsync(TickerListOptionStrat, 5));
+                MessageBox.Show("ConnectToTwsCommand");
             });
 
             TickerStringYahoo = " SKX\r\nPFS\r\nSLCA\r\n WT";
