@@ -1,4 +1,5 @@
 ﻿using Dsmn.DataProviders;
+using Dsmn.Ib;
 using Dsmn.WebScraping;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -16,6 +17,7 @@ namespace Dsmn
             Services = new ServiceCollection()
                 .AddSingleton<IBrowserWrapper, BrowserWrapper>()
                 .AddSingleton<IYahooProvider, YahooProvider>()
+                .AddSingleton<IIbHost, IbHost>()
                 .BuildServiceProvider();
         }
 
@@ -26,7 +28,8 @@ namespace Dsmn
             MainWindow mainWindow = new()
             {
                 DataContext = new ViewModel(
-                    Services.GetRequiredService<IYahooProvider>())
+                    Services.GetRequiredService<IYahooProvider>(),
+                    Services.GetRequiredService<IIbHost>())
             };
             mainWindow.Show();
         }

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Dsmn.DataProviders;
+using Dsmn.Ib;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,7 +11,7 @@ using System.Windows.Input;
 
 namespace Dsmn
 {
-    public class ViewModel : ObservableObject
+    public class ViewModel : ObservableObject, IIbConsumer
     {
         private string _tickerStringYahoo = null!;
         private ObservableCollection<string> _resultListYahoo = null!;
@@ -18,11 +19,12 @@ namespace Dsmn
         private int _decimalSeparatorSelectedIndexYahoo;
 
         private bool _connectedToTws;
+        private List<string>? _messages;
 
         public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
         public ICommand ConnectToTwsCommand { get; }
-        public ViewModel(IYahooProvider yahooProvider)
+        public ViewModel(IYahooProvider yahooProvider, IIbHost ibHost)
         {
             yahooProvider.Status += YahooProvider_Status;
             
@@ -40,6 +42,8 @@ namespace Dsmn
 
             ConnectToTwsCommand = new RelayCommand(() =>
             {
+                ibHost.Consumer = this;
+                //ibHost.ConnectAndStartReaderThread()
                 MessageBox.Show("ConnectToTwsCommand");
             });
 
@@ -133,6 +137,19 @@ namespace Dsmn
                 SetProperty(ref _connectedToTws, value);
             }
         }
+
+        public List<string>? Messages
+        {
+            get => _messages;
+            set
+            {
+                SetProperty(ref _messages, value);
+            }
+        }
+
+        //bool IIbConsumer.ConnectedToTws { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        //List<string>? IIbConsumer.Messages { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        
         #endregion TWS
     }
 }

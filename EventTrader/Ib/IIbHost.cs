@@ -1,9 +1,10 @@
 ﻿using System.Threading.Tasks;
 
-namespace Dsmn.IbHost
+namespace Dsmn.Ib
 {
     public interface IIbHost
     {
+        public IIbConsumer? Consumer { get; set; }
         public Task<bool> ConnectAndStartReaderThread(string host, int port, int clientId, int timeout);
         public void Disconnect();
         //public void ReqHistoricalData();

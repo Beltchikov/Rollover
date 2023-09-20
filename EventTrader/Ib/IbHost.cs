@@ -1,11 +1,10 @@
-﻿using Dsmn.IbHost;
-using IbClient;
+﻿using IbClient;
 using IbClient.messages;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SsbHedger
+namespace Dsmn.Ib
 {
     public class IbHost : IIbHost
     {
