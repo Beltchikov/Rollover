@@ -20,6 +20,8 @@ namespace Dsmn
         private string _tickerStringOptionStrat = null!;
         private string _messageOptionStrat = null!;
         private ObservableCollection<string> _resultListOptionStrat = null!;
+        
+        private bool _connectedToTws;
 
         public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
@@ -197,5 +199,16 @@ namespace Dsmn
         }
 
         #endregion OptionStrat
+
+        #region TWS
+        public bool ConnectedToTws
+        {
+            get => _connectedToTws;
+            set
+            {
+                SetProperty(ref _connectedToTws, value);
+            }
+        }
+        #endregion TWS
     }
 }
