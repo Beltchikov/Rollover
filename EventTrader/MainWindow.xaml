@@ -48,8 +48,7 @@ Foreground="White" Grid.ColumnSpan="3">
                                 <RowDefinition Height="10"></RowDefinition>
                             </Grid.RowDefinitions>
 
-                            <!--<Image Grid.Row="1" Grid.Column="1" Width="30" Height="20" Source="{Binding ConnectedToTws, FallbackValue={StaticResource ConnectionCircle}}">-->
-                                                     <Image Grid.Row="1" Grid.Column="1" Width="30" Height="20">
+                            <Image Grid.Row="1" Grid.Column="1" Width="30" Height="20">
                                 <Image.Style>
                                     <Style TargetType="{x:Type Image}">
                                         <Style.Triggers>
@@ -111,7 +110,7 @@ Foreground="White" Grid.ColumnSpan="3">
                             <Label Content="Tickers:" Grid.Column="1" Grid.Row="1" 
         HorizontalAlignment="Left"
          Foreground="White"></Label>
-                            <TextBox Text="{Binding TickerStringOptionStrat}" Grid.Column="1" Grid.Row="2" 
+                            <TextBox Text="TODO" Grid.Column="1" Grid.Row="2" 
           Grid.RowSpan="3" AcceptsReturn="True"
              VerticalScrollBarVisibility="Visible"></TextBox>
 
@@ -121,14 +120,14 @@ Foreground="White" Grid.ColumnSpan="3">
                    Height="25" 
              HorizontalAlignment="Stretch"
                  VerticalAlignment="Center" 
-                 Command="{Binding OptionsWarningsCommand}">Options Warnings >>"
+                 Command="">Options Warnings >>"
                                 </Button>
                             </StackPanel>
 
                             <Label Content="Results:" Grid.Column="3" Grid.Row="1" 
         HorizontalAlignment="Left"
          Foreground="White"></Label>
-                            <TextBox x:Name="txtResultsOptionStrat" Text="{Binding ResultStringOptionStrat}" Grid.Column="3" Grid.Row="2" 
+                            <TextBox x:Name="txtResultsOptionStrat" Text="TODO" Grid.Column="3" Grid.Row="2" 
           AcceptsReturn="True"
              VerticalScrollBarVisibility="Visible"></TextBox>
 
