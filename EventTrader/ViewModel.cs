@@ -17,10 +17,6 @@ namespace Dsmn
         private string _messageYahoo = null!;
         private int _decimalSeparatorSelectedIndexYahoo;
 
-        private string _tickerStringOptionStrat = null!;
-        private string _messageOptionStrat = null!;
-        private ObservableCollection<string> _resultListOptionStrat = null!;
-        
         private bool _connectedToTws;
 
         public ICommand LastEpsCommand { get; }
