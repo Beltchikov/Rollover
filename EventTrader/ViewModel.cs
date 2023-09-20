@@ -178,33 +178,6 @@ namespace Dsmn
             }
         }
 
-        //public string MessagesAsString
-        //{
-        //    get
-        //    {
-        //        if (ResultListYahoo == null)
-        //        {
-        //            return string.Empty;
-        //        }
-        //        else
-        //        {
-        //            if (!ResultListYahoo.Any())
-        //            {
-        //                return string.Empty;
-        //            }
-        //            else
-        //            {
-        //                return ResultListYahoo.Aggregate((r, n) => r + "\r\n" + n);
-        //            }
-        //        }
-        //    }
-        //    set
-        //    {
-        //        SetProperty(ref _resultListYahoo, new ObservableCollection<string>());
-        //        OnPropertyChanged(nameof(ResultListYahoo));
-        //    }
-        //}
-
         //bool IIbConsumer.ConnectedToTws { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         //List<string>? IIbConsumer.Messages { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
