@@ -85,11 +85,12 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="270"></ColumnDefinition>
+                <ColumnDefinition Width="22.732"></ColumnDefinition>
+                <ColumnDefinition Width="247.268"/>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <StackPanel Name="panelPositionsInfo" Orientation="Vertical" Grid.Row="0" Grid.Column="0">
+            <StackPanel Name="panelPositionsInfo" Orientation="Vertical" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
                 <TextBlock HorizontalAlignment="Center" 
                            Style="{StaticResource Warning}"
                            Text="{Binding Path=PositionsInfoMessage}"
@@ -97,7 +98,7 @@
             </StackPanel>
 
             <GroupBox Header="Delta Alert" Grid.Row="1" Style="{StaticResource GroupBoxHeader}"
-                      VerticalAlignment="Top">
+                      VerticalAlignment="Top" Grid.ColumnSpan="2">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20"></RowDefinition>
@@ -168,7 +169,7 @@
                 </Grid>
             </GroupBox>
 
-            <GroupBox Header="IV Alert" Grid.Row="1" Grid.Column="1" Style="{StaticResource GroupBoxHeader}" >
+            <GroupBox Header="IV Alert" Grid.Row="1" Grid.Column="2" Style="{StaticResource GroupBoxHeader}" >
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20"></RowDefinition>

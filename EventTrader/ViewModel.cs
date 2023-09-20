@@ -18,6 +18,9 @@ namespace Dsmn
         private string _messageYahoo = null!;
         private int _decimalSeparatorSelectedIndexYahoo;
 
+        private string _host = "localhost";
+        private int _port = 4001;
+        private int _clientId = 1;
         private bool _connectedToTws;
         private List<string>? _messages;
 
@@ -43,8 +46,8 @@ namespace Dsmn
             ConnectToTwsCommand = new RelayCommand(() =>
             {
                 ibHost.Consumer = this;
-                //ibHost.ConnectAndStartReaderThread()
-                MessageBox.Show("ConnectToTwsCommand");
+                ibHost.ConnectAndStartReaderThread(Host, Port, ClientId, 1000);
+                //MessageBox.Show("ConnectToTwsCommand");
             });
 
             TickerStringYahoo = " SKX\r\nPFS\r\nSLCA\r\n WT";
@@ -129,6 +132,34 @@ namespace Dsmn
         #endregion  Yahoo
 
         #region TWS
+
+        public string Host
+        {
+            get => _host;
+            set
+            {
+                SetProperty(ref _host, value);
+            }
+        }
+
+        public int Port
+        {
+            get => _port;
+            set
+            {
+                SetProperty(ref _port, value);
+            }
+        }
+
+        public int ClientId
+        {
+            get => _clientId;
+            set
+            {
+                SetProperty(ref _clientId, value);
+            }
+        }
+
         public bool ConnectedToTws
         {
             get => _connectedToTws;
