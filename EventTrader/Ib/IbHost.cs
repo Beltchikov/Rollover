@@ -62,7 +62,7 @@ namespace Dsmn.Ib
             {
                 throw new ApplicationException("Unexpected! Consumer is null");
             }
-            Consumer.TwsMessages?.Add($"ReqId:{reqId} code:{code} message:{message} exception:{exception}");
+            Consumer.TwsMessageList?.Add($"ReqId:{reqId} code:{code} message:{message} exception:{exception}");
         }
 
         private void _ibClient_ManagedAccounts(ManagedAccountsMessage message)
@@ -71,7 +71,7 @@ namespace Dsmn.Ib
             {
                 throw new ApplicationException("Unexpected! Consumer is null");
             }
-            Consumer.TwsMessages?.Add($"ReqId:0 managed accounts: {message.ManagedAccounts.Aggregate((r, n) => r + "," + n)}");
+            Consumer.TwsMessageList?.Add($"ReqId:0 managed accounts: {message.ManagedAccounts.Aggregate((r, n) => r + "," + n)}");
         }
 
         private void _ibClient_NextValidId(ConnectionStatusMessage message)
@@ -80,7 +80,7 @@ namespace Dsmn.Ib
             {
                 throw new ApplicationException("Unexpected! Consumer is null");
             }
-            Consumer.TwsMessages?.Add(message.IsConnected ? "CONNECTED!" : "NOT CONNECTED!");
+            Consumer.TwsMessageList?.Add(message.IsConnected ? "CONNECTED!" : "NOT CONNECTED!");
             Consumer.ConnectedToTws = message.IsConnected;
         }
 
@@ -90,7 +90,7 @@ namespace Dsmn.Ib
             {
                 throw new ApplicationException("Unexpected! Consumer is null");
             }
-            Consumer.TwsMessages?.Add("DISCONNECTED!");
+            Consumer.TwsMessageList?.Add("DISCONNECTED!");
             Consumer.ConnectedToTws = false;
         }
     }

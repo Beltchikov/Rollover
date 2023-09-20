@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
 using System.Windows.Input;
 
 namespace Dsmn
@@ -22,7 +21,7 @@ namespace Dsmn
         private int _port = 4001;
         private int _clientId = 1;
         private bool _connectedToTws;
-        private List<string>? _twsMessages;
+        private List<string>? _twsMessageList = new List<string>();
 
         public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
@@ -30,7 +29,7 @@ namespace Dsmn
         public ViewModel(IYahooProvider yahooProvider, IIbHost ibHost)
         {
             yahooProvider.Status += YahooProvider_Status;
-            
+
             LastEpsCommand = new RelayCommand(async () =>
             {
                 DecimalSeparatorSelectedIndexYahoo = 0;
@@ -47,7 +46,6 @@ namespace Dsmn
             {
                 ibHost.Consumer = this;
                 ibHost.ConnectAndStartReaderThread(Host, Port, ClientId, 1000);
-                //MessageBox.Show("ConnectToTwsCommand");
             });
 
             TickerStringYahoo = " SKX\r\nPFS\r\nSLCA\r\n WT";
@@ -169,17 +167,27 @@ namespace Dsmn
             }
         }
 
-        public List<string>? TwsMessages
+        public List<string>? TwsMessageList
         {
-            get => _twsMessages;
+            get => _twsMessageList;
             set
             {
-                SetProperty(ref _twsMessages, value);
+                SetProperty(ref _twsMessageList, value);
+                OnPropertyChanged(nameof(TwsMessages));
             }
         }
 
-        //bool IIbConsumer.ConnectedToTws { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        //List<string>? IIbConsumer.Messages { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public ObservableCollection<string>? TwsMessages
+        {
+            get 
+            {
+                if (_twsMessageList == null)
+                {
+                    return new ObservableCollection<string>();
+                }
+                return new ObservableCollection<string>(_twsMessageList);
+            }
+        }
 
         #endregion TWS
     }

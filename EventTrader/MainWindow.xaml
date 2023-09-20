@@ -159,8 +159,18 @@ Foreground="White" Grid.ColumnSpan="3">
                                 <RowDefinition Height="10"></RowDefinition>
                             </Grid.RowDefinitions>
 
-                            <TextBox Text="{Binding TwsMessages, Mode=OneWay}" 
-          Grid.Column="1" Grid.Row="1" ></TextBox>
+                            <ListBox Name="listBoxMessages" Grid.Row="1" Grid.Column="1" 
+          Background="Azure" ItemsSource="{Binding TwsMessages, Mode=OneWay}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding}"></TextBlock>
+                                            <!--<TextBlock Text=" "></TextBlock>
+                                            <TextBlock Text="{Binding Body}"></TextBlock>-->
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
 
                         </Grid>
                     </GroupBox>
