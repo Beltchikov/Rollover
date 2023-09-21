@@ -110,7 +110,7 @@ Foreground="White" Grid.ColumnSpan="3">
                             <Label Content="Tickers:" Grid.Column="1" Grid.Row="1" 
         HorizontalAlignment="Left"
          Foreground="White"></Label>
-                            <TextBox Text="TODO" Grid.Column="1" Grid.Row="2" 
+                            <TextBox Text="{Binding TickerStringTws}" Grid.Column="1" Grid.Row="2" 
           Grid.RowSpan="3" AcceptsReturn="True"
              VerticalScrollBarVisibility="Visible"></TextBox>
 
@@ -127,7 +127,7 @@ Foreground="White" Grid.ColumnSpan="3">
                             <Label Content="Results:" Grid.Column="3" Grid.Row="1" 
         HorizontalAlignment="Left"
          Foreground="White"></Label>
-                            <TextBox x:Name="txtResultsOptionStrat" Text="TODO" Grid.Column="3" Grid.Row="2" 
+                            <TextBox Text="{Binding ResultStringTws}" Grid.Column="3" Grid.Row="2" 
           AcceptsReturn="True"
              VerticalScrollBarVisibility="Visible"></TextBox>
 

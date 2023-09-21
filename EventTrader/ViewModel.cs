@@ -25,6 +25,8 @@ namespace Dsmn
         private int _clientId = 1;
         private bool _connectedToTws;
         private List<string>? _twsMessageList = new List<string>();
+        private string _tickerStringTws = null!;
+        private ObservableCollection<string> _resultListTws;
 
         public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
@@ -205,6 +207,52 @@ namespace Dsmn
                     return new ObservableCollection<string>();
                 }
                 return new ObservableCollection<string>(_twsMessageList);
+            }
+        }
+
+        public string TickerStringTws
+        {
+            get => _tickerStringTws;
+            set
+            {
+                SetProperty(ref _tickerStringTws, value);
+            }
+        }
+
+        public ObservableCollection<string> ResultListTws
+        {
+            get => _resultListTws;
+            set
+            {
+                SetProperty(ref _resultListTws, value);
+                OnPropertyChanged(nameof(ResultStringTws));
+            }
+        }
+
+        public string ResultStringTws
+        {
+            get
+            {
+                if (ResultListTws == null)
+                {
+                    return string.Empty;
+                }
+                else
+                {
+                    if (!ResultListTws.Any())
+                    {
+                        return string.Empty;
+                    }
+                    else
+                    {
+                        return ResultListTws.Aggregate((r, n) => r + "\r\n" + n);
+                    }
+                }
+            }
+            set
+            {
+                SetProperty(ref _resultListTws, new ObservableCollection<string>());
+                OnPropertyChanged(nameof(ResultListTws));
             }
         }
 
