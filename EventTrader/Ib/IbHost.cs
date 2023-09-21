@@ -79,6 +79,8 @@ namespace Dsmn.Ib
             };
             _ibClient.ClientSocket.reqContractDetails(1, contract);
 
+            // TODO use IbClientQueue
+
             //var startTime = DateTime.Now;
             //while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !Consumer.ConnectedToTws) 
             //{
