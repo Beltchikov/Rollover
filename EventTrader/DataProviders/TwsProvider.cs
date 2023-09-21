@@ -17,26 +17,29 @@ namespace Dsmn.DataProviders
         {
             var result = new List<string>();
 
-            int cnt = 1;
-            foreach (string ticker in tickerList)
-            {
-                await Task.Run(() =>
-                {
-                    TriggerStatus($"Retrieving bid/ask spread for {ticker} {cnt++}/{tickerList.Count}");
-                    var conId = _ibHost.RequestContractId(ticker, timeout);
+            TriggerStatus($"Retrieving bid/ask spread for {"SKX"} {tickerList.Count}");
+            var conId = _ibHost.RequestContractId("SKX", timeout);
+
+            //int cnt = 1;
+            //foreach (string ticker in tickerList)
+            //{
+            //    await Task.Run(() =>
+            //    {
+            //        TriggerStatus($"Retrieving bid/ask spread for {ticker} {cnt++}/{tickerList.Count}");
+            //        var conId = _ibHost.RequestContractId(ticker, timeout);
 
 
-                    // Exchange must be empty
-                    //ibClient.ClientSocket.reqSecDefOptParams(_activeReqId, symbol, exchange, secType, conId);
+            //        // Exchange must be empty
+            //        //ibClient.ClientSocket.reqSecDefOptParams(_activeReqId, symbol, exchange, secType, conId);
 
-                    //ibClient.SecurityDefinitionOptionParameter += OnSecurityDefinitionOptionParameter;
-                    //ibClient.SecurityDefinitionOptionParameterEnd += OnSecurityDefinitionOptionParameterEnd;
+            //        //ibClient.SecurityDefinitionOptionParameter += OnSecurityDefinitionOptionParameter;
+            //        //ibClient.SecurityDefinitionOptionParameterEnd += OnSecurityDefinitionOptionParameterEnd;
 
-                    // TODO
-                    result.Add($"{ticker} {conId}");
+            //        // TODO
+            //        result.Add($"{ticker} {conId}");
 
-                });
-            }
+            //    });
+            //}
 
             return result;
         }

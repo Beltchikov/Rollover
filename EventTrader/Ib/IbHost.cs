@@ -2,6 +2,7 @@
 using IbClient;
 using IbClient.messages;
 using System;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -68,7 +69,16 @@ namespace Dsmn.Ib
         public int RequestContractId(string ticker, int timeout)
         {
             // TODO make async
-            
+
+            var contract = new IBApi.Contract()
+            {
+                Symbol = "SKX",
+                SecType = STK,
+                Currency = USD,
+                Exchange = SMART
+            };
+            _ibClient.ClientSocket.reqContractDetails(1, contract);
+
             //var startTime = DateTime.Now;
             //while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !Consumer.ConnectedToTws) 
             //{
@@ -83,7 +93,7 @@ namespace Dsmn.Ib
             //    // TODO
             //    _ibClient.ClientSocket.reqContractDetails(-1, contract);
             //}
-            
+
             // TODO
             return -1;
         }
@@ -128,7 +138,7 @@ namespace Dsmn.Ib
 
         private void _ibClient_ContractDetails(ContractDetailsMessage obj)
         {
-            throw new NotImplementedException();
+            
         }
     }
 }
