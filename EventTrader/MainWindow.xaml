@@ -164,9 +164,7 @@ Foreground="White" Grid.ColumnSpan="3">
                                 ItemsSource="{Binding TwsMessages, Mode=OneWay}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding}"></TextBlock>
-                                        </StackPanel>
+                                        <TextBlock Text="{Binding}"></TextBlock>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
