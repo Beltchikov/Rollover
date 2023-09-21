@@ -13,6 +13,8 @@ namespace Dsmn
 {
     public class ViewModel : ObservableObject, IIbConsumer
     {
+        private const int TIMEOUT_SIMPLE_BROWSER = 5!;
+
         private string _tickerStringYahoo = null!;
         private ObservableCollection<string> _resultListYahoo = null!;
         private string _messageYahoo = null!;
@@ -35,13 +37,17 @@ namespace Dsmn
             LastEpsCommand = new RelayCommand(async () =>
             {
                 DecimalSeparatorSelectedIndexYahoo = 0;
-                ResultListYahoo = new ObservableCollection<string>(await yahooProvider.LastEpsAsync(TickerListYahoo, 5));
+                ResultListYahoo = new ObservableCollection<string>(await yahooProvider.LastEpsAsync(
+                    TickerListYahoo,
+                    TIMEOUT_SIMPLE_BROWSER));
             });
 
             ExpectedEpsCommand = new RelayCommand(async () =>
             {
                 DecimalSeparatorSelectedIndexYahoo = 0;
-                ResultListYahoo = new ObservableCollection<string>(await yahooProvider.ExpectedEpsAsync(TickerListYahoo, 5));
+                ResultListYahoo = new ObservableCollection<string>(await yahooProvider.ExpectedEpsAsync(
+                    TickerListYahoo,
+                    TIMEOUT_SIMPLE_BROWSER));
             });
 
             ConnectToTwsCommand = new RelayCommand(() =>
