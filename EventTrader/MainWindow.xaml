@@ -160,7 +160,7 @@ Foreground="White" Grid.ColumnSpan="3">
                                 <RowDefinition Height="10"></RowDefinition>
                             </Grid.RowDefinitions>
 
-                            <ListBox Name="listBoxMessages" Grid.Row="1" Grid.Column="1" 
+                            <ListBox Name="listBoxTwsMessages" Grid.Row="1" Grid.Column="1" 
                                 ItemsSource="{Binding TwsMessages, Mode=OneWay}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>

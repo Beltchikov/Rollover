@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Dsmn
 {
@@ -11,15 +13,18 @@ namespace Dsmn
     {
         const string DOT = ".";
         const string COMMA = ",";
-        
+
         public MainWindow()
         {
             InitializeComponent();
+
+            var listBoxMessagesSource = (INotifyCollectionChanged)listBoxTwsMessages.Items.SourceCollection;
+            listBoxMessagesSource.CollectionChanged += ListBoxMessagesSource_CollectionChanged;
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(txtResultsYahoo.Text == string.Empty)
+            if (txtResultsYahoo.Text == string.Empty)
             {
                 return;
             }
@@ -38,6 +43,13 @@ namespace Dsmn
             {
                 throw new NotImplementedException();
             }
+        }
+
+        private void ListBoxMessagesSource_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            var border = (Decorator)VisualTreeHelper.GetChild(listBoxTwsMessages, 0);
+            var scrollViewer = (ScrollViewer)border.Child;
+            scrollViewer.ScrollToEnd();
         }
     }
 }
