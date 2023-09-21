@@ -26,7 +26,7 @@ namespace Dsmn
         private bool _connectedToTws;
         private List<string>? _twsMessageList = new List<string>();
         private string _tickerStringTws = null!;
-        private ObservableCollection<string> _resultListTws;
+        private ObservableCollection<string> _resultListTws = null!;
 
         public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
