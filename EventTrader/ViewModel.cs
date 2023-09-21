@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Dsmn
@@ -26,6 +27,7 @@ namespace Dsmn
         public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
         public ICommand ConnectToTwsCommand { get; }
+        public ICommand BidAskSpreadCommand { get; }
         public ViewModel(IYahooProvider yahooProvider, IIbHost ibHost)
         {
             yahooProvider.Status += YahooProvider_Status;
@@ -44,8 +46,15 @@ namespace Dsmn
 
             ConnectToTwsCommand = new RelayCommand(() =>
             {
-                ibHost.Consumer = this;
+                ibHost.Consumer = ibHost.Consumer ?? this;
                 ibHost.ConnectAndStartReaderThread(Host, Port, ClientId, 1000);
+            });
+
+            BidAskSpreadCommand = new RelayCommand(() =>
+            {
+                ibHost.Consumer = ibHost.Consumer ?? this;
+                MessageBox.Show("BidAskSpreadCommand");
+                //ibHost.ConnectAndStartReaderThread(Host, Port, ClientId, 1000);
             });
 
             TickerStringYahoo = " SKX\r\nPFS\r\nSLCA\r\n WT";

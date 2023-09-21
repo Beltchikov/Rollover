@@ -88,7 +88,7 @@ Foreground="White" Grid.ColumnSpan="3">
                     </GroupBox>
 
 
-                    <GroupBox Grid.Column="1" Grid.Row="3" Header="Expected EPS"
+                    <GroupBox Grid.Column="1" Grid.Row="3" Header="Bid/Ask Spread"
    Foreground="White" Grid.ColumnSpan="3">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -120,7 +120,7 @@ Foreground="White" Grid.ColumnSpan="3">
                    Height="25" 
              HorizontalAlignment="Stretch"
                  VerticalAlignment="Center" 
-                 Command="">Options Warnings >>"
+                 Command="{Binding BidAskSpreadCommand}">Bid/Ask Spread >>"
                                 </Button>
                             </StackPanel>
 
