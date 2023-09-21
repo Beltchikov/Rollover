@@ -6,14 +6,14 @@ using System.Xml;
 
 namespace Dsmn.DataProviders
 {
-    public class ProviderBase
+    public class BrowserProviderBase
     {
         protected readonly IBrowserWrapper _browserWrapper;
         protected readonly XmlNamespaceManager _xmlNamespaceManager;
 
         public event Action<string> Status = null!;
 
-        protected ProviderBase(IBrowserWrapper browserWrapper)
+        protected BrowserProviderBase(IBrowserWrapper browserWrapper)
         {
             _browserWrapper = browserWrapper;
             _xmlNamespaceManager = new XmlNamespaceManager(new NameTable());

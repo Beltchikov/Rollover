@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Dsmn.DataProviders
 {
-    public class YahooProvider : ProviderBase, IYahooProvider
+    public class YahooProvider : BrowserProviderBase, IYahooProvider
     {
         readonly string urlEpsTemplate = $"https://finance.yahoo.com/quote/TICKER/analysis?p=TICKER";
         public YahooProvider(IBrowserWrapper browserWrapper) : base(browserWrapper) {}
