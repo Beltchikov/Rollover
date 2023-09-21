@@ -1,7 +1,10 @@
-﻿using IbClient;
+﻿using IBApi;
+using IbClient;
 using IbClient.messages;
 using System;
 using System.Linq;
+using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Dsmn.Ib
@@ -10,6 +13,10 @@ namespace Dsmn.Ib
     {
         IIBClient _ibClient;
 
+        private readonly string STK = "STK";
+        private readonly string USD = "USD";
+        private readonly string SMART = "SMART";
+
         public IbHost()
         {
             _ibClient = IBClient.CreateClient();
@@ -17,7 +24,9 @@ namespace Dsmn.Ib
             _ibClient.Error += _ibClient_Error;
             _ibClient.NextValidId += _ibClient_NextValidId;
             _ibClient.ManagedAccounts += _ibClient_ManagedAccounts;
-            //_ibClient.ConnectionClosed += _ibClient_ConnectionClosed;
+            _ibClient.ConnectionClosed += _ibClient_ConnectionClosed;
+            _ibClient.ContractDetails += _ibClient_ContractDetails;
+
             //_ibClient.HistoricalData += _ibClient_HistoricalData;
             //_ibClient.HistoricalDataUpdate += _ibClient_HistoricalDataUpdate;
             //_ibClient.HistoricalDataEnd += _ibClient_HistoricalDataEnd;
@@ -56,6 +65,29 @@ namespace Dsmn.Ib
             _ibClient.Disconnect();
         }
 
+        public int RequestContractId(string ticker, int timeout)
+        {
+            // TODO make async
+            
+            //var startTime = DateTime.Now;
+            //while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !Consumer.ConnectedToTws) 
+            //{
+            //    var contract = new Contract()
+            //    {
+            //        Symbol = ticker,
+            //        SecType = STK,
+            //        Currency = USD,
+            //        Exchange = SMART
+            //    };
+
+            //    // TODO
+            //    _ibClient.ClientSocket.reqContractDetails(-1, contract);
+            //}
+            
+            // TODO
+            return -1;
+        }
+
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)
         {
             if (Consumer == null)
@@ -92,6 +124,11 @@ namespace Dsmn.Ib
             }
             Consumer.TwsMessageList?.Add("DISCONNECTED!");
             Consumer.ConnectedToTws = false;
+        }
+
+        private void _ibClient_ContractDetails(ContractDetailsMessage obj)
+        {
+            throw new NotImplementedException();
         }
     }
 }

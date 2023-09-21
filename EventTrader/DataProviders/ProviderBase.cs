@@ -8,7 +8,7 @@ namespace Dsmn.DataProviders
 
         protected void TriggerStatus(string message)
         {
-            Status.Invoke(message);
+            Status?.Invoke(message);
         }
     }
 }
