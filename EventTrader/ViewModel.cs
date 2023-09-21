@@ -169,7 +169,11 @@ namespace Dsmn
 
         public List<string>? TwsMessageList
         {
-            get => _twsMessageList;
+            get
+            {
+                OnPropertyChanged(nameof(TwsMessages));
+                return _twsMessageList;
+            }
             set
             {
                 SetProperty(ref _twsMessageList, value);
@@ -177,15 +181,17 @@ namespace Dsmn
             }
         }
 
-        public ObservableCollection<string>? TwsMessages
+        public record Message(int ReqId, string? Body);
+
+        public ObservableCollection<Message>? TwsMessages
         {
-            get 
+            get
             {
                 if (_twsMessageList == null)
                 {
-                    return new ObservableCollection<string>();
+                    return new ObservableCollection<Message>();
                 }
-                return new ObservableCollection<string>(_twsMessageList);
+                return new ObservableCollection<Message>(_twsMessageList.Select(m => new Message(0, m)));
             }
         }
 

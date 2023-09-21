@@ -15,7 +15,8 @@
                 <Grid Background="#FFA72F34">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="10"></ColumnDefinition>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="59*"/>
+                        <ColumnDefinition Width="715*"/>
                         <ColumnDefinition Width="10"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -164,13 +165,16 @@ Foreground="White" Grid.ColumnSpan="3">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding}"></TextBlock>
-                                            <!--<TextBlock Text=" "></TextBlock>
-                                            <TextBlock Text="{Binding Body}"></TextBlock>-->
+                                            <TextBlock Text="{Binding ReqId}"></TextBlock>
+                                            <TextBlock Text=" "></TextBlock>
+                                            <TextBlock Text="{Binding Body}"></TextBlock>
                                         </StackPanel>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
+
+                            <!--<TextBox Text="{Binding TwsMessages, Mode=OneWay}" 
+         Grid.Column="1" Grid.Row="1" ></TextBox>-->
 
                         </Grid>
                     </GroupBox>
