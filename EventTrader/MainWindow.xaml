@@ -160,21 +160,8 @@ Foreground="White" Grid.ColumnSpan="3">
                                 <RowDefinition Height="10"></RowDefinition>
                             </Grid.RowDefinitions>
 
-                            <!--<ListBox Name="listBoxMessages" Grid.Row="1" Grid.Column="1" 
-                                ItemsSource="{Binding TwsMessages, Mode=OneWay}">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding ReqId}"></TextBlock>
-                                            <TextBlock Text=" "></TextBlock>
-                                            <TextBlock Text="{Binding Body}"></TextBlock>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>-->
-
                             <ListBox Name="listBoxMessages" Grid.Row="1" Grid.Column="1" 
-    ItemsSource="{Binding TwsMessages, Mode=OneWay}">
+                                ItemsSource="{Binding TwsMessages, Mode=OneWay}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
