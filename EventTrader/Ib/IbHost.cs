@@ -72,7 +72,7 @@ namespace Dsmn.Ib
 
             var contract = new IBApi.Contract()
             {
-                Symbol = "SKX",
+                Symbol = ticker,
                 SecType = STK,
                 Currency = USD,
                 Exchange = SMART
