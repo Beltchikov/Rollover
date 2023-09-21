@@ -13,7 +13,8 @@ namespace Dsmn
 {
     public class ViewModel : ObservableObject, IIbConsumer
     {
-        private const int TIMEOUT_SIMPLE_BROWSER = 5!;
+        private const int TIMEOUT_SIMPLE_BROWSER = 5;
+        private const int TIMEOUT_TWS = 100;
 
         private string _tickerStringYahoo = null!;
         private ObservableCollection<string> _resultListYahoo = null!;
@@ -32,7 +33,10 @@ namespace Dsmn
         public ICommand ExpectedEpsCommand { get; }
         public ICommand ConnectToTwsCommand { get; }
         public ICommand BidAskSpreadCommand { get; }
-        public ViewModel(IYahooProvider yahooProvider, IIbHost ibHost)
+        public ViewModel(
+            IYahooProvider yahooProvider,
+            ITwsProvider twsProvider,
+            IIbHost ibHost)
         {
             yahooProvider.Status += YahooProvider_Status;
 
@@ -58,14 +62,17 @@ namespace Dsmn
                 ibHost.ConnectAndStartReaderThread(Host, Port, ClientId, 1000);
             });
 
-            BidAskSpreadCommand = new RelayCommand(() =>
+            BidAskSpreadCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer = ibHost.Consumer ?? this;
-                MessageBox.Show("BidAskSpreadCommand");
+                ResultListTws= new ObservableCollection<string>(await twsProvider.BidAskSpread(
+                    TickerListTws,
+                    TIMEOUT_TWS));
                 //ibHost.ConnectAndStartReaderThread(Host, Port, ClientId, 1000);
             });
 
             TickerStringYahoo = " SKX\r\nPFS\r\nSLCA\r\n WT";
+            TickerStringTws = " SKX\r\nPFS\r\nSLCA\r\n WT";
         }
 
         #region Yahoo
@@ -208,6 +215,11 @@ namespace Dsmn
                 }
                 return new ObservableCollection<string>(_twsMessageList);
             }
+        }
+
+        public List<string> TickerListTws
+        {
+            get => TickerStringTws.Split("\r\n", StringSplitOptions.TrimEntries).ToList();
         }
 
         public string TickerStringTws
