@@ -181,17 +181,29 @@ namespace Dsmn
             }
         }
 
-        public record Message(int ReqId, string? Body);
+        //public record Message(int ReqId, string? Body);
 
-        public ObservableCollection<Message>? TwsMessages
+        //public ObservableCollection<Message>? TwsMessages
+        //{
+        //    get
+        //    {
+        //        if (_twsMessageList == null)
+        //        {
+        //            return new ObservableCollection<Message>();
+        //        }
+        //        return new ObservableCollection<Message>(_twsMessageList.Select(m => new Message(0, m)));
+        //    }
+        //}
+
+        public ObservableCollection<string>? TwsMessages
         {
             get
             {
                 if (_twsMessageList == null)
                 {
-                    return new ObservableCollection<Message>();
+                    return new ObservableCollection<string>();
                 }
-                return new ObservableCollection<Message>(_twsMessageList.Select(m => new Message(0, m)));
+                return new ObservableCollection<string>(_twsMessageList);
             }
         }
 
