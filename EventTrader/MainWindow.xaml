@@ -11,6 +11,25 @@
     </Window.Resources>
     <Grid>
         <TabControl x:Name="tabControl">
+            <TabItem Header="Investing">
+                <Grid Background="#FFE0CD52">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10"></ColumnDefinition>
+                        <ColumnDefinition Width="60"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="10"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10"></RowDefinition>
+                        <RowDefinition Height="500"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="10"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <GroupBox Grid.Column="1" Grid.Row="1" Header="Earnings for the Week"
+Foreground="Black" Grid.ColumnSpan="3">
+                        </GroupBox>
+                </Grid>
+            </TabItem>
             <TabItem Header="TWS">
                 <Grid Background="#FFA72F34">
                     <Grid.ColumnDefinitions>
@@ -271,23 +290,6 @@ Foreground="White" Grid.ColumnSpan="3">
                         </Grid>
                     </GroupBox>
 
-                </Grid>
-            </TabItem>
-            <TabItem Header="Investing.com">
-                <Grid Background="#FFE0CD52">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
-                        <ColumnDefinition Width="60"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="10"></RowDefinition>
-                    </Grid.RowDefinitions>
                 </Grid>
             </TabItem>
             <TabItem Header="TabItem">

@@ -47,9 +47,12 @@ namespace Dsmn
 
         private void ListBoxMessagesSource_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
-            var border = (Decorator)VisualTreeHelper.GetChild(listBoxTwsMessages, 0);
-            var scrollViewer = (ScrollViewer)border.Child;
-            scrollViewer.ScrollToEnd();
+            if (VisualTreeHelper.GetChildrenCount(listBoxTwsMessages) > 0)
+            {
+                var border = (Decorator)VisualTreeHelper.GetChild(listBoxTwsMessages, 0);
+                var scrollViewer = (ScrollViewer)border.Child;
+                scrollViewer.ScrollToEnd();
+            }
         }
     }
 }
