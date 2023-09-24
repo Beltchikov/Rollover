@@ -5,6 +5,7 @@ using Dsmn.Ib;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -28,6 +29,8 @@ namespace Dsmn
         private List<string>? _twsMessageList = new List<string>();
         private string _tickerStringTws = null!;
         private ObservableCollection<string> _resultListTws = null!;
+        
+        private int _weekForEarnings;
 
         public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
@@ -73,6 +76,7 @@ namespace Dsmn
 
             TickerStringYahoo = " SKX\r\nPFS\r\nSLCA\r\n WT";
             TickerStringTws = " SKX\r\nPFS\r\nSLCA\r\n WT";
+            WeekForEarnings = (new CultureInfo("en-US")).Calendar.GetWeekOfYear(DateTime.Now, CalendarWeekRule.FirstFullWeek, DayOfWeek.Monday);
         }
 
         #region Yahoo
@@ -152,6 +156,19 @@ namespace Dsmn
         }
 
         #endregion  Yahoo
+
+        #region Investing
+                
+        public int WeekForEarnings
+        {
+            get => _weekForEarnings;
+            set
+            {
+                SetProperty(ref _weekForEarnings, value);
+            }
+        }
+
+        #endregion Investing
 
         #region TWS
 
