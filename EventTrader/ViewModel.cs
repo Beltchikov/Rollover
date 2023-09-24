@@ -40,9 +40,9 @@ namespace Dsmn
         public ICommand ConnectToTwsCommand { get; }
         public ICommand BidAskSpreadCommand { get; }
         public ViewModel(
+            IInvestingProvider investingProvider,
             IYahooProvider yahooProvider,
             ITwsProvider twsProvider,
-            IInvestingProvider investingProvider,
             IIbHost ibHost)
         {
             yahooProvider.Status += YahooProvider_Status;

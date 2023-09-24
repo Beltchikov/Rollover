@@ -17,9 +17,9 @@ namespace Dsmn
         {
             Services = new ServiceCollection()
                 .AddSingleton<IBrowserWrapper, BrowserWrapper>()
+                .AddSingleton<IInvestingProvider, InvestingProvider>()
                 .AddSingleton<IYahooProvider, YahooProvider>()
                 .AddSingleton<ITwsProvider, TwsProvider>()
-                .AddSingleton<IInvestingProvider, InvestingProvider>()
                 .AddSingleton<IIbHost, IbHost>()
                 .BuildServiceProvider();
         }
@@ -31,9 +31,9 @@ namespace Dsmn
             MainWindow mainWindow = new()
             {
                 DataContext = new ViewModel(
+                    Services.GetRequiredService<IInvestingProvider>(),
                     Services.GetRequiredService<IYahooProvider>(),
                     Services.GetRequiredService<ITwsProvider>(),
-                    Services.GetRequiredService<IInvestingProvider>(),
                     Services.GetRequiredService<IIbHost>())
             };
             mainWindow.Show();
