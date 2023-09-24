@@ -15,7 +15,6 @@
                 <Grid Background="#FFE0CD52">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="10"></ColumnDefinition>
-                        <ColumnDefinition Width="60"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="10"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
@@ -26,7 +25,7 @@
                         <RowDefinition Height="10"></RowDefinition>
                     </Grid.RowDefinitions>
                     <GroupBox Grid.Column="1" Grid.Row="1" Header="Earnings for the Week"
-Foreground="Black" Grid.ColumnSpan="3">
+Foreground="Black">
                         </GroupBox>
                 </Grid>
             </TabItem>
