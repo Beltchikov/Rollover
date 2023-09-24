@@ -40,10 +40,10 @@
                                 <Label>Week:</Label>
                                 <TextBox VerticalAlignment="Center">"TODO"</TextBox>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" Grid.Row="1">
-                                <Label>HTML Source:</Label>
+                            <DockPanel Grid.Row="1">
+                                <Label DockPanel.Dock="Top">HTML Source:</Label>
                                 <TextBox AcceptsReturn="True" VerticalScrollBarVisibility="Visible" >"TODO"</TextBox>
-                            </StackPanel>
+                            </DockPanel>
                         </Grid>
                     </GroupBox>
                 </Grid>
