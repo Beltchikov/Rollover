@@ -32,6 +32,7 @@ namespace Dsmn
         
         private int _weekForEarnings;
         private ObservableCollection<string> _resultListEarningsForWeek = null!;
+        private string _htmlSourceEarningsForWeek = null!;
 
         public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
@@ -41,6 +42,7 @@ namespace Dsmn
         public ViewModel(
             IYahooProvider yahooProvider,
             ITwsProvider twsProvider,
+            IInvestingProvider investingProvider,
             IIbHost ibHost)
         {
             yahooProvider.Status += YahooProvider_Status;
@@ -63,7 +65,7 @@ namespace Dsmn
 
             EarningsForWeekCommand = new RelayCommand(() =>
             {
-                MessageBox.Show("EarningsForWeekCommand");
+                ResultListEarningsForWeek = new ObservableCollection<string>(investingProvider.GetEarningsData("HtmlSourceEarningsForWeek"));
             });
 
             ConnectToTwsCommand = new RelayCommand(() =>
@@ -172,6 +174,15 @@ namespace Dsmn
             set
             {
                 SetProperty(ref _weekForEarnings, value);
+            }
+        }
+
+        public string HtmlSourceEarningsForWeek
+        {
+            get => _htmlSourceEarningsForWeek;
+            set
+            {
+                SetProperty(ref _htmlSourceEarningsForWeek, value);
             }
         }
 
