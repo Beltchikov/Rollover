@@ -31,9 +31,11 @@ namespace Dsmn
         private ObservableCollection<string> _resultListTws = null!;
         
         private int _weekForEarnings;
+        private ObservableCollection<string> _resultListEarningsForWeek = null!;
 
         public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
+        public ICommand EarningsForWeekCommand { get; }
         public ICommand ConnectToTwsCommand { get; }
         public ICommand BidAskSpreadCommand { get; }
         public ViewModel(
@@ -57,6 +59,11 @@ namespace Dsmn
                 ResultListYahoo = new ObservableCollection<string>(await yahooProvider.ExpectedEpsAsync(
                     TickerListYahoo,
                     TIMEOUT_SIMPLE_BROWSER));
+            });
+
+            EarningsForWeekCommand = new RelayCommand(() =>
+            {
+                MessageBox.Show("EarningsForWeekCommand");
             });
 
             ConnectToTwsCommand = new RelayCommand(() =>
@@ -165,6 +172,43 @@ namespace Dsmn
             set
             {
                 SetProperty(ref _weekForEarnings, value);
+            }
+        }
+
+        public ObservableCollection<string> ResultListEarningsForWeek
+        {
+            get => _resultListEarningsForWeek;
+            set
+            {
+                SetProperty(ref _resultListEarningsForWeek, value);
+                OnPropertyChanged(nameof(ResultStringEarningsForWeek));
+            }
+        }
+
+        public string ResultStringEarningsForWeek
+        {
+            get
+            {
+                if (ResultListEarningsForWeek == null)
+                {
+                    return string.Empty;
+                }
+                else
+                {
+                    if (!ResultListEarningsForWeek.Any())
+                    {
+                        return string.Empty;
+                    }
+                    else
+                    {
+                        return ResultListEarningsForWeek.Aggregate((r, n) => r + "\r\n" + n);
+                    }
+                }
+            }
+            set
+            {
+                SetProperty(ref _resultListEarningsForWeek, new ObservableCollection<string>());
+                OnPropertyChanged(nameof(ResultListEarningsForWeek));
             }
         }
 
