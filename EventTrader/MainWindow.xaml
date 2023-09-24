@@ -29,6 +29,9 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="200"></ColumnDefinition>
+                                <ColumnDefinition Width="10"></ColumnDefinition>
+                                <ColumnDefinition Width="110"></ColumnDefinition>
+                                <ColumnDefinition Width="10"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
@@ -44,6 +47,12 @@
                                 <Label DockPanel.Dock="Top">HTML Source:</Label>
                                 <TextBox AcceptsReturn="True" VerticalScrollBarVisibility="Visible" >"TODO"</TextBox>
                             </DockPanel>
+                            <Button Height="25" Grid.Column="2" Grid.Row="1">Get Data >></Button>
+                            <DockPanel Grid.Row="1" Grid.Column="4">
+                                <Label DockPanel.Dock="Top">Result:</Label>
+                                <TextBox AcceptsReturn="True" VerticalScrollBarVisibility="Visible" >"TODO"</TextBox>
+                            </DockPanel>
+
                         </Grid>
                     </GroupBox>
                 </Grid>
