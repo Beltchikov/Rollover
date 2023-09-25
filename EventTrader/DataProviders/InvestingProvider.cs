@@ -28,10 +28,15 @@ namespace Dsmn.DataProviders
             var tableRows = xDocument.Descendants("tr").ToList();
 
             result.Add($"TICKER\tMarket Cap\tEPS Forecast B");
+            DateTime earningsDateOrMinValue = DateTime.MinValue;
             foreach (var tableRow in tableRows)
             {
                 if (!tableRow.Value.Contains("(") || !tableRow.Value.Contains(")"))
                 {
+                    if(!DateTime.TryParse(tableRow.Value, out earningsDateOrMinValue)) 
+                    {
+                        earningsDateOrMinValue = DateTime.MinValue;
+                    }
                     continue;
                 }
                 var tableColumns = tableRow.Descendants("td").ToList();
@@ -39,8 +44,9 @@ namespace Dsmn.DataProviders
                 string? ticker = GetTicker(tableColumns);
                 string? epsForecast = GetEpsForecast(tableColumns);
                 string? marketCap = GetMarketCap(tableColumns);
+                string? earningsDate = earningsDateOrMinValue == DateTime.MinValue ? null : earningsDateOrMinValue.ToString(new CultureInfo("De-de")); 
 
-                result.Add($"{ticker}\t{marketCap}\t{epsForecast}");
+                result.Add($"{ticker}\t{marketCap}\t{epsForecast}\t{earningsDate}");
             }
 
             return result;

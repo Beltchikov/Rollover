@@ -64,7 +64,8 @@ namespace Dsmn
 
             EarningsForWeekCommand = new RelayCommand(() =>
             {
-                ResultListEarningsForWeek = new ObservableCollection<string>(investingProvider.GetEarningsData(HtmlSourceEarningsForWeek));
+                //ResultListEarningsForWeek = new ObservableCollection<string>(investingProvider.GetEarningsData(HtmlSourceEarningsForWeek));
+                ResultListEarningsForWeek = new ObservableCollection<string>(investingProvider.GetEarningsData(testStringEarningData));
             });
 
             ConnectToTwsCommand = new RelayCommand(() =>
