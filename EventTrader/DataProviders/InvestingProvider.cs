@@ -35,15 +35,27 @@ namespace Dsmn.DataProviders
                 var tableColumns= tableRow.Descendants("td").ToList();
                 
                 string? ticker = GetTicker(tableColumns);
-
-                var epsForecast = tableColumns[3].Value;
-                var marketCap = tableColumns[6].Value;
+                string? epsForecast = GetEpsForecast(tableColumns);
+                // TODO B M conversion
+                string? marketCap = GetMarketCap(tableColumns);
             }
 
             MessageBox.Show("GetEarningsData");
 
             return result;
 
+        }
+
+        private string? GetMarketCap(List<XElement> tableColumns)
+        {
+            var marketCap = tableColumns[6].Value;
+            return marketCap;
+        }
+
+        private string? GetEpsForecast(List<XElement> tableColumns)
+        {
+            var epsForecast = tableColumns[3].Value;
+            return epsForecast; 
         }
 
         private static string? GetTicker(List<XElement> tableColumns)
