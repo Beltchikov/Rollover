@@ -25,6 +25,10 @@ namespace Dsmn.DataProviders
             var xDocument = XDocument.Parse(htmlSource);
             var tableRows = xDocument.Descendants("tr").ToList();
 
+            foreach ( var tableRow in tableRows ) 
+            { 
+            }
+
             MessageBox.Show("GetEarningsData");
 
             return result;
