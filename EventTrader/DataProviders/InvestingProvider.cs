@@ -55,6 +55,7 @@ namespace Dsmn.DataProviders
                 marketCap = marketCap[..^1];
                 var marketCapAsDouble = Double.Parse(marketCap, new CultureInfo("EN-US"));
                 marketCapAsDouble = marketCapAsDouble / 1000;
+                marketCapAsDouble = Math.Round(marketCapAsDouble, 3);
                 marketCap = marketCapAsDouble.ToString(CultureInfo.InvariantCulture);
             }
             if (marketCap != null && marketCap.EndsWith("B"))
