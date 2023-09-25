@@ -72,6 +72,14 @@ namespace Dsmn.DataProviders
         private string? GetEpsForecast(List<XElement> tableColumns)
         {
             var epsForecast = tableColumns[3].Value;
+            
+            double epsForecastAsDouble;
+            if(!double.TryParse(epsForecast, NumberStyles.Number, new CultureInfo("EN-US"), out epsForecastAsDouble))
+            {
+                return null;
+            }
+
+            epsForecast = epsForecastAsDouble.ToString("0.000");
             return epsForecast;
         }
 
