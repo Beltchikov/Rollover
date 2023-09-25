@@ -44,7 +44,7 @@ namespace Dsmn.DataProviders
                 string? ticker = GetTicker(tableColumns);
                 string? epsForecast = GetEpsForecast(tableColumns);
                 string? marketCap = GetMarketCap(tableColumns);
-                string? earningsDate = earningsDateOrMinValue == DateTime.MinValue ? null : earningsDateOrMinValue.ToString(new CultureInfo("De-de")); 
+                string? earningsDate = earningsDateOrMinValue == DateTime.MinValue ? null : earningsDateOrMinValue.ToString("dd.MM.yyyy"); 
 
                 result.Add($"{ticker}\t{marketCap}\t{epsForecast}\t{earningsDate}");
             }
