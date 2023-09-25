@@ -32,6 +32,8 @@ namespace Dsmn.DataProviders
                     continue;
                 }
                 var tableColumns= tableRow.Descendants("td").ToList();
+                var tickerElement = tableColumns.Where(x => x.Attributes("class").First().Value.Contains("earnCalCompany")).FirstOrDefault();
+                var ticker = tickerElement?.Value;
             }
 
             MessageBox.Show("GetEarningsData");
