@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Xml;
@@ -33,8 +34,7 @@ namespace Dsmn.DataProviders
                 }
                 var tableColumns= tableRow.Descendants("td").ToList();
                 
-                var tickerElement = tableColumns.Where(x => x.Attributes("class").First().Value.Contains("earnCalCompany")).FirstOrDefault();
-                var ticker = tickerElement?.Value;
+                string? ticker = GetTicker(tableColumns);
 
                 var epsForecast = tableColumns[3].Value;
                 var marketCap = tableColumns[6].Value;
@@ -44,6 +44,14 @@ namespace Dsmn.DataProviders
 
             return result;
 
+        }
+
+        private static string? GetTicker(List<XElement> tableColumns)
+        {
+            var tickerElement = tableColumns.Where(x => x.Attributes("class").First().Value.Contains("earnCalCompany")).FirstOrDefault();
+            var elementValue = tickerElement?.Value.Trim();
+            var ticker = elementValue?.Substring(elementValue.IndexOf("(") +1, elementValue.Length - elementValue.IndexOf(")") +3);
+            return ticker;
         }
     }
 }
