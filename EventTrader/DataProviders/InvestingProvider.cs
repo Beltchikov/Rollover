@@ -32,8 +32,12 @@ namespace Dsmn.DataProviders
                     continue;
                 }
                 var tableColumns= tableRow.Descendants("td").ToList();
+                
                 var tickerElement = tableColumns.Where(x => x.Attributes("class").First().Value.Contains("earnCalCompany")).FirstOrDefault();
                 var ticker = tickerElement?.Value;
+
+                var epsForecast = tableColumns[3].Value;
+                var marketCap = tableColumns[6].Value;
             }
 
             MessageBox.Show("GetEarningsData");
