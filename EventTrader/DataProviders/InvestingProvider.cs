@@ -27,17 +27,16 @@ namespace Dsmn.DataProviders
             var xDocument = XDocument.Parse(htmlSource);
             var tableRows = xDocument.Descendants("tr").ToList();
 
-            foreach ( var tableRow in tableRows ) 
-            { 
-                if(!tableRow.Value.Contains("(") || !tableRow.Value.Contains(")"))
+            foreach (var tableRow in tableRows)
+            {
+                if (!tableRow.Value.Contains("(") || !tableRow.Value.Contains(")"))
                 {
                     continue;
                 }
-                var tableColumns= tableRow.Descendants("td").ToList();
-                
+                var tableColumns = tableRow.Descendants("td").ToList();
+
                 string? ticker = GetTicker(tableColumns);
                 string? epsForecast = GetEpsForecast(tableColumns);
-                // TODO B M conversion
                 string? marketCap = GetMarketCap(tableColumns);
             }
 
@@ -55,7 +54,7 @@ namespace Dsmn.DataProviders
             {
                 marketCap = marketCap[..^1];
                 var marketCapAsDouble = Double.Parse(marketCap, new CultureInfo("EN-US"));
-                marketCapAsDouble = marketCapAsDouble * 1000;
+                marketCapAsDouble = marketCapAsDouble / 1000;
                 marketCap = marketCapAsDouble.ToString(CultureInfo.InvariantCulture);
             }
             if (marketCap != null && marketCap.EndsWith("B"))
@@ -69,7 +68,7 @@ namespace Dsmn.DataProviders
         private string? GetEpsForecast(List<XElement> tableColumns)
         {
             var epsForecast = tableColumns[3].Value;
-            return epsForecast; 
+            return epsForecast;
         }
 
         private static string? GetTicker(List<XElement> tableColumns)
@@ -77,10 +76,10 @@ namespace Dsmn.DataProviders
             var tickerElement = tableColumns.Where(x => x.Attributes("class").First().Value.Contains("earnCalCompany")).FirstOrDefault();
             var elementValue = tickerElement?.Value.Trim();
 
-            int? i1 = elementValue?.IndexOf("(") +1;
+            int? i1 = elementValue?.IndexOf("(") + 1;
             int? i2 = elementValue?.IndexOf(")");
-            
-            if(i1 == null || i2 == null)
+
+            if (i1 == null || i2 == null)
             {
                 return null;
             }
