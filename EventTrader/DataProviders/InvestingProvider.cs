@@ -27,7 +27,7 @@ namespace Dsmn.DataProviders
             var xDocument = XDocument.Parse(htmlSource);
             var tableRows = xDocument.Descendants("tr").ToList();
 
-            result.Add($"TICKER\tMarket Cap\tEPS Forecast B");
+            result.Add($"TICKER\tMarket Cap\tEPS Forecast B\tDate");
             DateTime earningsDateOrMinValue = DateTime.MinValue;
             foreach (var tableRow in tableRows)
             {
