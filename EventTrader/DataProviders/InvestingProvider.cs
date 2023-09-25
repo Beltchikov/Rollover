@@ -38,9 +38,9 @@ namespace Dsmn.DataProviders
                 string? ticker = GetTicker(tableColumns);
                 string? epsForecast = GetEpsForecast(tableColumns);
                 string? marketCap = GetMarketCap(tableColumns);
-            }
 
-            MessageBox.Show("GetEarningsData");
+                result.Add($"{ticker}\t{marketCap}\t{epsForecast}");
+            }
 
             return result;
 
