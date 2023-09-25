@@ -51,19 +51,21 @@ namespace Dsmn.DataProviders
         {
             var marketCap = tableColumns[6].Value;
 
+            double marketCapAsDouble = 0;
             if (marketCap != null && marketCap.EndsWith("M"))
             {
                 marketCap = marketCap[..^1];
-                var marketCapAsDouble = Double.Parse(marketCap, new CultureInfo("EN-US"));
+                marketCapAsDouble = double.Parse(marketCap, new CultureInfo("EN-US"));
                 marketCapAsDouble = marketCapAsDouble / 1000;
                 marketCapAsDouble = Math.Round(marketCapAsDouble, 3);
-                marketCap = marketCapAsDouble.ToString(CultureInfo.InvariantCulture);
             }
             if (marketCap != null && marketCap.EndsWith("B"))
             {
                 marketCap = marketCap[..^1];
+                marketCapAsDouble = double.Parse(marketCap, new CultureInfo("EN-US"));
             }
 
+            marketCap = marketCapAsDouble.ToString("0.000");
             return marketCap;
         }
 
