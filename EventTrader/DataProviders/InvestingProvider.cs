@@ -31,6 +31,7 @@ namespace Dsmn.DataProviders
                 {
                     continue;
                 }
+                var tableColumns= tableRow.Descendants("td").ToList();
             }
 
             MessageBox.Show("GetEarningsData");
