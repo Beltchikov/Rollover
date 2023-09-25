@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Xml;
@@ -49,6 +50,19 @@ namespace Dsmn.DataProviders
         private string? GetMarketCap(List<XElement> tableColumns)
         {
             var marketCap = tableColumns[6].Value;
+
+            if (marketCap != null && marketCap.EndsWith("M"))
+            {
+                marketCap = marketCap[..^1];
+                var marketCapAsDouble = Double.Parse(marketCap, new CultureInfo("EN-US"));
+                marketCapAsDouble = marketCapAsDouble * 1000;
+                marketCap = marketCapAsDouble.ToString(CultureInfo.InvariantCulture);
+            }
+            if (marketCap != null && marketCap.EndsWith("B"))
+            {
+                marketCap = marketCap[..^1];
+            }
+
             return marketCap;
         }
 
@@ -62,7 +76,16 @@ namespace Dsmn.DataProviders
         {
             var tickerElement = tableColumns.Where(x => x.Attributes("class").First().Value.Contains("earnCalCompany")).FirstOrDefault();
             var elementValue = tickerElement?.Value.Trim();
-            var ticker = elementValue?.Substring(elementValue.IndexOf("(") +1, elementValue.Length - elementValue.IndexOf(")") +3);
+
+            int? i1 = elementValue?.IndexOf("(") +1;
+            int? i2 = elementValue?.IndexOf(")");
+            
+            if(i1 == null || i2 == null)
+            {
+                return null;
+            }
+
+            var ticker = elementValue?.Substring(i1.Value, i2.Value - i1.Value);
             return ticker;
         }
     }
