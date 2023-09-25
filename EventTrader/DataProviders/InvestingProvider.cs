@@ -27,6 +27,10 @@ namespace Dsmn.DataProviders
 
             foreach ( var tableRow in tableRows ) 
             { 
+                if(!tableRow.Value.Contains("(") || !tableRow.Value.Contains(")"))
+                {
+                    continue;
+                }
             }
 
             MessageBox.Show("GetEarningsData");
