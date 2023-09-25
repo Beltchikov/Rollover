@@ -30,7 +30,6 @@ namespace Dsmn
         private string _tickerStringTws = null!;
         private ObservableCollection<string> _resultListTws = null!;
         
-        private int _weekForEarnings;
         private ObservableCollection<string> _resultListEarningsForWeek = null!;
         private string _htmlSourceEarningsForWeek = null!;
 
@@ -65,9 +64,7 @@ namespace Dsmn
 
             EarningsForWeekCommand = new RelayCommand(() =>
             {
-                // TODO
-                //ResultListEarningsForWeek = new ObservableCollection<string>(investingProvider.GetEarningsData("HtmlSourceEarningsForWeek"));
-                ResultListEarningsForWeek = new ObservableCollection<string>(investingProvider.GetEarningsData(testStringEarningData));
+                ResultListEarningsForWeek = new ObservableCollection<string>(investingProvider.GetEarningsData(HtmlSourceEarningsForWeek));
             });
 
             ConnectToTwsCommand = new RelayCommand(() =>
@@ -87,9 +84,6 @@ namespace Dsmn
 
             TickerStringYahoo = " SKX\r\nPFS\r\nSLCA\r\n WT";
             TickerStringTws = " SKX\r\nPFS\r\nSLCA\r\n WT";
-            
-            // TODO remove incl. the field
-            WeekForEarnings = (new CultureInfo("en-US")).Calendar.GetWeekOfYear(DateTime.Now, CalendarWeekRule.FirstFullWeek, DayOfWeek.Monday);
         }
 
         #region Yahoo
@@ -172,15 +166,6 @@ namespace Dsmn
 
         #region Investing
                 
-        public int WeekForEarnings
-        {
-            get => _weekForEarnings;
-            set
-            {
-                SetProperty(ref _weekForEarnings, value);
-            }
-        }
-
         public string HtmlSourceEarningsForWeek
         {
             get => _htmlSourceEarningsForWeek;

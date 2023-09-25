@@ -39,11 +39,8 @@
                                 <RowDefinition Height="150"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
-                            <StackPanel Orientation="Horizontal">
-                                <Label>Week:</Label>
-                                <TextBox VerticalAlignment="Center" Width="50" Text="{Binding WeekForEarnings}"></TextBox>
-                            </StackPanel>
-                            <DockPanel Grid.Row="1">
+                            <TextBlock Grid.ColumnSpan="5" VerticalAlignment="Center" Padding="5 0 0 0">Select table with the id earningsCalendarData on the Investing.com</TextBlock>
+                                <DockPanel Grid.Row="1">
                                 <Label DockPanel.Dock="Top">HTML Source:</Label>
                                 <TextBox AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
                                          Text="{Binding HtmlSourceEarningsForWeek}"></TextBox>
