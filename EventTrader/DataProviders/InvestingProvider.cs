@@ -27,6 +27,7 @@ namespace Dsmn.DataProviders
             var xDocument = XDocument.Parse(htmlSource);
             var tableRows = xDocument.Descendants("tr").ToList();
 
+            result.Add($"TICKER\tMarket Cap\tEPS Forecast B");
             foreach (var tableRow in tableRows)
             {
                 if (!tableRow.Value.Contains("(") || !tableRow.Value.Contains(")"))
