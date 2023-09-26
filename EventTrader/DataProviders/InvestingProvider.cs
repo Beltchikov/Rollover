@@ -18,7 +18,8 @@ namespace Dsmn.DataProviders
             _xmlNamespaceManager.AddNamespace("empty", "http://bel.com/2023/bel-schema");
         }
 
-        public List<string> GetEarningsData(string htmlSource)
+
+        public List<string> GetEarningsData(string htmlSource, double minMarketCap)
         {
             var result = new List<string>();
 
@@ -33,7 +34,7 @@ namespace Dsmn.DataProviders
             {
                 if (!tableRow.Value.Contains("(") || !tableRow.Value.Contains(")"))
                 {
-                    if(!DateTime.TryParse(tableRow.Value, out earningsDateOrMinValue)) 
+                    if (!DateTime.TryParse(tableRow.Value, out earningsDateOrMinValue))
                     {
                         earningsDateOrMinValue = DateTime.MinValue;
                     }
@@ -44,18 +45,21 @@ namespace Dsmn.DataProviders
                 string? ticker = GetTicker(tableColumns);
                 string? epsForecast = GetEpsForecast(tableColumns);
                 string? marketCap = GetMarketCap(tableColumns);
-                string? earningsDate = earningsDateOrMinValue == DateTime.MinValue ? null : earningsDateOrMinValue.ToString("dd.MM.yyyy"); 
+                string? earningsDate = earningsDateOrMinValue == DateTime.MinValue ? null : earningsDateOrMinValue.ToString("dd.MM.yyyy");
 
                 result.Add($"{ticker}\t{marketCap}\t{epsForecast}\t{earningsDate}");
             }
 
             return result;
-
         }
 
-        private string? GetMarketCap(List<XElement> tableColumns)
+        private double GetMarketCapAsDouble(List<XElement> tableColumns)
         {
             var marketCap = tableColumns[6].Value;
+            if(marketCap == null)
+            {
+                return .0;
+            }
 
             double marketCapAsDouble = 0;
             if (marketCap != null && marketCap.EndsWith("M"))
@@ -71,7 +75,18 @@ namespace Dsmn.DataProviders
                 marketCapAsDouble = double.Parse(marketCap, new CultureInfo("EN-US"));
             }
 
-            marketCap = marketCapAsDouble.ToString("0.000");
+            return marketCapAsDouble;
+        }
+
+        private string? GetMarketCap(List<XElement> tableColumns)
+        {
+            double marketCapAsDouble = GetMarketCapAsDouble(tableColumns); 
+            if(marketCapAsDouble <= 0)
+            {
+                return null;
+            }
+
+            string marketCap = marketCapAsDouble.ToString("0.000");
             return marketCap;
         }
 

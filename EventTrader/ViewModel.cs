@@ -69,7 +69,7 @@ namespace Dsmn
                     MessageBox.Show("HTML Source can not be empty!" );
                     return;
                 }
-                ResultListEarningsForWeek = new ObservableCollection<string>(investingProvider.GetEarningsData(HtmlSourceEarningsForWeek));
+                ResultListEarningsForWeek = new ObservableCollection<string>(investingProvider.GetEarningsData(HtmlSourceEarningsForWeek, MarketCap));
 
                 // Test HTML Source
                 //ResultListEarningsForWeek = new ObservableCollection<string>(investingProvider.GetEarningsData(testStringEarningData));
