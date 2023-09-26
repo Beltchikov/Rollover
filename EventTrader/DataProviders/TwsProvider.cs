@@ -13,7 +13,7 @@ namespace Eomn.DataProviders
             _ibHost = ibHost;
         }
 
-        public async Task<List<string>> BidAskSpread(List<string> tickerList, int timeout)
+        public async Task<List<string>> GetRoe(List<string> tickerList, int timeout)
         {
             var result = new List<string>();
 

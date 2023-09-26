@@ -5,6 +5,6 @@ namespace Eomn.DataProviders
 {
     public interface ITwsProvider
     {
-        Task<List<string>> BidAskSpread(List<string> tickerListTws, int timeout);
+        Task<List<string>> GetRoe(List<string> tickerListTws, int timeout);
     }
 }
