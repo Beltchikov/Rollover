@@ -1,11 +1,7 @@
-﻿using IBApi;
-using IbClient;
+﻿using IbClient;
 using IbClient.messages;
 using System;
-using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Net;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Eomn.Ib
@@ -13,12 +9,13 @@ namespace Eomn.Ib
     public class IbHost : IIbHost
     {
         IIBClient _ibClient;
+        private IIbClientQueue _queue;
 
         private readonly string STK = "STK";
         private readonly string USD = "USD";
         private readonly string SMART = "SMART";
 
-        public IbHost()
+        public IbHost(IIbClientQueue queue)
         {
             _ibClient = IBClient.CreateClient();
 
@@ -27,6 +24,8 @@ namespace Eomn.Ib
             _ibClient.ManagedAccounts += _ibClient_ManagedAccounts;
             _ibClient.ConnectionClosed += _ibClient_ConnectionClosed;
             _ibClient.ContractDetails += _ibClient_ContractDetails;
+            
+            _queue = queue;
 
             //_ibClient.HistoricalData += _ibClient_HistoricalData;
             //_ibClient.HistoricalDataUpdate += _ibClient_HistoricalDataUpdate;
