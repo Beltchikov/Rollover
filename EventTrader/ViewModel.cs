@@ -31,6 +31,7 @@ namespace Dsmn
         
         private ObservableCollection<string> _resultListEarningsForWeek = null!;
         private string _htmlSourceEarningsForWeek = null!;
+        private double _marketCap;
 
         public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
@@ -89,6 +90,7 @@ namespace Dsmn
                 //ibHost.ConnectAndStartReaderThread(Host, Port, ClientId, 1000);
             });
 
+            MarketCap = 0.1;
             TickerStringYahoo = " SKX\r\nPFS\r\nSLCA\r\n WT";
             TickerStringTws = " SKX\r\nPFS\r\nSLCA\r\n WT";
         }
@@ -181,6 +183,17 @@ namespace Dsmn
                 SetProperty(ref _htmlSourceEarningsForWeek, value);
             }
         }
+
+        public double MarketCap
+        {
+            get => _marketCap;
+            set
+            {
+                SetProperty(ref _marketCap, value);
+            }
+        }
+
+        
 
         public ObservableCollection<string> ResultListEarningsForWeek
         {
@@ -6058,7 +6071,7 @@ namespace Dsmn
             
 </tbody>
 </table>";
-
+        
         #endregion
     }
 }
