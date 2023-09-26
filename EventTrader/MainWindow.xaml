@@ -20,7 +20,7 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="200"></RowDefinition>
+                        <RowDefinition Height="235"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="10"></RowDefinition>
                     </Grid.RowDefinitions>
@@ -37,6 +37,8 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="25"></RowDefinition>
                                 <RowDefinition Height="150"></RowDefinition>
+                                <RowDefinition Height="10"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
                             <TextBlock Grid.ColumnSpan="5" VerticalAlignment="Center" Padding="5 0 0 0">Select table with the id earningsCalendarData on the Investing.com</TextBlock>
@@ -52,6 +54,9 @@
                                 <TextBox AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
                                          Text="{Binding ResultStringEarningsForWeek}"></TextBox>
                             </DockPanel>
+
+                            <Label Grid.Row="3" HorizontalAlignment="Right">Market Cap. only above (B): </Label>
+                            <TextBox Grid.Row="3" Grid.Column="2"></TextBox>
 
                         </Grid>
                     </GroupBox>
