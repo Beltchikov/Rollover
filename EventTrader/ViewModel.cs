@@ -13,7 +13,7 @@ namespace Eomn
 {
     public class ViewModel : ObservableObject, IIbConsumer
     {
-        private const int TIMEOUT_SIMPLE_BROWSER = 5;
+        private const int TIMEOUT_SIMPLE_BROWSER = 0;
         private const int TIMEOUT_TWS = 100;
 
         private string _tickerStringYahoo = null!;
