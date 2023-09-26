@@ -17,31 +17,28 @@ namespace Eomn.DataProviders
         {
             var result = new List<string>();
 
-            TriggerStatus($"Retrieving bid/ask spread for {"SKX"} {tickerList.Count}");
-            var conId = await _ibHost.RequestContractIdAsync("SKX", timeout);
+            TriggerStatus($"Retrieving ROE for {"SKX"} {tickerList.Count}");
+            //var conId = await _ibHost.RequestContractIdAsync("SKX", timeout);
 
-            result.Add($"SKX\t{conId}");   
+            //result.Add($"SKX\t{conId}");   
 
-            //int cnt = 1;
-            //foreach (string ticker in tickerList)
-            //{
-            //    await Task.Run(() =>
-            //    {
-            //        TriggerStatus($"Retrieving bid/ask spread for {ticker} {cnt++}/{tickerList.Count}");
-            //        var conId = _ibHost.RequestContractId(ticker, timeout);
+            int cnt = 1;
+            foreach (string ticker in tickerList)
+            {
+                TriggerStatus($"Retrieving bid/ask spread for {ticker} {cnt++}/{tickerList.Count}");
+                var conId = await _ibHost.RequestContractIdAsync(ticker, timeout);
 
 
-            //        // Exchange must be empty
-            //        //ibClient.ClientSocket.reqSecDefOptParams(_activeReqId, symbol, exchange, secType, conId);
+                // Exchange must be empty
+                //ibClient.ClientSocket.reqSecDefOptParams(_activeReqId, symbol, exchange, secType, conId);
 
-            //        //ibClient.SecurityDefinitionOptionParameter += OnSecurityDefinitionOptionParameter;
-            //        //ibClient.SecurityDefinitionOptionParameterEnd += OnSecurityDefinitionOptionParameterEnd;
+                //ibClient.SecurityDefinitionOptionParameter += OnSecurityDefinitionOptionParameter;
+                //ibClient.SecurityDefinitionOptionParameterEnd += OnSecurityDefinitionOptionParameterEnd;
 
-            //        // TODO
-            //        result.Add($"{ticker} {conId}");
+                // TODO
+                result.Add($"{ticker} {conId}");
 
-            //    });
-            //}
+            }
 
             return result;
         }
