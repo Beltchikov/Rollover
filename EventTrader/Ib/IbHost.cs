@@ -1,4 +1,5 @@
-﻿using IbClient;
+﻿using IBApi;
+using IbClient;
 using IbClient.messages;
 using System;
 using System.Collections.Concurrent;
@@ -68,11 +69,11 @@ namespace Eomn.Ib
             _ibClient.Disconnect();
         }
 
-        public int RequestContractId(string ticker, int timeout)
+        public async Task<int> RequestContractIdAsync(string ticker, int timeout)
         {
-            // TODO make async
+            int contractId = -1;
 
-            var contract = new IBApi.Contract()
+            var contract = new Contract()
             {
                 Symbol = ticker,
                 SecType = STK,
@@ -82,25 +83,19 @@ namespace Eomn.Ib
             var reqId = ++_currentReqId;
             _ibClient.ClientSocket.reqContractDetails(reqId, contract);
 
-            // TODO use IbClientQueue
+            await Task.Run(() =>
+            {
+                var startTime = DateTime.Now;
+                while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasMessageInQueue<ContractDetailsMessage>(reqId)) { }
 
-            //var startTime = DateTime.Now;
-            //while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !Consumer.ConnectedToTws) 
-            //{
-            //    var contract = new Contract()
-            //    {
-            //        Symbol = ticker,
-            //        SecType = STK,
-            //        Currency = USD,
-            //        Exchange = SMART
-            //    };
+                ContractDetailsMessage? contractDetailsMessage = _queue.Dequeue() as ContractDetailsMessage;
+                if (contractDetailsMessage != null)
+                {
+                    contractId = contractDetailsMessage.ContractDetails.Contract.ConId;
+                }
+            });
 
-            //    // TODO
-            //    _ibClient.ClientSocket.reqContractDetails(-1, contract);
-            //}
-
-            // TODO
-            return -1;
+            return contractId;  
         }
 
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)
@@ -143,7 +138,23 @@ namespace Eomn.Ib
 
         private void _ibClient_ContractDetails(ContractDetailsMessage contractDetailsMessage)
         {
-            _queue.Enqueue(contractDetailsMessage);    
+            _queue.Enqueue(contractDetailsMessage);
+        }
+
+        private bool HasMessageInQueue<T>(int reqId)
+        {
+            var message = _queue.Peek();
+            if (message == null)
+            {
+                return false;
+            }
+
+            if (!(message is T))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

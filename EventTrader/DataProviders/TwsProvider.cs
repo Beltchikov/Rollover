@@ -18,7 +18,9 @@ namespace Eomn.DataProviders
             var result = new List<string>();
 
             TriggerStatus($"Retrieving bid/ask spread for {"SKX"} {tickerList.Count}");
-            var conId = _ibHost.RequestContractId("SKX", timeout);
+            var conId = await _ibHost.RequestContractIdAsync("SKX", timeout);
+
+            result.Add($"SKX\t{conId}");   
 
             //int cnt = 1;
             //foreach (string ticker in tickerList)

@@ -7,7 +7,7 @@ namespace Eomn.Ib
         public IIbConsumer? Consumer { get; set; }
         public Task<bool> ConnectAndStartReaderThread(string host, int port, int clientId, int timeout);
         public void Disconnect();
-        int RequestContractId(string ticker, int timeout);
+        Task<int> RequestContractIdAsync(string ticker, int timeout);
         
         //public void ReqHistoricalData();
         //void ApplyDefaultHistoricalData();
