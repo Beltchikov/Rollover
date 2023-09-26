@@ -1,11 +1,11 @@
-﻿using Dsmn.WebScraping;
+﻿using Eomn.WebScraping;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Dsmn.DataProviders
+namespace Eomn.DataProviders
 {
     public class YahooProvider : BrowserProviderBase, IYahooProvider
     {

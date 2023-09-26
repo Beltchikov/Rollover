@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Dsmn.Ib
+namespace Eomn.Ib
 {
     public interface IIbHost
     {

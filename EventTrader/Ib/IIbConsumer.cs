@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Dsmn.Ib
+namespace Eomn.Ib
 {
     public interface IIbConsumer
     {

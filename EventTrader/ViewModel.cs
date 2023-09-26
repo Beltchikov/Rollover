@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Dsmn.DataProviders;
-using Dsmn.Ib;
+using Eomn.DataProviders;
+using Eomn.Ib;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
-namespace Dsmn
+namespace Eomn
 {
     public class ViewModel : ObservableObject, IIbConsumer
     {

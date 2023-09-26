@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dsmn.DataProviders
+namespace Eomn.DataProviders
 {
     public class ProviderBase
     {

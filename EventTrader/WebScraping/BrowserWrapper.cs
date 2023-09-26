@@ -2,7 +2,7 @@
 using System.Xml.Linq;
 using SimpleBrowser;
 
-namespace Dsmn.WebScraping
+namespace Eomn.WebScraping
 {
     [ExcludeFromCodeCoverage]
     public class BrowserWrapper : IBrowserWrapper

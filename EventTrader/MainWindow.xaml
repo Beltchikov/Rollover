@@ -1,11 +1,11 @@
-﻿<Window x:Class="Dsmn.MainWindow"
+﻿<Window x:Class="Eomn.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Dsmn"
+        xmlns:local="clr-namespace:Eomn"
         mc:Ignorable="d"
-        Title="DSMN" Height="700" Width="800">
+        Title="EOMN" Height="700" Width="800">
     <Window.Resources>
         <BitmapImage x:Key="ConnectionCircle" UriSource="/Images/RedCircle.png" />
     </Window.Resources>

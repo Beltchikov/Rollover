@@ -8,7 +8,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Dsmn.Ib
+namespace Eomn.Ib
 {
     public class IbHost : IIbHost
     {

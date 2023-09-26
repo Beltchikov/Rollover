@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Dsmn.DataProviders
+namespace Eomn.DataProviders
 {
     public interface IYahooProvider
     {

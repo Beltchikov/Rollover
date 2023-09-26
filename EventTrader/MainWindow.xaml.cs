@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace Dsmn
+namespace Eomn
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

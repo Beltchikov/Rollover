@@ -1,6 +1,6 @@
 ﻿using System.Xml.Linq;
 
-namespace Dsmn.WebScraping
+namespace Eomn.WebScraping
 {
     public interface IBrowserWrapper
     {

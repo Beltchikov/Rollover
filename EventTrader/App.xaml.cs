@@ -1,12 +1,12 @@
-﻿using Dsmn.DataProviders;
-using Dsmn.Ib;
-using Dsmn.WebScraping;
+﻿using Eomn.DataProviders;
+using Eomn.Ib;
+using Eomn.WebScraping;
 using IBApi;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows;
 
-namespace Dsmn
+namespace Eomn
 {
     /// <summary>
     /// Interaction logic for App.xaml

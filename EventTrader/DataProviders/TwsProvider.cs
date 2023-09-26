@@ -1,8 +1,8 @@
-﻿using Dsmn.Ib;
+﻿using Eomn.Ib;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Dsmn.DataProviders
+namespace Eomn.DataProviders
 {
     public class TwsProvider : ProviderBase, ITwsProvider
     {

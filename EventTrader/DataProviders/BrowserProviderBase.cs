@@ -1,9 +1,9 @@
-﻿using Dsmn.WebScraping;
+﻿using Eomn.WebScraping;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml;
 
-namespace Dsmn.DataProviders
+namespace Eomn.DataProviders
 {
     public class BrowserProviderBase : ProviderBase
     {
