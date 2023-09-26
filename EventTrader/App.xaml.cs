@@ -1,7 +1,6 @@
 ﻿using Eomn.DataProviders;
 using Eomn.Ib;
 using Eomn.WebScraping;
-using IBApi;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows;
@@ -21,6 +20,7 @@ namespace Eomn
                 .AddSingleton<IYahooProvider, YahooProvider>()
                 .AddSingleton<ITwsProvider, TwsProvider>()
                 .AddSingleton<IIbHost, IbHost>()
+                .AddSingleton<IIbClientQueue, IbClientQueue>()
                 .BuildServiceProvider();
         }
 

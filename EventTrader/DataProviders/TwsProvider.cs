@@ -7,10 +7,12 @@ namespace Eomn.DataProviders
     public class TwsProvider : ProviderBase, ITwsProvider
     {
         private IIbHost _ibHost;
+        private IIbClientQueue _queue;
 
-        public TwsProvider(IIbHost ibHost)
+        public TwsProvider(IIbHost ibHost, IIbClientQueue queue)
         {
             _ibHost = ibHost;
+            _queue = queue;
         }
 
         public async Task<List<string>> GetRoe(List<string> tickerList, int timeout)
