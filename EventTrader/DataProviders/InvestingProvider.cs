@@ -42,12 +42,18 @@ namespace Dsmn.DataProviders
                 }
                 var tableColumns = tableRow.Descendants("td").ToList();
 
+                double marketCap = GetMarketCapAsDouble(tableColumns);
+                if(marketCap < minMarketCap)
+                {
+                    continue;
+                }
+
                 string? ticker = GetTicker(tableColumns);
                 string? epsForecast = GetEpsForecast(tableColumns);
-                string? marketCap = GetMarketCap(tableColumns);
+                string? marketCapAsString = GetMarketCapAsString(tableColumns);
                 string? earningsDate = earningsDateOrMinValue == DateTime.MinValue ? null : earningsDateOrMinValue.ToString("dd.MM.yyyy");
 
-                result.Add($"{ticker}\t{marketCap}\t{epsForecast}\t{earningsDate}");
+                result.Add($"{ticker}\t{marketCapAsString}\t{epsForecast}\t{earningsDate}");
             }
 
             return result;
@@ -78,7 +84,7 @@ namespace Dsmn.DataProviders
             return marketCapAsDouble;
         }
 
-        private string? GetMarketCap(List<XElement> tableColumns)
+        private string? GetMarketCapAsString(List<XElement> tableColumns)
         {
             double marketCapAsDouble = GetMarketCapAsDouble(tableColumns); 
             if(marketCapAsDouble <= 0)
