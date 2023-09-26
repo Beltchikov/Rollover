@@ -1,6 +1,7 @@
 ﻿using IbClient;
 using IbClient.messages;
 using System;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,6 +11,8 @@ namespace Eomn.Ib
     {
         IIBClient _ibClient;
         private IIbClientQueue _queue;
+        private int _currentReqId = 0;
+
 
         private readonly string STK = "STK";
         private readonly string USD = "USD";
@@ -24,7 +27,7 @@ namespace Eomn.Ib
             _ibClient.ManagedAccounts += _ibClient_ManagedAccounts;
             _ibClient.ConnectionClosed += _ibClient_ConnectionClosed;
             _ibClient.ContractDetails += _ibClient_ContractDetails;
-            
+
             _queue = queue;
 
             //_ibClient.HistoricalData += _ibClient_HistoricalData;
@@ -76,7 +79,8 @@ namespace Eomn.Ib
                 Currency = USD,
                 Exchange = SMART
             };
-            _ibClient.ClientSocket.reqContractDetails(1, contract);
+            var reqId = ++_currentReqId;
+            _ibClient.ClientSocket.reqContractDetails(reqId, contract);
 
             // TODO use IbClientQueue
 
@@ -137,9 +141,9 @@ namespace Eomn.Ib
             Consumer.ConnectedToTws = false;
         }
 
-        private void _ibClient_ContractDetails(ContractDetailsMessage obj)
+        private void _ibClient_ContractDetails(ContractDetailsMessage contractDetailsMessage)
         {
-            
+            _queue.Enqueue(contractDetailsMessage);    
         }
     }
 }
