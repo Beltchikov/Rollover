@@ -5,7 +5,6 @@ using Dsmn.Ib;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -64,8 +63,15 @@ namespace Dsmn
 
             EarningsForWeekCommand = new RelayCommand(() =>
             {
-                //ResultListEarningsForWeek = new ObservableCollection<string>(investingProvider.GetEarningsData(HtmlSourceEarningsForWeek));
-                ResultListEarningsForWeek = new ObservableCollection<string>(investingProvider.GetEarningsData(testStringEarningData));
+                if(HtmlSourceEarningsForWeek == null || HtmlSourceEarningsForWeek  == string.Empty)
+                {
+                    MessageBox.Show("HTML Source can not be empty!" );
+                    return;
+                }
+                ResultListEarningsForWeek = new ObservableCollection<string>(investingProvider.GetEarningsData(HtmlSourceEarningsForWeek));
+
+                // Test HTML Source
+                //ResultListEarningsForWeek = new ObservableCollection<string>(investingProvider.GetEarningsData(testStringEarningData));
             });
 
             ConnectToTwsCommand = new RelayCommand(() =>
