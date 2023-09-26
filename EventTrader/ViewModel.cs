@@ -45,8 +45,7 @@ namespace Eomn
             IIbHost ibHost)
         {
             yahooProvider.Status += YahooProvider_Status;
-            twsProvider.Status += TwsProvider_Status; 
-
+            
             LastEpsCommand = new RelayCommand(async () =>
             {
                 DecimalSeparatorSelectedIndexYahoo = 0;
@@ -88,7 +87,6 @@ namespace Eomn
                 ResultListTws= new ObservableCollection<string>(await twsProvider.GetRoe(
                     TickerListTws,
                     TIMEOUT_TWS));
-                //ibHost.ConnectAndStartReaderThread(Host, Port, ClientId, 1000);
             });
 
             MarketCap = 0.1;

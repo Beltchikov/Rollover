@@ -138,6 +138,12 @@ namespace Eomn.Ib
 
         private void _ibClient_ContractDetails(ContractDetailsMessage contractDetailsMessage)
         {
+            if (Consumer == null)
+            {
+                throw new ApplicationException("Unexpected! Consumer is null");
+            }
+            Consumer.TwsMessageList?.Add($"ContractDetailsMessage for {contractDetailsMessage.ContractDetails.Contract.LocalSymbol} " +
+                $"conId:{contractDetailsMessage.ContractDetails.Contract.ConId}");
             _queue.Enqueue(contractDetailsMessage);
         }
 
