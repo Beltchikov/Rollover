@@ -104,10 +104,10 @@ Foreground="White" Grid.ColumnSpan="3">
                                     <Style TargetType="{x:Type Image}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding ConnectedToTws}" Value="False">
-                                                <Setter Property="Source" Value="pack://application:,,,/Dsmn;component/Images/RedCircle.png"/>
+                                                <Setter Property="Source" Value="pack://application:,,,/Eomn;component/Images/RedCircle.png"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding ConnectedToTws}" Value="True">
-                                                <Setter Property="Source" Value="pack://application:,,,/Dsmn;component/Images/GreenCircle.png"/>
+                                                <Setter Property="Source" Value="pack://application:,,,/Eomn;component/Images/GreenCircle.png"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
