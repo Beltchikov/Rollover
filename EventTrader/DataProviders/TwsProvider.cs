@@ -20,7 +20,7 @@ namespace Eomn.DataProviders
             int cnt = 1;
             foreach (string ticker in tickerList)
             {
-                TriggerStatus($"Retrieving ROE for {ticker} {cnt++}/{tickerList.Count}");
+                TriggerStatus($"Retrieving contract details for {ticker} {cnt++}/{tickerList.Count}");
                 var contractDetails = await _ibHost.RequestContractDetailsAsync(ticker, timeout);
                 result.Add($"{ticker} {contractDetails?.Contract.ConId}");
             }
