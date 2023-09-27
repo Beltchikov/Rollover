@@ -65,15 +65,15 @@ namespace Eomn
 
             EarningsForWeekCommand = new RelayCommand(() =>
             {
-                if(HtmlSourceEarningsForWeek == null || HtmlSourceEarningsForWeek  == string.Empty)
+                if (HtmlSourceEarningsForWeek == null || HtmlSourceEarningsForWeek == string.Empty)
                 {
-                    MessageBox.Show("HTML Source can not be empty!" );
+                    MessageBox.Show("HTML Source can not be empty!");
                     return;
                 }
                 ResultListEarningsForWeek = new ObservableCollection<string>(investingProvider.GetEarningsData(HtmlSourceEarningsForWeek, MarketCap));
 
                 // Test HTML Source
-                //ResultListEarningsForWeek = new ObservableCollection<string>(investingProvider.GetEarningsData(testStringEarningData));
+                //ResultListEarningsForWeek = new ObservableCollection<string>(investingProvider.GetEarningsData(testStringEarningData, MarketCap));
             });
 
             ConnectToTwsCommand = new RelayCommand(() =>
@@ -183,34 +183,6 @@ namespace Eomn
             set
             {
                 SetProperty(ref _resultListEarningsForWeek, value);
-                OnPropertyChanged(nameof(ResultStringEarningsForWeek));
-            }
-        }
-
-        public string ResultStringEarningsForWeek
-        {
-            get
-            {
-                if (ResultListEarningsForWeek == null)
-                {
-                    return string.Empty;
-                }
-                else
-                {
-                    if (!ResultListEarningsForWeek.Any())
-                    {
-                        return string.Empty;
-                    }
-                    else
-                    {
-                        return ResultListEarningsForWeek.Aggregate((r, n) => r + "\r\n" + n);
-                    }
-                }
-            }
-            set
-            {
-                SetProperty(ref _resultListEarningsForWeek, new ObservableCollection<string>());
-                OnPropertyChanged(nameof(ResultListEarningsForWeek));
             }
         }
 

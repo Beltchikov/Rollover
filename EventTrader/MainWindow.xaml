@@ -10,7 +10,7 @@
         WindowState="Maximized">
     <Window.Resources>
         <BitmapImage x:Key="ConnectionCircle" UriSource="/Images/RedCircle.png" />
-        <converters:YahooEpsConverter x:Key="YahooEpsConverter"></converters:YahooEpsConverter>
+        <converters:ListToStringConverter x:Key="ListToStringConverter"></converters:ListToStringConverter>
     </Window.Resources>
     <Grid>
         <TabControl x:Name="tabControl" TabStripPlacement="Left">
@@ -80,7 +80,7 @@
                             <DockPanel Grid.Row="1" Grid.Column="4">
                                 <Label DockPanel.Dock="Top">Result:</Label>
                                 <TextBox AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
-                                         Text="{Binding ResultStringEarningsForWeek}"></TextBox>
+                                         Text="{Binding ResultListEarningsForWeek, Converter={StaticResource ListToStringConverter}}"></TextBox>
                             </DockPanel>
 
                             <Label Grid.Row="3" HorizontalAlignment="Right">Market Cap. only above (B): </Label>
@@ -345,7 +345,7 @@ Foreground="White" Grid.ColumnSpan="3">
                             <Label Content="Results:" Grid.Column="3" Grid.Row="1" 
                                    HorizontalAlignment="Left"
                                     Foreground="White"></Label>
-                            <TextBox x:Name="txtResultsYahoo" Text="{Binding ResultListYahooEps, Converter={StaticResource YahooEpsConverter}, Mode=OneWay}" Grid.Column="3" Grid.Row="2" 
+                            <TextBox x:Name="txtResultsYahoo" Text="{Binding ResultListYahooEps, Converter={StaticResource ListToStringConverter}, Mode=OneWay}" Grid.Column="3" Grid.Row="2" 
                                      AcceptsReturn="True"
                                         VerticalScrollBarVisibility="Visible"></TextBox>
 
