@@ -211,6 +211,50 @@ Foreground="White" Grid.ColumnSpan="3">
                         </Grid>
                     </GroupBox>
 
+                    <GroupBox Grid.Column="1" Grid.Row="5" Header="ROE"
+Foreground="White" Grid.ColumnSpan="3">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="10"></ColumnDefinition>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                                <ColumnDefinition Width="155"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="10"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="10"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="10"></RowDefinition>
+                            </Grid.RowDefinitions>
+
+                            <Label Content="Tickers:" Grid.Column="1" Grid.Row="1" 
+     HorizontalAlignment="Left"
+      Foreground="White"></Label>
+                            <TextBox Text="{Binding TickerStringTwsRoe}" Grid.Column="1" Grid.Row="2" 
+        AcceptsReturn="True"
+          VerticalScrollBarVisibility="Visible"></TextBox>
+
+                            <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="2" >
+                                <Button Padding="10 0 10 0" 
+      Margin="10,0,10,0" 
+                Height="25" 
+          HorizontalAlignment="Stretch"
+              VerticalAlignment="Center" 
+              Command="{Binding RoeCommand}">ROE >>
+                                </Button>
+                            </StackPanel>
+
+                            <Label Content="Results:" Grid.Column="3" Grid.Row="1" 
+     HorizontalAlignment="Left"
+      Foreground="White"></Label>
+                            <TextBox Text="{Binding ResultStringTwsRow}" Grid.Column="3" Grid.Row="2" 
+       AcceptsReturn="True"
+          VerticalScrollBarVisibility="Visible"></TextBox>
+
+                        </Grid>
+                    </GroupBox>
+
                     <GroupBox Grid.Column="1" Grid.Row="6" Header="Information"
    Foreground="White" Grid.ColumnSpan="3">
                         <Grid>
