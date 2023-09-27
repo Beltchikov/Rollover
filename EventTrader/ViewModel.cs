@@ -37,7 +37,7 @@ namespace Eomn
         public ICommand ExpectedEpsCommand { get; }
         public ICommand EarningsForWeekCommand { get; }
         public ICommand ConnectToTwsCommand { get; }
-        public ICommand RoeCommand { get; }
+        public ICommand ContractDetailsCommand { get; }
         public ViewModel(
             IInvestingProvider investingProvider,
             IYahooProvider yahooProvider,
@@ -81,10 +81,10 @@ namespace Eomn
                 ibHost.ConnectAndStartReaderThread(Host, Port, ClientId, 1000);
             });
 
-            RoeCommand = new RelayCommand(async () =>
+            ContractDetailsCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer = ibHost.Consumer ?? this;
-                ResultListTws= new ObservableCollection<string>(await twsProvider.GetRoe(
+                ResultListTws= new ObservableCollection<string>(await twsProvider.GetContractDetails(
                     TickerListTws,
                     TIMEOUT_TWS));
             });

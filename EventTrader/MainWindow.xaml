@@ -169,7 +169,7 @@ Foreground="White" Grid.ColumnSpan="3">
                    Height="25" 
              HorizontalAlignment="Stretch"
                  VerticalAlignment="Center" 
-                 Command="{Binding RoeCommand}">ROE >>
+                 Command="{Binding ContractDetailsCommand}">Contract Detaiils >>
                                 </Button>
                             </StackPanel>
 
