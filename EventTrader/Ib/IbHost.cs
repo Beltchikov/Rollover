@@ -2,7 +2,6 @@
 using IbClient;
 using IbClient.messages;
 using System;
-using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -69,9 +68,9 @@ namespace Eomn.Ib
             _ibClient.Disconnect();
         }
 
-        public async Task<int> RequestContractIdAsync(string ticker, int timeout)
+        public async Task<ContractDetails?> RequestContractDetailsAsync(string ticker, int timeout)
         {
-            int contractId = -1;
+            ContractDetails contractDetails = null!;
 
             var contract = new Contract()
             {
@@ -88,14 +87,13 @@ namespace Eomn.Ib
                 var startTime = DateTime.Now;
                 while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasMessageInQueue<ContractDetailsMessage>(reqId)) { }
 
-                ContractDetailsMessage? contractDetailsMessage = _queue.Dequeue() as ContractDetailsMessage;
-                if (contractDetailsMessage != null)
+                if (_queue.Dequeue() is ContractDetailsMessage contractDetailsMessage)
                 {
-                    contractId = contractDetailsMessage.ContractDetails.Contract.ConId;
+                    contractDetails = contractDetailsMessage.ContractDetails;
                 }
             });
 
-            return contractId;  
+            return contractDetails;  
         }
 
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)
