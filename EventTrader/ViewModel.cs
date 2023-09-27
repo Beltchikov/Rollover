@@ -27,7 +27,7 @@ namespace Eomn
         private bool _connectedToTws;
         private List<string>? _twsMessageList = new List<string>();
         private string _tickerStringTwsContractDetails = null!;
-        private ObservableCollection<string> _resultListTws = null!;
+        private ObservableCollection<string> _resultListTwsContractDetails = null!;
         
         private ObservableCollection<string> _resultListEarningsForWeek = null!;
         private string _htmlSourceEarningsForWeek = null!;
@@ -84,7 +84,7 @@ namespace Eomn
             ContractDetailsCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer = ibHost.Consumer ?? this;
-                ResultListTws= new ObservableCollection<string>(await twsProvider.GetContractDetails(
+                ResultListTwsContractDetails= new ObservableCollection<string>(await twsProvider.GetContractDetails(
                     TickerListTwsContractDetails,
                     TIMEOUT_TWS));
             });
@@ -311,40 +311,40 @@ namespace Eomn
             }
         }
 
-        public ObservableCollection<string> ResultListTws
+        public ObservableCollection<string> ResultListTwsContractDetails
         {
-            get => _resultListTws;
+            get => _resultListTwsContractDetails;
             set
             {
-                SetProperty(ref _resultListTws, value);
-                OnPropertyChanged(nameof(ResultStringTws));
+                SetProperty(ref _resultListTwsContractDetails, value);
+                OnPropertyChanged(nameof(ResultStringTwsContractDetails));
             }
         }
 
-        public string ResultStringTws
+        public string ResultStringTwsContractDetails
         {
             get
             {
-                if (ResultListTws == null)
+                if (ResultListTwsContractDetails == null)
                 {
                     return string.Empty;
                 }
                 else
                 {
-                    if (!ResultListTws.Any())
+                    if (!ResultListTwsContractDetails.Any())
                     {
                         return string.Empty;
                     }
                     else
                     {
-                        return ResultListTws.Aggregate((r, n) => r + "\r\n" + n);
+                        return ResultListTwsContractDetails.Aggregate((r, n) => r + "\r\n" + n);
                     }
                 }
             }
             set
             {
-                SetProperty(ref _resultListTws, new ObservableCollection<string>());
-                OnPropertyChanged(nameof(ResultListTws));
+                SetProperty(ref _resultListTwsContractDetails, new ObservableCollection<string>());
+                OnPropertyChanged(nameof(ResultListTwsContractDetails));
             }
         }
 
