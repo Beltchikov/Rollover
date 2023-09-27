@@ -272,34 +272,6 @@ namespace Eomn
             set
             {
                 SetProperty(ref _resultListTwsContractDetails, value);
-                OnPropertyChanged(nameof(ResultStringTwsContractDetails));
-            }
-        }
-
-        public string ResultStringTwsContractDetails
-        {
-            get
-            {
-                if (ResultListTwsContractDetails == null)
-                {
-                    return string.Empty;
-                }
-                else
-                {
-                    if (!ResultListTwsContractDetails.Any())
-                    {
-                        return string.Empty;
-                    }
-                    else
-                    {
-                        return ResultListTwsContractDetails.Aggregate((r, n) => r + "\r\n" + n);
-                    }
-                }
-            }
-            set
-            {
-                SetProperty(ref _resultListTwsContractDetails, new ObservableCollection<string>());
-                OnPropertyChanged(nameof(ResultListTwsContractDetails));
             }
         }
 
