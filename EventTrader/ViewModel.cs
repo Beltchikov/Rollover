@@ -127,34 +127,6 @@ namespace Eomn
             set
             {
                 SetProperty(ref _resultListYahooEps, value);
-                OnPropertyChanged(nameof(ResultStringYahooEps));
-            }
-        }
-
-        public string ResultStringYahooEps
-        {
-            get
-            {
-                if (ResultListYahooEps == null)
-                {
-                    return string.Empty;
-                }
-                else
-                {
-                    if (!ResultListYahooEps.Any())
-                    {
-                        return string.Empty;
-                    }
-                    else
-                    {
-                        return ResultListYahooEps.Aggregate((r, n) => r + "\r\n" + n);
-                    }
-                }
-            }
-            set
-            {
-                SetProperty(ref _resultListYahooEps, new ObservableCollection<string>());
-                OnPropertyChanged(nameof(ResultListYahooEps));
             }
         }
 

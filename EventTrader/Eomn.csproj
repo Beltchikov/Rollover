@@ -29,8 +29,4 @@
     <Resource Include="Images\RedCircle.png" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Converters\" />
-  </ItemGroup>
-
 </Project>

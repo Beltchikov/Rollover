@@ -4,11 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Eomn"
+        xmlns:converters="clr-namespace:Eomn.Converters"
         mc:Ignorable="d"
         Title="EOMN" 
         WindowState="Maximized">
     <Window.Resources>
         <BitmapImage x:Key="ConnectionCircle" UriSource="/Images/RedCircle.png" />
+        <converters:YahooEpsConverter x:Key="YahooEpsConverter"></converters:YahooEpsConverter>
     </Window.Resources>
     <Grid>
         <TabControl x:Name="tabControl" TabStripPlacement="Left">
@@ -343,7 +345,7 @@ Foreground="White" Grid.ColumnSpan="3">
                             <Label Content="Results:" Grid.Column="3" Grid.Row="1" 
                                    HorizontalAlignment="Left"
                                     Foreground="White"></Label>
-                            <TextBox x:Name="txtResultsYahoo" Text="{Binding ResultStringYahooEps}" Grid.Column="3" Grid.Row="2" 
+                            <TextBox x:Name="txtResultsYahoo" Text="{Binding ResultListYahooEps, Converter={StaticResource YahooEpsConverter}, Mode=OneWay}" Grid.Column="3" Grid.Row="2" 
                                      AcceptsReturn="True"
                                         VerticalScrollBarVisibility="Visible"></TextBox>
 
