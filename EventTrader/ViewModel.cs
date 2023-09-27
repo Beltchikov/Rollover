@@ -26,7 +26,7 @@ namespace Eomn
         private int _clientId = 1;
         private bool _connectedToTws;
         private List<string>? _twsMessageList = new List<string>();
-        private string _tickerStringTws = null!;
+        private string _tickerStringTwsContractDetails = null!;
         private ObservableCollection<string> _resultListTws = null!;
         
         private ObservableCollection<string> _resultListEarningsForWeek = null!;
@@ -85,13 +85,13 @@ namespace Eomn
             {
                 ibHost.Consumer = ibHost.Consumer ?? this;
                 ResultListTws= new ObservableCollection<string>(await twsProvider.GetContractDetails(
-                    TickerListTws,
+                    TickerListTwsContractDetails,
                     TIMEOUT_TWS));
             });
 
             MarketCap = 0.1;
             TickerStringYahoo = " SKX\r\nPFS\r\nSLCA\r\n WT";
-            TickerStringTws = " SKX\r\nPFS\r\nSLCA\r\n WT";
+            TickerStringTwsContractDetails = " SKX\r\nPFS\r\nSLCA";
         }
 
         #region Yahoo
@@ -297,17 +297,17 @@ namespace Eomn
             }
         }
 
-        public List<string> TickerListTws
+        public List<string> TickerListTwsContractDetails
         {
-            get => TickerStringTws.Split("\r\n", StringSplitOptions.TrimEntries).ToList();
+            get => TickerStringTwsContractDetails.Split("\r\n", StringSplitOptions.TrimEntries).ToList();
         }
 
-        public string TickerStringTws
+        public string TickerStringTwsContractDetails
         {
-            get => _tickerStringTws;
+            get => _tickerStringTwsContractDetails;
             set
             {
-                SetProperty(ref _tickerStringTws, value);
+                SetProperty(ref _tickerStringTwsContractDetails, value);
             }
         }
 

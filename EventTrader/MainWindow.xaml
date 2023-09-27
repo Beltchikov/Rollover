@@ -159,7 +159,7 @@ Foreground="White" Grid.ColumnSpan="3">
                             <Label Content="Tickers:" Grid.Column="1" Grid.Row="1" 
         HorizontalAlignment="Left"
          Foreground="White"></Label>
-                            <TextBox Text="{Binding TickerStringTws}" Grid.Column="1" Grid.Row="2" 
+                            <TextBox Text="{Binding TickerStringTwsContractDetails}" Grid.Column="1" Grid.Row="2" 
            AcceptsReturn="True"
              VerticalScrollBarVisibility="Visible"></TextBox>
 
@@ -169,7 +169,7 @@ Foreground="White" Grid.ColumnSpan="3">
                    Height="25" 
              HorizontalAlignment="Stretch"
                  VerticalAlignment="Center" 
-                 Command="{Binding ContractDetailsCommand}">Contract Detaiils >>
+                 Command="{Binding ContractDetailsCommand}">Contract Details >>
                                 </Button>
                             </StackPanel>
 

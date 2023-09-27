@@ -22,12 +22,6 @@ namespace Eomn.DataProviders
             {
                 TriggerStatus($"Retrieving ROE for {ticker} {cnt++}/{tickerList.Count}");
                 var contractDetails = await _ibHost.RequestContractDetailsAsync(ticker, timeout);
-
-                //_ibHost.RequestFundamentalData()
-
-
-
-
                 result.Add($"{ticker} {contractDetails?.Contract.ConId}");
             }
 
