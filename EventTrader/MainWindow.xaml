@@ -343,7 +343,7 @@ Foreground="White" Grid.ColumnSpan="3">
                             <Label Content="Results:" Grid.Column="3" Grid.Row="1" 
                                    HorizontalAlignment="Left"
                                     Foreground="White"></Label>
-                            <TextBox x:Name="txtResultsYahoo" Text="{Binding ResultStringYahoo}" Grid.Column="3" Grid.Row="2" 
+                            <TextBox x:Name="txtResultsYahoo" Text="{Binding ResultStringYahooEps}" Grid.Column="3" Grid.Row="2" 
                                      AcceptsReturn="True"
                                         VerticalScrollBarVisibility="Visible"></TextBox>
 

@@ -17,7 +17,7 @@ namespace Eomn
         private const int TIMEOUT_TWS = 3000;
 
         private string _tickerStringYahoo = null!;
-        private ObservableCollection<string> _resultListYahoo = null!;
+        private ObservableCollection<string> _resultListYahooEps = null!;
         private string _messageYahoo = null!;
         private int _decimalSeparatorSelectedIndexYahoo;
 
@@ -50,7 +50,7 @@ namespace Eomn
             LastEpsCommand = new RelayCommand(async () =>
             {
                 DecimalSeparatorSelectedIndexYahoo = 0;
-                ResultListYahoo = new ObservableCollection<string>(await yahooProvider.LastEpsAsync(
+                ResultListYahooEps = new ObservableCollection<string>(await yahooProvider.LastEpsAsync(
                     TickerListYahoo,
                     TIMEOUT_SIMPLE_BROWSER));
             });
@@ -58,7 +58,7 @@ namespace Eomn
             ExpectedEpsCommand = new RelayCommand(async () =>
             {
                 DecimalSeparatorSelectedIndexYahoo = 0;
-                ResultListYahoo = new ObservableCollection<string>(await yahooProvider.ExpectedEpsAsync(
+                ResultListYahooEps = new ObservableCollection<string>(await yahooProvider.ExpectedEpsAsync(
                     TickerListYahoo,
                     TIMEOUT_SIMPLE_BROWSER));
             });
@@ -121,40 +121,40 @@ namespace Eomn
             }
         }
 
-        public ObservableCollection<string> ResultListYahoo
+        public ObservableCollection<string> ResultListYahooEps
         {
-            get => _resultListYahoo;
+            get => _resultListYahooEps;
             set
             {
-                SetProperty(ref _resultListYahoo, value);
-                OnPropertyChanged(nameof(ResultStringYahoo));
+                SetProperty(ref _resultListYahooEps, value);
+                OnPropertyChanged(nameof(ResultStringYahooEps));
             }
         }
 
-        public string ResultStringYahoo
+        public string ResultStringYahooEps
         {
             get
             {
-                if (ResultListYahoo == null)
+                if (ResultListYahooEps == null)
                 {
                     return string.Empty;
                 }
                 else
                 {
-                    if (!ResultListYahoo.Any())
+                    if (!ResultListYahooEps.Any())
                     {
                         return string.Empty;
                     }
                     else
                     {
-                        return ResultListYahoo.Aggregate((r, n) => r + "\r\n" + n);
+                        return ResultListYahooEps.Aggregate((r, n) => r + "\r\n" + n);
                     }
                 }
             }
             set
             {
-                SetProperty(ref _resultListYahoo, new ObservableCollection<string>());
-                OnPropertyChanged(nameof(ResultListYahoo));
+                SetProperty(ref _resultListYahooEps, new ObservableCollection<string>());
+                OnPropertyChanged(nameof(ResultListYahooEps));
             }
         }
 
