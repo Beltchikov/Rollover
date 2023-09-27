@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Eomn"
         mc:Ignorable="d"
-        Title="EOMN" Height="700" Width="800">
+        Title="EOMN" 
+        WindowState="Maximized">
     <Window.Resources>
         <BitmapImage x:Key="ConnectionCircle" UriSource="/Images/RedCircle.png" />
     </Window.Resources>
