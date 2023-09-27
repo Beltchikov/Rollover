@@ -38,6 +38,7 @@ namespace Eomn
         public ICommand EarningsForWeekCommand { get; }
         public ICommand ConnectToTwsCommand { get; }
         public ICommand ContractDetailsCommand { get; }
+        public ICommand RoeCommand { get; }
         public ViewModel(
             IInvestingProvider investingProvider,
             IYahooProvider yahooProvider,
@@ -87,6 +88,16 @@ namespace Eomn
                 ResultListTwsContractDetails= new ObservableCollection<string>(await twsProvider.GetContractDetails(
                     TickerListTwsContractDetails,
                     TIMEOUT_TWS));
+            });
+
+            RoeCommand = new RelayCommand(() =>
+            {
+                ibHost.Consumer = ibHost.Consumer ?? this;
+                //ResultListTwsContractDetails = new ObservableCollection<string>(await twsProvider.GetContractDetails(
+                //    TickerListTwsContractDetails,
+                //    TIMEOUT_TWS));
+
+                MessageBox.Show("RoeCommand");
             });
 
             MarketCap = 0.1;
@@ -346,11 +357,6 @@ namespace Eomn
                 SetProperty(ref _resultListTwsContractDetails, new ObservableCollection<string>());
                 OnPropertyChanged(nameof(ResultListTwsContractDetails));
             }
-        }
-
-        private void TwsProvider_Status(string message)
-        {
-            TwsMessages?.Add(message);
         }
 
         #endregion TWS
