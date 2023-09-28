@@ -87,24 +87,24 @@ namespace Eomn
             ContractDetailsCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer = ibHost.Consumer ?? this;
-                ResultListTwsContractDetails = new ObservableCollection<string>(await twsProvider.GetContractDetails(
-                    TickerListTwsContractDetails.ToList(),
+                ResultCollectionTwsContractDetails = new ObservableCollection<string>(await twsProvider.GetContractDetails(
+                    TickerCollectionTwsContractDetails.ToList(),
                     TIMEOUT_TWS));
             });
 
             RoeCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer = ibHost.Consumer ?? this;
-                ResultListTwsRoe = new ObservableCollection<string>(await twsProvider.GetFundamentalData(
-                    TickerListTwsRoe.ToList(),
+                ResultCollectionTwsRoe = new ObservableCollection<string>(await twsProvider.GetFundamentalData(
+                    TickerCollectionTwsRoe.ToList(),
                     REPORT_SNAPSHOT,
                     TIMEOUT_TWS));
             });
 
             MarketCap = 0.1;
             TickerCollectionYahoo = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA\r\n WT").Split("\r\n").ToList());
-            TickerListTwsContractDetails = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA").Split("\r\n").ToList());
-            TickerListTwsRoe= new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA").Split("\r\n").ToList());
+            TickerCollectionTwsContractDetails = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA").Split("\r\n").ToList());
+            TickerCollectionTwsRoe= new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA").Split("\r\n").ToList());
         }
 
         #region Yahoo
@@ -247,7 +247,7 @@ namespace Eomn
             }
         }
 
-        public ObservableCollection<string> TickerListTwsContractDetails
+        public ObservableCollection<string> TickerCollectionTwsContractDetails
         {
             get => _tickerCollectionTwsContractDetails;
             set
@@ -256,7 +256,7 @@ namespace Eomn
             }
         }
 
-        public ObservableCollection<string> ResultListTwsContractDetails
+        public ObservableCollection<string> ResultCollectionTwsContractDetails
         {
             get => _resultCollectionTwsContractDetails;
             set
@@ -265,7 +265,7 @@ namespace Eomn
             }
         }
 
-        public ObservableCollection<string> TickerListTwsRoe
+        public ObservableCollection<string> TickerCollectionTwsRoe
         {
             get => _tickerColllectionTwsRoe;
             set
@@ -274,7 +274,7 @@ namespace Eomn
             }
         }
 
-        public ObservableCollection<string> ResultListTwsRoe
+        public ObservableCollection<string> ResultCollectionTwsRoe
         {
             get => _resultColllectionTwsRoe;
             set

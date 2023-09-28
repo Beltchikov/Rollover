@@ -189,7 +189,7 @@ Foreground="White" Grid.ColumnSpan="3">
                             <Label Content="Tickers:" Grid.Column="1" Grid.Row="1" 
         HorizontalAlignment="Left"
          Foreground="White"></Label>
-                            <TextBox Text="{Binding TickerListTwsContractDetails, Converter={StaticResource ListToStringConverter}}" Grid.Column="1" Grid.Row="2" 
+                            <TextBox Text="{Binding TickerCollectionTwsContractDetails, Converter={StaticResource ListToStringConverter}}" Grid.Column="1" Grid.Row="2" 
            AcceptsReturn="True"
              VerticalScrollBarVisibility="Visible"></TextBox>
 
@@ -206,7 +206,7 @@ Foreground="White" Grid.ColumnSpan="3">
                             <Label Content="Results:" Grid.Column="3" Grid.Row="1" 
         HorizontalAlignment="Left"
          Foreground="White"></Label>
-                            <TextBox Text="{Binding ResultListTwsContractDetails, Converter={StaticResource ListToStringConverter}}" Grid.Column="3" Grid.Row="2" 
+                            <TextBox Text="{Binding ResultCollectionTwsContractDetails, Converter={StaticResource ListToStringConverter}}" Grid.Column="3" Grid.Row="2" 
           AcceptsReturn="True"
              VerticalScrollBarVisibility="Visible"></TextBox>
                             
@@ -233,7 +233,7 @@ Foreground="White" Grid.ColumnSpan="3">
                             <Label Content="Tickers:" Grid.Column="1" Grid.Row="1" 
      HorizontalAlignment="Left"
       Foreground="White"></Label>
-                            <TextBox Text="{Binding TickerListTwsRoe, Converter={StaticResource ListToStringConverter}}" Grid.Column="1" Grid.Row="2" 
+                            <TextBox Text="{Binding TickerCollectionTwsRoe, Converter={StaticResource ListToStringConverter}}" Grid.Column="1" Grid.Row="2" 
         AcceptsReturn="True"
           VerticalScrollBarVisibility="Visible"></TextBox>
 
@@ -250,7 +250,7 @@ Foreground="White" Grid.ColumnSpan="3">
                             <Label Content="Results:" Grid.Column="3" Grid.Row="1" 
      HorizontalAlignment="Left"
       Foreground="White"></Label>
-                            <TextBox Text="{Binding ResultListTwsRoe, Converter={StaticResource ListToStringConverter}}" 
+                            <TextBox Text="{Binding ResultCollectionTwsRoe, Converter={StaticResource ListToStringConverter}}" 
                                      Grid.Column="3" Grid.Row="2" 
        AcceptsReturn="True"
           VerticalScrollBarVisibility="Visible"></TextBox>
