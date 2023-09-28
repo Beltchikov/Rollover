@@ -29,9 +29,23 @@ namespace Eomn.DataProviders
             return result;
         }
 
-        public Task<IEnumerable<string>> GetRoe(object tickerStringTwsRoe, int timeout)
+        public async Task<IEnumerable<string>> GetRoe(List<string> tickerList, int timeout)
         {
-            throw new System.NotImplementedException();
+            var result = new List<string>();
+
+            int cnt = 1;
+            foreach (string ticker in tickerList)
+            {
+                var tickerTrimmed = ticker.Trim();
+                TriggerStatus($"Retrieving ROE for {tickerTrimmed} {cnt++}/{tickerList.Count}");
+                
+                var contractDetails = await _ibHost.RequestContractDetailsAsync(tickerTrimmed, timeout);
+                
+                //result.Add($"{tickerTrimmed} {contractDetails?.Contract.ConId}");
+                result.Add($"{tickerTrimmed} TODO");
+            }
+
+            return result;
         }
     }
 }

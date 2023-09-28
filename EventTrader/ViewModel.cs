@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Eomn.DataProviders;
 using Eomn.Ib;
+using Microsoft.Extensions.Logging.Abstractions;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -27,6 +28,7 @@ namespace Eomn
         private List<string>? _twsMessageList = new List<string>();
         private ObservableCollection<string> _tickerListTwsContractDetails = null!;
         private ObservableCollection<string> _resultListTwsContractDetails = null!;
+        private ObservableCollection<string> _tickerListTwsRoe = null!;
         private ObservableCollection<string> _resultListTwsRoe = null!;
 
         private ObservableCollection<string> _resultListEarningsForWeek = null!;
@@ -93,10 +95,10 @@ namespace Eomn
 
             RoeCommand = new RelayCommand(async () =>
             {
-                //ibHost.Consumer = ibHost.Consumer ?? this;
-                //ResultListTwsRoe= new ObservableCollection<string>(await twsProvider.GetRoe(
-                //    TickerStringTwsRoe,
-                //    TIMEOUT_TWS));
+                ibHost.Consumer = ibHost.Consumer ?? this;
+                ResultListTwsRoe = new ObservableCollection<string>(await twsProvider.GetRoe(
+                    TickerListTwsRoe.ToList(),
+                    TIMEOUT_TWS));
 
                 MessageBox.Show("RoeCommand");
             });
@@ -104,6 +106,7 @@ namespace Eomn
             MarketCap = 0.1;
             TickerListYahoo = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA\r\n WT").Split("\r\n").ToList());
             TickerListTwsContractDetails = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA").Split("\r\n").ToList());
+            TickerListTwsRoe= new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA").Split("\r\n").ToList());
         }
 
         #region Yahoo
@@ -261,6 +264,15 @@ namespace Eomn
             set
             {
                 SetProperty(ref _resultListTwsContractDetails, value);
+            }
+        }
+
+        public ObservableCollection<string> TickerListTwsRoe
+        {
+            get => _tickerListTwsRoe;
+            set
+            {
+                SetProperty(ref _tickerListTwsRoe, value);
             }
         }
 
@@ -5995,7 +6007,7 @@ namespace Eomn
             
 </tbody>
 </table>";
-
+        
         #endregion
     }
 }

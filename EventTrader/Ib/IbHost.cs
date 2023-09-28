@@ -2,7 +2,9 @@
 using IbClient;
 using IbClient.messages;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Eomn.Ib
@@ -27,6 +29,7 @@ namespace Eomn.Ib
             _ibClient.ManagedAccounts += _ibClient_ManagedAccounts;
             _ibClient.ConnectionClosed += _ibClient_ConnectionClosed;
             _ibClient.ContractDetails += _ibClient_ContractDetails;
+            _ibClient.FundamentalData += _ibClient_FundamentalData;
 
             _queue = queue;
 
@@ -96,6 +99,34 @@ namespace Eomn.Ib
             return contractDetails;  
         }
 
+        public async Task<ContractDetails?> RequestFundamentalDataAsync(string ticker, string reportType, int timeout)
+        {
+            ContractDetails contractDetails = null!;
+
+            var contract = new Contract()
+            {
+                Symbol = ticker,
+                SecType = STK,
+                Currency = USD,
+                Exchange = SMART
+            };
+            var reqId = ++_currentReqId;
+            _ibClient.ClientSocket.reqFundamentalData(reqId, contract, reportType, new List<TagValue>());
+
+            await Task.Run(() =>
+            {
+                var startTime = DateTime.Now;
+                while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasMessageInQueue<FundamentalsMessage>()) { }
+
+                if (_queue.Dequeue() is ContractDetailsMessage contractDetailsMessage)
+                {
+                    contractDetails = contractDetailsMessage.ContractDetails;
+                }
+            });
+
+            return contractDetails;
+        }
+
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)
         {
             if (Consumer == null)
@@ -145,7 +176,39 @@ namespace Eomn.Ib
             _queue.Enqueue(contractDetailsMessage);
         }
 
+        private void _ibClient_FundamentalData(FundamentalsMessage fundamentalsMessage)
+        {
+            if (Consumer == null)
+            {
+                throw new ApplicationException("Unexpected! Consumer is null");
+            }
+            Consumer.TwsMessageList?.Add($"FundamentalsMessage received." );
+            _queue.Enqueue(fundamentalsMessage);
+        }
+
         private bool HasMessageInQueue<T>(int reqId)
+        {
+            var message = _queue.Peek();
+            if (message == null)
+            {
+                return false;
+            }
+
+            if (!(message is T))
+            {
+                return false;
+            }
+
+            if(message is ContractDetailsMessage)    
+            {
+                var contractDetailsMessage = message as ContractDetailsMessage;
+                return contractDetailsMessage?.RequestId == reqId;   
+            }
+
+            return true;
+        }
+
+        private bool HasMessageInQueue<T>()
         {
             var message = _queue.Peek();
             if (message == null)
