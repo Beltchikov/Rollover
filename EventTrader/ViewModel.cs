@@ -87,7 +87,7 @@ namespace Eomn
             ContractDetailsCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer = ibHost.Consumer ?? this;
-                ResultListTwsContractDetails= new ObservableCollection<string>(await twsProvider.GetContractDetails(
+                ResultListTwsContractDetails = new ObservableCollection<string>(await twsProvider.GetContractDetails(
                     TickerListTwsContractDetails.ToList(),
                     TIMEOUT_TWS));
             });
@@ -104,7 +104,7 @@ namespace Eomn
 
             MarketCap = 0.1;
             TickerStringYahoo = " SKX\r\nPFS\r\nSLCA\r\n WT";
-            TickerListTwsContractDetails = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA").Split("\r\n").ToList());
+            TickerListTwsContractDetails = new ObservableCollection<string>( (" SKX\r\nPFS\r\nSLCA").Split("\r\n").ToList());
         }
 
         #region Yahoo
