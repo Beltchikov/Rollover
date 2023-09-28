@@ -76,7 +76,7 @@ namespace Eomn.DataProviders
             {
                 if(fundamentalData == null)
                 {
-                    result.Add($"UNKNOWN\tERROR!");
+                    result.Add($"UNKNOWN\t");
                     continue;
                 }
 
