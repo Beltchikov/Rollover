@@ -27,5 +27,10 @@ namespace Eomn.DataProviders
 
             return result;
         }
+
+        public Task<IEnumerable<string>> GetRoe(object tickerStringTwsRoe, int timeout)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

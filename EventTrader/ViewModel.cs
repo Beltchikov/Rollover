@@ -28,7 +28,8 @@ namespace Eomn
         private List<string>? _twsMessageList = new List<string>();
         private string _tickerStringTwsContractDetails = null!;
         private ObservableCollection<string> _resultListTwsContractDetails = null!;
-        
+        private ObservableCollection<string> _resultListTwsRoe = null!;
+
         private ObservableCollection<string> _resultListEarningsForWeek = null!;
         private string _htmlSourceEarningsForWeek = null!;
         private double _marketCap;
@@ -90,11 +91,11 @@ namespace Eomn
                     TIMEOUT_TWS));
             });
 
-            RoeCommand = new RelayCommand(() =>
+            RoeCommand = new RelayCommand(async () =>
             {
-                ibHost.Consumer = ibHost.Consumer ?? this;
-                //ResultListTwsContractDetails = new ObservableCollection<string>(await twsProvider.GetContractDetails(
-                //    TickerListTwsContractDetails,
+                //ibHost.Consumer = ibHost.Consumer ?? this;
+                //ResultListTwsRoe= new ObservableCollection<string>(await twsProvider.GetRoe(
+                //    TickerStringTwsRoe,
                 //    TIMEOUT_TWS));
 
                 MessageBox.Show("RoeCommand");
@@ -272,6 +273,15 @@ namespace Eomn
             set
             {
                 SetProperty(ref _resultListTwsContractDetails, value);
+            }
+        }
+
+        public ObservableCollection<string> ResultListTwsRoe
+        {
+            get => _resultListTwsRoe;
+            set
+            {
+                SetProperty(ref _resultListTwsRoe, value);
             }
         }
 
