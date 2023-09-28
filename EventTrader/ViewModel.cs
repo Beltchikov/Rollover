@@ -102,12 +102,6 @@ namespace Eomn
                     REPORT_SNAPSHOT,
                     TIMEOUT_TWS);
                 ResultCollectionTwsRoe = new ObservableCollection<string>(twsProvider.ExtractRoeFromFundamentalDataList(fundamentalDataList));
-
-
-                //ResultCollectionTwsRoe = new ObservableCollection<string>(await twsProvider.GetFundamentalData(
-                //    TickerCollectionTwsRoe.ToList(),
-                //    REPORT_SNAPSHOT,
-                //    TIMEOUT_TWS));
             });
 
             MarketCap = 0.1;
