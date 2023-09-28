@@ -26,6 +26,8 @@ namespace Eomn.UserControls
             this.DataContext = this;
         }
 
+        public int SelectedIndex { get; set; }
+
         public event Action<object, SelectionChangedEventArgs> SelectionChanged = null!;    
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

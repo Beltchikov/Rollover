@@ -71,7 +71,7 @@
                                 <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
                             <TextBlock Grid.ColumnSpan="5" VerticalAlignment="Center" Padding="5 0 0 0">Select table with the id earningsCalendarData on the Investing.com</TextBlock>
-                                <DockPanel Grid.Row="1">
+                            <DockPanel Grid.Row="1">
                                 <Label DockPanel.Dock="Top">HTML Source:</Label>
                                 <TextBox AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
                                          Text="{Binding HtmlSourceEarningsForWeek}"></TextBox>
@@ -84,7 +84,7 @@
                                          Text="{Binding ResultCollectionEarningsForWeek, Converter={StaticResource ListToStringConverter}}"></TextBox>
                             </DockPanel>
 
-                            <Label Grid.Row="3" HorizontalAlignment="Right">Market Cap. only above (B): </Label>
+                            <Label Grid.Row="3" HorizontalAlignment="Right">Market Cap. only above (B):</Label>
                             <TextBox Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" Text="{Binding MarketCap}"></TextBox>
 
                         </Grid>
@@ -210,7 +210,7 @@ Foreground="White" Grid.ColumnSpan="3">
                             <TextBox Text="{Binding ResultCollectionTwsContractIds, Converter={StaticResource ListToStringConverter}}" Grid.Column="3" Grid.Row="2" 
           AcceptsReturn="True"
              VerticalScrollBarVisibility="Visible"></TextBox>
-                            
+
                         </Grid>
                     </GroupBox>
 
@@ -347,7 +347,8 @@ Foreground="White" Grid.ColumnSpan="3">
                             <Label Content="Results:" Grid.Column="3" Grid.Row="1" 
                                    HorizontalAlignment="Left"
                                     Foreground="White"></Label>
-                            <TextBox x:Name="txtResultsYahoo" Text="{Binding ResultCollectionYahooEps, Converter={StaticResource ListToStringConverter}, Mode=OneWay}" Grid.Column="3" Grid.Row="2" 
+                            <TextBox x:Name="txtResultsYahoo" 
+                                     Text="{Binding ResultCollectionYahooEps, Converter={StaticResource ListToStringConverter}}" Grid.Column="3" Grid.Row="2" 
                                      AcceptsReturn="True"
                                         VerticalScrollBarVisibility="Visible"></TextBox>
 
@@ -362,7 +363,9 @@ Foreground="White" Grid.ColumnSpan="3">
                                 </ComboBox>
                             </StackPanel>-->
 
-                            <uc:DecimalSeparator Grid.Column="3" Grid.Row="4" Height="25" SelectionChanged="ComboBox_SelectionChanged"></uc:DecimalSeparator>
+                            <uc:DecimalSeparator Grid.Column="3" Grid.Row="4" Height="25" 
+                                                 SelectionChanged="ComboBox_SelectionChanged">
+                            </uc:DecimalSeparator>
 
                         </Grid>
                     </GroupBox>
