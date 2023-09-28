@@ -4,7 +4,6 @@ using IbClient.messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace Eomn.Ib
@@ -99,9 +98,9 @@ namespace Eomn.Ib
             return contractDetails;  
         }
 
-        public async Task<ContractDetails?> RequestFundamentalDataAsync(string ticker, string reportType, int timeout)
+        public async Task<string> RequestFundamentalDataAsync(string ticker, string reportType, int timeout)
         {
-            ContractDetails contractDetails = null!;
+            string fundamentalsMessageString = null!;
 
             var contract = new Contract()
             {
@@ -118,13 +117,13 @@ namespace Eomn.Ib
                 var startTime = DateTime.Now;
                 while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasMessageInQueue<FundamentalsMessage>()) { }
 
-                if (_queue.Dequeue() is ContractDetailsMessage contractDetailsMessage)
+                if (_queue.Dequeue() is FundamentalsMessage fundamentalsMessage)
                 {
-                    contractDetails = contractDetailsMessage.ContractDetails;
+                    fundamentalsMessageString = fundamentalsMessage.Data;
                 }
             });
 
-            return contractDetails;
+            return fundamentalsMessageString;
         }
 
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)

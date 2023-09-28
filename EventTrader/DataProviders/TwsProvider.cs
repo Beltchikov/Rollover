@@ -29,7 +29,7 @@ namespace Eomn.DataProviders
             return result;
         }
 
-        public async Task<IEnumerable<string>> GetRoe(List<string> tickerList, int timeout)
+        public async Task<IEnumerable<string>> GetFundamentalData(List<string> tickerList, string reportType, int timeout)
         {
             var result = new List<string>();
 
@@ -37,12 +37,11 @@ namespace Eomn.DataProviders
             foreach (string ticker in tickerList)
             {
                 var tickerTrimmed = ticker.Trim();
-                TriggerStatus($"Retrieving ROE for {tickerTrimmed} {cnt++}/{tickerList.Count}");
+                TriggerStatus($"Retrieving fundamental data for {tickerTrimmed}, report type: {reportType} {cnt++}/{tickerList.Count}");
                 
-                var contractDetails = await _ibHost.RequestContractDetailsAsync(tickerTrimmed, timeout);
+                var fundamentalDataString = await _ibHost.RequestFundamentalDataAsync(tickerTrimmed, reportType, timeout);
                 
-                //result.Add($"{tickerTrimmed} {contractDetails?.Contract.ConId}");
-                result.Add($"{tickerTrimmed} TODO");
+                result.Add($"{tickerTrimmed} {fundamentalDataString[..10]}");
             }
 
             return result;

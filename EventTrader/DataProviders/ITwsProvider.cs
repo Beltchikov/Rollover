@@ -7,6 +7,6 @@ namespace Eomn.DataProviders
     public interface ITwsProvider
     {
         Task<List<string>> GetContractDetails(List<string> tickerListTws, int timeout);
-        Task<IEnumerable<string>> GetRoe(List<string> tickerList, int timeout);
+        Task<IEnumerable<string>> GetFundamentalData(List<string> tickerList, string reportType, int timeout);
     }
 }

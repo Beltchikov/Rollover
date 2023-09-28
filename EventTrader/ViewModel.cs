@@ -15,7 +15,7 @@ namespace Eomn
     {
         private const int TIMEOUT_SIMPLE_BROWSER = 0;
         private const int TIMEOUT_TWS = 3000;
-
+        private readonly string REPORT_SNAPSHOT = "ReportSnapshot";
         private ObservableCollection<string> _tickerListYahoo = null!;
         private ObservableCollection<string> _resultListYahooEps = null!;
         private string _messageYahoo = null!;
@@ -96,11 +96,10 @@ namespace Eomn
             RoeCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer = ibHost.Consumer ?? this;
-                ResultListTwsRoe = new ObservableCollection<string>(await twsProvider.GetRoe(
+                ResultListTwsRoe = new ObservableCollection<string>(await twsProvider.GetFundamentalData(
                     TickerListTwsRoe.ToList(),
+                    REPORT_SNAPSHOT,
                     TIMEOUT_TWS));
-
-                MessageBox.Show("RoeCommand");
             });
 
             MarketCap = 0.1;
