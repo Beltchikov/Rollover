@@ -26,7 +26,7 @@ namespace Eomn
         private bool _connectedToTws;
         private List<string>? _twsMessageList = new List<string>();
         private ObservableCollection<string> _tickerCollectionTwsContractDetails = null!;
-        private ObservableCollection<string> _resultCollectionTwsContractDetails = null!;
+        private ObservableCollection<string> _resultCollectionTwsContractIds = null!;
         private ObservableCollection<string> _tickerColllectionTwsRoe = null!;
         private ObservableCollection<string> _resultColllectionTwsRoe = null!;
 
@@ -87,7 +87,7 @@ namespace Eomn
             ContractIdsCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer = ibHost.Consumer ?? this;
-                ResultCollectionTwsContractDetails = new ObservableCollection<string>(await twsProvider.GetContractDetails(
+                ResultCollectionTwsContractIds = new ObservableCollection<string>(await twsProvider.GetContractDetails(
                     TickerCollectionTwsContractDetails.ToList(),
                     TIMEOUT_TWS));
             });
@@ -256,12 +256,12 @@ namespace Eomn
             }
         }
 
-        public ObservableCollection<string> ResultCollectionTwsContractDetails
+        public ObservableCollection<string> ResultCollectionTwsContractIds
         {
-            get => _resultCollectionTwsContractDetails;
+            get => _resultCollectionTwsContractIds;
             set
             {
-                SetProperty(ref _resultCollectionTwsContractDetails, value);
+                SetProperty(ref _resultCollectionTwsContractIds, value);
             }
         }
 
