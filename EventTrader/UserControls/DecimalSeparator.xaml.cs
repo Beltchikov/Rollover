@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Eomn.UserConttrols
+namespace Eomn.UserControls
 {
     /// <summary>
     /// Interaction logic for DecimalSeparator.xaml
