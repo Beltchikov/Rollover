@@ -104,6 +104,8 @@
                         <RowDefinition Height="10"></RowDefinition>
                         <RowDefinition Height="130"></RowDefinition>
                         <RowDefinition Height="10"></RowDefinition>
+                        <RowDefinition Height="160"></RowDefinition>
+                        <RowDefinition Height="10"></RowDefinition>
                         <RowDefinition Height="130"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="10"></RowDefinition>
@@ -229,12 +231,15 @@ Foreground="White" Grid.ColumnSpan="3">
                                 <RowDefinition Height="25"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="10"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="10"></RowDefinition>
                             </Grid.RowDefinitions>
 
                             <Label Content="Tickers:" Grid.Column="1" Grid.Row="1" 
      HorizontalAlignment="Left"
       Foreground="White"></Label>
-                            <TextBox Text="{Binding TickerCollectionTwsRoe, Converter={StaticResource ListToStringConverter}}" Grid.Column="1" Grid.Row="2" 
+                            <TextBox Text="{Binding TickerCollectionTwsRoe, Converter={StaticResource ListToStringConverter}}" 
+                                     Grid.Column="1" Grid.Row="2" Grid.RowSpan="3"
         AcceptsReturn="True"
           VerticalScrollBarVisibility="Visible"></TextBox>
 
@@ -251,15 +256,19 @@ Foreground="White" Grid.ColumnSpan="3">
                             <Label Content="Results:" Grid.Column="3" Grid.Row="1" 
      HorizontalAlignment="Left"
       Foreground="White"></Label>
-                            <TextBox Text="{Binding ResultCollectionTwsRoe, Converter={StaticResource ListToStringConverter}}" 
-                                     Grid.Column="3" Grid.Row="2" 
-       AcceptsReturn="True"
-          VerticalScrollBarVisibility="Visible"></TextBox>
+                            <TextBox x:Name="txtResultsTwsRoe" 
+                                     Text="{Binding ResultCollectionTwsRoe, Converter={StaticResource ListToStringConverter}}" 
+                                     Grid.Column="3" Grid.Row="2" AcceptsReturn="True"
+                                        VerticalScrollBarVisibility="Visible"></TextBox>
+
+                            <uc:DecimalSeparator Grid.Column="3" Grid.Row="4" Height="25" 
+                      SelectionChanged="DecimalSeparatorTwsRoe_SelectionChanged">
+                            </uc:DecimalSeparator>
 
                         </Grid>
                     </GroupBox>
 
-                    <GroupBox Grid.Column="1" Grid.Row="6" Header="Information"
+                    <GroupBox Grid.Column="1" Grid.Row="7" Header="Information"
    Foreground="White" Grid.ColumnSpan="3">
                         <Grid>
                             <Grid.ColumnDefinitions>

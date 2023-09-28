@@ -45,6 +45,29 @@ namespace Eomn
             }
         }
 
+        private void DecimalSeparatorTwsRoe_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (txtResultsTwsRoe.Text == string.Empty)
+            {
+                return;
+            }
+
+            var selectedItem = ((ComboBox)sender).SelectedItem;
+            var decimalSeparator = ((ComboBoxItem)selectedItem).Content.ToString();
+            if (decimalSeparator == DOT)
+            {
+                txtResultsTwsRoe.Text = txtResultsTwsRoe.Text.Replace(COMMA, DOT);
+            }
+            else if (decimalSeparator == ",")
+            {
+                txtResultsTwsRoe.Text = txtResultsTwsRoe.Text.Replace(DOT, COMMA);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         private void ListBoxMessagesSource_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             if (VisualTreeHelper.GetChildrenCount(listBoxTwsMessages) > 0)

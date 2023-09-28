@@ -71,6 +71,10 @@ namespace Eomn.DataProviders
 
             foreach (string fundamentalData in fundamentalDataList)
             {
+                if(fundamentalData == null)
+                {
+                    continue;
+                }
                 XDocument xDocument = XDocument.Parse(fundamentalData);
 
                 var ratiosElement = xDocument.Descendants("Ratios");
