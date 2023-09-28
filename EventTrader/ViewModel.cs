@@ -87,6 +87,10 @@ namespace Eomn
             ContractIdsCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer = ibHost.Consumer ?? this;
+
+                //var contractDetailsList = twsProvider.GetContractDetails
+                //var contractIdsList = twsProvider.ExtractIdsFromContractDetailsList(contractDetailsList)
+
                 ResultCollectionTwsContractIds = new ObservableCollection<string>(await twsProvider.GetContractDetails(
                     TickerCollectionTwsContractDetails.ToList(),
                     TIMEOUT_TWS));

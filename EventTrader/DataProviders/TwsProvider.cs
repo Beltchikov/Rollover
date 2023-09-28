@@ -1,4 +1,5 @@
 ﻿using Eomn.Ib;
+using IBApi;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -24,6 +25,19 @@ namespace Eomn.DataProviders
                 TriggerStatus($"Retrieving contract details for {tickerTrimmed} {cnt++}/{tickerList.Count}");
                 var contractDetails = await _ibHost.RequestContractDetailsAsync(tickerTrimmed, timeout);
                 result.Add($"{tickerTrimmed} {contractDetails?.Contract.ConId}");
+            }
+
+            return result;
+        }
+
+        public List<string> ExtractIdsFromContractDetailsList(List<ContractDetails> contractDetailsList)
+        {
+            TriggerStatus($"Extracting contract ids from the contract details");
+            var result = new List<string>();
+
+            foreach (ContractDetails contractDetails in contractDetailsList)
+            {
+               result.Add($"{contractDetails?.Contract.LocalSymbol} {contractDetails?.Contract.ConId}");
             }
 
             return result;
