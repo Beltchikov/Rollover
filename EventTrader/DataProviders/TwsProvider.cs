@@ -48,7 +48,7 @@ namespace Eomn.DataProviders
             return result;
         }
 
-        public async Task<IEnumerable<string>> GetFundamentalData(List<string> tickerList, string reportType, int timeout)
+        public async Task<List<string>> GetFundamentalData(List<string> tickerList, string reportType, int timeout)
         {
             var result = new List<string>();
 
@@ -57,10 +57,8 @@ namespace Eomn.DataProviders
             {
                 var tickerTrimmed = ticker.Trim();
                 TriggerStatus($"Retrieving fundamental data for {tickerTrimmed}, report type: {reportType} {cnt++}/{tickerList.Count}");
-                
                 var fundamentalDataString = await _ibHost.RequestFundamentalDataAsync(tickerTrimmed, reportType, timeout);
-                
-                result.Add($"{tickerTrimmed} {fundamentalDataString[..10]}");
+                result.Add(fundamentalDataString);
             }
 
             return result;

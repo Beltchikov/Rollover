@@ -8,6 +8,7 @@ namespace Eomn.DataProviders
     {
         Task<List<ContractDetails>> GetContractDetails(List<string> tickerListTws, int timeout);
         List<string> ExtractIdsFromContractDetailsList(List<ContractDetails> contractDetailsList);
-        Task<IEnumerable<string>> GetFundamentalData(List<string> tickerList, string reportType, int timeout);
+        Task<List<string>> GetFundamentalData(List<string> tickerList, string reportType, int timeout);
+        List<string> ExtractRoeFromFundamentalDataList(List<string> fundamentalDataList);
     }
 }
