@@ -120,6 +120,10 @@ namespace Eomn.Ib
                 if (_queue.Dequeue() is FundamentalsMessage fundamentalsMessage)
                 {
                     fundamentalsMessageString = fundamentalsMessage.Data;
+                    if(!fundamentalsMessageString.Contains(ticker)) 
+                    {
+                        fundamentalsMessageString = ticker + " ERROR!";
+                    }
                 }
             });
 

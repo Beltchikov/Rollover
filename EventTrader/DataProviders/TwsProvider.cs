@@ -3,7 +3,9 @@ using IBApi;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace Eomn.DataProviders
@@ -74,9 +76,21 @@ namespace Eomn.DataProviders
             {
                 if(fundamentalData == null)
                 {
+                    result.Add($"UNKNOWN\tERROR!");
                     continue;
                 }
-                XDocument xDocument = XDocument.Parse(fundamentalData);
+
+                XDocument xDocument;
+                try
+                {
+                    xDocument = XDocument.Parse(fundamentalData);
+                }
+                catch (XmlException)
+                {
+                    var errorArray = fundamentalData.Split(" ");
+                    result.Add($"{errorArray[0]}\t{errorArray[1]}");
+                    continue;
+                }
 
                 var ratiosElement = xDocument.Descendants("Ratios");
                 var groupElements = ratiosElement.Descendants("Group");
