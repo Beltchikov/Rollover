@@ -352,17 +352,6 @@ Foreground="White" Grid.ColumnSpan="3">
                                      AcceptsReturn="True"
                                         VerticalScrollBarVisibility="Visible"></TextBox>
 
-                            <!--<StackPanel Orientation="Horizontal" Grid.Column="3" Grid.Row="4">
-                                <Label Content="Decimal Separator:"  
-                                HorizontalAlignment="Left"
-                                 Foreground="White">
-                                </Label>
-                                <ComboBox SelectedIndex="{Binding DecimalSeparatorSelectedIndexYahoo}" SelectionChanged="ComboBox_SelectionChanged">
-                                    <ComboBoxItem>.</ComboBoxItem>
-                                    <ComboBoxItem>,</ComboBoxItem>
-                                </ComboBox>
-                            </StackPanel>-->
-
                             <uc:DecimalSeparator Grid.Column="3" Grid.Row="4" Height="25" 
                                                  SelectionChanged="ComboBox_SelectionChanged">
                             </uc:DecimalSeparator>
