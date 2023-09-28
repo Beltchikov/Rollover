@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using Eomn.DataProviders;
 using Eomn.Ib;
-using Microsoft.Extensions.Logging.Abstractions;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -16,8 +15,8 @@ namespace Eomn
         private const int TIMEOUT_SIMPLE_BROWSER = 0;
         private const int TIMEOUT_TWS = 3000;
         private readonly string REPORT_SNAPSHOT = "ReportSnapshot";
-        private ObservableCollection<string> _tickerListYahoo = null!;
-        private ObservableCollection<string> _resultListYahooEps = null!;
+        private ObservableCollection<string> _tickerCollectionYahoo = null!;
+        private ObservableCollection<string> _resultCollectionYahooEps = null!;
         private string _messageYahoo = null!;
         private int _decimalSeparatorSelectedIndexYahoo;
 
@@ -26,12 +25,12 @@ namespace Eomn
         private int _clientId = 1;
         private bool _connectedToTws;
         private List<string>? _twsMessageList = new List<string>();
-        private ObservableCollection<string> _tickerListTwsContractDetails = null!;
-        private ObservableCollection<string> _resultListTwsContractDetails = null!;
-        private ObservableCollection<string> _tickerListTwsRoe = null!;
-        private ObservableCollection<string> _resultListTwsRoe = null!;
+        private ObservableCollection<string> _tickerCollectionTwsContractDetails = null!;
+        private ObservableCollection<string> _resultCollectionTwsContractDetails = null!;
+        private ObservableCollection<string> _tickerColllectionTwsRoe = null!;
+        private ObservableCollection<string> _resultColllectionTwsRoe = null!;
 
-        private ObservableCollection<string> _resultListEarningsForWeek = null!;
+        private ObservableCollection<string> _resultCollectionEarningsForWeek = null!;
         private string _htmlSourceEarningsForWeek = null!;
         private double _marketCap;
 
@@ -53,16 +52,16 @@ namespace Eomn
             LastEpsCommand = new RelayCommand(async () =>
             {
                 DecimalSeparatorSelectedIndexYahoo = 0;
-                ResultListYahooEps = new ObservableCollection<string>(await yahooProvider.LastEpsAsync(
-                    TickerListYahoo.ToList(),
+                ResultCollectionYahooEps = new ObservableCollection<string>(await yahooProvider.LastEpsAsync(
+                    TickerCollectionYahoo.ToList(),
                     TIMEOUT_SIMPLE_BROWSER));
             });
 
             ExpectedEpsCommand = new RelayCommand(async () =>
             {
                 DecimalSeparatorSelectedIndexYahoo = 0;
-                ResultListYahooEps = new ObservableCollection<string>(await yahooProvider.ExpectedEpsAsync(
-                    TickerListYahoo.ToList(),
+                ResultCollectionYahooEps = new ObservableCollection<string>(await yahooProvider.ExpectedEpsAsync(
+                    TickerCollectionYahoo.ToList(),
                     TIMEOUT_SIMPLE_BROWSER));
             });
 
@@ -73,7 +72,7 @@ namespace Eomn
                     MessageBox.Show("HTML Source can not be empty!");
                     return;
                 }
-                ResultListEarningsForWeek = new ObservableCollection<string>(investingProvider.GetEarningsData(HtmlSourceEarningsForWeek, MarketCap));
+                ResultCollectionEarningsForWeek = new ObservableCollection<string>(investingProvider.GetEarningsData(HtmlSourceEarningsForWeek, MarketCap));
 
                 // Test HTML Source
                 //ResultListEarningsForWeek = new ObservableCollection<string>(investingProvider.GetEarningsData(testStringEarningData, MarketCap));
@@ -103,28 +102,28 @@ namespace Eomn
             });
 
             MarketCap = 0.1;
-            TickerListYahoo = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA\r\n WT").Split("\r\n").ToList());
+            TickerCollectionYahoo = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA\r\n WT").Split("\r\n").ToList());
             TickerListTwsContractDetails = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA").Split("\r\n").ToList());
             TickerListTwsRoe= new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA").Split("\r\n").ToList());
         }
 
         #region Yahoo
 
-        public ObservableCollection<string> TickerListYahoo
+        public ObservableCollection<string> TickerCollectionYahoo
         {
-            get => _tickerListYahoo;
+            get => _tickerCollectionYahoo;
             set
             {
-                SetProperty(ref _tickerListYahoo, value);
+                SetProperty(ref _tickerCollectionYahoo, value);
             }
         }
 
-        public ObservableCollection<string> ResultListYahooEps
+        public ObservableCollection<string> ResultCollectionYahooEps
         {
-            get => _resultListYahooEps;
+            get => _resultCollectionYahooEps;
             set
             {
-                SetProperty(ref _resultListYahooEps, value);
+                SetProperty(ref _resultCollectionYahooEps, value);
             }
         }
 
@@ -173,12 +172,12 @@ namespace Eomn
             }
         }
 
-        public ObservableCollection<string> ResultListEarningsForWeek
+        public ObservableCollection<string> ResultCollectionEarningsForWeek
         {
-            get => _resultListEarningsForWeek;
+            get => _resultCollectionEarningsForWeek;
             set
             {
-                SetProperty(ref _resultListEarningsForWeek, value);
+                SetProperty(ref _resultCollectionEarningsForWeek, value);
             }
         }
 
@@ -250,37 +249,37 @@ namespace Eomn
 
         public ObservableCollection<string> TickerListTwsContractDetails
         {
-            get => _tickerListTwsContractDetails;
+            get => _tickerCollectionTwsContractDetails;
             set
             {
-                SetProperty(ref _tickerListTwsContractDetails, value);
+                SetProperty(ref _tickerCollectionTwsContractDetails, value);
             }
         }
 
         public ObservableCollection<string> ResultListTwsContractDetails
         {
-            get => _resultListTwsContractDetails;
+            get => _resultCollectionTwsContractDetails;
             set
             {
-                SetProperty(ref _resultListTwsContractDetails, value);
+                SetProperty(ref _resultCollectionTwsContractDetails, value);
             }
         }
 
         public ObservableCollection<string> TickerListTwsRoe
         {
-            get => _tickerListTwsRoe;
+            get => _tickerColllectionTwsRoe;
             set
             {
-                SetProperty(ref _tickerListTwsRoe, value);
+                SetProperty(ref _tickerColllectionTwsRoe, value);
             }
         }
 
         public ObservableCollection<string> ResultListTwsRoe
         {
-            get => _resultListTwsRoe;
+            get => _resultColllectionTwsRoe;
             set
             {
-                SetProperty(ref _resultListTwsRoe, value);
+                SetProperty(ref _resultColllectionTwsRoe, value);
             }
         }
 
