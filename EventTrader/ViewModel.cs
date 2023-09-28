@@ -38,7 +38,7 @@ namespace Eomn
         public ICommand ExpectedEpsCommand { get; }
         public ICommand EarningsForWeekCommand { get; }
         public ICommand ConnectToTwsCommand { get; }
-        public ICommand ContractDetailsCommand { get; }
+        public ICommand ContractIdsCommand { get; }
         public ICommand RoeCommand { get; }
 
         public ViewModel(
@@ -84,7 +84,7 @@ namespace Eomn
                 ibHost.ConnectAndStartReaderThread(Host, Port, ClientId, 1000);
             });
 
-            ContractDetailsCommand = new RelayCommand(async () =>
+            ContractIdsCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer = ibHost.Consumer ?? this;
                 ResultCollectionTwsContractDetails = new ObservableCollection<string>(await twsProvider.GetContractDetails(

@@ -199,7 +199,7 @@ Foreground="White" Grid.ColumnSpan="3">
                    Height="25" 
              HorizontalAlignment="Stretch"
                  VerticalAlignment="Center" 
-                 Command="{Binding ContractDetailsCommand}">Contract Details >>
+                 Command="{Binding ContractIdsCommand}">Contract IDs >>
                                 </Button>
                             </StackPanel>
 
