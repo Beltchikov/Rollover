@@ -72,13 +72,20 @@ namespace Eomn.DataProviders
             foreach (string fundamentalData in fundamentalDataList)
             {
                 XDocument xDocument = XDocument.Parse(fundamentalData);
+
                 var ratiosElement = xDocument.Descendants("Ratios");
                 var groupElements = ratiosElement.Descendants("Group");
                 var groupElementOtherRatios = groupElements.FirstOrDefault(e => e.Attribute("ID")?.Value == "Other Ratios");
                 var ratioElements = groupElementOtherRatios?.Descendants("Ratio");
                 var ratioElementRoe = ratioElements?.FirstOrDefault(e => e.Attribute("FieldName")?.Value == "TTMROEPCT");
-                
-                result.Add($"TODO {ratioElementRoe?.Value}");
+
+                var issuesElement = xDocument.Descendants("Issues").FirstOrDefault();
+                var issueElements = issuesElement?.Descendants("Issue");
+                var issueElementId1 = issueElements?.FirstOrDefault(e => e.Attribute("ID")?.Value == "1");
+                var issueIdElements = issueElementId1?.Descendants("IssueID");
+                var issueIdElementTicker = issueIdElements?.FirstOrDefault(e => e.Attribute("Type")?.Value == "Ticker");
+
+                result.Add($"{issueIdElementTicker?.Value}\t{ratioElementRoe?.Value}");
             }
 
             return result;
