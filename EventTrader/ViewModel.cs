@@ -87,13 +87,10 @@ namespace Eomn
             ContractIdsCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer = ibHost.Consumer ?? this;
-
-                //var contractDetailsList = twsProvider.GetContractDetails
-                //var contractIdsList = twsProvider.ExtractIdsFromContractDetailsList(contractDetailsList)
-
-                ResultCollectionTwsContractIds = new ObservableCollection<string>(await twsProvider.GetContractDetails(
-                    TickerCollectionTwsContractDetails.ToList(),
-                    TIMEOUT_TWS));
+                var contractDetailsList = await twsProvider.GetContractDetails(
+                                    TickerCollectionTwsContractDetails.ToList(),
+                                    TIMEOUT_TWS);
+                ResultCollectionTwsContractIds = new ObservableCollection<string>(twsProvider.ExtractIdsFromContractDetailsList(contractDetailsList));
             });
 
             RoeCommand = new RelayCommand(async () =>
@@ -108,7 +105,7 @@ namespace Eomn
             MarketCap = 0.1;
             TickerCollectionYahoo = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA\r\n WT").Split("\r\n").ToList());
             TickerCollectionTwsContractDetails = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA").Split("\r\n").ToList());
-            TickerCollectionTwsRoe= new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA").Split("\r\n").ToList());
+            TickerCollectionTwsRoe = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA").Split("\r\n").ToList());
         }
 
         #region Yahoo
@@ -6009,7 +6006,7 @@ namespace Eomn
             
 </tbody>
 </table>";
-        
+
         #endregion
     }
 }

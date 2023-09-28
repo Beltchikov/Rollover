@@ -14,9 +14,9 @@ namespace Eomn.DataProviders
             _ibHost = ibHost;
         }
 
-        public async Task<List<string>> GetContractDetails(List<string> tickerList, int timeout)
+        public async Task<List<ContractDetails>> GetContractDetails(List<string> tickerList, int timeout)
         {
-            var result = new List<string>();
+            var result = new List<ContractDetails>();
 
             int cnt = 1;
             foreach (string ticker in tickerList)
@@ -24,7 +24,10 @@ namespace Eomn.DataProviders
                 var tickerTrimmed = ticker.Trim();
                 TriggerStatus($"Retrieving contract details for {tickerTrimmed} {cnt++}/{tickerList.Count}");
                 var contractDetails = await _ibHost.RequestContractDetailsAsync(tickerTrimmed, timeout);
-                result.Add($"{tickerTrimmed} {contractDetails?.Contract.ConId}");
+                if(contractDetails != null)
+                {
+                    result.Add( contractDetails );
+                }
             }
 
             return result;
