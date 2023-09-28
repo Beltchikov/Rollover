@@ -16,7 +16,7 @@ namespace Eomn
         private const int TIMEOUT_SIMPLE_BROWSER = 0;
         private const int TIMEOUT_TWS = 3000;
 
-        private string _tickerStringYahoo = null!;
+        private ObservableCollection<string> _tickerListYahoo = null!;
         private ObservableCollection<string> _resultListYahooEps = null!;
         private string _messageYahoo = null!;
         private int _decimalSeparatorSelectedIndexYahoo;
@@ -53,7 +53,7 @@ namespace Eomn
             {
                 DecimalSeparatorSelectedIndexYahoo = 0;
                 ResultListYahooEps = new ObservableCollection<string>(await yahooProvider.LastEpsAsync(
-                    TickerListYahoo,
+                    TickerListYahoo.ToList(),
                     TIMEOUT_SIMPLE_BROWSER));
             });
 
@@ -61,7 +61,7 @@ namespace Eomn
             {
                 DecimalSeparatorSelectedIndexYahoo = 0;
                 ResultListYahooEps = new ObservableCollection<string>(await yahooProvider.ExpectedEpsAsync(
-                    TickerListYahoo,
+                    TickerListYahoo.ToList(),
                     TIMEOUT_SIMPLE_BROWSER));
             });
 
@@ -103,23 +103,18 @@ namespace Eomn
             });
 
             MarketCap = 0.1;
-            TickerStringYahoo = " SKX\r\nPFS\r\nSLCA\r\n WT";
+            TickerListYahoo = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA\r\n WT").Split("\r\n").ToList());
             TickerListTwsContractDetails = new ObservableCollection<string>( (" SKX\r\nPFS\r\nSLCA").Split("\r\n").ToList());
         }
 
         #region Yahoo
 
-        public List<string> TickerListYahoo
+        public ObservableCollection<string> TickerListYahoo
         {
-            get => TickerStringYahoo.Split("\r\n", StringSplitOptions.TrimEntries).ToList();
-        }
-
-        public string TickerStringYahoo
-        {
-            get => _tickerStringYahoo;
+            get => _tickerListYahoo;
             set
             {
-                SetProperty(ref _tickerStringYahoo, value);
+                SetProperty(ref _tickerListYahoo, value);
             }
         }
 
