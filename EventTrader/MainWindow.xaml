@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Eomn"
+        xmlns:uc="clr-namespace:Eomn.UserControls"
         xmlns:converters="clr-namespace:Eomn.Converters"
         mc:Ignorable="d"
         Title="EOMN" 
@@ -350,7 +351,7 @@ Foreground="White" Grid.ColumnSpan="3">
                                      AcceptsReturn="True"
                                         VerticalScrollBarVisibility="Visible"></TextBox>
 
-                            <StackPanel Orientation="Horizontal" Grid.Column="3" Grid.Row="4">
+                            <!--<StackPanel Orientation="Horizontal" Grid.Column="3" Grid.Row="4">
                                 <Label Content="Decimal Separator:"  
                                 HorizontalAlignment="Left"
                                  Foreground="White">
@@ -359,7 +360,9 @@ Foreground="White" Grid.ColumnSpan="3">
                                     <ComboBoxItem>.</ComboBoxItem>
                                     <ComboBoxItem>,</ComboBoxItem>
                                 </ComboBox>
-                            </StackPanel>
+                            </StackPanel>-->
+
+                            <uc:DecimalSeparator Grid.Column="3" Grid.Row="4" Height="25"></uc:DecimalSeparator>
 
                         </Grid>
                     </GroupBox>
