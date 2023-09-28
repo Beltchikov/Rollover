@@ -94,7 +94,7 @@ namespace Eomn.DataProviders
                     roeAsDouble = 0;
                 }
 
-                var roeAsString = roeAsDouble == 0 ? null : roeAsDouble.ToString("0.0");
+                var roeAsString = roeAsDouble == 0 ? null : roeAsDouble.ToString("0.0")+"%";
 
                 var issuesElement = xDocument.Descendants("Issues").FirstOrDefault();
                 var issueElements = issuesElement?.Descendants("Issue");
