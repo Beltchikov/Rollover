@@ -89,8 +89,12 @@ namespace Eomn.DataProviders
                 {
                     double.TryParse(ratioElementRoe.Value, NumberStyles.Number, new CultureInfo("EN-US"), out roeAsDouble);
                 }
+                if(roeAsDouble < -99999)
+                {
+                    roeAsDouble = 0;
+                }
 
-                var roeAsString = roeAsDouble.ToString("0.0");
+                var roeAsString = roeAsDouble == 0 ? null : roeAsDouble.ToString("0.0");
 
                 var issuesElement = xDocument.Descendants("Issues").FirstOrDefault();
                 var issueElements = issuesElement?.Descendants("Issue");
