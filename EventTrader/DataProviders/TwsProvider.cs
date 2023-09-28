@@ -1,7 +1,9 @@
 ﻿using Eomn.Ib;
 using IBApi;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Eomn.DataProviders
 {
@@ -63,5 +65,27 @@ namespace Eomn.DataProviders
 
             return result;
         }
+
+        public List<string> ExtractRoeFromFundamentalDataList(List<string> fundamentalDataList)
+        {
+            TriggerStatus($"Extracting ROE from the fundamental data list");
+            var result = new List<string>();
+
+            foreach (string fundamentalData in fundamentalDataList)
+            {
+                XDocument xDocument = XDocument.Parse(fundamentalData);
+                var ratiosElement = xDocument.Descendants("Ratios");
+                var groupElements = ratiosElement.Descendants("Group");
+                var groupElementOtherRatios = groupElements.FirstOrDefault(e => e.Attribute("ID")?.Value == "Other Ratios");
+                var ratioElements = groupElementOtherRatios?.Descendants("Ratio");
+                var ratioElementRoe = ratioElements?.FirstOrDefault(e => e.Attribute("FieldName")?.Value == "TTMROEPCT");
+                
+                result.Add($"TODO {ratioElementRoe?.Value}");
+            }
+
+            return result;
+        }
+
+        
     }
 }
