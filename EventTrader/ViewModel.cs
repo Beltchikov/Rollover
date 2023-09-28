@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using Eomn.DataProviders;
 using Eomn.Ib;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -24,7 +23,6 @@ namespace Eomn
         private int _port = 4001;
         private int _clientId = 1;
         private bool _connectedToTws;
-        private List<string>? _twsMessageList = new List<string>();
         private ObservableCollection<string> _twsMessageColllection = new ObservableCollection<string>();
         private ObservableCollection<string> _tickerCollectionTwsContractDetails = null!;
         private ObservableCollection<string> _resultCollectionTwsContractIds = null!;
@@ -222,15 +220,6 @@ namespace Eomn
             set
             {
                 SetProperty(ref _connectedToTws, value);
-            }
-        }
-
-        public List<string>? TwsMessageList
-        {
-            get => _twsMessageList;
-            set
-            {
-                SetProperty(ref _twsMessageList, value);
             }
         }
 

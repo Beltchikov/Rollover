@@ -132,7 +132,7 @@ namespace Eomn.Ib
             {
                 throw new ApplicationException("Unexpected! Consumer is null");
             }
-            Consumer.TwsMessageList?.Add($"ReqId:{reqId} code:{code} message:{message} exception:{exception}");
+            Consumer.TwsMessageCollection?.Add($"ReqId:{reqId} code:{code} message:{message} exception:{exception}");
         }
 
         private void _ibClient_ManagedAccounts(ManagedAccountsMessage message)
@@ -141,7 +141,7 @@ namespace Eomn.Ib
             {
                 throw new ApplicationException("Unexpected! Consumer is null");
             }
-            Consumer.TwsMessageList?.Add($"ReqId:0 managed accounts: {message.ManagedAccounts.Aggregate((r, n) => r + "," + n)}");
+            Consumer.TwsMessageCollection?.Add($"ReqId:0 managed accounts: {message.ManagedAccounts.Aggregate((r, n) => r + "," + n)}");
         }
 
         private void _ibClient_NextValidId(ConnectionStatusMessage message)
@@ -150,7 +150,7 @@ namespace Eomn.Ib
             {
                 throw new ApplicationException("Unexpected! Consumer is null");
             }
-            Consumer.TwsMessageList?.Add(message.IsConnected ? "CONNECTED!" : "NOT CONNECTED!");
+            Consumer.TwsMessageCollection?.Add(message.IsConnected ? "CONNECTED!" : "NOT CONNECTED!");
             Consumer.ConnectedToTws = message.IsConnected;
         }
 
@@ -160,7 +160,7 @@ namespace Eomn.Ib
             {
                 throw new ApplicationException("Unexpected! Consumer is null");
             }
-            Consumer.TwsMessageList?.Add("DISCONNECTED!");
+            Consumer.TwsMessageCollection?.Add("DISCONNECTED!");
             Consumer.ConnectedToTws = false;
         }
 
@@ -170,7 +170,7 @@ namespace Eomn.Ib
             {
                 throw new ApplicationException("Unexpected! Consumer is null");
             }
-            Consumer.TwsMessageList?.Add($"ContractDetailsMessage for {contractDetailsMessage.ContractDetails.Contract.LocalSymbol} " +
+            Consumer.TwsMessageCollection?.Add($"ContractDetailsMessage for {contractDetailsMessage.ContractDetails.Contract.LocalSymbol} " +
                 $"conId:{contractDetailsMessage.ContractDetails.Contract.ConId}");
             _queue.Enqueue(contractDetailsMessage);
         }
