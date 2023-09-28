@@ -283,7 +283,7 @@ Foreground="White" Grid.ColumnSpan="3">
                             </Grid.RowDefinitions>
 
                             <ListBox Name="listBoxTwsMessages" Grid.Row="1" Grid.Column="1" 
-                                ItemsSource="{Binding TwsMessages, Mode=OneWay}">
+                                ItemsSource="{Binding TwsMessageCollection, Mode=OneWay}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding}"></TextBlock>

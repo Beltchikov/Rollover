@@ -25,6 +25,7 @@ namespace Eomn
         private int _clientId = 1;
         private bool _connectedToTws;
         private List<string>? _twsMessageList = new List<string>();
+        private ObservableCollection<string> _twsMessageColllection = new ObservableCollection<string>();
         private ObservableCollection<string> _tickerCollectionTwsContractDetails = null!;
         private ObservableCollection<string> _resultCollectionTwsContractIds = null!;
         private ObservableCollection<string> _tickerColllectionTwsRoe = null!;
@@ -226,29 +227,47 @@ namespace Eomn
 
         public List<string>? TwsMessageList
         {
-            get
-            {
-                OnPropertyChanged(nameof(TwsMessages));
-                return _twsMessageList;
-            }
+            get => _twsMessageList;
             set
             {
                 SetProperty(ref _twsMessageList, value);
-                OnPropertyChanged(nameof(TwsMessages));
             }
         }
 
-        public ObservableCollection<string>? TwsMessages
+        public ObservableCollection<string> TwsMessageCollection
         {
-            get
+            get => _twsMessageColllection;
+            set
             {
-                if (_twsMessageList == null)
-                {
-                    return new ObservableCollection<string>();
-                }
-                return new ObservableCollection<string>(_twsMessageList);
+                SetProperty(ref _twsMessageColllection, value);
             }
         }
+
+        //public List<string>? TwsMessageList
+        //{
+        //    get
+        //    {
+        //        OnPropertyChanged(nameof(TwsMessages));
+        //        return _twsMessageList;
+        //    }
+        //    set
+        //    {
+        //        SetProperty(ref _twsMessageList, value);
+        //        OnPropertyChanged(nameof(TwsMessages));
+        //    }
+        //}
+
+        //public ObservableCollection<string>? TwsMessages
+        //{
+        //    get
+        //    {
+        //        if (_twsMessageList == null)
+        //        {
+        //            return new ObservableCollection<string>();
+        //        }
+        //        return new ObservableCollection<string>(_twsMessageList);
+        //    }
+        //}
 
         public ObservableCollection<string> TickerCollectionTwsContractDetails
         {
@@ -288,7 +307,7 @@ namespace Eomn
 
         private void TwsProvider_Status(string message)
         {
-            TwsMessages?.Add(message);
+            TwsMessageCollection.Add(message);
         }
 
         #endregion TWS
@@ -6013,7 +6032,7 @@ namespace Eomn
             
 </tbody>
 </table>";
-
+        
         #endregion
     }
 }
