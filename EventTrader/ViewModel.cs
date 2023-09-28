@@ -97,11 +97,10 @@ namespace Eomn
             RoeCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer = ibHost.Consumer ?? this;
-
                 var fundamentalDataList = await twsProvider.GetFundamentalData(
-                    TickerCollectionTwsRoe.ToList(),
-                    REPORT_SNAPSHOT,
-                    TIMEOUT_TWS);
+                                    TickerCollectionTwsRoe.ToList(),
+                                    REPORT_SNAPSHOT,
+                                    TIMEOUT_TWS);
                 ResultCollectionTwsRoe = new ObservableCollection<string>(twsProvider.ExtractRoeFromFundamentalDataList(fundamentalDataList));
             });
 

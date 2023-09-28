@@ -181,7 +181,6 @@ namespace Eomn.Ib
             {
                 throw new ApplicationException("Unexpected! Consumer is null");
             }
-            Consumer.TwsMessageList?.Add($"FundamentalsMessage received." );
             _queue.Enqueue(fundamentalsMessage);
         }
 
