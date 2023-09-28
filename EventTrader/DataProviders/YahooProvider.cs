@@ -1,7 +1,6 @@
 ﻿using Eomn.WebScraping;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,14 +18,15 @@ namespace Eomn.DataProviders
             int cnt = 1;
             foreach (string ticker in tickerList)
             {
+                var tickerTrimmed = ticker.Trim();  
                 await Task.Run(() =>
                 {
-                    TriggerStatus($"Retrieving last EPS for {ticker} {cnt++}/{tickerList.Count}");
-                    var url = urlEpsTemplate.Replace("TICKER", ticker);
+                    TriggerStatus($"Retrieving last EPS for {tickerTrimmed} {cnt++}/{tickerList.Count}");
+                    var url = urlEpsTemplate.Replace("TICKER", tickerTrimmed);
 
                     if (!_browserWrapper.Navigate(url))
                     {
-                        AddDataToResultList(result, ticker, null);
+                        AddDataToResultList(result, tickerTrimmed, null);
                     }
                     else
                     {
@@ -37,7 +37,7 @@ namespace Eomn.DataProviders
                         var line3 = line2?.Substring(0, line2.IndexOf("</tr>"));
                         var line4 = line3?.Substring(line3.LastIndexOf("Ta(end)"));
 
-                        AddDataToResultList(result, ticker, line4);
+                        AddDataToResultList(result, tickerTrimmed, line4);
                     }
 
                     Thread.Sleep(delay);
@@ -54,14 +54,16 @@ namespace Eomn.DataProviders
             int cnt = 1;
             foreach (string ticker in tickerList)
             {
+                var tickerTrimmed = ticker.Trim();
+
                 await Task.Run(() =>
                 {
-                    TriggerStatus($"Retrieving expected EPS for {ticker} {cnt++}/{tickerList.Count}");
-                    var url = urlEpsTemplate.Replace("TICKER", ticker);
+                    TriggerStatus($"Retrieving expected EPS for {tickerTrimmed} {cnt++}/{tickerList.Count}");
+                    var url = urlEpsTemplate.Replace("TICKER", tickerTrimmed);
 
                     if (!_browserWrapper.Navigate(url))
                     {
-                        AddDataToResultList(result, ticker, null);
+                        AddDataToResultList(result, tickerTrimmed, null);
                     }
                     else
                     {
@@ -72,7 +74,7 @@ namespace Eomn.DataProviders
                         var line3 = line2?.Substring(line2.IndexOf("Avg. Estimate"));
                         var line4 = line3?.Substring(line3.IndexOf("<td class=\"Ta(end)\">"));
 
-                        AddDataToResultList(result, ticker, line4);
+                        AddDataToResultList(result, tickerTrimmed, line4);
                     }
 
                     Thread.Sleep(delay);

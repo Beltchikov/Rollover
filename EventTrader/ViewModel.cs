@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using Eomn.DataProviders;
 using Eomn.Ib;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -26,7 +25,6 @@ namespace Eomn
         private int _clientId = 1;
         private bool _connectedToTws;
         private List<string>? _twsMessageList = new List<string>();
-        //private string _tickerStringTwsContractDetails = null!;
         private ObservableCollection<string> _tickerListTwsContractDetails = null!;
         private ObservableCollection<string> _resultListTwsContractDetails = null!;
         private ObservableCollection<string> _resultListTwsRoe = null!;
@@ -41,6 +39,7 @@ namespace Eomn
         public ICommand ConnectToTwsCommand { get; }
         public ICommand ContractDetailsCommand { get; }
         public ICommand RoeCommand { get; }
+
         public ViewModel(
             IInvestingProvider investingProvider,
             IYahooProvider yahooProvider,
@@ -48,7 +47,7 @@ namespace Eomn
             IIbHost ibHost)
         {
             yahooProvider.Status += YahooProvider_Status;
-            
+
             LastEpsCommand = new RelayCommand(async () =>
             {
                 DecimalSeparatorSelectedIndexYahoo = 0;
@@ -104,7 +103,7 @@ namespace Eomn
 
             MarketCap = 0.1;
             TickerListYahoo = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA\r\n WT").Split("\r\n").ToList());
-            TickerListTwsContractDetails = new ObservableCollection<string>( (" SKX\r\nPFS\r\nSLCA").Split("\r\n").ToList());
+            TickerListTwsContractDetails = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA").Split("\r\n").ToList());
         }
 
         #region Yahoo
@@ -153,7 +152,7 @@ namespace Eomn
         #endregion  Yahoo
 
         #region Investing
-                
+
         public string HtmlSourceEarningsForWeek
         {
             get => _htmlSourceEarningsForWeek;
@@ -171,8 +170,6 @@ namespace Eomn
                 SetProperty(ref _marketCap, value);
             }
         }
-
-        
 
         public ObservableCollection<string> ResultListEarningsForWeek
         {
@@ -257,15 +254,6 @@ namespace Eomn
                 SetProperty(ref _tickerListTwsContractDetails, value);
             }
         }
-
-        //public string TickerStringTwsContractDetails
-        //{
-        //    get => _tickerStringTwsContractDetails;
-        //    set
-        //    {
-        //        SetProperty(ref _tickerStringTwsContractDetails, value);
-        //    }
-        //}
 
         public ObservableCollection<string> ResultListTwsContractDetails
         {
@@ -6007,7 +5995,7 @@ namespace Eomn
             
 </tbody>
 </table>";
-        
+
         #endregion
     }
 }
