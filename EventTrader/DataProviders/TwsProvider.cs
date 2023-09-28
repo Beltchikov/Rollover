@@ -1,6 +1,7 @@
 ﻿using Eomn.Ib;
 using IBApi;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -83,13 +84,21 @@ namespace Eomn.DataProviders
                 var ratioElements = groupElementOtherRatios?.Descendants("Ratio");
                 var ratioElementRoe = ratioElements?.FirstOrDefault(e => e.Attribute("FieldName")?.Value == "TTMROEPCT");
 
+                double roeAsDouble = 0;
+                if (ratioElementRoe != null)
+                {
+                    double.TryParse(ratioElementRoe.Value, NumberStyles.Number, new CultureInfo("EN-US"), out roeAsDouble);
+                }
+
+                var roeAsString = roeAsDouble.ToString("0.0");
+
                 var issuesElement = xDocument.Descendants("Issues").FirstOrDefault();
                 var issueElements = issuesElement?.Descendants("Issue");
                 var issueElementId1 = issueElements?.FirstOrDefault(e => e.Attribute("ID")?.Value == "1");
                 var issueIdElements = issueElementId1?.Descendants("IssueID");
                 var issueIdElementTicker = issueIdElements?.FirstOrDefault(e => e.Attribute("Type")?.Value == "Ticker");
 
-                result.Add($"{issueIdElementTicker?.Value}\t{ratioElementRoe?.Value}");
+                result.Add($"{issueIdElementTicker?.Value}\t{roeAsString}");
             }
 
             return result;
