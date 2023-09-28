@@ -26,7 +26,8 @@ namespace Eomn
         private int _clientId = 1;
         private bool _connectedToTws;
         private List<string>? _twsMessageList = new List<string>();
-        private string _tickerStringTwsContractDetails = null!;
+        //private string _tickerStringTwsContractDetails = null!;
+        private ObservableCollection<string> _tickerListTwsContractDetails = null!;
         private ObservableCollection<string> _resultListTwsContractDetails = null!;
         private ObservableCollection<string> _resultListTwsRoe = null!;
 
@@ -87,7 +88,7 @@ namespace Eomn
             {
                 ibHost.Consumer = ibHost.Consumer ?? this;
                 ResultListTwsContractDetails= new ObservableCollection<string>(await twsProvider.GetContractDetails(
-                    TickerListTwsContractDetails,
+                    TickerListTwsContractDetails.ToList(),
                     TIMEOUT_TWS));
             });
 
@@ -103,7 +104,7 @@ namespace Eomn
 
             MarketCap = 0.1;
             TickerStringYahoo = " SKX\r\nPFS\r\nSLCA\r\n WT";
-            TickerStringTwsContractDetails = " SKX\r\nPFS\r\nSLCA";
+            TickerListTwsContractDetails = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA").Split("\r\n").ToList());
         }
 
         #region Yahoo
@@ -253,19 +254,23 @@ namespace Eomn
             }
         }
 
-        public List<string> TickerListTwsContractDetails
+        public ObservableCollection<string> TickerListTwsContractDetails
         {
-            get => TickerStringTwsContractDetails.Split("\r\n", StringSplitOptions.TrimEntries).ToList();
-        }
-
-        public string TickerStringTwsContractDetails
-        {
-            get => _tickerStringTwsContractDetails;
+            get => _tickerListTwsContractDetails;
             set
             {
-                SetProperty(ref _tickerStringTwsContractDetails, value);
+                SetProperty(ref _tickerListTwsContractDetails, value);
             }
         }
+
+        //public string TickerStringTwsContractDetails
+        //{
+        //    get => _tickerStringTwsContractDetails;
+        //    set
+        //    {
+        //        SetProperty(ref _tickerStringTwsContractDetails, value);
+        //    }
+        //}
 
         public ObservableCollection<string> ResultListTwsContractDetails
         {

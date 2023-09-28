@@ -31,7 +31,14 @@ namespace Eomn.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            var listAsString = value as string;
+            if (listAsString == null)
+            {
+                return new ObservableCollection<string>();
+            }
+
+            var resultList = listAsString.Split("\r\n", StringSplitOptions.TrimEntries).ToList();
+            return new ObservableCollection<string>(resultList);
         }
     }
 }

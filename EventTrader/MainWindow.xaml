@@ -189,7 +189,7 @@ Foreground="White" Grid.ColumnSpan="3">
                             <Label Content="Tickers:" Grid.Column="1" Grid.Row="1" 
         HorizontalAlignment="Left"
          Foreground="White"></Label>
-                            <TextBox Text="{Binding TickerStringTwsContractDetails}" Grid.Column="1" Grid.Row="2" 
+                            <TextBox Text="{Binding TickerListTwsContractDetails, Converter={StaticResource ListToStringConverter}}" Grid.Column="1" Grid.Row="2" 
            AcceptsReturn="True"
              VerticalScrollBarVisibility="Visible"></TextBox>
 
