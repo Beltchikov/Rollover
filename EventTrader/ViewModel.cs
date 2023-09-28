@@ -48,6 +48,7 @@ namespace Eomn
             IIbHost ibHost)
         {
             yahooProvider.Status += YahooProvider_Status;
+            twsProvider.Status += TwsProvider_Status;
 
             LastEpsCommand = new RelayCommand(async () =>
             {
@@ -284,6 +285,11 @@ namespace Eomn
             {
                 SetProperty(ref _resultColllectionTwsRoe, value);
             }
+        }
+
+        private void TwsProvider_Status(string message)
+        {
+            TwsMessages?.Add(message);
         }
 
         #endregion TWS
