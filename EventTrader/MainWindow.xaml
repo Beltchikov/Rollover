@@ -353,7 +353,7 @@ Foreground="White" Grid.ColumnSpan="3">
                                         VerticalScrollBarVisibility="Visible"></TextBox>
 
                             <uc:DecimalSeparator Grid.Column="3" Grid.Row="4" Height="25" 
-                                                 SelectionChanged="ComboBox_SelectionChanged">
+                                                 SelectionChanged="DecimalSeparatorYahooEps_SelectionChanged">
                             </uc:DecimalSeparator>
 
                         </Grid>

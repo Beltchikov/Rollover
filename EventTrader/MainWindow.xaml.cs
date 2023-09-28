@@ -22,7 +22,7 @@ namespace Eomn
             listBoxMessagesSource.CollectionChanged += ListBoxMessagesSource_CollectionChanged;
         }
 
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void DecimalSeparatorYahooEps_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (txtResultsYahoo.Text == string.Empty)
             {
