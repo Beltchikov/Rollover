@@ -12,7 +12,7 @@
      HorizontalAlignment="Left"
       Foreground="White">
             </Label>
-        <ComboBox SelectedValue="{Binding Separator}" 
+        <ComboBox SelectedIndex="0" 
                       SelectionChanged="ComboBox_SelectionChanged">
                 <ComboBoxItem>.</ComboBoxItem>
                 <ComboBoxItem>,</ComboBoxItem>
