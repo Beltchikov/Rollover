@@ -243,32 +243,6 @@ namespace Eomn
             }
         }
 
-        //public List<string>? TwsMessageList
-        //{
-        //    get
-        //    {
-        //        OnPropertyChanged(nameof(TwsMessages));
-        //        return _twsMessageList;
-        //    }
-        //    set
-        //    {
-        //        SetProperty(ref _twsMessageList, value);
-        //        OnPropertyChanged(nameof(TwsMessages));
-        //    }
-        //}
-
-        //public ObservableCollection<string>? TwsMessages
-        //{
-        //    get
-        //    {
-        //        if (_twsMessageList == null)
-        //        {
-        //            return new ObservableCollection<string>();
-        //        }
-        //        return new ObservableCollection<string>(_twsMessageList);
-        //    }
-        //}
-
         public ObservableCollection<string> TickerCollectionTwsContractDetails
         {
             get => _tickerCollectionTwsContractDetails;
