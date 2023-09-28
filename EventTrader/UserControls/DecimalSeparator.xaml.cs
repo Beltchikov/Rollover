@@ -24,13 +24,16 @@ namespace Eomn.UserControls
         {
             InitializeComponent();
             this.DataContext = this;
+            Separator = ".";
         }
 
         public string Separator { get; set; }
 
+        public event Action<object, SelectionChangedEventArgs> SelectionChanged = null!;    
+
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            SelectionChanged?.Invoke(sender, e);       
         }
     }
 }
