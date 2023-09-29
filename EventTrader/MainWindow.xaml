@@ -418,6 +418,11 @@ AcceptsReturn="True"
     HorizontalAlignment="Stretch" VerticalAlignment="Center" 
         Command="{Binding TwsSummaryCommand}">Get Summary >>
                     </Button>
+                    <DockPanel Grid.Row="1" Grid.Column="5" Grid.RowSpan="2">
+                        <Label DockPanel.Dock="Top">Result:</Label>
+                        <TextBox AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
+             Text="{Binding ResultCollectionTwsSummary, Converter={StaticResource ListToStringConverter}}"></TextBox>
+                    </DockPanel>
                 </Grid>
             </TabItem>
             <TabItem Header="TabItem">

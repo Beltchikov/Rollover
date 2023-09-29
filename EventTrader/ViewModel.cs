@@ -14,6 +14,11 @@ namespace Eomn
         private const int TIMEOUT_SIMPLE_BROWSER = 0;
         private const int TIMEOUT_TWS = 3000;
         private readonly string REPORT_SNAPSHOT = "ReportSnapshot";
+
+        private ObservableCollection<string> _resultCollectionEarningsForWeek = null!;
+        private string _htmlSourceEarningsForWeek = null!;
+        private double _marketCap;
+
         private ObservableCollection<string> _tickerCollectionYahoo = null!;
         private ObservableCollection<string> _resultCollectionYahooEps = null!;
         private string _messageYahoo = null!;
@@ -30,10 +35,7 @@ namespace Eomn
         private ObservableCollection<string> _resultColllectionTwsRoe = null!;
 
         private ObservableCollection<string> _tickerCollectionTwsSummary;
-
-        private ObservableCollection<string> _resultCollectionEarningsForWeek = null!;
-        private string _htmlSourceEarningsForWeek = null!;
-        private double _marketCap;
+        private ObservableCollection<string> _resultCollectionTwsSummary;
 
         public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
@@ -292,6 +294,15 @@ namespace Eomn
             set
             {
                 SetProperty(ref _tickerCollectionTwsSummary, value);
+            }
+        }
+
+        public ObservableCollection<string> ResultCollectionTwsSummary
+        {
+            get => _resultCollectionTwsSummary;
+            set
+            {
+                SetProperty(ref _resultCollectionTwsSummary, value);
             }
         }
 
