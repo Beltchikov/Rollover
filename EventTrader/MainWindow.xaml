@@ -390,6 +390,31 @@ Foreground="White" Grid.ColumnSpan="3">
 
                 </Grid>
             </TabItem>
+            <TabItem Header="TWS Business Summary">
+                <Grid Background="#FFC3A4A5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10"></ColumnDefinition>
+                        <ColumnDefinition Width="100"></ColumnDefinition>
+                        <ColumnDefinition Width="10"></ColumnDefinition>
+                        <ColumnDefinition Width="150"></ColumnDefinition>
+                        <ColumnDefinition Width="10"></ColumnDefinition>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10"></RowDefinition>
+                        <RowDefinition Height="25"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="10"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Content="Tickers:" Grid.Column="1" Grid.Row="1" 
+                    HorizontalAlignment="Left"
+                     Foreground="Black"></Label>
+                    <TextBox Text="{Binding TickerCollectionTwsSummary, Converter={StaticResource ListToStringConverter}}" Grid.Column="1" Grid.Row="2" 
+AcceptsReturn="True"
+   VerticalScrollBarVisibility="Visible"></TextBox>
+                </Grid>
+            </TabItem>
             <TabItem Header="TabItem">
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>

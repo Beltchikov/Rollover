@@ -29,6 +29,8 @@ namespace Eomn
         private ObservableCollection<string> _tickerColllectionTwsRoe = null!;
         private ObservableCollection<string> _resultColllectionTwsRoe = null!;
 
+        private ObservableCollection<string> _tickerCollectionTwsSummary;
+
         private ObservableCollection<string> _resultCollectionEarningsForWeek = null!;
         private string _htmlSourceEarningsForWeek = null!;
         private double _marketCap;
@@ -274,6 +276,20 @@ namespace Eomn
         }
 
         #endregion TWS
+
+        #region TWS Summary
+
+
+        public ObservableCollection<string> TickerCollectionTwsSummary
+        {
+            get => _tickerCollectionTwsSummary;
+            set
+            {
+                SetProperty(ref _tickerCollectionTwsSummary, value);
+            }
+        }
+
+        #endregion
 
         #region Test Data
 
