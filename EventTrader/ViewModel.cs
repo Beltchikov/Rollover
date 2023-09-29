@@ -41,7 +41,8 @@ namespace Eomn
         public ICommand ConnectToTwsCommand { get; }
         public ICommand ContractIdsCommand { get; }
         public ICommand RoeCommand { get; }
-
+        public ICommand TwsSummaryCommand { get; }
+        
         public ViewModel(
             IInvestingProvider investingProvider,
             IYahooProvider yahooProvider,
@@ -103,6 +104,11 @@ namespace Eomn
                                     REPORT_SNAPSHOT,
                                     TIMEOUT_TWS);
                 ResultCollectionTwsRoe = new ObservableCollection<string>(twsProvider.ExtractRoeFromFundamentalDataList(fundamentalDataList));
+            });
+
+            TwsSummaryCommand = new RelayCommand(async () =>
+            {
+                MessageBox.Show("TwsSummaryCommand");
             });
 
             MarketCap = 0.1;

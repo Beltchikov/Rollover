@@ -413,6 +413,11 @@ Foreground="White" Grid.ColumnSpan="3">
                     <TextBox Text="{Binding TickerCollectionTwsSummary, Converter={StaticResource ListToStringConverter}}" Grid.Column="1" Grid.Row="2" 
 AcceptsReturn="True"
    VerticalScrollBarVisibility="Visible"></TextBox>
+                    <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="25" 
+                            Grid.Column="3" Grid.Row="1"
+    HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+        Command="{Binding TwsSummaryCommand}">Get Summary >>
+                    </Button>
                 </Grid>
             </TabItem>
             <TabItem Header="TabItem">
