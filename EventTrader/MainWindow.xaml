@@ -23,7 +23,7 @@
                                 <Grid Name="Panel">
                                     <ContentPresenter x:Name="ContentSite"
                                         VerticalAlignment="Center"
-                                        HorizontalAlignment="Center"
+                                        HorizontalAlignment="Left"
                                         ContentSource="Header"
                                         Margin="10,2"/>
                                 </Grid>
@@ -163,7 +163,7 @@ Foreground="White" Grid.ColumnSpan="3">
                                      VerticalContentAlignment="Center"></TextBox>
 
                             <Button Padding="10 0 10 0" Grid.Column="8" Grid.Row="1"
-                            Margin="10,0,10,0" Height="25" HorizontalAlignment="Stretch" 
+                            Margin="10,0,10,0" Height="25" HorizontalAlignment="Left" 
                                     VerticalAlignment="Center" 
                             Command="{Binding ConnectToTwsCommand}">Connect to TWS
                             </Button>
