@@ -34,8 +34,8 @@ namespace Eomn
         private ObservableCollection<string> _tickerColllectionTwsRoe = null!;
         private ObservableCollection<string> _resultColllectionTwsRoe = null!;
 
-        private ObservableCollection<string> _tickerCollectionTwsSummary;
-        private ObservableCollection<string> _resultCollectionTwsSummary;
+        private ObservableCollection<string> _tickerCollectionTwsSummary = null!;
+        private ObservableCollection<string> _resultCollectionTwsSummary = null!;
 
         public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
