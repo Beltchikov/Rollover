@@ -86,7 +86,14 @@ namespace Eomn
             ConnectToTwsCommand = new RelayCommand(() =>
             {
                 ibHost.Consumer = ibHost.Consumer ?? this;
-                ibHost.ConnectAndStartReaderThread(Host, Port, ClientId, 1000);
+                if(!ibHost.Consumer.ConnectedToTws)
+                {
+                    ibHost.ConnectAndStartReaderThread(Host, Port, ClientId, 1000);
+                }
+                else
+                {
+                    MessageBox.Show("Connected!");
+                }
             });
 
             ContractIdsCommand = new RelayCommand(async () =>
