@@ -92,7 +92,7 @@ namespace Eomn
                 }
                 else
                 {
-                    MessageBox.Show("Connected!");
+                    ibHost.Disconnect();
                 }
             });
 
