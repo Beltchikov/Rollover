@@ -13,7 +13,8 @@
         <BitmapImage x:Key="ConnectionCircle" UriSource="/Images/RedCircle.png" />
         <converters:ListToStringConverter x:Key="ListToStringConverter"></converters:ListToStringConverter>
         <converters:TrueToFalseConverter x:Key="TrueToFalseConverter"></converters:TrueToFalseConverter>
-   </Window.Resources>
+        <converters:ConnectToTwsButtonConverter x:Key="ConnectToTwsButtonConverter"></converters:ConnectToTwsButtonConverter>
+    </Window.Resources>
     <Grid>
         <TabControl x:Name="tabControl" TabStripPlacement="Left">
             <TabControl.Resources>
@@ -263,7 +264,8 @@ Foreground="White" Grid.ColumnSpan="3">
                             <Button Padding="10 0 10 0" Grid.Column="8" Grid.Row="1"
                             Margin="10,0,10,0" Height="25" HorizontalAlignment="Left" 
                                     VerticalAlignment="Center" 
-                            Command="{Binding ConnectToTwsCommand}">Connect to TWS
+                                    Command="{Binding ConnectToTwsCommand}" 
+                                    Content="{Binding ConnectedToTws, Converter={StaticResource ConnectToTwsButtonConverter}}">
                             </Button>
 
                         </Grid>
