@@ -64,7 +64,7 @@ Foreground="White" Grid.ColumnSpan="3">
                 <Button Padding="10 0 10 0" Grid.Column="8" Grid.Row="1"
                             Margin="10,0,10,0" Height="25" HorizontalAlignment="Left" 
                                     VerticalAlignment="Center" 
-                                    Command="{Binding ConnectToTwsCommand}" 
+                                    Command="{Binding Command}" 
                                     Content="{Binding ConnectedToTws}">
                 </Button>
 

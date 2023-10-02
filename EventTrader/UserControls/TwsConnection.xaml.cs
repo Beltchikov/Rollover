@@ -44,5 +44,7 @@ namespace Eomn.UserControls
                     :"Connect to TWS";
             }
         }
+
+        public ICommand? Command { get; set; }
     }
 }
