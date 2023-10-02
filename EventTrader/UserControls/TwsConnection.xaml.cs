@@ -23,6 +23,26 @@ namespace Eomn.UserControls
         public TwsConnection()
         {
             InitializeComponent();
+            this.DataContext = this;
+        }
+
+        public bool ConnectedToTws { get; set; }
+        public bool TextFieldsAreEnabled
+        {
+            get
+            {
+                return !ConnectedToTws;
+            }
+        }
+
+        public string ButtonContent
+        {
+            get
+            {
+                return ConnectedToTws
+                    ? "Disconnect"
+                    :"Connect to TWS";
+            }
         }
     }
 }
