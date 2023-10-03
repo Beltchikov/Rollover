@@ -65,7 +65,7 @@ Foreground="White" Grid.ColumnSpan="3">
                             Margin="10,0,10,0" Height="25" HorizontalAlignment="Left" 
                                     VerticalAlignment="Center" 
                                     Command="{Binding Command}" 
-                                    Content="{Binding ConnectedToTws}">
+                                    Content="{Binding ButtonContent, Mode=OneWay}">
                 </Button>
 
             </Grid>

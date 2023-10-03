@@ -26,12 +26,28 @@ namespace Eomn.UserControls
             this.DataContext = this;
         }
 
-        public bool ConnectedToTws { get; set; }
+
+        public static readonly DependencyProperty ConnectedProperty =
+           DependencyProperty.Register("Connected", typeof(bool), typeof(TwsConnection), new PropertyMetadata(false));
+        public bool Connected
+        {
+            get { return (bool)GetValue(ConnectedProperty); }
+            set { SetValue(ConnectedProperty, value); }
+        }
+
+        public static readonly DependencyProperty CommandProperty =
+            DependencyProperty.Register("Command", typeof(ICommand), typeof(TwsConnection), new PropertyMetadata(null));
+        public ICommand? Command
+        {
+            get { return (ICommand?)GetValue(CommandProperty); }
+            set { SetValue(CommandProperty, value); }
+        }
+
         public bool TextFieldsAreEnabled
         {
             get
             {
-                return !ConnectedToTws;
+                return !Connected;
             }
         }
 
@@ -39,12 +55,12 @@ namespace Eomn.UserControls
         {
             get
             {
-                return ConnectedToTws
+                return Connected
                     ? "Disconnect"
                     :"Connect to TWS";
             }
         }
 
-        public ICommand? Command { get; set; }
+        
     }
 }

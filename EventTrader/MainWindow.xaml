@@ -207,7 +207,7 @@
                         <RowDefinition Height="10"></RowDefinition>
                     </Grid.RowDefinitions>
 
-                    <GroupBox Grid.Column="1" Grid.Row="1" Header="Connection"
+                    <!--<GroupBox Grid.Column="1" Grid.Row="1" Header="Connection"
 Foreground="White" Grid.ColumnSpan="3">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -269,7 +269,12 @@ Foreground="White" Grid.ColumnSpan="3">
                             </Button>
 
                         </Grid>
-                    </GroupBox>
+                    </GroupBox>-->
+
+                    <uc:TwsConnection Grid.Column="1" Grid.Row="1"  Grid.ColumnSpan="3" 
+                                      Connected="{Binding ConnectedToTws}"
+                                      Command="{Binding ConnectToTwsCommand}">
+                    </uc:TwsConnection>
 
 
                     <GroupBox Grid.Column="1" Grid.Row="3" Header="Contract Details"
