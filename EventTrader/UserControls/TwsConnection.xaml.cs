@@ -23,7 +23,6 @@ namespace Eomn.UserControls
         public TwsConnection()
         {
             InitializeComponent();
-            this.DataContext = this;
         }
 
 

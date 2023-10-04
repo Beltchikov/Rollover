@@ -32,10 +32,10 @@ Foreground="White" Grid.ColumnSpan="3">
                     <Image.Style>
                         <Style TargetType="{x:Type Image}">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Connected}" Value="False">
+                                <DataTrigger Binding="{Binding Connected, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Value="False">
                                     <Setter Property="Source" Value="pack://application:,,,/Eomn;component/Images/RedCircle.png"/>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Connected}" Value="True">
+                                <DataTrigger Binding="{Binding Connected, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Value="True">
                                     <Setter Property="Source" Value="pack://application:,,,/Eomn;component/Images/GreenCircle.png"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -47,7 +47,7 @@ Foreground="White" Grid.ColumnSpan="3">
                                  Foreground="White"></Label>
                 <TextBox Text="{Binding Host, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Grid.Column="3" Grid.Row="1" 
                      VerticalContentAlignment="Center" 
-                     IsEnabled="{Binding TextFieldsAreEnabled}"></TextBox>
+                     IsEnabled="{Binding TextFieldsAreEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"></TextBox>
 
                 <Label Content="Port:" Grid.Column="4" Grid.Row="1" HorizontalAlignment="Right"
                                 Foreground="White"></Label>
