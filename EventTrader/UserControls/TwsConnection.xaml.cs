@@ -51,6 +51,23 @@ namespace Eomn.UserControls
             set { SetValue(HostProperty, value); }
         }
 
+
+        public static readonly DependencyProperty PortProperty =
+            DependencyProperty.Register("Port", typeof(int), typeof(TwsConnection), new PropertyMetadata(0));
+        public int Port
+        {
+            get { return (int)GetValue(PortProperty); }
+            set { SetValue(PortProperty, value); }
+        }
+
+        public static readonly DependencyProperty ClientIdProperty =
+                    DependencyProperty.Register("ClientId", typeof(int), typeof(TwsConnection), new PropertyMetadata(0));
+        public int ClientId
+        {
+            get { return (int)GetValue(ClientIdProperty); }
+            set { SetValue(ClientIdProperty, value); }
+        }
+
         public bool TextFieldsAreEnabled
         {
             get
@@ -65,10 +82,10 @@ namespace Eomn.UserControls
             {
                 return Connected
                     ? "Disconnect"
-                    :"Connect to TWS";
+                    : "Connect to TWS";
             }
         }
 
-        
+
     }
 }
