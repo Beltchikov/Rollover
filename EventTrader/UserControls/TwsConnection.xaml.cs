@@ -43,6 +43,14 @@ namespace Eomn.UserControls
             set { SetValue(CommandProperty, value); }
         }
 
+        public static readonly DependencyProperty HostProperty =
+            DependencyProperty.Register("Host", typeof(string), typeof(TwsConnection), new PropertyMetadata(null));
+        public string Host
+        {
+            get { return (string)GetValue(HostProperty); }
+            set { SetValue(HostProperty, value); }
+        }
+
         public bool TextFieldsAreEnabled
         {
             get
