@@ -32,10 +32,10 @@ Foreground="White" Grid.ColumnSpan="3">
                     <Image.Style>
                         <Style TargetType="{x:Type Image}">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding ConnectedToTws}" Value="False">
+                                <DataTrigger Binding="{Binding Connected}" Value="False">
                                     <Setter Property="Source" Value="pack://application:,,,/Eomn;component/Images/RedCircle.png"/>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding ConnectedToTws}" Value="True">
+                                <DataTrigger Binding="{Binding Connected}" Value="True">
                                     <Setter Property="Source" Value="pack://application:,,,/Eomn;component/Images/GreenCircle.png"/>
                                 </DataTrigger>
                             </Style.Triggers>

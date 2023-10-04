@@ -272,8 +272,8 @@ Foreground="White" Grid.ColumnSpan="3">
                     </GroupBox>-->
 
                     <uc:TwsConnection Grid.Column="1" Grid.Row="1"  Grid.ColumnSpan="3" 
-                                      Connected="{Binding ConnectedToTws}"
-                                      Command="{Binding ConnectToTwsCommand}">
+                                      Connected="{Binding ConnectedToTws, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                      Command="{Binding ConnectToTwsCommand, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
                     </uc:TwsConnection>
 
 
