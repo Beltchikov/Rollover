@@ -31,7 +31,7 @@ namespace Eomn.UserControls
             ButtonContent = "Connect to TWS";
         }
 
-       
+
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -106,20 +106,15 @@ namespace Eomn.UserControls
 
         private static void OnConnectedChanged(DependencyObject depObj, DependencyPropertyChangedEventArgs e)
         {
-            //((TwsConnection)depObj).OnPropertyChanged(e.Property.Name);
-            //((TwsConnection)depObj).OnPropertyChanged("ButtonContent");
-
             if (e.Property.Name == nameof(Connected))
             {
                 ((TwsConnection)depObj).ButtonContent = (bool)e.NewValue ? "Disconnect" : "Connect to TWS";
             }
-
-            //PropertyChanged.Invoke(depObj, e);
         }
 
         private void TwsConnection_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            
+
         }
     }
 }
