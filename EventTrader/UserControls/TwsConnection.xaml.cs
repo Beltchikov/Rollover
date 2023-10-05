@@ -1,33 +1,19 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Eomn.UserControls
 {
     /// <summary>
     /// Interaction logic for TwsConnection.xaml
     /// </summary>
-    public partial class TwsConnection : UserControl, INotifyPropertyChanged
+    public partial class TwsConnection : UserControl
     {
         public TwsConnection()
         {
             InitializeComponent();
-            PropertyChanged += TwsConnection_PropertyChanged;
             ButtonContent = "Connect to TWS";
         }
 
@@ -110,11 +96,6 @@ namespace Eomn.UserControls
             {
                 ((TwsConnection)depObj).ButtonContent = (bool)e.NewValue ? "Disconnect" : "Connect to TWS";
             }
-        }
-
-        private void TwsConnection_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-        {
-
         }
     }
 }
