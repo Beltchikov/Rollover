@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -16,8 +15,6 @@ namespace Eomn.UserControls
             InitializeComponent();
             ButtonContent = "Connect to TWS";
         }
-
-
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -91,8 +88,8 @@ namespace Eomn.UserControls
             {
                 bool connected = (bool)e.NewValue;
 
-                ((TwsConnection)depObj).ButtonContent = connected 
-                    ? "Disconnect" 
+                ((TwsConnection)depObj).ButtonContent = connected
+                    ? "Disconnect"
                     : "Connect to TWS";
                 ((TwsConnection)depObj).TextFieldsAreEnabled = !connected;
             }
