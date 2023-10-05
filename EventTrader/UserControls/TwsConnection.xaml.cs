@@ -77,24 +77,24 @@ namespace Eomn.UserControls
             set { SetValue(ButtonContentProperty, value); }
         }
 
+        public static readonly DependencyProperty TextFieldsAreEnabledProperty =
+                   DependencyProperty.Register("TextFieldsAreEnabled", typeof(bool), typeof(TwsConnection), new PropertyMetadata(true));
         public bool TextFieldsAreEnabled
         {
-            get
-            {
-                return !Connected;
-            }
-        }
-
-        protected void OnPropertyChanged([CallerMemberName] string? name = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            get { return (bool)GetValue(TextFieldsAreEnabledProperty); }
+            set { SetValue(TextFieldsAreEnabledProperty, value); }
         }
 
         private static void OnConnectedChanged(DependencyObject depObj, DependencyPropertyChangedEventArgs e)
         {
             if (e.Property.Name == nameof(Connected))
             {
-                ((TwsConnection)depObj).ButtonContent = (bool)e.NewValue ? "Disconnect" : "Connect to TWS";
+                bool connected = (bool)e.NewValue;
+
+                ((TwsConnection)depObj).ButtonContent = connected 
+                    ? "Disconnect" 
+                    : "Connect to TWS";
+                ((TwsConnection)depObj).TextFieldsAreEnabled = !connected;
             }
         }
     }
