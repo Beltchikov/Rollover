@@ -208,8 +208,8 @@
                     </Grid.RowDefinitions>
 
                     <uc:TwsConnection Grid.Column="1" Grid.Row="1"  Grid.ColumnSpan="3" 
-                   Connected="{Binding ConnectedToTws, Mode=OneWay}"
-                   Command="{Binding ConnectToTwsCommand, Mode=OneWay}">
+                       Connected="{Binding ConnectedToTws, Mode=OneWay}"
+                       Command="{Binding ConnectToTwsCommand, Mode=OneWay}">
                     </uc:TwsConnection>
 
                     <GroupBox Grid.Column="1" Grid.Row="3" Header="Contract Details"
@@ -349,22 +349,31 @@ Foreground="White" Grid.ColumnSpan="3">
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="10"></RowDefinition>
+                        <RowDefinition Height="60"></RowDefinition>
+                        <RowDefinition Height="10"></RowDefinition>
                         <RowDefinition Height="25"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="10"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <Label Content="Tickers:" Grid.Column="1" Grid.Row="1" 
+
+                    <uc:TwsConnection Grid.Column="1" Grid.Row="1"  Grid.ColumnSpan="5" 
+                       Connected="{Binding ConnectedToTws, Mode=OneWay}"
+                       Command="{Binding ConnectToTwsCommand, Mode=OneWay}">        
+                    </uc:TwsConnection>
+
+                    <Label Content="Tickers:" Grid.Column="1" Grid.Row="3" 
                     HorizontalAlignment="Left"
                      Foreground="Black"></Label>
-                    <TextBox Text="{Binding TickerCollectionTwsSummary, Converter={StaticResource ListToStringConverter}}" Grid.Column="1" Grid.Row="2" 
+                    <TextBox Text="{Binding TickerCollectionTwsSummary, Converter={StaticResource ListToStringConverter}}" 
+                             Grid.Column="1" Grid.Row="4" 
 AcceptsReturn="True"
    VerticalScrollBarVisibility="Visible"></TextBox>
                     <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="25" 
-                            Grid.Column="3" Grid.Row="2"
+                            Grid.Column="3" Grid.Row="4"
     HorizontalAlignment="Stretch" VerticalAlignment="Center" 
         Command="{Binding TwsSummaryCommand}">Get Summary >>
                     </Button>
-                    <DockPanel Grid.Row="1" Grid.Column="5" Grid.RowSpan="2">
+                    <DockPanel Grid.Row="3" Grid.Column="5" Grid.RowSpan="2">
                         <Label DockPanel.Dock="Top">Result:</Label>
                         <TextBox AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
              Text="{Binding ResultCollectionTwsSummary, Converter={StaticResource ListToStringConverter}}"></TextBox>
