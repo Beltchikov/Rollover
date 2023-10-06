@@ -208,6 +208,9 @@
                     </Grid.RowDefinitions>
 
                     <uc:TwsConnection Grid.Column="1" Grid.Row="1"  Grid.ColumnSpan="3" 
+                       Host="{Binding Host, Mode=OneWay}"
+                       Port="{Binding Port, Mode=OneWay}"
+                       ClientId="{Binding ClientId, Mode=OneWay}"
                        Connected="{Binding ConnectedToTws, Mode=OneWay}"
                        Command="{Binding ConnectToTwsCommand, Mode=OneWay}">
                     </uc:TwsConnection>
@@ -358,6 +361,8 @@ Foreground="White" Grid.ColumnSpan="3">
 
                     <uc:TwsConnection Grid.Column="1" Grid.Row="1"  Grid.ColumnSpan="5" 
                        Host="{Binding Host, Mode=OneWay}"
+                       Port="{Binding Port, Mode=OneWay}"
+                       ClientId="{Binding ClientId, Mode=OneWay}"
                        Connected="{Binding ConnectedToTws, Mode=OneWay}"
                        Command="{Binding ConnectToTwsCommand, Mode=OneWay}">        
                     </uc:TwsConnection>
