@@ -123,7 +123,7 @@ namespace Eomn
                                     TickerCollectionTwsRoe.ToList(),
                                     REPORT_SNAPSHOT,
                                     TIMEOUT_TWS);
-                //TickerCollectionTwsSummary = new ObservableCollection<string>(twsProvider.ExtractSummaryFromFundamentalDataList(fundamentalDataList));
+                TickerCollectionTwsSummary = new ObservableCollection<string>(twsProvider.ExtractSummaryFromFundamentalDataList(fundamentalDataList));
 
                 MessageBox.Show("TwsSummaryCommand");
             });

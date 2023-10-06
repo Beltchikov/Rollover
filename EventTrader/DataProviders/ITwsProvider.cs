@@ -12,5 +12,6 @@ namespace Eomn.DataProviders
         List<string> ExtractIdsFromContractDetailsList(List<ContractDetails> contractDetailsList);
         Task<List<string>> GetFundamentalData(List<string> tickerList, string reportType, int timeout);
         List<string> ExtractRoeFromFundamentalDataList(List<string> fundamentalDataList);
+        List<string> ExtractSummaryFromFundamentalDataList(List<string> fundamentalDataList);
     }
 }
