@@ -118,21 +118,9 @@ namespace Eomn.DataProviders
 
             foreach (string fundamentalData in fundamentalDataList)
             {
-                if (fundamentalData == null)
+                XDocument? xDocument = ParseXDocumentWithChecks(fundamentalData, result);
+                if (xDocument == null) // some error string has been added
                 {
-                    result.Add($"UNKNOWN\t");
-                    continue;
-                }
-
-                XDocument xDocument;
-                try
-                {
-                    xDocument = XDocument.Parse(fundamentalData);
-                }
-                catch (XmlException)
-                {
-                    var errorArray = fundamentalData.Split(" ");
-                    result.Add($"{errorArray[0]}\t{errorArray[1]}");
                     continue;
                 }
 
