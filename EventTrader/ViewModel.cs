@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Eomn.DataProviders;
 using Eomn.Ib;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -108,7 +109,7 @@ namespace Eomn
             RoeCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer = ibHost.Consumer ?? this;
-                var fundamentalDataList = await twsProvider.GetFundamentalData(
+                fundamentalDataList = await twsProvider.GetFundamentalData(
                                     TickerCollectionTwsRoe.ToList(),
                                     REPORT_SNAPSHOT,
                                     TIMEOUT_TWS);
@@ -117,6 +118,9 @@ namespace Eomn
 
             TwsSummaryCommand = new RelayCommand(async () =>
             {
+                ibHost.Consumer = ibHost.Consumer ?? this;
+                //TickerCollectionTwsSummary = new ObservableCollection<string>(twsProvider.ExtractSummaryFromFundamentalDataList(fundamentalDataList));
+
                 MessageBox.Show("TwsSummaryCommand");
             });
 
@@ -203,6 +207,8 @@ namespace Eomn
         #endregion Investing
 
         #region TWS
+
+        private List<string> fundamentalDataList;
 
         public string Host
         {
