@@ -357,6 +357,7 @@ Foreground="White" Grid.ColumnSpan="3">
                     </Grid.RowDefinitions>
 
                     <uc:TwsConnection Grid.Column="1" Grid.Row="1"  Grid.ColumnSpan="5" 
+                       Host="{Binding Host, Mode=OneWay}"
                        Connected="{Binding ConnectedToTws, Mode=OneWay}"
                        Command="{Binding ConnectToTwsCommand, Mode=OneWay}">        
                     </uc:TwsConnection>
