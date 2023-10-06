@@ -108,8 +108,8 @@ namespace Eomn
 
             RoeCommand = new RelayCommand(async () =>
             {
-                ibHost.Consumer = ibHost.Consumer ?? this;
-                fundamentalDataList = await twsProvider.GetFundamentalData(
+                ibHost.Consumer ??= this;
+                fundamentalDataList ??= await twsProvider.GetFundamentalData(
                                     TickerCollectionTwsRoe.ToList(),
                                     REPORT_SNAPSHOT,
                                     TIMEOUT_TWS);
@@ -118,7 +118,11 @@ namespace Eomn
 
             TwsSummaryCommand = new RelayCommand(async () =>
             {
-                ibHost.Consumer = ibHost.Consumer ?? this;
+                ibHost.Consumer ??= this;
+                fundamentalDataList ??= await twsProvider.GetFundamentalData(
+                                    TickerCollectionTwsRoe.ToList(),
+                                    REPORT_SNAPSHOT,
+                                    TIMEOUT_TWS);
                 //TickerCollectionTwsSummary = new ObservableCollection<string>(twsProvider.ExtractSummaryFromFundamentalDataList(fundamentalDataList));
 
                 MessageBox.Show("TwsSummaryCommand");
