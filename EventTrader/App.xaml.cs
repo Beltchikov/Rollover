@@ -1,11 +1,11 @@
-﻿using EventTrader.EconomicData;
-using EventTrader.Requests;
-using EventTrader.WebScraping;
+﻿using Eomn.DataProviders;
+using Eomn.Ib;
+using Eomn.WebScraping;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows;
 
-namespace EventTrader
+namespace Eomn
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -16,10 +16,11 @@ namespace EventTrader
         {
             Services = new ServiceCollection()
                 .AddSingleton<IBrowserWrapper, BrowserWrapper>()
-                .AddSingleton<IInfiniteLoop, RequestLoop>()
-                .AddSingleton<IEconDataLoop, EconDataLoop>()
-                .AddSingleton<IBrowserWrapper, BrowserWrapper>()
-                .AddSingleton<IDataProviderContext, DataProviderContext>()
+                .AddSingleton<IInvestingProvider, InvestingProvider>()
+                .AddSingleton<IYahooProvider, YahooProvider>()
+                .AddSingleton<ITwsProvider, TwsProvider>()
+                .AddSingleton<IIbHost, IbHost>()
+                .AddSingleton<IIbClientQueue, IbClientQueue>()
                 .BuildServiceProvider();
         }
 
@@ -29,7 +30,11 @@ namespace EventTrader
         {
             MainWindow mainWindow = new()
             {
-                DataContext = new ViewModel(Services.GetRequiredService<IEconDataLoop>())
+                DataContext = new ViewModel(
+                    Services.GetRequiredService<IInvestingProvider>(),
+                    Services.GetRequiredService<IYahooProvider>(),
+                    Services.GetRequiredService<ITwsProvider>(),
+                    Services.GetRequiredService<IIbHost>())
             };
             mainWindow.Show();
         }

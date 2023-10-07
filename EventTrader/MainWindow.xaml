@@ -1,15 +1,49 @@
-﻿<Window x:Class="EventTrader.MainWindow"
+﻿<Window x:Class="Eomn.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:EventTrader"
+        xmlns:local="clr-namespace:Eomn"
+        xmlns:uc="clr-namespace:Eomn.UserControls"
+        xmlns:converters="clr-namespace:Eomn.Converters"
         mc:Ignorable="d"
-        Title="Event Trader" Height="700" Width="800">
+        Title="EOMN" 
+        WindowState="Maximized">
+    <Window.Resources>
+        <BitmapImage x:Key="ConnectionCircle" UriSource="/Images/RedCircle.png" />
+        <converters:ListToStringConverter x:Key="ListToStringConverter"></converters:ListToStringConverter>
+        <converters:TrueToFalseConverter x:Key="TrueToFalseConverter"></converters:TrueToFalseConverter>
+        <converters:ConnectToTwsButtonConverter x:Key="ConnectToTwsButtonConverter"></converters:ConnectToTwsButtonConverter>
+    </Window.Resources>
     <Grid>
-        <TabControl x:Name="tabControl">
-            <TabItem Header="USD">
-                <Grid Background="#FF1A26DA">
+        <TabControl x:Name="tabControl" TabStripPlacement="Left">
+            <TabControl.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TabItem">
+                                <Grid Name="Panel">
+                                    <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Left"
+                                        ContentSource="Header"
+                                        Margin="10,2"/>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="Panel" Property="Background" Value="LightSkyBlue" />
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="False">
+                                        <Setter TargetName="Panel" Property="Background" Value="White" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TabControl.Resources>
+            <TabItem Header="Investing" Background="#FFE0CD52">
+                <Grid Background="#FFE0CD52">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="10"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
@@ -17,26 +51,69 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="100"></RowDefinition>
-                        <RowDefinition Height="330"></RowDefinition>
-                        <RowDefinition Height="180"></RowDefinition>
+                        <RowDefinition Height="235"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="10"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <GroupBox Grid.Column="1" Grid.Row="1" Header="Earnings for the Week"
+                        Foreground="Black">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"></ColumnDefinition>
+                                <ColumnDefinition Width="10"></ColumnDefinition>
+                                <ColumnDefinition Width="110"></ColumnDefinition>
+                                <ColumnDefinition Width="10"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="150"></RowDefinition>
+                                <RowDefinition Height="10"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.ColumnSpan="5" VerticalAlignment="Center" Padding="5 0 0 0">Select table with the id earningsCalendarData on the Investing.com</TextBlock>
+                            <DockPanel Grid.Row="1">
+                                <Label DockPanel.Dock="Top">HTML Source:</Label>
+                                <TextBox AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
+                                         Text="{Binding HtmlSourceEarningsForWeek}"></TextBox>
+                            </DockPanel>
+                            <Button Height="25" Grid.Column="2" Grid.Row="1"
+                                    Command="{Binding EarningsForWeekCommand}">Get Data >></Button>
+                            <DockPanel Grid.Row="1" Grid.Column="4">
+                                <Label DockPanel.Dock="Top">Result:</Label>
+                                <TextBox AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
+                                         Text="{Binding ResultCollectionEarningsForWeek, Converter={StaticResource ListToStringConverter}}"></TextBox>
+                            </DockPanel>
+
+                            <Label Grid.Row="3" HorizontalAlignment="Right">Market Cap. only above (B):</Label>
+                            <TextBox Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" Text="{Binding MarketCap}"></TextBox>
+
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Yahoo Finance">
+                <Grid Background="#FF1A26DA">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10"></ColumnDefinition>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10"></RowDefinition>
+                        <RowDefinition Height="530"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="10"></RowDefinition>
                     </Grid.RowDefinitions>
 
-                    <GroupBox Grid.Column="1" Grid.Row="1" Header="Platform Connection"
-                              Foreground="White">
+                    <GroupBox Grid.Column="1" Grid.Row="1" Header="Expected EPS"
+                  Foreground="White" Grid.ColumnSpan="4">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="10"></ColumnDefinition>
-                                <ColumnDefinition Width="140"></ColumnDefinition>
-                                <ColumnDefinition Width="200"></ColumnDefinition>
-                                <ColumnDefinition Width="60"></ColumnDefinition>
-                                <ColumnDefinition Width="60"></ColumnDefinition>
-                                <ColumnDefinition Width="60"></ColumnDefinition>
-                                <ColumnDefinition Width="60"></ColumnDefinition>
-                                <ColumnDefinition Width="60"></ColumnDefinition>
-                                <ColumnDefinition Width="60"></ColumnDefinition>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                                <ColumnDefinition Width="150"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="10"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
@@ -45,234 +122,251 @@
                                 <RowDefinition Height="25"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="10"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="10"></RowDefinition>
                             </Grid.RowDefinitions>
 
-                            <Label Content="Host:" Grid.Column="1" Grid.Row="1" 
-                               HorizontalAlignment="Right"
-                               Foreground="White"></Label>
-                            <TextBox Text=""
-                             Grid.Column="2" Grid.Row="1"></TextBox>
+                            <Label Content="Tickers:" Grid.Column="1" Grid.Row="1" 
+                       HorizontalAlignment="Left"
+                        Foreground="White"></Label>
+                            <TextBox Text="{Binding TickerCollectionYahoo, Converter={StaticResource ListToStringConverter}}" Grid.Column="1" Grid.Row="2" 
+                         Grid.RowSpan="3" AcceptsReturn="True"
+                            VerticalScrollBarVisibility="Visible"></TextBox>
 
-                            <Label Content="Port:" Grid.Column="4" Grid.Row="1" 
-                               HorizontalAlignment="Right"
-                               Foreground="White"></Label>
-                            <TextBox Text=""
-                             Grid.Column="5" Grid.Row="1"></TextBox>
+                            <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="2" >
+                                <Button Padding="10 0 10 0" 
+                        Margin="10,0,10,0" 
+                                  Height="25" 
+                            HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center" 
+                                Command="{Binding LastEpsCommand}">Last EPS >>
+                                </Button>
+                                <Button Padding="10 0 10 0" 
+                        Margin="10,0,10,0" 
+                                HorizontalAlignment="Stretch"  Height="25" 
+                                VerticalAlignment="Center" 
+                            Command="{Binding ExpectedEpsCommand}">Expected EPS >>
+                                </Button>
 
-                            <Label Content="Client ID:" Grid.Column="7" Grid.Row="1" 
-                               HorizontalAlignment="Right"
-                               Foreground="White"></Label>
-                            <TextBox Text=""
-                             Grid.Column="8" Grid.Row="1" Grid.ColumnSpan="2"></TextBox>
+                            </StackPanel>
 
-                            <Button Padding="10 0 10 0" 
-                            Margin="0,0,1,0" Grid.Column="8" Grid.Row="2" Grid.ColumnSpan="2"
-                                    HorizontalAlignment="Right" Height="25" 
-                                    VerticalAlignment="Top" 
-                                    Command="{Binding TestConnectionCommand}">Test</Button>
+                            <Label Content="Results:" Grid.Column="3" Grid.Row="1" 
+                       HorizontalAlignment="Left"
+                        Foreground="White"></Label>
+                            <TextBox x:Name="txtResultsYahoo" 
+                         Text="{Binding ResultCollectionYahooEps, Converter={StaticResource ListToStringConverter}}" Grid.Column="3" Grid.Row="2" 
+                         AcceptsReturn="True"
+                            VerticalScrollBarVisibility="Visible"></TextBox>
+
+                            <uc:DecimalSeparator Grid.Column="3" Grid.Row="4" Height="25" 
+                                     SelectionChanged="DecimalSeparatorYahooEps_SelectionChanged">
+                            </uc:DecimalSeparator>
 
                         </Grid>
                     </GroupBox>
 
-                    <GroupBox Grid.Column="1" Grid.Row="2" Header="Trade"
-                              Foreground="White">
+                    <GroupBox Grid.Column="1" Grid.Row="2" Header="Information"
+                  Foreground="White" Grid.ColumnSpan="4">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="10"></ColumnDefinition>
-                                <ColumnDefinition Width="140"></ColumnDefinition>
-                                <ColumnDefinition Width="320"></ColumnDefinition>
-                                <ColumnDefinition Width="60"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="10"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="10"></RowDefinition>
-                                <RowDefinition Height="25"></RowDefinition>
-                                <RowDefinition Height="10"></RowDefinition>
-                                <RowDefinition Height="25"></RowDefinition>
-                                <RowDefinition Height="25"></RowDefinition>
-                                <RowDefinition Height="25"></RowDefinition>
-                                <RowDefinition Height="25"></RowDefinition>
-                                <RowDefinition Height="25"></RowDefinition>
-                                <RowDefinition Height="10"></RowDefinition>
-                                <RowDefinition Height="25"></RowDefinition>
-                                <RowDefinition Height="25"></RowDefinition>
-                                <RowDefinition Height="25"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="10"></RowDefinition>
                             </Grid.RowDefinitions>
 
-                            <Label Content="Kind of Economic Data:" 
-                                   Grid.Column="1" Grid.Row="1" 
-                                   HorizontalAlignment="Right"
-                                   Foreground="White"></Label>
-                            <ComboBox Grid.Column="2" Grid.Row="1" ItemsSource="{Binding DataTypesUs}" 
-                                      SelectedValue="{Binding DataType}"
-                                      DisplayMemberPath="Value" SelectedValuePath="Key"></ComboBox>
-                            <Label Content="Time:" 
-                                   Grid.Column="3" Grid.Row="1" 
-                                   HorizontalAlignment="Right"
-                                   Foreground="White"></Label>
-                            <DatePicker Grid.Column="4" Grid.Row="1" ></DatePicker>
-
-                            <Label Content="URL:" 
-                                   Grid.Column="1" Grid.Row="3" 
-                                   HorizontalAlignment="Right"
-                                   Foreground="White"></Label>
-                            <TextBox Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="3" 
-                                     Text="{Binding Url}">
-                            </TextBox>
-
-                            <Label Content="XPath Actual:" 
-                                   Grid.Column="1" Grid.Row="4" 
-                                   HorizontalAlignment="Right"
-                                   Foreground="White"></Label>
-                            <TextBox Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="3" 
-                                     Text="{Binding XPathActual}">
-                            </TextBox>
-
-                            <Label Content="XPath Expected:" 
-                                   Grid.Column="1" Grid.Row="5" 
-                                   HorizontalAlignment="Right"
-                                   Foreground="White"></Label>
-                            <TextBox Grid.Column="2" Grid.Row="5" Grid.ColumnSpan="3" 
-                                     Text="{Binding XPathExpected}">
-                            </TextBox>
-
-                            <Label Content="XPath Previous:" 
-                                   Grid.Column="1" Grid.Row="6" 
-                                   HorizontalAlignment="Right"
-                                   Foreground="White"></Label>
-                            <TextBox Grid.Column="2" Grid.Row="6" Grid.ColumnSpan="3" 
-                                     Text="{Binding XPathPrevious}">
-                            </TextBox>
-
-                            <Label Content="Null Placeholder:" 
-                                   Grid.Column="1" Grid.Row="7" 
-                                   HorizontalAlignment="Right"
-                                   Foreground="White"></Label>
-                            <TextBox Grid.Column="2" Grid.Row="7" Text="{Binding NullPlaceholder}">
-                            </TextBox>
-
-
-                            <Label Content="Long Trade Condition:" 
-                                   Grid.Column="1" Grid.Row="9" 
-                                   HorizontalAlignment="Right"
-                                   Foreground="White"></Label>
-                            <StackPanel Grid.Column="2" Grid.Row="9" Orientation="Horizontal">
-                                <ComboBox Width="60"></ComboBox>
-                                <TextBox Width="60" Text="0,2"></TextBox>
-                            </StackPanel>
-
-                            <Label Content="Short Trade Condition:" 
-                                   Grid.Column="1" Grid.Row="10" 
-                                   HorizontalAlignment="Right"
-                                   Foreground="White"></Label>
-                            <StackPanel Grid.Column="2" Grid.Row="10" Orientation="Horizontal">
-                                <ComboBox Width="60"></ComboBox>
-                                <TextBox Width="60" Text="0,2"></TextBox>
-                            </StackPanel>
-
-                            <Button x:Name="btStartSession" Padding="10 0 10 0" 
-                                    Margin="0,0,1,0" Grid.Column="4" Grid.Row="10" 
-                                    HorizontalAlignment="Right" Command="{Binding StartSessionCommand}">
-                                Start Trading Session</Button>
-
-                            <Label Content="Request Frequency (ms):" 
-                                   Grid.Column="1" Grid.Row="11" 
-                                   HorizontalAlignment="Right"
-                                   Foreground="White"></Label>
-                            <TextBox Grid.Column="2" Grid.Row="11"  Width="60" Text="{Binding Frequency}"
-                                     HorizontalAlignment="Left"></TextBox>
-
-                            <Button x:Name="btStopSession" Padding="10 0 10 0" 
-                                    Margin="0,0,1,0" Grid.Column="4" Grid.Row="11" 
-                                    HorizontalAlignment="Right" Command="{Binding StopSessionCommand}"
-                                    IsEnabled="{Binding StopSessionEnabled}">
-                                Stop Trading Session</Button>
-
-                        </Grid>
-                    </GroupBox>
-
-                    <GroupBox Grid.Column="1" Grid.Row="3" Header="Information"
-                              Foreground="White">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="10"></ColumnDefinition>
-                                <ColumnDefinition Width="140"></ColumnDefinition>
-                                <ColumnDefinition Width="100"></ColumnDefinition>
-                                <ColumnDefinition Width="100"></ColumnDefinition>
-                                <ColumnDefinition Width="100"></ColumnDefinition>
-                                <ColumnDefinition Width="100"></ColumnDefinition>
-                                <ColumnDefinition Width="100"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="10"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="10"></RowDefinition>
-                                <RowDefinition Height="25"></RowDefinition>
-                                <RowDefinition Height="10"></RowDefinition>
-                                <RowDefinition Height="25"></RowDefinition>
-                                <RowDefinition Height="25"></RowDefinition>
-                                <RowDefinition Height="10"></RowDefinition>
-                                <RowDefinition Height="25"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="10"></RowDefinition>
-                            </Grid.RowDefinitions>
-
-                            <Label Content="Last Request sent at:" Grid.Column="1" Grid.Row="1" 
-                               HorizontalAlignment="Right"
-                               Foreground="White"></Label>
-                            <TextBox Text="" Width="60" HorizontalAlignment="Left"
-                             Grid.Column="2" Grid.Row="1"></TextBox>
-
-                            <Label Content="Event" Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="2"
-                               HorizontalAlignment="Center"
-                               Foreground="White"></Label>
-                            <TextBox Text="" Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="2"></TextBox>
-
-                            <Label Content="Actual" Grid.Column="4" Grid.Row="3" 
-                               HorizontalAlignment="Center"
-                               Foreground="White"></Label>
-                            <TextBox Text="" Grid.Column="4" Grid.Row="4"></TextBox>
-
-                            <Label Content="Forecast" Grid.Column="5" Grid.Row="3" 
-                               HorizontalAlignment="Center"
-                               Foreground="White"></Label>
-                            <TextBox Text="" Grid.Column="5" Grid.Row="4"></TextBox>
-
-                            <Label Content="Previous" Grid.Column="6" Grid.Row="3" 
-                               HorizontalAlignment="Center"
-                               Foreground="White"></Label>
-                            <TextBox Text="" Grid.Column="6" Grid.Row="4"></TextBox>
-
-                            <Label Content="Trade Status:" Grid.Column="1" Grid.Row="6" 
-                               HorizontalAlignment="Right"
-                               Foreground="White"></Label>
-                            <TextBox Text="{Binding TradeStatus}" Grid.Column="2" Grid.Row="6" 
-                                     Grid.ColumnSpan="5">
-                            </TextBox>
+                            <TextBox Text="{Binding MessageYahoo, Mode=OneWay}" 
+                         Grid.Column="1" Grid.Row="1" ></TextBox>
 
                         </Grid>
                     </GroupBox>
 
                 </Grid>
             </TabItem>
-            <TabItem Header="AUD">
-                <Grid Background="#FFE0CD52">
+            <TabItem Header="TWS">
+                <Grid Background="#FFA72F34">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="10"></ColumnDefinition>
-                        <ColumnDefinition Width="60"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="10"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
+                        <RowDefinition Height="70"></RowDefinition>
+                        <RowDefinition Height="10"></RowDefinition>
+                        <RowDefinition Height="130"></RowDefinition>
+                        <RowDefinition Height="10"></RowDefinition>
+                        <RowDefinition Height="160"></RowDefinition>
+                        <RowDefinition Height="10"></RowDefinition>
+                        <RowDefinition Height="130"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="10"></RowDefinition>
                     </Grid.RowDefinitions>
+
+                    <uc:TwsConnection Grid.Column="1" Grid.Row="1"  Grid.ColumnSpan="3" 
+                       Host="{Binding Host, Mode=OneWay}"
+                       Port="{Binding Port, Mode=OneWay}"
+                       ClientId="{Binding ClientId, Mode=OneWay}"
+                       Connected="{Binding ConnectedToTws, Mode=OneWay}"
+                       Command="{Binding ConnectToTwsCommand, Mode=OneWay}">
+                    </uc:TwsConnection>
+
+                    <GroupBox Grid.Column="1" Grid.Row="3" Header="Contract Details"
+   Foreground="White" Grid.ColumnSpan="3">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="10"></ColumnDefinition>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                                <ColumnDefinition Width="155"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="10"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="10"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="10"></RowDefinition>
+                            </Grid.RowDefinitions>
+
+                            <Label Content="Tickers:" Grid.Column="1" Grid.Row="1" 
+        HorizontalAlignment="Left"
+         Foreground="White"></Label>
+                            <TextBox Text="{Binding TickerCollectionTwsContractDetails, Converter={StaticResource ListToStringConverter}}" Grid.Column="1" Grid.Row="2" 
+           AcceptsReturn="True"
+             VerticalScrollBarVisibility="Visible"></TextBox>
+
+                            <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="2" >
+                                <Button Padding="10 0 10 0" 
+         Margin="10,0,10,0" 
+                   Height="25" 
+             HorizontalAlignment="Stretch"
+                 VerticalAlignment="Center" 
+                 Command="{Binding ContractIdsCommand}">Contract IDs >>
+                                </Button>
+                            </StackPanel>
+
+                            <Label Content="Results:" Grid.Column="3" Grid.Row="1" 
+        HorizontalAlignment="Left"
+         Foreground="White"></Label>
+                            <TextBox Text="{Binding ResultCollectionTwsContractIds, Converter={StaticResource ListToStringConverter}}" Grid.Column="3" Grid.Row="2" 
+          AcceptsReturn="True"
+             VerticalScrollBarVisibility="Visible"></TextBox>
+
+                        </Grid>
+                    </GroupBox>
+
+                    <GroupBox Grid.Column="1" Grid.Row="5" Header="ROE"
+Foreground="White" Grid.ColumnSpan="3">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="10"></ColumnDefinition>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                                <ColumnDefinition Width="155"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="10"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="10"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="10"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="10"></RowDefinition>
+                            </Grid.RowDefinitions>
+
+                            <Label Content="Tickers:" Grid.Column="1" Grid.Row="1" 
+     HorizontalAlignment="Left"
+      Foreground="White"></Label>
+                            <TextBox Text="{Binding TickerCollectionTwsRoe, Converter={StaticResource ListToStringConverter}}" 
+                                     Grid.Column="1" Grid.Row="2" Grid.RowSpan="3"
+        AcceptsReturn="True"
+          VerticalScrollBarVisibility="Visible"></TextBox>
+
+                            <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="2" >
+                                <Button Padding="10 0 10 0" 
+      Margin="10,0,10,0" 
+                Height="25" 
+          HorizontalAlignment="Stretch"
+              VerticalAlignment="Center" 
+              Command="{Binding RoeCommand}">ROE >>
+                                </Button>
+                            </StackPanel>
+
+                            <Label Content="Results:" Grid.Column="3" Grid.Row="1" 
+     HorizontalAlignment="Left"
+      Foreground="White"></Label>
+                            <TextBox x:Name="txtResultsTwsRoe" 
+                                     Text="{Binding ResultCollectionTwsRoe, Converter={StaticResource ListToStringConverter}}" 
+                                     Grid.Column="3" Grid.Row="2" AcceptsReturn="True"
+                                        VerticalScrollBarVisibility="Visible"></TextBox>
+
+                            <uc:DecimalSeparator Grid.Column="3" Grid.Row="4" Height="25" 
+                      SelectionChanged="DecimalSeparatorTwsRoe_SelectionChanged">
+                            </uc:DecimalSeparator>
+
+                        </Grid>
+                    </GroupBox>
+
+                 <uc:TwsInformation Grid.Column="1" Grid.Row="7" MessageCollection="{Binding TwsMessageCollection}">
+                 </uc:TwsInformation>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="TWS Business Summary">
+                <Grid Background="#FFC3A4A5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10"></ColumnDefinition>
+                        <ColumnDefinition Width="100"></ColumnDefinition>
+                        <ColumnDefinition Width="10"></ColumnDefinition>
+                        <ColumnDefinition Width="150"></ColumnDefinition>
+                        <ColumnDefinition Width="10"></ColumnDefinition>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10"></RowDefinition>
+                        <RowDefinition Height="60"></RowDefinition>
+                        <RowDefinition Height="10"></RowDefinition>
+                        <RowDefinition Height="25"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="10"></RowDefinition>
+                        <RowDefinition Height="100"></RowDefinition>
+                        <RowDefinition Height="10"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <uc:TwsConnection Grid.Column="1" Grid.Row="1"  Grid.ColumnSpan="5" 
+                       Host="{Binding Host, Mode=OneWay}"
+                       Port="{Binding Port, Mode=OneWay}"
+                       ClientId="{Binding ClientId, Mode=OneWay}"
+                       Connected="{Binding ConnectedToTws, Mode=OneWay}"
+                       Command="{Binding ConnectToTwsCommand, Mode=OneWay}">
+                    </uc:TwsConnection>
+
+                    <Label Content="Tickers:" Grid.Column="1" Grid.Row="3" 
+                    HorizontalAlignment="Left"
+                     Foreground="Black"></Label>
+                    <TextBox Text="{Binding TickerCollectionTwsSummary, Converter={StaticResource ListToStringConverter}}" 
+                             Grid.Column="1" Grid.Row="4" 
+AcceptsReturn="True"
+   VerticalScrollBarVisibility="Visible"></TextBox>
+                    <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="25" 
+                            Grid.Column="3" Grid.Row="4"
+    HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+        Command="{Binding TwsSummaryCommand}">Get Summary >>
+                    </Button>
+                    <DockPanel Grid.Row="3" Grid.Column="5" Grid.RowSpan="2">
+                        <Label DockPanel.Dock="Top">Result:</Label>
+                        <TextBox AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
+                                 TextWrapping="Wrap" 
+                                 Text="{Binding ResultCollectionTwsSummary, Converter={StaticResource ListToStringConverter}}">
+                        </TextBox>
+                    </DockPanel>
+                    <uc:TwsInformation Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="5" MessageCollection="{Binding TwsMessageCollection}">
+                    </uc:TwsInformation>
                 </Grid>
             </TabItem>
             <TabItem Header="TabItem">

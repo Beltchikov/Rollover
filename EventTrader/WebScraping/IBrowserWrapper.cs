@@ -1,6 +1,6 @@
 ﻿using System.Xml.Linq;
 
-namespace EventTrader.WebScraping
+namespace Eomn.WebScraping
 {
     public interface IBrowserWrapper
     {

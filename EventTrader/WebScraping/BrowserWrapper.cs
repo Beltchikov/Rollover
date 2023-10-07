@@ -2,7 +2,7 @@
 using System.Xml.Linq;
 using SimpleBrowser;
 
-namespace EventTrader.WebScraping
+namespace Eomn.WebScraping
 {
     [ExcludeFromCodeCoverage]
     public class BrowserWrapper : IBrowserWrapper
