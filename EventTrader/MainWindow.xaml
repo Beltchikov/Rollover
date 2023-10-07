@@ -311,34 +311,8 @@ Foreground="White" Grid.ColumnSpan="3">
                         </Grid>
                     </GroupBox>
 
-                    <!--<GroupBox Grid.Column="1" Grid.Row="7" Header="Information"
-   Foreground="White" Grid.ColumnSpan="3">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="10"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="10"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="10"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                                <RowDefinition Height="10"></RowDefinition>
-                            </Grid.RowDefinitions>
-
-                            <ListBox Name="listBoxTwsMessages" Grid.Row="1" Grid.Column="1" 
-                                ItemsSource="{Binding TwsMessageCollection, Mode=OneWay}">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding}"></TextBlock>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-
-                        </Grid>
-                    </GroupBox>-->
-
-                    <uc:TwsInformation Grid.Column="1" Grid.Row="7" 
-                                       MessageCollection="{Binding TwsMessageCollection}"></uc:TwsInformation>
+                 <uc:TwsInformation Grid.Column="1" Grid.Row="7" MessageCollection="{Binding TwsMessageCollection}">
+                 </uc:TwsInformation>
 
                 </Grid>
             </TabItem>
@@ -359,6 +333,8 @@ Foreground="White" Grid.ColumnSpan="3">
                         <RowDefinition Height="10"></RowDefinition>
                         <RowDefinition Height="25"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="10"></RowDefinition>
+                        <RowDefinition Height="100"></RowDefinition>
                         <RowDefinition Height="10"></RowDefinition>
                     </Grid.RowDefinitions>
 
@@ -389,6 +365,8 @@ AcceptsReturn="True"
                                  Text="{Binding ResultCollectionTwsSummary, Converter={StaticResource ListToStringConverter}}">
                         </TextBox>
                     </DockPanel>
+                    <uc:TwsInformation Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="5" MessageCollection="{Binding TwsMessageCollection}">
+                    </uc:TwsInformation>
                 </Grid>
             </TabItem>
             <TabItem Header="TabItem">
