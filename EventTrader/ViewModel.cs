@@ -100,6 +100,11 @@ namespace Eomn
             ContractIdsCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer = ibHost.Consumer ?? this;
+                if (!ConnectedToTws)
+                {
+                    ConnectToTwsCommand?.Execute(null);
+                }
+
                 var contractDetailsList = await twsProvider.GetContractDetails(
                                     TickerCollectionTwsContractDetails.ToList(),
                                     TIMEOUT_TWS);
