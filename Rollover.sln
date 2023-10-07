@@ -44,7 +44,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChartControls", "ChartContr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IbClient.UnitTests", "IbClient.UnitTests\IbClient.UnitTests.csproj", "{1F674692-2028-4101-81BD-BFD58B04BD4D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eomn", "EventTrader\Eomn.csproj", "{C372FA65-BD1D-480C-BDD9-F7D9271F0F65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockAnalyzer", "EventTrader\StockAnalyzer.csproj", "{C372FA65-BD1D-480C-BDD9-F7D9271F0F65}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
