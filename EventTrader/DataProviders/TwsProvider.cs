@@ -129,8 +129,8 @@ namespace Eomn.DataProviders
                 var textElementBusinessSummary = textElements?.FirstOrDefault(e => e.Attribute("Type")?.Value == "Business Summary");
                 var textElementFinancialSummary = textElements?.FirstOrDefault(e => e.Attribute("Type")?.Value == "Financial Summary");
 
-                result.Add($"{textElementBusinessSummary?.Value}{Environment.NewLine}{Environment.NewLine}" +
-                    $"{textElementFinancialSummary?.Value}{Environment.NewLine}{Enumerable.Repeat("-", 20)}");
+                result.Add($"{textElementBusinessSummary?.Value}{Environment.NewLine}" +
+                    $"{textElementFinancialSummary?.Value}{Environment.NewLine}{string.Concat(Enumerable.Repeat("-", 20))}");
             }
 
             return result;

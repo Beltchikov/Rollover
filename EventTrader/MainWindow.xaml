@@ -364,7 +364,7 @@ Foreground="White" Grid.ColumnSpan="3">
                        Port="{Binding Port, Mode=OneWay}"
                        ClientId="{Binding ClientId, Mode=OneWay}"
                        Connected="{Binding ConnectedToTws, Mode=OneWay}"
-                       Command="{Binding ConnectToTwsCommand, Mode=OneWay}">        
+                       Command="{Binding ConnectToTwsCommand, Mode=OneWay}">
                     </uc:TwsConnection>
 
                     <Label Content="Tickers:" Grid.Column="1" Grid.Row="3" 
@@ -382,7 +382,9 @@ AcceptsReturn="True"
                     <DockPanel Grid.Row="3" Grid.Column="5" Grid.RowSpan="2">
                         <Label DockPanel.Dock="Top">Result:</Label>
                         <TextBox AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
-             Text="{Binding ResultCollectionTwsSummary, Converter={StaticResource ListToStringConverter}}"></TextBox>
+                                 TextWrapping="Wrap" 
+                                 Text="{Binding ResultCollectionTwsSummary, Converter={StaticResource ListToStringConverter}}">
+                        </TextBox>
                     </DockPanel>
                 </Grid>
             </TabItem>

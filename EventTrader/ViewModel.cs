@@ -126,9 +126,7 @@ namespace Eomn
                                     TickerCollectionTwsSummary.ToList(),
                                     REPORT_SNAPSHOT,
                                     TIMEOUT_TWS);
-                ResultCollectionTwsSummary = new ObservableCollection<string>(twsProvider.ExtractSummaryFromFundamentalDataList(_fundamentalDataListRoe));
-
-                MessageBox.Show("TwsSummaryCommand");
+                ResultCollectionTwsSummary = new ObservableCollection<string>(twsProvider.ExtractSummaryFromFundamentalDataList(_fundamentalDataListSummary));
             });
 
             MarketCap = 0.1;
