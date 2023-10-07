@@ -25,7 +25,6 @@ namespace StockAnalyzer
         }
 
         public IServiceProvider Services { get; }
-
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             MainWindow mainWindow = new()
