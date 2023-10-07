@@ -22,7 +22,7 @@
 
                 <!--<ListBox Background="Azure" Grid.Row="1" Grid.Column="1" ></ListBox>-->
 
-                 <ListBox Name="listBoxTwsMessages" Grid.Row="1" Grid.Column="1" 
+                 <ListBox Name="listBoxMessages" Grid.Row="1" Grid.Column="1" 
                              ItemsSource="{Binding MessageCollection, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>

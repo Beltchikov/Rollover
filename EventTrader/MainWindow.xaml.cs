@@ -17,9 +17,6 @@ namespace Eomn
         public MainWindow()
         {
             InitializeComponent();
-
-            //var listBoxMessagesSource = (INotifyCollectionChanged)listBoxTwsMessages.Items.SourceCollection;
-            //listBoxMessagesSource.CollectionChanged += ListBoxMessagesSource_CollectionChanged;
         }
 
         private void DecimalSeparatorYahooEps_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -67,15 +64,5 @@ namespace Eomn
                 throw new NotImplementedException();
             }
         }
-
-        //private void ListBoxMessagesSource_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        //{
-        //    if (VisualTreeHelper.GetChildrenCount(listBoxTwsMessages) > 0)
-        //    {
-        //        var border = (Decorator)VisualTreeHelper.GetChild(listBoxTwsMessages, 0);
-        //        var scrollViewer = (ScrollViewer)border.Child;
-        //        scrollViewer.ScrollToEnd();
-        //    }
-        //}
     }
 }

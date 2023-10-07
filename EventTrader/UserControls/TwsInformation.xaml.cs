@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,12 +26,11 @@ namespace Eomn.UserControls
         {
             InitializeComponent();
 
-            // TEST remove later
-            MessageCollection.Add("AAA");
-            MessageCollection.Add("bbb");
+
+            var listBoxMessagesSource = (INotifyCollectionChanged)listBoxMessages.Items.SourceCollection;
+            listBoxMessagesSource.CollectionChanged += ListBoxMessagesSource_CollectionChanged;
 
         }
-
 
         public static readonly DependencyProperty MessageCollectionProperty =
             DependencyProperty.Register("MessageCollection", typeof(ObservableCollection<string>), typeof(TwsInformation), new PropertyMetadata(new ObservableCollection<string>()));
@@ -40,5 +40,14 @@ namespace Eomn.UserControls
             set { SetValue(MessageCollectionProperty, value); }
         }
 
+        private void ListBoxMessagesSource_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (VisualTreeHelper.GetChildrenCount(listBoxMessages) > 0)
+            {
+                var border = (Decorator)VisualTreeHelper.GetChild(listBoxMessages, 0);
+                var scrollViewer = (ScrollViewer)border.Child;
+                scrollViewer.ScrollToEnd();
+            }
+        }
     }
 }
