@@ -45,7 +45,10 @@ namespace Eomn
         public ICommand ContractIdsCommand { get; }
         public ICommand RoeCommand { get; }
         public ICommand TwsSummaryCommand { get; }
-        
+
+        private List<string> _fundamentalDataListRoe = null!;
+        private List<string> _fundamentalDataListSummary = null!;
+
         public ViewModel(
             IInvestingProvider investingProvider,
             IYahooProvider yahooProvider,
@@ -87,7 +90,7 @@ namespace Eomn
             ConnectToTwsCommand = new RelayCommand(() =>
             {
                 ibHost.Consumer = ibHost.Consumer ?? this;
-                if(!ibHost.Consumer.ConnectedToTws)
+                if (!ibHost.Consumer.ConnectedToTws)
                 {
                     ibHost.ConnectAndStartReaderThread(Host, Port, ClientId, 1000);
                 }
@@ -109,21 +112,21 @@ namespace Eomn
             RoeCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer ??= this;
-                fundamentalDataList ??= await twsProvider.GetFundamentalData(
+                _fundamentalDataListRoe ??= await twsProvider.GetFundamentalData(
                                     TickerCollectionTwsRoe.ToList(),
                                     REPORT_SNAPSHOT,
                                     TIMEOUT_TWS);
-                ResultCollectionTwsRoe = new ObservableCollection<string>(twsProvider.ExtractRoeFromFundamentalDataList(fundamentalDataList));
+                ResultCollectionTwsRoe = new ObservableCollection<string>(twsProvider.ExtractRoeFromFundamentalDataList(_fundamentalDataListRoe));
             });
 
             TwsSummaryCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer ??= this;
-                fundamentalDataList ??= await twsProvider.GetFundamentalData(
-                                    TickerCollectionTwsRoe.ToList(),
+                _fundamentalDataListSummary ??= await twsProvider.GetFundamentalData(
+                                    TickerCollectionTwsSummary.ToList(),
                                     REPORT_SNAPSHOT,
                                     TIMEOUT_TWS);
-                TickerCollectionTwsSummary = new ObservableCollection<string>(twsProvider.ExtractSummaryFromFundamentalDataList(fundamentalDataList));
+                ResultCollectionTwsSummary = new ObservableCollection<string>(twsProvider.ExtractSummaryFromFundamentalDataList(_fundamentalDataListRoe));
 
                 MessageBox.Show("TwsSummaryCommand");
             });
@@ -132,6 +135,7 @@ namespace Eomn
             TickerCollectionYahoo = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA\r\n WT").Split("\r\n").ToList());
             TickerCollectionTwsContractDetails = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA").Split("\r\n").ToList());
             TickerCollectionTwsRoe = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA").Split("\r\n").ToList());
+            TickerCollectionTwsSummary = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA").Split("\r\n").ToList());
         }
 
         #region Yahoo
@@ -211,8 +215,6 @@ namespace Eomn
         #endregion Investing
 
         #region TWS
-
-        private List<string> fundamentalDataList;
 
         public string Host
         {
@@ -6045,7 +6047,7 @@ namespace Eomn
             
 </tbody>
 </table>";
-        
+
         #endregion
     }
 }

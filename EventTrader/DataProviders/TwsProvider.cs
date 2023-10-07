@@ -124,7 +124,13 @@ namespace Eomn.DataProviders
                     continue;
                 }
 
-                // TODO
+                var textInfoElement = xDocument.Descendants("TextInfo");
+                var textElements = textInfoElement?.Descendants("Text");
+                var textElementBusinessSummary = textElements?.FirstOrDefault(e => e.Attribute("Type")?.Value == "Business Summary");
+                var textElementFinancialSummary = textElements?.FirstOrDefault(e => e.Attribute("Type")?.Value == "Financial Summary");
+
+                result.Add($"{textElementBusinessSummary?.Value}{Environment.NewLine}{Environment.NewLine}" +
+                    $"{textElementFinancialSummary?.Value}{Environment.NewLine}{Enumerable.Repeat("-", 20)}");
             }
 
             return result;
