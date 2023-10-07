@@ -33,7 +33,7 @@ namespace Eomn.UserControls
 
 
         public static readonly DependencyProperty MessageCollectionProperty =
-            DependencyProperty.Register("MyProperty", typeof(ObservableCollection<string>), typeof(TwsInformation), new PropertyMetadata(new ObservableCollection<string>()));
+            DependencyProperty.Register("MessageCollection", typeof(ObservableCollection<string>), typeof(TwsInformation), new PropertyMetadata(new ObservableCollection<string>()));
         public ObservableCollection<string> MessageCollection
         {
             get { return (ObservableCollection<string>)GetValue(MessageCollectionProperty); }

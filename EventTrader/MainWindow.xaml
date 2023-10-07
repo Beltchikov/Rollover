@@ -337,7 +337,8 @@ Foreground="White" Grid.ColumnSpan="3">
                         </Grid>
                     </GroupBox>-->
 
-                    <uc:TwsInformation Grid.Column="1" Grid.Row="7"></uc:TwsInformation>
+                    <uc:TwsInformation Grid.Column="1" Grid.Row="7" 
+                                       MessageCollection="{Binding TwsMessageCollection}"></uc:TwsInformation>
 
                 </Grid>
             </TabItem>
