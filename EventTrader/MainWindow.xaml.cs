@@ -18,8 +18,8 @@ namespace Eomn
         {
             InitializeComponent();
 
-            var listBoxMessagesSource = (INotifyCollectionChanged)listBoxTwsMessages.Items.SourceCollection;
-            listBoxMessagesSource.CollectionChanged += ListBoxMessagesSource_CollectionChanged;
+            //var listBoxMessagesSource = (INotifyCollectionChanged)listBoxTwsMessages.Items.SourceCollection;
+            //listBoxMessagesSource.CollectionChanged += ListBoxMessagesSource_CollectionChanged;
         }
 
         private void DecimalSeparatorYahooEps_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -68,14 +68,14 @@ namespace Eomn
             }
         }
 
-        private void ListBoxMessagesSource_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (VisualTreeHelper.GetChildrenCount(listBoxTwsMessages) > 0)
-            {
-                var border = (Decorator)VisualTreeHelper.GetChild(listBoxTwsMessages, 0);
-                var scrollViewer = (ScrollViewer)border.Child;
-                scrollViewer.ScrollToEnd();
-            }
-        }
+        //private void ListBoxMessagesSource_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        //{
+        //    if (VisualTreeHelper.GetChildrenCount(listBoxTwsMessages) > 0)
+        //    {
+        //        var border = (Decorator)VisualTreeHelper.GetChild(listBoxTwsMessages, 0);
+        //        var scrollViewer = (ScrollViewer)border.Child;
+        //        scrollViewer.ScrollToEnd();
+        //    }
+        //}
     }
 }

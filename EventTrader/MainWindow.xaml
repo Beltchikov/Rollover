@@ -311,7 +311,7 @@ Foreground="White" Grid.ColumnSpan="3">
                         </Grid>
                     </GroupBox>
 
-                    <GroupBox Grid.Column="1" Grid.Row="7" Header="Information"
+                    <!--<GroupBox Grid.Column="1" Grid.Row="7" Header="Information"
    Foreground="White" Grid.ColumnSpan="3">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -335,7 +335,9 @@ Foreground="White" Grid.ColumnSpan="3">
                             </ListBox>
 
                         </Grid>
-                    </GroupBox>
+                    </GroupBox>-->
+
+                    <uc:TwsInformation Grid.Column="1" Grid.Row="7"></uc:TwsInformation>
 
                 </Grid>
             </TabItem>
