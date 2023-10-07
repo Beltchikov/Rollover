@@ -1,15 +1,14 @@
-﻿using Eomn.Ib;
-using IBApi;
+﻿using IBApi;
+using StockAnalyzer.Ib;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace Eomn.DataProviders
+namespace StockAnalyzer.DataProviders
 {
     public class TwsProvider : ProviderBase, ITwsProvider
     {

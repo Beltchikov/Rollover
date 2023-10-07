@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Eomn.UserControls
+namespace StockAnalyzer.UserControls
 {
     /// <summary>
     /// Interaction logic for TwsConnection.xaml

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Eomn.DataProviders
+namespace StockAnalyzer.DataProviders
 {
     public interface IInvestingProvider
     {

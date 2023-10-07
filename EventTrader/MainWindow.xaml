@@ -1,13 +1,13 @@
-﻿<Window x:Class="Eomn.MainWindow"
+﻿<Window x:Class="StockAnalyzer.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Eomn"
-        xmlns:uc="clr-namespace:Eomn.UserControls"
-        xmlns:converters="clr-namespace:Eomn.Converters"
+        xmlns:local="clr-namespace:StockAnalyzer"
+        xmlns:uc="clr-namespace:StockAnalyzer.UserControls"
+        xmlns:converters="clr-namespace:StockAnalyzer.Converters"
         mc:Ignorable="d"
-        Title="EOMN" 
+        Title="Stock Analyzer" 
         WindowState="Maximized">
     <Window.Resources>
         <BitmapImage x:Key="ConnectionCircle" UriSource="/Images/RedCircle.png" />

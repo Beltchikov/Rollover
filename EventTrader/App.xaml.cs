@@ -1,11 +1,11 @@
-﻿using Eomn.DataProviders;
-using Eomn.Ib;
-using Eomn.WebScraping;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using StockAnalyzer.DataProviders;
+using StockAnalyzer.Ib;
+using StockAnalyzer.WebScraping;
 using System;
 using System.Windows;
 
-namespace Eomn
+namespace StockAnalyzer
 {
     /// <summary>
     /// Interaction logic for App.xaml

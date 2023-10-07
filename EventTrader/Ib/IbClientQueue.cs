@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace Eomn.Ib
+namespace StockAnalyzer.Ib
 {
     [ExcludeFromCodeCoverage(Justification = "Just a wrapper")]
     public class IbClientQueue : IIbClientQueue

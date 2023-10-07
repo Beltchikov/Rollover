@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Eomn
+namespace StockAnalyzer
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

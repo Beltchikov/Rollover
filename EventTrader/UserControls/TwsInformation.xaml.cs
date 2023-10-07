@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace Eomn.UserControls
+namespace StockAnalyzer.UserControls
 {
     /// <summary>
     /// Interaction logic for TwsInformation.xaml

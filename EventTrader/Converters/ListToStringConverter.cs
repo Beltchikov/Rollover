@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
 
-namespace Eomn.Converters
+namespace StockAnalyzer.Converters
 {
     public class ListToStringConverter : IValueConverter
     {

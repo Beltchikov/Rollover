@@ -1,10 +1,10 @@
-﻿using Eomn.WebScraping;
+﻿using StockAnalyzer.WebScraping;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Eomn.DataProviders
+namespace StockAnalyzer.DataProviders
 {
     public class YahooProvider : BrowserProviderBase, IYahooProvider
     {

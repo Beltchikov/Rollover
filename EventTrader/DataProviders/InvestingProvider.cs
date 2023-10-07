@@ -6,7 +6,7 @@ using System.Windows;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace Eomn.DataProviders
+namespace StockAnalyzer.DataProviders
 {
     public class InvestingProvider : IInvestingProvider
     {

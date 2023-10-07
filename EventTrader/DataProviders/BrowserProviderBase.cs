@@ -1,9 +1,9 @@
-﻿using Eomn.WebScraping;
+﻿using StockAnalyzer.WebScraping;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml;
 
-namespace Eomn.DataProviders
+namespace StockAnalyzer.DataProviders
 {
     public class BrowserProviderBase : ProviderBase
     {

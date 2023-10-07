@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Eomn.DataProviders
+namespace StockAnalyzer.DataProviders
 {
     public class ProviderBase
     {

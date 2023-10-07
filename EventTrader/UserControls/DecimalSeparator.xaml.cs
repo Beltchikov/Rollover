@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Controls;
 
-namespace Eomn.UserControls
+namespace StockAnalyzer.UserControls
 {
     /// <summary>
     /// Interaction logic for DecimalSeparator.xaml

@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace Eomn.Converters
+namespace StockAnalyzer.Converters
 {
     public class ConnectToTwsButtonConverter : IValueConverter
     {

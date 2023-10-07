@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Eomn.DataProviders
+namespace StockAnalyzer.DataProviders
 {
     public interface ITwsProvider
     {

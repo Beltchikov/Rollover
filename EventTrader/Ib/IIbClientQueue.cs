@@ -1,4 +1,4 @@
-﻿namespace Eomn.Ib
+﻿namespace StockAnalyzer.Ib
 {
     public interface IIbClientQueue
     {

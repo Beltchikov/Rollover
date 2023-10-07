@@ -1,14 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Eomn.DataProviders;
-using Eomn.Ib;
+using StockAnalyzer.DataProviders;
+using StockAnalyzer.Ib;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
-namespace Eomn
+namespace StockAnalyzer
 {
     public class ViewModel : ObservableObject, IIbConsumer
     {

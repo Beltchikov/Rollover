@@ -1,6 +1,6 @@
 ﻿using System.Xml.Linq;
 
-namespace Eomn.WebScraping
+namespace StockAnalyzer.WebScraping
 {
     public interface IBrowserWrapper
     {
