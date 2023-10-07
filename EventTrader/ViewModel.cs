@@ -46,9 +46,6 @@ namespace Eomn
         public ICommand RoeCommand { get; }
         public ICommand TwsSummaryCommand { get; }
 
-        private List<string> _fundamentalDataListRoe = null!;
-        private List<string> _fundamentalDataListSummary = null!;
-
         public ViewModel(
             IInvestingProvider investingProvider,
             IYahooProvider yahooProvider,
@@ -112,21 +109,21 @@ namespace Eomn
             RoeCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer ??= this;
-                _fundamentalDataListRoe ??= await twsProvider.GetFundamentalData(
+                List<string> fundamentalDataListRoe = await twsProvider.GetFundamentalData(
                                     TickerCollectionTwsRoe.ToList(),
                                     REPORT_SNAPSHOT,
                                     TIMEOUT_TWS);
-                ResultCollectionTwsRoe = new ObservableCollection<string>(twsProvider.ExtractRoeFromFundamentalDataList(_fundamentalDataListRoe));
+                ResultCollectionTwsRoe = new ObservableCollection<string>(twsProvider.ExtractRoeFromFundamentalDataList(fundamentalDataListRoe));
             });
 
             TwsSummaryCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer ??= this;
-                _fundamentalDataListSummary ??= await twsProvider.GetFundamentalData(
+                List<string> fundamentalDataListSummary = await twsProvider.GetFundamentalData(
                                     TickerCollectionTwsSummary.ToList(),
                                     REPORT_SNAPSHOT,
                                     TIMEOUT_TWS);
-                ResultCollectionTwsSummary = new ObservableCollection<string>(twsProvider.ExtractSummaryFromFundamentalDataList(_fundamentalDataListSummary));
+                ResultCollectionTwsSummary = new ObservableCollection<string>(twsProvider.ExtractSummaryFromFundamentalDataList(fundamentalDataListSummary));
             });
 
             MarketCap = 0.1;
