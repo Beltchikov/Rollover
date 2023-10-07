@@ -99,12 +99,8 @@ namespace Eomn
 
             ContractIdsCommand = new RelayCommand(async () =>
             {
-                ibHost.Consumer = ibHost.Consumer ?? this;
-                if (!ConnectedToTws)
-                {
-                    ConnectToTwsCommand?.Execute(null);
-                }
-
+                ibHost.Consumer ??= this;
+                ConnectToTwsIfNeeded();
                 var contractDetailsList = await twsProvider.GetContractDetails(
                                     TickerCollectionTwsContractDetails.ToList(),
                                     TIMEOUT_TWS);
@@ -114,6 +110,7 @@ namespace Eomn
             RoeCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer ??= this;
+                ConnectToTwsIfNeeded();
                 List<string> fundamentalDataListRoe = await twsProvider.GetFundamentalData(
                                     TickerCollectionTwsRoe.ToList(),
                                     REPORT_SNAPSHOT,
@@ -124,6 +121,7 @@ namespace Eomn
             TwsSummaryCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer ??= this;
+                ConnectToTwsIfNeeded();
                 List<string> fundamentalDataListSummary = await twsProvider.GetFundamentalData(
                                     TickerCollectionTwsSummary.ToList(),
                                     REPORT_SNAPSHOT,
@@ -300,6 +298,14 @@ namespace Eomn
         private void TwsProvider_Status(string message)
         {
             TwsMessageCollection.Add(message);
+        }
+
+        private void ConnectToTwsIfNeeded()
+        {
+            if (!ConnectedToTws)
+            {
+                ConnectToTwsCommand?.Execute(null);
+            }
         }
 
         #endregion TWS
