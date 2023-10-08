@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SsbHelper"
-        xmlns:tws_us="clr-namespace:TwsUserControls;assembly=TwsUserControls;assembly=TwsUserControls"
+        xmlns:tws_us="clr-namespace:TwsUserControls;assembly=TwsUserControls"
         mc:Ignorable="d"
         Title="SSB Helper" Height="450" Width="800">
     <Grid Background="#FF9BC2E4">
@@ -19,8 +19,15 @@
             <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
 
-       <TabControl Grid.Column="1" Grid.Row="1" TabStripPlacement="Left">
+        <TabControl Grid.Column="1" Grid.Row="1" TabStripPlacement="Left">
             <TabItem Header="Opening" >
+                <tws_us:TwsConnection
+                     Host="{Binding Host, Mode=OneWay}"
+                     Port="{Binding Port, Mode=OneWay}"
+                     ClientId="{Binding ClientId, Mode=OneWay}"
+                     Connected="{Binding ConnectedToTws, Mode=OneWay}"
+                     Command="{Binding ConnectToTwsCommand, Mode=OneWay}">
+                </tws_us:TwsConnection>
             </TabItem>
         </TabControl>
 
