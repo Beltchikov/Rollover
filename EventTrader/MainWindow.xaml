@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StockAnalyzer"
         xmlns:uc="clr-namespace:StockAnalyzer.UserControls"
+        xmlns:uc2="clr-namespace:TwsUserControls;assembly=TwsUserControls"
         xmlns:converters="clr-namespace:StockAnalyzer.Converters"
         mc:Ignorable="d"
         Title="Stock Analyzer" 
@@ -215,7 +216,14 @@
                        Command="{Binding ConnectToTwsCommand, Mode=OneWay}">
                     </uc:TwsConnection>-->
 
-
+                    <uc2:TwsConnection Grid.Column="1" Grid.Row="1"  Grid.ColumnSpan="3" 
+                        Host="{Binding Host, Mode=OneWay}"
+                        Port="{Binding Port, Mode=OneWay}"
+                        ClientId="{Binding ClientId, Mode=OneWay}"
+                        Connected="{Binding ConnectedToTws, Mode=OneWay}"
+                        Command="{Binding ConnectToTwsCommand, Mode=OneWay}">       
+                    </uc2:TwsConnection>   
+               
                     <GroupBox Grid.Column="1" Grid.Row="3" Header="Contract Details"
    Foreground="White" Grid.ColumnSpan="3">
                         <Grid>

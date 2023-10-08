@@ -16,8 +16,6 @@ namespace StockAnalyzer.UserControls
             ButtonContent = "Connect to TWS";
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-
         public static readonly DependencyProperty ConnectedProperty =
            DependencyProperty.Register(
                "Connected",
