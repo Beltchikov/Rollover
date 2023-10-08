@@ -20,7 +20,10 @@ namespace SsbHelper
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            MainWindow mainWindow = new();
+            MainWindow mainWindow = new()
+            {
+                DataContext = new ViewModel()
+            };
             mainWindow.Show();
         }
     }
