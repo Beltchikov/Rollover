@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Windows;
 
 namespace SsbHelper
@@ -13,23 +9,19 @@ namespace SsbHelper
     /// </summary>
     public partial class App : Application
     {
-        private void Application_Startup(object sender, StartupEventArgs e)
+        public IServiceProvider Services { get; }
+
+        public App()
         {
-            MainWindow mainWindow = new(); 
-            mainWindow.Show();
+            Services = new ServiceCollection()
+                //.AddSingleton<IBrowserWrapper, BrowserWrapper>()
+                .BuildServiceProvider();
         }
 
-        //private void Application_Startup(object sender, StartupEventArgs e)
-        //{
-        //    MainWindow mainWindow = new()
-        //    {
-        //        //DataContext = new ViewModel(
-        //        //    Services.GetRequiredService<IInvestingProvider>(),
-        //        //    Services.GetRequiredService<IYahooProvider>(),
-        //        //    Services.GetRequiredService<ITwsProvider>(),
-        //        //    Services.GetRequiredService<IIbHost>())
-        //    };
-        //    mainWindow.Show();
-        //}
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            MainWindow mainWindow = new();
+            mainWindow.Show();
+        }
     }
 }
