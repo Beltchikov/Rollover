@@ -18,4 +18,10 @@
     <Resource Include="Images\RedCircle.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="TwsInformation.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

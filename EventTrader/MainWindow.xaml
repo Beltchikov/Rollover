@@ -312,8 +312,8 @@ Foreground="White" Grid.ColumnSpan="3">
                         </Grid>
                     </GroupBox>
 
-                 <uc:TwsInformation Grid.Column="1" Grid.Row="7" MessageCollection="{Binding TwsMessageCollection}">
-                 </uc:TwsInformation>
+                 <tws_uc:TwsInformation Grid.Column="1" Grid.Row="7" MessageCollection="{Binding TwsMessageCollection}">
+                 </tws_uc:TwsInformation>
 
                 </Grid>
             </TabItem>
@@ -366,8 +366,8 @@ AcceptsReturn="True"
                                  Text="{Binding ResultCollectionTwsSummary, Converter={StaticResource ListToStringConverter}}">
                         </TextBox>
                     </DockPanel>
-                    <uc:TwsInformation Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="5" MessageCollection="{Binding TwsMessageCollection}">
-                    </uc:TwsInformation>
+                    <tws_uc:TwsInformation Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="5" MessageCollection="{Binding TwsMessageCollection}">
+                    </tws_uc:TwsInformation>
                 </Grid>
             </TabItem>
             <TabItem Header="TabItem">
