@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SsbHelper"
         xmlns:tws_us="clr-namespace:TwsUserControls;assembly=TwsUserControls"
         mc:Ignorable="d"
-        Title="SSB Helper" Height="450" Width="800">
+        Title="SSB Helper" WindowState="Maximized">
     <Grid Background="#FF9BC2E4">
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
