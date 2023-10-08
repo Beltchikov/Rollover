@@ -21,13 +21,25 @@
 
         <TabControl Grid.Column="1" Grid.Row="1" TabStripPlacement="Left" Background="#FF4A4947">
             <TabItem Header="Opening" >
-                <tws_us:TwsConnection
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="60"/>
+                        <RowDefinition Height="10"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10*"/>
+                    </Grid.ColumnDefinitions>
+                    <tws_us:TwsConnection
                      Host="{Binding Host, Mode=OneWay}"
                      Port="{Binding Port, Mode=OneWay}"
                      ClientId="{Binding ClientId, Mode=OneWay}"
                      Connected="{Binding ConnectedToTws, Mode=OneWay}"
-                     Command="{Binding ConnectToTwsCommand, Mode=OneWay}">
-                </tws_us:TwsConnection>
+                     Command="{Binding ConnectToTwsCommand, Mode=OneWay}" Grid.ColumnSpan="3" Grid.RowSpan="2">
+                    </tws_us:TwsConnection>
+                </Grid>
             </TabItem>
         </TabControl>
 
