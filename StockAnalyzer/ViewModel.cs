@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using IbClient.IbHost;
 using StockAnalyzer.DataProviders;
-using StockAnalyzer.Ib;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;

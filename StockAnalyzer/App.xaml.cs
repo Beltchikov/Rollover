@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using IbClient.IbHost;
+using Microsoft.Extensions.DependencyInjection;
 using StockAnalyzer.DataProviders;
-using StockAnalyzer.Ib;
 using StockAnalyzer.WebScraping;
 using System;
 using System.Windows;

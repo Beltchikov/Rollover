@@ -1,5 +1,6 @@
 ﻿using IBApi;
 using IbClient;
+using IbClient.IbHost;
 using IbClient.messages;
 using SsbHedger.IbModel;
 using SsbHedger.Model;

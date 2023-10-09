@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace StockAnalyzer.Ib
+namespace IbClient.IbHost
 {
     public class IbHost : IIbHost
     {
@@ -95,7 +95,7 @@ namespace StockAnalyzer.Ib
                 }
             });
 
-            return contractDetails;  
+            return contractDetails;
         }
 
         public async Task<string> RequestFundamentalDataAsync(string ticker, string reportType, int timeout)
@@ -120,7 +120,7 @@ namespace StockAnalyzer.Ib
                 if (_queue.Dequeue() is FundamentalsMessage fundamentalsMessage)
                 {
                     fundamentalsMessageString = fundamentalsMessage.Data;
-                    if(!fundamentalsMessageString.Contains(ticker)) 
+                    if (!fundamentalsMessageString.Contains(ticker))
                     {
                         fundamentalsMessageString = ticker + " ERROR!";
                     }
@@ -201,10 +201,10 @@ namespace StockAnalyzer.Ib
                 return false;
             }
 
-            if(message is ContractDetailsMessage)    
+            if (message is ContractDetailsMessage)
             {
                 var contractDetailsMessage = message as ContractDetailsMessage;
-                return contractDetailsMessage?.RequestId == reqId;   
+                return contractDetailsMessage?.RequestId == reqId;
             }
 
             return true;

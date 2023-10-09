@@ -1,7 +1,7 @@
 ﻿using IBApi;
 using System.Threading.Tasks;
 
-namespace StockAnalyzer.Ib
+namespace IbClient.IbHost
 {
     public interface IIbHost
     {

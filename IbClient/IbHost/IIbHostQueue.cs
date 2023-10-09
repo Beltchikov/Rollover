@@ -1,4 +1,4 @@
-﻿namespace StockAnalyzer.Ib
+﻿namespace IbClient.IbHost
 {
     public interface IIbHostQueue
     {

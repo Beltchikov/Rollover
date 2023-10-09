@@ -1,5 +1,5 @@
 ﻿using AutoFixture.Xunit2;
-using IbClient;
+using IbClient.IbHost;
 using IbClient.messages;
 using NSubstitute;
 using SsbHedger.IbModel;

@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 
-namespace StockAnalyzer.Ib
+namespace IbClient.IbHost
 {
     public interface IIbConsumer
     {
         bool ConnectedToTws { get; set; }
-        ObservableCollection<string> TwsMessageCollection{ get; set; }
+        ObservableCollection<string> TwsMessageCollection { get; set; }
     }
 }

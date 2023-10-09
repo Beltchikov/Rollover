@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Linq;
 
-namespace StockAnalyzer.Ib
+namespace IbClient.IbHost
 {
     public class IbHostQueue : IIbHostQueue
     {

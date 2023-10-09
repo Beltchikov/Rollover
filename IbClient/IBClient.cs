@@ -1,4 +1,5 @@
 using IBApi;
+using IbClient.IbHost;
 using IbClient.messages;
 using System;
 using System.Collections.Generic;

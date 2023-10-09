@@ -3,7 +3,7 @@ using IbClient.messages;
 using System;
 using System.Collections.Generic;
 
-namespace IbClient
+namespace IbClient.IbHost
 {
     public interface IIBClient
     {

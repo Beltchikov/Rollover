@@ -1,5 +1,5 @@
 ﻿using IBApi;
-using StockAnalyzer.Ib;
+using IbClient.IbHost;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
