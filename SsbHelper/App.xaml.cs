@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using IbClient.IbHost;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows;
 
@@ -14,7 +15,8 @@ namespace SsbHelper
         public App()
         {
             Services = new ServiceCollection()
-                //.AddSingleton<IBrowserWrapper, BrowserWrapper>()
+                .AddSingleton<IIbHostQueue, IbHostQueue>()
+                .AddSingleton<IIbHost, IbHost>()
                 .BuildServiceProvider();
         }
 
@@ -22,7 +24,7 @@ namespace SsbHelper
         {
             MainWindow mainWindow = new()
             {
-                DataContext = new ViewModel()
+                DataContext = new ViewModel(Services.GetRequiredService<IIbHost>())
             };
             mainWindow.Show();
         }

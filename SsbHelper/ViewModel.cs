@@ -1,12 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using IbClient.IbHost;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 
 namespace SsbHelper
 {
-    public class ViewModel : ObservableObject
+    public class ViewModel : ObservableObject, IIbConsumer
     {
         private string _host = "localhost";
         private int _port = 4001;
@@ -16,21 +17,19 @@ namespace SsbHelper
 
         public ICommand ConnectToTwsCommand { get; }
 
-        public ViewModel()
+        public ViewModel(IIbHost ibHost)
         {
             ConnectToTwsCommand = new RelayCommand(() =>
             {
-                //ibHost.Consumer = ibHost.Consumer ?? this;
-                //if (!ibHost.Consumer.ConnectedToTws)
-                //{
-                //    ibHost.ConnectAndStartReaderThread(Host, Port, ClientId, 1000);
-                //}
-                //else
-                //{
-                //    ibHost.Disconnect();
-                //}
-
-                MessageBox.Show("ConnectToTwsCommand");
+                ibHost.Consumer = ibHost.Consumer ?? this;
+                if (!ibHost.Consumer.ConnectedToTws)
+                {
+                    ibHost.ConnectAndStartReaderThread(Host, Port, ClientId, 1000);
+                }
+                else
+                {
+                    ibHost.Disconnect();
+                }
             });
         }
 
