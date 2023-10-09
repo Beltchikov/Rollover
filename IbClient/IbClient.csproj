@@ -42,12 +42,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IBClient.cs" />
-    <Compile Include="IbClientQueue.cs" />
-    <Compile Include="IbHost.cs" />
-    <Compile Include="IIbClientQueue.cs" />
-    <Compile Include="IIbConsumer.cs" />
-    <Compile Include="IIbHost.cs" />
-    <Compile Include="IIBClient.cs" />
+    <Compile Include="IbHost\IbClientQueue.cs" />
+    <Compile Include="IbHost\IbHost.cs" />
+    <Compile Include="IbHost\IIbClientQueue.cs" />
+    <Compile Include="IbHost\IIbConsumer.cs" />
+    <Compile Include="IbHost\IIbHost.cs" />
+    <Compile Include="IbHost\IIBClient.cs" />
     <Compile Include="messages\AccountDownloadEndMessage.cs" />
     <Compile Include="messages\AccountSummaryEndMessage.cs" />
     <Compile Include="messages\AccountSummaryMessage.cs" />
