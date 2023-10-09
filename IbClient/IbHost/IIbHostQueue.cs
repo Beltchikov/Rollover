@@ -1,6 +1,6 @@
 ﻿namespace StockAnalyzer.Ib
 {
-    public interface IIbClientQueue
+    public interface IIbHostQueue
     {
         void Enqueue(object obj);
         object Dequeue();

@@ -1,14 +1,13 @@
 ﻿using System.Collections.Concurrent;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace StockAnalyzer.Ib
 {
-    public class IbClientQueue : IIbClientQueue
+    public class IbHostQueue : IIbHostQueue
     {
         private readonly ConcurrentQueue<object> _ibClientQueue;
 
-        public IbClientQueue()
+        public IbHostQueue()
         {
             _ibClientQueue = new ConcurrentQueue<object>();
         }

@@ -11,7 +11,7 @@ namespace StockAnalyzer.Ib
     public class IbHost : IIbHost
     {
         IIBClient _ibClient;
-        private IIbClientQueue _queue;
+        private IIbHostQueue _queue;
         private int _currentReqId = 0;
 
 
@@ -19,7 +19,7 @@ namespace StockAnalyzer.Ib
         private readonly string USD = "USD";
         private readonly string SMART = "SMART";
 
-        public IbHost(IIbClientQueue queue)
+        public IbHost(IIbHostQueue queue)
         {
             _ibClient = IBClient.CreateClient();
 

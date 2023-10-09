@@ -42,9 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IBClient.cs" />
-    <Compile Include="IbHost\IbClientQueue.cs" />
+    <Compile Include="IbHost\IbHostQueue.cs" />
     <Compile Include="IbHost\IbHost.cs" />
-    <Compile Include="IbHost\IIbClientQueue.cs" />
+    <Compile Include="IbHost\IIbHostQueue.cs" />
     <Compile Include="IbHost\IIbConsumer.cs" />
     <Compile Include="IbHost\IIbHost.cs" />
     <Compile Include="IbHost\IIBClient.cs" />

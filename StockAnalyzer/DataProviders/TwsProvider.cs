@@ -14,7 +14,7 @@ namespace StockAnalyzer.DataProviders
     {
         private IIbHost _ibHost;
 
-        public TwsProvider(IIbHost ibHost, IIbClientQueue queue)
+        public TwsProvider(IIbHost ibHost, IIbHostQueue queue)
         {
             _ibHost = ibHost;
         }

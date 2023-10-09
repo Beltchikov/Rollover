@@ -20,7 +20,7 @@ namespace StockAnalyzer
                 .AddSingleton<IYahooProvider, YahooProvider>()
                 .AddSingleton<ITwsProvider, TwsProvider>()
                 .AddSingleton<IIbHost, IbHost>()
-                .AddSingleton<IIbClientQueue, IbClientQueue>()
+                .AddSingleton<IIbHostQueue, IbHostQueue>()
                 .BuildServiceProvider();
         }
 
