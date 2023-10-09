@@ -5,12 +5,12 @@ namespace StockAnalyzer.Ib
 {
     public interface IIbHost
     {
-        public IIbConsumer? Consumer { get; set; }
-        public Task<bool> ConnectAndStartReaderThread(string host, int port, int clientId, int timeout);
-        public void Disconnect();
-        public Task<ContractDetails?> RequestContractDetailsAsync(string ticker, int timeout);
+        IIbConsumer Consumer { get; set; }
+        Task<bool> ConnectAndStartReaderThread(string host, int port, int clientId, int timeout);
+        void Disconnect();
+        Task<ContractDetails> RequestContractDetailsAsync(string ticker, int timeout);
 
-        public Task<string> RequestFundamentalDataAsync(string ticker, string reportType, int timeout);
+        Task<string> RequestFundamentalDataAsync(string ticker, string reportType, int timeout);
 
         //public void ReqHistoricalData();
         //void ApplyDefaultHistoricalData();

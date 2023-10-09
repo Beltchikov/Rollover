@@ -5,7 +5,7 @@ namespace StockAnalyzer.Ib
 {
     public interface IIbConsumer
     {
-        public bool ConnectedToTws { get; set; }
-        public ObservableCollection<string> TwsMessageCollection{ get; internal set; }
+        bool ConnectedToTws { get; set; }
+        ObservableCollection<string> TwsMessageCollection{ get; set; }
     }
 }

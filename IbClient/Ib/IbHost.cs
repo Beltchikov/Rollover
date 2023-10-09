@@ -46,7 +46,7 @@ namespace StockAnalyzer.Ib
             //_ibClient.TickOptionCommunication += _ibClient_TickOptionCommunication;
         }
 
-        public IIbConsumer? Consumer { get; set; }
+        public IIbConsumer Consumer { get; set; }
 
         public async Task<bool> ConnectAndStartReaderThread(string host, int port, int clientId, int timeout)
         {
@@ -70,9 +70,9 @@ namespace StockAnalyzer.Ib
             _ibClient.Disconnect();
         }
 
-        public async Task<ContractDetails?> RequestContractDetailsAsync(string ticker, int timeout)
+        public async Task<ContractDetails> RequestContractDetailsAsync(string ticker, int timeout)
         {
-            ContractDetails contractDetails = null!;
+            ContractDetails contractDetails = null;
 
             var contract = new Contract()
             {
@@ -100,7 +100,7 @@ namespace StockAnalyzer.Ib
 
         public async Task<string> RequestFundamentalDataAsync(string ticker, string reportType, int timeout)
         {
-            string fundamentalsMessageString = null!;
+            string fundamentalsMessageString = null;
 
             var contract = new Contract()
             {

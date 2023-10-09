@@ -4,7 +4,6 @@ using System.Linq;
 
 namespace StockAnalyzer.Ib
 {
-    [ExcludeFromCodeCoverage(Justification = "Just a wrapper")]
     public class IbClientQueue : IIbClientQueue
     {
         private readonly ConcurrentQueue<object> _ibClientQueue;
@@ -19,9 +18,9 @@ namespace StockAnalyzer.Ib
             _ibClientQueue.Enqueue(item);
         }
 
-        public object? Dequeue()
+        public object Dequeue()
         {
-            object? item;
+            object item;
             if (_ibClientQueue.TryDequeue(out item))
             {
                 return item;
@@ -32,9 +31,9 @@ namespace StockAnalyzer.Ib
             }
         }
 
-        public object? Peek()
+        public object Peek()
         {
-            object? item;
+            object item;
             if (_ibClientQueue.TryPeek(out item))
             {
                 return item;
