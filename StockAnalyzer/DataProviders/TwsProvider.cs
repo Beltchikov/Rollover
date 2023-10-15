@@ -26,9 +26,9 @@ namespace StockAnalyzer.DataProviders
             int cnt = 1;
             foreach (string contractString in contractStringsTws)
             {
-                var tickerTrimmed = contractString.Trim();
-                TriggerStatus($"Retrieving contract details for {tickerTrimmed} {cnt++}/{contractStringsTws.Count}");
-                var contractDetails = await _ibHost.RequestContractDetailsAsync(tickerTrimmed, timeout);
+                var contractStringTrimmed = contractString.Trim();
+                TriggerStatus($"Retrieving contract details for {contractStringTrimmed} {cnt++}/{contractStringsTws.Count}");
+                var contractDetails = await _ibHost.RequestContractDetailsAsync(contractStringTrimmed, timeout);
                 if (contractDetails != null)
                 {
                     result.Add(contractDetails);
@@ -58,9 +58,9 @@ namespace StockAnalyzer.DataProviders
             int cnt = 1;
             foreach (string contractString in contractStringsTws)
             {
-                var tickerTrimmed = contractString.Trim();
-                TriggerStatus($"Retrieving fundamental data for {tickerTrimmed}, report type: {reportType} {cnt++}/{contractStringsTws.Count}");
-                var fundamentalDataString = await _ibHost.RequestFundamentalDataAsync(tickerTrimmed, reportType, timeout);
+                var contractStringTrimmed = contractString.Trim();
+                TriggerStatus($"Retrieving fundamental data for {contractStringTrimmed}, report type: {reportType} {cnt++}/{contractStringsTws.Count}");
+                var fundamentalDataString = await _ibHost.RequestFundamentalDataAsync(contractStringTrimmed, reportType, timeout);
                 result.Add(fundamentalDataString);
             }
 
