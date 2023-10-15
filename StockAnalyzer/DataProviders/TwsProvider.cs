@@ -124,7 +124,8 @@ namespace StockAnalyzer.DataProviders
                     continue;
                 }
 
-                //var ratiosElement = xDocument.Descendants("Ratios");
+                var annualPeriodsElement = xDocument.Descendants("AnnualPeriods");
+                var fiscalPeriodElements = annualPeriodsElement?.Descendants("FiscalPeriod");
 
                 // result.Add($"{issueIdElementTicker?.Value}\t{roeAsString}");
             }
