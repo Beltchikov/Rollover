@@ -15,7 +15,7 @@ namespace StockAnalyzer
         private const int TIMEOUT_SIMPLE_BROWSER = 0;
         private const int TIMEOUT_TWS = 3000;
         private readonly string REPORT_SNAPSHOT = "ReportSnapshot";
-        private readonly string REPORTS_FIN_STATEMENTS= "ReportsFinStatements";
+        private readonly string REPORTS_FIN_STATEMENTS = "ReportsFinStatements";
 
         private ObservableCollection<string> _resultCollectionEarningsForWeek = null!;
         private string _htmlSourceEarningsForWeek = null!;
@@ -130,13 +130,11 @@ namespace StockAnalyzer
                 ConnectToTwsIfNeeded();
                 List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
 
-                List<string> fundamentalDataListNetIncome= await twsProvider.GetFundamentalData(
+                List<string> fundamentalDataListNetIncome = await twsProvider.GetFundamentalData(
                                     contractStringsList,
                                     REPORTS_FIN_STATEMENTS,
                                     TIMEOUT_TWS);
                 ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractNetIncomeFromFundamentalDataList(fundamentalDataListNetIncome));
-
-                MessageBox.Show("NetIncomeCommand");
             });
 
             DivPaidCommand = new RelayCommand(async () =>
