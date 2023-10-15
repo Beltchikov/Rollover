@@ -33,8 +33,8 @@ namespace StockAnalyzer
         private ObservableCollection<string> _twsMessageColllection = new ObservableCollection<string>();
         private ObservableCollection<string> _tickerCollectionTwsContractDetails = null!;
         private ObservableCollection<string> _resultCollectionTwsContractIds = null!;
-        private ObservableCollection<string> _tickerColllectionTwsRoe = null!;
-        private ObservableCollection<string> _resultColllectionTwsRoe = null!;
+        private ObservableCollection<string> _contractStringsTwsFinStatements = null!;
+        private ObservableCollection<string> _resultCollectionTwsFinStatements = null!;
 
         private ObservableCollection<string> _tickerCollectionTwsSummary = null!;
         private ObservableCollection<string> _resultCollectionTwsSummary = null!;
@@ -116,21 +116,21 @@ namespace StockAnalyzer
             {
                 ibHost.Consumer ??= this;
                 ConnectToTwsIfNeeded();
-                List<string> contractStringsList = ContractStringsTwsRoe.ToList();
+                List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
                 List<string> fundamentalDataListRoe = await twsProvider.GetFundamentalData(
                                     contractStringsList,
                                     REPORT_SNAPSHOT,
                                     TIMEOUT_TWS);
-                ResultCollectionTwsRoe = new ObservableCollection<string>(twsProvider.ExtractRoeFromFundamentalDataList(fundamentalDataListRoe));
+                ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractRoeFromFundamentalDataList(fundamentalDataListRoe));
             });
 
             NetIncomeCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer ??= this;
                 ConnectToTwsIfNeeded();
-                List<string> contractStringsList = ContractStringsTwsRoe.ToList();
+                List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
 
-                List<string> fundamentalDataListRoe = await twsProvider.GetFundamentalData(
+                List<string> fundamentalDataListNetIncome= await twsProvider.GetFundamentalData(
                                     contractStringsList,
                                     REPORTS_FIN_STATEMENTS,
                                     TIMEOUT_TWS);
@@ -143,7 +143,7 @@ namespace StockAnalyzer
             {
                 ibHost.Consumer ??= this;
                 ConnectToTwsIfNeeded();
-                List<string> contractStringsList = ContractStringsTwsRoe.ToList();
+                List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
 
                 MessageBox.Show("DivPaidCommand");
             });
@@ -152,7 +152,7 @@ namespace StockAnalyzer
             {
                 ibHost.Consumer ??= this;
                 ConnectToTwsIfNeeded();
-                List<string> contractStringsList = ContractStringsTwsRoe.ToList();
+                List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
 
                 MessageBox.Show("PayoutRatioCommand");
             });
@@ -172,7 +172,7 @@ namespace StockAnalyzer
             MarketCap = 0.1;
             TickerCollectionYahoo = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA\r\n WT").Split("\r\n").ToList());
             ContractStringsTwsContractDetails = new ObservableCollection<string>((" BWLPG;NOK;STK\r\nPFS\r\nSLCA").Split("\r\n").ToList());
-            ContractStringsTwsRoe = new ObservableCollection<string>(("BWLPG;NOK;\r\nPFS\r\nSLCA").Split("\r\n").ToList());
+            ContractStringsTwsFinStatements = new ObservableCollection<string>(("BWLPG;NOK;\r\nPFS\r\nSLCA").Split("\r\n").ToList());
             ContractStringsTwsSummary = new ObservableCollection<string>(("BWLPG ;NOK ;STK ; SMART\r\nPFS\r\nSLCA").Split("\r\n").ToList());
         }
 
@@ -317,21 +317,21 @@ namespace StockAnalyzer
             }
         }
 
-        public ObservableCollection<string> ContractStringsTwsRoe
+        public ObservableCollection<string> ContractStringsTwsFinStatements
         {
-            get => _tickerColllectionTwsRoe;
+            get => _contractStringsTwsFinStatements;
             set
             {
-                SetProperty(ref _tickerColllectionTwsRoe, value);
+                SetProperty(ref _contractStringsTwsFinStatements, value);
             }
         }
 
-        public ObservableCollection<string> ResultCollectionTwsRoe
+        public ObservableCollection<string> ResultCollectionTwsFinStatements
         {
-            get => _resultColllectionTwsRoe;
+            get => _resultCollectionTwsFinStatements;
             set
             {
-                SetProperty(ref _resultColllectionTwsRoe, value);
+                SetProperty(ref _resultCollectionTwsFinStatements, value);
             }
         }
 

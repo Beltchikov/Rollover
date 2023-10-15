@@ -260,7 +260,7 @@
                         </Grid>
                     </GroupBox>
 
-                    <GroupBox Grid.Column="1" Grid.Row="5" Header="ROE"
+                    <GroupBox Grid.Column="1" Grid.Row="5" Header="Financial Statements"
 Foreground="White" Grid.ColumnSpan="3">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -282,7 +282,7 @@ Foreground="White" Grid.ColumnSpan="3">
                             <Label Content="Contract String&#10;(SMB;CUR;SEC;EXC):" Grid.Column="1" Grid.Row="1" 
      HorizontalAlignment="Left"
       Foreground="White"></Label>
-                            <TextBox Text="{Binding ContractStringsTwsRoe, Converter={StaticResource ListToStringConverter}}" 
+                            <TextBox Text="{Binding ContractStringsTwsFinStatements, Converter={StaticResource ListToStringConverter}}" 
                                      Grid.Column="1" Grid.Row="2" Grid.RowSpan="3"
         AcceptsReturn="True"
           VerticalScrollBarVisibility="Visible"></TextBox>
@@ -310,7 +310,7 @@ Foreground="White" Grid.ColumnSpan="3">
      HorizontalAlignment="Left"
       Foreground="White"></Label>
                             <TextBox x:Name="txtResultsTwsRoe" 
-                                     Text="{Binding ResultCollectionTwsRoe, Converter={StaticResource ListToStringConverter}}" 
+                                     Text="{Binding ResultCollectionTwsFinStatements, Converter={StaticResource ListToStringConverter}}" 
                                      Grid.Column="3" Grid.Row="2" AcceptsReturn="True"
                                         VerticalScrollBarVisibility="Visible"></TextBox>
 
