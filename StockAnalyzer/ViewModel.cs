@@ -136,7 +136,7 @@ namespace StockAnalyzer
             TickerCollectionYahoo = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA\r\n WT").Split("\r\n").ToList());
             ContractStringsTwsContractDetails = new ObservableCollection<string>((" BWLPG;NOK;STK\r\nPFS\r\nSLCA").Split("\r\n").ToList());
             ContractStringsTwsRoe = new ObservableCollection<string>(("BWLPG;NOK;\r\nPFS\r\nSLCA").Split("\r\n").ToList());
-            ContractStringsTwsSummary = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA").Split("\r\n").ToList());
+            ContractStringsTwsSummary = new ObservableCollection<string>(("BWLPG ;NOK ;STK ; SMART\r\nPFS\r\nSLCA").Split("\r\n").ToList());
         }
 
         #region Yahoo

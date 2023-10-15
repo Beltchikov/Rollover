@@ -115,9 +115,9 @@ namespace IbClient.IbHost
             var contract = new Contract()
             {
                 Symbol = ticker,
-                SecType = STK,
-                Currency = USD,
-                Exchange = SMART
+                Currency = currency ?? USD,
+                SecType = secType ?? STK,
+                Exchange = exchange ?? SMART
             };
             var reqId = ++_currentReqId;
             _ibClient.ClientSocket.reqFundamentalData(reqId, contract, reportType, new List<TagValue>());
