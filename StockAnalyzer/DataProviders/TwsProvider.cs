@@ -110,6 +110,28 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
+
+        public List<string> ExtractNetIncomeFromFundamentalDataList(List<string> fundamentalDataList)
+        {
+            TriggerStatus($"Extracting Net Income from the fundamental data list");
+            var result = new List<string>();
+
+            foreach (string fundamentalData in fundamentalDataList)
+            {
+                XDocument? xDocument = ParseXDocumentWithChecks(fundamentalData, result);
+                if (xDocument == null) // some error string has been added
+                {
+                    continue;
+                }
+
+                //var ratiosElement = xDocument.Descendants("Ratios");
+
+                // result.Add($"{issueIdElementTicker?.Value}\t{roeAsString}");
+            }
+
+            return result;
+        }
+
         public List<string> ExtractSummaryFromFundamentalDataList(List<string> fundamentalDataList)
         {
             TriggerStatus($"Extracting business summary from the fundamental data list");

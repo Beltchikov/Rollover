@@ -134,7 +134,7 @@ namespace StockAnalyzer
                                     contractStringsList,
                                     REPORTS_FIN_STATEMENTS,
                                     TIMEOUT_TWS);
-                //ResultCollectionTwsRoe = new ObservableCollection<string>(twsProvider.ExtractRoeFromFundamentalDataList(fundamentalDataListRoe));
+                ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractNetIncomeFromFundamentalDataList(fundamentalDataListNetIncome));
 
                 MessageBox.Show("NetIncomeCommand");
             });
