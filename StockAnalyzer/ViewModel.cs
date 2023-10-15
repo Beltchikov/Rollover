@@ -102,7 +102,7 @@ namespace StockAnalyzer
                 ibHost.Consumer ??= this;
                 ConnectToTwsIfNeeded();
                 var contractDetailsList = await twsProvider.GetContractDetails(
-                                    TickerCollectionTwsContractDetails.ToList(),
+                                    ContractStringsTwsContractDetails.ToList(),
                                     TIMEOUT_TWS);
                 ResultCollectionTwsContractIds = new ObservableCollection<string>(twsProvider.ExtractIdsFromContractDetailsList(contractDetailsList));
             });
@@ -112,7 +112,7 @@ namespace StockAnalyzer
                 ibHost.Consumer ??= this;
                 ConnectToTwsIfNeeded();
                 List<string> fundamentalDataListRoe = await twsProvider.GetFundamentalData(
-                                    TickerCollectionTwsRoe.ToList(),
+                                    ContractStringsTwsRoe.ToList(),
                                     REPORT_SNAPSHOT,
                                     TIMEOUT_TWS);
                 ResultCollectionTwsRoe = new ObservableCollection<string>(twsProvider.ExtractRoeFromFundamentalDataList(fundamentalDataListRoe));
@@ -123,7 +123,7 @@ namespace StockAnalyzer
                 ibHost.Consumer ??= this;
                 ConnectToTwsIfNeeded();
                 List<string> fundamentalDataListSummary = await twsProvider.GetFundamentalData(
-                                    TickerCollectionTwsSummary.ToList(),
+                                    ContractStringsTwsSummary.ToList(),
                                     REPORT_SNAPSHOT,
                                     TIMEOUT_TWS);
                 ResultCollectionTwsSummary = new ObservableCollection<string>(twsProvider.ExtractSummaryFromFundamentalDataList(fundamentalDataListSummary));
@@ -131,9 +131,9 @@ namespace StockAnalyzer
 
             MarketCap = 0.1;
             TickerCollectionYahoo = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA\r\n WT").Split("\r\n").ToList());
-            TickerCollectionTwsContractDetails = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA").Split("\r\n").ToList());
-            TickerCollectionTwsRoe = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA").Split("\r\n").ToList());
-            TickerCollectionTwsSummary = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA").Split("\r\n").ToList());
+            ContractStringsTwsContractDetails = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA").Split("\r\n").ToList());
+            ContractStringsTwsRoe = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA").Split("\r\n").ToList());
+            ContractStringsTwsSummary = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA").Split("\r\n").ToList());
         }
 
         #region Yahoo
@@ -259,7 +259,7 @@ namespace StockAnalyzer
             }
         }
 
-        public ObservableCollection<string> TickerCollectionTwsContractDetails
+        public ObservableCollection<string> ContractStringsTwsContractDetails
         {
             get => _tickerCollectionTwsContractDetails;
             set
@@ -277,7 +277,7 @@ namespace StockAnalyzer
             }
         }
 
-        public ObservableCollection<string> TickerCollectionTwsRoe
+        public ObservableCollection<string> ContractStringsTwsRoe
         {
             get => _tickerColllectionTwsRoe;
             set
@@ -313,7 +313,7 @@ namespace StockAnalyzer
         #region TWS Summary
 
 
-        public ObservableCollection<string> TickerCollectionTwsSummary
+        public ObservableCollection<string> ContractStringsTwsSummary
         {
             get => _tickerCollectionTwsSummary;
             set

@@ -236,7 +236,7 @@
                             <Label Content="Tickers:" Grid.Column="1" Grid.Row="1" 
         HorizontalAlignment="Left"
          Foreground="White"></Label>
-                            <TextBox Text="{Binding TickerCollectionTwsContractDetails, Converter={StaticResource ListToStringConverter}}" Grid.Column="1" Grid.Row="2" 
+                            <TextBox Text="{Binding ContractStringsTwsContractDetails, Converter={StaticResource ListToStringConverter}}" Grid.Column="1" Grid.Row="2" 
            AcceptsReturn="True"
              VerticalScrollBarVisibility="Visible"></TextBox>
 
@@ -282,7 +282,7 @@ Foreground="White" Grid.ColumnSpan="3">
                             <Label Content="Tickers:" Grid.Column="1" Grid.Row="1" 
      HorizontalAlignment="Left"
       Foreground="White"></Label>
-                            <TextBox Text="{Binding TickerCollectionTwsRoe, Converter={StaticResource ListToStringConverter}}" 
+                            <TextBox Text="{Binding ContractStringsTwsRoe, Converter={StaticResource ListToStringConverter}}" 
                                      Grid.Column="1" Grid.Row="2" Grid.RowSpan="3"
         AcceptsReturn="True"
           VerticalScrollBarVisibility="Visible"></TextBox>
@@ -350,7 +350,7 @@ Foreground="White" Grid.ColumnSpan="3">
                     <Label Content="Tickers:" Grid.Column="1" Grid.Row="3" 
                     HorizontalAlignment="Left"
                      Foreground="Black"></Label>
-                    <TextBox Text="{Binding TickerCollectionTwsSummary, Converter={StaticResource ListToStringConverter}}" 
+                    <TextBox Text="{Binding ContractStringsTwsSummary, Converter={StaticResource ListToStringConverter}}" 
                              Grid.Column="1" Grid.Row="4" 
 AcceptsReturn="True"
    VerticalScrollBarVisibility="Visible"></TextBox>
