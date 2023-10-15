@@ -130,6 +130,7 @@ namespace StockAnalyzer.DataProviders
                 var statementElements = lastFiscalPeriodElement?.Descendants("Statement");
                 var incStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "INC");
                 var lineItemElements = incStatementElement?.Descendants("lineItem");
+                var nincLineItemElement = lineItemElements?.Where(e => e?.Attribute("coaCode")?.Value == "NINC");
 
                 // result.Add($"{issueIdElementTicker?.Value}\t{roeAsString}");
             }
