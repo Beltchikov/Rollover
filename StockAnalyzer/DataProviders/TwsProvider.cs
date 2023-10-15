@@ -19,15 +19,15 @@ namespace StockAnalyzer.DataProviders
             _ibHost = ibHost;
         }
 
-        public async Task<List<ContractDetails>> GetContractDetails(List<string> tickerList, int timeout)
+        public async Task<List<ContractDetails>> GetContractDetails(List<string> contractStringsTws, int timeout)
         {
             var result = new List<ContractDetails>();
 
             int cnt = 1;
-            foreach (string ticker in tickerList)
+            foreach (string contractString in contractStringsTws)
             {
-                var tickerTrimmed = ticker.Trim();
-                TriggerStatus($"Retrieving contract details for {tickerTrimmed} {cnt++}/{tickerList.Count}");
+                var tickerTrimmed = contractString.Trim();
+                TriggerStatus($"Retrieving contract details for {tickerTrimmed} {cnt++}/{contractStringsTws.Count}");
                 var contractDetails = await _ibHost.RequestContractDetailsAsync(tickerTrimmed, timeout);
                 if (contractDetails != null)
                 {
@@ -51,15 +51,15 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
-        public async Task<List<string>> GetFundamentalData(List<string> tickerList, string reportType, int timeout)
+        public async Task<List<string>> GetFundamentalData(List<string> contractStringsTws, string reportType, int timeout)
         {
             var result = new List<string>();
 
             int cnt = 1;
-            foreach (string ticker in tickerList)
+            foreach (string contractString in contractStringsTws)
             {
-                var tickerTrimmed = ticker.Trim();
-                TriggerStatus($"Retrieving fundamental data for {tickerTrimmed}, report type: {reportType} {cnt++}/{tickerList.Count}");
+                var tickerTrimmed = contractString.Trim();
+                TriggerStatus($"Retrieving fundamental data for {tickerTrimmed}, report type: {reportType} {cnt++}/{contractStringsTws.Count}");
                 var fundamentalDataString = await _ibHost.RequestFundamentalDataAsync(tickerTrimmed, reportType, timeout);
                 result.Add(fundamentalDataString);
             }
