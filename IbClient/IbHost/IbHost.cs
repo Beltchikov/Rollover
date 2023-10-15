@@ -69,15 +69,20 @@ namespace IbClient.IbHost
             _ibClient.Disconnect();
         }
 
-        public async Task<ContractDetails> RequestContractDetailsAsync(string ticker, int timeout)
+        public async Task<ContractDetails> RequestContractDetailsAsync(
+            string ticker,
+            int timeout,
+            string currency,
+            string secType,
+            string exchange)
         {
             ContractDetails contractDetails = null;
 
             var contract = new Contract()
             {
                 Symbol = ticker,
-                SecType = STK,
                 Currency = USD,
+                SecType = STK,
                 Exchange = SMART
             };
             var reqId = ++_currentReqId;
@@ -97,7 +102,13 @@ namespace IbClient.IbHost
             return contractDetails;
         }
 
-        public async Task<string> RequestFundamentalDataAsync(string ticker, string reportType, int timeout)
+        public async Task<string> RequestFundamentalDataAsync(
+            string ticker,
+            string reportType,
+            int timeout,
+            string currency,
+            string secType,
+            string exchange)
         {
             string fundamentalsMessageString = null;
 

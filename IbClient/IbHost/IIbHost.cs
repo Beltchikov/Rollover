@@ -8,9 +8,20 @@ namespace IbClient.IbHost
         IIbConsumer Consumer { get; set; }
         Task<bool> ConnectAndStartReaderThread(string host, int port, int clientId, int timeout);
         void Disconnect();
-        Task<ContractDetails> RequestContractDetailsAsync(string ticker, int timeout);
+        Task<ContractDetails> RequestContractDetailsAsync(
+            string ticker,
+            int timeout,
+            string currency = "USD",
+            string secType = "STK",
+            string exchange = "SMART");
 
-        Task<string> RequestFundamentalDataAsync(string ticker, string reportType, int timeout);
+        Task<string> RequestFundamentalDataAsync(
+            string ticker,
+            string reportType,
+            int timeout,
+            string currency = "USD",
+            string secType = "STK",
+            string exchange = "SMART");
 
         //public void ReqHistoricalData();
         //void ApplyDefaultHistoricalData();
