@@ -101,8 +101,9 @@ namespace StockAnalyzer
             {
                 ibHost.Consumer ??= this;
                 ConnectToTwsIfNeeded();
+                List<string> contractStringsList = ContractStringsTwsContractDetails.ToList();
                 var contractDetailsList = await twsProvider.GetContractDetails(
-                                    ContractStringsTwsContractDetails.ToList(),
+                                    contractStringsList,
                                     TIMEOUT_TWS);
                 ResultCollectionTwsContractIds = new ObservableCollection<string>(twsProvider.ExtractIdsFromContractDetailsList(contractDetailsList));
             });
@@ -111,8 +112,9 @@ namespace StockAnalyzer
             {
                 ibHost.Consumer ??= this;
                 ConnectToTwsIfNeeded();
+                List<string> contractStringsList = ContractStringsTwsRoe.ToList();
                 List<string> fundamentalDataListRoe = await twsProvider.GetFundamentalData(
-                                    ContractStringsTwsRoe.ToList(),
+                                    contractStringsList,
                                     REPORT_SNAPSHOT,
                                     TIMEOUT_TWS);
                 ResultCollectionTwsRoe = new ObservableCollection<string>(twsProvider.ExtractRoeFromFundamentalDataList(fundamentalDataListRoe));
@@ -122,8 +124,9 @@ namespace StockAnalyzer
             {
                 ibHost.Consumer ??= this;
                 ConnectToTwsIfNeeded();
+                List<string> contractStringsList = ContractStringsTwsSummary.ToList();
                 List<string> fundamentalDataListSummary = await twsProvider.GetFundamentalData(
-                                    ContractStringsTwsSummary.ToList(),
+                                    contractStringsList,
                                     REPORT_SNAPSHOT,
                                     TIMEOUT_TWS);
                 ResultCollectionTwsSummary = new ObservableCollection<string>(twsProvider.ExtractSummaryFromFundamentalDataList(fundamentalDataListSummary));
