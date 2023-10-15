@@ -321,7 +321,7 @@ Foreground="White" Grid.ColumnSpan="3">
                 <Grid Background="#FFC3A4A5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="10"></ColumnDefinition>
-                        <ColumnDefinition Width="100"></ColumnDefinition>
+                        <ColumnDefinition Width="170"></ColumnDefinition>
                         <ColumnDefinition Width="10"></ColumnDefinition>
                         <ColumnDefinition Width="150"></ColumnDefinition>
                         <ColumnDefinition Width="10"></ColumnDefinition>
