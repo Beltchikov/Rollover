@@ -201,7 +201,7 @@
                         <RowDefinition Height="10"></RowDefinition>
                         <RowDefinition Height="180"></RowDefinition>
                         <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="190"></RowDefinition>
+                        <RowDefinition Height="250"></RowDefinition>
                         <RowDefinition Height="10"></RowDefinition>
                         <RowDefinition Height="130"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
@@ -288,12 +288,21 @@ Foreground="White" Grid.ColumnSpan="3">
           VerticalScrollBarVisibility="Visible"></TextBox>
 
                             <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="2" >
-                                <Button Padding="10 0 10 0" 
-      Margin="10,0,10,0" 
-                Height="25" 
-          HorizontalAlignment="Stretch"
-              VerticalAlignment="Center" 
-              Command="{Binding RoeCommand}">ROE >>
+                                <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="25" 
+                                      HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                                          Command="{Binding RoeCommand}">ROE >>
+                                </Button>
+                                <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="25" 
+                                   HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                                       Command="{Binding NetIncomeCommand}">Net Income >>
+                                </Button>
+                                <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="25" 
+                                    HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                                        Command="{Binding DivPaidCommand}">Div. Paid >>
+                                </Button>
+                                <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="25" 
+                                    HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                                    Command="{Binding PayoutRatioCommand}">Payout Ratio >>
                                 </Button>
                             </StackPanel>
 

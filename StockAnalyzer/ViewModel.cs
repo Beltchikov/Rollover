@@ -44,6 +44,9 @@ namespace StockAnalyzer
         public ICommand ConnectToTwsCommand { get; }
         public ICommand ContractIdsCommand { get; }
         public ICommand RoeCommand { get; }
+        public ICommand NetIncomeCommand { get; }
+        public ICommand DivPaidCommand { get; }
+        public ICommand PayoutRatioCommand { get; }
         public ICommand TwsSummaryCommand { get; }
 
         public ViewModel(
@@ -118,6 +121,39 @@ namespace StockAnalyzer
                                     REPORT_SNAPSHOT,
                                     TIMEOUT_TWS);
                 ResultCollectionTwsRoe = new ObservableCollection<string>(twsProvider.ExtractRoeFromFundamentalDataList(fundamentalDataListRoe));
+            });
+
+            NetIncomeCommand = new RelayCommand(async () =>
+            {
+                ibHost.Consumer ??= this;
+                ConnectToTwsIfNeeded();
+                List<string> contractStringsList = ContractStringsTwsRoe.ToList();
+
+                MessageBox.Show("NetIncomeCommand");
+
+                //List<string> fundamentalDataListRoe = await twsProvider.GetFundamentalData(
+                //                    contractStringsList,
+                //                    REPORT_SNAPSHOT,
+                //                    TIMEOUT_TWS);
+                //ResultCollectionTwsRoe = new ObservableCollection<string>(twsProvider.ExtractRoeFromFundamentalDataList(fundamentalDataListRoe));
+            });
+
+            DivPaidCommand = new RelayCommand(async () =>
+            {
+                ibHost.Consumer ??= this;
+                ConnectToTwsIfNeeded();
+                List<string> contractStringsList = ContractStringsTwsRoe.ToList();
+
+                MessageBox.Show("DivPaidCommand");
+            });
+
+            PayoutRatioCommand = new RelayCommand(async () =>
+            {
+                ibHost.Consumer ??= this;
+                ConnectToTwsIfNeeded();
+                List<string> contractStringsList = ContractStringsTwsRoe.ToList();
+
+                MessageBox.Show("PayoutRatioCommand");
             });
 
             TwsSummaryCommand = new RelayCommand(async () =>
