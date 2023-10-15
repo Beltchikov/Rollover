@@ -38,39 +38,6 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
-        private async Task<ContractDetails> ContractDetailsFromContractString(int timeout, string contractString)
-        {
-            ContractDetails contractDetails = null!;
-            var contractArray = contractString.Split(';');
-            if (contractArray.Length == 1)
-            {
-                contractDetails = await _ibHost.RequestContractDetailsAsync(contractArray[0], timeout);
-            }
-            else if (contractArray.Length == 2)
-            {
-                contractDetails = await _ibHost.RequestContractDetailsAsync(contractArray[0], timeout, contractArray[1]);
-            }
-            else if (contractArray.Length == 3)
-            {
-                contractDetails = await _ibHost.RequestContractDetailsAsync(contractArray[0], timeout, contractArray[1], contractArray[2]);
-            }
-            else if (contractArray.Length == 4)
-            {
-                contractDetails = await _ibHost.RequestContractDetailsAsync(
-                    contractArray[0],
-                    timeout,
-                    contractArray[1],
-                    contractArray[2],
-                    contractArray[2]);
-            }
-            else
-            {
-                throw new ApplicationException("Wrong number of elements in contract's string representation.");
-            }
-
-            return contractDetails;
-        }
-
         public List<string> ExtractIdsFromContractDetailsList(List<ContractDetails> contractDetailsList)
         {
             TriggerStatus($"Extracting contract ids from the contract details");
@@ -189,6 +156,39 @@ namespace StockAnalyzer.DataProviders
             }
 
             return xDocument;
+        }
+
+        private async Task<ContractDetails> ContractDetailsFromContractString(int timeout, string contractString)
+        {
+            ContractDetails contractDetails = null!;
+            var contractArray = contractString.Split(';');
+            if (contractArray.Length == 1)
+            {
+                contractDetails = await _ibHost.RequestContractDetailsAsync(contractArray[0], timeout);
+            }
+            else if (contractArray.Length == 2)
+            {
+                contractDetails = await _ibHost.RequestContractDetailsAsync(contractArray[0], timeout, contractArray[1]);
+            }
+            else if (contractArray.Length == 3)
+            {
+                contractDetails = await _ibHost.RequestContractDetailsAsync(contractArray[0], timeout, contractArray[1], contractArray[2]);
+            }
+            else if (contractArray.Length == 4)
+            {
+                contractDetails = await _ibHost.RequestContractDetailsAsync(
+                    contractArray[0],
+                    timeout,
+                    contractArray[1],
+                    contractArray[2],
+                    contractArray[2]);
+            }
+            else
+            {
+                throw new ApplicationException("Wrong number of elements in contract's string representation.");
+            }
+
+            return contractDetails;
         }
     }
 }
