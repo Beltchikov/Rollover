@@ -199,9 +199,9 @@
                         <RowDefinition Height="10"></RowDefinition>
                         <RowDefinition Height="70"></RowDefinition>
                         <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="130"></RowDefinition>
+                        <RowDefinition Height="180"></RowDefinition>
                         <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="160"></RowDefinition>
+                        <RowDefinition Height="190"></RowDefinition>
                         <RowDefinition Height="10"></RowDefinition>
                         <RowDefinition Height="130"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
