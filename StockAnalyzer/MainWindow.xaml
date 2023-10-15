@@ -228,12 +228,12 @@
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="10"></RowDefinition>
-                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="50"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="10"></RowDefinition>
                             </Grid.RowDefinitions>
 
-                            <Label Content="Tickers:" Grid.Column="1" Grid.Row="1" 
+                            <Label Content="Contract String&#10;(SMB;CUR;SEC;EXC):" Grid.Column="1" Grid.Row="1" 
         HorizontalAlignment="Left"
          Foreground="White"></Label>
                             <TextBox Text="{Binding ContractStringsTwsContractDetails, Converter={StaticResource ListToStringConverter}}" Grid.Column="1" Grid.Row="2" 
@@ -272,14 +272,14 @@ Foreground="White" Grid.ColumnSpan="3">
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="10"></RowDefinition>
-                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="50"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="10"></RowDefinition>
                                 <RowDefinition Height="25"></RowDefinition>
                                 <RowDefinition Height="10"></RowDefinition>
                             </Grid.RowDefinitions>
 
-                            <Label Content="Tickers:" Grid.Column="1" Grid.Row="1" 
+                            <Label Content="Contract String&#10;(SMB;CUR;SEC;EXC):" Grid.Column="1" Grid.Row="1" 
      HorizontalAlignment="Left"
       Foreground="White"></Label>
                             <TextBox Text="{Binding ContractStringsTwsRoe, Converter={StaticResource ListToStringConverter}}" 
@@ -332,7 +332,7 @@ Foreground="White" Grid.ColumnSpan="3">
                         <RowDefinition Height="10"></RowDefinition>
                         <RowDefinition Height="60"></RowDefinition>
                         <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
+                        <RowDefinition Height="50"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="10"></RowDefinition>
                         <RowDefinition Height="100"></RowDefinition>
@@ -347,7 +347,7 @@ Foreground="White" Grid.ColumnSpan="3">
                         Command="{Binding ConnectToTwsCommand, Mode=OneWay}">   
                     </tws_uc:TwsConnection>
 
-                    <Label Content="Tickers:" Grid.Column="1" Grid.Row="3" 
+                    <Label Content="Contract String&#10;(SMB;CUR;SEC;EXC):" Grid.Column="1" Grid.Row="3" 
                     HorizontalAlignment="Left"
                      Foreground="Black"></Label>
                     <TextBox Text="{Binding ContractStringsTwsSummary, Converter={StaticResource ListToStringConverter}}" 
