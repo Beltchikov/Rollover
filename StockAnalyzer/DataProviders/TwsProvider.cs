@@ -120,6 +120,7 @@ namespace StockAnalyzer.DataProviders
         {
             TriggerStatus($"Extracting Net Income from the fundamental data list");
             var result = new List<string>();
+            result.Add($"Ticker\tNet Income in M");
 
             foreach (string fundamentalData in fundamentalDataList)
             {
