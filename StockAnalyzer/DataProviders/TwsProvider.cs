@@ -164,24 +164,24 @@ namespace StockAnalyzer.DataProviders
             var contractArray = contractString.Split(';');
             if (contractArray.Length == 1)
             {
-                contractDetails = await _ibHost.RequestContractDetailsAsync(contractArray[0], timeout);
+                contractDetails = await _ibHost.RequestContractDetailsAsync(contractArray[0]?.Trim(), timeout);
             }
             else if (contractArray.Length == 2)
             {
-                contractDetails = await _ibHost.RequestContractDetailsAsync(contractArray[0], timeout, contractArray[1]);
+                contractDetails = await _ibHost.RequestContractDetailsAsync(contractArray[0]?.Trim(), timeout, contractArray[1]?.Trim());
             }
             else if (contractArray.Length == 3)
             {
-                contractDetails = await _ibHost.RequestContractDetailsAsync(contractArray[0], timeout, contractArray[1], contractArray[2]);
+                contractDetails = await _ibHost.RequestContractDetailsAsync(contractArray[0]?.Trim(), timeout, contractArray[1]?.Trim(), contractArray[2]?.Trim());
             }
             else if (contractArray.Length == 4)
             {
                 contractDetails = await _ibHost.RequestContractDetailsAsync(
-                    contractArray[0],
+                    contractArray[0]?.Trim(),
                     timeout,
-                    contractArray[1],
-                    contractArray[2],
-                    contractArray[2]);
+                    contractArray[1]?.Trim(),
+                    contractArray[2]?.Trim(),
+                    contractArray[2]?.Trim());
             }
             else
             {
