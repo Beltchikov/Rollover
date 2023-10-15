@@ -126,7 +126,9 @@ namespace StockAnalyzer.DataProviders
 
                 var annualPeriodsElement = xDocument.Descendants("AnnualPeriods");
                 var fiscalPeriodElements = annualPeriodsElement?.Descendants("FiscalPeriod");
-                var lastFiscalPeriodelement = fiscalPeriodElements?.MaxBy(e => Convert.ToInt32(e.Attribute("FiscalYear")?.Value));
+                var lastFiscalPeriodElement = fiscalPeriodElements?.MaxBy(e => Convert.ToInt32(e.Attribute("FiscalYear")?.Value));
+                var statementElements = lastFiscalPeriodElement?.Descendants("Statement");
+
 
                 // result.Add($"{issueIdElementTicker?.Value}\t{roeAsString}");
             }
