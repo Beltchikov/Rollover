@@ -97,19 +97,24 @@ namespace StockAnalyzer.DataProviders
                 }
 
                 var roeAsString = roeAsDouble == 0 ? null : roeAsDouble.ToString("0.0") + "%";
-
-                var issuesElement = xDocument.Descendants("Issues").FirstOrDefault();
-                var issueElements = issuesElement?.Descendants("Issue");
-                var issueElementId1 = issueElements?.FirstOrDefault(e => e.Attribute("ID")?.Value == "1");
-                var issueIdElements = issueElementId1?.Descendants("IssueID");
-                var issueIdElementTicker = issueIdElements?.FirstOrDefault(e => e.Attribute("Type")?.Value == "Ticker");
-
-                result.Add($"{issueIdElementTicker?.Value}\t{roeAsString}");
+                string ticker = TickerFromXDocument(xDocument);
+                result.Add($"{ticker}\t{roeAsString}");
             }
 
             return result;
         }
 
+        private static string TickerFromXDocument(XDocument? xDocument)
+        {
+            string ticker;
+            var issuesElement = xDocument?.Descendants("Issues").FirstOrDefault();
+            var issueElements = issuesElement?.Descendants("Issue");
+            var issueElementId1 = issueElements?.FirstOrDefault(e => e.Attribute("ID")?.Value == "1");
+            var issueIdElements = issueElementId1?.Descendants("IssueID");
+            var issueIdElementTicker = issueIdElements?.FirstOrDefault(e => e.Attribute("Type")?.Value == "Ticker");
+            ticker = issueIdElementTicker?.Value ?? "";
+            return ticker;
+        }
 
         public List<string> ExtractNetIncomeFromFundamentalDataList(List<string> fundamentalDataList)
         {
@@ -130,9 +135,10 @@ namespace StockAnalyzer.DataProviders
                 var statementElements = lastFiscalPeriodElement?.Descendants("Statement");
                 var incStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "INC");
                 var lineItemElements = incStatementElement?.Descendants("lineItem");
-                var nincLineItemElement = lineItemElements?.Where(e => e?.Attribute("coaCode")?.Value == "NINC");
+                var nincLineItemElement = lineItemElements?.Where(e => e?.Attribute("coaCode")?.Value == "NINC").FirstOrDefault();
 
-                // result.Add($"{issueIdElementTicker?.Value}\t{roeAsString}");
+                string ticker = TickerFromXDocument(xDocument);
+                result.Add($"{ticker}\t{nincLineItemElement?.Value}");
             }
 
             return result;
