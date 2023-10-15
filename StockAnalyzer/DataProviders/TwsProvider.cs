@@ -129,6 +129,7 @@ namespace StockAnalyzer.DataProviders
                 var lastFiscalPeriodElement = fiscalPeriodElements?.MaxBy(e => Convert.ToInt32(e.Attribute("FiscalYear")?.Value));
                 var statementElements = lastFiscalPeriodElement?.Descendants("Statement");
                 var incStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "INC");
+                var lineItemElements = incStatementElement?.Descendants("lineItem");
 
                 // result.Add($"{issueIdElementTicker?.Value}\t{roeAsString}");
             }
