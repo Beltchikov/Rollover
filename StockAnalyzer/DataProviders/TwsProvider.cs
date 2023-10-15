@@ -60,7 +60,7 @@ namespace StockAnalyzer.DataProviders
             {
                 var contractStringTrimmed = contractString.Trim();
                 TriggerStatus($"Retrieving fundamental data for {contractStringTrimmed}, report type: {reportType} {cnt++}/{contractStringsTws.Count}");
-                var fundamentalDataString = await _ibHost.RequestFundamentalDataAsync(contractStringTrimmed, reportType, timeout);
+                string fundamentalDataString = await FundamentalDataFromContractString(timeout, reportType, contractStringTrimmed);
                 result.Add(fundamentalDataString);
             }
 
@@ -75,7 +75,7 @@ namespace StockAnalyzer.DataProviders
             foreach (string fundamentalData in fundamentalDataList)
             {
                 XDocument? xDocument = ParseXDocumentWithChecks(fundamentalData, result);
-                if(xDocument == null) // some error string has been added
+                if (xDocument == null) // some error string has been added
                 {
                     continue;
                 }
@@ -189,6 +189,43 @@ namespace StockAnalyzer.DataProviders
             }
 
             return contractDetails;
+        }
+
+        private async Task<string> FundamentalDataFromContractString(int timeout, string reportType, string contractString)
+        {
+            string fundamentalData;
+            var contractArray = contractString.Split(';', StringSplitOptions.RemoveEmptyEntries);
+            if (contractArray.Length == 1)
+            {
+                fundamentalData = await _ibHost.RequestFundamentalDataAsync(contractArray[0]?.Trim(), reportType, timeout);
+            }
+            else if (contractArray.Length == 2)
+            {
+                fundamentalData = await _ibHost.RequestFundamentalDataAsync(
+                    contractArray[0]?.Trim(),
+                    reportType,
+                    timeout,
+                    contractArray[1]?.Trim());
+            }
+            else if (contractArray.Length == 3)
+            {
+                fundamentalData = await _ibHost.RequestFundamentalDataAsync(contractArray[0]?.Trim(), reportType, timeout, contractArray[1]?.Trim(), contractArray[2]?.Trim());
+            }
+            else if (contractArray.Length == 4)
+            {
+                fundamentalData = await _ibHost.RequestFundamentalDataAsync(
+                    contractArray[0]?.Trim(),
+                    reportType,
+                    timeout,
+                    contractArray[1]?.Trim(),
+                    contractArray[2]?.Trim(),
+                    contractArray[3]?.Trim());
+            }
+            else
+            {
+                throw new ApplicationException("Wrong number of elements in contract's string representation.");
+            }
+            return fundamentalData;
         }
     }
 }
