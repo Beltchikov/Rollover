@@ -161,7 +161,7 @@ namespace StockAnalyzer.DataProviders
         private async Task<ContractDetails> ContractDetailsFromContractString(int timeout, string contractString)
         {
             ContractDetails contractDetails = null!;
-            var contractArray = contractString.Split(';');
+            var contractArray = contractString.Split(';', StringSplitOptions.RemoveEmptyEntries);
             if (contractArray.Length == 1)
             {
                 contractDetails = await _ibHost.RequestContractDetailsAsync(contractArray[0]?.Trim(), timeout);
