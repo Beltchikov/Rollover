@@ -221,7 +221,7 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="10"></ColumnDefinition>
-                                <ColumnDefinition Width="140"></ColumnDefinition>
+                                <ColumnDefinition Width="155"></ColumnDefinition>
                                 <ColumnDefinition Width="155"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="10"></ColumnDefinition>
@@ -250,7 +250,7 @@
                                 </Button>
                             </StackPanel>
 
-                            <Label Content="Results:" Grid.Column="3" Grid.Row="1" 
+                            <Label Content="Results:" Grid.Column="3" Grid.Row="1" VerticalAlignment="Bottom"
         HorizontalAlignment="Left"
          Foreground="White"></Label>
                             <TextBox Text="{Binding ResultCollectionTwsContractIds, Converter={StaticResource ListToStringConverter}}" Grid.Column="3" Grid.Row="2" 
@@ -265,7 +265,7 @@ Foreground="White" Grid.ColumnSpan="3">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="10"></ColumnDefinition>
-                                <ColumnDefinition Width="140"></ColumnDefinition>
+                                <ColumnDefinition Width="155"></ColumnDefinition>
                                 <ColumnDefinition Width="155"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="10"></ColumnDefinition>
@@ -297,7 +297,7 @@ Foreground="White" Grid.ColumnSpan="3">
                                 </Button>
                             </StackPanel>
 
-                            <Label Content="Results:" Grid.Column="3" Grid.Row="1" 
+                            <Label Content="Results:" Grid.Column="3" Grid.Row="1" VerticalAlignment="Bottom"
      HorizontalAlignment="Left"
       Foreground="White"></Label>
                             <TextBox x:Name="txtResultsTwsRoe" 
