@@ -45,9 +45,9 @@ namespace StockAnalyzer
         public ICommand ConnectToTwsCommand { get; }
         public ICommand ContractIdsCommand { get; }
         public ICommand RoeCommand { get; }
-        public ICommand NetIncomeCommand { get; }
-        public ICommand DivPaidCommand { get; }
-        public ICommand PayoutRatioCommand { get; }
+        public ICommand NetIncomeYCommand { get; }
+        public ICommand DivPaidYCommand { get; }
+        public ICommand PayoutRatioYCommand { get; }
         public ICommand TwsSummaryCommand { get; }
 
         public ViewModel(
@@ -124,7 +124,7 @@ namespace StockAnalyzer
                 ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractRoeFromFundamentalDataList(fundamentalDataListRoe));
             });
 
-            NetIncomeCommand = new RelayCommand(async () =>
+            NetIncomeYCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer ??= this;
                 ConnectToTwsIfNeeded();
@@ -134,25 +134,25 @@ namespace StockAnalyzer
                                     contractStringsList,
                                     REPORTS_FIN_STATEMENTS,
                                     TIMEOUT_TWS);
-                ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractNetIncomeFromFundamentalDataList(fundamentalDataListNetIncome));
+                ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractNetIncomeYFromFundamentalDataList(fundamentalDataListNetIncome));
             });
 
-            DivPaidCommand = new RelayCommand(async () =>
+            DivPaidYCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer ??= this;
                 ConnectToTwsIfNeeded();
                 List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
 
-                MessageBox.Show("DivPaidCommand");
+                MessageBox.Show("DivPaidYCommand");
             });
 
-            PayoutRatioCommand = new RelayCommand(async () =>
+            PayoutRatioYCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer ??= this;
                 ConnectToTwsIfNeeded();
                 List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
 
-                MessageBox.Show("PayoutRatioCommand");
+                MessageBox.Show("PayoutRatioYCommand");
             });
 
             TwsSummaryCommand = new RelayCommand(async () =>

@@ -294,15 +294,15 @@ Foreground="White" Grid.ColumnSpan="3">
                                 </Button>
                                 <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="25" 
                                    HorizontalAlignment="Stretch" VerticalAlignment="Center" 
-                                       Command="{Binding NetIncomeCommand}">Net Income >>
+                                       Command="{Binding NetIncomeYCommand}">Net Income (Y) >>
                                 </Button>
                                 <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="25" 
                                     HorizontalAlignment="Stretch" VerticalAlignment="Center" 
-                                        Command="{Binding DivPaidCommand}">Div. Paid >>
+                                        Command="{Binding DivPaidYCommand}">Div. Paid (Y) >>
                                 </Button>
                                 <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="25" 
                                     HorizontalAlignment="Stretch" VerticalAlignment="Center" 
-                                    Command="{Binding PayoutRatioCommand}">Payout Ratio >>
+                                    Command="{Binding PayoutRatioYCommand}">Payout Ratio (Y)>>
                                 </Button>
                             </StackPanel>
 

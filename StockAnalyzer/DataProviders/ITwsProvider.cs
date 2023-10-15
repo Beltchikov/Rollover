@@ -13,6 +13,6 @@ namespace StockAnalyzer.DataProviders
         Task<List<string>> GetFundamentalData(List<string> contractStringsTws, string reportType, int timeout);
         List<string> ExtractRoeFromFundamentalDataList(List<string> fundamentalDataList);
         List<string> ExtractSummaryFromFundamentalDataList(List<string> fundamentalDataList);
-        List<string> ExtractNetIncomeFromFundamentalDataList(List<string> fundamentalDataList);
+        List<string> ExtractNetIncomeYFromFundamentalDataList(List<string> fundamentalDataList);
     }
 }
