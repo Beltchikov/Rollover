@@ -138,12 +138,15 @@ namespace StockAnalyzer.DataProviders
 
                 // Net income
                 var incStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "INC");
-                var lineItemElements = incStatementElement?.Descendants("lineItem");
-                var nincLineItemElement = lineItemElements?.Where(e => e?.Attribute("coaCode")?.Value == "NINC").FirstOrDefault();
+                var lineItemElementsInc = incStatementElement?.Descendants("lineItem");
+                var nincLineItemElement = lineItemElementsInc?.Where(e => e?.Attribute("coaCode")?.Value == "NINC").FirstOrDefault();
                 var netIncome = nincLineItemElement?.Value;
 
                 // Total Cash Dividends Paid
                 var casStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "CAS");
+                var lineItemElementsCas = casStatementElement?.Descendants("lineItem");
+                var fcdpLineItemElement = lineItemElementsCas?.Where(e => e?.Attribute("coaCode")?.Value == "FCDP").FirstOrDefault();
+                var divPaidNegative = fcdpLineItemElement?.Value;   
 
                 string ticker = TickerFromXDocument(xDocument);
                 result.Add($"{ticker}\t{netIncome}");
