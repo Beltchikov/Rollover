@@ -153,6 +153,7 @@ namespace StockAnalyzer.DataProviders
                 // Payback ratio
                 netIncome = netIncome == 0 ? 1 : netIncome; 
                 var paybackRatio = (divPaid / netIncome) * 100;
+                paybackRatio = Math.Round(paybackRatio, 1);
 
                 string ticker = TickerFromXDocument(xDocument);
                 result.Add($"{ticker}\t{netIncome}\t{divPaid}\t{paybackRatio}%");
