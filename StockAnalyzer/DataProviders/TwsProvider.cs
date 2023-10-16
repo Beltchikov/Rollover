@@ -120,7 +120,7 @@ namespace StockAnalyzer.DataProviders
         {
             TriggerStatus($"Extracting Net Income from the fundamental data list");
             var result = new List<string>();
-            result.Add($"Ticker\tNet Income in M");
+            result.Add($"Ticker\tNet Income in M\tDiv. Paid\tPayback Ratio");
 
             foreach (string fundamentalData in fundamentalDataList)
             {
@@ -140,16 +140,22 @@ namespace StockAnalyzer.DataProviders
                 var incStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "INC");
                 var lineItemElementsInc = incStatementElement?.Descendants("lineItem");
                 var nincLineItemElement = lineItemElementsInc?.Where(e => e?.Attribute("coaCode")?.Value == "NINC").FirstOrDefault();
-                var netIncome = nincLineItemElement?.Value;
+                var netIncomeAsString = nincLineItemElement?.Value;
+                var netIncome = Convert.ToDouble(netIncomeAsString, CultureInfo.InvariantCulture);
 
                 // Total Cash Dividends Paid
                 var casStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "CAS");
                 var lineItemElementsCas = casStatementElement?.Descendants("lineItem");
                 var fcdpLineItemElement = lineItemElementsCas?.Where(e => e?.Attribute("coaCode")?.Value == "FCDP").FirstOrDefault();
-                var divPaidNegative = fcdpLineItemElement?.Value;   
+                var divPaidNegative = fcdpLineItemElement?.Value;
+                var divPaid = Convert.ToDouble(divPaidNegative, CultureInfo.InvariantCulture) * -1;
+
+                // Payback ratio
+                netIncome = netIncome == 0 ? 1 : netIncome; 
+                var paybackRatio = (divPaid / netIncome) * 100;
 
                 string ticker = TickerFromXDocument(xDocument);
-                result.Add($"{ticker}\t{netIncome}");
+                result.Add($"{ticker}\t{netIncome}\t{divPaid}\t{paybackRatio}%");
             }
 
             return result;
