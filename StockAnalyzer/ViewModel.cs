@@ -46,8 +46,6 @@ namespace StockAnalyzer
         public ICommand ContractIdsCommand { get; }
         public ICommand RoeCommand { get; }
         public ICommand NetIncomeYCommand { get; }
-        public ICommand DivPaidYCommand { get; }
-        public ICommand PayoutRatioYCommand { get; }
         public ICommand TwsSummaryCommand { get; }
 
         public ViewModel(
@@ -135,24 +133,6 @@ namespace StockAnalyzer
                                     REPORTS_FIN_STATEMENTS,
                                     TIMEOUT_TWS);
                 ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractNetIncomeYFromFundamentalDataList(fundamentalDataListNetIncome));
-            });
-
-            DivPaidYCommand = new RelayCommand(async () =>
-            {
-                ibHost.Consumer ??= this;
-                ConnectToTwsIfNeeded();
-                List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
-
-                MessageBox.Show("DivPaidYCommand");
-            });
-
-            PayoutRatioYCommand = new RelayCommand(async () =>
-            {
-                ibHost.Consumer ??= this;
-                ConnectToTwsIfNeeded();
-                List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
-
-                MessageBox.Show("PayoutRatioYCommand");
             });
 
             TwsSummaryCommand = new RelayCommand(async () =>
