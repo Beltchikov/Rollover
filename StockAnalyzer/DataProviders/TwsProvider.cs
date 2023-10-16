@@ -134,12 +134,14 @@ namespace StockAnalyzer.DataProviders
                 var fiscalPeriodElements = annualPeriodsElement?.Descendants("FiscalPeriod");
                 var lastFiscalPeriodElement = fiscalPeriodElements?.MaxBy(e => Convert.ToInt32(e.Attribute("FiscalYear")?.Value));
                 var statementElements = lastFiscalPeriodElement?.Descendants("Statement");
+
                 var incStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "INC");
                 var lineItemElements = incStatementElement?.Descendants("lineItem");
                 var nincLineItemElement = lineItemElements?.Where(e => e?.Attribute("coaCode")?.Value == "NINC").FirstOrDefault();
+                var netIncome = nincLineItemElement?.Value;
 
                 string ticker = TickerFromXDocument(xDocument);
-                result.Add($"{ticker}\t{nincLineItemElement?.Value}");
+                result.Add($"{ticker}\t{netIncome}");
             }
 
             return result;
