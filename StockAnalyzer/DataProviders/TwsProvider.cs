@@ -130,15 +130,20 @@ namespace StockAnalyzer.DataProviders
                     continue;
                 }
 
+                // Statement section
                 var annualPeriodsElement = xDocument.Descendants("AnnualPeriods");
                 var fiscalPeriodElements = annualPeriodsElement?.Descendants("FiscalPeriod");
                 var lastFiscalPeriodElement = fiscalPeriodElements?.MaxBy(e => Convert.ToInt32(e.Attribute("FiscalYear")?.Value));
                 var statementElements = lastFiscalPeriodElement?.Descendants("Statement");
 
+                // Net income
                 var incStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "INC");
                 var lineItemElements = incStatementElement?.Descendants("lineItem");
                 var nincLineItemElement = lineItemElements?.Where(e => e?.Attribute("coaCode")?.Value == "NINC").FirstOrDefault();
                 var netIncome = nincLineItemElement?.Value;
+
+                // Total Cash Dividends Paid
+                var casStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "CAS");
 
                 string ticker = TickerFromXDocument(xDocument);
                 result.Add($"{ticker}\t{netIncome}");
