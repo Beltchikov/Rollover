@@ -129,12 +129,7 @@ namespace StockAnalyzer.DataProviders
                 {
                     continue;
                 }
-
-                // Statement section
-                var annualPeriodsElement = xDocument.Descendants("AnnualPeriods");
-                var fiscalPeriodElements = annualPeriodsElement?.Descendants("FiscalPeriod");
-                var lastFiscalPeriodElement = fiscalPeriodElements?.MaxBy(e => Convert.ToInt32(e.Attribute("FiscalYear")?.Value));
-                var statementElements = lastFiscalPeriodElement?.Descendants("Statement");
+                IEnumerable<XElement> statementElements = ExtractStatementSection(xDocument);
 
                 // Net income
                 var incStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "INC");
@@ -151,7 +146,7 @@ namespace StockAnalyzer.DataProviders
                 var divPaid = Convert.ToDouble(divPaidNegative, CultureInfo.InvariantCulture) * -1;
 
                 // Payback ratio
-                netIncome = netIncome == 0 ? 1 : netIncome; 
+                netIncome = netIncome == 0 ? 1 : netIncome;
                 var paybackRatio = (divPaid / netIncome) * 100;
                 paybackRatio = Math.Round(paybackRatio, 1);
 
@@ -278,6 +273,16 @@ namespace StockAnalyzer.DataProviders
                 throw new ApplicationException("Wrong number of elements in contract's string representation.");
             }
             return fundamentalData;
+        }
+
+        private static IEnumerable<XElement>? ExtractStatementSection(XDocument? xDocument)
+        {
+            IEnumerable<XElement>? statementElements;
+            var annualPeriodsElement = xDocument?.Descendants("AnnualPeriods");
+            var fiscalPeriodElements = annualPeriodsElement?.Descendants("FiscalPeriod");
+            var lastFiscalPeriodElement = fiscalPeriodElements?.MaxBy(e => Convert.ToInt32(e.Attribute("FiscalYear")?.Value));
+            statementElements = lastFiscalPeriodElement?.Descendants("Statement");
+            return statementElements;
         }
     }
 }
