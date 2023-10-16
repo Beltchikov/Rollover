@@ -129,26 +129,11 @@ namespace StockAnalyzer.DataProviders
                 {
                     continue;
                 }
-                IEnumerable<XElement> statementElements = ExtractStatementSection(xDocument);
-
-                // Net income
-                var incStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "INC");
-                var lineItemElementsInc = incStatementElement?.Descendants("lineItem");
-                var nincLineItemElement = lineItemElementsInc?.Where(e => e?.Attribute("coaCode")?.Value == "NINC").FirstOrDefault();
-                var netIncomeAsString = nincLineItemElement?.Value;
-                var netIncome = Convert.ToDouble(netIncomeAsString, CultureInfo.InvariantCulture);
-
-                // Total Cash Dividends Paid
-                var casStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "CAS");
-                var lineItemElementsCas = casStatementElement?.Descendants("lineItem");
-                var fcdpLineItemElement = lineItemElementsCas?.Where(e => e?.Attribute("coaCode")?.Value == "FCDP").FirstOrDefault();
-                var divPaidNegative = fcdpLineItemElement?.Value;
-                var divPaid = Convert.ToDouble(divPaidNegative, CultureInfo.InvariantCulture) * -1;
-
-                // Payback ratio
-                netIncome = netIncome == 0 ? 1 : netIncome;
-                var paybackRatio = (divPaid / netIncome) * 100;
-                paybackRatio = Math.Round(paybackRatio, 1);
+                IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument);
+                
+                double netIncome = ExtractNetIncome(statementSection);
+                double divPaid = ExtractDividendsPaid(statementSection);
+                double paybackRatio = CalculatePaybackRatio(netIncome, divPaid);
 
                 string ticker = TickerFromXDocument(xDocument);
                 result.Add($"{ticker}\t{netIncome}\t{divPaid}\t{paybackRatio}%");
@@ -284,5 +269,37 @@ namespace StockAnalyzer.DataProviders
             statementElements = lastFiscalPeriodElement?.Descendants("Statement");
             return statementElements;
         }
+
+        private static double CalculatePaybackRatio(double netIncome, double divPaid)
+        {
+            double paybackRatio;
+            netIncome = netIncome == 0 ? 1 : netIncome;
+            paybackRatio = (divPaid / netIncome) * 100;
+            paybackRatio = Math.Round(paybackRatio, 1);
+            return paybackRatio;
+        }
+
+        private static double ExtractDividendsPaid(IEnumerable<XElement>? statementSection)
+        {
+            double divPaid;
+            var casStatementElement = statementSection?.Where(e => e?.Attribute("Type")?.Value == "CAS");
+            var lineItemElementsCas = casStatementElement?.Descendants("lineItem");
+            var fcdpLineItemElement = lineItemElementsCas?.Where(e => e?.Attribute("coaCode")?.Value == "FCDP").FirstOrDefault();
+            var divPaidNegative = fcdpLineItemElement?.Value;
+            divPaid = Convert.ToDouble(divPaidNegative, CultureInfo.InvariantCulture) * -1;
+            return divPaid;
+        }
+
+        private static double ExtractNetIncome(IEnumerable<XElement>? statementElements)
+        {
+            double netIncome;
+            var incStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "INC");
+            var lineItemElementsInc = incStatementElement?.Descendants("lineItem");
+            var nincLineItemElement = lineItemElementsInc?.Where(e => e?.Attribute("coaCode")?.Value == "NINC").FirstOrDefault();
+            var netIncomeAsString = nincLineItemElement?.Value;
+            netIncome = Convert.ToDouble(netIncomeAsString, CultureInfo.InvariantCulture);
+            return netIncome;
+        }
+
     }
 }
