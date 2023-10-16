@@ -294,7 +294,7 @@ Foreground="White" Grid.ColumnSpan="3">
                                 </Button>
                                 <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="25" 
                                    HorizontalAlignment="Stretch" VerticalAlignment="Center" 
-                                       Command="{Binding NetIncomeYCommand}">Payout Ratio (Y) >>
+                                       Command="{Binding PayoutRatioYCommand}">Payout Ratio (Y) >>
                                 </Button>
                                 <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="25" 
                                     HorizontalAlignment="Stretch" VerticalAlignment="Center" 

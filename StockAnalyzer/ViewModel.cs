@@ -45,7 +45,7 @@ namespace StockAnalyzer
         public ICommand ConnectToTwsCommand { get; }
         public ICommand ContractIdsCommand { get; }
         public ICommand RoeCommand { get; }
-        public ICommand NetIncomeYCommand { get; }
+        public ICommand PayoutRatioYCommand { get; }
         public ICommand TwsSummaryCommand { get; }
 
         public ViewModel(
@@ -122,7 +122,7 @@ namespace StockAnalyzer
                 ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractRoeFromFundamentalDataList(fundamentalDataListRoe));
             });
 
-            NetIncomeYCommand = new RelayCommand(async () =>
+            PayoutRatioYCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer ??= this;
                 ConnectToTwsIfNeeded();
