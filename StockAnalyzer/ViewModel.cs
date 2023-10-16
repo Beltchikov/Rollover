@@ -128,11 +128,11 @@ namespace StockAnalyzer
                 ConnectToTwsIfNeeded();
                 List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
 
-                List<string> fundamentalDataListNetIncome = await twsProvider.GetFundamentalData(
+                List<string> fundamentalDataListPayoutRatio = await twsProvider.GetFundamentalData(
                                     contractStringsList,
                                     REPORTS_FIN_STATEMENTS,
                                     TIMEOUT_TWS);
-                ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractNetIncomeYFromFundamentalDataList(fundamentalDataListNetIncome));
+                ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractPayoutRationYFromFundamentalDataList(fundamentalDataListPayoutRatio));
             });
 
             TwsSummaryCommand = new RelayCommand(async () =>

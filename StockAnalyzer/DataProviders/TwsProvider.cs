@@ -116,7 +116,7 @@ namespace StockAnalyzer.DataProviders
             return ticker;
         }
 
-        public List<string> ExtractNetIncomeYFromFundamentalDataList(List<string> fundamentalDataList)
+        public List<string> ExtractPayoutRationYFromFundamentalDataList(List<string> fundamentalDataList)
         {
             TriggerStatus($"Extracting Net Income from the fundamental data list");
             var result = new List<string>();
