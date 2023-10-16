@@ -298,11 +298,7 @@ Foreground="White" Grid.ColumnSpan="3">
                                 </Button>
                                 <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="25" 
                                     HorizontalAlignment="Stretch" VerticalAlignment="Center" 
-                                        >DELETE (Y) >>
-                                </Button>
-                                <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="25" 
-                                    HorizontalAlignment="Stretch" VerticalAlignment="Center" 
-                                    >DELETE (Y)>>
+                                        Command="{Binding PayoutRatioQCommand}">Payout Ratio (Q) >>
                                 </Button>
                             </StackPanel>
 

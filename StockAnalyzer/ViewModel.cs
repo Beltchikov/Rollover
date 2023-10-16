@@ -46,6 +46,7 @@ namespace StockAnalyzer
         public ICommand ContractIdsCommand { get; }
         public ICommand RoeCommand { get; }
         public ICommand PayoutRatioYCommand { get; }
+        public ICommand PayoutRatioQCommand { get; }
         public ICommand TwsSummaryCommand { get; }
 
         public ViewModel(
@@ -133,6 +134,22 @@ namespace StockAnalyzer
                                     REPORTS_FIN_STATEMENTS,
                                     TIMEOUT_TWS);
                 ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractPayoutRationYFromFundamentalDataList(fundamentalDataListPayoutRatio));
+            });
+
+            PayoutRatioQCommand = new RelayCommand(async () =>
+            {
+                ibHost.Consumer ??= this;
+                ConnectToTwsIfNeeded();
+                List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
+
+                List<string> fundamentalDataListPayoutRatio = await twsProvider.GetFundamentalData(
+                                    contractStringsList,
+                                    REPORTS_FIN_STATEMENTS,
+                                    TIMEOUT_TWS);
+
+                MessageBox.Show("PayoutRatioQCommand");
+
+                //ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractPayoutRationYFromFundamentalDataList(fundamentalDataListPayoutRatio));
             });
 
             TwsSummaryCommand = new RelayCommand(async () =>
