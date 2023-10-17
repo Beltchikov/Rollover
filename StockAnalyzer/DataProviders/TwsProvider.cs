@@ -132,8 +132,8 @@ namespace StockAnalyzer.DataProviders
                 }
                 IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument, "AnnualPeriods");
 
-                double netIncome = ExtractNetIncomeY(statementSection);
-                double divPaid = ExtractDividendsPaidY(statementSection);
+                double netIncome = ExtractNetIncome(statementSection);
+                double divPaid = ExtractDividendsPaid(statementSection);
                 double paybackRatio = CalculatePaybackRatio(netIncome, divPaid);
 
                 string ticker = TickerFromXDocument(xDocument);
@@ -159,14 +159,14 @@ namespace StockAnalyzer.DataProviders
                 }
                 IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument, "InterimPeriods");
 
-                double netIncome = ExtractNetIncomeQ(statementSection);
-                double divPaid = ExtractDividendsPaidQ(statementSection);
+                double netIncome = ExtractNetIncome(statementSection);
+                double divPaid = ExtractDividendsPaid(statementSection);
                 double paybackRatio = CalculatePaybackRatio(netIncome, divPaid);
 
                 string ticker = TickerFromXDocument(xDocument);
                 result.Add($"{ticker}\t{netIncome}\t{divPaid}\t{paybackRatio}%");
             }
-            
+
             return result;
         }
 
@@ -307,7 +307,7 @@ namespace StockAnalyzer.DataProviders
             return paybackRatio;
         }
 
-        private static double ExtractDividendsPaidY(IEnumerable<XElement>? statementSection)
+        private static double ExtractDividendsPaid(IEnumerable<XElement>? statementSection)
         {
             double divPaid;
             var casStatementElement = statementSection?.Where(e => e?.Attribute("Type")?.Value == "CAS");
@@ -318,31 +318,9 @@ namespace StockAnalyzer.DataProviders
             return divPaid;
         }
 
-        private static double ExtractDividendsPaidQ(IEnumerable<XElement>? statementSection)
-        {
-            double divPaid;
-            var casStatementElement = statementSection?.Where(e => e?.Attribute("Type")?.Value == "CAS");
-            var lineItemElementsCas = casStatementElement?.Descendants("lineItem");
-            var fcdpLineItemElement = lineItemElementsCas?.Where(e => e?.Attribute("coaCode")?.Value == "FCDP").FirstOrDefault();
-            var divPaidNegative = fcdpLineItemElement?.Value;
-            divPaid = Convert.ToDouble(divPaidNegative, CultureInfo.InvariantCulture) * -1;
-            return divPaid;
-        }
-
-        private static double ExtractNetIncomeY(IEnumerable<XElement>? statementElements)
+        private static double ExtractNetIncome(IEnumerable<XElement>? statementElements)
         {
             double netIncome;
-            var incStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "INC");
-            var lineItemElementsInc = incStatementElement?.Descendants("lineItem");
-            var nincLineItemElement = lineItemElementsInc?.Where(e => e?.Attribute("coaCode")?.Value == "NINC").FirstOrDefault();
-            var netIncomeAsString = nincLineItemElement?.Value;
-            netIncome = Convert.ToDouble(netIncomeAsString, CultureInfo.InvariantCulture);
-            return netIncome;
-        }
-
-        private double ExtractNetIncomeQ(IEnumerable<XElement>? statementElements)
-        {
-            double netIncome = 0;
             var incStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "INC");
             var lineItemElementsInc = incStatementElement?.Descendants("lineItem");
             var nincLineItemElement = lineItemElementsInc?.Where(e => e?.Attribute("coaCode")?.Value == "NINC").FirstOrDefault();
