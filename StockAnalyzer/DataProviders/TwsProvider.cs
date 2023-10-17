@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -118,7 +119,7 @@ namespace StockAnalyzer.DataProviders
 
         public List<string> ExtractPayoutRationYFromFundamentalDataList(List<string> fundamentalDataList)
         {
-            TriggerStatus($"Extracting Net Income from the fundamental data list");
+            TriggerStatus($"Extracting Payout Ratio (Y) from the fundamental data list");
             var result = new List<string>();
             result.Add($"Ticker\tNet Income in M\tDiv. Paid\tPayback Ratio");
 
@@ -130,7 +131,7 @@ namespace StockAnalyzer.DataProviders
                     continue;
                 }
                 IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument);
-                
+
                 double netIncome = ExtractNetIncome(statementSection);
                 double divPaid = ExtractDividendsPaid(statementSection);
                 double paybackRatio = CalculatePaybackRatio(netIncome, divPaid);
@@ -138,6 +139,17 @@ namespace StockAnalyzer.DataProviders
                 string ticker = TickerFromXDocument(xDocument);
                 result.Add($"{ticker}\t{netIncome}\t{divPaid}\t{paybackRatio}%");
             }
+
+            return result;
+        }
+
+
+        public List<string> ExtractPayoutRationQFromFundamentalDataList(List<string> fundamentalDataListPayoutRatio)
+        {
+            TriggerStatus($"Extracting Payout Ratio (Q) from the fundamental data list");
+            var result = new List<string>();
+
+            MessageBox.Show("ExtractPayoutRationQ");
 
             return result;
         }
@@ -300,6 +312,5 @@ namespace StockAnalyzer.DataProviders
             netIncome = Convert.ToDouble(netIncomeAsString, CultureInfo.InvariantCulture);
             return netIncome;
         }
-
     }
 }

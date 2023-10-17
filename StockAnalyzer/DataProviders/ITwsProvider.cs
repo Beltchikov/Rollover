@@ -14,5 +14,6 @@ namespace StockAnalyzer.DataProviders
         List<string> ExtractRoeFromFundamentalDataList(List<string> fundamentalDataList);
         List<string> ExtractSummaryFromFundamentalDataList(List<string> fundamentalDataList);
         List<string> ExtractPayoutRationYFromFundamentalDataList(List<string> fundamentalDataList);
+        List<string> ExtractPayoutRationQFromFundamentalDataList(List<string> fundamentalDataListPayoutRatio);
     }
 }
