@@ -130,7 +130,7 @@ namespace StockAnalyzer.DataProviders
                 {
                     continue;
                 }
-                IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument);
+                IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument, "AnnualPeriods");
 
                 double netIncome = ExtractNetIncomeY(statementSection);
                 double divPaid = ExtractDividendsPaidY(statementSection);
@@ -283,10 +283,10 @@ namespace StockAnalyzer.DataProviders
             return fundamentalData;
         }
 
-        private static IEnumerable<XElement>? ExtractStatementSection(XDocument? xDocument)
+        private static IEnumerable<XElement>? ExtractStatementSection(XDocument? xDocument, string periods)
         {
             IEnumerable<XElement>? statementElements;
-            var annualPeriodsElement = xDocument?.Descendants("AnnualPeriods");
+            var annualPeriodsElement = xDocument?.Descendants(periods);
             var fiscalPeriodElements = annualPeriodsElement?.Descendants("FiscalPeriod");
             var lastFiscalPeriodElement = fiscalPeriodElements?.MaxBy(e => Convert.ToInt32(e.Attribute("FiscalYear")?.Value));
             statementElements = lastFiscalPeriodElement?.Descendants("Statement");
