@@ -161,11 +161,12 @@ namespace StockAnalyzer.DataProviders
 
                 double netIncome = ExtractNetIncomeQ(statementSection);
                 double divPaid = ExtractDividendsPaidQ(statementSection);
-                //double paybackRatio = CalculatePaybackRatio(netIncome, divPaid);
+                double paybackRatio = CalculatePaybackRatio(netIncome, divPaid);
+
+                string ticker = TickerFromXDocument(xDocument);
+                result.Add($"{ticker}\t{netIncome}\t{divPaid}\t{paybackRatio}%");
             }
-
-            MessageBox.Show("ExtractPayoutRationQ");
-
+            
             return result;
         }
 
