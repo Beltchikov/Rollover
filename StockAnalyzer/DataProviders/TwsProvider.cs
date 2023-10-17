@@ -150,15 +150,15 @@ namespace StockAnalyzer.DataProviders
             var result = new List<string>();
             result.Add($"Ticker\tNet Income (Q) in M\tDiv. Paid\tPayback Ratio");
 
-            //foreach (string fundamentalData in fundamentalDataList)
-            //{
-            //    XDocument? xDocument = ParseXDocumentWithChecks(fundamentalData, result);
-            //    if (xDocument == null) // some error string has been added
-            //    {
-            //        continue;
-            //    }
-            //    IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument);
-            //}
+            foreach (string fundamentalData in fundamentalDataList)
+            {
+                XDocument? xDocument = ParseXDocumentWithChecks(fundamentalData, result);
+                if (xDocument == null) // some error string has been added
+                {
+                    continue;
+                }
+                IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument, "InterimPeriods");
+            }
 
             MessageBox.Show("ExtractPayoutRationQ");
 
