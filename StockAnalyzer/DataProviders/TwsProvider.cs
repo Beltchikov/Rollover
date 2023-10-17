@@ -121,7 +121,7 @@ namespace StockAnalyzer.DataProviders
         {
             TriggerStatus($"Extracting Payout Ratio (Y) from the fundamental data list");
             var result = new List<string>();
-            result.Add($"Ticker\tNet Income in M\tDiv. Paid\tPayback Ratio");
+            result.Add($"Ticker\tNet Income (Y) in M\tDiv. Paid\tPayback Ratio");
 
             foreach (string fundamentalData in fundamentalDataList)
             {
@@ -132,8 +132,8 @@ namespace StockAnalyzer.DataProviders
                 }
                 IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument);
 
-                double netIncome = ExtractNetIncome(statementSection);
-                double divPaid = ExtractDividendsPaid(statementSection);
+                double netIncome = ExtractNetIncomeY(statementSection);
+                double divPaid = ExtractDividendsPaidY(statementSection);
                 double paybackRatio = CalculatePaybackRatio(netIncome, divPaid);
 
                 string ticker = TickerFromXDocument(xDocument);
@@ -144,10 +144,21 @@ namespace StockAnalyzer.DataProviders
         }
 
 
-        public List<string> ExtractPayoutRationQFromFundamentalDataList(List<string> fundamentalDataListPayoutRatio)
+        public List<string> ExtractPayoutRationQFromFundamentalDataList(List<string> fundamentalDataList)
         {
             TriggerStatus($"Extracting Payout Ratio (Q) from the fundamental data list");
             var result = new List<string>();
+            result.Add($"Ticker\tNet Income (Q) in M\tDiv. Paid\tPayback Ratio");
+
+            //foreach (string fundamentalData in fundamentalDataList)
+            //{
+            //    XDocument? xDocument = ParseXDocumentWithChecks(fundamentalData, result);
+            //    if (xDocument == null) // some error string has been added
+            //    {
+            //        continue;
+            //    }
+            //    IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument);
+            //}
 
             MessageBox.Show("ExtractPayoutRationQ");
 
@@ -291,7 +302,7 @@ namespace StockAnalyzer.DataProviders
             return paybackRatio;
         }
 
-        private static double ExtractDividendsPaid(IEnumerable<XElement>? statementSection)
+        private static double ExtractDividendsPaidY(IEnumerable<XElement>? statementSection)
         {
             double divPaid;
             var casStatementElement = statementSection?.Where(e => e?.Attribute("Type")?.Value == "CAS");
@@ -302,7 +313,7 @@ namespace StockAnalyzer.DataProviders
             return divPaid;
         }
 
-        private static double ExtractNetIncome(IEnumerable<XElement>? statementElements)
+        private static double ExtractNetIncomeY(IEnumerable<XElement>? statementElements)
         {
             double netIncome;
             var incStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "INC");
