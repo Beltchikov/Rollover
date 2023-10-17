@@ -158,6 +158,10 @@ namespace StockAnalyzer.DataProviders
                     continue;
                 }
                 IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument, "InterimPeriods");
+
+                double netIncome = ExtractNetIncomeQ(statementSection);
+                //double divPaid = ExtractDividendsPaidQ(statementSection);
+                //double paybackRatio = CalculatePaybackRatio(netIncome, divPaid);
             }
 
             MessageBox.Show("ExtractPayoutRationQ");
@@ -321,6 +325,17 @@ namespace StockAnalyzer.DataProviders
             var nincLineItemElement = lineItemElementsInc?.Where(e => e?.Attribute("coaCode")?.Value == "NINC").FirstOrDefault();
             var netIncomeAsString = nincLineItemElement?.Value;
             netIncome = Convert.ToDouble(netIncomeAsString, CultureInfo.InvariantCulture);
+            return netIncome;
+        }
+
+        private double ExtractNetIncomeQ(IEnumerable<XElement>? statementElements)
+        {
+            double netIncome = 0;
+            var incStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "INC");
+            //var lineItemElementsInc = incStatementElement?.Descendants("lineItem");
+            //var nincLineItemElement = lineItemElementsInc?.Where(e => e?.Attribute("coaCode")?.Value == "NINC").FirstOrDefault();
+            //var netIncomeAsString = nincLineItemElement?.Value;
+            //netIncome = Convert.ToDouble(netIncomeAsString, CultureInfo.InvariantCulture);
             return netIncome;
         }
     }
