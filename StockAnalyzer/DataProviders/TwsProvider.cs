@@ -332,9 +332,9 @@ namespace StockAnalyzer.DataProviders
         {
             double netIncome = 0;
             var incStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "INC");
-            //var lineItemElementsInc = incStatementElement?.Descendants("lineItem");
-            //var nincLineItemElement = lineItemElementsInc?.Where(e => e?.Attribute("coaCode")?.Value == "NINC").FirstOrDefault();
-            //var netIncomeAsString = nincLineItemElement?.Value;
+            var lineItemElementsInc = incStatementElement?.Descendants("lineItem");
+            var nincLineItemElement = lineItemElementsInc?.Where(e => e?.Attribute("coaCode")?.Value == "NINC").FirstOrDefault();
+            var netIncomeAsString = nincLineItemElement?.Value;
             //netIncome = Convert.ToDouble(netIncomeAsString, CultureInfo.InvariantCulture);
             return netIncome;
         }
