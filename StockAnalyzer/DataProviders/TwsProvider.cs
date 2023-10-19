@@ -187,13 +187,17 @@ namespace StockAnalyzer.DataProviders
                 IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument, "AnnualPeriods");
 
                 double divPaid = ExtractDividendsPaid(statementSection);
+
                 double commonStocks = ExtractTotalSharesOutstanding(statementSection, "QTCO");
                 double preferredStocks = ExtractTotalSharesOutstanding(statementSection, "QTPO");
                 double totalShares = commonStocks + preferredStocks;
+
                 double dps = divPaid / commonStocks;
                 double dpsRounded = Math.Round(dps, 5);
-                double npv = dps / (riskFreeRate/100);
+                double npv = dps / (riskFreeRate / 100);
                 npv = Math.Round(npv, 2);
+
+                string? currency = ExtractCurrency(xDocument);
 
                 string ticker = TickerFromXDocument(xDocument);
                 result.Add($"{ticker}\t{divPaid}\t{commonStocks}\t{preferredStocks}\t{totalShares}\t{dpsRounded}\t{npv}");
@@ -328,6 +332,12 @@ namespace StockAnalyzer.DataProviders
             var lastFiscalPeriodElement = fiscalPeriodElements?.MaxBy(e => Convert.ToInt32(e.Attribute("FiscalYear")?.Value));
             statementElements = lastFiscalPeriodElement?.Descendants("Statement");
             return statementElements;
+        }
+
+        private string? ExtractCurrency(XDocument xDocument)
+        {
+            var reportingCurrencyElement = xDocument?.Descendants("ReportingCurrency").FirstOrDefault();
+            return reportingCurrencyElement?.Attribute("Code")?.Value;
         }
 
         private static double CalculatePaybackRatio(double netIncome, double divPaid)
