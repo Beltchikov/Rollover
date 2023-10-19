@@ -35,6 +35,7 @@ namespace StockAnalyzer
         private ObservableCollection<string> _resultCollectionTwsContractIds = null!;
         private ObservableCollection<string> _contractStringsTwsFinStatements = null!;
         private ObservableCollection<string> _resultCollectionTwsFinStatements = null!;
+        private double _riskFreeRate;
 
         private ObservableCollection<string> _tickerCollectionTwsSummary = null!;
         private ObservableCollection<string> _resultCollectionTwsSummary = null!;
@@ -166,6 +167,7 @@ namespace StockAnalyzer
             ContractStringsTwsContractDetails = new ObservableCollection<string>(("ALD1;EUR;STK;SBF\r\nBWLPG;NOK;STK\r\nPFS\r\nSLCA").Split("\r\n").ToList());
             ContractStringsTwsFinStatements = new ObservableCollection<string>(("ALD1;EUR;STK;SBF\r\nBWLPG;NOK;\r\nPFS\r\nSLCA").Split("\r\n").ToList());
             ContractStringsTwsSummary = new ObservableCollection<string>(("BWLPG ;NOK ;STK ; SMART\r\nPFS\r\nSLCA").Split("\r\n").ToList());
+            RiskFreeRate = 5.5;
         }
 
         #region Yahoo
@@ -324,6 +326,15 @@ namespace StockAnalyzer
             set
             {
                 SetProperty(ref _resultCollectionTwsFinStatements, value);
+            }
+        }
+        
+        public double RiskFreeRate
+        {
+            get => _riskFreeRate;
+            set
+            {
+                SetProperty(ref _riskFreeRate, value);
             }
         }
 
@@ -6085,7 +6096,7 @@ namespace StockAnalyzer
             
 </tbody>
 </table>";
-
+        
         #endregion
     }
 }
