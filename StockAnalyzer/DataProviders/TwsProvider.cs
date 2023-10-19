@@ -175,7 +175,7 @@ namespace StockAnalyzer.DataProviders
         {
             TriggerStatus($"Extracting NPV from the fundamental data list");
             var result = new List<string>();
-            result.Add($"Ticker\tDiv. Paid\tCommon\tPreferred\tTotal Shares\tDPS\tNPV");
+            result.Add($"Ticker\tDiv. Paid\tCommon\tPreferred\tTotal Shares\tDPS\tNPV\tCurrency");
 
             foreach (string fundamentalData in fundamentalDataList)
             {
@@ -200,7 +200,7 @@ namespace StockAnalyzer.DataProviders
                 string? currency = ExtractCurrency(xDocument);
 
                 string ticker = TickerFromXDocument(xDocument);
-                result.Add($"{ticker}\t{divPaid}\t{commonStocks}\t{preferredStocks}\t{totalShares}\t{dpsRounded}\t{npv}");
+                result.Add($"{ticker}\t{divPaid}\t{commonStocks}\t{preferredStocks}\t{totalShares}\t{dpsRounded}\t{npv}\t{currency}");
             }
 
             return result;
