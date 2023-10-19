@@ -356,12 +356,15 @@ namespace StockAnalyzer.DataProviders
             return netIncome;
         }
 
-        private static int ExtractTotalCommonSharesOutstanding(IEnumerable<XElement>? statementSection)
+        private static double ExtractTotalCommonSharesOutstanding(IEnumerable<XElement>? statementSection)
         {
-            int stocks = 0;
+            double shares = 0;
             var balStatementElement = statementSection?.Where(e => e?.Attribute("Type")?.Value == "BAL");
+            var lineItemElementsInc = balStatementElement?.Descendants("lineItem");
+            var qtcoLineItemElement = lineItemElementsInc?.Where(e => e?.Attribute("coaCode")?.Value == "QTCO").FirstOrDefault();
+            var sharesAsString = qtcoLineItemElement?.Value;
 
-            return stocks;
+            return shares;
         }
     }
 }
