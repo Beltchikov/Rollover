@@ -188,7 +188,8 @@ namespace StockAnalyzer.DataProviders
                 IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument, "AnnualPeriods");
 
                 double divPaid = ExtractDividendsPaid(statementSection);
-                double commonStocks = ExtractTotalCommonSharesOutstanding(statementSection);
+                double commonStocks = ExtractTotalSharesOutstanding(statementSection, "QTCO");
+                double preferredStocks = ExtractTotalSharesOutstanding(statementSection, "QTPO");
                 
                 string ticker = TickerFromXDocument(xDocument);
                 result.Add($"{ticker}\t{divPaid}");
@@ -356,14 +357,20 @@ namespace StockAnalyzer.DataProviders
             return netIncome;
         }
 
-        private static double ExtractTotalCommonSharesOutstanding(IEnumerable<XElement>? statementSection)
+        /// <summary>
+        /// coaCode: QTCO for common shares; QTPO for preferred shares
+        /// </summary>
+        /// <param name="statementSection"></param>
+        /// <param name="coaCode"></param>
+        /// <returns></returns>
+        private static double ExtractTotalSharesOutstanding(IEnumerable<XElement>? statementSection, string coaCode)
         {
             double shares = 0;
             var balStatementElement = statementSection?.Where(e => e?.Attribute("Type")?.Value == "BAL");
             var lineItemElementsInc = balStatementElement?.Descendants("lineItem");
-            var qtcoLineItemElement = lineItemElementsInc?.Where(e => e?.Attribute("coaCode")?.Value == "QTCO").FirstOrDefault();
+            var qtcoLineItemElement = lineItemElementsInc?.Where(e => e?.Attribute("coaCode")?.Value == coaCode).FirstOrDefault();
             var sharesAsString = qtcoLineItemElement?.Value;
-
+            shares = Convert.ToDouble(sharesAsString, CultureInfo.InvariantCulture);
             return shares;
         }
     }
