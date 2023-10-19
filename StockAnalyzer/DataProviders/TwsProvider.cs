@@ -171,13 +171,26 @@ namespace StockAnalyzer.DataProviders
         }
 
 
-        public IEnumerable<string> ExtractNpvYFromFundamentalDataList(List<string> fundamentalDataListPayoutRatio)
+        public IEnumerable<string> ExtractNpvYFromFundamentalDataList(List<string> fundamentalDataList)
         {
             TriggerStatus($"Extracting NPV from the fundamental data list");
             var result = new List<string>();
-            //result.Add($"Ticker\tNet Income (Q) in M\tDiv. Paid\tPayback Ratio");
+            result.Add($"Ticker\tDiv. Paid");
 
-            MessageBox.Show("ExtractNpvYFromFundamentalDataList");
+            foreach (string fundamentalData in fundamentalDataList)
+            {
+                XDocument? xDocument = ParseXDocumentWithChecks(fundamentalData, result);
+                if (xDocument == null) // some error string has been added
+                {
+                    continue;
+                }
+                IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument, "AnnualPeriods");
+
+                double divPaid = ExtractDividendsPaid(statementSection);
+                
+                string ticker = TickerFromXDocument(xDocument);
+                result.Add($"{ticker}\t{divPaid}");
+            }
 
             return result;
         }
