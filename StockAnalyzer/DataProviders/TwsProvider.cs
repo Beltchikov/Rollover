@@ -171,7 +171,6 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
-
         public IEnumerable<string> ExtractNpvYFromFundamentalDataList(List<string> fundamentalDataList, double riskFreeRate)
         {
             TriggerStatus($"Extracting NPV from the fundamental data list");
@@ -190,12 +189,14 @@ namespace StockAnalyzer.DataProviders
                 double divPaid = ExtractDividendsPaid(statementSection);
                 double commonStocks = ExtractTotalSharesOutstanding(statementSection, "QTCO");
                 double preferredStocks = ExtractTotalSharesOutstanding(statementSection, "QTPO");
-                double totalShares = commonStocks +preferredStocks;
+                double totalShares = commonStocks + preferredStocks;
                 double dps = divPaid / commonStocks;
-                double npv = divPaid / riskFreeRate; 
+                double dpsRounded = Math.Round(dps, 5);
+                double npv = dps / riskFreeRate;
+                npv = Math.Round(npv, 2);
 
                 string ticker = TickerFromXDocument(xDocument);
-                result.Add($"{ticker}\t{divPaid}\t{commonStocks}\t{preferredStocks}\t{totalShares}\t{dps}\t{npv}");
+                result.Add($"{ticker}\t{divPaid}\t{commonStocks}\t{preferredStocks}\t{totalShares}\t{dpsRounded}\t{npv}");
             }
 
             return result;
