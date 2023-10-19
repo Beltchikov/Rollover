@@ -176,7 +176,7 @@ namespace StockAnalyzer.DataProviders
         {
             TriggerStatus($"Extracting NPV from the fundamental data list");
             var result = new List<string>();
-            result.Add($"Ticker\tDiv. Paid\tCommon\tPreferred\tTotal Shares");
+            result.Add($"Ticker\tDiv. Paid\tCommon\tPreferred\tTotal Shares\tDPS");
 
             foreach (string fundamentalData in fundamentalDataList)
             {
@@ -191,9 +191,10 @@ namespace StockAnalyzer.DataProviders
                 double commonStocks = ExtractTotalSharesOutstanding(statementSection, "QTCO");
                 double preferredStocks = ExtractTotalSharesOutstanding(statementSection, "QTPO");
                 double totalShares = commonStocks +preferredStocks;
+                double dps = divPaid / commonStocks;
 
                 string ticker = TickerFromXDocument(xDocument);
-                result.Add($"{ticker}\t{divPaid}\t{commonStocks}\t{preferredStocks}\t{totalShares}");
+                result.Add($"{ticker}\t{divPaid}\t{commonStocks}\t{preferredStocks}\t{totalShares}\t{dps}");
             }
 
             return result;
