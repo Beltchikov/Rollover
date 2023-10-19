@@ -192,7 +192,7 @@ namespace StockAnalyzer.DataProviders
                 double totalShares = commonStocks + preferredStocks;
                 double dps = divPaid / commonStocks;
                 double dpsRounded = Math.Round(dps, 5);
-                double npv = dps / riskFreeRate;
+                double npv = dps / (riskFreeRate/100);
                 npv = Math.Round(npv, 2);
 
                 string ticker = TickerFromXDocument(xDocument);
