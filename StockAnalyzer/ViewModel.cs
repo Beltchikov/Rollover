@@ -51,7 +51,7 @@ namespace StockAnalyzer
 
         public ICommand NpvYCommand { get; }
         public ICommand TwsSummaryCommand { get; }
-        
+
         public ViewModel(
             IInvestingProvider investingProvider,
             IYahooProvider yahooProvider,
@@ -158,15 +158,13 @@ namespace StockAnalyzer
                 ConnectToTwsIfNeeded();
                 List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
 
-                //List<string> fundamentalDataListPayoutRatio = await twsProvider.GetFundamentalData(
-                //                    contractStringsList,
-                //                    REPORTS_FIN_STATEMENTS,
-                //                    TIMEOUT_TWS);
-                //ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractPayoutRationQFromFundamentalDataList(fundamentalDataListPayoutRatio));
-
-                MessageBox.Show("NpvYCommand");
+                List<string> fundamentalDataListPayoutRatio = await twsProvider.GetFundamentalData(
+                                    contractStringsList,
+                                    REPORTS_FIN_STATEMENTS,
+                                    TIMEOUT_TWS);
+                ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractNpvYFromFundamentalDataList(fundamentalDataListPayoutRatio));
             });
-            
+
             TwsSummaryCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer ??= this;
@@ -345,7 +343,7 @@ namespace StockAnalyzer
                 SetProperty(ref _resultCollectionTwsFinStatements, value);
             }
         }
-        
+
         public double RiskFreeRate
         {
             get => _riskFreeRate;
@@ -6113,7 +6111,7 @@ namespace StockAnalyzer
             
 </tbody>
 </table>";
-        
+
         #endregion
     }
 }

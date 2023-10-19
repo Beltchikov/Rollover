@@ -170,6 +170,18 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
+
+        public IEnumerable<string> ExtractNpvYFromFundamentalDataList(List<string> fundamentalDataListPayoutRatio)
+        {
+            TriggerStatus($"Extracting NPV from the fundamental data list");
+            var result = new List<string>();
+            //result.Add($"Ticker\tNet Income (Q) in M\tDiv. Paid\tPayback Ratio");
+
+            MessageBox.Show("ExtractNpvYFromFundamentalDataList");
+
+            return result;
+        }
+
         public List<string> ExtractSummaryFromFundamentalDataList(List<string> fundamentalDataList)
         {
             TriggerStatus($"Extracting business summary from the fundamental data list");
