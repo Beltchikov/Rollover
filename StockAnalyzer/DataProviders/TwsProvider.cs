@@ -172,7 +172,7 @@ namespace StockAnalyzer.DataProviders
         }
 
 
-        public IEnumerable<string> ExtractNpvYFromFundamentalDataList(List<string> fundamentalDataList)
+        public IEnumerable<string> ExtractNpvYFromFundamentalDataList(List<string> fundamentalDataList, double riskFreeRate)
         {
             TriggerStatus($"Extracting NPV from the fundamental data list");
             var result = new List<string>();

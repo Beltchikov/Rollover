@@ -162,7 +162,7 @@ namespace StockAnalyzer
                                     contractStringsList,
                                     REPORTS_FIN_STATEMENTS,
                                     TIMEOUT_TWS);
-                ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractNpvYFromFundamentalDataList(fundamentalDataListPayoutRatio));
+                ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractNpvYFromFundamentalDataList(fundamentalDataListPayoutRatio, RiskFreeRate));
             });
 
             TwsSummaryCommand = new RelayCommand(async () =>
