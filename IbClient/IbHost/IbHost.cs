@@ -130,7 +130,7 @@ namespace IbClient.IbHost
                 if (_queue.Dequeue() is FundamentalsMessage fundamentalsMessage)
                 {
                     fundamentalsMessageString = fundamentalsMessage.Data;
-                    if (!fundamentalsMessageString.Contains(ticker))
+                    if (!MessageForRightTickerContains(fundamentalsMessageString, ticker))
                     {
                         fundamentalsMessageString = ticker + " ERROR!";
                     }
@@ -234,6 +234,16 @@ namespace IbClient.IbHost
             }
 
             return true;
+        }
+
+        private bool MessageForRightTickerContains(string fundamentalsMessageString, string ticker)
+        {
+            if (ticker == "ALD1")
+            {
+                return fundamentalsMessageString.Contains("ALD");
+            }
+
+            return fundamentalsMessageString.Contains(ticker);
         }
     }
 }

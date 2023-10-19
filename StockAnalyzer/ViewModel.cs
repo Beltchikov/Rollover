@@ -163,8 +163,8 @@ namespace StockAnalyzer
 
             MarketCap = 0.1;
             TickerCollectionYahoo = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA\r\n WT").Split("\r\n").ToList());
-            ContractStringsTwsContractDetails = new ObservableCollection<string>((" BWLPG;NOK;STK\r\nPFS\r\nSLCA").Split("\r\n").ToList());
-            ContractStringsTwsFinStatements = new ObservableCollection<string>(("BWLPG;NOK;\r\nPFS\r\nSLCA").Split("\r\n").ToList());
+            ContractStringsTwsContractDetails = new ObservableCollection<string>(("ALD1;EUR;STK;SBF\r\nBWLPG;NOK;STK\r\nPFS\r\nSLCA").Split("\r\n").ToList());
+            ContractStringsTwsFinStatements = new ObservableCollection<string>(("ALD1;EUR;STK;SBF\r\nBWLPG;NOK;\r\nPFS\r\nSLCA").Split("\r\n").ToList());
             ContractStringsTwsSummary = new ObservableCollection<string>(("BWLPG ;NOK ;STK ; SMART\r\nPFS\r\nSLCA").Split("\r\n").ToList());
         }
 
