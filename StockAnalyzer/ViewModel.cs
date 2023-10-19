@@ -48,8 +48,10 @@ namespace StockAnalyzer
         public ICommand RoeCommand { get; }
         public ICommand PayoutRatioYCommand { get; }
         public ICommand PayoutRatioQCommand { get; }
-        public ICommand TwsSummaryCommand { get; }
 
+        public ICommand NpvYCommand { get; }
+        public ICommand TwsSummaryCommand { get; }
+        
         public ViewModel(
             IInvestingProvider investingProvider,
             IYahooProvider yahooProvider,
@@ -150,6 +152,21 @@ namespace StockAnalyzer
                 ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractPayoutRationQFromFundamentalDataList(fundamentalDataListPayoutRatio));
             });
 
+            NpvYCommand = new RelayCommand(async () =>
+            {
+                ibHost.Consumer ??= this;
+                ConnectToTwsIfNeeded();
+                List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
+
+                //List<string> fundamentalDataListPayoutRatio = await twsProvider.GetFundamentalData(
+                //                    contractStringsList,
+                //                    REPORTS_FIN_STATEMENTS,
+                //                    TIMEOUT_TWS);
+                //ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractPayoutRationQFromFundamentalDataList(fundamentalDataListPayoutRatio));
+
+                MessageBox.Show("NpvYCommand");
+            });
+            
             TwsSummaryCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer ??= this;

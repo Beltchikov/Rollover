@@ -308,6 +308,10 @@ Foreground="White" Grid.ColumnSpan="3">
                                     HorizontalAlignment="Stretch" VerticalAlignment="Center" 
                                         Command="{Binding PayoutRatioQCommand}">Payout Ratio (Q) >>
                                 </Button>
+                                <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="25" 
+                                    HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                                        Command="{Binding NpvYCommand}">NPV (Y) >>
+                                </Button>
                             </StackPanel>
 
                             <Label Content="Results:" Grid.Column="3" Grid.Row="1" VerticalAlignment="Bottom"
