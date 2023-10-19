@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Xml;
 using System.Xml.Linq;
+using static Microsoft.AspNetCore.Razor.Language.TagHelperMetadata;
 
 namespace StockAnalyzer.DataProviders
 {
@@ -187,6 +188,7 @@ namespace StockAnalyzer.DataProviders
                 IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument, "AnnualPeriods");
 
                 double divPaid = ExtractDividendsPaid(statementSection);
+                double commonStocks = ExtractTotalCommonSharesOutstanding(statementSection);
                 
                 string ticker = TickerFromXDocument(xDocument);
                 result.Add($"{ticker}\t{divPaid}");
@@ -352,6 +354,14 @@ namespace StockAnalyzer.DataProviders
             var netIncomeAsString = nincLineItemElement?.Value;
             netIncome = Convert.ToDouble(netIncomeAsString, CultureInfo.InvariantCulture);
             return netIncome;
+        }
+
+        private static int ExtractTotalCommonSharesOutstanding(IEnumerable<XElement>? statementSection)
+        {
+            int stocks = 0;
+            var balStatementElement = statementSection?.Where(e => e?.Attribute("Type")?.Value == "BAL");
+
+            return stocks;
         }
     }
 }
