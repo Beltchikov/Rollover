@@ -350,15 +350,27 @@ namespace StockAnalyzer.DataProviders
             if (ConditionTwiceAYear(endDate0, endDate1)) // twice a year
             {
                 // check
-                DateTime endDate3 = EndDateOfFiscalPeriod(interimStatement, 2);
-
+                DateTime endDate2 = EndDateOfFiscalPeriod(interimStatement, 2);
+                if (!ConditionTwiceAYear(endDate1, endDate2))
+                {
+                    throw new ApplicationException($"Reporting frequency is twice a year, but the third statement does not fit.");
+                }
                 return true;
             }
             else
             {
+                DateTime endDate2 = EndDateOfFiscalPeriod(interimStatement, 2);
+                if (ConditionTwiceAYear(endDate1, endDate2))
+                {
+                    throw new ApplicationException($"Reporting frequency is quarterly, but the third statement does not fit.");
+                }
+                DateTime endDate3 = EndDateOfFiscalPeriod(interimStatement, 3);
+                if (ConditionTwiceAYear(endDate2, endDate3))
+                {
+                    throw new ApplicationException($"Reporting frequency is quarterly, but the forth statement does not fit.");
+                }
                 return false;
             }
-
         }
 
         private static bool ConditionTwiceAYear(DateTime endDate0, DateTime endDate1)
