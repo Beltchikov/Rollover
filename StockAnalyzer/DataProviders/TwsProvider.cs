@@ -344,20 +344,11 @@ namespace StockAnalyzer.DataProviders
 
         private bool ReportingFrequencyIsTwiceAYear(XElement? interimStatement)
         {
-            var endDate1String = interimStatement?.Descendants("FiscalPeriod").FirstOrDefault()?.Attribute("EndDate")?.Value;
-            if (!DateTime.TryParse(endDate1String, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime endDate1))
-            {
-                throw new ApplicationException($"Can not parce the DateTime from {endDate1String}");
-            }
-
-            var endDate2String = interimStatement?.Descendants("FiscalPeriod").Skip(1).FirstOrDefault()?.Attribute("EndDate")?.Value;
-            if (!DateTime.TryParse(endDate2String, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime endDate2))
-            {
-                throw new ApplicationException($"Can not parce the DateTime from {endDate2String}");
-            }
+            DateTime endDate1 = EndDateOfFiscalPeriod(interimStatement, 0);
+            DateTime endDate2 = EndDateOfFiscalPeriod(interimStatement, 1);
 
             var frequency = (endDate1 - endDate2).TotalDays;
-            if(170 < frequency && frequency < 200) // twice a year
+            if (170 < frequency && frequency < 200) // twice a year
             {
                 // check
 
@@ -368,6 +359,18 @@ namespace StockAnalyzer.DataProviders
                 return false;
             }
 
+        }
+
+        private static DateTime EndDateOfFiscalPeriod(XElement? interimStatement, int periodsAgo)
+        {
+            DateTime endDate;
+            var endDateString = interimStatement?.Descendants("FiscalPeriod").Skip(periodsAgo).FirstOrDefault()?.Attribute("EndDate")?.Value;
+            if (!DateTime.TryParse(endDateString, CultureInfo.InvariantCulture, DateTimeStyles.None, out endDate))
+            {
+                throw new ApplicationException($"Can not parce the DateTime from {endDateString}");
+            }
+
+            return endDate;
         }
 
         private string? ExtractCurrency(XDocument xDocument)
