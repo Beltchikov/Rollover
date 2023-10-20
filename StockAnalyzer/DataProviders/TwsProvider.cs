@@ -159,7 +159,9 @@ namespace StockAnalyzer.DataProviders
                     continue;
                 }
                 //IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument, "InterimPeriods");
-                IEnumerable<XElement>? statementSection = ExtractAllStatements(xDocument, "InterimPeriods");
+                IEnumerable<XElement>? interimStatements = ExtractAllStatements(xDocument, "InterimPeriods");
+                var interimStatement = interimStatements?.FirstOrDefault();
+                bool twiceAYear = ReportingFrequencyIsTwiceAYear(interimStatement);  // otherwise quarterly
 
                 //double netIncome = ExtractNetIncome(statementSection);
                 //double divPaid = ExtractDividendsPaid(statementSection);
@@ -338,6 +340,34 @@ namespace StockAnalyzer.DataProviders
         private IEnumerable<XElement>? ExtractAllStatements(XDocument xDocument, string periods)
         {
             return xDocument?.Descendants(periods);
+        }
+
+        private bool ReportingFrequencyIsTwiceAYear(XElement? interimStatement)
+        {
+            var endDate1String = interimStatement?.Descendants("FiscalPeriod").FirstOrDefault()?.Attribute("EndDate")?.Value;
+            if (!DateTime.TryParse(endDate1String, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime endDate1))
+            {
+                throw new ApplicationException($"Can not parce the DateTime from {endDate1String}");
+            }
+
+            var endDate2String = interimStatement?.Descendants("FiscalPeriod").Skip(1).FirstOrDefault()?.Attribute("EndDate")?.Value;
+            if (!DateTime.TryParse(endDate2String, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime endDate2))
+            {
+                throw new ApplicationException($"Can not parce the DateTime from {endDate2String}");
+            }
+
+            var frequency = (endDate1 - endDate2).TotalDays;
+            if(170 < frequency && frequency < 200) // twice a year
+            {
+                // check
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
 
         private string? ExtractCurrency(XDocument xDocument)
