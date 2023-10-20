@@ -175,6 +175,9 @@ namespace StockAnalyzer.DataProviders
                 {
                     netIncomeH1 = ExtractNetIncome(interimStatement, 0);
                     netIncomeH2 = ExtractNetIncome(interimStatement, 1);
+
+                    divPaidH1 = ExtractDividendsPaid(interimStatement, 0);
+                    divPaidH2 = ExtractDividendsPaid(interimStatement, 1);
                 }
                 else
                 {
@@ -427,6 +430,21 @@ namespace StockAnalyzer.DataProviders
         {
             double divPaid;
             var casStatementElement = statementSection?.Where(e => e?.Attribute("Type")?.Value == "CAS");
+            var lineItemElementsCas = casStatementElement?.Descendants("lineItem");
+            var fcdpLineItemElement = lineItemElementsCas?.Where(e => e?.Attribute("coaCode")?.Value == "FCDP").FirstOrDefault();
+            var divPaidNegative = fcdpLineItemElement?.Value;
+            divPaid = Convert.ToDouble(divPaidNegative, CultureInfo.InvariantCulture) * -1;
+            return divPaid;
+        }
+
+        private double ExtractDividendsPaid(XElement? periodsElement, int periodsAgo)
+        {
+            double divPaid;
+
+            var fiscalPeriodElements = periodsElement?.Descendants("FiscalPeriod");
+            var fiscalPeriodElement = fiscalPeriodElements?.Skip(periodsAgo).FirstOrDefault();
+            var statementElements = fiscalPeriodElement?.Descendants("Statement");
+            var casStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "CAS");
             var lineItemElementsCas = casStatementElement?.Descendants("lineItem");
             var fcdpLineItemElement = lineItemElementsCas?.Where(e => e?.Attribute("coaCode")?.Value == "FCDP").FirstOrDefault();
             var divPaidNegative = fcdpLineItemElement?.Value;
