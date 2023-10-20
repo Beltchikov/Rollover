@@ -149,8 +149,7 @@ namespace StockAnalyzer.DataProviders
         {
             TriggerStatus($"Extracting Payout Ratio (Q) from the fundamental data list");
             var result = new List<string>();
-            result.Add($"Ticker\tNet Income (Q) in M\tDiv. Paid\tPayback Ratio");
-
+            
             foreach (string fundamentalData in fundamentalDataList)
             {
                 XDocument? xDocument = ParseXDocumentWithChecks(fundamentalData, result);
@@ -171,13 +170,17 @@ namespace StockAnalyzer.DataProviders
                 double netIncomeH2, divPaidH2, paybackRatioH2;
                 double netIncomeH1, divPaidH1, paybackRatioH1;
                 double netIncomeTtm, divPaidTtm, paybackRatioTtm;
-                if (twiceAYear )
+                if (twiceAYear)
                 {
                     netIncomeH1 = ExtractNetIncome(interimStatement, 0);
                     netIncomeH2 = ExtractNetIncome(interimStatement, 1);
-
                     divPaidH1 = ExtractDividendsPaid(interimStatement, 0);
                     divPaidH2 = ExtractDividendsPaid(interimStatement, 1);
+                    paybackRatioH1 = CalculatePaybackRatio(netIncomeH1, divPaidH1);
+                    paybackRatioH2 = CalculatePaybackRatio(netIncomeH2, divPaidH2);
+
+                    if(!result.Any()) result.Add($"Ticker\tH2 Net Inc in M\tH2 Div\tH2 Ratio\tH1 Net Inc\tH1 Div\tH1 Ratio\tTTM Net Inc\tTTM Div\tTTM Ratio");
+                    result.Add($"{ticker}\t{netIncomeH2}\t{divPaidH2}\t{paybackRatioH2}%t{netIncomeH1}\t{divPaidH1}\t{paybackRatioH1}%");
                 }
                 else
                 {
@@ -188,7 +191,7 @@ namespace StockAnalyzer.DataProviders
                 //double divPaid = ExtractDividendsPaid(statementSection);
                 //double paybackRatio = CalculatePaybackRatio(netIncome, divPaid);
 
-                
+
                 //result.Add($"{ticker}\t{netIncome}\t{divPaid}\t{paybackRatio}%");
             }
 
