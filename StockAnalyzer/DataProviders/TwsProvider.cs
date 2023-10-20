@@ -217,8 +217,6 @@ namespace StockAnalyzer.DataProviders
             var result = new List<string>();
             //result.Add($"Ticker\tNet Income (Y) in M\tDiv. Paid\tPayback Ratio");
 
-            MessageBox.Show("ExtractSharesOutYFromFundamentalDataList");
-
             foreach (string fundamentalData in fundamentalDataList)
             {
                 XDocument? xDocument = ParseXDocumentWithChecks(fundamentalData, result);
@@ -228,7 +226,8 @@ namespace StockAnalyzer.DataProviders
                 }
                 IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument, "AnnualPeriods");
 
-                double sharesOut = ExtractCommonSharesOut(statementSection);
+                double commonSharesOut = ExtractSharesOut(statementSection, "QTCO");
+                double preferredSharesOut = ExtractSharesOut(statementSection, "QTPO");
                 //double divPaid = ExtractDividendsPaid(statementSection);
                 //double paybackRatio = CalculatePaybackRatio(netIncome, divPaid);
 
@@ -540,11 +539,18 @@ namespace StockAnalyzer.DataProviders
             return netIncome;
         }
 
-        private static double ExtractCommonSharesOut(IEnumerable<XElement>? statementElements)
+        /// <summary>
+        /// Common shares : coaCode QTCO
+        /// Preferred shares : coaCode QTPO
+        /// </summary>
+        /// <param name="statementElements"></param>
+        /// <param name="coaCode"></param>
+        /// <returns></returns>
+        private static double ExtractSharesOut(IEnumerable<XElement>? statementElements, string coaCode)
         {
             var balStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "BAL");
             var lineItemElements = balStatementElement?.Descendants("lineItem");
-            var qtcoLineItemElement = lineItemElements?.Where(e => e?.Attribute("coaCode")?.Value == "QTCO").FirstOrDefault();
+            var qtcoLineItemElement = lineItemElements?.Where(e => e?.Attribute("coaCode")?.Value == coaCode).FirstOrDefault();
             var commonSharesOutAsString = qtcoLineItemElement?.Value;
             double commonSharesOut = Convert.ToDouble(commonSharesOutAsString, CultureInfo.InvariantCulture);
             return commonSharesOut;
