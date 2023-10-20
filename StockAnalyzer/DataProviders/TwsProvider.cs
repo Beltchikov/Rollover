@@ -211,20 +211,57 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
-        private static List<string> ConcatTablesWithDifferentColumnsNumber(List<string> resultQuarterly, List<string> resultTwiceAYear)
+        public List<string> ExtractSharesOutYFromFundamentalDataList(List<string> fundamentalDataList)
         {
-            List<string> result;
-            if (resultTwiceAYear.Any())
+            TriggerStatus($"Extracting Total Shares Outstanding (Y) from the fundamental data list");
+            var result = new List<string>();
+            //result.Add($"Ticker\tNet Income (Y) in M\tDiv. Paid\tPayback Ratio");
+
+            MessageBox.Show("ExtractSharesOutYFromFundamentalDataList");
+
+            foreach (string fundamentalData in fundamentalDataList)
             {
-                result = resultTwiceAYear;
-                result.Add(Environment.NewLine);
-                result.AddRange(resultQuarterly);
+                XDocument? xDocument = ParseXDocumentWithChecks(fundamentalData, result);
+                if (xDocument == null) // some error string has been added
+                {
+                    continue;
+                }
+                //IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument, "AnnualPeriods");
+
+                //double netIncome = ExtractNetIncome(statementSection);
+                //double divPaid = ExtractDividendsPaid(statementSection);
+                //double paybackRatio = CalculatePaybackRatio(netIncome, divPaid);
+
+                //string ticker = TickerFromXDocument(xDocument);
+                //result.Add($"{ticker}\t{netIncome}\t{divPaid}\t{paybackRatio}%");
             }
-            else
+
+            return result;
+        }
+
+        public List<string> ExtractSharesOutQFromFundamentalDataList(List<string> fundamentalDataList)
+        {
+            TriggerStatus($"Extracting Total Shares Outstanding (Q) from the fundamental data list");
+            var result = new List<string>();
+            //result.Add($"Ticker\tNet Income (Y) in M\tDiv. Paid\tPayback Ratio");
+
+            MessageBox.Show("ExtractSharesOutQFromFundamentalDataList");
+
+            foreach (string fundamentalData in fundamentalDataList)
             {
-                result = resultQuarterly;
-                result.Add(Environment.NewLine);
-                result.AddRange(resultTwiceAYear);
+                XDocument? xDocument = ParseXDocumentWithChecks(fundamentalData, result);
+                if (xDocument == null) // some error string has been added
+                {
+                    continue;
+                }
+                //IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument, "AnnualPeriods");
+
+                //double netIncome = ExtractNetIncome(statementSection);
+                //double divPaid = ExtractDividendsPaid(statementSection);
+                //double paybackRatio = CalculatePaybackRatio(netIncome, divPaid);
+
+                //string ticker = TickerFromXDocument(xDocument);
+                //result.Add($"{ticker}\t{netIncome}\t{divPaid}\t{paybackRatio}%");
             }
 
             return result;
@@ -263,6 +300,11 @@ namespace StockAnalyzer.DataProviders
             }
 
             return result;
+        }
+
+        List<string> ITwsProvider.ExtractNpvYFromFundamentalDataList(List<string> fundamentalDataListPayoutRatio, double riskFreeRate)
+        {
+            throw new NotImplementedException();
         }
 
         public List<string> ExtractSummaryFromFundamentalDataList(List<string> fundamentalDataList)
@@ -528,6 +570,25 @@ namespace StockAnalyzer.DataProviders
             var sharesAsString = qtcoLineItemElement?.Value;
             shares = Convert.ToDouble(sharesAsString, CultureInfo.InvariantCulture);
             return shares;
+        }
+
+        private static List<string> ConcatTablesWithDifferentColumnsNumber(List<string> resultQuarterly, List<string> resultTwiceAYear)
+        {
+            List<string> result;
+            if (resultTwiceAYear.Any())
+            {
+                result = resultTwiceAYear;
+                result.Add(Environment.NewLine);
+                result.AddRange(resultQuarterly);
+            }
+            else
+            {
+                result = resultQuarterly;
+                result.Add(Environment.NewLine);
+                result.AddRange(resultTwiceAYear);
+            }
+
+            return result;
         }
     }
 }

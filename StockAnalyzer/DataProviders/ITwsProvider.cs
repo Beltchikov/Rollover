@@ -15,6 +15,8 @@ namespace StockAnalyzer.DataProviders
         List<string> ExtractSummaryFromFundamentalDataList(List<string> fundamentalDataList);
         List<string> ExtractPayoutRationYFromFundamentalDataList(List<string> fundamentalDataList);
         List<string> ExtractPayoutRatioQFromFundamentalDataList(List<string> fundamentalDataListPayoutRatio);
-        IEnumerable<string> ExtractNpvYFromFundamentalDataList(List<string> fundamentalDataListPayoutRatio, double riskFreeRate);
+        List<string> ExtractNpvYFromFundamentalDataList(List<string> fundamentalDataListPayoutRatio, double riskFreeRate);
+        List<string> ExtractSharesOutYFromFundamentalDataList(List<string> fundamentalDataListFinStatements);
+        List<string> ExtractSharesOutQFromFundamentalDataList(List<string> fundamentalDataListFinStatements);
     }
 }

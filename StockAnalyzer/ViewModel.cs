@@ -159,14 +159,11 @@ namespace StockAnalyzer
                 ConnectToTwsIfNeeded();
                 List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
 
-                List<string> fundamentalDataListPayoutRatio = await twsProvider.GetFundamentalData(
+                List<string> fundamentalDataListFinStatements = await twsProvider.GetFundamentalData(
                                     contractStringsList,
                                     REPORTS_FIN_STATEMENTS,
                                     TIMEOUT_TWS);
-
-                // TODO
-                MessageBox.Show("SharesOutYCommand");
-                //ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractNpvYFromFundamentalDataList(fundamentalDataListPayoutRatio, RiskFreeRate));
+                ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractSharesOutYFromFundamentalDataList(fundamentalDataListFinStatements));
             });
 
             SharesOutQCommand = new RelayCommand(async () =>
@@ -175,14 +172,11 @@ namespace StockAnalyzer
                 ConnectToTwsIfNeeded();
                 List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
 
-                List<string> fundamentalDataListPayoutRatio = await twsProvider.GetFundamentalData(
+                List<string> fundamentalDataListFinStatements = await twsProvider.GetFundamentalData(
                                     contractStringsList,
                                     REPORTS_FIN_STATEMENTS,
                                     TIMEOUT_TWS);
-
-                // TODO
-                MessageBox.Show("SharesOutQCommand");
-                //ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractNpvYFromFundamentalDataList(fundamentalDataListPayoutRatio, RiskFreeRate));
+                ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractSharesOutQFromFundamentalDataList(fundamentalDataListFinStatements));
             });
 
             NpvYCommand = new RelayCommand(async () =>
