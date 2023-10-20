@@ -201,7 +201,7 @@
                         <RowDefinition Height="10"></RowDefinition>
                         <RowDefinition Height="180"></RowDefinition>
                         <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="250"></RowDefinition>
+                        <RowDefinition Height="350"></RowDefinition>
                         <RowDefinition Height="10"></RowDefinition>
                         <RowDefinition Height="130"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
@@ -222,7 +222,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="10"></ColumnDefinition>
                                 <ColumnDefinition Width="155"></ColumnDefinition>
-                                <ColumnDefinition Width="155"></ColumnDefinition>
+                                <ColumnDefinition Width="165"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="10"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
@@ -266,7 +266,7 @@ Foreground="White" Grid.ColumnSpan="3">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="10"></ColumnDefinition>
                                 <ColumnDefinition Width="155"></ColumnDefinition>
-                                <ColumnDefinition Width="155"></ColumnDefinition>
+                                <ColumnDefinition Width="165"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="10"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
