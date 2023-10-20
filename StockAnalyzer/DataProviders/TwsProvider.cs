@@ -174,13 +174,18 @@ namespace StockAnalyzer.DataProviders
                 {
                     netIncomeH1 = ExtractNetIncome(interimStatement, 0);
                     netIncomeH2 = ExtractNetIncome(interimStatement, 1);
+                    netIncomeTtm = netIncomeH1 + netIncomeH2;
                     divPaidH1 = ExtractDividendsPaid(interimStatement, 0);
                     divPaidH2 = ExtractDividendsPaid(interimStatement, 1);
+                    divPaidTtm = divPaidH1 + divPaidH2; 
                     paybackRatioH1 = CalculatePaybackRatio(netIncomeH1, divPaidH1);
                     paybackRatioH2 = CalculatePaybackRatio(netIncomeH2, divPaidH2);
+                    paybackRatioTtm = CalculatePaybackRatio(netIncomeTtm, divPaidTtm);
 
-                    if(!result.Any()) result.Add($"Ticker\tH2 Net Inc in M\tH2 Div\tH2 Ratio\tH1 Net Inc\tH1 Div\tH1 Ratio\tTTM Net Inc\tTTM Div\tTTM Ratio");
-                    result.Add($"{ticker}\t{netIncomeH2}\t{divPaidH2}\t{paybackRatioH2}%t{netIncomeH1}\t{divPaidH1}\t{paybackRatioH1}%");
+                    if (!result.Any()) result.Add($"Ticker\tH2 Net Inc in M\tH2 Div\tH2 Ratio\tH1 Net Inc\tH1 Div\tH1 Ratio" +
+                        $"\tTTM Net Inc\tTTM Div\tTTM Ratio");
+                    result.Add($"{ticker}\t{netIncomeH2}\t{divPaidH2}\t{paybackRatioH2}%\t{netIncomeH1}\t{divPaidH1}\t{paybackRatioH1}%" +
+                        $"\t{netIncomeTtm}\t{divPaidTtm}\t{paybackRatioTtm}%");
                 }
                 else
                 {
