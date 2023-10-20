@@ -158,16 +158,33 @@ namespace StockAnalyzer.DataProviders
                 {
                     continue;
                 }
-                //IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument, "InterimPeriods");
+                string ticker = TickerFromXDocument(xDocument);
+
                 IEnumerable<XElement>? interimStatements = ExtractAllStatements(xDocument, "InterimPeriods");
                 var interimStatement = interimStatements?.FirstOrDefault();
                 bool twiceAYear = ReportingFrequencyIsTwiceAYear(interimStatement);  // otherwise quarterly
+
+                //double netIncomeQ4, divPaidQ4, paybackRatioQ4;
+                //double netIncomeQ3, divPaidQ3, paybackRatioQ3;
+                //double netIncomeQ2, divPaidQ2, paybackRatioQ2;
+                //double netIncomeQ1, divPaidQ1, paybackRatioQ1;
+                double netIncomeH2, divPaidH2, paybackRatioH2;
+                double netIncomeH1, divPaidH1, paybackRatioH1;
+                double netIncomeTtm, divPaidTtm, paybackRatioTtm;
+                if (twiceAYear )
+                {
+                    netIncomeH1 = ExtractNetIncome(interimStatement, 0);
+                }
+                else
+                {
+
+                }
 
                 //double netIncome = ExtractNetIncome(statementSection);
                 //double divPaid = ExtractDividendsPaid(statementSection);
                 //double paybackRatio = CalculatePaybackRatio(netIncome, divPaid);
 
-                //string ticker = TickerFromXDocument(xDocument);
+                
                 //result.Add($"{ticker}\t{netIncome}\t{divPaid}\t{paybackRatio}%");
             }
 
@@ -419,6 +436,21 @@ namespace StockAnalyzer.DataProviders
         private static double ExtractNetIncome(IEnumerable<XElement>? statementElements)
         {
             double netIncome;
+            var incStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "INC");
+            var lineItemElementsInc = incStatementElement?.Descendants("lineItem");
+            var nincLineItemElement = lineItemElementsInc?.Where(e => e?.Attribute("coaCode")?.Value == "NINC").FirstOrDefault();
+            var netIncomeAsString = nincLineItemElement?.Value;
+            netIncome = Convert.ToDouble(netIncomeAsString, CultureInfo.InvariantCulture);
+            return netIncome;
+        }
+
+        private static double ExtractNetIncome(XElement? periodsElement, int periodsAgo)
+        {
+            double netIncome;
+
+            var fiscalPeriodElements = periodsElement?.Descendants("FiscalPeriod");
+            var fiscalPeriodElement = fiscalPeriodElements?.Skip(periodsAgo).FirstOrDefault();
+            var statementElements = fiscalPeriodElement?.Descendants("Statement");
             var incStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "INC");
             var lineItemElementsInc = incStatementElement?.Descendants("lineItem");
             var nincLineItemElement = lineItemElementsInc?.Where(e => e?.Attribute("coaCode")?.Value == "NINC").FirstOrDefault();
