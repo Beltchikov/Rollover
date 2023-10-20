@@ -344,13 +344,13 @@ namespace StockAnalyzer.DataProviders
 
         private bool ReportingFrequencyIsTwiceAYear(XElement? interimStatement)
         {
-            DateTime endDate1 = EndDateOfFiscalPeriod(interimStatement, 0);
-            DateTime endDate2 = EndDateOfFiscalPeriod(interimStatement, 1);
+            DateTime endDate0 = EndDateOfFiscalPeriod(interimStatement, 0);
+            DateTime endDate1 = EndDateOfFiscalPeriod(interimStatement, 1);
 
-            var frequency = (endDate1 - endDate2).TotalDays;
-            if (170 < frequency && frequency < 200) // twice a year
+            if (ConditionTwiceAYear(endDate0, endDate1)) // twice a year
             {
                 // check
+                DateTime endDate3 = EndDateOfFiscalPeriod(interimStatement, 2);
 
                 return true;
             }
@@ -359,6 +359,11 @@ namespace StockAnalyzer.DataProviders
                 return false;
             }
 
+        }
+
+        private static bool ConditionTwiceAYear(DateTime endDate0, DateTime endDate1)
+        {
+            return 170 < (endDate0 - endDate1).TotalDays && (endDate0 - endDate1).TotalDays < 200;
         }
 
         private static DateTime EndDateOfFiscalPeriod(XElement? interimStatement, int periodsAgo)
