@@ -167,20 +167,17 @@ namespace StockAnalyzer.DataProviders
                 double netIncomeQ3, divPaidQ3, paybackRatioQ3;
                 double netIncomeQ2, divPaidQ2, paybackRatioQ2;
                 double netIncomeQ1, divPaidQ1, paybackRatioQ1;
-                double netIncomeH2, divPaidH2, paybackRatioH2;
-                double netIncomeH1, divPaidH1, paybackRatioH1;
-                double netIncomeTtm, divPaidTtm, paybackRatioTtm;
                 if (twiceAYear)
                 {
-                    netIncomeH1 = ExtractNetIncome(interimStatement, 0);
-                    netIncomeH2 = ExtractNetIncome(interimStatement, 1);
-                    netIncomeTtm = netIncomeH1 + netIncomeH2;
-                    divPaidH1 = ExtractDividendsPaid(interimStatement, 0);
-                    divPaidH2 = ExtractDividendsPaid(interimStatement, 1);
-                    divPaidTtm = divPaidH1 + divPaidH2; 
-                    paybackRatioH1 = CalculatePaybackRatio(netIncomeH1, divPaidH1);
-                    paybackRatioH2 = CalculatePaybackRatio(netIncomeH2, divPaidH2);
-                    paybackRatioTtm = CalculatePaybackRatio(netIncomeTtm, divPaidTtm);
+                    double netIncomeH1 = ExtractNetIncome(interimStatement, 0);
+                    double netIncomeH2 = ExtractNetIncome(interimStatement, 1);
+                    double netIncomeTtm = netIncomeH1 + netIncomeH2;
+                    double divPaidH1 = ExtractDividendsPaid(interimStatement, 0);
+                    double divPaidH2 = ExtractDividendsPaid(interimStatement, 1);
+                    double divPaidTtm = divPaidH1 + divPaidH2; 
+                    double paybackRatioH1 = CalculatePaybackRatio(netIncomeH1, divPaidH1);
+                    double paybackRatioH2 = CalculatePaybackRatio(netIncomeH2, divPaidH2);
+                    double paybackRatioTtm = CalculatePaybackRatio(netIncomeTtm, divPaidTtm);
 
                     if (!result.Any()) result.Add($"Ticker\tH2 Net Inc in M\tH2 Div\tH2 Ratio\tH1 Net Inc\tH1 Div\tH1 Ratio" +
                         $"\tTTM Net Inc\tTTM Div\tTTM Ratio");
