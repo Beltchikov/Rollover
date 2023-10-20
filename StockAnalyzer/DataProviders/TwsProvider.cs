@@ -149,7 +149,7 @@ namespace StockAnalyzer.DataProviders
         {
             TriggerStatus($"Extracting Payout Ratio (Q) from the fundamental data list");
             var resultQuarterly = new List<string>();
-            var resultTwiceAYear= new List<string>();
+            var resultTwiceAYear = new List<string>();
 
             foreach (string fundamentalData in fundamentalDataList)
             {
@@ -207,9 +207,14 @@ namespace StockAnalyzer.DataProviders
                         $"\t{netIncomeTtm}\t{divPaidTtm}\t{paybackRatioTtm}%");
                 }
             }
+            List<string> result = ConcatTablesWithDifferentColumnsNumber(resultQuarterly, resultTwiceAYear);
+            return result;
+        }
 
+        private static List<string> ConcatTablesWithDifferentColumnsNumber(List<string> resultQuarterly, List<string> resultTwiceAYear)
+        {
             List<string> result;
-            if(resultTwiceAYear.Any())
+            if (resultTwiceAYear.Any())
             {
                 result = resultTwiceAYear;
                 result.Add(Environment.NewLine);
@@ -221,7 +226,7 @@ namespace StockAnalyzer.DataProviders
                 result.Add(Environment.NewLine);
                 result.AddRange(resultTwiceAYear);
             }
-     
+
             return result;
         }
 
