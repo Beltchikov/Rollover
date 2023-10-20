@@ -145,7 +145,7 @@ namespace StockAnalyzer.DataProviders
         }
 
 
-        public List<string> ExtractPayoutRationQFromFundamentalDataList(List<string> fundamentalDataList)
+        public List<string> ExtractPayoutRatioQFromFundamentalDataList(List<string> fundamentalDataList)
         {
             TriggerStatus($"Extracting Payout Ratio (Q) from the fundamental data list");
             var result = new List<string>();
