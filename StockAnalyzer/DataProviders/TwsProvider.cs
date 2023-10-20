@@ -215,7 +215,7 @@ namespace StockAnalyzer.DataProviders
         {
             TriggerStatus($"Extracting Total Shares Outstanding (Y) from the fundamental data list");
             var result = new List<string>();
-            //result.Add($"Ticker\tNet Income (Y) in M\tDiv. Paid\tPayback Ratio");
+            result.Add($"Ticker\tCommon (Y) in M\tPreferred\tTotal");
 
             foreach (string fundamentalData in fundamentalDataList)
             {
@@ -224,15 +224,14 @@ namespace StockAnalyzer.DataProviders
                 {
                     continue;
                 }
-                IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument, "AnnualPeriods");
+                string ticker = TickerFromXDocument(xDocument);
 
+                IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument, "AnnualPeriods");
                 double commonSharesOut = ExtractSharesOut(statementSection, "QTCO");
                 double preferredSharesOut = ExtractSharesOut(statementSection, "QTPO");
-                //double divPaid = ExtractDividendsPaid(statementSection);
-                //double paybackRatio = CalculatePaybackRatio(netIncome, divPaid);
+                double totalSharesOut = commonSharesOut + preferredSharesOut;
 
-                //string ticker = TickerFromXDocument(xDocument);
-                //result.Add($"{ticker}\t{netIncome}\t{divPaid}\t{paybackRatio}%");
+                result.Add($"{ticker}\t{commonSharesOut}\t{preferredSharesOut}\t{totalSharesOut}");
             }
 
             return result;
