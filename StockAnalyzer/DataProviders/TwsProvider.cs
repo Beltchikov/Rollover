@@ -174,6 +174,7 @@ namespace StockAnalyzer.DataProviders
                 if (twiceAYear )
                 {
                     netIncomeH1 = ExtractNetIncome(interimStatement, 0);
+                    netIncomeH2 = ExtractNetIncome(interimStatement, 1);
                 }
                 else
                 {
