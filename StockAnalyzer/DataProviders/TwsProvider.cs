@@ -149,7 +149,7 @@ namespace StockAnalyzer.DataProviders
         {
             TriggerStatus($"Extracting Payout Ratio (Q) from the fundamental data list");
             var result = new List<string>();
-            
+
             foreach (string fundamentalData in fundamentalDataList)
             {
                 XDocument? xDocument = ParseXDocumentWithChecks(fundamentalData, result);
@@ -161,12 +161,8 @@ namespace StockAnalyzer.DataProviders
 
                 IEnumerable<XElement>? interimStatements = ExtractAllStatements(xDocument, "InterimPeriods");
                 var interimStatement = interimStatements?.FirstOrDefault();
-                bool twiceAYear = ReportingFrequencyIsTwiceAYear(interimStatement);  // otherwise quarterly
 
-                //double netIncomeQ4, divPaidQ4, paybackRatioQ4;
-                //double netIncomeQ3, divPaidQ3, paybackRatioQ3;
-                //double netIncomeQ2, divPaidQ2, paybackRatioQ2;
-                //double netIncomeQ1, divPaidQ1, paybackRatioQ1;
+                bool twiceAYear = ReportingFrequencyIsTwiceAYear(interimStatement);  // otherwise quarterly
                 if (twiceAYear)
                 {
                     double netIncomeH1 = ExtractNetIncome(interimStatement, 0);
@@ -174,7 +170,7 @@ namespace StockAnalyzer.DataProviders
                     double netIncomeTtm = netIncomeH1 + netIncomeH2;
                     double divPaidH1 = ExtractDividendsPaid(interimStatement, 0);
                     double divPaidH2 = ExtractDividendsPaid(interimStatement, 1);
-                    double divPaidTtm = divPaidH1 + divPaidH2; 
+                    double divPaidTtm = divPaidH1 + divPaidH2;
                     double paybackRatioH1 = CalculatePaybackRatio(netIncomeH1, divPaidH1);
                     double paybackRatioH2 = CalculatePaybackRatio(netIncomeH2, divPaidH2);
                     double paybackRatioTtm = CalculatePaybackRatio(netIncomeTtm, divPaidTtm);
@@ -190,18 +186,25 @@ namespace StockAnalyzer.DataProviders
                     double netIncomeQ2 = ExtractNetIncome(interimStatement, 1);
                     double netIncomeQ3 = ExtractNetIncome(interimStatement, 2);
                     double netIncomeQ4 = ExtractNetIncome(interimStatement, 3);
+                    double netIncomeTtm = netIncomeQ1 + netIncomeQ2 + netIncomeQ3 + netIncomeQ4;
                     double divPaidQ1 = ExtractDividendsPaid(interimStatement, 0);
                     double divPaidQ2 = ExtractDividendsPaid(interimStatement, 1);
                     double divPaidQ3 = ExtractDividendsPaid(interimStatement, 2);
                     double divPaidQ4 = ExtractDividendsPaid(interimStatement, 3);
+                    double divPaidTtm = divPaidQ1 + divPaidQ2 + divPaidQ3 + divPaidQ4;
+                    double paybackRatioQ1 = CalculatePaybackRatio(netIncomeQ1, divPaidQ1);
+                    double paybackRatioQ2 = CalculatePaybackRatio(netIncomeQ2, divPaidQ2);
+                    double paybackRatioQ3 = CalculatePaybackRatio(netIncomeQ3, divPaidQ3);
+                    double paybackRatioQ4 = CalculatePaybackRatio(netIncomeQ4, divPaidQ4);
+                    double paybackRatioTtm = CalculatePaybackRatio(netIncomeTtm, divPaidTtm);
+
+                    if (!result.Any()) result.Add($"Ticker\tQ4 Net Inc in M\tQ4 Div\tQ4 Ratio\tQ3 Net Inc\tQ3 Div\tQ3 Ratio" +
+                        $"\tQ2 Net Inc\tQ2 Div\tQ2 Ratio\tQ1 Net Inc\tQ1 Div\tQ1 Ratio" +
+                        $"\tTTM Net Inc\tTTM Div\tTTM Ratio");
+                    result.Add($"{ticker}\t{netIncomeQ4}\t{divPaidQ4}\t{paybackRatioQ4}%\t{netIncomeQ3}\t{divPaidQ3}\t{paybackRatioQ3}%" +
+                        $"\t{netIncomeQ2}\t{divPaidQ2}\t{paybackRatioQ2}%\t{netIncomeQ1}\t{divPaidQ1}\t{paybackRatioQ1}%" +
+                        $"\t{netIncomeTtm}\t{divPaidTtm}\t{paybackRatioTtm}%");
                 }
-
-                //double netIncome = ExtractNetIncome(statementSection);
-                //double divPaid = ExtractDividendsPaid(statementSection);
-                //double paybackRatio = CalculatePaybackRatio(netIncome, divPaid);
-
-
-                //result.Add($"{ticker}\t{netIncome}\t{divPaid}\t{paybackRatio}%");
             }
 
             return result;
