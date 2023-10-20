@@ -310,6 +310,14 @@ Foreground="White" Grid.ColumnSpan="3">
                                 </Button>
                                 <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="25" 
                                     HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                                        Command="{Binding SharesOutYCommand}">Shares Outstd. (Y) >>
+                                </Button>
+                                <Button Padding="10 0 10 0" Margin="10,0,10,5" Height="25" 
+                                    HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                                        Command="{Binding SharesOutQCommand}">Shares Outstd. TTM >>
+                                </Button>
+                                <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="25" 
+                                    HorizontalAlignment="Stretch" VerticalAlignment="Center" 
                                         Command="{Binding NpvYCommand}">NPV (Y) >>
                                 </Button>
                             </StackPanel>

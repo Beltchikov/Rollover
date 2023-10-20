@@ -48,7 +48,8 @@ namespace StockAnalyzer
         public ICommand RoeCommand { get; }
         public ICommand PayoutRatioYCommand { get; }
         public ICommand PayoutRatioQCommand { get; }
-
+        public ICommand SharesOutYCommand { get; }
+        public ICommand SharesOutQCommand { get; }
         public ICommand NpvYCommand { get; }
         public ICommand TwsSummaryCommand { get; }
 
@@ -150,6 +151,38 @@ namespace StockAnalyzer
                                     REPORTS_FIN_STATEMENTS,
                                     TIMEOUT_TWS);
                 ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractPayoutRatioQFromFundamentalDataList(fundamentalDataListPayoutRatio));
+            });
+
+            SharesOutYCommand = new RelayCommand(async () =>
+            {
+                ibHost.Consumer ??= this;
+                ConnectToTwsIfNeeded();
+                List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
+
+                List<string> fundamentalDataListPayoutRatio = await twsProvider.GetFundamentalData(
+                                    contractStringsList,
+                                    REPORTS_FIN_STATEMENTS,
+                                    TIMEOUT_TWS);
+
+                // TODO
+                MessageBox.Show("SharesOutYCommand");
+                //ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractNpvYFromFundamentalDataList(fundamentalDataListPayoutRatio, RiskFreeRate));
+            });
+
+            SharesOutQCommand = new RelayCommand(async () =>
+            {
+                ibHost.Consumer ??= this;
+                ConnectToTwsIfNeeded();
+                List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
+
+                List<string> fundamentalDataListPayoutRatio = await twsProvider.GetFundamentalData(
+                                    contractStringsList,
+                                    REPORTS_FIN_STATEMENTS,
+                                    TIMEOUT_TWS);
+
+                // TODO
+                MessageBox.Show("SharesOutQCommand");
+                //ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractNpvYFromFundamentalDataList(fundamentalDataListPayoutRatio, RiskFreeRate));
             });
 
             NpvYCommand = new RelayCommand(async () =>
