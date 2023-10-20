@@ -158,14 +158,15 @@ namespace StockAnalyzer.DataProviders
                 {
                     continue;
                 }
-                IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument, "InterimPeriods");
+                //IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument, "InterimPeriods");
+                IEnumerable<XElement>? statementSection = ExtractAllStatements(xDocument, "InterimPeriods");
 
-                double netIncome = ExtractNetIncome(statementSection);
-                double divPaid = ExtractDividendsPaid(statementSection);
-                double paybackRatio = CalculatePaybackRatio(netIncome, divPaid);
+                //double netIncome = ExtractNetIncome(statementSection);
+                //double divPaid = ExtractDividendsPaid(statementSection);
+                //double paybackRatio = CalculatePaybackRatio(netIncome, divPaid);
 
-                string ticker = TickerFromXDocument(xDocument);
-                result.Add($"{ticker}\t{netIncome}\t{divPaid}\t{paybackRatio}%");
+                //string ticker = TickerFromXDocument(xDocument);
+                //result.Add($"{ticker}\t{netIncome}\t{divPaid}\t{paybackRatio}%");
             }
 
             return result;
@@ -332,6 +333,11 @@ namespace StockAnalyzer.DataProviders
             var lastFiscalPeriodElement = fiscalPeriodElements?.MaxBy(e => Convert.ToInt32(e.Attribute("FiscalYear")?.Value));
             statementElements = lastFiscalPeriodElement?.Descendants("Statement");
             return statementElements;
+        }
+
+        private IEnumerable<XElement>? ExtractAllStatements(XDocument xDocument, string periods)
+        {
+            return xDocument?.Descendants(periods);
         }
 
         private string? ExtractCurrency(XDocument xDocument)
