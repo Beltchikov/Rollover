@@ -208,10 +208,20 @@ namespace StockAnalyzer.DataProviders
                 }
             }
 
-            List<string> result = resultTwiceAYear.Any()
-                ? resultTwiceAYear.Concat(resultQuarterly).ToList()
-                : resultQuarterly.Concat(resultTwiceAYear).ToList();  
-
+            List<string> result;
+            if(resultTwiceAYear.Any())
+            {
+                result = resultTwiceAYear;
+                result.Add(Environment.NewLine);
+                result.AddRange(resultQuarterly);
+            }
+            else
+            {
+                result = resultQuarterly;
+                result.Add(Environment.NewLine);
+                result.AddRange(resultTwiceAYear);
+            }
+     
             return result;
         }
 
