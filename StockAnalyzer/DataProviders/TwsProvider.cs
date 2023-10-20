@@ -148,11 +148,12 @@ namespace StockAnalyzer.DataProviders
         public List<string> ExtractPayoutRatioQFromFundamentalDataList(List<string> fundamentalDataList)
         {
             TriggerStatus($"Extracting Payout Ratio (Q) from the fundamental data list");
-            var result = new List<string>();
+            var resultQuarterly = new List<string>();
+            var resultTwiceAYear= new List<string>();
 
             foreach (string fundamentalData in fundamentalDataList)
             {
-                XDocument? xDocument = ParseXDocumentWithChecks(fundamentalData, result);
+                XDocument? xDocument = ParseXDocumentWithChecks(fundamentalData, resultQuarterly);
                 if (xDocument == null) // some error string has been added
                 {
                     continue;
@@ -175,9 +176,9 @@ namespace StockAnalyzer.DataProviders
                     double paybackRatioH2 = CalculatePaybackRatio(netIncomeH2, divPaidH2);
                     double paybackRatioTtm = CalculatePaybackRatio(netIncomeTtm, divPaidTtm);
 
-                    if (!result.Any()) result.Add($"Ticker\tH2 Net Inc in M\tH2 Div\tH2 Ratio\tH1 Net Inc\tH1 Div\tH1 Ratio" +
+                    if (!resultTwiceAYear.Any()) resultTwiceAYear.Add($"Ticker\tH2 Net Inc in M\tH2 Div\tH2 Ratio\tH1 Net Inc\tH1 Div\tH1 Ratio" +
                         $"\tTTM Net Inc\tTTM Div\tTTM Ratio");
-                    result.Add($"{ticker}\t{netIncomeH2}\t{divPaidH2}\t{paybackRatioH2}%\t{netIncomeH1}\t{divPaidH1}\t{paybackRatioH1}%" +
+                    resultTwiceAYear.Add($"{ticker}\t{netIncomeH2}\t{divPaidH2}\t{paybackRatioH2}%\t{netIncomeH1}\t{divPaidH1}\t{paybackRatioH1}%" +
                         $"\t{netIncomeTtm}\t{divPaidTtm}\t{paybackRatioTtm}%");
                 }
                 else
@@ -198,14 +199,18 @@ namespace StockAnalyzer.DataProviders
                     double paybackRatioQ4 = CalculatePaybackRatio(netIncomeQ4, divPaidQ4);
                     double paybackRatioTtm = CalculatePaybackRatio(netIncomeTtm, divPaidTtm);
 
-                    if (!result.Any()) result.Add($"Ticker\tQ4 Net Inc in M\tQ4 Div\tQ4 Ratio\tQ3 Net Inc\tQ3 Div\tQ3 Ratio" +
+                    if (!resultQuarterly.Any()) resultQuarterly.Add($"Ticker\tQ4 Net Inc in M\tQ4 Div\tQ4 Ratio\tQ3 Net Inc\tQ3 Div\tQ3 Ratio" +
                         $"\tQ2 Net Inc\tQ2 Div\tQ2 Ratio\tQ1 Net Inc\tQ1 Div\tQ1 Ratio" +
                         $"\tTTM Net Inc\tTTM Div\tTTM Ratio");
-                    result.Add($"{ticker}\t{netIncomeQ4}\t{divPaidQ4}\t{paybackRatioQ4}%\t{netIncomeQ3}\t{divPaidQ3}\t{paybackRatioQ3}%" +
+                    resultQuarterly.Add($"{ticker}\t{netIncomeQ4}\t{divPaidQ4}\t{paybackRatioQ4}%\t{netIncomeQ3}\t{divPaidQ3}\t{paybackRatioQ3}%" +
                         $"\t{netIncomeQ2}\t{divPaidQ2}\t{paybackRatioQ2}%\t{netIncomeQ1}\t{divPaidQ1}\t{paybackRatioQ1}%" +
                         $"\t{netIncomeTtm}\t{divPaidTtm}\t{paybackRatioTtm}%");
                 }
             }
+
+            List<string> result = resultTwiceAYear.Any()
+                ? resultTwiceAYear.Concat(resultQuarterly).ToList()
+                : resultQuarterly.Concat(resultTwiceAYear).ToList();  
 
             return result;
         }
