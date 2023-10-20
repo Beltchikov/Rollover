@@ -226,9 +226,9 @@ namespace StockAnalyzer.DataProviders
                 {
                     continue;
                 }
-                //IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument, "AnnualPeriods");
+                IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument, "AnnualPeriods");
 
-                //double netIncome = ExtractNetIncome(statementSection);
+                double sharesOut = ExtractCommonSharesOut(statementSection);
                 //double divPaid = ExtractDividendsPaid(statementSection);
                 //double paybackRatio = CalculatePaybackRatio(netIncome, divPaid);
 
@@ -538,6 +538,16 @@ namespace StockAnalyzer.DataProviders
             var netIncomeAsString = nincLineItemElement?.Value;
             netIncome = Convert.ToDouble(netIncomeAsString, CultureInfo.InvariantCulture);
             return netIncome;
+        }
+
+        private static double ExtractCommonSharesOut(IEnumerable<XElement>? statementElements)
+        {
+            var balStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "BAL");
+            var lineItemElements = balStatementElement?.Descendants("lineItem");
+            var qtcoLineItemElement = lineItemElements?.Where(e => e?.Attribute("coaCode")?.Value == "QTCO").FirstOrDefault();
+            var commonSharesOutAsString = qtcoLineItemElement?.Value;
+            double commonSharesOut = Convert.ToDouble(commonSharesOutAsString, CultureInfo.InvariantCulture);
+            return commonSharesOut;
         }
 
         private static double ExtractNetIncome(XElement? periodsElement, int periodsAgo)
