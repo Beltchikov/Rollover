@@ -163,10 +163,10 @@ namespace StockAnalyzer.DataProviders
                 var interimStatement = interimStatements?.FirstOrDefault();
                 bool twiceAYear = ReportingFrequencyIsTwiceAYear(interimStatement);  // otherwise quarterly
 
-                double netIncomeQ4, divPaidQ4, paybackRatioQ4;
-                double netIncomeQ3, divPaidQ3, paybackRatioQ3;
-                double netIncomeQ2, divPaidQ2, paybackRatioQ2;
-                double netIncomeQ1, divPaidQ1, paybackRatioQ1;
+                //double netIncomeQ4, divPaidQ4, paybackRatioQ4;
+                //double netIncomeQ3, divPaidQ3, paybackRatioQ3;
+                //double netIncomeQ2, divPaidQ2, paybackRatioQ2;
+                //double netIncomeQ1, divPaidQ1, paybackRatioQ1;
                 if (twiceAYear)
                 {
                     double netIncomeH1 = ExtractNetIncome(interimStatement, 0);
@@ -186,10 +186,14 @@ namespace StockAnalyzer.DataProviders
                 }
                 else
                 {
-                    netIncomeQ1 = ExtractNetIncome(interimStatement, 0);
-                    netIncomeQ2 = ExtractNetIncome(interimStatement, 1);
-                    netIncomeQ3 = ExtractNetIncome(interimStatement, 2);
-                    netIncomeQ4 = ExtractNetIncome(interimStatement, 3);
+                    double netIncomeQ1 = ExtractNetIncome(interimStatement, 0);
+                    double netIncomeQ2 = ExtractNetIncome(interimStatement, 1);
+                    double netIncomeQ3 = ExtractNetIncome(interimStatement, 2);
+                    double netIncomeQ4 = ExtractNetIncome(interimStatement, 3);
+                    double divPaidQ1 = ExtractDividendsPaid(interimStatement, 0);
+                    double divPaidQ2 = ExtractDividendsPaid(interimStatement, 1);
+                    double divPaidQ3 = ExtractDividendsPaid(interimStatement, 2);
+                    double divPaidQ4 = ExtractDividendsPaid(interimStatement, 3);
                 }
 
                 //double netIncome = ExtractNetIncome(statementSection);
