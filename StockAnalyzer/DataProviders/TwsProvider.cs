@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Xml;
 using System.Xml.Linq;
-using static Microsoft.AspNetCore.Razor.Language.TagHelperMetadata;
 
 namespace StockAnalyzer.DataProviders
 {
@@ -148,8 +147,8 @@ namespace StockAnalyzer.DataProviders
         public List<string> ExtractPayoutRatioQFromFundamentalDataList(List<string> fundamentalDataList)
         {
             TriggerStatus($"Extracting Payout Ratio (Q) from the fundamental data list");
-            var resultQuarterly = new List<string>();
-            var resultTwiceAYear = new List<string>();
+            List<string> resultQuarterly = new List<string>();
+            List<string> resultTwiceAYear = new List<string>();
 
             foreach (string fundamentalData in fundamentalDataList)
             {
@@ -166,49 +165,59 @@ namespace StockAnalyzer.DataProviders
                 bool twiceAYear = ReportingFrequencyIsTwiceAYear(interimStatement);  // otherwise quarterly
                 if (twiceAYear)
                 {
-                    double netIncomeH1 = ExtractNetIncome(interimStatement, 0);
-                    double netIncomeH2 = ExtractNetIncome(interimStatement, 1);
-                    double netIncomeTtm = netIncomeH1 + netIncomeH2;
-                    double divPaidH1 = ExtractDividendsPaid(interimStatement, 0);
-                    double divPaidH2 = ExtractDividendsPaid(interimStatement, 1);
-                    double divPaidTtm = divPaidH1 + divPaidH2;
-                    double paybackRatioH1 = CalculatePaybackRatio(netIncomeH1, divPaidH1);
-                    double paybackRatioH2 = CalculatePaybackRatio(netIncomeH2, divPaidH2);
-                    double paybackRatioTtm = CalculatePaybackRatio(netIncomeTtm, divPaidTtm);
-
-                    if (!resultTwiceAYear.Any()) resultTwiceAYear.Add($"Ticker\tH2 Net Inc in M\tH2 Div\tH2 Ratio\tH1 Net Inc\tH1 Div\tH1 Ratio" +
-                        $"\tTTM Net Inc\tTTM Div\tTTM Ratio");
-                    resultTwiceAYear.Add($"{ticker}\t{netIncomeH2}\t{divPaidH2}\t{paybackRatioH2}%\t{netIncomeH1}\t{divPaidH1}\t{paybackRatioH1}%" +
-                        $"\t{netIncomeTtm}\t{divPaidTtm}\t{paybackRatioTtm}%");
+                    CalculateResultsTwiceAYearReporting(resultTwiceAYear, ticker, interimStatement);
                 }
                 else
                 {
-                    double netIncomeQ1 = ExtractNetIncome(interimStatement, 0);
-                    double netIncomeQ2 = ExtractNetIncome(interimStatement, 1);
-                    double netIncomeQ3 = ExtractNetIncome(interimStatement, 2);
-                    double netIncomeQ4 = ExtractNetIncome(interimStatement, 3);
-                    double netIncomeTtm = netIncomeQ1 + netIncomeQ2 + netIncomeQ3 + netIncomeQ4;
-                    double divPaidQ1 = ExtractDividendsPaid(interimStatement, 0);
-                    double divPaidQ2 = ExtractDividendsPaid(interimStatement, 1);
-                    double divPaidQ3 = ExtractDividendsPaid(interimStatement, 2);
-                    double divPaidQ4 = ExtractDividendsPaid(interimStatement, 3);
-                    double divPaidTtm = divPaidQ1 + divPaidQ2 + divPaidQ3 + divPaidQ4;
-                    double paybackRatioQ1 = CalculatePaybackRatio(netIncomeQ1, divPaidQ1);
-                    double paybackRatioQ2 = CalculatePaybackRatio(netIncomeQ2, divPaidQ2);
-                    double paybackRatioQ3 = CalculatePaybackRatio(netIncomeQ3, divPaidQ3);
-                    double paybackRatioQ4 = CalculatePaybackRatio(netIncomeQ4, divPaidQ4);
-                    double paybackRatioTtm = CalculatePaybackRatio(netIncomeTtm, divPaidTtm);
-
-                    if (!resultQuarterly.Any()) resultQuarterly.Add($"Ticker\tQ4 Net Inc in M\tQ4 Div\tQ4 Ratio\tQ3 Net Inc\tQ3 Div\tQ3 Ratio" +
-                        $"\tQ2 Net Inc\tQ2 Div\tQ2 Ratio\tQ1 Net Inc\tQ1 Div\tQ1 Ratio" +
-                        $"\tTTM Net Inc\tTTM Div\tTTM Ratio");
-                    resultQuarterly.Add($"{ticker}\t{netIncomeQ4}\t{divPaidQ4}\t{paybackRatioQ4}%\t{netIncomeQ3}\t{divPaidQ3}\t{paybackRatioQ3}%" +
-                        $"\t{netIncomeQ2}\t{divPaidQ2}\t{paybackRatioQ2}%\t{netIncomeQ1}\t{divPaidQ1}\t{paybackRatioQ1}%" +
-                        $"\t{netIncomeTtm}\t{divPaidTtm}\t{paybackRatioTtm}%");
+                    CalculateResultsQuarterlyReporting(resultQuarterly, ticker, interimStatement);
                 }
             }
             List<string> result = ConcatTablesWithDifferentColumnsNumber(resultQuarterly, resultTwiceAYear);
             return result;
+        }
+
+        private void CalculateResultsQuarterlyReporting(List<string> resultQuarterly, string ticker, XElement? interimStatement)
+        {
+            double netIncomeQ1 = ExtractNetIncome(interimStatement, 0);
+            double netIncomeQ2 = ExtractNetIncome(interimStatement, 1);
+            double netIncomeQ3 = ExtractNetIncome(interimStatement, 2);
+            double netIncomeQ4 = ExtractNetIncome(interimStatement, 3);
+            double netIncomeTtm = netIncomeQ1 + netIncomeQ2 + netIncomeQ3 + netIncomeQ4;
+            double divPaidQ1 = ExtractDividendsPaid(interimStatement, 0);
+            double divPaidQ2 = ExtractDividendsPaid(interimStatement, 1);
+            double divPaidQ3 = ExtractDividendsPaid(interimStatement, 2);
+            double divPaidQ4 = ExtractDividendsPaid(interimStatement, 3);
+            double divPaidTtm = divPaidQ1 + divPaidQ2 + divPaidQ3 + divPaidQ4;
+            double paybackRatioQ1 = CalculatePaybackRatio(netIncomeQ1, divPaidQ1);
+            double paybackRatioQ2 = CalculatePaybackRatio(netIncomeQ2, divPaidQ2);
+            double paybackRatioQ3 = CalculatePaybackRatio(netIncomeQ3, divPaidQ3);
+            double paybackRatioQ4 = CalculatePaybackRatio(netIncomeQ4, divPaidQ4);
+            double paybackRatioTtm = CalculatePaybackRatio(netIncomeTtm, divPaidTtm);
+
+            if (!resultQuarterly.Any()) resultQuarterly.Add($"Ticker\tQ4 Net Inc in M\tQ4 Div\tQ4 Ratio\tQ3 Net Inc\tQ3 Div\tQ3 Ratio" +
+                $"\tQ2 Net Inc\tQ2 Div\tQ2 Ratio\tQ1 Net Inc\tQ1 Div\tQ1 Ratio" +
+                $"\tTTM Net Inc\tTTM Div\tTTM Ratio");
+            resultQuarterly.Add($"{ticker}\t{netIncomeQ4}\t{divPaidQ4}\t{paybackRatioQ4}%\t{netIncomeQ3}\t{divPaidQ3}\t{paybackRatioQ3}%" +
+                $"\t{netIncomeQ2}\t{divPaidQ2}\t{paybackRatioQ2}%\t{netIncomeQ1}\t{divPaidQ1}\t{paybackRatioQ1}%" +
+                $"\t{netIncomeTtm}\t{divPaidTtm}\t{paybackRatioTtm}%");
+        }
+
+        private void CalculateResultsTwiceAYearReporting(List<string> resultTwiceAYear, string ticker, XElement? interimStatement)
+        {
+            double netIncomeH1 = ExtractNetIncome(interimStatement, 0);
+            double netIncomeH2 = ExtractNetIncome(interimStatement, 1);
+            double netIncomeTtm = netIncomeH1 + netIncomeH2;
+            double divPaidH1 = ExtractDividendsPaid(interimStatement, 0);
+            double divPaidH2 = ExtractDividendsPaid(interimStatement, 1);
+            double divPaidTtm = divPaidH1 + divPaidH2;
+            double paybackRatioH1 = CalculatePaybackRatio(netIncomeH1, divPaidH1);
+            double paybackRatioH2 = CalculatePaybackRatio(netIncomeH2, divPaidH2);
+            double paybackRatioTtm = CalculatePaybackRatio(netIncomeTtm, divPaidTtm);
+
+            if (!resultTwiceAYear.Any()) resultTwiceAYear.Add($"Ticker\tH2 Net Inc in M\tH2 Div\tH2 Ratio\tH1 Net Inc\tH1 Div\tH1 Ratio" +
+                $"\tTTM Net Inc\tTTM Div\tTTM Ratio");
+            resultTwiceAYear.Add($"{ticker}\t{netIncomeH2}\t{divPaidH2}\t{paybackRatioH2}%\t{netIncomeH1}\t{divPaidH1}\t{paybackRatioH1}%" +
+                $"\t{netIncomeTtm}\t{divPaidTtm}\t{paybackRatioTtm}%");
         }
 
         public List<string> ExtractSharesOutYFromFundamentalDataList(List<string> fundamentalDataList)
