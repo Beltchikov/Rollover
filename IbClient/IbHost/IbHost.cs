@@ -152,7 +152,6 @@ namespace IbClient.IbHost
             string ticker,
             bool snapshot,
             bool frozen,
-            int tickType,
             int timeout,
             string currency,
             string secType,

@@ -421,8 +421,7 @@ namespace StockAnalyzer.DataProviders
             double? currentPrice;
             bool snapshot = true;
             bool frozen = true;
-            int tickType = 2; // Bid
-
+            
             var contractArray = contractString.Split(';', StringSplitOptions.RemoveEmptyEntries);
             if (contractArray.Length == 1)
             {
@@ -430,7 +429,6 @@ namespace StockAnalyzer.DataProviders
                     contractArray[0]?.Trim(),
                     snapshot,
                     frozen,
-                    tickType,
                     timeout);
             }
             else if (contractArray.Length == 2)
@@ -439,7 +437,6 @@ namespace StockAnalyzer.DataProviders
                     contractArray[0]?.Trim(),
                     snapshot,
                     frozen,
-                    tickType,
                     timeout,
                     contractArray[1]?.Trim());
             }
@@ -449,7 +446,6 @@ namespace StockAnalyzer.DataProviders
                                     contractArray[0]?.Trim(),
                                     snapshot,
                                     frozen,
-                                    tickType,
                                     timeout,
                                     contractArray[1]?.Trim(),
                                     contractArray[2]?.Trim());
@@ -460,7 +456,6 @@ namespace StockAnalyzer.DataProviders
                                     contractArray[0]?.Trim(),
                                     snapshot,
                                     frozen,
-                                    tickType,
                                     timeout,
                                     contractArray[1]?.Trim(),
                                     contractArray[2]?.Trim(),
