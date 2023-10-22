@@ -151,8 +151,8 @@ namespace StockAnalyzer.DataProviders
             string statusMessage)
         {
             TriggerStatus(statusMessage);
-            List<string> resultQuarterly = new List<string>();
-            List<string> resultTwiceAYear = new List<string>();
+            List<string> resultQuarterly = new();
+            List<string> resultTwiceAYear = new();
 
             foreach (string fundamentalData in fundamentalDataList)
             {
