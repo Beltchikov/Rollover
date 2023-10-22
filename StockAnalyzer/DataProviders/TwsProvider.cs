@@ -74,6 +74,8 @@ namespace StockAnalyzer.DataProviders
         {
             TriggerStatus($"Extracting ROE from the fundamental data list");
             var result = new List<string>();
+            // TODO use basic accounts
+            result.Add("WARNING! The calculation is not based on the basic accounts! The value is computed by TWS!");
 
             foreach (string fundamentalData in fundamentalDataList)
             {
