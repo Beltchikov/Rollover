@@ -74,10 +74,15 @@ namespace StockAnalyzer.DataProviders
         {
             var result = new List<string>();
 
-            // TODO
-            //await Task.Run(() =>MessageBox.Show("CurrentPriceFromContractStrings"));
-            MessageBox.Show("CurrentPriceFromContractStrings");
-
+            int cnt = 1;
+            foreach (string contractString in contractStringsListTws)
+            {
+                var contractStringTrimmed = contractString.Trim();
+                TriggerStatus($"Retrieving current price for {contractStringTrimmed} {cnt++}/{contractStringsListTws.Count}");
+                var currentPrice = await CurrentPriceFromContractString(timeout, contractStringTrimmed);
+                result.Add(Convert.ToString(currentPrice, new CultureInfo("DE-de")) ?? "");
+            }
+            
             return result;
         }
 
@@ -409,6 +414,64 @@ namespace StockAnalyzer.DataProviders
                 throw new ApplicationException("Wrong number of elements in contract's string representation.");
             }
             return fundamentalData;
+        }
+
+        private async Task<double?> CurrentPriceFromContractString(int timeout, string contractString)
+        {
+            double? currentPrice;
+            bool snapshot = true;
+            bool frozen = true;
+            int tickType = 2; // Bid
+
+            var contractArray = contractString.Split(';', StringSplitOptions.RemoveEmptyEntries);
+            if (contractArray.Length == 1)
+            {
+                currentPrice = await _ibHost.RequestMarketDataAsync(
+                    contractArray[0]?.Trim(),
+                    snapshot,
+                    frozen,
+                    tickType,
+                    timeout);
+            }
+            else if (contractArray.Length == 2)
+            {
+                currentPrice = await _ibHost.RequestMarketDataAsync(
+                    contractArray[0]?.Trim(),
+                    snapshot,
+                    frozen,
+                    tickType,
+                    timeout,
+                    contractArray[1]?.Trim());
+            }
+            else if (contractArray.Length == 3)
+            {
+                currentPrice = await _ibHost.RequestMarketDataAsync(
+                                    contractArray[0]?.Trim(),
+                                    snapshot,
+                                    frozen,
+                                    tickType,
+                                    timeout,
+                                    contractArray[1]?.Trim(),
+                                    contractArray[2]?.Trim());
+            }
+            else if (contractArray.Length == 4)
+            {
+                currentPrice = await _ibHost.RequestMarketDataAsync(
+                                    contractArray[0]?.Trim(),
+                                    snapshot,
+                                    frozen,
+                                    tickType,
+                                    timeout,
+                                    contractArray[1]?.Trim(),
+                                    contractArray[2]?.Trim(),
+                                    contractArray[2]?.Trim());
+            }
+            else
+            {
+                throw new ApplicationException("Wrong number of elements in contract's string representation.");
+            }
+
+            return currentPrice;
         }
 
         private static IEnumerable<XElement>? StatementElementsFromXDocument(XDocument? xDocument, string periods)

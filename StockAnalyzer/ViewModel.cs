@@ -196,12 +196,10 @@ namespace StockAnalyzer
                 ibHost.Consumer ??= this;
                 ConnectToTwsIfNeeded();
                 List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
-
-                List<string> fundamentalDataListPayoutRatio = await twsProvider.CurrentPriceFromContractStrings(
-                                    contractStringsList,
-                                    TIMEOUT_TWS);
-
-                //ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.NpvYFromFundamentalDataList(fundamentalDataListPayoutRatio, RiskFreeRate));
+                List<string> currentPriceString = await twsProvider.CurrentPriceFromContractStrings(
+                                                    contractStringsList,
+                                                    TIMEOUT_TWS);
+                ResultCollectionTwsFinStatements = new ObservableCollection<string>(currentPriceString);
             });
 
             NpvYCommand = new RelayCommand(async () =>

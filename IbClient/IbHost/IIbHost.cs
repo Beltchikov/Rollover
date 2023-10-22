@@ -29,9 +29,9 @@ namespace IbClient.IbHost
             bool frozen,
             int tickType,
             int timeout,
-            string currency,
-            string secType,
-            string exchange);
+            string currency = "USD",
+            string secType = "STK",
+            string exchange = "SMART");
 
         //public void ReqHistoricalData();
         //void ApplyDefaultHistoricalData();
