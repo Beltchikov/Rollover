@@ -464,7 +464,7 @@ namespace StockAnalyzer.DataProviders
                                     timeout,
                                     contractArray[1]?.Trim(),
                                     contractArray[2]?.Trim(),
-                                    contractArray[2]?.Trim());
+                                    contractArray[3]?.Trim());
             }
             else
             {
