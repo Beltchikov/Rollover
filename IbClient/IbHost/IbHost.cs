@@ -148,7 +148,7 @@ namespace IbClient.IbHost
         /// <param name="tickType">Bid: 1, Ask: 2, 
         /// full list: https://interactivebrokers.github.io/tws-api/tick_types.html</param>
         /// <returns></returns>
-        public async Task<double> RequestMarketDataAsync(
+        public async Task<double?> RequestMarketDataAsync(
             string ticker,
             bool snapshot,
             bool frozen,
@@ -158,6 +158,8 @@ namespace IbClient.IbHost
             string secType,
             string exchange)
         {
+            double? price = null;
+            
             if(frozen)
             {
                 _ibClient.ClientSocket.reqMarketDataType(2);
@@ -180,8 +182,18 @@ namespace IbClient.IbHost
                false,
                new List<TagValue>());
 
-            // TODO
-            return -1;
+            await Task.Run(() =>
+            {
+                var startTime = DateTime.Now;
+                while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasMessageInQueue<TickPriceMessage>(reqId)) { }
+
+                if (_queue.Dequeue() is TickPriceMessage tickPriceMessage)
+                {
+                    price = tickPriceMessage.Price;
+                }
+            });
+
+            return price;
         }
 
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)

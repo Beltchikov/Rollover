@@ -23,7 +23,7 @@ namespace IbClient.IbHost
             string secType = "STK",
             string exchange = "SMART");
 
-        Task<double> RequestMarketDataAsync(
+        Task<double?> RequestMarketDataAsync(
             string ticker,
             bool snapshot,
             bool frozen,
