@@ -9,7 +9,7 @@ namespace StockAnalyzer.DataProviders
     public interface ITwsProvider
     {
         public event Action<string> Status;
-        Task<List<ContractDetails>> GetContractDetails(List<string> contractStringsTws, int timeout);
+        Task<List<ContractDetails>> ContractDetailsListFromContractStringsList(List<string> contractStringsTws, int timeout);
         List<string> ConIdsFromContractDetailsList(List<ContractDetails> contractDetailsList);
         Task<List<string>> FundamentalDataFromContractStrings(List<string> contractStringsTws, string reportType, int timeout);
         List<string> RoeFromFundamentalDataList(List<string> fundamentalDataList);

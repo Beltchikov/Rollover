@@ -109,7 +109,7 @@ namespace StockAnalyzer
                 ibHost.Consumer ??= this;
                 ConnectToTwsIfNeeded();
                 List<string> contractStringsList = ContractStringsTwsContractDetails.ToList();
-                var contractDetailsList = await twsProvider.GetContractDetails(
+                var contractDetailsList = await twsProvider.ContractDetailsListFromContractStringsList(
                                     contractStringsList,
                                     TIMEOUT_TWS);
                 ResultCollectionTwsContractIds = new ObservableCollection<string>(twsProvider.ConIdsFromContractDetailsList(contractDetailsList));

@@ -22,7 +22,7 @@ namespace StockAnalyzer.DataProviders
             _ibHost = ibHost;
         }
 
-        public async Task<List<ContractDetails>> GetContractDetails(List<string> contractStringsTws, int timeout)
+        public async Task<List<ContractDetails>> ContractDetailsListFromContractStringsList(List<string> contractStringsTws, int timeout)
         {
             var result = new List<ContractDetails>();
 
