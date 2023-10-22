@@ -20,7 +20,7 @@ namespace StockAnalyzer.DataProviders
         List<string> ExtractNpvYFromFundamentalDataList(List<string> fundamentalDataListPayoutRatio, double riskFreeRate);
         List<string> ExtractSharesOutYFromFundamentalDataList(List<string> fundamentalDataListFinStatements);
         List<string> ExtractSharesOutQFromFundamentalDataList(List<string> fundamentalDataListFinStatements);
-        void CalculateResultsQuarterlyReporting(List<string> resultQuarterly, string ticker, XElement? interimStatement);
-        void CalculateResultsTwiceAYearReporting(List<string> resultTwiceAYear, string ticker, XElement? interimStatement);
+        void PayoutRationQuarterlyCalculations(List<string> resultQuarterly, string ticker, XElement? interimStatement);
+        void PayoutRatioTwiceAYearCalculations(List<string> resultTwiceAYear, string ticker, XElement? interimStatement);
     }
 }

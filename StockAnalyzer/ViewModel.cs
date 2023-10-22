@@ -153,8 +153,8 @@ namespace StockAnalyzer
                 ResultCollectionTwsFinStatements = new ObservableCollection<string>(
                     twsProvider.ExtractQuarterlyDataFromFundamentalDataList(
                         fundamentalDataListPayoutRatio,
-                        twsProvider.CalculateResultsTwiceAYearReporting,
-                        twsProvider.CalculateResultsQuarterlyReporting));
+                        twsProvider.PayoutRatioTwiceAYearCalculations,
+                        twsProvider.PayoutRationQuarterlyCalculations));
             });
 
             SharesOutYCommand = new RelayCommand(async () =>
@@ -181,6 +181,12 @@ namespace StockAnalyzer
                                     REPORTS_FIN_STATEMENTS,
                                     TIMEOUT_TWS);
                 ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractSharesOutQFromFundamentalDataList(fundamentalDataListFinStatements));
+
+                //ResultCollectionTwsFinStatements = new ObservableCollection<string>(
+                //   twsProvider.ExtractQuarterlyDataFromFundamentalDataList(
+                //       fundamentalDataListFinStatements,
+                //       twsProvider.PayoutRatioTwiceAYearCalculations,
+                //       twsProvider.PayoutRationQuarterlyCalculations));
             });
 
             NpvYCommand = new RelayCommand(async () =>

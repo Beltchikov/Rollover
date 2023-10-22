@@ -298,7 +298,7 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
-        public void CalculateResultsQuarterlyReporting(List<string> resultQuarterly, string ticker, XElement? interimStatement)
+        public void PayoutRationQuarterlyCalculations(List<string> resultQuarterly, string ticker, XElement? interimStatement)
         {
             double netIncomeQ1 = ExtractNetIncome(interimStatement, 0);
             double netIncomeQ2 = ExtractNetIncome(interimStatement, 1);
@@ -324,7 +324,7 @@ namespace StockAnalyzer.DataProviders
                 $"\t{netIncomeTtm}\t{divPaidTtm}\t{paybackRatioTtm}%");
         }
 
-        public void CalculateResultsTwiceAYearReporting(List<string> resultTwiceAYear, string ticker, XElement? interimStatement)
+        public void PayoutRatioTwiceAYearCalculations(List<string> resultTwiceAYear, string ticker, XElement? interimStatement)
         {
             double netIncomeH1 = ExtractNetIncome(interimStatement, 0);
             double netIncomeH2 = ExtractNetIncome(interimStatement, 1);
