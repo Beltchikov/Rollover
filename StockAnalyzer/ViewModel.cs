@@ -154,7 +154,8 @@ namespace StockAnalyzer
                     twsProvider.QuarterlyDataFromFundamentalDataList(
                         fundamentalDataListPayoutRatio,
                         twsProvider.PayoutRatioTwiceAYearCalculations,
-                        twsProvider.PayoutRatioQuarterlyCalculations));
+                        twsProvider.PayoutRatioQuarterlyCalculations,
+                        "Extracting Payout Ratio (Q) from the fundamental data list"));
             });
 
             SharesOutYCommand = new RelayCommand(async () =>
@@ -184,7 +185,8 @@ namespace StockAnalyzer
                    twsProvider.QuarterlyDataFromFundamentalDataList(
                        fundamentalDataListFinStatements,
                        twsProvider.SharesOutTwiceAYearCalculations,
-                       twsProvider.SharesOutQuarterlyCalculations));
+                       twsProvider.SharesOutQuarterlyCalculations,
+                       "Extracting Total Shares Outstanding (Q) from the fundamental data list"));
             });
 
             NpvYCommand = new RelayCommand(async () =>

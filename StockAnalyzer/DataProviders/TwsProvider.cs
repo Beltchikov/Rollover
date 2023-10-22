@@ -147,9 +147,10 @@ namespace StockAnalyzer.DataProviders
         public List<string> QuarterlyDataFromFundamentalDataList(
             List<string> fundamentalDataList,
             Action<List<string>, string, XElement?> twiceAYearCalculations,
-            Action<List<string>, string, XElement?> quarterlyCalculations)
+            Action<List<string>, string, XElement?> quarterlyCalculations, 
+            string statusMessage)
         {
-            TriggerStatus($"Extracting Payout Ratio (Q) from the fundamental data list");
+            TriggerStatus(statusMessage);
             List<string> resultQuarterly = new List<string>();
             List<string> resultTwiceAYear = new List<string>();
 
