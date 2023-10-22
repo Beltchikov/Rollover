@@ -337,6 +337,8 @@ namespace StockAnalyzer.DataProviders
         /// <param name="periodsElement">AnnualPeriods or InterimPeriods</param>
         public void SharesOutTwiceAYearCalculations(List<string> resultTwiceAYear, string ticker, XElement? periodsElement)
         {
+            if (!resultTwiceAYear.Any()) resultTwiceAYear.Add($"Ticker\tCommon in M\tPreferred\tTotal");
+
             double commonSharesOutH1 = SharesOutstandingFromPeriodsElement(periodsElement, "QTCO", 0);
             double preferredSharesOutH1 = SharesOutstandingFromPeriodsElement(periodsElement, "QTPO", 0);
             double totalSharesOutH1 = commonSharesOutH1 + preferredSharesOutH1;
