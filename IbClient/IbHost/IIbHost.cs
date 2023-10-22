@@ -23,6 +23,11 @@ namespace IbClient.IbHost
             string secType = "STK",
             string exchange = "SMART");
 
+        Task<double> RequestMarketDataAsync(
+            bool snapshot,
+            bool frozen,
+            int tickType);
+
         //public void ReqHistoricalData();
         //void ApplyDefaultHistoricalData();
         //void ReqPositions();

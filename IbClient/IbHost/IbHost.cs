@@ -140,6 +140,22 @@ namespace IbClient.IbHost
             return fundamentalsMessageString;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="snapshot"></param>
+        /// <param name="frozen"></param>
+        /// <param name="tickType">Bid: 1, Ask: 2, 
+        /// full list: https://interactivebrokers.github.io/tws-api/tick_types.html</param>
+        /// <returns></returns>
+        public async Task<double> RequestMarketDataAsync(
+            bool snapshot,
+            bool frozen,
+            int tickType)
+        {
+            // TODO
+            return -1;
+        }
+
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)
         {
             if (Consumer == null)
