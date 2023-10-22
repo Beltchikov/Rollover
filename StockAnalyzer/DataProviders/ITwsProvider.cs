@@ -21,5 +21,6 @@ namespace StockAnalyzer.DataProviders
         void PayoutRatioQuarterlyCalculations(List<string> resultQuarterly, string ticker, XElement? interimStatement);
         void SharesOutTwiceAYearCalculations(List<string> resultTwiceAYear, string ticker, XElement? interimStatement);
         void SharesOutQuarterlyCalculations(List<string> resultQuarterly, string ticker, XElement? interimStatement);
+        Task<List<string>> CurrentPriceFromContractStrings(List<string> contractStringsListTws, int timeout);
     }
 }

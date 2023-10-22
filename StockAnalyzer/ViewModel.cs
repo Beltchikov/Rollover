@@ -197,12 +197,9 @@ namespace StockAnalyzer
                 ConnectToTwsIfNeeded();
                 List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
 
-                //List<string> fundamentalDataListPayoutRatio = await twsProvider.FundamentalDataFromContractStrings(
-                //                    contractStringsList,
-                //                    REPORTS_FIN_STATEMENTS,
-                //                    TIMEOUT_TWS);
-
-                MessageBox.Show("CurrentPriceCommandCommand");
+                List<string> fundamentalDataListPayoutRatio = await twsProvider.CurrentPriceFromContractStrings(
+                                    contractStringsList,
+                                    TIMEOUT_TWS);
 
                 //ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.NpvYFromFundamentalDataList(fundamentalDataListPayoutRatio, RiskFreeRate));
             });

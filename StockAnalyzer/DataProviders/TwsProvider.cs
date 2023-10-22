@@ -70,6 +70,17 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
+        public async Task<List<string>> CurrentPriceFromContractStrings(List<string> contractStringsListTws, int timeout)
+        {
+            var result = new List<string>();
+
+            // TODO
+            //await Task.Run(() =>MessageBox.Show("CurrentPriceFromContractStrings"));
+            MessageBox.Show("CurrentPriceFromContractStrings");
+
+            return result;
+        }
+
         public List<string> RoeFromFundamentalDataList(List<string> fundamentalDataList)
         {
             TriggerStatus($"Extracting ROE from the fundamental data list");
