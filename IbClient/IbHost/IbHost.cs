@@ -41,7 +41,7 @@ namespace IbClient.IbHost
             //_ibClient.ContractDetailsEnd += _ibClient_ContractDetailsEnd;
             //_ibClient.TickPrice += _ibClient_TickPrice;
             //_ibClient.TickSize += _ibClient_TickSize;
-            
+
             //_ibClient.TickString += _ibClient_TickString;
             //_ibClient.TickOptionCommunication += _ibClient_TickOptionCommunication;
         }
@@ -158,8 +158,8 @@ namespace IbClient.IbHost
             string exchange)
         {
             double? price = null;
-            
-            if(frozen)
+
+            if (frozen)
             {
                 _ibClient.ClientSocket.reqMarketDataType(2);
             }
@@ -258,14 +258,9 @@ namespace IbClient.IbHost
             Consumer.TwsMessageCollection?.Add($"TickPriceMessage for {tickPriceMessage.RequestId} " +
                 $"field:{tickPriceMessage.Field} price:{tickPriceMessage.Price}");
 
-            if (tickPriceMessage.Field == 1 && tickPriceMessage.Price > 0 // Highest priced bid for the contract.
-                || tickPriceMessage.Field == 4 && tickPriceMessage.Price > 0 // Last price at which the contract traded 
-                || tickPriceMessage.Field == 9 && tickPriceMessage.Price > 0)  // The last available closing price for the previous day.
+            if (tickPriceMessage.Field == 1) // Highest priced bid for the contract.
             {
-                if (!HasMessageInQueue<TickPriceMessage>(tickPriceMessage.RequestId))
-                {
-                    _queue.Enqueue(tickPriceMessage);
-                }
+                _queue.Enqueue(tickPriceMessage);
             }
         }
 
