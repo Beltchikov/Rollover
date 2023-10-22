@@ -316,6 +316,10 @@ Foreground="White" Grid.ColumnSpan="3">
                                     HorizontalAlignment="Stretch" VerticalAlignment="Center" 
                                         Command="{Binding SharesOutQCommand}">Shares Outstd. (Q) >>
                                 </Button>
+                                <Button Padding="10 0 10 5" Margin="10,0,10,5" Height="25" 
+                                    HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                                        Command="{Binding CurrentPriceCommandCommand}">Current Price >>
+                                </Button>
                                 <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="25" 
                                     HorizontalAlignment="Stretch" VerticalAlignment="Center" 
                                         Command="{Binding NpvYCommand}">NPV (Y) >>

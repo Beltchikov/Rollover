@@ -50,6 +50,7 @@ namespace StockAnalyzer
         public ICommand PayoutRatioQCommand { get; }
         public ICommand SharesOutYCommand { get; }
         public ICommand SharesOutQCommand { get; }
+        public ICommand CurrentPriceCommandCommand { get; }
         public ICommand NpvYCommand { get; }
         public ICommand TwsSummaryCommand { get; }
 
@@ -189,6 +190,23 @@ namespace StockAnalyzer
                        "Extracting Total Shares Outstanding (Q) from the fundamental data list"));
             });
 
+
+            CurrentPriceCommandCommand = new RelayCommand(async () =>
+            {
+                ibHost.Consumer ??= this;
+                ConnectToTwsIfNeeded();
+                List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
+
+                //List<string> fundamentalDataListPayoutRatio = await twsProvider.FundamentalDataFromContractStrings(
+                //                    contractStringsList,
+                //                    REPORTS_FIN_STATEMENTS,
+                //                    TIMEOUT_TWS);
+
+                MessageBox.Show("CurrentPriceCommandCommand");
+
+                //ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.NpvYFromFundamentalDataList(fundamentalDataListPayoutRatio, RiskFreeRate));
+            });
+
             NpvYCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer ??= this;
@@ -199,8 +217,8 @@ namespace StockAnalyzer
                                     contractStringsList,
                                     REPORTS_FIN_STATEMENTS,
                                     TIMEOUT_TWS);
-                
-                MessageBox.Show("NpvYCommand - remove later");  
+
+                MessageBox.Show("NpvYCommand - remove later");
 
                 //ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.NpvYFromFundamentalDataList(fundamentalDataListPayoutRatio, RiskFreeRate));
             });
