@@ -112,7 +112,7 @@ namespace StockAnalyzer
                 var contractDetailsList = await twsProvider.GetContractDetails(
                                     contractStringsList,
                                     TIMEOUT_TWS);
-                ResultCollectionTwsContractIds = new ObservableCollection<string>(twsProvider.ExtractIdsFromContractDetailsList(contractDetailsList));
+                ResultCollectionTwsContractIds = new ObservableCollection<string>(twsProvider.ConIdsFromContractDetailsList(contractDetailsList));
             });
 
             RoeCommand = new RelayCommand(async () =>
@@ -120,11 +120,11 @@ namespace StockAnalyzer
                 ibHost.Consumer ??= this;
                 ConnectToTwsIfNeeded();
                 List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
-                List<string> fundamentalDataListRoe = await twsProvider.GetFundamentalData(
+                List<string> fundamentalDataListRoe = await twsProvider.FundamentalDataFromContractStrings(
                                     contractStringsList,
                                     REPORT_SNAPSHOT,
                                     TIMEOUT_TWS);
-                ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractRoeFromFundamentalDataList(fundamentalDataListRoe));
+                ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.RoeFromFundamentalDataList(fundamentalDataListRoe));
             });
 
             PayoutRatioYCommand = new RelayCommand(async () =>
@@ -133,11 +133,11 @@ namespace StockAnalyzer
                 ConnectToTwsIfNeeded();
                 List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
 
-                List<string> fundamentalDataListPayoutRatio = await twsProvider.GetFundamentalData(
+                List<string> fundamentalDataListPayoutRatio = await twsProvider.FundamentalDataFromContractStrings(
                                     contractStringsList,
                                     REPORTS_FIN_STATEMENTS,
                                     TIMEOUT_TWS);
-                ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractPayoutRationYFromFundamentalDataList(fundamentalDataListPayoutRatio));
+                ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.PayoutRatioYFromFundamentalDataList(fundamentalDataListPayoutRatio));
             });
 
             PayoutRatioQCommand = new RelayCommand(async () =>
@@ -146,12 +146,12 @@ namespace StockAnalyzer
                 ConnectToTwsIfNeeded();
                 List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
 
-                List<string> fundamentalDataListPayoutRatio = await twsProvider.GetFundamentalData(
+                List<string> fundamentalDataListPayoutRatio = await twsProvider.FundamentalDataFromContractStrings(
                                     contractStringsList,
                                     REPORTS_FIN_STATEMENTS,
                                     TIMEOUT_TWS);
                 ResultCollectionTwsFinStatements = new ObservableCollection<string>(
-                    twsProvider.ExtractQuarterlyDataFromFundamentalDataList(
+                    twsProvider.QuarterlyDataFromFundamentalDataList(
                         fundamentalDataListPayoutRatio,
                         twsProvider.PayoutRatioTwiceAYearCalculations,
                         twsProvider.PayoutRatioQuarterlyCalculations));
@@ -163,11 +163,11 @@ namespace StockAnalyzer
                 ConnectToTwsIfNeeded();
                 List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
 
-                List<string> fundamentalDataListFinStatements = await twsProvider.GetFundamentalData(
+                List<string> fundamentalDataListFinStatements = await twsProvider.FundamentalDataFromContractStrings(
                                     contractStringsList,
                                     REPORTS_FIN_STATEMENTS,
                                     TIMEOUT_TWS);
-                ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractSharesOutYFromFundamentalDataList(fundamentalDataListFinStatements));
+                ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.SharesOutYFromFundamentalDataList(fundamentalDataListFinStatements));
             });
 
             SharesOutQCommand = new RelayCommand(async () =>
@@ -176,12 +176,12 @@ namespace StockAnalyzer
                 ConnectToTwsIfNeeded();
                 List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
 
-                List<string> fundamentalDataListFinStatements = await twsProvider.GetFundamentalData(
+                List<string> fundamentalDataListFinStatements = await twsProvider.FundamentalDataFromContractStrings(
                                     contractStringsList,
                                     REPORTS_FIN_STATEMENTS,
                                     TIMEOUT_TWS);
                 ResultCollectionTwsFinStatements = new ObservableCollection<string>(
-                   twsProvider.ExtractQuarterlyDataFromFundamentalDataList(
+                   twsProvider.QuarterlyDataFromFundamentalDataList(
                        fundamentalDataListFinStatements,
                        twsProvider.SharesOutTwiceAYearCalculations,
                        twsProvider.SharesOutQuarterlyCalculations));
@@ -193,11 +193,14 @@ namespace StockAnalyzer
                 ConnectToTwsIfNeeded();
                 List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
 
-                List<string> fundamentalDataListPayoutRatio = await twsProvider.GetFundamentalData(
+                List<string> fundamentalDataListPayoutRatio = await twsProvider.FundamentalDataFromContractStrings(
                                     contractStringsList,
                                     REPORTS_FIN_STATEMENTS,
                                     TIMEOUT_TWS);
-                ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractNpvYFromFundamentalDataList(fundamentalDataListPayoutRatio, RiskFreeRate));
+                
+                MessageBox.Show("NpvYCommand - remove later");  
+
+                //ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.NpvYFromFundamentalDataList(fundamentalDataListPayoutRatio, RiskFreeRate));
             });
 
             TwsSummaryCommand = new RelayCommand(async () =>
@@ -205,11 +208,11 @@ namespace StockAnalyzer
                 ibHost.Consumer ??= this;
                 ConnectToTwsIfNeeded();
                 List<string> contractStringsList = ContractStringsTwsSummary.ToList();
-                List<string> fundamentalDataListSummary = await twsProvider.GetFundamentalData(
+                List<string> fundamentalDataListSummary = await twsProvider.FundamentalDataFromContractStrings(
                                     contractStringsList,
                                     REPORT_SNAPSHOT,
                                     TIMEOUT_TWS);
-                ResultCollectionTwsSummary = new ObservableCollection<string>(twsProvider.ExtractSummaryFromFundamentalDataList(fundamentalDataListSummary));
+                ResultCollectionTwsSummary = new ObservableCollection<string>(twsProvider.DesriptionOfCompanyFromFundamentalDataList(fundamentalDataListSummary));
             });
 
             MarketCap = 0.1;

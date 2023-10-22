@@ -10,15 +10,14 @@ namespace StockAnalyzer.DataProviders
     {
         public event Action<string> Status;
         Task<List<ContractDetails>> GetContractDetails(List<string> contractStringsTws, int timeout);
-        List<string> ExtractIdsFromContractDetailsList(List<ContractDetails> contractDetailsList);
-        Task<List<string>> GetFundamentalData(List<string> contractStringsTws, string reportType, int timeout);
-        List<string> ExtractRoeFromFundamentalDataList(List<string> fundamentalDataList);
-        List<string> ExtractSummaryFromFundamentalDataList(List<string> fundamentalDataList);
-        List<string> ExtractPayoutRationYFromFundamentalDataList(List<string> fundamentalDataList);
-        List<string> ExtractQuarterlyDataFromFundamentalDataList(List<string> fundamentalDataListPayoutRatio, Action<List<string>, string, XElement?> twiceAYearCalculation, Action<List<string>, string, XElement?> quarterlyCalculations);
-        List<string> ExtractNpvYFromFundamentalDataList(List<string> fundamentalDataListPayoutRatio, double riskFreeRate);
-        List<string> ExtractSharesOutYFromFundamentalDataList(List<string> fundamentalDataListFinStatements);
-        List<string> ExtractSharesOutQFromFundamentalDataList(List<string> fundamentalDataListFinStatements);
+        List<string> ConIdsFromContractDetailsList(List<ContractDetails> contractDetailsList);
+        Task<List<string>> FundamentalDataFromContractStrings(List<string> contractStringsTws, string reportType, int timeout);
+        List<string> RoeFromFundamentalDataList(List<string> fundamentalDataList);
+        List<string> DesriptionOfCompanyFromFundamentalDataList(List<string> fundamentalDataList);
+        List<string> PayoutRatioYFromFundamentalDataList(List<string> fundamentalDataList);
+        List<string> QuarterlyDataFromFundamentalDataList(List<string> fundamentalDataListPayoutRatio, Action<List<string>, string, XElement?> twiceAYearCalculation, Action<List<string>, string, XElement?> quarterlyCalculations);
+        List<string> SharesOutYFromFundamentalDataList(List<string> fundamentalDataListFinStatements);
+        List<string> SharesOutQFromFundamentalDataList(List<string> fundamentalDataListFinStatements);
         void PayoutRatioTwiceAYearCalculations(List<string> resultTwiceAYear, string ticker, XElement? interimStatement);
         void PayoutRatioQuarterlyCalculations(List<string> resultQuarterly, string ticker, XElement? interimStatement);
         void SharesOutTwiceAYearCalculations(List<string> resultTwiceAYear, string ticker, XElement? interimStatement);

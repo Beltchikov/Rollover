@@ -39,7 +39,7 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
-        public List<string> ExtractIdsFromContractDetailsList(List<ContractDetails> contractDetailsList)
+        public List<string> ConIdsFromContractDetailsList(List<ContractDetails> contractDetailsList)
         {
             TriggerStatus($"Extracting contract ids from the contract details");
             var result = new List<string>();
@@ -52,7 +52,7 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
-        public async Task<List<string>> GetFundamentalData(List<string> contractStringsTws, string reportType, int timeout)
+        public async Task<List<string>> FundamentalDataFromContractStrings(List<string> contractStringsTws, string reportType, int timeout)
         {
             var result = new List<string>();
 
@@ -68,14 +68,14 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
-        public List<string> ExtractRoeFromFundamentalDataList(List<string> fundamentalDataList)
+        public List<string> RoeFromFundamentalDataList(List<string> fundamentalDataList)
         {
             TriggerStatus($"Extracting ROE from the fundamental data list");
             var result = new List<string>();
 
             foreach (string fundamentalData in fundamentalDataList)
             {
-                XDocument? xDocument = ParseXDocumentWithChecks(fundamentalData, result);
+                XDocument? xDocument = XDocumentFromStringWithChecks(fundamentalData, result);
                 if (xDocument == null) // some error string has been added
                 {
                     continue;
@@ -117,7 +117,7 @@ namespace StockAnalyzer.DataProviders
             return ticker;
         }
 
-        public List<string> ExtractPayoutRationYFromFundamentalDataList(List<string> fundamentalDataList)
+        public List<string> PayoutRatioYFromFundamentalDataList(List<string> fundamentalDataList)
         {
             TriggerStatus($"Extracting Payout Ratio (Y) from the fundamental data list");
             var result = new List<string>();
@@ -125,16 +125,16 @@ namespace StockAnalyzer.DataProviders
 
             foreach (string fundamentalData in fundamentalDataList)
             {
-                XDocument? xDocument = ParseXDocumentWithChecks(fundamentalData, result);
+                XDocument? xDocument = XDocumentFromStringWithChecks(fundamentalData, result);
                 if (xDocument == null) // some error string has been added
                 {
                     continue;
                 }
-                IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument, "AnnualPeriods");
+                IEnumerable<XElement>? statementSection = StatementElementsFromXDocument(xDocument, "AnnualPeriods");
 
-                double netIncome = ExtractNetIncome(statementSection);
-                double divPaid = ExtractDividendsPaid(statementSection);
-                double paybackRatio = CalculatePaybackRatio(netIncome, divPaid);
+                double netIncome = NetIncomeFromFiscalPeriodElement(statementSection);
+                double divPaid = DividendsPaidFromFiscalPeriodElement(statementSection);
+                double paybackRatio = PaybackRatioFromNetIncomeAndDividends(netIncome, divPaid);
 
                 string ticker = TickerFromXDocument(xDocument);
                 result.Add($"{ticker}\t{netIncome}\t{divPaid}\t{paybackRatio}%");
@@ -144,7 +144,7 @@ namespace StockAnalyzer.DataProviders
         }
 
 
-        public List<string> ExtractQuarterlyDataFromFundamentalDataList(
+        public List<string> QuarterlyDataFromFundamentalDataList(
             List<string> fundamentalDataList,
             Action<List<string>, string, XElement?> twiceAYearCalculations,
             Action<List<string>, string, XElement?> quarterlyCalculations)
@@ -155,14 +155,14 @@ namespace StockAnalyzer.DataProviders
 
             foreach (string fundamentalData in fundamentalDataList)
             {
-                XDocument? xDocument = ParseXDocumentWithChecks(fundamentalData, resultQuarterly);
+                XDocument? xDocument = XDocumentFromStringWithChecks(fundamentalData, resultQuarterly);
                 if (xDocument == null) // some error string has been added
                 {
                     continue;
                 }
                 string ticker = TickerFromXDocument(xDocument);
 
-                IEnumerable<XElement>? interimStatements = ExtractAllStatements(xDocument, "InterimPeriods");
+                IEnumerable<XElement>? interimStatements = AllStatementsFromXDocument(xDocument, "InterimPeriods");
                 var interimStatement = interimStatements?.FirstOrDefault();
 
                 bool twiceAYear = ReportingFrequencyIsTwiceAYear(interimStatement);  // otherwise quarterly
@@ -175,11 +175,11 @@ namespace StockAnalyzer.DataProviders
                     quarterlyCalculations(resultQuarterly, ticker, interimStatement);
                 }
             }
-            List<string> result = ConcatTablesWithDifferentColumnsNumber(resultQuarterly, resultTwiceAYear);
+            List<string> result = ResultListFromTwoDifferentlyStructuredLists(resultQuarterly, resultTwiceAYear);
             return result;
         }
 
-        public List<string> ExtractSharesOutYFromFundamentalDataList(List<string> fundamentalDataList)
+        public List<string> SharesOutYFromFundamentalDataList(List<string> fundamentalDataList)
         {
             TriggerStatus($"Extracting Total Shares Outstanding (Y) from the fundamental data list");
             var result = new List<string>();
@@ -187,16 +187,16 @@ namespace StockAnalyzer.DataProviders
 
             foreach (string fundamentalData in fundamentalDataList)
             {
-                XDocument? xDocument = ParseXDocumentWithChecks(fundamentalData, result);
+                XDocument? xDocument = XDocumentFromStringWithChecks(fundamentalData, result);
                 if (xDocument == null) // some error string has been added
                 {
                     continue;
                 }
                 string ticker = TickerFromXDocument(xDocument);
 
-                IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument, "AnnualPeriods");
-                double commonSharesOut = ExtractSharesOut(statementSection, "QTCO");
-                double preferredSharesOut = ExtractSharesOut(statementSection, "QTPO");
+                IEnumerable<XElement>? statementSection = StatementElementsFromXDocument(xDocument, "AnnualPeriods");
+                double commonSharesOut = SharesOutstandingFromFiscalPeriodElement(statementSection, "QTCO");
+                double preferredSharesOut = SharesOutstandingFromFiscalPeriodElement(statementSection, "QTPO");
                 double totalSharesOut = commonSharesOut + preferredSharesOut;
 
                 result.Add($"{ticker}\t{commonSharesOut}\t{preferredSharesOut}\t{totalSharesOut}");
@@ -205,7 +205,7 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
-        public List<string> ExtractSharesOutQFromFundamentalDataList(List<string> fundamentalDataList)
+        public List<string> SharesOutQFromFundamentalDataList(List<string> fundamentalDataList)
         {
             TriggerStatus($"Extracting Total Shares Outstanding (Q) from the fundamental data list");
             var result = new List<string>();
@@ -215,25 +215,17 @@ namespace StockAnalyzer.DataProviders
 
             foreach (string fundamentalData in fundamentalDataList)
             {
-                XDocument? xDocument = ParseXDocumentWithChecks(fundamentalData, result);
+                XDocument? xDocument = XDocumentFromStringWithChecks(fundamentalData, result);
                 if (xDocument == null) // some error string has been added
                 {
                     continue;
                 }
-                //IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument, "AnnualPeriods");
-
-                //double netIncome = ExtractNetIncome(statementSection);
-                //double divPaid = ExtractDividendsPaid(statementSection);
-                //double paybackRatio = CalculatePaybackRatio(netIncome, divPaid);
-
-                //string ticker = TickerFromXDocument(xDocument);
-                //result.Add($"{ticker}\t{netIncome}\t{divPaid}\t{paybackRatio}%");
             }
 
             return result;
         }
 
-        public IEnumerable<string> ExtractNpvYFromFundamentalDataList(List<string> fundamentalDataList, double riskFreeRate)
+        public IEnumerable<string> NpvYFromFundamentalDataList(List<string> fundamentalDataList, double riskFreeRate)
         {
             TriggerStatus($"Extracting NPV from the fundamental data list");
             var result = new List<string>();
@@ -241,17 +233,17 @@ namespace StockAnalyzer.DataProviders
 
             foreach (string fundamentalData in fundamentalDataList)
             {
-                XDocument? xDocument = ParseXDocumentWithChecks(fundamentalData, result);
+                XDocument? xDocument = XDocumentFromStringWithChecks(fundamentalData, result);
                 if (xDocument == null) // some error string has been added
                 {
                     continue;
                 }
-                IEnumerable<XElement>? statementSection = ExtractStatementSection(xDocument, "AnnualPeriods");
+                IEnumerable<XElement>? statementSection = StatementElementsFromXDocument(xDocument, "AnnualPeriods");
 
-                double divPaid = ExtractDividendsPaid(statementSection);
+                double divPaid = DividendsPaidFromFiscalPeriodElement(statementSection);
 
-                double commonStocks = ExtractTotalSharesOutstanding(statementSection, "QTCO");
-                double preferredStocks = ExtractTotalSharesOutstanding(statementSection, "QTPO");
+                double commonStocks = SharesOutstandingFromFiscalPeriodElement2(statementSection, "QTCO");
+                double preferredStocks = SharesOutstandingFromFiscalPeriodElement2(statementSection, "QTPO");
                 double totalShares = commonStocks + preferredStocks;
 
                 double dps = divPaid / commonStocks;
@@ -259,7 +251,7 @@ namespace StockAnalyzer.DataProviders
                 double npv = dps / (riskFreeRate / 100);
                 npv = Math.Round(npv, 2);
 
-                string? currency = ExtractCurrency(xDocument);
+                string? currency = CurrencyFromXmlDocument(xDocument);
 
                 string ticker = TickerFromXDocument(xDocument);
                 result.Add($"{ticker}\t{divPaid}\t{commonStocks}\t{preferredStocks}\t{totalShares}\t{dpsRounded}\t{npv}\t{currency}");
@@ -268,19 +260,14 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
-        List<string> ITwsProvider.ExtractNpvYFromFundamentalDataList(List<string> fundamentalDataListPayoutRatio, double riskFreeRate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<string> ExtractSummaryFromFundamentalDataList(List<string> fundamentalDataList)
+        public List<string> DesriptionOfCompanyFromFundamentalDataList(List<string> fundamentalDataList)
         {
             TriggerStatus($"Extracting business summary from the fundamental data list");
             var result = new List<string>();
 
             foreach (string fundamentalData in fundamentalDataList)
             {
-                XDocument? xDocument = ParseXDocumentWithChecks(fundamentalData, result);
+                XDocument? xDocument = XDocumentFromStringWithChecks(fundamentalData, result);
                 if (xDocument == null) // some error string has been added
                 {
                     continue;
@@ -300,15 +287,15 @@ namespace StockAnalyzer.DataProviders
 
         public void PayoutRatioTwiceAYearCalculations(List<string> resultTwiceAYear, string ticker, XElement? interimStatement)
         {
-            double netIncomeH1 = ExtractNetIncome(interimStatement, 0);
-            double netIncomeH2 = ExtractNetIncome(interimStatement, 1);
+            double netIncomeH1 = NetIncomeFromPeriodsElement(interimStatement, 0);
+            double netIncomeH2 = NetIncomeFromPeriodsElement(interimStatement, 1);
             double netIncomeTtm = netIncomeH1 + netIncomeH2;
             double divPaidH1 = ExtractDividendsPaid(interimStatement, 0);
             double divPaidH2 = ExtractDividendsPaid(interimStatement, 1);
             double divPaidTtm = divPaidH1 + divPaidH2;
-            double paybackRatioH1 = CalculatePaybackRatio(netIncomeH1, divPaidH1);
-            double paybackRatioH2 = CalculatePaybackRatio(netIncomeH2, divPaidH2);
-            double paybackRatioTtm = CalculatePaybackRatio(netIncomeTtm, divPaidTtm);
+            double paybackRatioH1 = PaybackRatioFromNetIncomeAndDividends(netIncomeH1, divPaidH1);
+            double paybackRatioH2 = PaybackRatioFromNetIncomeAndDividends(netIncomeH2, divPaidH2);
+            double paybackRatioTtm = PaybackRatioFromNetIncomeAndDividends(netIncomeTtm, divPaidTtm);
 
             if (!resultTwiceAYear.Any()) resultTwiceAYear.Add($"Ticker\tH2 Net Inc in M\tH2 Div\tH2 Ratio\tH1 Net Inc\tH1 Div\tH1 Ratio" +
                 $"\tTTM Net Inc\tTTM Div\tTTM Ratio");
@@ -318,21 +305,21 @@ namespace StockAnalyzer.DataProviders
 
         public void PayoutRatioQuarterlyCalculations(List<string> resultQuarterly, string ticker, XElement? interimStatement)
         {
-            double netIncomeQ1 = ExtractNetIncome(interimStatement, 0);
-            double netIncomeQ2 = ExtractNetIncome(interimStatement, 1);
-            double netIncomeQ3 = ExtractNetIncome(interimStatement, 2);
-            double netIncomeQ4 = ExtractNetIncome(interimStatement, 3);
+            double netIncomeQ1 = NetIncomeFromPeriodsElement(interimStatement, 0);
+            double netIncomeQ2 = NetIncomeFromPeriodsElement(interimStatement, 1);
+            double netIncomeQ3 = NetIncomeFromPeriodsElement(interimStatement, 2);
+            double netIncomeQ4 = NetIncomeFromPeriodsElement(interimStatement, 3);
             double netIncomeTtm = netIncomeQ1 + netIncomeQ2 + netIncomeQ3 + netIncomeQ4;
             double divPaidQ1 = ExtractDividendsPaid(interimStatement, 0);
             double divPaidQ2 = ExtractDividendsPaid(interimStatement, 1);
             double divPaidQ3 = ExtractDividendsPaid(interimStatement, 2);
             double divPaidQ4 = ExtractDividendsPaid(interimStatement, 3);
             double divPaidTtm = divPaidQ1 + divPaidQ2 + divPaidQ3 + divPaidQ4;
-            double paybackRatioQ1 = CalculatePaybackRatio(netIncomeQ1, divPaidQ1);
-            double paybackRatioQ2 = CalculatePaybackRatio(netIncomeQ2, divPaidQ2);
-            double paybackRatioQ3 = CalculatePaybackRatio(netIncomeQ3, divPaidQ3);
-            double paybackRatioQ4 = CalculatePaybackRatio(netIncomeQ4, divPaidQ4);
-            double paybackRatioTtm = CalculatePaybackRatio(netIncomeTtm, divPaidTtm);
+            double paybackRatioQ1 = PaybackRatioFromNetIncomeAndDividends(netIncomeQ1, divPaidQ1);
+            double paybackRatioQ2 = PaybackRatioFromNetIncomeAndDividends(netIncomeQ2, divPaidQ2);
+            double paybackRatioQ3 = PaybackRatioFromNetIncomeAndDividends(netIncomeQ3, divPaidQ3);
+            double paybackRatioQ4 = PaybackRatioFromNetIncomeAndDividends(netIncomeQ4, divPaidQ4);
+            double paybackRatioTtm = PaybackRatioFromNetIncomeAndDividends(netIncomeTtm, divPaidTtm);
 
             if (!resultQuarterly.Any()) resultQuarterly.Add($"Ticker\tQ4 Net Inc in M\tQ4 Div\tQ4 Ratio\tQ3 Net Inc\tQ3 Div\tQ3 Ratio" +
                 $"\tQ2 Net Inc\tQ2 Div\tQ2 Ratio\tQ1 Net Inc\tQ1 Div\tQ1 Ratio" +
@@ -350,14 +337,11 @@ namespace StockAnalyzer.DataProviders
         /// <param name="periodsElement">AnnualPeriods or InterimPeriods</param>
         public void SharesOutTwiceAYearCalculations(List<string> resultTwiceAYear, string ticker, XElement? periodsElement)
         {
-            double commonSharesOutH1 = ExtractSharesOut(periodsElement, "QTCO", 0);
-            double preferredSharesOutH1 = ExtractSharesOut(periodsElement, "QTPO", 0);
+            double commonSharesOutH1 = SharesOutstandingFromPeriodsElement(periodsElement, "QTCO", 0);
+            double preferredSharesOutH1 = SharesOutstandingFromPeriodsElement(periodsElement, "QTPO", 0);
             double totalSharesOutH1 = commonSharesOutH1 + preferredSharesOutH1;
-
             // No need for TTM value
-
             resultTwiceAYear.Add($"{ticker}\t{commonSharesOutH1}\t{preferredSharesOutH1}\t{totalSharesOutH1}");
-
         }
 
         /// <summary>
@@ -372,7 +356,7 @@ namespace StockAnalyzer.DataProviders
             SharesOutTwiceAYearCalculations(resultQuarterly, ticker, periodsElement);
         }
 
-        private XDocument? ParseXDocumentWithChecks(string stringToParse, List<string> result)
+        private XDocument? XDocumentFromStringWithChecks(string stringToParse, List<string> result)
         {
             if (stringToParse == null)
             {
@@ -465,7 +449,7 @@ namespace StockAnalyzer.DataProviders
             return fundamentalData;
         }
 
-        private static IEnumerable<XElement>? ExtractStatementSection(XDocument? xDocument, string periods)
+        private static IEnumerable<XElement>? StatementElementsFromXDocument(XDocument? xDocument, string periods)
         {
             IEnumerable<XElement>? statementElements;
             var annualPeriodsElement = xDocument?.Descendants(periods);
@@ -475,7 +459,7 @@ namespace StockAnalyzer.DataProviders
             return statementElements;
         }
 
-        private IEnumerable<XElement>? ExtractAllStatements(XDocument xDocument, string periods)
+        private IEnumerable<XElement>? AllStatementsFromXDocument(XDocument xDocument, string periods)
         {
             return xDocument?.Descendants(periods);
         }
@@ -516,25 +500,30 @@ namespace StockAnalyzer.DataProviders
             return 170 < (endDate0 - endDate1).TotalDays && (endDate0 - endDate1).TotalDays < 200;
         }
 
-        private static DateTime EndDateOfFiscalPeriod(XElement? interimStatement, int periodsAgo)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="periodsElement"></param>
+        /// <param name="periodsAgo">AnnualPeriods or InterimPeriods</param>
+        /// <returns></returns>
+        /// <exception cref="ApplicationException"></exception>
+        private static DateTime EndDateOfFiscalPeriod(XElement? periodsElement, int periodsAgo)
         {
-            DateTime endDate;
-            var endDateString = interimStatement?.Descendants("FiscalPeriod").Skip(periodsAgo).FirstOrDefault()?.Attribute("EndDate")?.Value;
-            if (!DateTime.TryParse(endDateString, CultureInfo.InvariantCulture, DateTimeStyles.None, out endDate))
+            var endDateString = periodsElement?.Descendants("FiscalPeriod").Skip(periodsAgo).FirstOrDefault()?.Attribute("EndDate")?.Value;
+            if (!DateTime.TryParse(endDateString, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime endDate))
             {
                 throw new ApplicationException($"Can not parce the DateTime from {endDateString}");
             }
-
             return endDate;
         }
 
-        private string? ExtractCurrency(XDocument xDocument)
+        private string? CurrencyFromXmlDocument(XDocument xDocument)
         {
             var reportingCurrencyElement = xDocument?.Descendants("ReportingCurrency").FirstOrDefault();
             return reportingCurrencyElement?.Attribute("Code")?.Value;
         }
 
-        private static double CalculatePaybackRatio(double netIncome, double divPaid)
+        private static double PaybackRatioFromNetIncomeAndDividends(double netIncome, double divPaid)
         {
             double paybackRatio;
             netIncome = netIncome == 0 ? 1 : netIncome;
@@ -543,21 +532,24 @@ namespace StockAnalyzer.DataProviders
             return paybackRatio;
         }
 
-        private static double ExtractDividendsPaid(IEnumerable<XElement>? statementSection)
+        private static double DividendsPaidFromFiscalPeriodElement(IEnumerable<XElement>? fiscalPeriodElement)
         {
-            double divPaid;
-            var casStatementElement = statementSection?.Where(e => e?.Attribute("Type")?.Value == "CAS");
+            var casStatementElement = fiscalPeriodElement?.Where(e => e?.Attribute("Type")?.Value == "CAS");
             var lineItemElementsCas = casStatementElement?.Descendants("lineItem");
             var fcdpLineItemElement = lineItemElementsCas?.Where(e => e?.Attribute("coaCode")?.Value == "FCDP").FirstOrDefault();
             var divPaidNegative = fcdpLineItemElement?.Value;
-            divPaid = Convert.ToDouble(divPaidNegative, CultureInfo.InvariantCulture) * -1;
+            double divPaid = Convert.ToDouble(divPaidNegative, CultureInfo.InvariantCulture) * -1;
             return divPaid;
         }
 
+        /// <summary>
+        /// ExtractDividendsPaid
+        /// </summary>
+        /// <param name="periodsElement">AnnualPeriods or InterimPeriods</param>
+        /// <param name="periodsAgo"></param>
+        /// <returns></returns>
         private double ExtractDividendsPaid(XElement? periodsElement, int periodsAgo)
         {
-            double divPaid;
-
             var fiscalPeriodElements = periodsElement?.Descendants("FiscalPeriod");
             var fiscalPeriodElement = fiscalPeriodElements?.Skip(periodsAgo).FirstOrDefault();
             var statementElements = fiscalPeriodElement?.Descendants("Statement");
@@ -565,14 +557,14 @@ namespace StockAnalyzer.DataProviders
             var lineItemElementsCas = casStatementElement?.Descendants("lineItem");
             var fcdpLineItemElement = lineItemElementsCas?.Where(e => e?.Attribute("coaCode")?.Value == "FCDP").FirstOrDefault();
             var divPaidNegative = fcdpLineItemElement?.Value;
-            divPaid = Convert.ToDouble(divPaidNegative, CultureInfo.InvariantCulture) * -1;
+            double divPaid = Convert.ToDouble(divPaidNegative, CultureInfo.InvariantCulture) * -1;
             return divPaid;
         }
 
-        private static double ExtractNetIncome(IEnumerable<XElement>? statementElements)
+        private static double NetIncomeFromFiscalPeriodElement(IEnumerable<XElement>? fiscalPeriodElement)
         {
             double netIncome;
-            var incStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "INC");
+            var incStatementElement = fiscalPeriodElement?.Where(e => e?.Attribute("Type")?.Value == "INC");
             var lineItemElementsInc = incStatementElement?.Descendants("lineItem");
             var nincLineItemElement = lineItemElementsInc?.Where(e => e?.Attribute("coaCode")?.Value == "NINC").FirstOrDefault();
             var netIncomeAsString = nincLineItemElement?.Value;
@@ -584,12 +576,12 @@ namespace StockAnalyzer.DataProviders
         /// Common shares : coaCode QTCO
         /// Preferred shares : coaCode QTPO
         /// </summary>
-        /// <param name="statementElements"></param>
+        /// <param name="fiscalPeriodElement"></param>
         /// <param name="coaCode"></param>
         /// <returns></returns>
-        private static double ExtractSharesOut(IEnumerable<XElement>? statementElements, string coaCode)
+        private static double SharesOutstandingFromFiscalPeriodElement(IEnumerable<XElement>? fiscalPeriodElement, string coaCode)
         {
-            var balStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "BAL");
+            var balStatementElement = fiscalPeriodElement?.Where(e => e?.Attribute("Type")?.Value == "BAL");
             var lineItemElements = balStatementElement?.Descendants("lineItem");
             var qtcoLineItemElement = lineItemElements?.Where(e => e?.Attribute("coaCode")?.Value == coaCode).FirstOrDefault();
             var commonSharesOutAsString = qtcoLineItemElement?.Value;
@@ -598,13 +590,12 @@ namespace StockAnalyzer.DataProviders
         }
 
         /// <summary>
-        /// Common shares : coaCode QTCO
-        /// Preferred shares : coaCode QTPO
         /// </summary>
-        /// <param name="statementElements"></param>
+        /// <param name="periodsElement">AnnualPeriods or InterimPeriods</param>
         /// <param name="coaCode"></param>
+        /// <param name="periodsAgo"></param>
         /// <returns></returns>
-        private static double ExtractSharesOut(XElement? periodsElement, string coaCode, int periodsAgo)
+        private static double SharesOutstandingFromPeriodsElement(XElement? periodsElement, string coaCode, int periodsAgo)
         {
             var fiscalPeriodElements = periodsElement?.Descendants("FiscalPeriod");
             var fiscalPeriodElement = fiscalPeriodElements?.Skip(periodsAgo).FirstOrDefault();
@@ -617,10 +608,14 @@ namespace StockAnalyzer.DataProviders
             return sharesOut;
         }
 
-        private static double ExtractNetIncome(XElement? periodsElement, int periodsAgo)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="periodsElement">AnnualPeriods or InterimPeriods</param>
+        /// <param name="periodsAgo"></param>
+        /// <returns></returns>
+        private static double NetIncomeFromPeriodsElement(XElement? periodsElement, int periodsAgo)
         {
-            double netIncome;
-
             var fiscalPeriodElements = periodsElement?.Descendants("FiscalPeriod");
             var fiscalPeriodElement = fiscalPeriodElements?.Skip(periodsAgo).FirstOrDefault();
             var statementElements = fiscalPeriodElement?.Descendants("Statement");
@@ -628,28 +623,26 @@ namespace StockAnalyzer.DataProviders
             var lineItemElementsInc = incStatementElement?.Descendants("lineItem");
             var nincLineItemElement = lineItemElementsInc?.Where(e => e?.Attribute("coaCode")?.Value == "NINC").FirstOrDefault();
             var netIncomeAsString = nincLineItemElement?.Value;
-            netIncome = Convert.ToDouble(netIncomeAsString, CultureInfo.InvariantCulture);
+            double netIncome = Convert.ToDouble(netIncomeAsString, CultureInfo.InvariantCulture);
             return netIncome;
         }
 
         /// <summary>
-        /// coaCode: QTCO for common shares; QTPO for preferred shares
         /// </summary>
-        /// <param name="statementSection"></param>
-        /// <param name="coaCode"></param>
+        /// <param name="fiscalPeriodElement"></param>
+        /// <param name="coaCode">QTCO for common shares; QTPO for preferred shares</param>
         /// <returns></returns>
-        private static double ExtractTotalSharesOutstanding(IEnumerable<XElement>? statementSection, string coaCode)
+        private static double SharesOutstandingFromFiscalPeriodElement2(IEnumerable<XElement>? fiscalPeriodElement, string coaCode)
         {
-            double shares = 0;
-            var balStatementElement = statementSection?.Where(e => e?.Attribute("Type")?.Value == "BAL");
+            var balStatementElement = fiscalPeriodElement?.Where(e => e?.Attribute("Type")?.Value == "BAL");
             var lineItemElementsInc = balStatementElement?.Descendants("lineItem");
             var qtcoLineItemElement = lineItemElementsInc?.Where(e => e?.Attribute("coaCode")?.Value == coaCode).FirstOrDefault();
             var sharesAsString = qtcoLineItemElement?.Value;
-            shares = Convert.ToDouble(sharesAsString, CultureInfo.InvariantCulture);
+            double shares = Convert.ToDouble(sharesAsString, CultureInfo.InvariantCulture);
             return shares;
         }
 
-        private static List<string> ConcatTablesWithDifferentColumnsNumber(List<string> resultQuarterly, List<string> resultTwiceAYear)
+        private static List<string> ResultListFromTwoDifferentlyStructuredLists(List<string> resultQuarterly, List<string> resultTwiceAYear)
         {
             List<string> result;
             if (resultTwiceAYear.Any())
