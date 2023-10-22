@@ -24,6 +24,7 @@ namespace IbClient.IbHost
             string exchange = "SMART");
 
         Task<double> RequestMarketDataAsync(
+            Contract contract,
             bool snapshot,
             bool frozen,
             int tickType);
