@@ -1,7 +1,6 @@
 ﻿using IBApi;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -20,7 +19,9 @@ namespace StockAnalyzer.DataProviders
         List<string> ExtractNpvYFromFundamentalDataList(List<string> fundamentalDataListPayoutRatio, double riskFreeRate);
         List<string> ExtractSharesOutYFromFundamentalDataList(List<string> fundamentalDataListFinStatements);
         List<string> ExtractSharesOutQFromFundamentalDataList(List<string> fundamentalDataListFinStatements);
-        void PayoutRationQuarterlyCalculations(List<string> resultQuarterly, string ticker, XElement? interimStatement);
         void PayoutRatioTwiceAYearCalculations(List<string> resultTwiceAYear, string ticker, XElement? interimStatement);
+        void PayoutRatioQuarterlyCalculations(List<string> resultQuarterly, string ticker, XElement? interimStatement);
+        void SharesOutTwiceAYearCalculations(List<string> resultTwiceAYear, string ticker, XElement? interimStatement);
+        void SharesOutQuarterlyCalculations(List<string> resultQuarterly, string ticker, XElement? interimStatement);
     }
 }
