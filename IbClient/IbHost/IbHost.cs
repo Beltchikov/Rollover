@@ -28,6 +28,7 @@ namespace IbClient.IbHost
             _ibClient.ConnectionClosed += _ibClient_ConnectionClosed;
             _ibClient.ContractDetails += _ibClient_ContractDetails;
             _ibClient.FundamentalData += _ibClient_FundamentalData;
+            _ibClient.TickPrice += _ibClient_TickPrice;
 
             _queue = queue;
 
@@ -40,7 +41,7 @@ namespace IbClient.IbHost
             //_ibClient.ContractDetailsEnd += _ibClient_ContractDetailsEnd;
             //_ibClient.TickPrice += _ibClient_TickPrice;
             //_ibClient.TickSize += _ibClient_TickSize;
-            //_ibClient.TickPrice += _ibClient_TickPrice;
+            
             //_ibClient.TickString += _ibClient_TickString;
             //_ibClient.TickOptionCommunication += _ibClient_TickOptionCommunication;
         }
@@ -234,11 +235,15 @@ namespace IbClient.IbHost
 
         private void _ibClient_FundamentalData(FundamentalsMessage fundamentalsMessage)
         {
-            if (Consumer == null)
-            {
-                throw new ApplicationException("Unexpected! Consumer is null");
-            }
             _queue.Enqueue(fundamentalsMessage);
+        }
+
+        private void _ibClient_TickPrice(TickPriceMessage tickPriceMessage)
+        {
+            if (tickPriceMessage.Field == 1)  // bid. Use 2 for ask
+            {
+                _queue.Enqueue(tickPriceMessage);
+            }
         }
 
         private bool HasMessageInQueue<T>(int reqId)
