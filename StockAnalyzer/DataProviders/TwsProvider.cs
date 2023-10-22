@@ -226,41 +226,6 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
-        public IEnumerable<string> NpvYFromFundamentalDataList(List<string> fundamentalDataList, double riskFreeRate)
-        {
-            TriggerStatus($"Extracting NPV from the fundamental data list");
-            var result = new List<string>();
-            result.Add($"Ticker\tDiv. Paid\tCommon\tPreferred\tTotal Shares\tDPS\tNPV\tCurrency");
-
-            foreach (string fundamentalData in fundamentalDataList)
-            {
-                XDocument? xDocument = XDocumentFromStringWithChecks(fundamentalData, result);
-                if (xDocument == null) // some error string has been added
-                {
-                    continue;
-                }
-                IEnumerable<XElement>? statementSection = StatementElementsFromXDocument(xDocument, "AnnualPeriods");
-
-                double divPaid = DividendsPaidFromFiscalPeriodElement(statementSection);
-
-                double commonStocks = SharesOutstandingFromFiscalPeriodElement2(statementSection, "QTCO");
-                double preferredStocks = SharesOutstandingFromFiscalPeriodElement2(statementSection, "QTPO");
-                double totalShares = commonStocks + preferredStocks;
-
-                double dps = divPaid / commonStocks;
-                double dpsRounded = Math.Round(dps, 5);
-                double npv = dps / (riskFreeRate / 100);
-                npv = Math.Round(npv, 2);
-
-                string? currency = CurrencyFromXmlDocument(xDocument);
-
-                string ticker = TickerFromXDocument(xDocument);
-                result.Add($"{ticker}\t{divPaid}\t{commonStocks}\t{preferredStocks}\t{totalShares}\t{dpsRounded}\t{npv}\t{currency}");
-            }
-
-            return result;
-        }
-
         public List<string> DesriptionOfCompanyFromFundamentalDataList(List<string> fundamentalDataList)
         {
             TriggerStatus($"Extracting business summary from the fundamental data list");
@@ -633,21 +598,6 @@ namespace StockAnalyzer.DataProviders
             var netIncomeAsString = nincLineItemElement?.Value;
             double netIncome = Convert.ToDouble(netIncomeAsString, CultureInfo.InvariantCulture);
             return netIncome;
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="fiscalPeriodElement"></param>
-        /// <param name="coaCode">QTCO for common shares; QTPO for preferred shares</param>
-        /// <returns></returns>
-        private static double SharesOutstandingFromFiscalPeriodElement2(IEnumerable<XElement>? fiscalPeriodElement, string coaCode)
-        {
-            var balStatementElement = fiscalPeriodElement?.Where(e => e?.Attribute("Type")?.Value == "BAL");
-            var lineItemElementsInc = balStatementElement?.Descendants("lineItem");
-            var qtcoLineItemElement = lineItemElementsInc?.Where(e => e?.Attribute("coaCode")?.Value == coaCode).FirstOrDefault();
-            var sharesAsString = qtcoLineItemElement?.Value;
-            double shares = Convert.ToDouble(sharesAsString, CultureInfo.InvariantCulture);
-            return shares;
         }
 
         private static List<string> ResultListFromTwoDifferentlyStructuredLists(List<string> resultQuarterly, List<string> resultTwiceAYear)
