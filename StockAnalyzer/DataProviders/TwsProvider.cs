@@ -256,8 +256,8 @@ namespace StockAnalyzer.DataProviders
             double netIncomeH1 = NetIncomeFromPeriodsElement(interimStatement, 0);
             double netIncomeH2 = NetIncomeFromPeriodsElement(interimStatement, 1);
             double netIncomeTtm = netIncomeH1 + netIncomeH2;
-            double divPaidH1 = ExtractDividendsPaid(interimStatement, 0);
-            double divPaidH2 = ExtractDividendsPaid(interimStatement, 1);
+            double divPaidH1 = DividendsPaidFromPeriodsElement(interimStatement, 0);
+            double divPaidH2 = DividendsPaidFromPeriodsElement(interimStatement, 1);
             double divPaidTtm = divPaidH1 + divPaidH2;
             double paybackRatioH1 = PaybackRatioFromNetIncomeAndDividends(netIncomeH1, divPaidH1);
             double paybackRatioH2 = PaybackRatioFromNetIncomeAndDividends(netIncomeH2, divPaidH2);
@@ -276,10 +276,10 @@ namespace StockAnalyzer.DataProviders
             double netIncomeQ3 = NetIncomeFromPeriodsElement(interimStatement, 2);
             double netIncomeQ4 = NetIncomeFromPeriodsElement(interimStatement, 3);
             double netIncomeTtm = netIncomeQ1 + netIncomeQ2 + netIncomeQ3 + netIncomeQ4;
-            double divPaidQ1 = ExtractDividendsPaid(interimStatement, 0);
-            double divPaidQ2 = ExtractDividendsPaid(interimStatement, 1);
-            double divPaidQ3 = ExtractDividendsPaid(interimStatement, 2);
-            double divPaidQ4 = ExtractDividendsPaid(interimStatement, 3);
+            double divPaidQ1 = DividendsPaidFromPeriodsElement(interimStatement, 0);
+            double divPaidQ2 = DividendsPaidFromPeriodsElement(interimStatement, 1);
+            double divPaidQ3 = DividendsPaidFromPeriodsElement(interimStatement, 2);
+            double divPaidQ4 = DividendsPaidFromPeriodsElement(interimStatement, 3);
             double divPaidTtm = divPaidQ1 + divPaidQ2 + divPaidQ3 + divPaidQ4;
             double paybackRatioQ1 = PaybackRatioFromNetIncomeAndDividends(netIncomeQ1, divPaidQ1);
             double paybackRatioQ2 = PaybackRatioFromNetIncomeAndDividends(netIncomeQ2, divPaidQ2);
@@ -521,7 +521,7 @@ namespace StockAnalyzer.DataProviders
         /// <param name="periodsElement">AnnualPeriods or InterimPeriods</param>
         /// <param name="periodsAgo"></param>
         /// <returns></returns>
-        private double ExtractDividendsPaid(XElement? periodsElement, int periodsAgo)
+        private double DividendsPaidFromPeriodsElement(XElement? periodsElement, int periodsAgo)
         {
             var fiscalPeriodElements = periodsElement?.Descendants("FiscalPeriod");
             var fiscalPeriodElement = fiscalPeriodElements?.Skip(periodsAgo).FirstOrDefault();
