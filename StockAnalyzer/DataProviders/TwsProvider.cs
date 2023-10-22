@@ -163,7 +163,7 @@ namespace StockAnalyzer.DataProviders
                 }
                 string ticker = TickerFromXDocument(xDocument);
 
-                IEnumerable<XElement>? interimStatements = AllStatementsFromXDocument(xDocument, "InterimPeriods");
+                IEnumerable<XElement>? interimStatements = PeriodsElementFromXDocument(xDocument, "InterimPeriods");
                 var interimStatement = interimStatements?.FirstOrDefault();
 
                 bool twiceAYear = ReportingFrequencyIsTwiceAYear(interimStatement);  // otherwise quarterly
@@ -462,7 +462,12 @@ namespace StockAnalyzer.DataProviders
             return statementElements;
         }
 
-        private IEnumerable<XElement>? AllStatementsFromXDocument(XDocument xDocument, string periods)
+        /// <summary>
+        /// </summary>
+        /// <param name="xDocument"></param>
+        /// <param name="periods">InterimPeriods or AnnualPeriods</param>
+        /// <returns></returns>
+        private IEnumerable<XElement>? PeriodsElementFromXDocument(XDocument xDocument, string periods)
         {
             return xDocument?.Descendants(periods);
         }
