@@ -24,10 +24,14 @@ namespace IbClient.IbHost
             string exchange = "SMART");
 
         Task<double> RequestMarketDataAsync(
-            Contract contract,
+            string ticker,
             bool snapshot,
             bool frozen,
-            int tickType);
+            int tickType,
+            int timeout,
+            string currency,
+            string secType,
+            string exchange);
 
         //public void ReqHistoricalData();
         //void ApplyDefaultHistoricalData();

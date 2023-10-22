@@ -148,16 +148,28 @@ namespace IbClient.IbHost
         /// full list: https://interactivebrokers.github.io/tws-api/tick_types.html</param>
         /// <returns></returns>
         public async Task<double> RequestMarketDataAsync(
-            Contract contract,
+            string ticker,
             bool snapshot,
             bool frozen,
-            int tickType)
+            int tickType,
+            int timeout,
+            string currency,
+            string secType,
+            string exchange)
         {
             if(frozen)
             {
                 _ibClient.ClientSocket.reqMarketDataType(2);
             }
-            
+
+            var contract = new Contract()
+            {
+                Symbol = ticker,
+                Currency = currency ?? USD,
+                SecType = secType ?? STK,
+                Exchange = exchange ?? SMART
+            };
+
             var reqId = ++_currentReqId;
             _ibClient.ClientSocket.reqMktData(
                reqId,
