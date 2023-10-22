@@ -288,7 +288,13 @@ namespace IbClient.IbHost
                 return contractDetailsMessage?.RequestId == reqId;
             }
 
-            return true;
+            if (message is TickPriceMessage)
+            {
+                var tickPriceMessage = message as TickPriceMessage;
+                return tickPriceMessage?.RequestId == reqId;
+            }
+
+            throw new NotImplementedException();
         }
 
         private bool HasMessageInQueue<T>()
