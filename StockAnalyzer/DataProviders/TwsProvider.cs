@@ -1,5 +1,6 @@
 ﻿using IBApi;
 using IbClient.IbHost;
+using StockAnalyzer.DataProviders.FinancialStatements.Tws.Accounts;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -133,7 +134,7 @@ namespace StockAnalyzer.DataProviders
                 IEnumerable<XElement>? statementSection = StatementElementsFromXDocument(xDocument, "AnnualPeriods");
 
                 double netIncome = NetIncomeFromFiscalPeriodElement(statementSection);
-                double divPaid = DividendsPaidFromFiscalPeriodElement(statementSection);
+                double divPaid = DividendsPaid.FromFiscalPeriodElement(statementSection);
                 double paybackRatio = PaybackRatioFromNetIncomeAndDividends(netIncome, divPaid);
 
                 string ticker = TickerFromXDocument(xDocument);
@@ -256,8 +257,8 @@ namespace StockAnalyzer.DataProviders
             double netIncomeH1 = NetIncomeFromPeriodsElement(interimStatement, 0);
             double netIncomeH2 = NetIncomeFromPeriodsElement(interimStatement, 1);
             double netIncomeTtm = netIncomeH1 + netIncomeH2;
-            double divPaidH1 = DividendsPaidFromPeriodsElement(interimStatement, 0);
-            double divPaidH2 = DividendsPaidFromPeriodsElement(interimStatement, 1);
+            double divPaidH1 = DividendsPaid.FromPeriodsElement(interimStatement, 0);
+            double divPaidH2 = DividendsPaid.FromPeriodsElement(interimStatement, 1);
             double divPaidTtm = divPaidH1 + divPaidH2;
             double paybackRatioH1 = PaybackRatioFromNetIncomeAndDividends(netIncomeH1, divPaidH1);
             double paybackRatioH2 = PaybackRatioFromNetIncomeAndDividends(netIncomeH2, divPaidH2);
@@ -276,10 +277,10 @@ namespace StockAnalyzer.DataProviders
             double netIncomeQ3 = NetIncomeFromPeriodsElement(interimStatement, 2);
             double netIncomeQ4 = NetIncomeFromPeriodsElement(interimStatement, 3);
             double netIncomeTtm = netIncomeQ1 + netIncomeQ2 + netIncomeQ3 + netIncomeQ4;
-            double divPaidQ1 = DividendsPaidFromPeriodsElement(interimStatement, 0);
-            double divPaidQ2 = DividendsPaidFromPeriodsElement(interimStatement, 1);
-            double divPaidQ3 = DividendsPaidFromPeriodsElement(interimStatement, 2);
-            double divPaidQ4 = DividendsPaidFromPeriodsElement(interimStatement, 3);
+            double divPaidQ1 = DividendsPaid.FromPeriodsElement(interimStatement, 0);
+            double divPaidQ2 = DividendsPaid.FromPeriodsElement(interimStatement, 1);
+            double divPaidQ3 = DividendsPaid.FromPeriodsElement(interimStatement, 2);
+            double divPaidQ4 = DividendsPaid.FromPeriodsElement(interimStatement, 3);
             double divPaidTtm = divPaidQ1 + divPaidQ2 + divPaidQ3 + divPaidQ4;
             double paybackRatioQ1 = PaybackRatioFromNetIncomeAndDividends(netIncomeQ1, divPaidQ1);
             double paybackRatioQ2 = PaybackRatioFromNetIncomeAndDividends(netIncomeQ2, divPaidQ2);
@@ -503,35 +504,6 @@ namespace StockAnalyzer.DataProviders
             paybackRatio = (divPaid / netIncome) * 100;
             paybackRatio = Math.Round(paybackRatio, 1);
             return paybackRatio;
-        }
-
-        private static double DividendsPaidFromFiscalPeriodElement(IEnumerable<XElement>? fiscalPeriodElement)
-        {
-            var casStatementElement = fiscalPeriodElement?.Where(e => e?.Attribute("Type")?.Value == "CAS");
-            var lineItemElementsCas = casStatementElement?.Descendants("lineItem");
-            var fcdpLineItemElement = lineItemElementsCas?.Where(e => e?.Attribute("coaCode")?.Value == "FCDP").FirstOrDefault();
-            var divPaidNegative = fcdpLineItemElement?.Value;
-            double divPaid = Convert.ToDouble(divPaidNegative, CultureInfo.InvariantCulture) * -1;
-            return divPaid;
-        }
-
-        /// <summary>
-        /// ExtractDividendsPaid
-        /// </summary>
-        /// <param name="periodsElement">AnnualPeriods or InterimPeriods</param>
-        /// <param name="periodsAgo"></param>
-        /// <returns></returns>
-        private double DividendsPaidFromPeriodsElement(XElement? periodsElement, int periodsAgo)
-        {
-            var fiscalPeriodElements = periodsElement?.Descendants("FiscalPeriod");
-            var fiscalPeriodElement = fiscalPeriodElements?.Skip(periodsAgo).FirstOrDefault();
-            var statementElements = fiscalPeriodElement?.Descendants("Statement");
-            var casStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "CAS");
-            var lineItemElementsCas = casStatementElement?.Descendants("lineItem");
-            var fcdpLineItemElement = lineItemElementsCas?.Where(e => e?.Attribute("coaCode")?.Value == "FCDP").FirstOrDefault();
-            var divPaidNegative = fcdpLineItemElement?.Value;
-            double divPaid = Convert.ToDouble(divPaidNegative, CultureInfo.InvariantCulture) * -1;
-            return divPaid;
         }
 
         private static double NetIncomeFromFiscalPeriodElement(IEnumerable<XElement>? fiscalPeriodElement)
