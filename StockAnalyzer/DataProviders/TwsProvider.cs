@@ -350,7 +350,7 @@ namespace StockAnalyzer.DataProviders
         /// <param name="periodsElement">AnnualPeriods or InterimPeriods</param>
         public void SharesOutTwiceAYearCalculations(List<string> resultTwiceAYear, string ticker, XElement? periodsElement)
         {
-            double commonSharesOutH1 = ExtractSharesOut(periodsElement, "QTCO",0);
+            double commonSharesOutH1 = ExtractSharesOut(periodsElement, "QTCO", 0);
             double preferredSharesOutH1 = ExtractSharesOut(periodsElement, "QTPO", 0);
             double totalSharesOutH1 = commonSharesOutH1 + preferredSharesOutH1;
 
@@ -362,8 +362,8 @@ namespace StockAnalyzer.DataProviders
 
         public void SharesOutQuarterlyCalculations(List<string> resultQuarterly, string ticker, XElement? interimStatement)
         {
-            // TODO
-            //throw new NotImplementedException();
+            // No need for TTM value
+            SharesOutTwiceAYearCalculations(resultQuarterly, ticker, interimStatement);
         }
 
         private XDocument? ParseXDocumentWithChecks(string stringToParse, List<string> result)
