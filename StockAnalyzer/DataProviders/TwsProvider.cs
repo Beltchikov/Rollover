@@ -285,8 +285,8 @@ namespace StockAnalyzer.DataProviders
         {
             if (!resultTwiceAYear.Any()) resultTwiceAYear.Add($"Ticker\tCommon in M\tPreferred\tTotal");
 
-            double commonSharesOutH1 = SharesOutstandingFromPeriodsElement(periodsElement, "QTCO", 0);
-            double preferredSharesOutH1 = SharesOutstandingFromPeriodsElement(periodsElement, "QTPO", 0);
+            double commonSharesOutH1 = TotalSharesOutstanding.FromPeriodsElement(periodsElement, "QTCO", 0);
+            double preferredSharesOutH1 = TotalSharesOutstanding.FromPeriodsElement(periodsElement, "QTPO", 0);
             double totalSharesOutH1 = commonSharesOutH1 + preferredSharesOutH1;
             // No need for TTM value
             resultTwiceAYear.Add($"{ticker}\t{commonSharesOutH1}\t{preferredSharesOutH1}\t{totalSharesOutH1}");
@@ -500,25 +500,6 @@ namespace StockAnalyzer.DataProviders
             var commonSharesOutAsString = qtcoLineItemElement?.Value;
             double commonSharesOut = Convert.ToDouble(commonSharesOutAsString, CultureInfo.InvariantCulture);
             return commonSharesOut;
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="periodsElement">AnnualPeriods or InterimPeriods</param>
-        /// <param name="coaCode"></param>
-        /// <param name="periodsAgo"></param>
-        /// <returns></returns>
-        private static double SharesOutstandingFromPeriodsElement(XElement? periodsElement, string coaCode, int periodsAgo)
-        {
-            var fiscalPeriodElements = periodsElement?.Descendants("FiscalPeriod");
-            var fiscalPeriodElement = fiscalPeriodElements?.Skip(periodsAgo).FirstOrDefault();
-            var statementElements = fiscalPeriodElement?.Descendants("Statement");
-            var balStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "BAL");
-            var lineItemElements = balStatementElement?.Descendants("lineItem");
-            var sharesOutLineItemElement = lineItemElements?.Where(e => e?.Attribute("coaCode")?.Value == coaCode).FirstOrDefault();
-            var shareOutAsString = sharesOutLineItemElement?.Value;
-            var sharesOut = Convert.ToDouble(shareOutAsString, CultureInfo.InvariantCulture);
-            return sharesOut;
         }
         private static List<string> ResultListFromTwoDifferentlyStructuredLists(List<string> resultQuarterly, List<string> resultTwiceAYear)
         {
