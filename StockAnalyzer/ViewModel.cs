@@ -180,8 +180,6 @@ namespace StockAnalyzer
                                     contractStringsList,
                                     REPORTS_FIN_STATEMENTS,
                                     TIMEOUT_TWS);
-                //ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.ExtractSharesOutQFromFundamentalDataList(fundamentalDataListFinStatements));
-
                 ResultCollectionTwsFinStatements = new ObservableCollection<string>(
                    twsProvider.ExtractQuarterlyDataFromFundamentalDataList(
                        fundamentalDataListFinStatements,

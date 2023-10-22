@@ -360,10 +360,16 @@ namespace StockAnalyzer.DataProviders
 
         }
 
-        public void SharesOutQuarterlyCalculations(List<string> resultQuarterly, string ticker, XElement? interimStatement)
+        /// <summary>
+        /// SharesOutQuarterlyCalculations
+        /// </summary>
+        /// <param name="resultQuarterly"></param>
+        /// <param name="ticker"></param>
+        /// <param name="periodsElement">AnnualPeriods or InterimPeriods</param>
+        public void SharesOutQuarterlyCalculations(List<string> resultQuarterly, string ticker, XElement? periodsElement)
         {
             // No need for TTM value
-            SharesOutTwiceAYearCalculations(resultQuarterly, ticker, interimStatement);
+            SharesOutTwiceAYearCalculations(resultQuarterly, ticker, periodsElement);
         }
 
         private XDocument? ParseXDocumentWithChecks(string stringToParse, List<string> result)
