@@ -206,27 +206,6 @@ namespace StockAnalyzer.DataProviders
 
             return result;
         }
-
-        public List<string> SharesOutQFromFundamentalDataList(List<string> fundamentalDataList)
-        {
-            TriggerStatus($"Extracting Total Shares Outstanding (Q) from the fundamental data list");
-            var result = new List<string>();
-            //result.Add($"Ticker\tNet Income (Y) in M\tDiv. Paid\tPayback Ratio");
-
-            MessageBox.Show("ExtractSharesOutQFromFundamentalDataList");
-
-            foreach (string fundamentalData in fundamentalDataList)
-            {
-                XDocument? xDocument = XDocumentFromStringWithChecks(fundamentalData, result);
-                if (xDocument == null) // some error string has been added
-                {
-                    continue;
-                }
-            }
-
-            return result;
-        }
-
         public List<string> DesriptionOfCompanyFromFundamentalDataList(List<string> fundamentalDataList)
         {
             TriggerStatus($"Extracting business summary from the fundamental data list");
