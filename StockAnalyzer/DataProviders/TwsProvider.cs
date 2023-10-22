@@ -1,6 +1,7 @@
 ﻿using IBApi;
 using IbClient.IbHost;
 using StockAnalyzer.DataProviders.FinancialStatements.Tws.Accounts;
+using StockAnalyzer.DataProviders.FinancialStatements.Tws.ComputedFinancials;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -135,7 +136,7 @@ namespace StockAnalyzer.DataProviders
 
                 double netIncome = NetIncome.FromFiscalPeriodElement(statementSection);
                 double divPaid = DividendsPaid.FromFiscalPeriodElement(statementSection);
-                double paybackRatio = PayoutRatioFromNetIncomeAndDividends(netIncome, divPaid);
+                double paybackRatio = PayoutRatio.FromNetIncomeAndDividends(netIncome, divPaid);
 
                 string ticker = TickerFromXDocument(xDocument);
                 result.Add($"{ticker}\t{netIncome}\t{divPaid}\t{paybackRatio}%");
@@ -239,9 +240,9 @@ namespace StockAnalyzer.DataProviders
             double divPaidH1 = DividendsPaid.FromPeriodsElement(interimStatement, 0);
             double divPaidH2 = DividendsPaid.FromPeriodsElement(interimStatement, 1);
             double divPaidTtm = divPaidH1 + divPaidH2;
-            double paybackRatioH1 = PayoutRatioFromNetIncomeAndDividends(netIncomeH1, divPaidH1);
-            double paybackRatioH2 = PayoutRatioFromNetIncomeAndDividends(netIncomeH2, divPaidH2);
-            double paybackRatioTtm = PayoutRatioFromNetIncomeAndDividends(netIncomeTtm, divPaidTtm);
+            double paybackRatioH1 = PayoutRatio.FromNetIncomeAndDividends(netIncomeH1, divPaidH1);
+            double paybackRatioH2 = PayoutRatio.FromNetIncomeAndDividends(netIncomeH2, divPaidH2);
+            double paybackRatioTtm = PayoutRatio.FromNetIncomeAndDividends(netIncomeTtm, divPaidTtm);
 
             if (!resultTwiceAYear.Any()) resultTwiceAYear.Add($"Ticker\tH2 Net Inc in M\tH2 Div\tH2 Ratio\tH1 Net Inc\tH1 Div\tH1 Ratio" +
                 $"\tTTM Net Inc\tTTM Div\tTTM Ratio");
@@ -261,11 +262,11 @@ namespace StockAnalyzer.DataProviders
             double divPaidQ3 = DividendsPaid.FromPeriodsElement(interimStatement, 2);
             double divPaidQ4 = DividendsPaid.FromPeriodsElement(interimStatement, 3);
             double divPaidTtm = divPaidQ1 + divPaidQ2 + divPaidQ3 + divPaidQ4;
-            double paybackRatioQ1 = PayoutRatioFromNetIncomeAndDividends(netIncomeQ1, divPaidQ1);
-            double paybackRatioQ2 = PayoutRatioFromNetIncomeAndDividends(netIncomeQ2, divPaidQ2);
-            double paybackRatioQ3 = PayoutRatioFromNetIncomeAndDividends(netIncomeQ3, divPaidQ3);
-            double paybackRatioQ4 = PayoutRatioFromNetIncomeAndDividends(netIncomeQ4, divPaidQ4);
-            double paybackRatioTtm = PayoutRatioFromNetIncomeAndDividends(netIncomeTtm, divPaidTtm);
+            double paybackRatioQ1 = PayoutRatio.FromNetIncomeAndDividends(netIncomeQ1, divPaidQ1);
+            double paybackRatioQ2 = PayoutRatio.FromNetIncomeAndDividends(netIncomeQ2, divPaidQ2);
+            double paybackRatioQ3 = PayoutRatio.FromNetIncomeAndDividends(netIncomeQ3, divPaidQ3);
+            double paybackRatioQ4 = PayoutRatio.FromNetIncomeAndDividends(netIncomeQ4, divPaidQ4);
+            double paybackRatioTtm = PayoutRatio.FromNetIncomeAndDividends(netIncomeTtm, divPaidTtm);
 
             if (!resultQuarterly.Any()) resultQuarterly.Add($"Ticker\tQ4 Net Inc in M\tQ4 Div\tQ4 Ratio\tQ3 Net Inc\tQ3 Div\tQ3 Ratio" +
                 $"\tQ2 Net Inc\tQ2 Div\tQ2 Ratio\tQ1 Net Inc\tQ1 Div\tQ1 Ratio" +
@@ -474,14 +475,6 @@ namespace StockAnalyzer.DataProviders
         {
             var reportingCurrencyElement = xDocument?.Descendants("ReportingCurrency").FirstOrDefault();
             return reportingCurrencyElement?.Attribute("Code")?.Value;
-        }
-
-        private static double PayoutRatioFromNetIncomeAndDividends(double netIncome, double divPaid)
-        {
-            netIncome = netIncome == 0 ? 1 : netIncome;
-            double payoutRatio = (divPaid / netIncome) * 100;
-            payoutRatio = Math.Round(payoutRatio, 1);
-            return payoutRatio;
         }
 
         /// <summary>
