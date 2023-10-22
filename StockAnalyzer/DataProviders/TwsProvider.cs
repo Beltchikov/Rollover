@@ -133,7 +133,7 @@ namespace StockAnalyzer.DataProviders
                 }
                 IEnumerable<XElement>? statementSection = StatementElementsFromXDocument(xDocument, "AnnualPeriods");
 
-                double netIncome = NetIncomeFromFiscalPeriodElement(statementSection);
+                double netIncome = NetIncome.FromFiscalPeriodElement(statementSection);
                 double divPaid = DividendsPaid.FromFiscalPeriodElement(statementSection);
                 double paybackRatio = PaybackRatioFromNetIncomeAndDividends(netIncome, divPaid);
 
@@ -148,7 +148,7 @@ namespace StockAnalyzer.DataProviders
         public List<string> QuarterlyDataFromFundamentalDataList(
             List<string> fundamentalDataList,
             Action<List<string>, string, XElement?> twiceAYearCalculations,
-            Action<List<string>, string, XElement?> quarterlyCalculations, 
+            Action<List<string>, string, XElement?> quarterlyCalculations,
             string statusMessage)
         {
             TriggerStatus(statusMessage);
@@ -254,8 +254,8 @@ namespace StockAnalyzer.DataProviders
 
         public void PayoutRatioTwiceAYearCalculations(List<string> resultTwiceAYear, string ticker, XElement? interimStatement)
         {
-            double netIncomeH1 = NetIncomeFromPeriodsElement(interimStatement, 0);
-            double netIncomeH2 = NetIncomeFromPeriodsElement(interimStatement, 1);
+            double netIncomeH1 = NetIncome.FromPeriodsElement(interimStatement, 0);
+            double netIncomeH2 = NetIncome.FromPeriodsElement(interimStatement, 1);
             double netIncomeTtm = netIncomeH1 + netIncomeH2;
             double divPaidH1 = DividendsPaid.FromPeriodsElement(interimStatement, 0);
             double divPaidH2 = DividendsPaid.FromPeriodsElement(interimStatement, 1);
@@ -272,10 +272,10 @@ namespace StockAnalyzer.DataProviders
 
         public void PayoutRatioQuarterlyCalculations(List<string> resultQuarterly, string ticker, XElement? interimStatement)
         {
-            double netIncomeQ1 = NetIncomeFromPeriodsElement(interimStatement, 0);
-            double netIncomeQ2 = NetIncomeFromPeriodsElement(interimStatement, 1);
-            double netIncomeQ3 = NetIncomeFromPeriodsElement(interimStatement, 2);
-            double netIncomeQ4 = NetIncomeFromPeriodsElement(interimStatement, 3);
+            double netIncomeQ1 = NetIncome.FromPeriodsElement(interimStatement, 0);
+            double netIncomeQ2 = NetIncome.FromPeriodsElement(interimStatement, 1);
+            double netIncomeQ3 = NetIncome.FromPeriodsElement(interimStatement, 2);
+            double netIncomeQ4 = NetIncome.FromPeriodsElement(interimStatement, 3);
             double netIncomeTtm = netIncomeQ1 + netIncomeQ2 + netIncomeQ3 + netIncomeQ4;
             double divPaidQ1 = DividendsPaid.FromPeriodsElement(interimStatement, 0);
             double divPaidQ2 = DividendsPaid.FromPeriodsElement(interimStatement, 1);
@@ -506,17 +506,6 @@ namespace StockAnalyzer.DataProviders
             return paybackRatio;
         }
 
-        private static double NetIncomeFromFiscalPeriodElement(IEnumerable<XElement>? fiscalPeriodElement)
-        {
-            double netIncome;
-            var incStatementElement = fiscalPeriodElement?.Where(e => e?.Attribute("Type")?.Value == "INC");
-            var lineItemElementsInc = incStatementElement?.Descendants("lineItem");
-            var nincLineItemElement = lineItemElementsInc?.Where(e => e?.Attribute("coaCode")?.Value == "NINC").FirstOrDefault();
-            var netIncomeAsString = nincLineItemElement?.Value;
-            netIncome = Convert.ToDouble(netIncomeAsString, CultureInfo.InvariantCulture);
-            return netIncome;
-        }
-
         /// <summary>
         /// Common shares : coaCode QTCO
         /// Preferred shares : coaCode QTPO
@@ -552,26 +541,6 @@ namespace StockAnalyzer.DataProviders
             var sharesOut = Convert.ToDouble(shareOutAsString, CultureInfo.InvariantCulture);
             return sharesOut;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="periodsElement">AnnualPeriods or InterimPeriods</param>
-        /// <param name="periodsAgo"></param>
-        /// <returns></returns>
-        private static double NetIncomeFromPeriodsElement(XElement? periodsElement, int periodsAgo)
-        {
-            var fiscalPeriodElements = periodsElement?.Descendants("FiscalPeriod");
-            var fiscalPeriodElement = fiscalPeriodElements?.Skip(periodsAgo).FirstOrDefault();
-            var statementElements = fiscalPeriodElement?.Descendants("Statement");
-            var incStatementElement = statementElements?.Where(e => e?.Attribute("Type")?.Value == "INC");
-            var lineItemElementsInc = incStatementElement?.Descendants("lineItem");
-            var nincLineItemElement = lineItemElementsInc?.Where(e => e?.Attribute("coaCode")?.Value == "NINC").FirstOrDefault();
-            var netIncomeAsString = nincLineItemElement?.Value;
-            double netIncome = Convert.ToDouble(netIncomeAsString, CultureInfo.InvariantCulture);
-            return netIncome;
-        }
-
         private static List<string> ResultListFromTwoDifferentlyStructuredLists(List<string> resultQuarterly, List<string> resultTwiceAYear)
         {
             List<string> result;
