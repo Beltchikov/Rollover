@@ -252,9 +252,21 @@ namespace IbClient.IbHost
 
         private void _ibClient_TickPrice(TickPriceMessage tickPriceMessage)
         {
-            if (tickPriceMessage.Field == 1)  // bid. Use 2 for ask
+            if (Consumer == null)
             {
-                _queue.Enqueue(tickPriceMessage);
+                throw new ApplicationException("Unexpected! Consumer is null");
+            }
+            Consumer.TwsMessageCollection?.Add($"TickPriceMessage for {tickPriceMessage.RequestId} " +
+                $"field:{tickPriceMessage.Field} price:{tickPriceMessage.Price}");
+
+            if (tickPriceMessage.Field == 1 && tickPriceMessage.Price > 0 // Highest priced bid for the contract.
+                || tickPriceMessage.Field == 4 && tickPriceMessage.Price > 0 // Last price at which the contract traded 
+                || tickPriceMessage.Field == 9 && tickPriceMessage.Price > 0)  // The last available closing price for the previous day.
+            {
+                if (!HasMessageInQueue<TickPriceMessage>(tickPriceMessage.RequestId))
+                {
+                    _queue.Enqueue(tickPriceMessage);
+                }
             }
         }
 

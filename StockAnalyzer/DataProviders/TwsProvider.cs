@@ -80,7 +80,7 @@ namespace StockAnalyzer.DataProviders
                 var contractStringTrimmed = contractString.Trim();
                 TriggerStatus($"Retrieving current price for {contractStringTrimmed} {cnt++}/{contractStringsListTws.Count}");
                 var currentPrice = await CurrentPriceFromContractString(timeout, contractStringTrimmed);
-                result.Add(Convert.ToString(currentPrice, new CultureInfo("DE-de")) ?? "");
+                result.Add($"{contractStringTrimmed.Split(";")[0]} {currentPrice}");
             }
             
             return result;
