@@ -187,8 +187,14 @@ namespace StockAnalyzer.DataProviders
                 IEnumerable<XElement>? interimStatements = PeriodsElementFromXDocument(xDocument, "InterimPeriods");
                 var interimStatement = interimStatements?.FirstOrDefault();
 
-                bool twiceAYear = ReportingFrequencyIsTwiceAYear(interimStatement);  // otherwise quarterly
-                if (twiceAYear)
+                BoolWithError twiceAYearOrError = ReportingFrequencyIsTwiceAYear(interimStatement);  // otherwise quarterly
+                if(twiceAYearOrError.Value == null) 
+                {
+                    resultTwiceAYear.Add($"{ticker}\t{twiceAYearOrError.Error}");   
+                }
+                bool? twiceAYear = twiceAYearOrError.Value;
+
+                if (twiceAYear.HasValue && twiceAYear.Value)
                 {
                     twiceAYearCalculations(resultTwiceAYear, ticker, interimStatement);
                 }
@@ -490,34 +496,59 @@ namespace StockAnalyzer.DataProviders
             return xDocument?.Descendants(periods);
         }
 
-        private bool ReportingFrequencyIsTwiceAYear(XElement? interimStatement)
+        private BoolWithError ReportingFrequencyIsTwiceAYear(XElement? interimStatement)
         {
-            DateTime? endDate0 = EndDateOfFiscalPeriod(interimStatement, 0).Value;
-            DateTime? endDate1 = EndDateOfFiscalPeriod(interimStatement, 1).Value;
+            DateTimeWithError endDate0 = EndDateOfFiscalPeriod(interimStatement, 0);
+            DateTimeWithError endDate1 = EndDateOfFiscalPeriod(interimStatement, 1);
 
-            if (ConditionTwiceAYear(endDate0.Value, endDate1.Value)) // twice a year
+            if(endDate0.Value == null)
+            {
+                return new BoolWithError(null, endDate0.Error);
+            }
+            if (endDate1.Value == null)
+            {
+                return new BoolWithError(null, endDate1.Error);
+            }
+
+            if (ConditionTwiceAYear(endDate0.Value.Value, endDate1.Value.Value)) // twice a year
             {
                 // check
-                DateTime? endDate2 = EndDateOfFiscalPeriod(interimStatement, 2).Value;
-                if (!ConditionTwiceAYear(endDate1.Value, endDate2.Value))
+                DateTimeWithError endDate2 = EndDateOfFiscalPeriod(interimStatement, 2);
+                if (endDate2.Value == null)
                 {
-                    throw new ApplicationException($"Reporting frequency is twice a year, but the third statement does not fit.");
+                    return new BoolWithError(null, endDate2.Error);
                 }
-                return true;
+
+                if (!ConditionTwiceAYear(endDate1.Value.Value, endDate2.Value.Value))
+                {
+                    return new BoolWithError(null, $"Reporting frequency is twice a year, but the third statement does not fit.");
+                }
+                return new BoolWithError(true, "");
             }
             else
             {
-                DateTime? endDate2 = EndDateOfFiscalPeriod(interimStatement, 2).Value;
-                if (ConditionTwiceAYear(endDate1.Value, endDate2.Value))
+                DateTimeWithError endDate2 = EndDateOfFiscalPeriod(interimStatement, 2);
+                if (endDate2.Value == null)
                 {
-                    throw new ApplicationException($"Reporting frequency is quarterly, but the third statement does not fit.");
+                    return new BoolWithError(null, endDate2.Error);
                 }
-                DateTime? endDate3 = EndDateOfFiscalPeriod(interimStatement, 3).Value;
-                if (ConditionTwiceAYear(endDate2.Value, endDate3.Value))
+
+                if (ConditionTwiceAYear(endDate1.Value.Value, endDate2.Value.Value))
                 {
-                    throw new ApplicationException($"Reporting frequency is quarterly, but the forth statement does not fit.");
+                    return new BoolWithError(null, $"Reporting frequency is quarterly, but the third statement does not fit.");
                 }
-                return false;
+                
+                DateTimeWithError endDate3 = EndDateOfFiscalPeriod(interimStatement, 3);
+                if (endDate3.Value == null)
+                {
+                    return new BoolWithError(null, endDate3.Error);
+                }
+
+                if (ConditionTwiceAYear(endDate2.Value.Value, endDate3.Value.Value))
+                {
+                    return new BoolWithError(null, $"Reporting frequency is quarterly, but the third statement does not fit.");
+                }
+                return new BoolWithError(false, "");
             }
         }
 
