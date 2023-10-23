@@ -2,6 +2,7 @@
 using IbClient.IbHost;
 using StockAnalyzer.DataProviders.FinancialStatements.Tws.Accounts;
 using StockAnalyzer.DataProviders.FinancialStatements.Tws.ComputedFinancials;
+using StockAnalyzer.DataProviders.Types;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -491,14 +492,14 @@ namespace StockAnalyzer.DataProviders
 
         private bool ReportingFrequencyIsTwiceAYear(XElement? interimStatement)
         {
-            DateTime endDate0 = EndDateOfFiscalPeriod(interimStatement, 0);
-            DateTime endDate1 = EndDateOfFiscalPeriod(interimStatement, 1);
+            DateTime? endDate0 = EndDateOfFiscalPeriod(interimStatement, 0).Value;
+            DateTime? endDate1 = EndDateOfFiscalPeriod(interimStatement, 1).Value;
 
-            if (ConditionTwiceAYear(endDate0, endDate1)) // twice a year
+            if (ConditionTwiceAYear(endDate0.Value, endDate1.Value)) // twice a year
             {
                 // check
-                DateTime endDate2 = EndDateOfFiscalPeriod(interimStatement, 2);
-                if (!ConditionTwiceAYear(endDate1, endDate2))
+                DateTime? endDate2 = EndDateOfFiscalPeriod(interimStatement, 2).Value;
+                if (!ConditionTwiceAYear(endDate1.Value, endDate2.Value))
                 {
                     throw new ApplicationException($"Reporting frequency is twice a year, but the third statement does not fit.");
                 }
@@ -506,13 +507,13 @@ namespace StockAnalyzer.DataProviders
             }
             else
             {
-                DateTime endDate2 = EndDateOfFiscalPeriod(interimStatement, 2);
-                if (ConditionTwiceAYear(endDate1, endDate2))
+                DateTime? endDate2 = EndDateOfFiscalPeriod(interimStatement, 2).Value;
+                if (ConditionTwiceAYear(endDate1.Value, endDate2.Value))
                 {
                     throw new ApplicationException($"Reporting frequency is quarterly, but the third statement does not fit.");
                 }
-                DateTime endDate3 = EndDateOfFiscalPeriod(interimStatement, 3);
-                if (ConditionTwiceAYear(endDate2, endDate3))
+                DateTime? endDate3 = EndDateOfFiscalPeriod(interimStatement, 3).Value;
+                if (ConditionTwiceAYear(endDate2.Value, endDate3.Value))
                 {
                     throw new ApplicationException($"Reporting frequency is quarterly, but the forth statement does not fit.");
                 }
@@ -526,20 +527,19 @@ namespace StockAnalyzer.DataProviders
         }
 
         /// <summary>
-        /// 
-        /// </summary>
+        /// /// </summary>
         /// <param name="periodsElement"></param>
         /// <param name="periodsAgo">AnnualPeriods or InterimPeriods</param>
         /// <returns></returns>
         /// <exception cref="ApplicationException"></exception>
-        private static DateTime EndDateOfFiscalPeriod(XElement? periodsElement, int periodsAgo)
+        private static DateTimeWithError EndDateOfFiscalPeriod(XElement? periodsElement, int periodsAgo)
         {
             var endDateString = periodsElement?.Descendants("FiscalPeriod").Skip(periodsAgo).FirstOrDefault()?.Attribute("EndDate")?.Value;
             if (!DateTime.TryParse(endDateString, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime endDate))
             {
-                throw new ApplicationException($"Can not parce the DateTime from {endDateString}");
+                return new DateTimeWithError(null, $"Can not parce the DateTime from {endDateString}");
             }
-            return endDate;
+            return new DateTimeWithError(endDate, "");
         }
 
         private string? CurrencyFromXmlDocument(XDocument xDocument)
