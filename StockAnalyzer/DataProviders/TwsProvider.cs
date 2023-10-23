@@ -262,7 +262,7 @@ namespace StockAnalyzer.DataProviders
             double paybackRatioH2 = PayoutRatio.FromNetIncomeAndDividends(netIncomeH2, divPaidH2);
             double paybackRatioTtm = PayoutRatio.FromNetIncomeAndDividends(netIncomeTtm, divPaidTtm);
 
-            if (!resultTwiceAYear.Any()) resultTwiceAYear.Add($"Ticker\tH2 Net Inc in M\tH2 Div\tH2 Ratio\tH1 Net Inc\tH1 Div\tH1 Ratio" +
+            if (!resultTwiceAYear.Any()) resultTwiceAYear.Add($"Ticker\tNetIncomeH2(M)\tDivH2\tRatioH2\tNetIncomeH1\tDivH1\tRatioH1" +
                 $"\tTTM Net Inc\tTTM Div\tTTM Ratio");
             resultTwiceAYear.Add($"{ticker}\t{netIncomeH2}\t{divPaidH2}\t{paybackRatioH2}%\t{netIncomeH1}\t{divPaidH1}\t{paybackRatioH1}%" +
                 $"\t{netIncomeTtm}\t{divPaidTtm}\t{paybackRatioTtm}%");
@@ -286,8 +286,8 @@ namespace StockAnalyzer.DataProviders
             double paybackRatioQ4 = PayoutRatio.FromNetIncomeAndDividends(netIncomeQ4, divPaidQ4);
             double paybackRatioTtm = PayoutRatio.FromNetIncomeAndDividends(netIncomeTtm, divPaidTtm);
 
-            if (!resultQuarterly.Any()) resultQuarterly.Add($"Ticker\tQ4 Net Inc in M\tQ4 Div\tQ4 Ratio\tQ3 Net Inc\tQ3 Div\tQ3 Ratio" +
-                $"\tQ2 Net Inc\tQ2 Div\tQ2 Ratio\tQ1 Net Inc\tQ1 Div\tQ1 Ratio" +
+            if (!resultQuarterly.Any()) resultQuarterly.Add($"Ticker\tNetIncomeQ4(M)\tDivQ4\tRatioQ4\tNetIncomeQ3\tDivQ3\tRatioQ3" +
+                $"\tNetIncomeQ2\tDivQ2\tRatioQ2\tNetIncomeQ1\tDivQ1\tRatioQ1" +
                 $"\tTTM Net Inc\tTTM Div\tTTM Ratio");
             resultQuarterly.Add($"{ticker}\t{netIncomeQ4}\t{divPaidQ4}\t{paybackRatioQ4}%\t{netIncomeQ3}\t{divPaidQ3}\t{paybackRatioQ3}%" +
                 $"\t{netIncomeQ2}\t{divPaidQ2}\t{paybackRatioQ2}%\t{netIncomeQ1}\t{divPaidQ1}\t{paybackRatioQ1}%" +
