@@ -174,10 +174,11 @@ namespace StockAnalyzer.DataProviders
             TriggerStatus(statusMessage);
             List<string> resultQuarterly = new();
             List<string> resultTwiceAYear = new();
+            List<string> resultNoFundamentalData = new();
 
             foreach (string fundamentalData in fundamentalDataList)
             {
-                XDocument? xDocument = XDocumentFromStringWithChecks(fundamentalData, resultQuarterly);
+                XDocument? xDocument = XDocumentFromStringWithChecks(fundamentalData, resultNoFundamentalData);
                 if (xDocument == null) // some error string has been added
                 {
                     continue;
@@ -207,6 +208,7 @@ namespace StockAnalyzer.DataProviders
                 }
             }
             List<string> result = ResultListFromTwoDifferentlyStructuredLists(resultQuarterly, resultTwiceAYear);
+            result.AddRange(resultNoFundamentalData);
             return result;
         }
 
