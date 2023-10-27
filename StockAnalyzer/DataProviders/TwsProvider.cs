@@ -62,6 +62,11 @@ namespace StockAnalyzer.DataProviders
             int cnt = 1;
             foreach (string contractString in contractStringsTws)
             {
+                if (string.IsNullOrWhiteSpace(contractString))
+                {
+                    continue;
+                }
+
                 var contractStringTrimmed = contractString.Trim();
                 TriggerStatus($"Retrieving fundamental data for {contractStringTrimmed}, report type: {reportType} {cnt++}/{contractStringsTws.Count}");
                 string fundamentalDataString = await FundamentalDataFromContractString(timeout, reportType, contractStringTrimmed);
@@ -394,7 +399,9 @@ namespace StockAnalyzer.DataProviders
         private async Task<string> FundamentalDataFromContractString(int timeout, string reportType, string contractString)
         {
             string fundamentalData;
+
             var contractArray = contractString.Split(';', StringSplitOptions.RemoveEmptyEntries);
+            
             if (contractArray.Length == 1)
             {
                 fundamentalData = await _ibHost.RequestFundamentalDataAsync(contractArray[0]?.Trim(), reportType, timeout);
