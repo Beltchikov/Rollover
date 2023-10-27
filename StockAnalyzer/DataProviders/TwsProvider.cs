@@ -83,7 +83,7 @@ namespace StockAnalyzer.DataProviders
                 var currentPrice = await CurrentPriceFromContractString(timeout, contractStringTrimmed);
                 result.Add($"{contractStringTrimmed.Split(";")[0]} {currentPrice}");
             }
-            
+
             return result;
         }
 
@@ -188,19 +188,22 @@ namespace StockAnalyzer.DataProviders
                 var interimStatement = interimStatements?.FirstOrDefault();
 
                 BoolWithError twiceAYearOrError = ReportingFrequencyIsTwiceAYear(interimStatement);  // otherwise quarterly
-                if(twiceAYearOrError.Value == null) 
+                if (twiceAYearOrError.Value == null)
                 {
-                    resultTwiceAYear.Add($"{ticker}\t{twiceAYearOrError.Error}");   
+                    resultTwiceAYear.Add($"{ticker}\t{twiceAYearOrError.Error}");
                 }
                 bool? twiceAYear = twiceAYearOrError.Value;
 
-                if (twiceAYear.HasValue && twiceAYear.Value)
+                if (twiceAYear.HasValue)
                 {
-                    twiceAYearCalculations(resultTwiceAYear, ticker, interimStatement);
-                }
-                else
-                {
-                    quarterlyCalculations(resultQuarterly, ticker, interimStatement);
+                    if (twiceAYear.Value)
+                    {
+                        twiceAYearCalculations(resultTwiceAYear, ticker, interimStatement);
+                    }
+                    else
+                    {
+                        quarterlyCalculations(resultQuarterly, ticker, interimStatement);
+                    }
                 }
             }
             List<string> result = ResultListFromTwoDifferentlyStructuredLists(resultQuarterly, resultTwiceAYear);
@@ -419,7 +422,7 @@ namespace StockAnalyzer.DataProviders
             else
             {
                 throw new ApplicationException($"Wrong number of elements in contract's string representation: " +
-                    $"{contractArray.Aggregate((r,n) => r + ";" +n)}");
+                    $"{contractArray.Aggregate((r, n) => r + ";" + n)}");
             }
             return fundamentalData ?? $"{contractArray[0]}\tNO_FUNDAMENTAL_DATA";
         }
@@ -429,7 +432,7 @@ namespace StockAnalyzer.DataProviders
             double? currentPrice;
             bool snapshot = true;
             bool frozen = true;
-            
+
             var contractArray = contractString.Split(';', StringSplitOptions.RemoveEmptyEntries);
             if (contractArray.Length == 1)
             {
@@ -502,7 +505,7 @@ namespace StockAnalyzer.DataProviders
             DateTimeWithError endDate0 = EndDateOfFiscalPeriod(interimStatement, 0);
             DateTimeWithError endDate1 = EndDateOfFiscalPeriod(interimStatement, 1);
 
-            if(endDate0.Value == null)
+            if (endDate0.Value == null)
             {
                 return new BoolWithError(null, endDate0.Error);
             }
@@ -538,7 +541,7 @@ namespace StockAnalyzer.DataProviders
                 {
                     return new BoolWithError(null, $"Reporting frequency is quarterly, but the third statement does not fit.");
                 }
-                
+
                 DateTimeWithError endDate3 = EndDateOfFiscalPeriod(interimStatement, 3);
                 if (endDate3.Value == null)
                 {
