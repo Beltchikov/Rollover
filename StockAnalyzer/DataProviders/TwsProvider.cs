@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -16,6 +15,7 @@ namespace StockAnalyzer.DataProviders
 {
     public class TwsProvider : ProviderBase, ITwsProvider
     {
+        private const string NO_FUNDAMENTAL_DATA = "NO_FUNDAMENTAL_DATA";
         private IIbHost _ibHost;
 
         public TwsProvider(IIbHost ibHost, IIbHostQueue queue)
@@ -332,9 +332,9 @@ namespace StockAnalyzer.DataProviders
 
         private XDocument? XDocumentFromStringWithChecks(string stringToParse, List<string> result)
         {
-            if (stringToParse == null)
+            if (stringToParse.EndsWith(NO_FUNDAMENTAL_DATA))
             {
-                result.Add($"UNKNOWN\t");
+                result.Add(stringToParse);
                 return null;
             }
 
@@ -421,7 +421,7 @@ namespace StockAnalyzer.DataProviders
                 throw new ApplicationException($"Wrong number of elements in contract's string representation: " +
                     $"{contractArray.Aggregate((r,n) => r + ";" +n)}");
             }
-            return fundamentalData;
+            return fundamentalData ?? $"{contractArray[0]}\tNO_FUNDAMENTAL_DATA";
         }
 
         private async Task<double?> CurrentPriceFromContractString(int timeout, string contractString)
