@@ -418,7 +418,8 @@ namespace StockAnalyzer.DataProviders
             }
             else
             {
-                throw new ApplicationException("Wrong number of elements in contract's string representation.");
+                throw new ApplicationException($"Wrong number of elements in contract's string representation: " +
+                    $"{contractArray.Aggregate((r,n) => r + ";" +n)}");
             }
             return fundamentalData;
         }
