@@ -13,10 +13,9 @@ namespace IbClient.IbHost
         private IIbHostQueue _queue;
         private int _currentReqId = 0;
 
-
-        private readonly string STK = "STK";
-        private readonly string USD = "USD";
-        private readonly string SMART = "SMART";
+        public static readonly string DEFAULT_SEC_TYPE = "STK";
+        public static readonly string DEFAULT_CURRENCY = "USD";
+        public static readonly string DEFAULT_EXCHANGE = "SMART";
 
         public IbHost(IIbHostQueue queue)
         {
@@ -82,9 +81,9 @@ namespace IbClient.IbHost
             var contract = new Contract()
             {
                 Symbol = ticker,
-                Currency = currency ?? USD,
-                SecType = secType ?? STK,
-                Exchange = exchange ?? SMART
+                Currency = currency ?? DEFAULT_CURRENCY,
+                SecType = secType ?? DEFAULT_SEC_TYPE,
+                Exchange = exchange ?? DEFAULT_EXCHANGE
             };
             var reqId = ++_currentReqId;
             _ibClient.ClientSocket.reqContractDetails(reqId, contract);
@@ -103,23 +102,10 @@ namespace IbClient.IbHost
             return contractDetails;
         }
 
-        public async Task<string> RequestFundamentalDataAsync(
-            string ticker,
-            string reportType,
-            int timeout,
-            string currency,
-            string secType,
-            string exchange)
+        public async Task<string> RequestFundamentalDataAsync(Contract contract, string reportType, int timeout)
         {
             string fundamentalsMessageString = null;
 
-            var contract = new Contract()
-            {
-                Symbol = ticker,
-                Currency = currency ?? USD,
-                SecType = secType ?? STK,
-                Exchange = exchange ?? SMART
-            };
             var reqId = ++_currentReqId;
             _ibClient.ClientSocket.reqFundamentalData(reqId, contract, reportType, new List<TagValue>());
 
@@ -131,9 +117,9 @@ namespace IbClient.IbHost
                 if (_queue.Dequeue() is FundamentalsMessage fundamentalsMessage)
                 {
                     fundamentalsMessageString = fundamentalsMessage.Data;
-                    if (!MessageForRightTickerContains(fundamentalsMessageString, ticker))
+                    if (!MessageForRightTickerContains(fundamentalsMessageString, contract.Symbol))
                     {
-                        fundamentalsMessageString = ticker + " ERROR!";
+                        fundamentalsMessageString = contract.Symbol + " ERROR!";
                     }
                 }
             });
@@ -167,9 +153,9 @@ namespace IbClient.IbHost
             var contract = new Contract()
             {
                 Symbol = ticker,
-                Currency = currency ?? USD,
-                SecType = secType ?? STK,
-                Exchange = exchange ?? SMART
+                Currency = currency ?? DEFAULT_CURRENCY,
+                SecType = secType ?? DEFAULT_SEC_TYPE,
+                Exchange = exchange ?? DEFAULT_EXCHANGE
             };
 
             var reqId = ++_currentReqId;

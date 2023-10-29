@@ -16,12 +16,9 @@ namespace IbClient.IbHost
             string exchange = "SMART");
 
         Task<string> RequestFundamentalDataAsync(
-            string ticker,
+            Contract contract,
             string reportType,
-            int timeout,
-            string currency = "USD",
-            string secType = "STK",
-            string exchange = "SMART");
+            int timeout);
 
         Task<double?> RequestMarketDataAsync(
             string ticker,

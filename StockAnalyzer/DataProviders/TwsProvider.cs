@@ -1,4 +1,5 @@
 ﻿using IBApi;
+using IbClient;
 using IbClient.IbHost;
 using StockAnalyzer.DataProviders.FinancialStatements.Tws.Accounts;
 using StockAnalyzer.DataProviders.FinancialStatements.Tws.ComputedFinancials;
@@ -398,42 +399,9 @@ namespace StockAnalyzer.DataProviders
 
         private async Task<string> FundamentalDataFromContractString(int timeout, string reportType, string contractString)
         {
-            string fundamentalData;
-
-            var contractArray = contractString.Split(';', StringSplitOptions.RemoveEmptyEntries);
-            
-            if (contractArray.Length == 1)
-            {
-                fundamentalData = await _ibHost.RequestFundamentalDataAsync(contractArray[0]?.Trim(), reportType, timeout);
-            }
-            else if (contractArray.Length == 2)
-            {
-                fundamentalData = await _ibHost.RequestFundamentalDataAsync(
-                    contractArray[0]?.Trim(),
-                    reportType,
-                    timeout,
-                    contractArray[1]?.Trim());
-            }
-            else if (contractArray.Length == 3)
-            {
-                fundamentalData = await _ibHost.RequestFundamentalDataAsync(contractArray[0]?.Trim(), reportType, timeout, contractArray[1]?.Trim(), contractArray[2]?.Trim());
-            }
-            else if (contractArray.Length == 4)
-            {
-                fundamentalData = await _ibHost.RequestFundamentalDataAsync(
-                    contractArray[0]?.Trim(),
-                    reportType,
-                    timeout,
-                    contractArray[1]?.Trim(),
-                    contractArray[2]?.Trim(),
-                    contractArray[3]?.Trim());
-            }
-            else
-            {
-                throw new ApplicationException($"Wrong number of elements in contract's string representation: " +
-                    $"{contractArray.Aggregate((r, n) => r + ";" + n)}");
-            }
-            return fundamentalData ?? $"{contractArray[0]}\tNO_FUNDAMENTAL_DATA";
+            Contract contract = ContractFromString(contractString);
+            string fundamentalData = await _ibHost.RequestFundamentalDataAsync(contract, reportType, timeout);
+            return fundamentalData ?? $"{contract.Symbol}\tNO_FUNDAMENTAL_DATA";
         }
 
         private async Task<double?> CurrentPriceFromContractString(int timeout, string contractString)
@@ -625,6 +593,57 @@ namespace StockAnalyzer.DataProviders
             }
 
             return result;
+        }
+
+        private Contract ContractFromString(string contractString)
+        {
+            var contractArray = contractString.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (contractArray.Length == 1)
+            {
+                return new Contract()
+                {
+                    Symbol = contractArray[0].Trim(),
+                    Currency = IbHost.DEFAULT_CURRENCY,
+                    SecType = IbHost.DEFAULT_SEC_TYPE,
+                    Exchange = IbHost.DEFAULT_EXCHANGE
+                };
+            }
+            else if (contractArray.Length == 2)
+            {
+                return new Contract()
+                {
+                    Symbol = contractArray[0].Trim(),
+                    Currency = contractArray[1].Trim(),
+                    SecType = IbHost.DEFAULT_SEC_TYPE,
+                    Exchange = IbHost.DEFAULT_EXCHANGE
+                };
+            }
+            else if (contractArray.Length == 3)
+            {
+                return new Contract()
+                {
+                    Symbol = contractArray[0].Trim(),
+                    Currency = contractArray[1].Trim(),
+                    SecType = contractArray[2].Trim(),
+                    Exchange = IbHost.DEFAULT_EXCHANGE
+                };
+            }
+            else if (contractArray.Length == 4)
+            {
+                return new Contract()
+                {
+                    Symbol = contractArray[0].Trim(),
+                    Currency = contractArray[1].Trim(),
+                    SecType = contractArray[2].Trim(),
+                    Exchange = contractArray[3].Trim()
+                };
+            }
+            else
+            {
+                throw new ApplicationException($"Wrong number of elements in contract's string representation: " +
+                    $"{contractArray.Aggregate((r, n) => r + ";" + n)}");
+            }
         }
     }
 }
