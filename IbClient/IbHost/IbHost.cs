@@ -69,22 +69,9 @@ namespace IbClient.IbHost
             _ibClient.Disconnect();
         }
 
-        public async Task<ContractDetails> RequestContractDetailsAsync(
-            string ticker,
-            int timeout,
-            string currency,
-            string secType,
-            string exchange)
+        public async Task<ContractDetails> RequestContractDetailsAsync(Contract contract, int timeout)
         {
             ContractDetails contractDetails = null;
-
-            var contract = new Contract()
-            {
-                Symbol = ticker,
-                Currency = currency ?? DEFAULT_CURRENCY,
-                SecType = secType ?? DEFAULT_SEC_TYPE,
-                Exchange = exchange ?? DEFAULT_EXCHANGE
-            };
             var reqId = ++_currentReqId;
             _ibClient.ClientSocket.reqContractDetails(reqId, contract);
 

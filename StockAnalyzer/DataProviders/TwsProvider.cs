@@ -366,34 +366,8 @@ namespace StockAnalyzer.DataProviders
 
         private async Task<ContractDetails> ContractDetailsFromContractString(int timeout, string contractString)
         {
-            ContractDetails contractDetails = null!;
-            var contractArray = contractString.Split(';', StringSplitOptions.RemoveEmptyEntries);
-            if (contractArray.Length == 1)
-            {
-                contractDetails = await _ibHost.RequestContractDetailsAsync(contractArray[0]?.Trim(), timeout);
-            }
-            else if (contractArray.Length == 2)
-            {
-                contractDetails = await _ibHost.RequestContractDetailsAsync(contractArray[0]?.Trim(), timeout, contractArray[1]?.Trim());
-            }
-            else if (contractArray.Length == 3)
-            {
-                contractDetails = await _ibHost.RequestContractDetailsAsync(contractArray[0]?.Trim(), timeout, contractArray[1]?.Trim(), contractArray[2]?.Trim());
-            }
-            else if (contractArray.Length == 4)
-            {
-                contractDetails = await _ibHost.RequestContractDetailsAsync(
-                    contractArray[0]?.Trim(),
-                    timeout,
-                    contractArray[1]?.Trim(),
-                    contractArray[2]?.Trim(),
-                    contractArray[3]?.Trim());
-            }
-            else
-            {
-                throw new ApplicationException("Wrong number of elements in contract's string representation.");
-            }
-
+            Contract contract = ContractFromString(contractString);
+            ContractDetails contractDetails = await _ibHost.RequestContractDetailsAsync(contract, timeout);
             return contractDetails;
         }
 

@@ -9,25 +9,20 @@ namespace IbClient.IbHost
         Task<bool> ConnectAndStartReaderThread(string host, int port, int clientId, int timeout);
         void Disconnect();
         Task<ContractDetails> RequestContractDetailsAsync(
-            string ticker,
-            int timeout,
-            string currency = "USD",
-            string secType = "STK",
-            string exchange = "SMART");
-
-        Task<string> RequestFundamentalDataAsync(
             Contract contract,
-            string reportType,
             int timeout);
-
+        Task<string> RequestFundamentalDataAsync(
+                    Contract contract,
+                    string reportType,
+                    int timeout);
         Task<double?> RequestMarketDataAsync(
-            string ticker,
-            bool snapshot,
-            bool frozen,
-            int timeout,
-            string currency = "USD",
-            string secType = "STK",
-            string exchange = "SMART");
+                    string ticker,
+                    bool snapshot,
+                    bool frozen,
+                    int timeout,
+                    string currency = "USD",
+                    string secType = "STK",
+                    string exchange = "SMART");
 
         //public void ReqHistoricalData();
         //void ApplyDefaultHistoricalData();
