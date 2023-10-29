@@ -3,6 +3,7 @@ using IbClient.messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Threading.Tasks;
 
 namespace IbClient.IbHost
@@ -121,14 +122,7 @@ namespace IbClient.IbHost
         /// <param name="tickType">Bid: 1, Ask: 2, 
         /// full list: https://interactivebrokers.github.io/tws-api/tick_types.html</param>
         /// <returns></returns>
-        public async Task<double?> RequestMarketDataAsync(
-            string ticker,
-            bool snapshot,
-            bool frozen,
-            int timeout,
-            string currency,
-            string secType,
-            string exchange)
+        public async Task<double?> RequestMarketDataAsync(Contract contract, bool snapshot, bool frozen, int timeout)
         {
             double? price = null;
 
@@ -136,14 +130,6 @@ namespace IbClient.IbHost
             {
                 _ibClient.ClientSocket.reqMarketDataType(2);
             }
-
-            var contract = new Contract()
-            {
-                Symbol = ticker,
-                Currency = currency ?? DEFAULT_CURRENCY,
-                SecType = secType ?? DEFAULT_SEC_TYPE,
-                Exchange = exchange ?? DEFAULT_EXCHANGE
-            };
 
             var reqId = ++_currentReqId;
             _ibClient.ClientSocket.reqMktData(

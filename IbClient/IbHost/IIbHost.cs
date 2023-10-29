@@ -16,13 +16,10 @@ namespace IbClient.IbHost
                     string reportType,
                     int timeout);
         Task<double?> RequestMarketDataAsync(
-                    string ticker,
+                    Contract contract,
                     bool snapshot,
                     bool frozen,
-                    int timeout,
-                    string currency = "USD",
-                    string secType = "STK",
-                    string exchange = "SMART");
+                    int timeout);
 
         //public void ReqHistoricalData();
         //void ApplyDefaultHistoricalData();

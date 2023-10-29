@@ -380,54 +380,15 @@ namespace StockAnalyzer.DataProviders
 
         private async Task<double?> CurrentPriceFromContractString(int timeout, string contractString)
         {
-            double? currentPrice;
             bool snapshot = true;
             bool frozen = true;
 
-            var contractArray = contractString.Split(';', StringSplitOptions.RemoveEmptyEntries);
-            if (contractArray.Length == 1)
-            {
-                currentPrice = await _ibHost.RequestMarketDataAsync(
-                    contractArray[0]?.Trim(),
+            Contract contract = ContractFromString(contractString);
+            var currentPrice = await _ibHost.RequestMarketDataAsync(
+                    contract,
                     snapshot,
                     frozen,
                     timeout);
-            }
-            else if (contractArray.Length == 2)
-            {
-                currentPrice = await _ibHost.RequestMarketDataAsync(
-                    contractArray[0]?.Trim(),
-                    snapshot,
-                    frozen,
-                    timeout,
-                    contractArray[1]?.Trim());
-            }
-            else if (contractArray.Length == 3)
-            {
-                currentPrice = await _ibHost.RequestMarketDataAsync(
-                                    contractArray[0]?.Trim(),
-                                    snapshot,
-                                    frozen,
-                                    timeout,
-                                    contractArray[1]?.Trim(),
-                                    contractArray[2]?.Trim());
-            }
-            else if (contractArray.Length == 4)
-            {
-                currentPrice = await _ibHost.RequestMarketDataAsync(
-                                    contractArray[0]?.Trim(),
-                                    snapshot,
-                                    frozen,
-                                    timeout,
-                                    contractArray[1]?.Trim(),
-                                    contractArray[2]?.Trim(),
-                                    contractArray[3]?.Trim());
-            }
-            else
-            {
-                throw new ApplicationException("Wrong number of elements in contract's string representation.");
-            }
-
             return currentPrice;
         }
 
