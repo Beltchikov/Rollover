@@ -189,7 +189,6 @@ namespace StockAnalyzer.DataProviders
                 {
                     continue;
                 }
-                string ticker = TickerFromXDocument(xDocument);
 
                 IEnumerable<XElement>? interimStatements = PeriodsElementFromXDocument(xDocument, "InterimPeriods");
                 var interimStatement = interimStatements?.FirstOrDefault();
@@ -197,7 +196,7 @@ namespace StockAnalyzer.DataProviders
                 BoolWithError twiceAYearOrError = ReportingFrequencyIsTwiceAYear(interimStatement);  // otherwise quarterly
                 if (twiceAYearOrError.Value == null)
                 {
-                    resultTwiceAYear.Add($"{ticker}\t{twiceAYearOrError.Error}");
+                    resultTwiceAYear.Add($"{TickerFromXDocument(xDocument)}\t{twiceAYearOrError.Error}");
                 }
                 bool? twiceAYear = twiceAYearOrError.Value;
 
@@ -205,11 +204,11 @@ namespace StockAnalyzer.DataProviders
                 {
                     if (twiceAYear.Value)
                     {
-                        twiceAYearCalculations(resultTwiceAYear, ticker, interimStatement);
+                        twiceAYearCalculations(resultTwiceAYear, TickerFromXDocument(xDocument), interimStatement);
                     }
                     else
                     {
-                        quarterlyCalculations(resultQuarterly, ticker, interimStatement);
+                        quarterlyCalculations(resultQuarterly, TickerFromXDocument(xDocument), interimStatement);
                     }
                 }
             }
