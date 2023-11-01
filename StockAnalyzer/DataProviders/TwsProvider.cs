@@ -190,13 +190,7 @@ namespace StockAnalyzer.DataProviders
                 }
 
                 var interimPeriodsElement = PeriodsElementFromXDocument(xDocument, "InterimPeriods")?.FirstOrDefault();
-
-                BoolWithError twiceAYearOrError = ReportingFrequencyIsTwiceAYear(interimPeriodsElement);  // otherwise quarterly
-                if (twiceAYearOrError.Value == null)
-                {
-                    resultTwiceAYear.Add($"{TickerFromXDocument(xDocument)}\t{twiceAYearOrError.Error}");
-                }
-                bool? twiceAYear = twiceAYearOrError.Value;
+                bool? twiceAYear = ReportingIsTwiceAYear(resultTwiceAYear, xDocument, interimPeriodsElement);
 
                 if (twiceAYear.HasValue)
                 {
@@ -215,6 +209,18 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
+        private bool? ReportingIsTwiceAYear(List<string> resultTwiceAYear, XDocument? xDocument, XElement? interimPeriodsElement)
+        {
+            bool? twiceAYear;
+            BoolWithError twiceAYearOrError = ReportingFrequencyIsTwiceAYear(interimPeriodsElement);  // otherwise quarterly
+            if (twiceAYearOrError.Value == null)
+            {
+                resultTwiceAYear.Add($"{TickerFromXDocument(xDocument)}\t{twiceAYearOrError.Error}");
+            }
+            twiceAYear = twiceAYearOrError.Value;
+            return twiceAYear;
+        }
+
         public List<string> SharesOutYFromFundamentalDataList(List<DataStringWithTicker> fundamentalDataList)
         {
             TriggerStatus($"Extracting Total Shares Outstanding (Y) from the fundamental data list");
@@ -228,7 +234,7 @@ namespace StockAnalyzer.DataProviders
                 {
                     continue;
                 }
-                
+
                 IEnumerable<XElement>? statementSection = StatementElementsFromXDocument(xDocument, "AnnualPeriods");
                 double commonSharesOut = SharesOutstandingFromFiscalPeriodElement(statementSection, "QTCO");
                 double preferredSharesOut = SharesOutstandingFromFiscalPeriodElement(statementSection, "QTPO");
