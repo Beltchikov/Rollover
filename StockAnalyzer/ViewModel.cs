@@ -173,7 +173,7 @@ namespace StockAnalyzer
                                     REPORTS_FIN_STATEMENTS,
                                     TIMEOUT_TWS);
                 ResultCollectionTwsFinStatements = new ObservableCollection<string>(
-                    twsProvider.SharesOutYFromFundamentalDataList(fundamentalDataListFinStatements.Select(f => f.Data).ToList() ));
+                    twsProvider.SharesOutYFromFundamentalDataList(fundamentalDataListFinStatements));
             });
 
             SharesOutQCommand = new RelayCommand(async () =>

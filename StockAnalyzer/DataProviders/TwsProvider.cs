@@ -215,27 +215,26 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
-        public List<string> SharesOutYFromFundamentalDataList(List<string> fundamentalDataList)
+        public List<string> SharesOutYFromFundamentalDataList(List<DataStringWithTicker> fundamentalDataList)
         {
             TriggerStatus($"Extracting Total Shares Outstanding (Y) from the fundamental data list");
             var result = new List<string>();
             result.Add($"Ticker\tCommon (Y) in M\tPreferred\tTotal");
 
-            foreach (string fundamentalData in fundamentalDataList)
+            foreach (DataStringWithTicker fundamentalData in fundamentalDataList)
             {
-                XDocument? xDocument = XDocumentFromStringWithChecks(fundamentalData, result);
+                XDocument? xDocument = XDocumentFromStringWithChecks(fundamentalData.Data, result);
                 if (xDocument == null) // some error string has been added
                 {
                     continue;
                 }
-                string ticker = TickerFromXDocument(xDocument);
-
+                
                 IEnumerable<XElement>? statementSection = StatementElementsFromXDocument(xDocument, "AnnualPeriods");
                 double commonSharesOut = SharesOutstandingFromFiscalPeriodElement(statementSection, "QTCO");
                 double preferredSharesOut = SharesOutstandingFromFiscalPeriodElement(statementSection, "QTPO");
                 double totalSharesOut = commonSharesOut + preferredSharesOut;
 
-                result.Add($"{ticker}\t{commonSharesOut}\t{preferredSharesOut}\t{totalSharesOut}");
+                result.Add($"{fundamentalData.Ticker}\t{commonSharesOut}\t{preferredSharesOut}\t{totalSharesOut}");
             }
 
             return result;
