@@ -204,8 +204,8 @@ namespace StockAnalyzer.DataProviders
                     if (!resultQuarterly.Any()) resultQuarterly.Add($"Ticker\tCurrency\tNetIncomeQ4(M)\tDivQ4\tRatioQ4\tNetIncomeQ3\tDivQ3\tRatioQ3" +
                         $"\tNetIncomeQ2\tDivQ2\tRatioQ2\tNetIncomeQ1\tDivQ1\tRatioQ1" +
                         $"\tTTM Net Inc\tTTM Div\tTTM Ratio");
-                    resultQuarterly.Add($"{fundamentalData.Ticker}\t{currency}\tInterimPeriods element is null{Enumerable.Repeat('\t',15)}");
-                    //resultQuarterly.Add($"{fundamentalData.Ticker}\t{currency}\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
+                    var r = Enumerable.Repeat("\t", 15).Aggregate((r, n) => r + n);
+                    resultQuarterly.Add($"{fundamentalData.Ticker}\t{currency}\tInterimPeriods element is null{r}");
                     continue;
                 }
 
