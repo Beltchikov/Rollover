@@ -423,17 +423,6 @@ namespace StockAnalyzer.DataProviders
 
             if (ConditionTwiceAYear(endDate0.Value.Value, endDate1.Value.Value)) // twice a year
             {
-                // check
-                DateTimeWithError endDate2 = EndDateOfFiscalPeriod(interimStatement, 2);
-                if (endDate2.Value == null)
-                {
-                    return new BoolWithError(null, endDate2.Error);
-                }
-
-                if (!ConditionTwiceAYear(endDate1.Value.Value, endDate2.Value.Value))
-                {
-                    return new BoolWithError(null, $"Reporting frequency is twice a year, but the third statement does not fit.");
-                }
                 return new BoolWithError(true, "");
             }
             else
