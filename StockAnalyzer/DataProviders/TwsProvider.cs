@@ -144,6 +144,14 @@ namespace StockAnalyzer.DataProviders
             return ticker;
         }
 
+        private static string CurrencyFromXDocument(XDocument? xDocument)
+        {
+            var coGeneralInfoElement = xDocument?.Descendants("CoGeneralInfo").FirstOrDefault();
+            var reportingCurrencyElement = coGeneralInfoElement?.Descendants("ReportingCurrency").FirstOrDefault();
+            string currency = reportingCurrencyElement?.Attribute("Code")?.Value ?? "NO_CURRENCY";
+            return currency;
+        }
+
         public List<string> PayoutRatioYFromFundamentalDataList(List<DataStringWithTicker> fundamentalDataList)
         {
             TriggerStatus($"Extracting Payout Ratio (Y) from the fundamental data list");
@@ -189,6 +197,7 @@ namespace StockAnalyzer.DataProviders
                     continue;
                 }
 
+                string currency = CurrencyFromXDocument(xDocument);
                 var interimPeriodsElement = PeriodsElementFromXDocument(xDocument, "InterimPeriods")?.FirstOrDefault();
                 bool? twiceAYear = ReportingIsTwiceAYear(resultTwiceAYear, xDocument, interimPeriodsElement);
 
