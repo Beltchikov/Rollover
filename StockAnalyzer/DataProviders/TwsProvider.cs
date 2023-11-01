@@ -71,7 +71,7 @@ namespace StockAnalyzer.DataProviders
                 var contractStringTrimmed = contractString.Trim();
                 Contract contract = ContractFromString(contractStringTrimmed);
                 TriggerStatus($"Retrieving fundamental data for {contractStringTrimmed}, report type: {reportType} {cnt++}/{contractStringsTws.Count}");
-                string fundamentalDataString = await FundamentalDataFromContractString(timeout, reportType, contract);
+                string fundamentalDataString = await FundamentalDataFromContract(timeout, reportType, contract);
                 result.Add(new DataStringWithTicker(contract.Symbol, fundamentalDataString));
             }
 
@@ -367,7 +367,7 @@ namespace StockAnalyzer.DataProviders
             return contractDetails;
         }
 
-        private async Task<string> FundamentalDataFromContractString(int timeout, string reportType, Contract contract)
+        private async Task<string> FundamentalDataFromContract(int timeout, string reportType, Contract contract)
         {
             string fundamentalData = await _ibHost.RequestFundamentalDataAsync(contract, reportType, timeout);
             return fundamentalData ?? $"{contract.Symbol}\tNO_FUNDAMENTAL_DATA";
