@@ -94,16 +94,16 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
-        public List<string> RoeFromFundamentalDataList(List<string> fundamentalDataList)
+        public List<string> RoeFromFundamentalDataList(List<DataStringWithTicker> fundamentalDataList)
         {
             TriggerStatus($"Extracting ROE from the fundamental data list");
             var result = new List<string>();
             // TODO use basic accounts
             result.Add("WARNING! The calculation is not based on the basic accounts! The value is computed by TWS!");
 
-            foreach (string fundamentalData in fundamentalDataList)
+            foreach (DataStringWithTicker fundamentalData in fundamentalDataList)
             {
-                XDocument? xDocument = XDocumentFromStringWithChecks(fundamentalData, result);
+                XDocument? xDocument = XDocumentFromStringWithChecks(fundamentalData.Data, result);
                 if (xDocument == null) // some error string has been added
                 {
                     continue;
@@ -126,8 +126,7 @@ namespace StockAnalyzer.DataProviders
                 }
 
                 var roeAsString = roeAsDouble == 0 ? null : roeAsDouble.ToString("0.0") + "%";
-                string ticker = TickerFromXDocument(xDocument);
-                result.Add($"{ticker}\t{roeAsString}");
+                result.Add($"{fundamentalData.Ticker}\t{roeAsString}");
             }
 
             return result;
