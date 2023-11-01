@@ -86,9 +86,10 @@ namespace StockAnalyzer.DataProviders
             foreach (string contractString in contractStringsListTws)
             {
                 var contractStringTrimmed = contractString.Trim();
+                Contract contract = ContractFromString(contractStringTrimmed);
                 TriggerStatus($"Retrieving current price for {contractStringTrimmed} {cnt++}/{contractStringsListTws.Count}");
-                var currentPrice = await CurrentPriceFromContractString(timeout, contractStringTrimmed);
-                result.Add($"{contractStringTrimmed.Split(";")[0]} {currentPrice}");
+                var currentPrice = await CurrentPriceFromContract(timeout, contract);
+                result.Add($"{contract.Symbol} {currentPrice}");
             }
 
             return result;
@@ -373,12 +374,11 @@ namespace StockAnalyzer.DataProviders
             return fundamentalData ?? $"{contract.Symbol}\tNO_FUNDAMENTAL_DATA";
         }
 
-        private async Task<double?> CurrentPriceFromContractString(int timeout, string contractString)
+        private async Task<double?> CurrentPriceFromContract(int timeout, Contract contract)
         {
             bool snapshot = true;
             bool frozen = true;
 
-            Contract contract = ContractFromString(contractString);
             var currentPrice = await _ibHost.RequestMarketDataAsync(
                     contract,
                     snapshot,
