@@ -180,8 +180,8 @@ namespace StockAnalyzer.DataProviders
 
         public List<string> QuarterlyDataFromFundamentalDataList(
             List<DataStringWithTicker> fundamentalDataList,
-            Action<List<string>, string, XElement?> twiceAYearCalculations,
-            Action<List<string>, string, XElement?> quarterlyCalculations,
+            Action<List<string>, string, string, XElement?> twiceAYearCalculations,
+            Action<List<string>, string, string, XElement?> quarterlyCalculations,
             string statusMessage)
         {
             TriggerStatus(statusMessage);
@@ -205,11 +205,11 @@ namespace StockAnalyzer.DataProviders
                 {
                     if (twiceAYear.Value)
                     {
-                        twiceAYearCalculations(resultTwiceAYear, fundamentalData.Ticker, interimPeriodsElement);
+                        twiceAYearCalculations(resultTwiceAYear, fundamentalData.Ticker, currency, interimPeriodsElement);
                     }
                     else
                     {
-                        quarterlyCalculations(resultQuarterly, fundamentalData.Ticker, interimPeriodsElement);
+                        quarterlyCalculations(resultQuarterly, fundamentalData.Ticker, currency, interimPeriodsElement);
                     }
                 }
             }
@@ -280,7 +280,11 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
-        public void PayoutRatioTwiceAYearCalculations(List<string> resultTwiceAYear, string ticker, XElement? interimStatement)
+        public void PayoutRatioTwiceAYearCalculations(
+            List<string> resultTwiceAYear,
+            string ticker,
+            string currency,
+            XElement? interimStatement)
         {
             double netIncomeH1 = NetIncome.FromPeriodsElement(interimStatement, 0);
             double netIncomeH2 = NetIncome.FromPeriodsElement(interimStatement, 1);
@@ -292,13 +296,17 @@ namespace StockAnalyzer.DataProviders
             double paybackRatioH2 = PayoutRatio.FromNetIncomeAndDividends(netIncomeH2, divPaidH2);
             double paybackRatioTtm = PayoutRatio.FromNetIncomeAndDividends(netIncomeTtm, divPaidTtm);
 
-            if (!resultTwiceAYear.Any()) resultTwiceAYear.Add($"Ticker\tNetIncomeH2(M)\tDivH2\tRatioH2\tNetIncomeH1\tDivH1\tRatioH1" +
+            if (!resultTwiceAYear.Any()) resultTwiceAYear.Add($"Ticker\tCurrency\tNetIncomeH2(M)\tDivH2\tRatioH2\tNetIncomeH1\tDivH1\tRatioH1" +
                 $"\tTTM Net Inc\tTTM Div\tTTM Ratio");
-            resultTwiceAYear.Add($"{ticker}\t{netIncomeH2}\t{divPaidH2}\t{paybackRatioH2}%\t{netIncomeH1}\t{divPaidH1}\t{paybackRatioH1}%" +
+            resultTwiceAYear.Add($"{ticker}\t{currency}\t{netIncomeH2}\t{divPaidH2}\t{paybackRatioH2}%\t{netIncomeH1}\t{divPaidH1}\t{paybackRatioH1}%" +
                 $"\t{netIncomeTtm}\t{divPaidTtm}\t{paybackRatioTtm}%");
         }
 
-        public void PayoutRatioQuarterlyCalculations(List<string> resultQuarterly, string ticker, XElement? interimStatement)
+        public void PayoutRatioQuarterlyCalculations(
+            List<string> resultQuarterly,
+            string ticker,
+            string currency,
+            XElement? interimStatement)
         {
             double netIncomeQ1 = NetIncome.FromPeriodsElement(interimStatement, 0);
             double netIncomeQ2 = NetIncome.FromPeriodsElement(interimStatement, 1);
@@ -316,10 +324,10 @@ namespace StockAnalyzer.DataProviders
             double paybackRatioQ4 = PayoutRatio.FromNetIncomeAndDividends(netIncomeQ4, divPaidQ4);
             double paybackRatioTtm = PayoutRatio.FromNetIncomeAndDividends(netIncomeTtm, divPaidTtm);
 
-            if (!resultQuarterly.Any()) resultQuarterly.Add($"Ticker\tNetIncomeQ4(M)\tDivQ4\tRatioQ4\tNetIncomeQ3\tDivQ3\tRatioQ3" +
+            if (!resultQuarterly.Any()) resultQuarterly.Add($"Ticker\tCurrency\tNetIncomeQ4(M)\tDivQ4\tRatioQ4\tNetIncomeQ3\tDivQ3\tRatioQ3" +
                 $"\tNetIncomeQ2\tDivQ2\tRatioQ2\tNetIncomeQ1\tDivQ1\tRatioQ1" +
                 $"\tTTM Net Inc\tTTM Div\tTTM Ratio");
-            resultQuarterly.Add($"{ticker}\t{netIncomeQ4}\t{divPaidQ4}\t{paybackRatioQ4}%\t{netIncomeQ3}\t{divPaidQ3}\t{paybackRatioQ3}%" +
+            resultQuarterly.Add($"{ticker}\t{currency}\t{netIncomeQ4}\t{divPaidQ4}\t{paybackRatioQ4}%\t{netIncomeQ3}\t{divPaidQ3}\t{paybackRatioQ3}%" +
                 $"\t{netIncomeQ2}\t{divPaidQ2}\t{paybackRatioQ2}%\t{netIncomeQ1}\t{divPaidQ1}\t{paybackRatioQ1}%" +
                 $"\t{netIncomeTtm}\t{divPaidTtm}\t{paybackRatioTtm}%");
         }
@@ -330,15 +338,15 @@ namespace StockAnalyzer.DataProviders
         /// <param name="resultTwiceAYear"></param>
         /// <param name="ticker"></param>
         /// <param name="periodsElement">AnnualPeriods or InterimPeriods</param>
-        public void SharesOutTwiceAYearCalculations(List<string> resultTwiceAYear, string ticker, XElement? periodsElement)
+        public void SharesOutTwiceAYearCalculations(List<string> resultTwiceAYear, string ticker, string currency, XElement? periodsElement)
         {
-            if (!resultTwiceAYear.Any()) resultTwiceAYear.Add($"Ticker\tCommon in M\tPreferred\tTotal");
+            if (!resultTwiceAYear.Any()) resultTwiceAYear.Add($"Ticker\tCurrency\tCommon in M\tPreferred\tTotal");
 
             double commonSharesOutH1 = TotalSharesOutstanding.FromPeriodsElement(periodsElement, "QTCO", 0);
             double preferredSharesOutH1 = TotalSharesOutstanding.FromPeriodsElement(periodsElement, "QTPO", 0);
             double totalSharesOutH1 = commonSharesOutH1 + preferredSharesOutH1;
             // No need for TTM value
-            resultTwiceAYear.Add($"{ticker}\t{commonSharesOutH1}\t{preferredSharesOutH1}\t{totalSharesOutH1}");
+            resultTwiceAYear.Add($"{ticker}\t{currency}\t{commonSharesOutH1}\t{preferredSharesOutH1}\t{totalSharesOutH1}");
         }
 
         /// <summary>
@@ -347,10 +355,10 @@ namespace StockAnalyzer.DataProviders
         /// <param name="resultQuarterly"></param>
         /// <param name="ticker"></param>
         /// <param name="periodsElement">AnnualPeriods or InterimPeriods</param>
-        public void SharesOutQuarterlyCalculations(List<string> resultQuarterly, string ticker, XElement? periodsElement)
+        public void SharesOutQuarterlyCalculations(List<string> resultQuarterly, string ticker, string currency, XElement? periodsElement)
         {
             // No need for TTM value
-            SharesOutTwiceAYearCalculations(resultQuarterly, ticker, periodsElement);
+            SharesOutTwiceAYearCalculations(resultQuarterly, ticker, currency, periodsElement);
         }
 
         private XDocument? XDocumentFromStringWithChecks(string stringToParse, List<string> result)

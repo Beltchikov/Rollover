@@ -18,14 +18,14 @@ namespace StockAnalyzer.DataProviders
         List<string> PayoutRatioYFromFundamentalDataList(List<DataStringWithTicker> fundamentalDataList);
         List<string> QuarterlyDataFromFundamentalDataList(
             List<DataStringWithTicker> fundamentalDataListPayoutRatio,
-            Action<List<string>, string, XElement?> twiceAYearCalculation,
-            Action<List<string>, string, XElement?> quarterlyCalculations,
+            Action<List<string>, string, string, XElement?> twiceAYearCalculation,
+            Action<List<string>, string, string, XElement?> quarterlyCalculations,
             string statusMessage);
         List<string> SharesOutYFromFundamentalDataList(List<DataStringWithTicker> fundamentalDataListFinStatements);
-        void PayoutRatioTwiceAYearCalculations(List<string> resultTwiceAYear, string ticker, XElement? interimStatement);
-        void PayoutRatioQuarterlyCalculations(List<string> resultQuarterly, string ticker, XElement? interimStatement);
-        void SharesOutTwiceAYearCalculations(List<string> resultTwiceAYear, string ticker, XElement? interimStatement);
-        void SharesOutQuarterlyCalculations(List<string> resultQuarterly, string ticker, XElement? interimStatement);
+        void PayoutRatioTwiceAYearCalculations(List<string> resultTwiceAYear, string ticker, string currency, XElement? interimStatement);
+        void PayoutRatioQuarterlyCalculations(List<string> resultQuarterly, string ticker, string currency, XElement? interimStatement);
+        void SharesOutTwiceAYearCalculations(List<string> resultTwiceAYear, string ticker, string currency, XElement? interimStatement);
+        void SharesOutQuarterlyCalculations(List<string> resultQuarterly, string ticker, string currency, XElement? interimStatement);
         Task<List<string>> CurrentPriceFromContractStrings(List<string> contractStringsListTws, int timeout);
     }
 }
