@@ -171,7 +171,7 @@ namespace StockAnalyzer.DataProviders
 
 
         public List<string> QuarterlyDataFromFundamentalDataList(
-            List<string> fundamentalDataList,
+            List<DataStringWithTicker> fundamentalDataList,
             Action<List<string>, string, XElement?> twiceAYearCalculations,
             Action<List<string>, string, XElement?> quarterlyCalculations,
             string statusMessage)
@@ -181,9 +181,9 @@ namespace StockAnalyzer.DataProviders
             List<string> resultTwiceAYear = new();
             List<string> resultNoFundamentalData = new();
 
-            foreach (string fundamentalData in fundamentalDataList)
+            foreach (DataStringWithTicker fundamentalData in fundamentalDataList)
             {
-                XDocument? xDocument = XDocumentFromStringWithChecks(fundamentalData, resultNoFundamentalData);
+                XDocument? xDocument = XDocumentFromStringWithChecks(fundamentalData.Data, resultNoFundamentalData);
                 if (xDocument == null) // some error string has been added
                 {
                     continue;
@@ -202,11 +202,11 @@ namespace StockAnalyzer.DataProviders
                 {
                     if (twiceAYear.Value)
                     {
-                        twiceAYearCalculations(resultTwiceAYear, TickerFromXDocument(xDocument), interimPeriodsElement);
+                        twiceAYearCalculations(resultTwiceAYear, fundamentalData.Ticker, interimPeriodsElement);
                     }
                     else
                     {
-                        quarterlyCalculations(resultQuarterly, TickerFromXDocument(xDocument), interimPeriodsElement);
+                        quarterlyCalculations(resultQuarterly, fundamentalData.Ticker, interimPeriodsElement);
                     }
                 }
             }

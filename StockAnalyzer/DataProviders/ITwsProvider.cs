@@ -16,7 +16,11 @@ namespace StockAnalyzer.DataProviders
         List<string> RoeFromFundamentalDataList(List<DataStringWithTicker> fundamentalDataList);
         List<string> DesriptionOfCompanyFromFundamentalDataList(List<string> fundamentalDataList);
         List<string> PayoutRatioYFromFundamentalDataList(List<DataStringWithTicker> fundamentalDataList);
-        List<string> QuarterlyDataFromFundamentalDataList(List<string> fundamentalDataListPayoutRatio, Action<List<string>, string, XElement?> twiceAYearCalculation, Action<List<string>, string, XElement?> quarterlyCalculations, string statusMessage);
+        List<string> QuarterlyDataFromFundamentalDataList(
+            List<DataStringWithTicker> fundamentalDataListPayoutRatio,
+            Action<List<string>, string, XElement?> twiceAYearCalculation,
+            Action<List<string>, string, XElement?> quarterlyCalculations,
+            string statusMessage);
         List<string> SharesOutYFromFundamentalDataList(List<string> fundamentalDataListFinStatements);
         void PayoutRatioTwiceAYearCalculations(List<string> resultTwiceAYear, string ticker, XElement? interimStatement);
         void PayoutRatioQuarterlyCalculations(List<string> resultQuarterly, string ticker, XElement? interimStatement);

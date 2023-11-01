@@ -156,7 +156,7 @@ namespace StockAnalyzer
                                     TIMEOUT_TWS);
                 ResultCollectionTwsFinStatements = new ObservableCollection<string>(
                     twsProvider.QuarterlyDataFromFundamentalDataList(
-                        fundamentalDataListPayoutRatio.Select(f => f.Data).ToList(),
+                        fundamentalDataListPayoutRatio,
                         twsProvider.PayoutRatioTwiceAYearCalculations,
                         twsProvider.PayoutRatioQuarterlyCalculations,
                         "Extracting Payout Ratio (Q) from the fundamental data list"));
@@ -188,7 +188,7 @@ namespace StockAnalyzer
                                     TIMEOUT_TWS);
                 ResultCollectionTwsFinStatements = new ObservableCollection<string>(
                    twsProvider.QuarterlyDataFromFundamentalDataList(
-                       fundamentalDataListFinStatements.Select(f => f.Data).ToList(),
+                       fundamentalDataListFinStatements,
                        twsProvider.SharesOutTwiceAYearCalculations,
                        twsProvider.SharesOutQuarterlyCalculations,
                        "Extracting Total Shares Outstanding (Q) from the fundamental data list"));
