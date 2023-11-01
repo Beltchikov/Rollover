@@ -144,15 +144,15 @@ namespace StockAnalyzer.DataProviders
             return ticker;
         }
 
-        public List<string> PayoutRatioYFromFundamentalDataList(List<string> fundamentalDataList)
+        public List<string> PayoutRatioYFromFundamentalDataList(List<DataStringWithTicker> fundamentalDataList)
         {
             TriggerStatus($"Extracting Payout Ratio (Y) from the fundamental data list");
             var result = new List<string>();
             result.Add($"Ticker\tNet Income (Y) in M\tDiv. Paid\tPayback Ratio");
 
-            foreach (string fundamentalData in fundamentalDataList)
+            foreach (DataStringWithTicker fundamentalData in fundamentalDataList)
             {
-                XDocument? xDocument = XDocumentFromStringWithChecks(fundamentalData, result);
+                XDocument? xDocument = XDocumentFromStringWithChecks(fundamentalData.Data, result);
                 if (xDocument == null) // some error string has been added
                 {
                     continue;
@@ -163,8 +163,7 @@ namespace StockAnalyzer.DataProviders
                 double divPaid = DividendsPaid.FromFiscalPeriodElement(statementSection);
                 double paybackRatio = PayoutRatio.FromNetIncomeAndDividends(netIncome, divPaid);
 
-                string ticker = TickerFromXDocument(xDocument);
-                result.Add($"{ticker}\t{netIncome}\t{divPaid}\t{paybackRatio}%");
+                result.Add($"{fundamentalData.Ticker}\t{netIncome}\t{divPaid}\t{paybackRatio}%");
             }
 
             return result;

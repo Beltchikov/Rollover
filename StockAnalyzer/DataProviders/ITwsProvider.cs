@@ -15,7 +15,7 @@ namespace StockAnalyzer.DataProviders
         Task<List<DataStringWithTicker>> FundamentalDataFromContractStrings(List<string> contractStringsTws, string reportType, int timeout);
         List<string> RoeFromFundamentalDataList(List<DataStringWithTicker> fundamentalDataList);
         List<string> DesriptionOfCompanyFromFundamentalDataList(List<string> fundamentalDataList);
-        List<string> PayoutRatioYFromFundamentalDataList(List<string> fundamentalDataList);
+        List<string> PayoutRatioYFromFundamentalDataList(List<DataStringWithTicker> fundamentalDataList);
         List<string> QuarterlyDataFromFundamentalDataList(List<string> fundamentalDataListPayoutRatio, Action<List<string>, string, XElement?> twiceAYearCalculation, Action<List<string>, string, XElement?> quarterlyCalculations, string statusMessage);
         List<string> SharesOutYFromFundamentalDataList(List<string> fundamentalDataListFinStatements);
         void PayoutRatioTwiceAYearCalculations(List<string> resultTwiceAYear, string ticker, XElement? interimStatement);
