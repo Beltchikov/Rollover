@@ -1,4 +1,5 @@
 ﻿using IBApi;
+using StockAnalyzer.DataProviders.Types;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace StockAnalyzer.DataProviders
         public event Action<string> Status;
         Task<List<ContractDetails>> ContractDetailsListFromContractStringsList(List<string> contractStringsTws, int timeout);
         List<string> ConIdsFromContractDetailsList(List<ContractDetails> contractDetailsList);
-        Task<List<string>> FundamentalDataFromContractStrings(List<string> contractStringsTws, string reportType, int timeout);
+        Task<List<DataStringWithTicker>> FundamentalDataFromContractStrings(List<string> contractStringsTws, string reportType, int timeout);
         List<string> RoeFromFundamentalDataList(List<string> fundamentalDataList);
         List<string> DesriptionOfCompanyFromFundamentalDataList(List<string> fundamentalDataList);
         List<string> PayoutRatioYFromFundamentalDataList(List<string> fundamentalDataList);

@@ -56,9 +56,9 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
-        public async Task<List<string>> FundamentalDataFromContractStrings(List<string> contractStringsTws, string reportType, int timeout)
+        public async Task<List<DataStringWithTicker>> FundamentalDataFromContractStrings(List<string> contractStringsTws, string reportType, int timeout)
         {
-            var result = new List<string>();
+            var result = new List<DataStringWithTicker>();
 
             int cnt = 1;
             foreach (string contractString in contractStringsTws)
@@ -69,9 +69,10 @@ namespace StockAnalyzer.DataProviders
                 }
 
                 var contractStringTrimmed = contractString.Trim();
+                Contract contract = ContractFromString(contractStringTrimmed);
                 TriggerStatus($"Retrieving fundamental data for {contractStringTrimmed}, report type: {reportType} {cnt++}/{contractStringsTws.Count}");
-                string fundamentalDataString = await FundamentalDataFromContractString(timeout, reportType, contractStringTrimmed);
-                result.Add(fundamentalDataString);
+                string fundamentalDataString = await FundamentalDataFromContractString(timeout, reportType, contract);
+                result.Add(new DataStringWithTicker(contract.Symbol, fundamentalDataString));
             }
 
             return result;
@@ -369,9 +370,8 @@ namespace StockAnalyzer.DataProviders
             return contractDetails;
         }
 
-        private async Task<string> FundamentalDataFromContractString(int timeout, string reportType, string contractString)
+        private async Task<string> FundamentalDataFromContractString(int timeout, string reportType, Contract contract)
         {
-            Contract contract = ContractFromString(contractString);
             string fundamentalData = await _ibHost.RequestFundamentalDataAsync(contract, reportType, timeout);
             return fundamentalData ?? $"{contract.Symbol}\tNO_FUNDAMENTAL_DATA";
         }
