@@ -1,5 +1,4 @@
 ﻿using IBApi;
-using IbClient;
 using IbClient.IbHost;
 using StockAnalyzer.DataProviders.FinancialStatements.Tws.Accounts;
 using StockAnalyzer.DataProviders.FinancialStatements.Tws.ComputedFinancials;
@@ -240,14 +239,14 @@ namespace StockAnalyzer.DataProviders
 
             return result;
         }
-        public List<string> DesriptionOfCompanyFromFundamentalDataList(List<string> fundamentalDataList)
+        public List<string> DesriptionOfCompanyFromFundamentalDataList(List<DataStringWithTicker> fundamentalDataList)
         {
             TriggerStatus($"Extracting business summary from the fundamental data list");
             var result = new List<string>();
 
-            foreach (string fundamentalData in fundamentalDataList)
+            foreach (DataStringWithTicker fundamentalData in fundamentalDataList)
             {
-                XDocument? xDocument = XDocumentFromStringWithChecks(fundamentalData, result);
+                XDocument? xDocument = XDocumentFromStringWithChecks(fundamentalData.Data, result);
                 if (xDocument == null) // some error string has been added
                 {
                     continue;
@@ -258,7 +257,8 @@ namespace StockAnalyzer.DataProviders
                 var textElementBusinessSummary = textElements?.FirstOrDefault(e => e.Attribute("Type")?.Value == "Business Summary");
                 var textElementFinancialSummary = textElements?.FirstOrDefault(e => e.Attribute("Type")?.Value == "Financial Summary");
 
-                result.Add($"{textElementBusinessSummary?.Value}{Environment.NewLine}" +
+                result.Add($"{fundamentalData.Ticker}{Environment.NewLine}" +
+                    $"{textElementBusinessSummary?.Value}{Environment.NewLine}" +
                     $"{textElementFinancialSummary?.Value}{Environment.NewLine}{string.Concat(Enumerable.Repeat("-", 20))}");
             }
 

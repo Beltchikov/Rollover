@@ -14,7 +14,7 @@ namespace StockAnalyzer.DataProviders
         List<string> ConIdsFromContractDetailsList(List<ContractDetails> contractDetailsList);
         Task<List<DataStringWithTicker>> FundamentalDataFromContractStrings(List<string> contractStringsTws, string reportType, int timeout);
         List<string> RoeFromFundamentalDataList(List<DataStringWithTicker> fundamentalDataList);
-        List<string> DesriptionOfCompanyFromFundamentalDataList(List<string> fundamentalDataList);
+        List<string> DesriptionOfCompanyFromFundamentalDataList(List<DataStringWithTicker> fundamentalDataList);
         List<string> PayoutRatioYFromFundamentalDataList(List<DataStringWithTicker> fundamentalDataList);
         List<string> QuarterlyDataFromFundamentalDataList(
             List<DataStringWithTicker> fundamentalDataListPayoutRatio,

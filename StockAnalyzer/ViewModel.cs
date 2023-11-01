@@ -232,7 +232,7 @@ namespace StockAnalyzer
                                     REPORT_SNAPSHOT,
                                     TIMEOUT_TWS);
                 ResultCollectionTwsSummary = new ObservableCollection<string>(
-                    twsProvider.DesriptionOfCompanyFromFundamentalDataList(fundamentalDataListSummary.Select(f => f.Data).ToList()));
+                    twsProvider.DesriptionOfCompanyFromFundamentalDataList(fundamentalDataListSummary));
             });
 
             MarketCap = 0.1;
