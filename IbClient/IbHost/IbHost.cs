@@ -126,16 +126,9 @@ namespace IbClient.IbHost
             Contract contract,
             int tickType,
             bool snapshot,
-            bool frozen,
             int timeout)
         {
             double? price = null;
-
-            if (frozen)
-            {
-                _ibClient.ClientSocket.reqMarketDataType(2);
-            }
-
             var reqId = ++_currentReqId;
             _ibClient.ClientSocket.reqMktData(
                reqId,

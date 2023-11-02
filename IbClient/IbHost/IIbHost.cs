@@ -19,7 +19,7 @@ namespace IbClient.IbHost
                     Contract contract,
                     int tickType,
                     bool snapshot,
-                    bool frozen, int timeout);
+                    int timeout);
 
         //public void ReqHistoricalData();
         //void ApplyDefaultHistoricalData();

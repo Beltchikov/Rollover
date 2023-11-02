@@ -410,14 +410,13 @@ namespace StockAnalyzer.DataProviders
         private async Task<double?> CurrentPriceFromContract(int timeout, Contract contract)
         {
             bool snapshot = true;
-            bool frozen = true;
             int tickType = 1; // bid
 
             var currentPrice = await _ibHost.RequestMarketDataLiveAsync(
                     contract,
                     tickType,
                     snapshot,
-                    frozen, timeout);
+                    timeout);
             return currentPrice;
         }
 
