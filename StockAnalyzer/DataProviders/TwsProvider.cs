@@ -87,8 +87,8 @@ namespace StockAnalyzer.DataProviders
                 var contractStringTrimmed = contractString.Trim();
                 Contract contract = ContractFromString(contractStringTrimmed);
                 TriggerStatus($"Retrieving current price for {contractStringTrimmed} {cnt++}/{contractStringsListTws.Count}");
-                var currentPrice = await CurrentPriceFromContract(timeout, contract);
-                result.Add($"{contract.Symbol} {currentPrice}");
+                var livePrice = await CurrentLiveBidPriceFromContract(timeout, contract);
+                result.Add($"{contract.Symbol}\t{livePrice.Value}\t{livePrice.MarketDataType}\t{livePrice.TickType}\tLIVE BID");
             }
 
             return result;
@@ -407,7 +407,7 @@ namespace StockAnalyzer.DataProviders
             return fundamentalData ?? $"{contract.Symbol}\tNO_FUNDAMENTAL_DATA";
         }
 
-        private async Task<double?> CurrentPriceFromContract(int timeout, Contract contract)
+        private async Task<Price> CurrentLiveBidPriceFromContract(int timeout, Contract contract)
         {
             bool snapshot = true;
             int tickType = 1; // bid
@@ -417,7 +417,11 @@ namespace StockAnalyzer.DataProviders
                     tickType,
                     snapshot,
                     timeout);
-            return currentPrice;
+
+            // TODO
+            //if(Price == -1)
+            
+            return new Price(currentPrice, 1, tickType);
         }
 
         private static IEnumerable<XElement>? StatementElementsFromXDocument(XDocument? xDocument, string periods)
