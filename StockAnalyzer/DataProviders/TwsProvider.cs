@@ -87,8 +87,17 @@ namespace StockAnalyzer.DataProviders
                 var contractStringTrimmed = contractString.Trim();
                 Contract contract = ContractFromString(contractStringTrimmed);
                 TriggerStatus($"Retrieving current price for {contractStringTrimmed} {cnt++}/{contractStringsListTws.Count}");
+                
                 var livePrice = await CurrentLiveBidPriceFromContract(timeout, contract);
-                result.Add($"{contract.Symbol}\t{livePrice.Value}\t{livePrice.MarketDataType}\t{livePrice.TickType}\tLIVE BID");
+                if (livePrice.Value != null && livePrice.Value != -1)
+                {
+                    result.Add($"{contract.Symbol}\t{livePrice.Value}\t{livePrice.MarketDataType}\t{livePrice.TickType}\tLIVE BID");
+                }
+                else
+                {
+                    // TODO
+                }
+                
             }
 
             return result;
