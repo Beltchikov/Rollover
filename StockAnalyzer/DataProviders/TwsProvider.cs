@@ -80,7 +80,7 @@ namespace StockAnalyzer.DataProviders
         public async Task<List<string>> CurrentPriceFromContractStrings(List<string> contractStringsListTws, int timeout)
         {
             var result = new List<string>();
-            result.Add($"Ticker\tPrice\tMarket Data Type\tTick Type\tComment");
+            result.Add($"Ticker\tPrice");
 
             int cnt = 1;
             foreach (string contractString in contractStringsListTws)
