@@ -95,7 +95,7 @@ namespace StockAnalyzer.DataProviders
                 }
                 else
                 {
-                    // TODO
+                    var frozenPrice = await CurrentFrozenClosePriceFromContract(timeout, contract);
                 }
                 
             }
@@ -427,9 +427,20 @@ namespace StockAnalyzer.DataProviders
                     snapshot,
                     timeout);
 
-            // TODO
-            //if(Price == -1)
-            
+            return new Price(currentPrice, 1, tickType);
+        }
+
+        private async Task<Price> CurrentFrozenClosePriceFromContract(int timeout, Contract contract)
+        {
+            bool snapshot = true;
+            int tickType = 9; // close
+
+            var currentPrice = await _ibHost.RequestMarketDataFrozenAsync(
+                    contract,
+                    tickType,
+                    snapshot,
+                    timeout);
+
             return new Price(currentPrice, 1, tickType);
         }
 
