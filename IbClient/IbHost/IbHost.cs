@@ -122,7 +122,7 @@ namespace IbClient.IbHost
         /// <param name="tickType">Bid: 1, Ask: 2, 
         /// full list: https://interactivebrokers.github.io/tws-api/tick_types.html</param>
         /// <returns></returns>
-        public async Task<double?> RequestMarketDataAsync(
+        public async Task<double?> RequestMarketDataLiveAsync(
             Contract contract,
             int tickType,
             bool snapshot,

@@ -413,7 +413,7 @@ namespace StockAnalyzer.DataProviders
             bool frozen = true;
             int tickType = 1; // bid
 
-            var currentPrice = await _ibHost.RequestMarketDataAsync(
+            var currentPrice = await _ibHost.RequestMarketDataLiveAsync(
                     contract,
                     tickType,
                     snapshot,
