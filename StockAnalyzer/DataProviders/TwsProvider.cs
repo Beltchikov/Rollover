@@ -411,12 +411,13 @@ namespace StockAnalyzer.DataProviders
         {
             bool snapshot = true;
             bool frozen = true;
+            int tickType = 1; // bid
 
             var currentPrice = await _ibHost.RequestMarketDataAsync(
                     contract,
+                    tickType,
                     snapshot,
-                    frozen,
-                    timeout);
+                    frozen, timeout);
             return currentPrice;
         }
 

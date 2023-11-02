@@ -122,7 +122,12 @@ namespace IbClient.IbHost
         /// <param name="tickType">Bid: 1, Ask: 2, 
         /// full list: https://interactivebrokers.github.io/tws-api/tick_types.html</param>
         /// <returns></returns>
-        public async Task<double?> RequestMarketDataAsync(Contract contract, bool snapshot, bool frozen, int timeout)
+        public async Task<double?> RequestMarketDataAsync(
+            Contract contract,
+            int tickType,
+            bool snapshot,
+            bool frozen,
+            int timeout)
         {
             double? price = null;
 
@@ -147,7 +152,10 @@ namespace IbClient.IbHost
 
                 if (_queue.Dequeue() is TickPriceMessage tickPriceMessage)
                 {
-                    price = tickPriceMessage.Price;
+                    if (tickPriceMessage.Field == tickType)
+                    {
+                        price = tickPriceMessage.Price;
+                    }
                 }
             });
 
