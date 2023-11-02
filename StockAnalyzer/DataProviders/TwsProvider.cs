@@ -80,6 +80,7 @@ namespace StockAnalyzer.DataProviders
         public async Task<List<string>> CurrentPriceFromContractStrings(List<string> contractStringsListTws, int timeout)
         {
             var result = new List<string>();
+            result.Add($"Ticker\tPrice\tMarket Data Type\tTick Type\tComment");
 
             int cnt = 1;
             foreach (string contractString in contractStringsListTws)
@@ -87,7 +88,7 @@ namespace StockAnalyzer.DataProviders
                 var contractStringTrimmed = contractString.Trim();
                 Contract contract = ContractFromString(contractStringTrimmed);
                 TriggerStatus($"Retrieving current price for {contractStringTrimmed} {cnt++}/{contractStringsListTws.Count}");
-                
+
                 var livePrice = await CurrentLiveBidPriceFromContract(timeout, contract);
                 if (livePrice.Value != null && livePrice.Value != -1)
                 {
@@ -96,8 +97,11 @@ namespace StockAnalyzer.DataProviders
                 else
                 {
                     var frozenPrice = await CurrentFrozenClosePriceFromContract(timeout, contract);
+                    if (frozenPrice.Value != null && frozenPrice.Value != -1)
+                    {
+                        result.Add($"{contract.Symbol}\t{frozenPrice.Value}\t{frozenPrice.MarketDataType}\t{frozenPrice.TickType}\tFROZEN CLOSE");
+                    }
                 }
-                
             }
 
             return result;
@@ -208,7 +212,7 @@ namespace StockAnalyzer.DataProviders
 
                 string currency = CurrencyFromXDocument(xDocument);
                 var interimPeriodsElement = PeriodsElementFromXDocument(xDocument, "InterimPeriods")?.FirstOrDefault();
-                if(interimPeriodsElement == null)
+                if (interimPeriodsElement == null)
                 {
                     if (!resultQuarterly.Any()) resultQuarterly.Add($"Ticker\tCurrency\tNetIncomeQ4(M)\tDivQ4\tRatioQ4\tNetIncomeQ3\tDivQ3\tRatioQ3" +
                         $"\tNetIncomeQ2\tDivQ2\tRatioQ2\tNetIncomeQ1\tDivQ1\tRatioQ1" +
