@@ -106,15 +106,22 @@ namespace StockAnalyzer.DataProviders
                 string[] comments = new[]
                 { "LIVE BID", "LIVE LAST TRADED", "FROZEN CLOSE", "DELAYED BID", "DELAYED LAST TRADED", "FROZEN DELAYED CLOSE" };
 
-                int i = 0;
-                Price? currentPrice = null;
-                while (currentPrice == null || currentPrice.Value == null || currentPrice.Value <= 0)
+                try
                 {
-                    currentPrice = await CurrentPriceFromContract(contract, marketDataTypes[i], tickTypes[i], timeout);
-                    i++;
+                    int i = 0;
+                    Price? currentPrice = null;
+                    while (currentPrice == null || currentPrice.Value == null || currentPrice.Value <= 0)
+                    {
+                        currentPrice = await CurrentPriceFromContract(contract, marketDataTypes[i], tickTypes[i], timeout);
+                        i++;
+                    }
+                    result.Add($"{contract.Symbol}\t{currentPrice.Value}\t{contract.Currency}" +
+                        $"\t{marketDataTypes[i - 1]}\t{tickTypes[i - 1]}\t{comments[i - 1]}");
                 }
-                result.Add($"{contract.Symbol}\t{currentPrice.Value}\t{contract.Currency}" +
-                    $"\t{marketDataTypes[i - 1]}\t{tickTypes[i - 1]}\t{comments[i - 1]}");
+                catch (IndexOutOfRangeException ex)
+                {
+                    result.Add($"{contract.Symbol}\tIndexOutOfRangeException: please try again\t{ex}");
+                }
             }
 
             return result;
