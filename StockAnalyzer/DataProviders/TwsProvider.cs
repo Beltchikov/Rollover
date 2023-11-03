@@ -88,7 +88,7 @@ namespace StockAnalyzer.DataProviders
         public async Task<List<string>> CurrentPriceFromContractStrings(List<string> contractStringsListTws, int timeout)
         {
             var result = new List<string>();
-            result.Add($"Ticker\tPrice\tMarket Data Type\tTick Type\tComment");
+            result.Add($"Ticker\tPrice\tCurrency\tMarket Data Type\tTick Type\tComment");
 
             int cnt = 1;
             foreach (string contractString in contractStringsListTws)
@@ -113,7 +113,8 @@ namespace StockAnalyzer.DataProviders
                     currentPrice = await CurrentPriceFromContract(contract, marketDataTypes[i], tickTypes[i], timeout);
                     i++;
                 }
-                result.Add($"{contract.Symbol}\t{currentPrice.Value}\t{marketDataTypes[i - 1]}\t{tickTypes[i - 1]}\t{comments[i - 1]}");
+                result.Add($"{contract.Symbol}\t{currentPrice.Value}\t{contract.Currency}" +
+                    $"\t{marketDataTypes[i - 1]}\t{tickTypes[i - 1]}\t{comments[i - 1]}");
             }
 
             return result;
