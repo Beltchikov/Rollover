@@ -1,10 +1,9 @@
 ﻿using IBApi;
 using IbClient.messages;
+using IbClient.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Security.AccessControl;
 using System.Threading.Tasks;
 
 namespace IbClient.IbHost
@@ -123,9 +122,9 @@ namespace IbClient.IbHost
         /// <param name="tickType">Bid: 1, Ask: 2, 
         /// full list: https://interactivebrokers.github.io/tws-api/tick_types.html</param>
         /// <returns></returns>
-        public async Task<double?> RequestMarketDataAsync(Contract contract, int marketDataType, int tickType, bool snapshot, int timeout)
+        public async Task<double?> RequestMarketDataAsync(Contract contract, MarketDataType marketDataType, int tickType, bool snapshot, int timeout)
         {
-            _ibClient.ClientSocket.reqMarketDataType(marketDataType);
+            _ibClient.ClientSocket.reqMarketDataType(((int)marketDataType));
 
             double? price = null;
             var reqId = ++_currentReqId;

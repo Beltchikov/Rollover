@@ -1,5 +1,6 @@
 ﻿using IBApi;
 using IbClient.IbHost;
+using IbClient.Types;
 using StockAnalyzer.DataProviders.FinancialStatements.Tws.Accounts;
 using StockAnalyzer.DataProviders.FinancialStatements.Tws.ComputedFinancials;
 using StockAnalyzer.DataProviders.Types;
@@ -95,7 +96,9 @@ namespace StockAnalyzer.DataProviders
                 Contract contract = ContractFromString(contractStringTrimmed);
                 TriggerStatus($"Retrieving current price for {contractStringTrimmed} {cnt++}/{contractStringsListTws.Count}");
 
-                int[] marketDataTypes = new[] { 1, 1, 2, 3, 3, 4 };
+                MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.Live, 
+                    MarketDataType.Frozen, MarketDataType.Delayed, 
+                    MarketDataType.Delayed, MarketDataType.DelayedFrozen };
                 int[] tickTypes = new[] { 1, 4, 9, 66, 68, 75 };
                 string[] comments = new[]
                 { "LIVE BID", "LIVE LAST TRADED", "FROZEN CLOSE", "DELAYED BID", "DELAYED LAST TRADED", "FROZEN DELAYED CLOSE" };
@@ -419,7 +422,7 @@ namespace StockAnalyzer.DataProviders
             return fundamentalData ?? $"{contract.Symbol}\tNO_FUNDAMENTAL_DATA";
         }
 
-        private async Task<Price> CurrentPriceFromContract(Contract contract, int marketDataType, int tickType, int timeout)
+        private async Task<Price> CurrentPriceFromContract(Contract contract, MarketDataType marketDataType, int tickType, int timeout)
         {
             bool snapshot = true;
 

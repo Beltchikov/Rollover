@@ -113,6 +113,7 @@
     <Compile Include="messages\UpdateAccountTimeMessage.cs" />
     <Compile Include="messages\UpdatePortfolioMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Types\MarketDataType.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\TWSAPI\source\CSharpClient\client\CSharpAPI.csproj">
@@ -125,5 +126,6 @@
       <Link>.editorconfig</Link>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

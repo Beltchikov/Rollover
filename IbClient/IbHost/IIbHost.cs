@@ -1,4 +1,5 @@
 ﻿using IBApi;
+using IbClient.Types;
 using System.Threading.Tasks;
 
 namespace IbClient.IbHost
@@ -16,8 +17,8 @@ namespace IbClient.IbHost
                     string reportType,
                     int timeout);
         Task<double?> RequestMarketDataAsync(
-                    Contract contract,
-                    int marketDataType,
+        Contract contract,
+                    MarketDataType marketDataType,
                     int tickType,
                     bool snapshot, int timeout);
 
