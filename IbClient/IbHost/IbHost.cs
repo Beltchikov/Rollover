@@ -13,7 +13,7 @@ namespace IbClient.IbHost
         IIBClient _ibClient;
         private IIbHostQueue _queue;
         private int _currentReqId = 0;
-
+        private int _tickType;
         public static readonly string DEFAULT_SEC_TYPE = "STK";
         public static readonly string DEFAULT_CURRENCY = "USD";
         public static readonly string DEFAULT_EXCHANGE = "SMART";
@@ -124,6 +124,7 @@ namespace IbClient.IbHost
         /// <returns></returns>
         public async Task<double?> RequestMarketDataAsync(Contract contract, MarketDataType marketDataType, int tickType, bool snapshot, int timeout)
         {
+            _tickType = tickType;
             _ibClient.ClientSocket.reqMarketDataType(((int)marketDataType));
 
             double? price = null;
@@ -255,7 +256,7 @@ namespace IbClient.IbHost
             Consumer.TwsMessageCollection?.Add($"TickPriceMessage for {tickPriceMessage.RequestId} " +
                 $"field:{tickPriceMessage.Field} price:{tickPriceMessage.Price}");
 
-            if (tickPriceMessage.Field == 1) // Highest priced bid for the contract.
+            if (tickPriceMessage.Field == _tickType) 
             {
                 _queue.Enqueue(tickPriceMessage);
             }
