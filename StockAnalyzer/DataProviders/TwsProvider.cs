@@ -89,7 +89,7 @@ namespace StockAnalyzer.DataProviders
                 Contract contract = ContractFromString(contractStringTrimmed);
                 TriggerStatus($"Retrieving current price for {contractStringTrimmed} {cnt++}/{contractStringsListTws.Count}");
 
-                var livePrice = await CurrentLiveBidPriceFromContract(timeout, contract);
+                var livePrice = await CurrentPriceFromContract(timeout, contract);
                 if (livePrice.Value != null && livePrice.Value != -1)
                 {
                     result.Add($"{contract.Symbol}\t{livePrice.Value}\t{livePrice.MarketDataType}\t{livePrice.TickType}\tLIVE BID");
@@ -412,7 +412,7 @@ namespace StockAnalyzer.DataProviders
             return fundamentalData ?? $"{contract.Symbol}\tNO_FUNDAMENTAL_DATA";
         }
 
-        private async Task<Price> CurrentLiveBidPriceFromContract(int timeout, Contract contract)
+        private async Task<Price> CurrentPriceFromContract(int timeout, Contract contract)
         {
             bool snapshot = true;
             int tickType = 1; // bid
