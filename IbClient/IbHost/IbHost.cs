@@ -3,6 +3,7 @@ using IbClient.messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.AccessControl;
 using System.Threading.Tasks;
 
@@ -124,6 +125,8 @@ namespace IbClient.IbHost
         /// <returns></returns>
         public async Task<double?> RequestMarketDataAsync(Contract contract, int marketDataType, int tickType, bool snapshot, int timeout)
         {
+            _ibClient.ClientSocket.reqMarketDataType(marketDataType);
+
             double? price = null;
             var reqId = ++_currentReqId;
             _ibClient.ClientSocket.reqMktData(
