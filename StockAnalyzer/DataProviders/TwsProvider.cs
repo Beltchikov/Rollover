@@ -89,19 +89,33 @@ namespace StockAnalyzer.DataProviders
                 Contract contract = ContractFromString(contractStringTrimmed);
                 TriggerStatus($"Retrieving current price for {contractStringTrimmed} {cnt++}/{contractStringsListTws.Count}");
 
-                var bidPrice = await CurrentPriceFromContract(contract, 1, 1, timeout);
-                if (bidPrice.Value != null && bidPrice.Value != -1)
+                //var bidPrice = await CurrentPriceFromContract(contract, 1, 1, timeout);
+                //if (bidPrice.Value != null && bidPrice.Value != -1)
+                //{
+                //    result.Add($"{contract.Symbol}\t{bidPrice.Value}\t{bidPrice.MarketDataType}\t{bidPrice.TickType}\tLIVE BID");
+                //}
+                //else
+                //{
+                //    var frozenPrice = await CurrentPriceFromContract(contract, 2, 9, timeout);
+                //    if (frozenPrice.Value != null && frozenPrice.Value != -1)
+                //    {
+                //        result.Add($"{contract.Symbol}\t{frozenPrice.Value}\t{frozenPrice.MarketDataType}\t{frozenPrice.TickType}\tFROZEN CLOSE");
+                //    }
+                //}
+
+                int[] marketDataTypes = new[] { 1, 2 };
+                int[] tickTypes = new[] { 1, 9 };
+                string[] comments = new[] { "LIVE BID", "FROZEN CLOSE" };
+                int i = 0;
+                Price currentPrice = null;
+                while(currentPrice == null || currentPrice.Value <=0)
                 {
-                    result.Add($"{contract.Symbol}\t{bidPrice.Value}\t{bidPrice.MarketDataType}\t{bidPrice.TickType}\tLIVE BID");
+                    currentPrice = await CurrentPriceFromContract(contract, marketDataTypes[i], tickTypes[i], timeout);
+
+                    i++;
                 }
-                else
-                {
-                    var frozenPrice = await CurrentPriceFromContract(contract, 2, 9, timeout);
-                    if (frozenPrice.Value != null && frozenPrice.Value != -1)
-                    {
-                        result.Add($"{contract.Symbol}\t{frozenPrice.Value}\t{frozenPrice.MarketDataType}\t{frozenPrice.TickType}\tFROZEN CLOSE");
-                    }
-                }
+                result.Add($"{contract.Symbol}\t{currentPrice.Value}\t{marketDataTypes[i-1]}\t{tickTypes[i-1]}\t{comments[i-1]}");
+
             }
 
             return result;
