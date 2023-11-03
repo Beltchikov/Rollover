@@ -160,45 +160,6 @@ namespace IbClient.IbHost
             return price;
         }
 
-
-        /// <summary>
-        /// </summary>
-        /// <param name="snapshot"></param>
-        /// <param name="frozen"></param>
-        /// <param name="tickType">Close: 9
-        /// full list: https://interactivebrokers.github.io/tws-api/tick_types.html</param>
-        /// <returns></returns>
-        public async Task<double?> RequestMarketDataFrozenAsync(Contract contract, int tickType, bool snapshot, int timeout)
-        {
-            _ibClient.ClientSocket.reqMarketDataType(2); // Set frozen market data type
-
-            double? price = null;
-            var reqId = ++_currentReqId;
-            _ibClient.ClientSocket.reqMktData(
-               reqId,
-               contract,
-               "",
-               snapshot,
-               false,
-               new List<TagValue>());
-
-            await Task.Run(() =>
-            {
-                var startTime = DateTime.Now;
-                while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasMessageInQueue<TickPriceMessage>(reqId)) { }
-
-                if (_queue.Dequeue() is TickPriceMessage tickPriceMessage)
-                {
-                    if (tickPriceMessage.Field == tickType)
-                    {
-                        price = tickPriceMessage.Price;
-                    }
-                }
-            });
-
-            return price;
-        }
-
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)
         {
             if (Consumer == null)
