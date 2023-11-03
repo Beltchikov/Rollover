@@ -77,6 +77,12 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
+        /// <summary>
+        /// See https://interactivebrokers.github.io/tws-api/tick_types.html
+        /// </summary>
+        /// <param name="contractStringsListTws"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
         public async Task<List<string>> CurrentPriceFromContractStrings(List<string> contractStringsListTws, int timeout)
         {
             var result = new List<string>();
@@ -89,20 +95,20 @@ namespace StockAnalyzer.DataProviders
                 Contract contract = ContractFromString(contractStringTrimmed);
                 TriggerStatus($"Retrieving current price for {contractStringTrimmed} {cnt++}/{contractStringsListTws.Count}");
 
-                int[] marketDataTypes = new[] { 1, 1, 2 };
-                int[] tickTypes = new[] { 1, 4, 9 };
-                string[] comments = new[] { "LIVE BID", "LIVE LAST TRADED", "FROZEN CLOSE" };
-                
+                int[] marketDataTypes = new[] { 1, 1, 2, 3, 3, 4 };
+                int[] tickTypes = new[] { 1, 4, 9, 66, 68, 75 };
+                string[] comments = new[]
+                { "LIVE BID", "LIVE LAST TRADED", "FROZEN CLOSE", "DELAYED BID", "DELAYED LAST TRADED", "FROZEN DELAYED CLOSE" };
+
                 int i = 0;
                 Price? currentPrice = null;
-                while(currentPrice == null || currentPrice.Value <=0)
+                while (currentPrice == null || currentPrice.Value <= 0)
                 {
                     currentPrice = await CurrentPriceFromContract(contract, marketDataTypes[i], tickTypes[i], timeout);
 
                     i++;
                 }
-                result.Add($"{contract.Symbol}\t{currentPrice.Value}\t{marketDataTypes[i-1]}\t{tickTypes[i-1]}\t{comments[i-1]}");
-
+                result.Add($"{contract.Symbol}\t{currentPrice.Value}\t{marketDataTypes[i - 1]}\t{tickTypes[i - 1]}\t{comments[i - 1]}");
             }
 
             return result;
@@ -416,10 +422,10 @@ namespace StockAnalyzer.DataProviders
         private async Task<Price> CurrentPriceFromContract(Contract contract, int marketDataType, int tickType, int timeout)
         {
             bool snapshot = true;
-            
+
             var currentPrice = await _ibHost.RequestMarketDataAsync(
                     contract,
-                    marketDataType, 
+                    marketDataType,
                     tickType,
                     snapshot,
                     timeout);
