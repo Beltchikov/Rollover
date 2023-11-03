@@ -89,14 +89,14 @@ namespace StockAnalyzer.DataProviders
                 Contract contract = ContractFromString(contractStringTrimmed);
                 TriggerStatus($"Retrieving current price for {contractStringTrimmed} {cnt++}/{contractStringsListTws.Count}");
 
-                var livePrice = await CurrentPriceFromContract(timeout, contract);
-                if (livePrice.Value != null && livePrice.Value != -1)
+                var bidPrice = await CurrentPriceFromContract(contract, 1, 1, timeout);
+                if (bidPrice.Value != null && bidPrice.Value != -1)
                 {
-                    result.Add($"{contract.Symbol}\t{livePrice.Value}\t{livePrice.MarketDataType}\t{livePrice.TickType}\tLIVE BID");
+                    result.Add($"{contract.Symbol}\t{bidPrice.Value}\t{bidPrice.MarketDataType}\t{bidPrice.TickType}\tLIVE BID");
                 }
                 else
                 {
-                    var frozenPrice = await CurrentFrozenClosePriceFromContract(timeout, contract);
+                    var frozenPrice = await CurrentPriceFromContract(contract, 2, 9, timeout);
                     if (frozenPrice.Value != null && frozenPrice.Value != -1)
                     {
                         result.Add($"{contract.Symbol}\t{frozenPrice.Value}\t{frozenPrice.MarketDataType}\t{frozenPrice.TickType}\tFROZEN CLOSE");
@@ -412,27 +412,13 @@ namespace StockAnalyzer.DataProviders
             return fundamentalData ?? $"{contract.Symbol}\tNO_FUNDAMENTAL_DATA";
         }
 
-        private async Task<Price> CurrentPriceFromContract(int timeout, Contract contract)
+        private async Task<Price> CurrentPriceFromContract(Contract contract, int marketDataType, int tickType, int timeout)
         {
             bool snapshot = true;
-            int tickType = 1; // bid
-
-            var currentPrice = await _ibHost.RequestMarketDataLiveAsync(
+            
+            var currentPrice = await _ibHost.RequestMarketDataAsync(
                     contract,
-                    tickType,
-                    snapshot,
-                    timeout);
-
-            return new Price(currentPrice, 1, tickType);
-        }
-
-        private async Task<Price> CurrentFrozenClosePriceFromContract(int timeout, Contract contract)
-        {
-            bool snapshot = true;
-            int tickType = 9; // close
-
-            var currentPrice = await _ibHost.RequestMarketDataFrozenAsync(
-                    contract,
+                    marketDataType, 
                     tickType,
                     snapshot,
                     timeout);

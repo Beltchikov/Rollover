@@ -15,17 +15,11 @@ namespace IbClient.IbHost
                     Contract contract,
                     string reportType,
                     int timeout);
-        Task<double?> RequestMarketDataLiveAsync(
+        Task<double?> RequestMarketDataAsync(
                     Contract contract,
+                    int marketDataType,
                     int tickType,
-                    bool snapshot,
-                    int timeout);
-
-        Task<double?> RequestMarketDataFrozenAsync(
-            Contract contract,
-            int tickType,
-            bool snapshot,
-            int timeout);
+                    bool snapshot, int timeout);
 
         //public void ReqHistoricalData();
         //void ApplyDefaultHistoricalData();
