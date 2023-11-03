@@ -145,18 +145,6 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
-        private static string TickerFromXDocument(XDocument? xDocument)
-        {
-            string ticker;
-            var issuesElement = xDocument?.Descendants("Issues").FirstOrDefault();
-            var issueElements = issuesElement?.Descendants("Issue");
-            var issueElementId1 = issueElements?.FirstOrDefault(e => e.Attribute("ID")?.Value == "1");
-            var issueIdElements = issueElementId1?.Descendants("IssueID");
-            var issueIdElementTicker = issueIdElements?.FirstOrDefault(e => e.Attribute("Type")?.Value == "Ticker");
-            ticker = issueIdElementTicker?.Value ?? "";
-            return ticker;
-        }
-
         private static string CurrencyFromXDocument(XDocument? xDocument)
         {
             var coGeneralInfoElement = xDocument?.Descendants("CoGeneralInfo").FirstOrDefault();
@@ -222,7 +210,7 @@ namespace StockAnalyzer.DataProviders
                     continue;
                 }
 
-                bool? twiceAYear = ReportingIsTwiceAYear(resultTwiceAYear, xDocument, interimPeriodsElement);
+                bool? twiceAYear = ReportingIsTwiceAYear(resultTwiceAYear, xDocument, interimPeriodsElement, fundamentalData.Ticker);
 
                 if (twiceAYear.HasValue)
                 {
@@ -241,13 +229,17 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
-        private bool? ReportingIsTwiceAYear(List<string> resultTwiceAYear, XDocument? xDocument, XElement? interimPeriodsElement)
+        private bool? ReportingIsTwiceAYear(
+            List<string> resultTwiceAYear,
+            XDocument? xDocument,
+            XElement? interimPeriodsElement,
+            string ticker)
         {
             bool? twiceAYear;
             BoolWithError twiceAYearOrError = ReportingFrequencyIsTwiceAYear(interimPeriodsElement);  // otherwise quarterly
             if (twiceAYearOrError.Value == null)
             {
-                resultTwiceAYear.Add($"{TickerFromXDocument(xDocument)}\t{twiceAYearOrError.Error}");
+                resultTwiceAYear.Add($"{ticker}\t{twiceAYearOrError.Error}");
             }
             twiceAYear = twiceAYearOrError.Value;
             return twiceAYear;
