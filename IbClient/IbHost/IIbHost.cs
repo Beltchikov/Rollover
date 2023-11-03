@@ -19,7 +19,7 @@ namespace IbClient.IbHost
         Task<double?> RequestMarketDataAsync(
         Contract contract,
                     MarketDataType marketDataType,
-                    int tickType,
+                    Types.TickType tickType,
                     bool snapshot, int timeout);
 
         //public void ReqHistoricalData();

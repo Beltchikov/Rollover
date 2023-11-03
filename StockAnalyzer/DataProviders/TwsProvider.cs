@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using TickType = IbClient.Types.TickType;
 
 namespace StockAnalyzer.DataProviders
 {
@@ -99,7 +100,9 @@ namespace StockAnalyzer.DataProviders
                 MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.Live, 
                     MarketDataType.Frozen, MarketDataType.Delayed, 
                     MarketDataType.Delayed, MarketDataType.DelayedFrozen };
-                int[] tickTypes = new[] { 1, 4, 9, 66, 68, 75 };
+                TickType[] tickTypes = new[] { TickType.BidPrice, TickType.LastPrice, 
+                    TickType.ClosePrice, TickType.DelayedBid,
+                    TickType.DelayedLast, TickType.DelayedClose };
                 string[] comments = new[]
                 { "LIVE BID", "LIVE LAST TRADED", "FROZEN CLOSE", "DELAYED BID", "DELAYED LAST TRADED", "FROZEN DELAYED CLOSE" };
 
@@ -422,7 +425,7 @@ namespace StockAnalyzer.DataProviders
             return fundamentalData ?? $"{contract.Symbol}\tNO_FUNDAMENTAL_DATA";
         }
 
-        private async Task<Price> CurrentPriceFromContract(Contract contract, MarketDataType marketDataType, int tickType, int timeout)
+        private async Task<Price> CurrentPriceFromContract(Contract contract, MarketDataType marketDataType, TickType tickType, int timeout)
         {
             bool snapshot = true;
 
@@ -433,7 +436,7 @@ namespace StockAnalyzer.DataProviders
                     snapshot,
                     timeout);
 
-            return new Price(currentPrice, 1, tickType);
+            return new Price(currentPrice, 1, (int)tickType);
         }
 
         private static IEnumerable<XElement>? StatementElementsFromXDocument(XDocument? xDocument, string periods)

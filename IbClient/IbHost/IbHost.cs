@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TickType = IbClient.Types.TickType;
 
 namespace IbClient.IbHost
 {
@@ -122,9 +123,14 @@ namespace IbClient.IbHost
         /// <param name="tickType">Bid: 1, Ask: 2, 
         /// full list: https://interactivebrokers.github.io/tws-api/tick_types.html</param>
         /// <returns></returns>
-        public async Task<double?> RequestMarketDataAsync(Contract contract, MarketDataType marketDataType, int tickType, bool snapshot, int timeout)
+        public async Task<double?> RequestMarketDataAsync(
+            Contract contract,
+            MarketDataType marketDataType,
+            TickType tickType,
+            bool snapshot,
+            int timeout)
         {
-            _tickType = tickType;
+            _tickType = (int)tickType;
             _ibClient.ClientSocket.reqMarketDataType(((int)marketDataType));
 
             double? price = null;
@@ -144,7 +150,7 @@ namespace IbClient.IbHost
 
                 if (_queue.Dequeue() is TickPriceMessage tickPriceMessage)
                 {
-                    if (tickPriceMessage.Field == tickType)
+                    if (tickPriceMessage.Field == (int)tickType)
                     {
                         price = tickPriceMessage.Price;
                     }
