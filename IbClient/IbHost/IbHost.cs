@@ -4,6 +4,7 @@ using IbClient.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using TickType = IbClient.Types.TickType;
 
@@ -30,6 +31,7 @@ namespace IbClient.IbHost
             _ibClient.ContractDetails += _ibClient_ContractDetails;
             _ibClient.FundamentalData += _ibClient_FundamentalData;
             _ibClient.TickPrice += _ibClient_TickPrice;
+            _ibClient.TickSnapshotEnd += _ibClient_TickSnapshotEnd;
 
             _queue = queue;
 
@@ -223,10 +225,21 @@ namespace IbClient.IbHost
             Consumer.TwsMessageCollection?.Add($"TickPriceMessage for {tickPriceMessage.RequestId} " +
                 $"field:{tickPriceMessage.Field} price:{tickPriceMessage.Price}");
 
-            if (tickPriceMessage.Field == _tickType) 
+            if (tickPriceMessage.Field == _tickType)
             {
                 _queue.Enqueue(tickPriceMessage);
             }
+        }
+
+        private void _ibClient_TickSnapshotEnd(int obj)
+        {
+            if (Consumer == null)
+            {
+                throw new ApplicationException("Unexpected! Consumer is null");
+            }
+            Consumer.TwsMessageCollection?.Add($"TickSnapshotEnd for {obj} ");
+
+            // TODO
         }
 
         private bool HasMessageInQueue<T>(int reqId)
