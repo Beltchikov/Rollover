@@ -113,6 +113,7 @@
     <Compile Include="messages\UpdateAccountTimeMessage.cs" />
     <Compile Include="messages\UpdatePortfolioMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Types\MarketDataSnapshotResponse.cs" />
     <Compile Include="Types\MarketDataType.cs" />
     <Compile Include="Types\TickType.cs" />
   </ItemGroup>
