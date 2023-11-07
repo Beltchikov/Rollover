@@ -14,6 +14,7 @@ namespace IbClient.IbHost
     {
         IIBClient _ibClient;
         private IIbHostQueue _queue;
+        private IMarketDataResponseList _marketDataResponseList;
         private int _currentReqId = 0;
         private int _tickType;
         public static readonly string DEFAULT_SEC_TYPE = "STK";
@@ -34,6 +35,7 @@ namespace IbClient.IbHost
             _ibClient.TickSnapshotEnd += _ibClient_TickSnapshotEnd;
 
             _queue = queue;
+            _marketDataResponseList = new MarketDataResponseList();
 
             //_ibClient.HistoricalData += _ibClient_HistoricalData;
             //_ibClient.HistoricalDataUpdate += _ibClient_HistoricalDataUpdate;
@@ -137,6 +139,7 @@ namespace IbClient.IbHost
 
             double? price = null;
             var reqId = ++_currentReqId;
+            _marketDataResponseList.Add(reqId);
             _ibClient.ClientSocket.reqMktData(
                reqId,
                contract,
