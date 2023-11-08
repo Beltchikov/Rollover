@@ -38,12 +38,5 @@ namespace IbClient.Types
             MarketDataSnapshotResponse response = _responseList.Single(r => r.GetId() == reqId);
             return response.EndOfSnapshot();
         }
-
-        public double? GetPrice(int reqId, TickType tickType)
-        {
-            MarketDataSnapshotResponse response = _responseList.Single(r => r.GetId() == reqId);
-            return response.GetPrice(tickType);
-            //return _responseList.Single(r => r.GetResponse()) == reqId);
-        }
     }
 }
