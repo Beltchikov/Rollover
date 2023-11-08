@@ -105,6 +105,7 @@ namespace IbClient.IbHost
             await Task.Run(() =>
             {
                 var startTime = DateTime.Now;
+                //while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasCompletedResponseInQueue(reqId)) { }
                 while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasMessageInQueue<FundamentalsMessage>()) { }
 
                 if (_queue.Dequeue() is FundamentalsMessage fundamentalsMessage)
@@ -151,14 +152,26 @@ namespace IbClient.IbHost
             await Task.Run(() =>
             {
                 var startTime = DateTime.Now;
-                while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasMessageInQueue<TickPriceMessage>(reqId)) { }
+                //while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasMessageInQueue<TickPriceMessage>(reqId)) { }
+                while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasCompletedResponseInQueue(reqId)) { }
 
-                if (_queue.Dequeue() is TickPriceMessage tickPriceMessage)
+                //if (_queue.Dequeue() is TickPriceMessage tickPriceMessage)
+                //{
+                //    if (tickPriceMessage.Field == (int)tickType)
+                //    {
+                //        price = tickPriceMessage.Price;
+                //    }
+                //}
+
+                if (_queue.Dequeue() is MarketDataSnapshotResponse marketDataSnapshotResponse)
                 {
-                    if (tickPriceMessage.Field == (int)tickType)
-                    {
-                        price = tickPriceMessage.Price;
-                    }
+                    price = marketDataSnapshotResponse.GetPrice(tickType);
+
+
+                    //if (tickPriceMessage.Field == (int)tickType)
+                    //{
+                    //    price = tickPriceMessage.Price;
+                    //}
                 }
             });
 
@@ -228,21 +241,25 @@ namespace IbClient.IbHost
             Consumer.TwsMessageCollection?.Add($"TickPriceMessage for {tickPriceMessage.RequestId} " +
                 $"field:{tickPriceMessage.Field} price:{tickPriceMessage.Price}");
 
-            if (tickPriceMessage.Field == _tickType)
-            {
-                _queue.Enqueue(tickPriceMessage);
-            }
+            //if (tickPriceMessage.Field == _tickType)
+            //{
+            //    _queue.Enqueue(tickPriceMessage);
+            //}
+
+            _marketDataResponseList.UpdateResponse(tickPriceMessage);
         }
 
-        private void _ibClient_TickSnapshotEnd(int obj)
+        private void _ibClient_TickSnapshotEnd(int reqId)
         {
             if (Consumer == null)
             {
                 throw new ApplicationException("Unexpected! Consumer is null");
             }
-            Consumer.TwsMessageCollection?.Add($"TickSnapshotEnd for {obj} ");
+            Consumer.TwsMessageCollection?.Add($"TickSnapshotEnd for {reqId} ");
 
             // TODO
+            var response = _marketDataResponseList.SetCompleted(reqId);
+            _queue.Enqueue(response);
         }
 
         private bool HasMessageInQueue<T>(int reqId)
@@ -286,6 +303,19 @@ namespace IbClient.IbHost
                 return false;
             }
 
+            return true;
+        }
+
+        private bool HasCompletedResponseInQueue(int reqId)
+        {
+            if (!(_queue.Peek() is MarketDataResponseList marketDataResponseList))
+            {
+                return false;
+            }
+            if (!marketDataResponseList.ResponseIsCompleted(reqId))
+            {
+                return false;
+            }
             return true;
         }
 

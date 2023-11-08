@@ -97,26 +97,30 @@ namespace StockAnalyzer.DataProviders
                 Contract contract = ContractFromString(contractStringTrimmed);
                 TriggerStatus($"Retrieving current price for {contractStringTrimmed} {cnt++}/{contractStringsListTws.Count}");
 
-                MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.Live,
-                    MarketDataType.Frozen, MarketDataType.Delayed,
-                    MarketDataType.Delayed, MarketDataType.DelayedFrozen };
-                TickType[] tickTypes = new[] { TickType.BidPrice, TickType.LastPrice,
-                    TickType.ClosePrice, TickType.DelayedBid,
-                    TickType.DelayedLast, TickType.DelayedClose };
-                string[] comments = new[]
-                { "LIVE BID", "LIVE LAST TRADED", "FROZEN CLOSE", "DELAYED BID", "DELAYED LAST TRADED", "FROZEN DELAYED CLOSE" };
+                //MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.Live,
+                //    MarketDataType.Frozen, MarketDataType.Delayed,
+                //    MarketDataType.Delayed, MarketDataType.DelayedFrozen };
+                //TickType[] tickTypes = new[] { TickType.BidPrice, TickType.LastPrice,
+                //    TickType.ClosePrice, TickType.DelayedBid,
+                //    TickType.DelayedLast, TickType.DelayedClose };
+                //string[] comments = new[]
+                //{ "LIVE BID", "LIVE LAST TRADED", "FROZEN CLOSE", "DELAYED BID", "DELAYED LAST TRADED", "FROZEN DELAYED CLOSE" };
+
+                MarketDataType[] marketDataTypes = new[] { MarketDataType.Live};
+                TickType[] tickTypes = new[] { TickType.BidPrice};
+                string[] comments = new[] { "LIVE BID" };
 
                 try
                 {
                     int i = 0;
                     Price? currentPrice = null;
-                    while (currentPrice == null || currentPrice.Value == null || currentPrice.Value <= 0)
-                    {
-                        currentPrice = await CurrentPriceFromContract(contract, marketDataTypes[i], tickTypes[i], timeout);
-                        i++;
-                    }
+                    //while (currentPrice == null || currentPrice.Value == null || currentPrice.Value <= 0)
+                    //{
+                        currentPrice = await CurrentPriceFromContract(contract, marketDataTypes[0], tickTypes[0], timeout);
+                        //i++;
+                    //}
                     result.Add($"{contract.Symbol}\t{currentPrice.Value}\t{contract.Currency}" +
-                        $"\t{marketDataTypes[i - 1]}\t{tickTypes[i - 1]}\t{comments[i - 1]}");
+                        $"\t{marketDataTypes[0]}\t{tickTypes[0]}\t{comments[0]}");
                 }
                 catch (IndexOutOfRangeException ex)
                 {
