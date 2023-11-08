@@ -7,6 +7,5 @@ namespace IbClient.Types
         void Add(int reqId);
         void UpdateResponse(TickPriceMessage tickPriceMessage);
         MarketDataSnapshotResponse SetCompleted(int reqId);
-        bool ResponseIsCompleted(int reqId);
     }
 }

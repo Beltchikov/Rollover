@@ -1,5 +1,4 @@
 ﻿using IbClient.messages;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -21,22 +20,16 @@ namespace IbClient.Types
 
         public void UpdateResponse(TickPriceMessage tickPriceMessage)
         {
-            MarketDataSnapshotResponse response = _responseList.Single(r => r.GetId() == tickPriceMessage.RequestId);
+            MarketDataSnapshotResponse response = _responseList.Single(r => r.GetReqId() == tickPriceMessage.RequestId);
             response.AddTickPriceMessage(tickPriceMessage);
 
         }
 
         public MarketDataSnapshotResponse SetCompleted(int reqId)
         {
-            MarketDataSnapshotResponse response = _responseList.Single(r => r.GetId() == reqId);
+            MarketDataSnapshotResponse response = _responseList.Single(r => r.GetReqId() == reqId);
             response.SetEndOfSnapshot();
             return response;
-        }
-
-        public bool ResponseIsCompleted(int reqId)
-        {
-            MarketDataSnapshotResponse response = _responseList.Single(r => r.GetId() == reqId);
-            return response.EndOfSnapshot();
         }
     }
 }

@@ -152,26 +152,10 @@ namespace IbClient.IbHost
             await Task.Run(() =>
             {
                 var startTime = DateTime.Now;
-                //while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasMessageInQueue<TickPriceMessage>(reqId)) { }
                 while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasCompletedResponseInQueue(reqId)) { }
-
-                //if (_queue.Dequeue() is TickPriceMessage tickPriceMessage)
-                //{
-                //    if (tickPriceMessage.Field == (int)tickType)
-                //    {
-                //        price = tickPriceMessage.Price;
-                //    }
-                //}
-
                 if (_queue.Dequeue() is MarketDataSnapshotResponse marketDataSnapshotResponse)
                 {
                     price = marketDataSnapshotResponse.GetPrice(tickType);
-
-
-                    //if (tickPriceMessage.Field == (int)tickType)
-                    //{
-                    //    price = tickPriceMessage.Price;
-                    //}
                 }
             });
 
@@ -240,12 +224,6 @@ namespace IbClient.IbHost
             }
             Consumer.TwsMessageCollection?.Add($"TickPriceMessage for {tickPriceMessage.RequestId} " +
                 $"field:{tickPriceMessage.Field} price:{tickPriceMessage.Price}");
-
-            //if (tickPriceMessage.Field == _tickType)
-            //{
-            //    _queue.Enqueue(tickPriceMessage);
-            //}
-
             _marketDataResponseList.UpdateResponse(tickPriceMessage);
         }
 
@@ -308,11 +286,15 @@ namespace IbClient.IbHost
 
         private bool HasCompletedResponseInQueue(int reqId)
         {
-            if (!(_queue.Peek() is MarketDataResponseList marketDataResponseList))
+            if (!(_queue.Peek() is MarketDataSnapshotResponse marketDataSnapshotResponse))
             {
                 return false;
             }
-            if (!marketDataResponseList.ResponseIsCompleted(reqId))
+            if (marketDataSnapshotResponse.GetReqId() != reqId)
+            {
+                return false;
+            }
+            if (!marketDataSnapshotResponse.EndOfSnapshot())
             {
                 return false;
             }

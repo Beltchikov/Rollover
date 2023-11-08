@@ -106,19 +106,13 @@ namespace StockAnalyzer.DataProviders
                 //string[] comments = new[]
                 //{ "LIVE BID", "LIVE LAST TRADED", "FROZEN CLOSE", "DELAYED BID", "DELAYED LAST TRADED", "FROZEN DELAYED CLOSE" };
 
-                MarketDataType[] marketDataTypes = new[] { MarketDataType.Live};
-                TickType[] tickTypes = new[] { TickType.BidPrice};
+                MarketDataType[] marketDataTypes = new[] { MarketDataType.Live };
+                TickType[] tickTypes = new[] { TickType.BidPrice };
                 string[] comments = new[] { "LIVE BID" };
 
                 try
                 {
-                    int i = 0;
-                    Price? currentPrice = null;
-                    //while (currentPrice == null || currentPrice.Value == null || currentPrice.Value <= 0)
-                    //{
-                        currentPrice = await CurrentPriceFromContract(contract, marketDataTypes[0], tickTypes[0], timeout);
-                        //i++;
-                    //}
+                    Price? currentPrice = await CurrentPriceFromContract(contract, marketDataTypes[0], tickTypes[0], timeout);
                     result.Add($"{contract.Symbol}\t{currentPrice.Value}\t{contract.Currency}" +
                         $"\t{marketDataTypes[0]}\t{tickTypes[0]}\t{comments[0]}");
                 }
@@ -439,15 +433,13 @@ namespace StockAnalyzer.DataProviders
         private async Task<Price> CurrentPriceFromContract(Contract contract, MarketDataType marketDataType, TickType tickType, int timeout)
         {
             bool snapshot = true;
-
             var currentPrice = await _ibHost.RequestMarketDataAsync(
-                    contract,
-                    marketDataType,
-                    tickType,
-                    snapshot,
-                    timeout);
-
-            return new Price(currentPrice, 1, (int)tickType);
+                                contract,
+                                marketDataType,
+                                tickType,
+                                snapshot,
+                                timeout);
+            return new Price(currentPrice, (int)marketDataType, (int)tickType);
         }
 
         private static IEnumerable<XElement>? StatementElementsFromXDocument(XDocument? xDocument, string periods)

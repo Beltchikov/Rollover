@@ -21,7 +21,7 @@ namespace IbClient.Types
             _tickSizeMessages = new List<TickSizeMessage>();
         }
 
-        public int GetId()
+        public int GetReqId()
         {
             return _reqId;
         }
