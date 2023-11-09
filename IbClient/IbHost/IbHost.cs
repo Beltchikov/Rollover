@@ -144,75 +144,38 @@ namespace IbClient.IbHost
             { "LIVE BID", "LIVE LAST TRADED", "FROZEN CLOSE", "DELAYED BID", "DELAYED LAST TRADED", "FROZEN DELAYED CLOSE" };
 
             double? price = null;
-
-
-            //MarketDataType[] marketDataTypes = new[] { MarketDataType.Live };
-            //TickType[] tickTypes = new[] { TickType.BidPrice };
-            //string[] comments = new[] { "LIVE BID" };
-
-
-
             await Task.Run(() =>
-            {
+                        {
 
-                for (int i = 0; i < marketDataTypes.Length; i++)
-                {
-                    var marketDataType = marketDataTypes[i];
-                    _ibClient.ClientSocket.reqMarketDataType(((int)marketDataType));
+                            for (int i = 0; i < marketDataTypes.Length; i++)
+                            {
+                                var marketDataType = marketDataTypes[i];
+                                _ibClient.ClientSocket.reqMarketDataType(((int)marketDataType));
 
-                    var reqId = ++_currentReqId;
-                    _marketDataResponseList.Add(reqId);
-                    _ibClient.ClientSocket.reqMktData(
-                       reqId,
-                       contract,
-                       "",
-                       snapshot,
-                       false,
-                       new List<TagValue>());
-                    var startTime = DateTime.Now;
-                    MarketDataSnapshotResponse marketDataSnapshotResponse = null;
-                    while (_queue.Count() == 0 && (DateTime.Now - startTime).TotalMilliseconds < timeout) { };
-                    GetCompletedResponseFromQueue(reqId, out marketDataSnapshotResponse);
-                    if (marketDataSnapshotResponse != null)
-                    {
-                        var tickType = tickTypes[i];
-                        price = marketDataSnapshotResponse.GetPrice(tickType);
-                        break;
-                    }
-                }
-            });
+                                var reqId = ++_currentReqId;
+                                _marketDataResponseList.Add(reqId);
+                                _ibClient.ClientSocket.reqMktData(
+                                   reqId,
+                                   contract,
+                                   "",
+                                   snapshot,
+                                   false,
+                                   new List<TagValue>());
+
+                                var startTime = DateTime.Now;
+                                while (_queue.Count() == 0 && (DateTime.Now - startTime).TotalMilliseconds < timeout) { };
+
+                                GetCompletedResponseFromQueue(reqId, out MarketDataSnapshotResponse marketDataSnapshotResponse);
+                                if (marketDataSnapshotResponse != null)
+                                {
+                                    var tickType = tickTypes[i];
+                                    price = marketDataSnapshotResponse.GetPrice(tickType);
+                                    break;
+                                }
+                            }
+                        });
 
             return price;
-
-
-
-
-            /////////////////////////////////////////////
-            //_tickType = (int)tickType;
-            //_ibClient.ClientSocket.reqMarketDataType(((int)marketDataType));
-
-            //double? price = null;
-            //var reqId = ++_currentReqId;
-            //_marketDataResponseList.Add(reqId);
-            //_ibClient.ClientSocket.reqMktData(
-            //   reqId,
-            //   contract,
-            //   "",
-            //   snapshot,
-            //   false,
-            //   new List<TagValue>());
-
-            //await Task.Run(() =>
-            //{
-            //    var startTime = DateTime.Now;
-            //    while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasCompletedResponseInQueue(reqId)) { }
-            //    if (_queue.Dequeue() is MarketDataSnapshotResponse marketDataSnapshotResponse)
-            //    {
-            //        price = marketDataSnapshotResponse.GetPrice(tickType);
-            //    }
-            //});
-
-            //return price;
         }
 
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)
