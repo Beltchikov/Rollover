@@ -3,6 +3,7 @@ using IbClient.messages;
 using IbClient.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -130,36 +131,88 @@ namespace IbClient.IbHost
         /// <returns></returns>
         public async Task<double?> RequestMarketDataAsync(
             Contract contract,
-            MarketDataType marketDataType,
-            TickType tickType,
             bool snapshot,
             int timeout)
         {
-            _tickType = (int)tickType;
-            _ibClient.ClientSocket.reqMarketDataType(((int)marketDataType));
+            MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.Live,
+                MarketDataType.Frozen, MarketDataType.Delayed,
+                MarketDataType.Delayed, MarketDataType.DelayedFrozen };
+            TickType[] tickTypes = new[] { TickType.BidPrice, TickType.LastPrice,
+                TickType.ClosePrice, TickType.DelayedBid,
+                TickType.DelayedLast, TickType.DelayedClose };
+            string[] comments = new[]
+            { "LIVE BID", "LIVE LAST TRADED", "FROZEN CLOSE", "DELAYED BID", "DELAYED LAST TRADED", "FROZEN DELAYED CLOSE" };
 
             double? price = null;
-            var reqId = ++_currentReqId;
-            _marketDataResponseList.Add(reqId);
-            _ibClient.ClientSocket.reqMktData(
-               reqId,
-               contract,
-               "",
-               snapshot,
-               false,
-               new List<TagValue>());
+
+
+            //MarketDataType[] marketDataTypes = new[] { MarketDataType.Live };
+            //TickType[] tickTypes = new[] { TickType.BidPrice };
+            //string[] comments = new[] { "LIVE BID" };
+
+
 
             await Task.Run(() =>
             {
-                var startTime = DateTime.Now;
-                while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasCompletedResponseInQueue(reqId)) { }
-                if (_queue.Dequeue() is MarketDataSnapshotResponse marketDataSnapshotResponse)
+
+                for (int i = 0; i < marketDataTypes.Length; i++)
                 {
-                    price = marketDataSnapshotResponse.GetPrice(tickType);
+                    var marketDataType = marketDataTypes[i];
+                    _ibClient.ClientSocket.reqMarketDataType(((int)marketDataType));
+
+                    var reqId = ++_currentReqId;
+                    _marketDataResponseList.Add(reqId);
+                    _ibClient.ClientSocket.reqMktData(
+                       reqId,
+                       contract,
+                       "",
+                       snapshot,
+                       false,
+                       new List<TagValue>());
+                    var startTime = DateTime.Now;
+                    MarketDataSnapshotResponse marketDataSnapshotResponse = null;
+                    while (_queue.Count() == 0 && (DateTime.Now - startTime).TotalMilliseconds < timeout) { };
+                    GetCompletedResponseFromQueue(reqId, out marketDataSnapshotResponse);
+                    if (marketDataSnapshotResponse != null)
+                    {
+                        var tickType = tickTypes[i];
+                        price = marketDataSnapshotResponse.GetPrice(tickType);
+                        break;
+                    }
                 }
             });
 
             return price;
+
+
+
+
+            /////////////////////////////////////////////
+            //_tickType = (int)tickType;
+            //_ibClient.ClientSocket.reqMarketDataType(((int)marketDataType));
+
+            //double? price = null;
+            //var reqId = ++_currentReqId;
+            //_marketDataResponseList.Add(reqId);
+            //_ibClient.ClientSocket.reqMktData(
+            //   reqId,
+            //   contract,
+            //   "",
+            //   snapshot,
+            //   false,
+            //   new List<TagValue>());
+
+            //await Task.Run(() =>
+            //{
+            //    var startTime = DateTime.Now;
+            //    while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasCompletedResponseInQueue(reqId)) { }
+            //    if (_queue.Dequeue() is MarketDataSnapshotResponse marketDataSnapshotResponse)
+            //    {
+            //        price = marketDataSnapshotResponse.GetPrice(tickType);
+            //    }
+            //});
+
+            //return price;
         }
 
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)
@@ -284,9 +337,10 @@ namespace IbClient.IbHost
             return true;
         }
 
-        private bool HasCompletedResponseInQueue(int reqId)
+        private bool GetCompletedResponseFromQueue(int reqId, out MarketDataSnapshotResponse marketDataSnapshotResponse)
         {
-            if (!(_queue.Peek() is MarketDataSnapshotResponse marketDataSnapshotResponse))
+            marketDataSnapshotResponse = _queue.Dequeue() as MarketDataSnapshotResponse;
+            if (marketDataSnapshotResponse == null)
             {
                 return false;
             }
@@ -309,6 +363,11 @@ namespace IbClient.IbHost
             }
 
             return fundamentalsMessageString.Contains(ticker);
+        }
+
+        private bool IsValidPrice(double? price)
+        {
+            return price.HasValue && price.Value > 0;
         }
     }
 }

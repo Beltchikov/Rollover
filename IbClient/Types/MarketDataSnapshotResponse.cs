@@ -42,8 +42,8 @@ namespace IbClient.Types
         }
         public double? GetPrice(TickType tickType)
         {
-            var message = _tickPriceMessages.Single(m => m.Field == (int)tickType);
-            return message.Price;
+            var message = _tickPriceMessages.FirstOrDefault(m => m.Field == (int)tickType);
+            return message?.Price;
         }
     }
 }
