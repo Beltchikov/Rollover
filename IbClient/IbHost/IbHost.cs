@@ -126,7 +126,6 @@ namespace IbClient.IbHost
         /// </summary>
         /// <param name="snapshot"></param>
         /// <param name="frozen"></param>
-        /// <param name="tickType">Bid: 1, Ask: 2, 
         /// full list: https://interactivebrokers.github.io/tws-api/tick_types.html</param>
         /// <returns></returns>
         public async Task<double?> RequestMarketDataAsync(
@@ -145,35 +144,37 @@ namespace IbClient.IbHost
 
             double? price = null;
             await Task.Run(() =>
+            {
+                for (int i = 0; i < marketDataTypes.Length; i++)
+                {
+                    var marketDataType = marketDataTypes[i];
+                    _ibClient.ClientSocket.reqMarketDataType(((int)marketDataType));
+
+                    var reqId = ++_currentReqId;
+                    _marketDataResponseList.Add(reqId);
+                    _ibClient.ClientSocket.reqMktData(
+                        reqId,
+                        contract,
+                        "",
+                        snapshot,
+                        false,
+                        new List<TagValue>());
+
+                    var startTime = DateTime.Now;
+                    while (_queue.Count() == 0 && (DateTime.Now - startTime).TotalMilliseconds < timeout) { };
+
+                    GetCompletedResponseFromQueue(reqId, out MarketDataSnapshotResponse marketDataSnapshotResponse);
+                    if (marketDataSnapshotResponse != null)
+                    {
+                        var tickType = tickTypes[i];
+                        price = marketDataSnapshotResponse.GetPrice(tickType);
+                        if (IsValidPrice(price))
                         {
-
-                            for (int i = 0; i < marketDataTypes.Length; i++)
-                            {
-                                var marketDataType = marketDataTypes[i];
-                                _ibClient.ClientSocket.reqMarketDataType(((int)marketDataType));
-
-                                var reqId = ++_currentReqId;
-                                _marketDataResponseList.Add(reqId);
-                                _ibClient.ClientSocket.reqMktData(
-                                   reqId,
-                                   contract,
-                                   "",
-                                   snapshot,
-                                   false,
-                                   new List<TagValue>());
-
-                                var startTime = DateTime.Now;
-                                while (_queue.Count() == 0 && (DateTime.Now - startTime).TotalMilliseconds < timeout) { };
-
-                                GetCompletedResponseFromQueue(reqId, out MarketDataSnapshotResponse marketDataSnapshotResponse);
-                                if (marketDataSnapshotResponse != null)
-                                {
-                                    var tickType = tickTypes[i];
-                                    price = marketDataSnapshotResponse.GetPrice(tickType);
-                                    break;
-                                }
-                            }
-                        });
+                            break;
+                        }
+                    }
+                }
+            });
 
             return price;
         }
@@ -250,8 +251,6 @@ namespace IbClient.IbHost
                 throw new ApplicationException("Unexpected! Consumer is null");
             }
             Consumer.TwsMessageCollection?.Add($"TickSnapshotEnd for {reqId} ");
-
-            // TODO
             var response = _marketDataResponseList.SetCompleted(reqId);
             _queue.Enqueue(response);
         }
