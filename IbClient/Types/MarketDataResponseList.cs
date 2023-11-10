@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace IbClient.Types
 {
+    // TODO evtl. obsolete
     public class MarketDataResponseList : IMarketDataResponseList
     {
         private List<MarketDataSnapshotResponse> _responseList;

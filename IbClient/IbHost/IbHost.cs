@@ -18,6 +18,7 @@ namespace IbClient.IbHost
         private IMarketDataResponseList _marketDataResponseList;
         private int _currentReqId = 0;
         private int _tickType;
+        private IResponses _responses;
         public static readonly string DEFAULT_SEC_TYPE = "STK";
         public static readonly string DEFAULT_CURRENCY = "USD";
         public static readonly string DEFAULT_EXCHANGE = "SMART";
@@ -37,6 +38,7 @@ namespace IbClient.IbHost
 
             _queue = queue;
             _marketDataResponseList = new MarketDataResponseList();
+            _responses = new Responses();  
 
             //_ibClient.HistoricalData += _ibClient_HistoricalData;
             //_ibClient.HistoricalDataUpdate += _ibClient_HistoricalDataUpdate;
@@ -161,17 +163,24 @@ namespace IbClient.IbHost
                         new List<TagValue>());
 
                     var startTime = DateTime.Now;
-                    while (_queue.Count() == 0 && (DateTime.Now - startTime).TotalMilliseconds < timeout) { };
+                    //while (_queue.Count() == 0 && (DateTime.Now - startTime).TotalMilliseconds < timeout) { };
+                    while (!_responses.TryGetValidPrice(reqId, m => m.Price > 0, out price) 
+                    && (DateTime.Now - startTime).TotalMilliseconds < timeout) { };
 
-                    GetCompletedResponseFromQueue(reqId, out MarketDataSnapshotResponse marketDataSnapshotResponse);
-                    if (marketDataSnapshotResponse != null)
+                    //GetCompletedResponseFromQueue(reqId, out MarketDataSnapshotResponse marketDataSnapshotResponse);
+                    //if (marketDataSnapshotResponse != null)
+                    //{
+                    //    var tickType = tickTypes[i];
+                    //    price = marketDataSnapshotResponse.GetPrice(tickType);
+                    //    if (IsValidPrice(price))
+                    //    {
+                    //        break;
+                    //    }
+                    //}
+
+                    if(price != null) 
                     {
-                        var tickType = tickTypes[i];
-                        price = marketDataSnapshotResponse.GetPrice(tickType);
-                        if (IsValidPrice(price))
-                        {
-                            break;
-                        }
+                        break;
                     }
                 }
             });
@@ -241,18 +250,20 @@ namespace IbClient.IbHost
             }
             Consumer.TwsMessageCollection?.Add($"TickPriceMessage for {tickPriceMessage.RequestId} " +
                 $"field:{tickPriceMessage.Field} price:{tickPriceMessage.Price}");
-            _marketDataResponseList.UpdateResponse(tickPriceMessage);
+            //_marketDataResponseList.UpdateResponse(tickPriceMessage);
+            _responses.AddTickPriceMessage(tickPriceMessage);
         }
 
         private void _ibClient_TickSnapshotEnd(int reqId)
         {
+            // TODO evtl. not needed
             if (Consumer == null)
             {
                 throw new ApplicationException("Unexpected! Consumer is null");
             }
             Consumer.TwsMessageCollection?.Add($"TickSnapshotEnd for {reqId} ");
             var response = _marketDataResponseList.SetCompleted(reqId);
-            _queue.Enqueue(response);
+            //_queue.Enqueue(response);
         }
 
         private bool HasMessageInQueue<T>(int reqId)
