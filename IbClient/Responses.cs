@@ -17,7 +17,7 @@ namespace IbClient
         }
         public bool TryGetValidPrice(int reqId, Predicate<TickPriceMessage> ValidPriceCallback, out double? price)
         {
-            var tickPriceMessagesCopy = new List<TickPriceMessage>(_tickPriceMessages);   
+            var tickPriceMessagesCopy = _tickPriceMessages.ToArray();   
             TickPriceMessage tickPriceMessage = tickPriceMessagesCopy.FirstOrDefault(m => m.RequestId == reqId);
            
             if (tickPriceMessage == null)
