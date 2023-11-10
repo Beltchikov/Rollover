@@ -3,9 +3,7 @@ using IbClient.messages;
 using IbClient.Types;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using TickType = IbClient.Types.TickType;
 
@@ -15,7 +13,6 @@ namespace IbClient.IbHost
     {
         IIBClient _ibClient;
         private IIbHostQueue _queue;
-        private IMarketDataResponseList _marketDataResponseList;
         private int _currentReqId = 0;
         private int _tickType;
         private IResponses _responses;
@@ -37,8 +34,7 @@ namespace IbClient.IbHost
             _ibClient.TickSnapshotEnd += _ibClient_TickSnapshotEnd;
 
             _queue = queue;
-            _marketDataResponseList = new MarketDataResponseList();
-            _responses = new Responses();  
+            _responses = new Responses();
 
             //_ibClient.HistoricalData += _ibClient_HistoricalData;
             //_ibClient.HistoricalDataUpdate += _ibClient_HistoricalDataUpdate;
@@ -153,7 +149,6 @@ namespace IbClient.IbHost
                     _ibClient.ClientSocket.reqMarketDataType(((int)marketDataType));
 
                     var reqId = ++_currentReqId;
-                    _marketDataResponseList.Add(reqId);
                     _ibClient.ClientSocket.reqMktData(
                         reqId,
                         contract,
@@ -164,7 +159,7 @@ namespace IbClient.IbHost
 
                     var startTime = DateTime.Now;
                     //while (_queue.Count() == 0 && (DateTime.Now - startTime).TotalMilliseconds < timeout) { };
-                    while (!_responses.TryGetValidPrice(reqId, m => m.Price > 0, out price) 
+                    while (!_responses.TryGetValidPrice(reqId, m => m.Price > 0, out price)
                     && (DateTime.Now - startTime).TotalMilliseconds < timeout) { };
 
                     //GetCompletedResponseFromQueue(reqId, out MarketDataSnapshotResponse marketDataSnapshotResponse);
@@ -178,7 +173,7 @@ namespace IbClient.IbHost
                     //    }
                     //}
 
-                    if(price != null) 
+                    if (price != null)
                     {
                         break;
                     }
@@ -250,20 +245,12 @@ namespace IbClient.IbHost
             }
             Consumer.TwsMessageCollection?.Add($"TickPriceMessage for {tickPriceMessage.RequestId} " +
                 $"field:{tickPriceMessage.Field} price:{tickPriceMessage.Price}");
-            //_marketDataResponseList.UpdateResponse(tickPriceMessage);
             _responses.AddTickPriceMessage(tickPriceMessage);
         }
 
         private void _ibClient_TickSnapshotEnd(int reqId)
         {
             // TODO evtl. not needed
-            if (Consumer == null)
-            {
-                throw new ApplicationException("Unexpected! Consumer is null");
-            }
-            Consumer.TwsMessageCollection?.Add($"TickSnapshotEnd for {reqId} ");
-            var response = _marketDataResponseList.SetCompleted(reqId);
-            //_queue.Enqueue(response);
         }
 
         private bool HasMessageInQueue<T>(int reqId)
@@ -310,24 +297,6 @@ namespace IbClient.IbHost
             return true;
         }
 
-        private bool GetCompletedResponseFromQueue(int reqId, out MarketDataSnapshotResponse marketDataSnapshotResponse)
-        {
-            marketDataSnapshotResponse = _queue.Dequeue() as MarketDataSnapshotResponse;
-            if (marketDataSnapshotResponse == null)
-            {
-                return false;
-            }
-            if (marketDataSnapshotResponse.GetReqId() != reqId)
-            {
-                return false;
-            }
-            if (!marketDataSnapshotResponse.EndOfSnapshot())
-            {
-                return false;
-            }
-            return true;
-        }
-
         private bool MessageForRightTickerContains(string fundamentalsMessageString, string ticker)
         {
             if (ticker == "ALD1")
@@ -336,11 +305,6 @@ namespace IbClient.IbHost
             }
 
             return fundamentalsMessageString.Contains(ticker);
-        }
-
-        private bool IsValidPrice(double? price)
-        {
-            return price.HasValue && price.Value > 0;
         }
     }
 }
