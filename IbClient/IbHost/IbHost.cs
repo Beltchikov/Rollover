@@ -126,7 +126,7 @@ namespace IbClient.IbHost
         /// <param name="frozen"></param>
         /// full list: https://interactivebrokers.github.io/tws-api/tick_types.html</param>
         /// <returns></returns>
-        public async Task<double?> RequestMarketDataAsync(
+        public async Task<(double?, TickType?)> RequestMarketDataAsync(
             Contract contract,
             bool snapshot,
             int timeout)
@@ -181,7 +181,7 @@ namespace IbClient.IbHost
                 }
             });
 
-            return price;
+            return (price, tickType);
         }
 
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)

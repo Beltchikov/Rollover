@@ -104,7 +104,7 @@ namespace StockAnalyzer.DataProviders
 
                 try
                 {
-                    Price? currentPrice = await CurrentPriceFromContract(contract, marketDataTypes[0], tickTypes[0], timeout);
+                    Price? currentPrice = await CurrentPriceFromContract(contract, marketDataTypes[0], timeout);
                     result.Add($"{contract.Symbol}\t{currentPrice.Value}\t{contract.Currency}" +
                         $"\t{marketDataTypes[0]}\t{tickTypes[0]}\t{comments[0]}");
                 }
@@ -422,13 +422,13 @@ namespace StockAnalyzer.DataProviders
             return fundamentalData ?? $"{contract.Symbol}\tNO_FUNDAMENTAL_DATA";
         }
 
-        private async Task<Price> CurrentPriceFromContract(Contract contract, MarketDataType marketDataType, TickType tickType, int timeout)
+        private async Task<Price> CurrentPriceFromContract(Contract contract, MarketDataType marketDataType, int timeout)
         {
-            var currentPrice = await _ibHost.RequestMarketDataAsync(
+            (var currentPrice, var tickType) = await _ibHost.RequestMarketDataAsync(
                                 contract,
                                 snapshot: true, 
                                 timeout);
-            return new Price(currentPrice, (int)marketDataType, (int)tickType);
+            return new Price(currentPrice, (int)marketDataType, (int?)tickType);
         }
 
         private static IEnumerable<XElement>? StatementElementsFromXDocument(XDocument? xDocument, string periods)
