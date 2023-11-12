@@ -106,7 +106,7 @@ namespace StockAnalyzer.DataProviders
                 {
                     Price? currentPrice = await CurrentPriceFromContract(contract, marketDataTypes[0], timeout);
                     result.Add($"{contract.Symbol}\t{currentPrice.Value}\t{contract.Currency}" +
-                        $"\t{marketDataTypes[0]}\t{tickTypes[0]}\t{comments[0]}");
+                        $"\t{marketDataTypes[0]}\t{TickTypeName(currentPrice.TickType)}");
                 }
                 catch (IndexOutOfRangeException ex)
                 {
@@ -426,7 +426,7 @@ namespace StockAnalyzer.DataProviders
         {
             (var currentPrice, var tickType) = await _ibHost.RequestMarketDataAsync(
                                 contract,
-                                snapshot: true, 
+                                snapshot: true,
                                 timeout);
             return new Price(currentPrice, (int)marketDataType, (int?)tickType);
         }
@@ -607,6 +607,18 @@ namespace StockAnalyzer.DataProviders
                 throw new ApplicationException($"Wrong number of elements in contract's string representation: " +
                     $"{contractArray.Aggregate((r, n) => r + ";" + n)}");
             }
+        }
+
+        private string TickTypeName(int? tickType)
+        {
+            const string NULL = "NULL";
+            if (tickType == null)
+            {
+                return NULL;
+            }
+
+            var tickTypeName = Enum.GetName(typeof(TickType), tickType.Value);
+            return tickTypeName ?? NULL;
         }
     }
 }
