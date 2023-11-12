@@ -141,6 +141,7 @@ namespace IbClient.IbHost
             { "LIVE BID", "LIVE LAST TRADED", "FROZEN CLOSE", "DELAYED BID", "DELAYED LAST TRADED", "FROZEN DELAYED CLOSE" };
 
             double? price = null;
+            TickType? tickType = null;
             await Task.Run(() =>
             {
                 for (int i = 0; i < marketDataTypes.Length; i++)
@@ -159,7 +160,7 @@ namespace IbClient.IbHost
 
                     var startTime = DateTime.Now;
                     //while (_queue.Count() == 0 && (DateTime.Now - startTime).TotalMilliseconds < timeout) { };
-                    while (!_responses.TryGetValidPrice(reqId, m => m.Price > 0, out price)
+                    while (!_responses.TryGetValidPrice(reqId, m => m.Price > 0, out price, out tickType)
                     && (DateTime.Now - startTime).TotalMilliseconds < timeout) { };
 
                     //GetCompletedResponseFromQueue(reqId, out MarketDataSnapshotResponse marketDataSnapshotResponse);

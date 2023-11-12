@@ -1,4 +1,5 @@
 ﻿using IbClient.messages;
+using IbClient.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,11 @@ namespace IbClient
             _tickPriceMessages = new List<TickPriceMessage>();
             _tickSizeMessages = new List<TickSizeMessage>();
         }
-        public bool TryGetValidPrice(int reqId, Predicate<TickPriceMessage> ValidPriceCallback, out double? price)
+        public bool TryGetValidPrice(
+            int reqId,
+            Predicate<TickPriceMessage> ValidPriceCallback,
+            out double? price,
+            out TickType? tickType)
         {
             var tickPriceMessagesCopy = _tickPriceMessages.ToArray();   
             TickPriceMessage tickPriceMessage = tickPriceMessagesCopy.FirstOrDefault(m => m.RequestId == reqId);
@@ -23,6 +28,7 @@ namespace IbClient
             if (tickPriceMessage == null)
             {
                 price = null;
+                tickType = null;    
                 return false;
             }
             else
@@ -30,11 +36,13 @@ namespace IbClient
                 if (ValidPriceCallback(tickPriceMessage))
                 {
                     price = tickPriceMessage.Price;
+                    tickType = (TickType)Enum.Parse(typeof(TickType), tickPriceMessage.Field.ToString());
                     return true;
                 }
                 else
                 {
                     price = null;
+                    tickType = (TickType)Enum.Parse(typeof(TickType), tickPriceMessage.Field.ToString());
                     return false; 
                 }   
             }
