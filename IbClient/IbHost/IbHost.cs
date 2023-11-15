@@ -119,26 +119,13 @@ namespace IbClient.IbHost
             return fundamentalsMessageString;
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="snapshot"></param>
-        /// <param name="frozen"></param>
-        /// full list: https://interactivebrokers.github.io/tws-api/tick_types.html</param>
-        /// <returns></returns>
-        public async Task<(double?, TickType?)> RequestMarketDataAsync(
-            Contract contract,
-            bool snapshot,
-            int timeout)
+        // full list of tick types: https://interactivebrokers.github.io/tws-api/tick_types.html</param>
+        public async Task<(double?, TickType?)> RequestMarketDataSnapshotAsync(Contract contract)
         {
             MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.Live,
                 MarketDataType.Frozen, MarketDataType.Delayed,
                 MarketDataType.Delayed, MarketDataType.DelayedFrozen };
-            TickType[] tickTypes = new[] { TickType.BidPrice, TickType.LastPrice,
-                TickType.ClosePrice, TickType.DelayedBid,
-                TickType.DelayedLast, TickType.DelayedClose };
-            string[] comments = new[]
-            { "LIVE BID", "LIVE LAST TRADED", "FROZEN CLOSE", "DELAYED BID", "DELAYED LAST TRADED", "FROZEN DELAYED CLOSE" };
-
+          
             double? price = null;
             TickType? tickType = null;
             await Task.Run(() =>
@@ -153,13 +140,11 @@ namespace IbClient.IbHost
                         reqId,
                         contract,
                         "",
-                        snapshot,
+                        true,
                         false,
                         new List<TagValue>());
 
                     var startTime = DateTime.Now;
-                    //while (!_responses.TryGetValidPrice(reqId, m => m.Price > 0, out price, out tickType)
-                    //&& (DateTime.Now - startTime).TotalMilliseconds < timeout) { };
                     while (!_responses.TryGetValidPrice(reqId, m => m.Price > 0, out price, out tickType)) { };
 
                     if (price != null)

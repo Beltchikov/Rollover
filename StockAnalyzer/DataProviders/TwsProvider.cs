@@ -424,10 +424,7 @@ namespace StockAnalyzer.DataProviders
 
         private async Task<Price> CurrentPriceFromContract(Contract contract, MarketDataType marketDataType, int timeout)
         {
-            (var currentPrice, var tickType) = await _ibHost.RequestMarketDataAsync(
-                                contract,
-                                snapshot: true,
-                                timeout);
+            (var currentPrice, var tickType) = await _ibHost.RequestMarketDataSnapshotAsync(contract);
             return new Price(currentPrice, (int)marketDataType, (int?)tickType);
         }
 
