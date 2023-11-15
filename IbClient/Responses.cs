@@ -69,12 +69,17 @@ namespace IbClient
 
         public void SetSnapshotEnd(int reqId)
         {
-            _reqIdsOfEndedSnapshots.Add(reqId); 
+            object lockObject = new object();
+            lock (lockObject)
+            {
+                _reqIdsOfEndedSnapshots.Add(reqId);
+            }
         }
 
         private bool SnaphotEnded(int reqId)
         {
-            return _reqIdsOfEndedSnapshots.Any(i => i.Equals(reqId));
+            var reqIdsOfEndedSnapshotsCopy = _reqIdsOfEndedSnapshots.ToArray();
+            return reqIdsOfEndedSnapshotsCopy.Any(i => i.Equals(reqId));
         }
     }
 }
