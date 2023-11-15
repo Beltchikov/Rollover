@@ -120,7 +120,7 @@ namespace IbClient.IbHost
         }
 
         // full list of tick types: https://interactivebrokers.github.io/tws-api/tick_types.html</param>
-        public async Task<(double?, TickType?)> RequestMarketDataSnapshotAsync(Contract contract)
+        public async Task<(double?, TickType?)> RequestMarketDataSnapshotAsync(Contract contract, MarketDataType marketDataType)
         {
             MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.Live,
                 MarketDataType.Frozen, MarketDataType.Delayed,
@@ -132,7 +132,7 @@ namespace IbClient.IbHost
             {
                 for (int i = 0; i < marketDataTypes.Length; i++)
                 {
-                    var marketDataType = marketDataTypes[i];
+                    //var marketDataType = marketDataTypes[i];
                     _ibClient.ClientSocket.reqMarketDataType(((int)marketDataType));
 
                     var reqId = ++_currentReqId;
