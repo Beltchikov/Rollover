@@ -104,7 +104,6 @@ namespace IbClient.IbHost
             await Task.Run(() =>
             {
                 var startTime = DateTime.Now;
-                //while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasCompletedResponseInQueue(reqId)) { }
                 while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasMessageInQueue<FundamentalsMessage>()) { }
 
                 if (_queue.Dequeue() is FundamentalsMessage fundamentalsMessage)
@@ -159,20 +158,8 @@ namespace IbClient.IbHost
                         new List<TagValue>());
 
                     var startTime = DateTime.Now;
-                    //while (_queue.Count() == 0 && (DateTime.Now - startTime).TotalMilliseconds < timeout) { };
                     while (!_responses.TryGetValidPrice(reqId, m => m.Price > 0, out price, out tickType)
                     && (DateTime.Now - startTime).TotalMilliseconds < timeout) { };
-
-                    //GetCompletedResponseFromQueue(reqId, out MarketDataSnapshotResponse marketDataSnapshotResponse);
-                    //if (marketDataSnapshotResponse != null)
-                    //{
-                    //    var tickType = tickTypes[i];
-                    //    price = marketDataSnapshotResponse.GetPrice(tickType);
-                    //    if (IsValidPrice(price))
-                    //    {
-                    //        break;
-                    //    }
-                    //}
 
                     if (price != null)
                     {
