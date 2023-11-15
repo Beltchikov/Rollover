@@ -238,7 +238,13 @@ namespace IbClient.IbHost
 
         private void _ibClient_TickSnapshotEnd(int reqId)
         {
-            // TODO evtl. not needed
+            if (Consumer == null)
+            {
+                throw new ApplicationException("Unexpected! Consumer is null");
+            }
+            Consumer.TwsMessageCollection?.Add($"TickSnapshotEnd for {reqId} ");
+            //var response = _marketDataResponseList.SetCompleted(reqId);
+            //_queue.Enqueue(response);
         }
 
         private bool HasMessageInQueue<T>(int reqId)
