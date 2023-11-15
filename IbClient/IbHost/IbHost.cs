@@ -158,8 +158,9 @@ namespace IbClient.IbHost
                         new List<TagValue>());
 
                     var startTime = DateTime.Now;
-                    while (!_responses.TryGetValidPrice(reqId, m => m.Price > 0, out price, out tickType)
-                    && (DateTime.Now - startTime).TotalMilliseconds < timeout) { };
+                    //while (!_responses.TryGetValidPrice(reqId, m => m.Price > 0, out price, out tickType)
+                    //&& (DateTime.Now - startTime).TotalMilliseconds < timeout) { };
+                    while (!_responses.TryGetValidPrice(reqId, m => m.Price > 0, out price, out tickType)) { };
 
                     if (price != null)
                     {
@@ -243,8 +244,7 @@ namespace IbClient.IbHost
                 throw new ApplicationException("Unexpected! Consumer is null");
             }
             Consumer.TwsMessageCollection?.Add($"TickSnapshotEnd for {reqId} ");
-            //var response = _marketDataResponseList.SetCompleted(reqId);
-            //_queue.Enqueue(response);
+            _responses.SetSnapshotEnd(reqId);
         }
 
         private bool HasMessageInQueue<T>(int reqId)

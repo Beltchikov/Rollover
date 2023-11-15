@@ -12,5 +12,6 @@ namespace IbClient
             out double? price,
             out TickType? tickType);
         void AddTickPriceMessage(TickPriceMessage tickPriceMessage);
+        void SetSnapshotEnd(int reqId);
     }
 }
