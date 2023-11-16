@@ -13,5 +13,6 @@ namespace IbClient
             out TickType? tickType);
         void AddTickPriceMessage(TickPriceMessage tickPriceMessage);
         void SetSnapshotEnd(int reqId);
+        bool SnaphotEnded(int reqId);
     }
 }

@@ -94,21 +94,20 @@ namespace StockAnalyzer.DataProviders
             foreach (string contractString in contractStringsListTws)
             {
                 var contractStringTrimmed = contractString.Trim();
+                if(string.IsNullOrWhiteSpace(contractStringTrimmed))
+                {
+                    continue;
+                }
                 Contract contract = ContractFromString(contractStringTrimmed);
                 TriggerStatus($"Retrieving current price for {contractStringTrimmed} {cnt++}/{contractStringsListTws.Count}");
 
-                //MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.Live,
-                //MarketDataType.Frozen, MarketDataType.Delayed,
-                //MarketDataType.Delayed, MarketDataType.DelayedFrozen };
-
-
-                MarketDataType[] marketDataTypes = new[] { MarketDataType.Live };
-                TickType[] tickTypes = new[] { TickType.BidPrice };
-                string[] comments = new[] { "LIVE BID" };
+                MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.Live,
+                MarketDataType.Frozen, MarketDataType.Delayed,
+                MarketDataType.Delayed, MarketDataType.DelayedFrozen };
 
                 try
                 {
-                    Price? currentPrice = await CurrentPriceFromContract(contract, marketDataTypes[0]);
+                    Price? currentPrice = await CurrentPriceFromContract(contract, marketDataTypes);
                     result.Add($"{contract.Symbol}\t{currentPrice.Value}\t{contract.Currency}" +
                         $"\t{marketDataTypes[0]}\t{TickTypeName(currentPrice.TickType)}");
                 }
@@ -426,10 +425,10 @@ namespace StockAnalyzer.DataProviders
             return fundamentalData ?? $"{contract.Symbol}\tNO_FUNDAMENTAL_DATA";
         }
 
-        private async Task<Price> CurrentPriceFromContract(Contract contract, MarketDataType marketDataType)
+        private async Task<Price> CurrentPriceFromContract(Contract contract, MarketDataType[] marketDataTypes)
         {
-            (var currentPrice, var tickType) = await _ibHost.RequestMarketDataSnapshotAsync(contract, marketDataType);
-            return new Price(currentPrice, (int)marketDataType, (int?)tickType);
+            (var currentPrice, var tickType, var marketDataType) = await _ibHost.RequestMarketDataSnapshotAsync(contract, marketDataTypes);
+            return new Price(currentPrice, (int?)marketDataType, (int?)tickType);
         }
 
         private static IEnumerable<XElement>? StatementElementsFromXDocument(XDocument? xDocument, string periods)

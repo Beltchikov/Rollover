@@ -14,7 +14,6 @@ namespace IbClient.IbHost
         IIBClient _ibClient;
         private IIbHostQueue _queue;
         private int _currentReqId = 0;
-        private int _tickType;
         private IResponses _responses;
         public static readonly string DEFAULT_SEC_TYPE = "STK";
         public static readonly string DEFAULT_CURRENCY = "USD";
@@ -120,19 +119,20 @@ namespace IbClient.IbHost
         }
 
         // full list of tick types: https://interactivebrokers.github.io/tws-api/tick_types.html</param>
-        public async Task<(double?, TickType?)> RequestMarketDataSnapshotAsync(Contract contract, MarketDataType marketDataType)
+        public async Task<(double?, TickType?, MarketDataType?)> RequestMarketDataSnapshotAsync(Contract contract, MarketDataType[] marketDataTypes)
         {
-            MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.Live,
-                MarketDataType.Frozen, MarketDataType.Delayed,
-                MarketDataType.Delayed, MarketDataType.DelayedFrozen };
+            //MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.Live,
+            //    MarketDataType.Frozen, MarketDataType.Delayed,
+            //    MarketDataType.Delayed, MarketDataType.DelayedFrozen };
           
             double? price = null;
             TickType? tickType = null;
+            MarketDataType? marketDataType = null;
             await Task.Run(() =>
             {
                 for (int i = 0; i < marketDataTypes.Length; i++)
                 {
-                    //var marketDataType = marketDataTypes[i];
+                    marketDataType = marketDataTypes[i];
                     _ibClient.ClientSocket.reqMarketDataType(((int)marketDataType));
 
                     var reqId = ++_currentReqId;
@@ -145,8 +145,9 @@ namespace IbClient.IbHost
                         new List<TagValue>());
 
                     var startTime = DateTime.Now;
-                    while (!_responses.TryGetValidPrice(reqId, m => m.Price > 0, out price, out tickType)) { };
-
+                    while (!_responses.TryGetValidPrice(reqId, m => m.Price > 0, out price, out tickType)
+                        && !_responses.SnaphotEnded(reqId)) { };
+                   
                     if (price != null)
                     {
                         break;
@@ -154,7 +155,7 @@ namespace IbClient.IbHost
                 }
             });
 
-            return (price, tickType);
+            return (price, tickType, marketDataType);
         }
 
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)

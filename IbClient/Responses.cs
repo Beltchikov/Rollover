@@ -25,23 +25,9 @@ namespace IbClient
             out double? price,
             out TickType? tickType)
         {
-            if(SnaphotEnded(reqId))
-            {
-                price = null;
-                tickType = null;
-                return false;
-            }
-            
-            var tickPriceMessagesCopy = _tickPriceMessages.ToArray();   
-            TickPriceMessage tickPriceMessage = tickPriceMessagesCopy.FirstOrDefault(m => m.RequestId == reqId);
-           
-            if (tickPriceMessage == null)
-            {
-                price = null;
-                tickType = null;    
-                return false;
-            }
-            else
+            var tickPriceMessagesCopy = _tickPriceMessages.ToArray();
+
+            foreach (var tickPriceMessage in tickPriceMessagesCopy.Where(m => m.RequestId == reqId))
             {
                 if (ValidPriceCallback(tickPriceMessage))
                 {
@@ -49,13 +35,11 @@ namespace IbClient
                     tickType = (TickType)Enum.Parse(typeof(TickType), tickPriceMessage.Field.ToString());
                     return true;
                 }
-                else
-                {
-                    price = null;
-                    tickType = (TickType)Enum.Parse(typeof(TickType), tickPriceMessage.Field.ToString());
-                    return false; 
-                }   
             }
+
+            price = null;
+            tickType = null;
+            return false;
         }
 
         public void AddTickPriceMessage(TickPriceMessage tickPriceMessage)
@@ -76,7 +60,7 @@ namespace IbClient
             }
         }
 
-        private bool SnaphotEnded(int reqId)
+        public bool SnaphotEnded(int reqId)
         {
             var reqIdsOfEndedSnapshotsCopy = _reqIdsOfEndedSnapshots.ToArray();
             return reqIdsOfEndedSnapshotsCopy.Any(i => i.Equals(reqId));
