@@ -132,9 +132,9 @@ namespace IbClient.IbHost
             MarketDataType? marketDataType = null;
             await Task.Run(() =>
             {
-                for (int i = 0; i < marketDataTypes.Length; i++)
-                {
-                    marketDataType = marketDataTypes[i];
+                //for (int i = 0; i < marketDataTypes.Length; i++)
+                //{
+                    marketDataType = MarketDataType.Live;
                     _ibClient.ClientSocket.reqMarketDataType(((int)marketDataType));
 
                     var reqId = ++_currentReqId;
@@ -152,13 +152,13 @@ namespace IbClient.IbHost
                         && ! _errorMessages10168.Any(m => m.RequestId == reqId)) { };
 
                     // TODO
-                    // Cses error 10168
+                    // Case error 10168
                    
-                    if (price != null)
-                    {
-                        break;
-                    }
-                }
+                    //if (price != null)
+                    //{
+                    //    break;
+                    //}
+                //}
             });
 
             return (price, tickType, marketDataType);
