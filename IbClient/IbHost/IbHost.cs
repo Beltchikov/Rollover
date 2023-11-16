@@ -15,6 +15,7 @@ namespace IbClient.IbHost
         private IIbHostQueue _queue;
         private int _currentReqId = 0;
         private IResponses _responses;
+        private List<ErrorMessage> _errorMessages10168;
         public static readonly string DEFAULT_SEC_TYPE = "STK";
         public static readonly string DEFAULT_CURRENCY = "USD";
         public static readonly string DEFAULT_EXCHANGE = "SMART";
@@ -34,6 +35,7 @@ namespace IbClient.IbHost
 
             _queue = queue;
             _responses = new Responses();
+            _errorMessages10168 = new List<ErrorMessage>();
 
             //_ibClient.HistoricalData += _ibClient_HistoricalData;
             //_ibClient.HistoricalDataUpdate += _ibClient_HistoricalDataUpdate;
@@ -146,7 +148,11 @@ namespace IbClient.IbHost
 
                     var startTime = DateTime.Now;
                     while (!_responses.TryGetValidPrice(reqId, m => m.Price > 0, out price, out tickType)
-                        && !_responses.SnaphotEnded(reqId)) { };
+                        && !_responses.SnaphotEnded(reqId)
+                        && ! _errorMessages10168.Any(m => m.RequestId == reqId)) { };
+
+                    // TODO
+                    // Cses error 10168
                    
                     if (price != null)
                     {
@@ -165,6 +171,11 @@ namespace IbClient.IbHost
                 throw new ApplicationException("Unexpected! Consumer is null");
             }
             Consumer.TwsMessageCollection?.Add($"ReqId:{reqId} code:{code} message:{message} exception:{exception}");
+
+            if(code == 10168)
+            {
+                _errorMessages10168.Add(new ErrorMessage(reqId, code, message));
+            }
         }
 
         private void _ibClient_ManagedAccounts(ManagedAccountsMessage message)

@@ -27,7 +27,7 @@ namespace IbClient
         {
             var tickPriceMessagesCopy = _tickPriceMessages.ToArray();
 
-            foreach (var tickPriceMessage in tickPriceMessagesCopy.Where(m => m.RequestId == reqId))
+            foreach (var tickPriceMessage in tickPriceMessagesCopy.Where(m => m?.RequestId == reqId))
             {
                 if (ValidPriceCallback(tickPriceMessage))
                 {
