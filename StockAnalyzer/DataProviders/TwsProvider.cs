@@ -101,15 +101,15 @@ namespace StockAnalyzer.DataProviders
                 Contract contract = ContractFromString(contractStringTrimmed);
                 TriggerStatus($"Retrieving current price for {contractStringTrimmed} {cnt++}/{contractStringsListTws.Count}");
 
-                MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.Live,
-                MarketDataType.Frozen, MarketDataType.Delayed,
-                MarketDataType.Delayed, MarketDataType.DelayedFrozen };
+                //MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.Live,
+                //MarketDataType.Frozen, MarketDataType.Delayed,
+                //MarketDataType.Delayed, MarketDataType.DelayedFrozen };
 
                 try
                 {
-                    Price? currentPrice = await CurrentPriceFromContract(contract, marketDataTypes);
+                    Price? currentPrice = await CurrentPriceFromContract(contract);
                     result.Add($"{contract.Symbol}\t{currentPrice.Value}\t{contract.Currency}" +
-                        $"\t{marketDataTypes[0]}\t{TickTypeName(currentPrice.TickType)}");
+                        $"\t{MarketDataTypeName(currentPrice.MarketDataType)}\t{TickTypeName(currentPrice.TickType)}");
                 }
                 catch (IndexOutOfRangeException ex)
                 {
@@ -425,9 +425,9 @@ namespace StockAnalyzer.DataProviders
             return fundamentalData ?? $"{contract.Symbol}\tNO_FUNDAMENTAL_DATA";
         }
 
-        private async Task<Price> CurrentPriceFromContract(Contract contract, MarketDataType[] marketDataTypes)
+        private async Task<Price> CurrentPriceFromContract(Contract contract)
         {
-            (var currentPrice, var tickType, var marketDataType) = await _ibHost.RequestMarketDataSnapshotAsync(contract, marketDataTypes);
+            (var currentPrice, var tickType, var marketDataType) = await _ibHost.RequestMarketDataSnapshotAsync(contract);
             return new Price(currentPrice, (int?)marketDataType, (int?)tickType);
         }
 
@@ -619,6 +619,18 @@ namespace StockAnalyzer.DataProviders
 
             var tickTypeName = Enum.GetName(typeof(TickType), tickType.Value);
             return tickTypeName ?? NULL;
+        }
+
+        private string MarketDataTypeName(int? marketDataType)
+        {
+            const string NULL = "NULL";
+            if (marketDataType == null)
+            {
+                return NULL;
+            }
+
+            var marketDataTypeName = Enum.GetName(typeof(MarketDataType), marketDataType.Value);
+            return marketDataTypeName ?? NULL;
         }
     }
 }

@@ -121,47 +121,34 @@ namespace IbClient.IbHost
         }
 
         // full list of tick types: https://interactivebrokers.github.io/tws-api/tick_types.html</param>
-        public async Task<(double?, TickType?, MarketDataType?)> RequestMarketDataSnapshotAsync(Contract contract, MarketDataType[] marketDataTypes)
+        public async Task<(double?, TickType?, MarketDataType?)> RequestMarketDataSnapshotAsync(Contract contract)
         {
-            //MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.Live,
-            //    MarketDataType.Frozen, MarketDataType.Delayed,
-            //    MarketDataType.Delayed, MarketDataType.DelayedFrozen };
-          
             double? price = null;
             TickType? tickType = null;
-            MarketDataType? marketDataType = null;
+            MarketDataType? marketDataTypeLive = MarketDataType.Live;
             await Task.Run(() =>
             {
-                //for (int i = 0; i < marketDataTypes.Length; i++)
-                //{
-                    marketDataType = MarketDataType.Live;
-                    _ibClient.ClientSocket.reqMarketDataType(((int)marketDataType));
+                _ibClient.ClientSocket.reqMarketDataType(((int)marketDataTypeLive));
 
-                    var reqId = ++_currentReqId;
-                    _ibClient.ClientSocket.reqMktData(
-                        reqId,
-                        contract,
-                        "",
-                        true,
-                        false,
-                        new List<TagValue>());
+                var reqId = ++_currentReqId;
+                _ibClient.ClientSocket.reqMktData(
+                    reqId,
+                    contract,
+                    "",
+                    true,
+                    false,
+                    new List<TagValue>());
 
-                    var startTime = DateTime.Now;
-                    while (!_responses.TryGetValidPrice(reqId, m => m.Price > 0, out price, out tickType)
-                        && !_responses.SnaphotEnded(reqId)
-                        && ! _errorMessages10168.Any(m => m.RequestId == reqId)) { };
+                var startTime = DateTime.Now;
+                while (!_responses.TryGetValidPrice(reqId, m => m.Price > 0, out price, out tickType)
+                    && !_responses.SnaphotEnded(reqId)
+                    && !_errorMessages10168.Any(m => m.RequestId == reqId)) { };
 
-                    // TODO
-                    // Case error 10168
-                   
-                    //if (price != null)
-                    //{
-                    //    break;
-                    //}
-                //}
+                // TODO
+                // Case error 10168
             });
 
-            return (price, tickType, marketDataType);
+            return (price, tickType, marketDataTypeLive);
         }
 
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)
@@ -172,7 +159,7 @@ namespace IbClient.IbHost
             }
             Consumer.TwsMessageCollection?.Add($"ReqId:{reqId} code:{code} message:{message} exception:{exception}");
 
-            if(code == 10168)
+            if (code == 10168)
             {
                 _errorMessages10168.Add(new ErrorMessage(reqId, code, message));
             }
