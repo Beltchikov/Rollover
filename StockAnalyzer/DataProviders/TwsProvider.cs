@@ -94,7 +94,7 @@ namespace StockAnalyzer.DataProviders
             foreach (string contractString in contractStringsListTws)
             {
                 var contractStringTrimmed = contractString.Trim();
-                if(string.IsNullOrWhiteSpace(contractStringTrimmed))
+                if (string.IsNullOrWhiteSpace(contractStringTrimmed))
                 {
                     continue;
                 }
@@ -109,7 +109,7 @@ namespace StockAnalyzer.DataProviders
                 {
                     Price? currentPrice = await CurrentPriceFromContract(contract);
                     result.Add($"{contract.Symbol}\t{currentPrice.Value}\t{contract.Currency}" +
-                        $"\t{MarketDataTypeName(currentPrice.MarketDataType)}\t{TickTypeName(currentPrice.TickType)}");
+                        $"\t{EnumNameFromValue<MarketDataType>(currentPrice.MarketDataType)}\t{EnumNameFromValue<TickType>(currentPrice.TickType)}");
                 }
                 catch (IndexOutOfRangeException ex)
                 {
@@ -609,28 +609,16 @@ namespace StockAnalyzer.DataProviders
             }
         }
 
-        private string TickTypeName(int? tickType)
+        private string EnumNameFromValue<T>(int? enumValue)
         {
             const string NULL = "NULL";
-            if (tickType == null)
+            if (enumValue == null)
             {
                 return NULL;
             }
 
-            var tickTypeName = Enum.GetName(typeof(TickType), tickType.Value);
-            return tickTypeName ?? NULL;
-        }
-
-        private string MarketDataTypeName(int? marketDataType)
-        {
-            const string NULL = "NULL";
-            if (marketDataType == null)
-            {
-                return NULL;
-            }
-
-            var marketDataTypeName = Enum.GetName(typeof(MarketDataType), marketDataType.Value);
-            return marketDataTypeName ?? NULL;
+            var enumName = Enum.GetName(typeof(T), enumValue.Value);
+            return enumName ?? NULL;
         }
     }
 }
