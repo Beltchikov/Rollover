@@ -125,30 +125,33 @@ namespace IbClient.IbHost
         {
             double? price = null;
             TickType? tickType = null;
-            MarketDataType? marketDataTypeLive = MarketDataType.Live;
+            MarketDataType? marketDataType = MarketDataType.Live;
             await Task.Run(() =>
             {
-                _ibClient.ClientSocket.reqMarketDataType(((int)marketDataTypeLive));
+                while (price == null)
+                {
+                    _ibClient.ClientSocket.reqMarketDataType(((int)marketDataType));
 
-                var reqId = ++_currentReqId;
-                _ibClient.ClientSocket.reqMktData(
-                    reqId,
-                    contract,
-                    "",
-                    true,
-                    false,
-                    new List<TagValue>());
+                    var reqId = ++_currentReqId;
+                    _ibClient.ClientSocket.reqMktData(
+                        reqId,
+                        contract,
+                        "",
+                        true,
+                        false,
+                        new List<TagValue>());
 
-                var startTime = DateTime.Now;
-                while (!_responses.TryGetValidPrice(reqId, m => m.Price > 0, out price, out tickType)
-                    && !_responses.SnaphotEnded(reqId)
-                    && !_errorMessages10168.Any(m => m.RequestId == reqId)) { };
+                    var startTime = DateTime.Now;
+                    while (!_responses.TryGetValidPrice(reqId, m => m.Price > 0, out price, out tickType)
+                        && !_responses.SnaphotEnded(reqId)
+                        && !_errorMessages10168.Any(m => m.RequestId == reqId)) { };
+                }
 
                 // TODO
                 // Case error 10168
             });
 
-            return (price, tickType, marketDataTypeLive);
+            return (price, tickType, marketDataType);
         }
 
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)
