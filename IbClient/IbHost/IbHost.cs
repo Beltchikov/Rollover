@@ -36,7 +36,7 @@ namespace IbClient.IbHost
             _queue = queue;
             _responses = new Responses();
             _errorMessages = new List<ErrorMessage>();
-            
+
             //_ibClient.HistoricalData += _ibClient_HistoricalData;
             //_ibClient.HistoricalDataUpdate += _ibClient_HistoricalDataUpdate;
             //_ibClient.HistoricalDataEnd += _ibClient_HistoricalDataEnd;
@@ -144,9 +144,9 @@ namespace IbClient.IbHost
 
                     while (!(_responses.TryGetValidPrice(reqId, m => m.Price > 0, out price, out tickType)
                         || _responses.SnaphotEnded(reqId)
-                        || _errorMessages.Any(m => m.RequestId == reqId)
-                        || _errorMessages.Any(m => m.RequestId == reqId))) { };
-                  
+                        || HasErrorMessage(reqId, 10168)
+                        || HasErrorMessage(reqId, 354))) { };
+
                     if (price == null)
                     {
                         marketDataType = marketDataTypes[1];
@@ -156,7 +156,6 @@ namespace IbClient.IbHost
 
             return (price, tickType, marketDataType);
         }
-
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)
         {
             if (Consumer == null)
@@ -293,6 +292,12 @@ namespace IbClient.IbHost
             }
 
             return fundamentalsMessageString.Contains(ticker);
+        }
+
+        private bool HasErrorMessage(int reqId, int errorCode)
+        {
+            var errorMessagesCopy = _errorMessages.ToArray();   
+            return errorMessagesCopy.Any(c=>c.RequestId== reqId && c.ErrorCode == errorCode);   
         }
     }
 }
