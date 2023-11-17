@@ -146,6 +146,11 @@ namespace IbClient.IbHost
                     while (!_responses.TryGetValidPrice(reqId, m => m.Price > 0, out price, out tickType)
                         && !_responses.SnaphotEnded(reqId)
                         && !_errorMessages10168.Any(m => m.RequestId == reqId)) { };
+
+                    if (price == null)
+                    {
+                        marketDataType = marketDataTypes[1];
+                    }
                 }
 
                 // TODO
@@ -166,6 +171,11 @@ namespace IbClient.IbHost
             if (code == 10168)
             {
                 _errorMessages10168.Add(new ErrorMessage(reqId, code, message));
+            }
+            if (code == 354)
+            {
+                // TODO
+                //_errorMessages10168.Add(new ErrorMessage(reqId, code, message));
             }
         }
 
