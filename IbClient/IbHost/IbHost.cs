@@ -125,7 +125,8 @@ namespace IbClient.IbHost
         {
             double? price = null;
             TickType? tickType = null;
-            MarketDataType? marketDataType = MarketDataType.Live;
+            MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.DelayedFrozen };
+            MarketDataType? marketDataType = marketDataTypes[0];
             await Task.Run(() =>
             {
                 while (price == null)
