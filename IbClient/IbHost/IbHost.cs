@@ -15,7 +15,7 @@ namespace IbClient.IbHost
         private IIbHostQueue _queue;
         private int _currentReqId = 0;
         private IResponses _responses;
-        private List<ErrorMessage> _errorMessages10168;
+        private List<ErrorMessage> _errorMessages;
         public static readonly string DEFAULT_SEC_TYPE = "STK";
         public static readonly string DEFAULT_CURRENCY = "USD";
         public static readonly string DEFAULT_EXCHANGE = "SMART";
@@ -35,7 +35,7 @@ namespace IbClient.IbHost
 
             _queue = queue;
             _responses = new Responses();
-            _errorMessages10168 = new List<ErrorMessage>();
+            _errorMessages = new List<ErrorMessage>();
             
             //_ibClient.HistoricalData += _ibClient_HistoricalData;
             //_ibClient.HistoricalDataUpdate += _ibClient_HistoricalDataUpdate;
@@ -144,8 +144,8 @@ namespace IbClient.IbHost
 
                     while (!(_responses.TryGetValidPrice(reqId, m => m.Price > 0, out price, out tickType)
                         || _responses.SnaphotEnded(reqId)
-                        || _errorMessages10168.Any(m => m.RequestId == reqId)
-                        || _errorMessages10168.Any(m => m.RequestId == reqId))) { };
+                        || _errorMessages.Any(m => m.RequestId == reqId)
+                        || _errorMessages.Any(m => m.RequestId == reqId))) { };
                   
                     if (price == null)
                     {
@@ -167,11 +167,11 @@ namespace IbClient.IbHost
 
             if (code == 10168)
             {
-                _errorMessages10168.Add(new ErrorMessage(reqId, code, message));
+                _errorMessages.Add(new ErrorMessage(reqId, code, message));
             }
             if (code == 354)
             {
-                _errorMessages10168.Add(new ErrorMessage(reqId, code, message));
+                _errorMessages.Add(new ErrorMessage(reqId, code, message));
             }
         }
 
