@@ -121,11 +121,10 @@ namespace IbClient.IbHost
         }
 
         // full list of tick types: https://interactivebrokers.github.io/tws-api/tick_types.html</param>
-        public async Task<(double?, TickType?, MarketDataType?)> RequestMarketDataSnapshotAsync(Contract contract)
+        public async Task<(double?, TickType?, MarketDataType?)> RequestMarketDataSnapshotAsync(Contract contract, MarketDataType[] marketDataTypes)
         {
             double? price = null;
             TickType? tickType = null;
-            MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.DelayedFrozen };
             MarketDataType? marketDataType = marketDataTypes[0];
             await Task.Run(() =>
             {

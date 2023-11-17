@@ -101,13 +101,11 @@ namespace StockAnalyzer.DataProviders
                 Contract contract = ContractFromString(contractStringTrimmed);
                 TriggerStatus($"Retrieving current price for {contractStringTrimmed} {cnt++}/{contractStringsListTws.Count}");
 
-                //MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.Live,
-                //MarketDataType.Frozen, MarketDataType.Delayed,
-                //MarketDataType.Delayed, MarketDataType.DelayedFrozen };
+                MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.DelayedFrozen };
 
                 try
                 {
-                    Price? currentPrice = await CurrentPriceFromContract(contract);
+                    Price? currentPrice = await CurrentPriceFromContract(contract, marketDataTypes);
                     result.Add($"{contract.Symbol}\t{currentPrice.Value}\t{contract.Currency}" +
                         $"\t{EnumNameFromValue<MarketDataType>(currentPrice.MarketDataType)}\t{EnumNameFromValue<TickType>(currentPrice.TickType)}");
                 }
@@ -425,9 +423,10 @@ namespace StockAnalyzer.DataProviders
             return fundamentalData ?? $"{contract.Symbol}\tNO_FUNDAMENTAL_DATA";
         }
 
-        private async Task<Price> CurrentPriceFromContract(Contract contract)
+        private async Task<Price> CurrentPriceFromContract(Contract contract, MarketDataType[] marketDataTypes)
         {
-            (var currentPrice, var tickType, var marketDataType) = await _ibHost.RequestMarketDataSnapshotAsync(contract);
+            (var currentPrice, var tickType, var marketDataType) 
+                = await _ibHost.RequestMarketDataSnapshotAsync(contract, marketDataTypes);
             return new Price(currentPrice, (int?)marketDataType, (int?)tickType);
         }
 
