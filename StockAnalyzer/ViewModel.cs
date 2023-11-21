@@ -52,7 +52,7 @@ namespace StockAnalyzer
         public ICommand SharesOutYCommand { get; }
         public ICommand SharesOutQCommand { get; }
         public ICommand CurrentPriceCommandCommand { get; }
-        public ICommand NpvYCommand { get; }
+        public ICommand NextValidIdCommand { get; }
         public ICommand TwsSummaryCommand { get; }
 
         public ViewModel(
@@ -206,18 +206,18 @@ namespace StockAnalyzer
                 ResultCollectionTwsFinStatements = new ObservableCollection<string>(currentPriceString);
             });
 
-            NpvYCommand = new RelayCommand(async () =>
+            NextValidIdCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer ??= this;
                 ConnectToTwsIfNeeded();
-                List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
+                //List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
 
-                List<DataStringWithTicker> fundamentalDataListPayoutRatio = await twsProvider.FundamentalDataFromContractStrings(
-                                    contractStringsList,
-                                    REPORTS_FIN_STATEMENTS,
-                                    TIMEOUT_TWS);
+                //List<DataStringWithTicker> fundamentalDataListPayoutRatio = await twsProvider.FundamentalDataFromContractStrings(
+                //                    contractStringsList,
+                //                    REPORTS_FIN_STATEMENTS,
+                //                    TIMEOUT_TWS);
 
-                MessageBox.Show("NpvYCommand - remove later");
+                MessageBox.Show("NextValidIdCommand");
 
                 //ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.NpvYFromFundamentalDataList(fundamentalDataListPayoutRatio, RiskFreeRate));
             });

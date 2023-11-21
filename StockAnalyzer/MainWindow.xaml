@@ -322,7 +322,7 @@ Foreground="White" Grid.ColumnSpan="3">
                                 </Button>
                                 <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="25" 
                                     HorizontalAlignment="Stretch" VerticalAlignment="Center" 
-                                        Command="{Binding NpvYCommand}">NPV (Y) >>
+                                        Command="{Binding NextValidIdCommand}">Next Valid Id >>
                                 </Button>
                             </StackPanel>
 
