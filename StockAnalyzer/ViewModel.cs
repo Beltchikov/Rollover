@@ -210,6 +210,9 @@ namespace StockAnalyzer
             {
                 ibHost.Consumer ??= this;
                 ConnectToTwsIfNeeded();
+
+                int id = twsProvider.GetNextValidId();
+
                 //List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
 
                 //List<DataStringWithTicker> fundamentalDataListPayoutRatio = await twsProvider.FundamentalDataFromContractStrings(
@@ -217,7 +220,7 @@ namespace StockAnalyzer
                 //                    REPORTS_FIN_STATEMENTS,
                 //                    TIMEOUT_TWS);
 
-                MessageBox.Show("NextValidIdCommand");
+                
 
                 //ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.NpvYFromFundamentalDataList(fundamentalDataListPayoutRatio, RiskFreeRate));
             });

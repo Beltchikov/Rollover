@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Xml;
 using System.Xml.Linq;
 using TickType = IbClient.Types.TickType;
@@ -385,6 +386,12 @@ namespace StockAnalyzer.DataProviders
         {
             // No need for TTM value
             SharesOutTwiceAYearCalculations(resultQuarterly, ticker, currency, periodsElement);
+        }
+
+        public int GetNextValidId()
+        {
+            MessageBox.Show("NextValidIdCommand");
+            throw new NotImplementedException();
         }
 
         private XDocument? XDocumentFromStringWithChecks(string stringToParse, List<string> result)
