@@ -388,10 +388,12 @@ namespace StockAnalyzer.DataProviders
             SharesOutTwiceAYearCalculations(resultQuarterly, ticker, currency, periodsElement);
         }
 
-        public int GetNextValidId()
+        public int NextValidId()
         {
-            MessageBox.Show("NextValidIdCommand");
-            throw new NotImplementedException();
+            var id = _ibHost.NextValidId();
+
+            MessageBox.Show($"NextValidIdCommand {id}");
+            return id;    
         }
 
         private XDocument? XDocumentFromStringWithChecks(string stringToParse, List<string> result)

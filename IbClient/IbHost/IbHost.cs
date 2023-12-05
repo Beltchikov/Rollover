@@ -155,6 +155,13 @@ namespace IbClient.IbHost
 
             return (price, tickType, marketDataType);
         }
+
+
+        public int NextValidId()
+        {
+            // TODO
+            return -99999;
+        }
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)
         {
             if (Consumer == null)

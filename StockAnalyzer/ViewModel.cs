@@ -211,7 +211,7 @@ namespace StockAnalyzer
                 ibHost.Consumer ??= this;
                 ConnectToTwsIfNeeded();
 
-                int id = twsProvider.GetNextValidId();
+                int id = twsProvider.NextValidId();
 
                 //List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
 
