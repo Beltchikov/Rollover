@@ -52,7 +52,7 @@ namespace StockAnalyzer
         public ICommand SharesOutYCommand { get; }
         public ICommand SharesOutQCommand { get; }
         public ICommand CurrentPriceCommandCommand { get; }
-        public ICommand NextValidIdCommand { get; }
+        public ICommand MarginCommand { get; }
         public ICommand TwsSummaryCommand { get; }
 
         public ViewModel(
@@ -206,7 +206,7 @@ namespace StockAnalyzer
                 ResultCollectionTwsFinStatements = new ObservableCollection<string>(currentPriceString);
             });
 
-            NextValidIdCommand = new RelayCommand(async () =>
+            MarginCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer ??= this;
                 ConnectToTwsIfNeeded();

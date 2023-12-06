@@ -392,7 +392,7 @@ namespace StockAnalyzer.DataProviders
         {
             var id = _ibHost.NextValidId();
 
-            MessageBox.Show($"NextValidIdCommand {id}");
+            MessageBox.Show($"MarginCommand {id}");
             return id;    
         }
 
