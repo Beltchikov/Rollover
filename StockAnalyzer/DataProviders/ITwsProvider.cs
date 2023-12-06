@@ -13,6 +13,7 @@ namespace StockAnalyzer.DataProviders
         Task<List<ContractDetails>> ContractDetailsListFromContractStringsList(List<string> contractStringsTws, int timeout);
         List<string> ConIdsFromContractDetailsList(List<ContractDetails> contractDetailsList);
         Task<List<DataStringWithTicker>> FundamentalDataFromContractStrings(List<string> contractStringsTws, string reportType, int timeout);
+        Task<List<DataStringWithTicker>> MarginFromContractStrings(List<string> contractStringsListTws, int timeout);
         List<string> RoeFromFundamentalDataList(List<DataStringWithTicker> fundamentalDataList);
         List<string> DesriptionOfCompanyFromFundamentalDataList(List<DataStringWithTicker> fundamentalDataList);
         List<string> PayoutRatioYFromFundamentalDataList(List<DataStringWithTicker> fundamentalDataList);
@@ -27,6 +28,5 @@ namespace StockAnalyzer.DataProviders
         void SharesOutTwiceAYearCalculations(List<string> resultTwiceAYear, string ticker, string currency, XElement? interimStatement);
         void SharesOutQuarterlyCalculations(List<string> resultQuarterly, string ticker, string currency, XElement? interimStatement);
         Task<List<string>> CurrentPriceFromContractStrings(List<string> contractStringsListTws, int timeout);
-        int NextValidId();
     }
 }

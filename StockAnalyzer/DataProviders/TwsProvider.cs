@@ -119,6 +119,18 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
+        public async Task<List<DataStringWithTicker>> MarginFromContractStrings(List<string> contractStringsListTws, int timeout)
+        {
+            await Task.Run(() =>
+            {
+                MessageBox.Show($"MarginFromContractStrings");
+                // TODO
+                return new List<DataStringWithTicker>();
+            });
+            return new List<DataStringWithTicker>();
+
+        }
+
         public List<string> RoeFromFundamentalDataList(List<DataStringWithTicker> fundamentalDataList)
         {
             TriggerStatus($"Extracting ROE from the fundamental data list");
@@ -386,14 +398,6 @@ namespace StockAnalyzer.DataProviders
         {
             // No need for TTM value
             SharesOutTwiceAYearCalculations(resultQuarterly, ticker, currency, periodsElement);
-        }
-
-        public int NextValidId()
-        {
-            var id = _ibHost.NextValidId();
-
-            MessageBox.Show($"MarginCommand {id}");
-            return id;    
         }
 
         private XDocument? XDocumentFromStringWithChecks(string stringToParse, List<string> result)

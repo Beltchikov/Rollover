@@ -156,12 +156,6 @@ namespace IbClient.IbHost
             return (price, tickType, marketDataType);
         }
 
-
-        public int NextValidId()
-        {
-            // TODO
-            return -99999;
-        }
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)
         {
             if (Consumer == null)
@@ -302,8 +296,8 @@ namespace IbClient.IbHost
 
         private bool HasErrorMessage(int reqId, int errorCode)
         {
-            var errorMessagesCopy = _errorMessages.ToArray();   
-            return errorMessagesCopy.Any(c=>c.RequestId== reqId && c.ErrorCode == errorCode);   
+            var errorMessagesCopy = _errorMessages.ToArray();
+            return errorMessagesCopy.Any(c => c.RequestId == reqId && c.ErrorCode == errorCode);
         }
     }
 }
