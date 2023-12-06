@@ -210,12 +210,8 @@ namespace StockAnalyzer
             {
                 ibHost.Consumer ??= this;
                 ConnectToTwsIfNeeded();
-
-                //int id = twsProvider.NextValidId();
-
                 List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
-
-                List<DataStringWithTicker> fundamentalDataListPayoutRatio = await twsProvider.MarginFromContractStrings(
+                List<DataStringWithTicker> marginList = await twsProvider.MarginFromContractStrings(
                                     contractStringsList,
                                     TIMEOUT_TWS);
 
