@@ -124,7 +124,6 @@ namespace StockAnalyzer.DataProviders
             var result = new List<DataStringWithTicker>();
             //result.Add($"Ticker\tPrice\tCurrency\tMarket Data Type\tTick Type\tComment");
 
-
             int cnt = 1;
             foreach (string contractString in contractStringsListTws)
             {
@@ -154,11 +153,10 @@ namespace StockAnalyzer.DataProviders
 
                 // TODO
                 //var orderState = _ibHost.WhatIfOrderStatesFromContract(qty);
-                result.Add(new DataStringWithTicker(contract.Symbol,$"qty"));
+                result.Add(new DataStringWithTicker(contract.Symbol,$"{qty}"));
             }
 
-            MessageBox.Show($"MarginFromContractStrings");
-            return new List<DataStringWithTicker>();
+            return result;
         }
 
         public List<string> RoeFromFundamentalDataList(List<DataStringWithTicker> fundamentalDataList)

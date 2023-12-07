@@ -211,13 +211,10 @@ namespace StockAnalyzer
                 ibHost.Consumer ??= this;
                 ConnectToTwsIfNeeded();
                 List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
-                List<DataStringWithTicker> marginList = await twsProvider.MarginListFromContractStrings(
+                List<DataStringWithTicker> marginListWithTicker = await twsProvider.MarginListFromContractStrings(
                                     contractStringsList,
                                     TIMEOUT_TWS, INVESTMENT_AMOUNT);
-
-
-
-                //ResultCollectionTwsFinStatements = new ObservableCollection<string>(twsProvider.NpvYFromFundamentalDataList(fundamentalDataListPayoutRatio, RiskFreeRate));
+                ResultCollectionTwsFinStatements = new ObservableCollection<string>(marginListWithTicker.Select(dwt => dwt.Ticker + "\t" + dwt.Data));
             });
 
             TwsSummaryCommand = new RelayCommand(async () =>
