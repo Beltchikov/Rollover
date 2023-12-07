@@ -121,7 +121,7 @@ namespace StockAnalyzer.DataProviders
 
         public async Task<List<DataStringWithTicker>> MarginListFromContractStrings(List<string> contractStringsListTws, int timeout, double investmentAmount)
         {
-            var result = new List<string>();
+            var result = new List<DataStringWithTicker>();
             //result.Add($"Ticker\tPrice\tCurrency\tMarket Data Type\tTick Type\tComment");
 
 
@@ -141,19 +141,20 @@ namespace StockAnalyzer.DataProviders
 
                 if (currentPrice == null)
                 {
-                    result.Add($"{contract.Symbol}\tcurrentPrice is null");
+                    result.Add(new DataStringWithTicker(contract.Symbol, "currentPrice is null"));
                     continue;
                 }
                 double? price = currentPrice.Value;
                 if (price == null)
                 {
-                    result.Add($"{contract.Symbol}\tvalue of currentPrice is null");
+                    result.Add(new DataStringWithTicker(contract.Symbol, "value of currentPrice is null"));
                     continue;
                 }
                 int qty = (int)Math.Floor(investmentAmount / (double)price);
-               
+
                 // TODO
                 //var orderState = _ibHost.WhatIfOrderStatesFromContract(qty);
+                result.Add(new DataStringWithTicker(contract.Symbol,$"qty"));
             }
 
             MessageBox.Show($"MarginFromContractStrings");
