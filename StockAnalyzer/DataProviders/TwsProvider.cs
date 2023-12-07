@@ -119,17 +119,55 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
-        public async Task<List<DataStringWithTicker>> MarginFromContractStrings(List<string> contractStringsListTws, int timeout)
+        public async Task<List<DataStringWithTicker>> MarginListFromContractStrings(List<string> contractStringsListTws, int timeout, double investmentAmount)
         {
-            await Task.Run(() =>
-            {
+            var result = new List<string>();
+            //result.Add($"Ticker\tPrice\tCurrency\tMarket Data Type\tTick Type\tComment");
+
+            
+                int cnt = 1;
+                foreach (string contractString in contractStringsListTws)
+                {
+                    var contractStringTrimmed = contractString.Trim();
+                    if (string.IsNullOrWhiteSpace(contractStringTrimmed))
+                    {
+                        continue;
+                    }
+                    Contract contract = ContractFromString(contractStringTrimmed);
+                    TriggerStatus($"Retrieving current price for {contractStringTrimmed} {cnt++}/{contractStringsListTws.Count}");
+
+                    MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.DelayedFrozen };
+                    Price? currentPrice = await CurrentPriceFromContract(contract, marketDataTypes);
+                if (currentPrice == null)
+                {
+                    result.Add($"{contract.Symbol}\tcurrentPrice is null");
+                    continue;
+                }
+                double? price = currentPrice.Value;
+                if (price == null)
+                {
+                    result.Add($"{contract.Symbol}\tvalue of currentPrice is null");
+                    continue;
+                }
+                else
+                {
+                    int qty = (int)Math.Floor(investmentAmount / (double)price);
+                }
+               
+                    // TODO
+                    //var orderState = _ibHost.WhatIfOrderStatesFromContract(qty);
+
+                    //Price? currentPrice = await CurrentPriceFromContract(contract, marketDataTypes);
+                    //result.Add($"{contract.Symbol}\t{currentPrice.Value}\t{contract.Currency}" +
+                    //  $"\t{EnumNameFromValue<MarketDataType>(currentPrice.MarketDataType)}\t{EnumNameFromValue<TickType>(currentPrice.TickType)}");
+                
+                }
+
+                
                 MessageBox.Show($"MarginFromContractStrings");
                 // TODO
                 return new List<DataStringWithTicker>();
-            });
-            return new List<DataStringWithTicker>();
-
-        }
+                }
 
         public List<string> RoeFromFundamentalDataList(List<DataStringWithTicker> fundamentalDataList)
         {

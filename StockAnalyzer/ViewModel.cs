@@ -17,7 +17,7 @@ namespace StockAnalyzer
         private const int TIMEOUT_TWS = 3000;
         private readonly string REPORT_SNAPSHOT = "ReportSnapshot";
         private readonly string REPORTS_FIN_STATEMENTS = "ReportsFinStatements";
-
+        private readonly double INVESTMENT_AMOUNT = 6400;
         private ObservableCollection<string> _resultCollectionEarningsForWeek = null!;
         private string _htmlSourceEarningsForWeek = null!;
         private double _marketCap;
@@ -211,9 +211,9 @@ namespace StockAnalyzer
                 ibHost.Consumer ??= this;
                 ConnectToTwsIfNeeded();
                 List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
-                List<DataStringWithTicker> marginList = await twsProvider.MarginFromContractStrings(
+                List<DataStringWithTicker> marginList = await twsProvider.MarginListFromContractStrings(
                                     contractStringsList,
-                                    TIMEOUT_TWS);
+                                    TIMEOUT_TWS, INVESTMENT_AMOUNT);
 
 
 
