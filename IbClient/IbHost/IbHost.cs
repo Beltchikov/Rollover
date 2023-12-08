@@ -156,6 +156,11 @@ namespace IbClient.IbHost
             return (price, tickType, marketDataType);
         }
 
+        public OrderState WhatIfOrderStateFromContract(Contract contract, int qty)
+        {
+            throw new NotImplementedException();
+        }
+
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)
         {
             if (Consumer == null)

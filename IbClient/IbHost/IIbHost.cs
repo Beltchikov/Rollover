@@ -18,6 +18,7 @@ namespace IbClient.IbHost
                     string reportType,
                     int timeout);
         Task<(double?, TickType?, MarketDataType?)> RequestMarketDataSnapshotAsync(Contract contract, MarketDataType[] marketDataTypes);
+        OrderState WhatIfOrderStateFromContract(Contract contract, int qty);
 
         //public void ReqHistoricalData();
         //void ApplyDefaultHistoricalData();
