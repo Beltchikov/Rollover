@@ -4,8 +4,6 @@ using IbClient.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Threading;
 using System.Threading.Tasks;
 using TickType = IbClient.Types.TickType;
 
@@ -18,6 +16,8 @@ namespace IbClient.IbHost
         private int _currentReqId = 0;
         private IResponses _responses;
         private List<ErrorMessage> _errorMessages;
+        private int _nextOrderId;
+        private int _lastOrderId;
         public static readonly string DEFAULT_SEC_TYPE = "STK";
         public static readonly string DEFAULT_CURRENCY = "USD";
         public static readonly string DEFAULT_EXCHANGE = "SMART";
@@ -163,9 +163,16 @@ namespace IbClient.IbHost
         {
             OrderState orderState = null;
             _ibClient.ClientSocket.reqIds(-1);
+
+            _lastOrderId = _nextOrderId;
+            await Task.Run(() =>
+            {
+                while (_lastOrderId == _nextOrderId) { _nextOrderId = _ibClient.NextOrderId; }
+            });
+                        
             Order order = new Order()
             {
-                OrderId = _ibClient.NextOrderId,
+                OrderId = _nextOrderId,
                 Action = "BUY",
                 OrderType = "MARKET",
                 TotalQuantity = qty,
