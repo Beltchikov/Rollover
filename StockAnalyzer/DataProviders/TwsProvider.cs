@@ -149,8 +149,8 @@ namespace StockAnalyzer.DataProviders
                     continue;
                 }
 
-                int qty = (int)Math.Floor(investmentAmount / (double)price);
-                OrderState orderState = await _ibHost.WhatIfOrderStateFromContract(contract, qty, timeout);
+                int initialQty = (int)Math.Floor(investmentAmount / (double)price);
+                OrderState orderState = await _ibHost.WhatIfOrderStateFromContract(contract, initialQty, timeout);
                 if (orderState == null)
                 {
                     result.Add($"{contract.Symbol}\torderState is null");
@@ -159,7 +159,7 @@ namespace StockAnalyzer.DataProviders
 
                 double maintMarginAsDouble = double.Parse(orderState.MaintMarginChange, new CultureInfo("EN-US"));
                 maintMarginAsDouble = Math.Round(maintMarginAsDouble, 0);
-                result.Add($"{contract.Symbol}\t{qty}\t{maintMarginAsDouble}");
+                result.Add($"{contract.Symbol}\t{initialQty}\t{maintMarginAsDouble}");
             }
 
             return result;
