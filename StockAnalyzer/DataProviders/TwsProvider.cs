@@ -122,7 +122,7 @@ namespace StockAnalyzer.DataProviders
         {
             var result = new List<string>();
             result.Add($"Ticker\tQty\tMaint.Margin");
-           
+
             int cnt = 1;
             foreach (string contractString in contractStringsListTws)
             {
@@ -148,12 +148,11 @@ namespace StockAnalyzer.DataProviders
                     result.Add($"{contract.Symbol}\tvalue of currentPrice is null");
                     continue;
                 }
-                int qty = (int)Math.Floor(investmentAmount / (double)price);
 
+                int qty = (int)Math.Floor(investmentAmount / (double)price);
                 OrderState orderState = await _ibHost.WhatIfOrderStateFromContract(contract, qty, timeout);
-                
-                var maintMarginString = orderState.MaintMarginChange;
-                double maintMarginAsDouble = double.Parse(maintMarginString, new CultureInfo("EN-US"));
+
+                double maintMarginAsDouble = double.Parse(orderState.MaintMarginChange, new CultureInfo("EN-US"));
                 maintMarginAsDouble = Math.Round(maintMarginAsDouble, 0);
                 result.Add($"{contract.Symbol}\t{qty}\t{maintMarginAsDouble}");
             }
