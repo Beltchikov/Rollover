@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Xml;
 using System.Xml.Linq;
 using TickType = IbClient.Types.TickType;
@@ -119,11 +118,11 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
-        public async Task<List<DataStringWithTicker>> MarginListFromContractStrings(List<string> contractStringsListTws, int timeout, double investmentAmount)
+        public async Task<List<string>> MarginListFromContractStrings(List<string> contractStringsListTws, int timeout, double investmentAmount)
         {
-            var result = new List<DataStringWithTicker>();
-            //result.Add($"Ticker\tPrice\tCurrency\tMarket Data Type\tTick Type\tComment");
-
+            var result = new List<string>();
+            result.Add($"Ticker\tQty\tMaint.Margin");
+           
             int cnt = 1;
             foreach (string contractString in contractStringsListTws)
             {
@@ -140,19 +139,19 @@ namespace StockAnalyzer.DataProviders
 
                 if (currentPrice == null)
                 {
-                    result.Add(new DataStringWithTicker(contract.Symbol, "currentPrice is null"));
+                    result.Add($"{contract.Symbol}\tcurrentPrice is null");
                     continue;
                 }
                 double? price = currentPrice.Value;
                 if (price == null)
                 {
-                    result.Add(new DataStringWithTicker(contract.Symbol, "value of currentPrice is null"));
+                    result.Add($"{contract.Symbol}\tvalue of currentPrice is null");
                     continue;
                 }
                 int qty = (int)Math.Floor(investmentAmount / (double)price);
 
                 OrderState orderState = await _ibHost.WhatIfOrderStateFromContract(contract, qty, timeout);
-                result.Add(new DataStringWithTicker(contract.Symbol,$"{qty}\t{orderState.MaintMarginChange}"));
+                result.Add($"{contract.Symbol}\t{qty}\t{orderState.MaintMarginChange}");
             }
 
             return result;

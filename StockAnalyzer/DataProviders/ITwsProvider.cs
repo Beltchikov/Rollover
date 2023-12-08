@@ -13,7 +13,7 @@ namespace StockAnalyzer.DataProviders
         Task<List<ContractDetails>> ContractDetailsListFromContractStringsList(List<string> contractStringsTws, int timeout);
         List<string> ConIdsFromContractDetailsList(List<ContractDetails> contractDetailsList);
         Task<List<DataStringWithTicker>> FundamentalDataFromContractStrings(List<string> contractStringsTws, string reportType, int timeout);
-        Task<List<DataStringWithTicker>> MarginListFromContractStrings(List<string> contractStringsListTws, int timeout, double investmentsAmount);
+        Task<List<string>> MarginListFromContractStrings(List<string> contractStringsListTws, int timeout, double investmentsAmount);
         List<string> RoeFromFundamentalDataList(List<DataStringWithTicker> fundamentalDataList);
         List<string> DesriptionOfCompanyFromFundamentalDataList(List<DataStringWithTicker> fundamentalDataList);
         List<string> PayoutRatioYFromFundamentalDataList(List<DataStringWithTicker> fundamentalDataList);
