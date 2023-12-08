@@ -4,6 +4,7 @@ using IbClient.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using TickType = IbClient.Types.TickType;
 
@@ -32,6 +33,7 @@ namespace IbClient.IbHost
             _ibClient.FundamentalData += _ibClient_FundamentalData;
             _ibClient.TickPrice += _ibClient_TickPrice;
             _ibClient.TickSnapshotEnd += _ibClient_TickSnapshotEnd;
+            _ibClient.OpenOrder += _ibClient_OpenOrder;
 
             _queue = queue;
             _responses = new Responses();
@@ -158,7 +160,20 @@ namespace IbClient.IbHost
 
         public OrderState WhatIfOrderStateFromContract(Contract contract, int qty)
         {
-            throw new NotImplementedException();
+            _ibClient.ClientSocket.reqIds(-1);
+            Order order = new Order()
+            {
+                OrderId = _ibClient.NextOrderId,
+                Action = "BUY",
+                OrderType = "MARKET",
+                TotalQuantity = qty,
+                WhatIf = true
+            };
+            _ibClient.ClientSocket.placeOrder(_ibClient.NextOrderId, contract, order);
+
+            //throw new NotImplementedException();
+            // TODO
+            return null;
         }
 
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)
@@ -243,6 +258,11 @@ namespace IbClient.IbHost
             }
             Consumer.TwsMessageCollection?.Add($"TickSnapshotEnd for {reqId} ");
             _responses.SetSnapshotEnd(reqId);
+        }
+
+        private void _ibClient_OpenOrder(OpenOrderMessage openOrderMessage)
+        {
+            throw new NotImplementedException();
         }
 
         private bool HasMessageInQueue<T>(int reqId)
