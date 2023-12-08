@@ -161,24 +161,6 @@ namespace IbClient.IbHost
 
         public async Task<OrderState> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout)
         {
-            //ContractDetails contractDetails = null;
-            //var reqId = ++_currentReqId;
-            //_ibClient.ClientSocket.reqContractDetails(reqId, contract);
-
-            //await Task.Run(() =>
-            //{
-            //    var startTime = DateTime.Now;
-            //    while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasMessageInQueue<ContractDetailsMessage>(reqId)) { }
-
-            //    if (_queue.Dequeue() is ContractDetailsMessage contractDetailsMessage)
-            //    {
-            //        contractDetails = contractDetailsMessage.ContractDetails;
-            //    }
-            //});
-
-            //return contractDetails;
-
-
             OrderState orderState = null;
             _ibClient.ClientSocket.reqIds(-1);
             Order order = new Order()
@@ -202,9 +184,7 @@ namespace IbClient.IbHost
                     orderState = openOrderMessage.OrderState;
                 }
             });
-
-            //throw new NotImplementedException();
-            // TODO
+            
             return orderState;
         }
 
