@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using TickType = IbClient.Types.TickType;
 
@@ -158,8 +159,27 @@ namespace IbClient.IbHost
             return (price, tickType, marketDataType);
         }
 
-        public OrderState WhatIfOrderStateFromContract(Contract contract, int qty)
+        public async Task<OrderState> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout)
         {
+            //ContractDetails contractDetails = null;
+            //var reqId = ++_currentReqId;
+            //_ibClient.ClientSocket.reqContractDetails(reqId, contract);
+
+            //await Task.Run(() =>
+            //{
+            //    var startTime = DateTime.Now;
+            //    while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasMessageInQueue<ContractDetailsMessage>(reqId)) { }
+
+            //    if (_queue.Dequeue() is ContractDetailsMessage contractDetailsMessage)
+            //    {
+            //        contractDetails = contractDetailsMessage.ContractDetails;
+            //    }
+            //});
+
+            //return contractDetails;
+
+
+            OrderState orderState = null;
             _ibClient.ClientSocket.reqIds(-1);
             Order order = new Order()
             {
@@ -169,11 +189,23 @@ namespace IbClient.IbHost
                 TotalQuantity = qty,
                 WhatIf = true
             };
+
             _ibClient.ClientSocket.placeOrder(_ibClient.NextOrderId, contract, order);
+
+            await Task.Run(() =>
+            {
+                var startTime = DateTime.Now;
+                while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasMessageInQueue<OpenOrderMessage>()) { }
+
+                if (_queue.Dequeue() is OpenOrderMessage openOrderMessage)
+                {
+                    orderState = openOrderMessage.OrderState;
+                }
+            });
 
             //throw new NotImplementedException();
             // TODO
-            return null;
+            return orderState;
         }
 
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)
@@ -262,7 +294,13 @@ namespace IbClient.IbHost
 
         private void _ibClient_OpenOrder(OpenOrderMessage openOrderMessage)
         {
-            throw new NotImplementedException();
+            if (Consumer == null)
+            {
+                throw new ApplicationException("Unexpected! Consumer is null");
+            }
+            Consumer.TwsMessageCollection?.Add($"OpenOrderMessage for {openOrderMessage.Contract.LocalSymbol} " +
+                $"conId:{openOrderMessage.Contract.ConId}");
+            _queue.Enqueue(openOrderMessage);
         }
 
         private bool HasMessageInQueue<T>(int reqId)

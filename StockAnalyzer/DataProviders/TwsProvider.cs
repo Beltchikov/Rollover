@@ -152,7 +152,7 @@ namespace StockAnalyzer.DataProviders
                 int qty = (int)Math.Floor(investmentAmount / (double)price);
 
                 // TODO
-                OrderState orderState = _ibHost.WhatIfOrderStateFromContract(contract, qty);
+                OrderState orderState = await _ibHost.WhatIfOrderStateFromContract(contract, qty, timeout);
                 result.Add(new DataStringWithTicker(contract.Symbol,$"{qty}"));
             }
 
