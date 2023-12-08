@@ -151,6 +151,11 @@ namespace StockAnalyzer.DataProviders
 
                 int qty = (int)Math.Floor(investmentAmount / (double)price);
                 OrderState orderState = await _ibHost.WhatIfOrderStateFromContract(contract, qty, timeout);
+                if (orderState == null)
+                {
+                    result.Add($"{contract.Symbol}\torderState is null");
+                    continue;
+                }
 
                 double maintMarginAsDouble = double.Parse(orderState.MaintMarginChange, new CultureInfo("EN-US"));
                 maintMarginAsDouble = Math.Round(maintMarginAsDouble, 0);
