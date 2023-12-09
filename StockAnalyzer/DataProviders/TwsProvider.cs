@@ -148,17 +148,20 @@ namespace StockAnalyzer.DataProviders
                     result.Add($"{contract.Symbol}\tvalue of currentPrice is null");
                     continue;
                 }
-
                 int initialQty = (int)Math.Floor(investmentAmount / (double)price);
+                
                 OrderState orderState = await _ibHost.WhatIfOrderStateFromContract(contract, initialQty, timeout);
                 if (orderState == null)
                 {
                     result.Add($"{contract.Symbol}\torderState is null");
                     continue;
                 }
-
                 double maintMarginAsDouble = double.Parse(orderState.MaintMarginChange, new CultureInfo("EN-US"));
                 maintMarginAsDouble = Math.Round(maintMarginAsDouble, 0);
+
+                // TODO
+                //double margin = TrialAndError(RequestMaintMargin, contract, initialQty, targetMargin, precisionInPercent);
+                
                 result.Add($"{contract.Symbol}\t{initialQty}\t{maintMarginAsDouble}");
             }
 
