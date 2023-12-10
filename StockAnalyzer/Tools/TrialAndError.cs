@@ -17,7 +17,7 @@ namespace StockAnalyzer.Tools
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         /// <param name="precision">In percent/// </param>
-        public static async Task<int> PositiveCorrelation(
+        public static async Task<MarginResult> PositiveCorrelation(
             Func<int, Contract, int, Task<int>> maintenanceMarginFromQty,
             int timeout,
             Contract contract,
@@ -44,10 +44,7 @@ namespace StockAnalyzer.Tools
                 trialCount++;
             } while (!(lowestMargin <= margin && margin <= highestMargin));
 
-
-            // TODO
-
-            return margin;
+            return new MarginResult(margin, qty, trialCount);
         }
     }
 }

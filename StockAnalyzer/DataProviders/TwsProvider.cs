@@ -153,7 +153,7 @@ namespace StockAnalyzer.DataProviders
                 }
                 int initialQty = (int)Math.Floor(investmentAmount / (double)price);
 
-                int maintenanceMargin = await TrialAndError.PositiveCorrelation(
+                MarginResult marginResult = await TrialAndError.PositiveCorrelation(
                     MaintenanceMarginFromQty,
                     timeout, 
                     contract,
@@ -161,7 +161,7 @@ namespace StockAnalyzer.DataProviders
                     targetMargin,
                     TRIAL_AND_ERROR_PRECISION_IN_PERCENT);
 
-                result.Add($"{contract.Symbol}\t{initialQty}\t{maintenanceMargin}");
+                result.Add($"{contract.Symbol}\t{initialQty}\t{marginResult.Margin}");
             }
 
             return result;
