@@ -44,7 +44,7 @@ namespace StockAnalyzer.Tools
                 trialCount++;
             } while (!(lowestMargin <= margin && margin <= highestMargin));
 
-            return new MarginResult(margin, qty, trialCount);
+            return new MarginResult(margin, qty, --trialCount);
         }
     }
 }
