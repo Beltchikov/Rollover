@@ -4,6 +4,7 @@ using IbClient.Types;
 using StockAnalyzer.DataProviders.FinancialStatements.Tws.Accounts;
 using StockAnalyzer.DataProviders.FinancialStatements.Tws.ComputedFinancials;
 using StockAnalyzer.DataProviders.Types;
+using StockAnalyzer.Tools;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -18,6 +19,7 @@ namespace StockAnalyzer.DataProviders
     public class TwsProvider : ProviderBase, ITwsProvider
     {
         private const string NO_FUNDAMENTAL_DATA = "NO_FUNDAMENTAL_DATA";
+        private readonly int TRIAL_AND_ERROR_PRECISION_IN_PERCENT = 6;
         private IIbHost _ibHost;
 
         public TwsProvider(IIbHost ibHost, IIbHostQueue queue)
@@ -122,6 +124,7 @@ namespace StockAnalyzer.DataProviders
         {
             var result = new List<string>();
             result.Add($"Ticker\tQty\tMaint.Margin");
+            var targetMargin = investmentAmount;
 
             int cnt = 1;
             foreach (string contractString in contractStringsListTws)
@@ -150,12 +153,16 @@ namespace StockAnalyzer.DataProviders
                 }
                 int initialQty = (int)Math.Floor(investmentAmount / (double)price);
 
-                double maintMarginAsDouble = await MaintenanceMarginFromQty(timeout, contract, initialQty);
+                //double maintMarginAsDouble = await MaintenanceMarginFromQty(timeout, contract, initialQty);
+                double maintenanceMargin = await TrialAndError.PositiveCorrelation(
+                    MaintenanceMarginFromQty,
+                    timeout, 
+                    contract,
+                    initialQty,
+                    targetMargin,
+                    TRIAL_AND_ERROR_PRECISION_IN_PERCENT);
 
-                // TODO
-                //double margin = TrialAndError(RequestMaintMargin, contract, initialQty, targetMargin, precisionInPercent);
-
-                result.Add($"{contract.Symbol}\t{initialQty}\t{maintMarginAsDouble}");
+                result.Add($"{contract.Symbol}\t{initialQty}\t{maintenanceMargin}");
             }
 
             return result;
