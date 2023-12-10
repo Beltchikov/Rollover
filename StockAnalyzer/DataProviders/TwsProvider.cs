@@ -149,14 +149,12 @@ namespace StockAnalyzer.DataProviders
                     continue;
                 }
                 int initialQty = (int)Math.Floor(investmentAmount / (double)price);
-                
-                OrderState orderState = await _ibHost.WhatIfOrderStateFromContract(contract, initialQty, timeout);
-                double maintMarginAsDouble = orderState == null ? 0 :  double.Parse(orderState.MaintMarginChange, new CultureInfo("EN-US"));
-                maintMarginAsDouble = Math.Round(maintMarginAsDouble, 0);
+
+                double maintMarginAsDouble = await MaintenanceMarginFromQty(timeout, contract, initialQty);
 
                 // TODO
                 //double margin = TrialAndError(RequestMaintMargin, contract, initialQty, targetMargin, precisionInPercent);
-                
+
                 result.Add($"{contract.Symbol}\t{initialQty}\t{maintMarginAsDouble}");
             }
 
@@ -663,6 +661,12 @@ namespace StockAnalyzer.DataProviders
 
             var enumName = Enum.GetName(typeof(T), enumValue.Value);
             return enumName ?? NULL;
+        }
+        private async Task<double> MaintenanceMarginFromQty(int timeout, Contract contract, int qty)
+        {
+            OrderState orderState = await _ibHost.WhatIfOrderStateFromContract(contract, qty, timeout);
+            double maintMarginAsDouble = orderState == null ? 0 : double.Parse(orderState.MaintMarginChange, new CultureInfo("EN-US"));
+            return Math.Round(maintMarginAsDouble, 0);
         }
     }
 }
