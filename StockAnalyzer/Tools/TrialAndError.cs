@@ -17,12 +17,12 @@ namespace StockAnalyzer.Tools
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         /// <param name="precision">In percent/// </param>
-        public static async Task<double> PositiveCorrelation(
-            Func<int, Contract, int, Task<double>> maintenanceMarginFromQty,
+        public static async Task<int> PositiveCorrelation(
+            Func<int, Contract, int, Task<int>> maintenanceMarginFromQty,
             int timeout,
             Contract contract,
             int initialQty,
-            double targetMargin,
+            int targetMargin,
             int precision)
         {
             var qty = initialQty;
@@ -31,14 +31,14 @@ namespace StockAnalyzer.Tools
             double highestMarginKoef = (100d + (double)precision) / 100d;
             int lowestMargin = (int)Math.Round(targetMargin * lowestMarginKoef, 0);
             int highestMargin = (int)Math.Round(targetMargin * highestMarginKoef, 0);
-            double margin = 0;
+            int margin = 0;
 
             int trialCount = 1;
             do
             {
                 if (margin != 0)
                 {
-                    qty = (int)Math.Round((targetMargin * qty) / margin, 0);
+                    qty = (int)Math.Round((double)(targetMargin * (double)qty) / margin, 0);
                 }
                 margin = await maintenanceMarginFromQty(timeout, contract, qty);
                 trialCount++;

@@ -120,7 +120,7 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
-        public async Task<List<string>> MarginListFromContractStrings(List<string> contractStringsListTws, int timeout, double investmentAmount)
+        public async Task<List<string>> MarginListFromContractStrings(List<string> contractStringsListTws, int timeout, int investmentAmount)
         {
             var result = new List<string>();
             result.Add($"Ticker\tQty\tMaint.Margin");
@@ -153,7 +153,7 @@ namespace StockAnalyzer.DataProviders
                 }
                 int initialQty = (int)Math.Floor(investmentAmount / (double)price);
 
-                double maintenanceMargin = await TrialAndError.PositiveCorrelation(
+                int maintenanceMargin = await TrialAndError.PositiveCorrelation(
                     MaintenanceMarginFromQty,
                     timeout, 
                     contract,
@@ -668,11 +668,11 @@ namespace StockAnalyzer.DataProviders
             var enumName = Enum.GetName(typeof(T), enumValue.Value);
             return enumName ?? NULL;
         }
-        private async Task<double> MaintenanceMarginFromQty(int timeout, Contract contract, int qty)
+        private async Task<int> MaintenanceMarginFromQty(int timeout, Contract contract, int qty)
         {
             OrderState orderState = await _ibHost.WhatIfOrderStateFromContract(contract, qty, timeout);
             double maintMarginAsDouble = orderState == null ? 0 : double.Parse(orderState.MaintMarginChange, new CultureInfo("EN-US"));
-            return Math.Round(maintMarginAsDouble, 0);
+            return (int)Math.Round(maintMarginAsDouble, 0);
         }
     }
 }
