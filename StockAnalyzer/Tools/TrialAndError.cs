@@ -33,6 +33,7 @@ namespace StockAnalyzer.Tools
             int highestMargin = (int)Math.Round(targetMargin * highestMarginKoef, 0);
             double margin = 0;
 
+            int trialCount = 1;
             do
             {
                 if (margin != 0)
@@ -40,6 +41,7 @@ namespace StockAnalyzer.Tools
                     qty = (int)Math.Round((targetMargin * qty) / margin, 0);
                 }
                 margin = await maintenanceMarginFromQty(timeout, contract, qty);
+                trialCount++;
             } while (!(lowestMargin <= margin && margin <= highestMargin));
 
 
