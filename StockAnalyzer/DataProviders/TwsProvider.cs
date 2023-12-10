@@ -153,7 +153,6 @@ namespace StockAnalyzer.DataProviders
                 }
                 int initialQty = (int)Math.Floor(investmentAmount / (double)price);
 
-                //double maintMarginAsDouble = await MaintenanceMarginFromQty(timeout, contract, initialQty);
                 double maintenanceMargin = await TrialAndError.PositiveCorrelation(
                     MaintenanceMarginFromQty,
                     timeout, 
