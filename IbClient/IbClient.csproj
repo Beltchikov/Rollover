@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CurrencyPair.cs" />
     <Compile Include="IBClient.cs" />
     <Compile Include="IbHost\IbHostQueue.cs" />
     <Compile Include="IbHost\IbHost.cs" />

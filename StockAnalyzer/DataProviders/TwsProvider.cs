@@ -1,4 +1,5 @@
 ﻿using IBApi;
+using IbClient;
 using IbClient.IbHost;
 using IbClient.Types;
 using StockAnalyzer.DataProviders.FinancialStatements.Tws.Accounts;
@@ -476,6 +477,13 @@ namespace StockAnalyzer.DataProviders
         {
             (var currentPrice, var tickType, var marketDataType)
                 = await _ibHost.RequestMarketDataSnapshotAsync(contract, marketDataTypes);
+
+            if(contract.Currency != "USD")
+            {
+                CurrencyPair currencyPair = CurrencyPair.BuildFor(contract.Currency);
+                // TODO
+            }
+
             return new Price(currentPrice, (int?)marketDataType, (int?)tickType);
         }
 
