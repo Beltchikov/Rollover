@@ -22,6 +22,8 @@ namespace IbClient
             switch (currency)
             {
                 case "EUR": return new CurrencyPair("EUR.USD", true);
+                case "GPB": return new CurrencyPair("GBP.USD", true);
+                case "NOK": return new CurrencyPair("USD.NOK", false);
                 default: throw new NotImplementedException($"Not implemented for {currency}");
             }
 
