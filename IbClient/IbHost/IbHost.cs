@@ -235,11 +235,9 @@ namespace IbClient.IbHost
                 (Contract currencyPairContract, bool usdIsInDenominator) = CurrencyPair.ContractFromCurrency(currency);
                 MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.DelayedFrozen };
                 (var currentPrice, _, _) = await RequestMarketDataSnapshotAsync(currencyPairContract, marketDataTypes);
-                result = usdIsInDenominator ? currentPrice : 1 / currentPrice;
+                result = usdIsInDenominator ? currentPrice : Math.Round(1 / currentPrice.Value,5);
             }
-
             return result;
-
         }
 
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)
