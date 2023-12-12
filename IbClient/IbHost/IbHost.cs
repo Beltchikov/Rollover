@@ -225,17 +225,19 @@ namespace IbClient.IbHost
 
         public async Task<double?> RateOfExchange(string currency)
         {
-            double? result = null;
-
-            await Task.Run(() =>
+            double? result;
+            if (currency.ToUpper() == "USD")
             {
-                if (currency.ToUpper() == "USD")
-                {
-                    result = 1;
-                }
-            });
+                result = 1;
+            }
+            else
+            {
+                (Contract currencyPairContract, bool usdIsInDenominator) = CurrencyPair.ContractFromCurrency(currency);
+                MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.DelayedFrozen };
+                (var currentPrice, _, _) = await RequestMarketDataSnapshotAsync(currencyPairContract, marketDataTypes);
+                result = usdIsInDenominator ? currentPrice : 1 / currentPrice;
+            }
 
-            // TODO
             return result;
 
         }
