@@ -137,9 +137,6 @@ namespace StockAnalyzer.DataProviders
                 }
                 Contract contract = ContractFromString(contractStringTrimmed);
                 TriggerStatus($"Retrieving current price for {contractStringTrimmed} {cnt++}/{contractStringsListTws.Count}");
-
-                //MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.DelayedFrozen };
-                //Price? currentPrice = await CurrentPriceFromContract(contract, marketDataTypes);
                 double? currentAskPrice = await _ibHost.RequestMarketDataSnapshotAsync(contract, TickType.AskPrice);
 
                 if (currentAskPrice == null)
