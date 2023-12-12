@@ -159,6 +159,34 @@ namespace IbClient.IbHost
             return (price, tickType, marketDataType);
         }
 
+        // full list of tick types: https://interactivebrokers.github.io/tws-api/tick_types.html</param>
+        public async Task<double?> RequestMarketDataSnapshotAsync(Contract contract, TickType tickType)
+        {
+            double? price = null;
+            TickType? tickTypeReceived = null;
+            await Task.Run(() =>
+            {
+                while (price == null)
+                {
+                    var reqId = ++_currentReqId;
+                    _ibClient.ClientSocket.reqMktData(
+                        reqId,
+                        contract,
+                        "",
+                        true,
+                        false,
+                        new List<TagValue>());
+
+                    while (!(_responses.TryGetValidPrice(reqId, m => m.Field == (int)tickType, out price, out tickTypeReceived)
+                        || _responses.SnaphotEnded(reqId)
+                        || HasErrorMessage(reqId, 10168)
+                        || HasErrorMessage(reqId, 354))) { };
+                }
+            });
+
+            return price;
+        }
+
         public async Task<OrderState> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout)
         {
             OrderState orderState = null;
@@ -169,7 +197,7 @@ namespace IbClient.IbHost
             {
                 while (_lastOrderId == _nextOrderId) { _nextOrderId = _ibClient.NextOrderId; }
             });
-                        
+
             Order order = new Order()
             {
                 OrderId = _nextOrderId,
@@ -191,7 +219,7 @@ namespace IbClient.IbHost
                     orderState = openOrderMessage.OrderState;
                 }
             });
-            
+
             return orderState;
         }
 

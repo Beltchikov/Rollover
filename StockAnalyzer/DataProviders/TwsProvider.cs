@@ -138,15 +138,16 @@ namespace StockAnalyzer.DataProviders
                 Contract contract = ContractFromString(contractStringTrimmed);
                 TriggerStatus($"Retrieving current price for {contractStringTrimmed} {cnt++}/{contractStringsListTws.Count}");
 
-                MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.DelayedFrozen };
-                Price? currentPrice = await CurrentPriceFromContract(contract, marketDataTypes);
+                //MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.DelayedFrozen };
+                //Price? currentPrice = await CurrentPriceFromContract(contract, marketDataTypes);
+                double? currentAskPrice = await _ibHost.RequestMarketDataSnapshotAsync(contract, TickType.AskPrice);
 
-                if (currentPrice == null)
+                if (currentAskPrice == null)
                 {
                     result.Add($"{contract.Symbol}\tcurrentPrice is null");
                     continue;
                 }
-                double? price = currentPrice.Value;
+                double? price = currentAskPrice.Value;
                 if (price == null)
                 {
                     result.Add($"{contract.Symbol}\tvalue of currentPrice is null");
@@ -163,7 +164,7 @@ namespace StockAnalyzer.DataProviders
                     TRIAL_AND_ERROR_PRECISION_IN_PERCENT);
 
                 result.Add($"{contract.Symbol}\t{initialQty}\t{marginResult.Quantity}\t{marginResult.TrialCount}\t{marginResult.Margin}" +
-                    $"\t{currentPrice.Value}");
+                    $"\t{currentAskPrice.Value}");
             }
 
             return result;
