@@ -475,7 +475,6 @@ namespace StockAnalyzer.DataProviders
 
         private async Task<Price> CurrentPriceFromContract(Contract contract, MarketDataType[] marketDataTypes)
         {
-            double currentPriceUsd = 0;
             (var currentPrice, var tickType, var marketDataType)
                 = await _ibHost.RequestMarketDataSnapshotAsync(contract, marketDataTypes);
             if(currentPrice == null) { 
@@ -487,22 +486,6 @@ namespace StockAnalyzer.DataProviders
             if (marketDataType == null)
             {
                 throw new ApplicationException($"marketDataType is null for {contract.Symbol}");
-            }
-
-            if (contract.Currency != "USD" && contract.SecType != "CASH")
-            {
-                (Contract currencyPairContract, bool usdIsInDenominator) = CurrencyPair.ContractFromCurrency(contract.Currency);
-                var rateOfExchangePrice = await CurrentPriceFromContract(currencyPairContract, marketDataTypes) 
-                    ?? throw new NotImplementedException($"Can not retrieve rate of exchange for {contract.Currency}");
-
-                if(rateOfExchangePrice.Value == 0)
-                {
-                    throw new ApplicationException($"UNEXPECTED: rateOfExchangePrice.Value is zero");
-                }
-
-                //currentPrice = usdIsInDenominator 
-                //    ? Math.Round(currentPrice.Value * rateOfExchangePrice.Value, 2)
-                //    : Math.Round(currentPrice.Value / rateOfExchangePrice.Value, 2);
             }
 
             return new Price(currentPrice.Value, (int)marketDataType.Value, (int)tickType.Value);
