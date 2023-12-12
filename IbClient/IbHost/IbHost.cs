@@ -226,22 +226,18 @@ namespace IbClient.IbHost
         public async Task<double?> RateOfExchange(string currency)
         {
             double? result = null;
-            
+
             await Task.Run(() =>
             {
                 if (currency.ToUpper() == "USD")
                 {
                     result = 1;
-                    return result;
                 }
-
-                // TODO
-                return 9999d;
             });
 
             // TODO
             return result;
-           
+
         }
 
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)
