@@ -480,7 +480,6 @@ namespace StockAnalyzer.DataProviders
 
             if(contract.Currency != "USD")
             {
-                CurrencyPair currencyPair = CurrencyPair.BuildFor(contract.Currency);
                 // TODO
                 Contract currencyPairContract = CurrencyPair.ContractFromCurrency(contract.Currency);
             }
