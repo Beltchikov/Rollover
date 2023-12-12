@@ -477,14 +477,24 @@ namespace StockAnalyzer.DataProviders
         {
             (var currentPrice, var tickType, var marketDataType)
                 = await _ibHost.RequestMarketDataSnapshotAsync(contract, marketDataTypes);
+            if(currentPrice == null) { 
+                throw new ApplicationException($"currentPrice is null for {contract.Symbol}");
+            }
+            if (tickType == null){
+                throw new ApplicationException($"tickType is null for {contract.Symbol}");
+            }
+            if (marketDataType == null)
+            {
+                throw new ApplicationException($"marketDataType is null for {contract.Symbol}");
+            }
 
-            if(contract.Currency != "USD")
+            if (contract.Currency != "USD")
             {
                 // TODO
                 Contract currencyPairContract = CurrencyPair.ContractFromCurrency(contract.Currency);
             }
 
-            return new Price(currentPrice, (int?)marketDataType, (int?)tickType);
+            return new Price(currentPrice.Value, (int)marketDataType.Value, (int)tickType.Value);
         }
 
         private static IEnumerable<XElement>? StatementElementsFromXDocument(XDocument? xDocument, string periods)
