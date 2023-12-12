@@ -124,7 +124,7 @@ namespace StockAnalyzer.DataProviders
         public async Task<List<string>> MarginListFromContractStrings(List<string> contractStringsListTws, int timeout, int investmentAmount)
         {
             var result = new List<string>();
-            result.Add($"Ticker\tInitialQty\tQty\tTrialCnt\tMaint.Margin");
+            result.Add($"Ticker\tInitialQty\tQty\tTrialCnt\tMaint.Margin\tPrice");
             var targetMargin = investmentAmount;
 
             int cnt = 1;
@@ -162,7 +162,8 @@ namespace StockAnalyzer.DataProviders
                     targetMargin,
                     TRIAL_AND_ERROR_PRECISION_IN_PERCENT);
 
-                result.Add($"{contract.Symbol}\t{initialQty}\t{marginResult.Quantity}\t{marginResult.TrialCount}\t{marginResult.Margin}");
+                result.Add($"{contract.Symbol}\t{initialQty}\t{marginResult.Quantity}\t{marginResult.TrialCount}\t{marginResult.Margin}" +
+                    $"\t{currentPrice.Value}");
             }
 
             return result;
@@ -475,6 +476,7 @@ namespace StockAnalyzer.DataProviders
 
         private async Task<Price> CurrentPriceFromContract(Contract contract, MarketDataType[] marketDataTypes)
         {
+            double currentPriceUsd = 0;
             (var currentPrice, var tickType, var marketDataType)
                 = await _ibHost.RequestMarketDataSnapshotAsync(contract, marketDataTypes);
             if(currentPrice == null) { 
@@ -499,9 +501,9 @@ namespace StockAnalyzer.DataProviders
                     throw new ApplicationException($"UNEXPECTED: rateOfExchangePrice.Value is zero");
                 }
 
-                currentPrice = usdIsInDenominator 
-                    ? Math.Round(currentPrice.Value * rateOfExchangePrice.Value, 2)
-                    : Math.Round(currentPrice.Value / rateOfExchangePrice.Value, 2);
+                //currentPrice = usdIsInDenominator 
+                //    ? Math.Round(currentPrice.Value * rateOfExchangePrice.Value, 2)
+                //    : Math.Round(currentPrice.Value / rateOfExchangePrice.Value, 2);
             }
 
             return new Price(currentPrice.Value, (int)marketDataType.Value, (int)tickType.Value);
