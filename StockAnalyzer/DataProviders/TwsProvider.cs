@@ -500,8 +500,8 @@ namespace StockAnalyzer.DataProviders
                 }
 
                 currentPrice = usdIsInDenominator 
-                    ? currentPrice * rateOfExchangePrice.Value
-                    : currentPrice / rateOfExchangePrice.Value;
+                    ? Math.Round(currentPrice.Value * rateOfExchangePrice.Value, 2)
+                    : Math.Round(currentPrice.Value / rateOfExchangePrice.Value, 2);
             }
 
             return new Price(currentPrice.Value, (int)marketDataType.Value, (int)tickType.Value);
