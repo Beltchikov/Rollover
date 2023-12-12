@@ -488,18 +488,20 @@ namespace StockAnalyzer.DataProviders
                 throw new ApplicationException($"marketDataType is null for {contract.Symbol}");
             }
 
-            if (contract.Currency != "USD")
+            if (contract.Currency != "USD" && contract.SecType != "CASH")
             {
-                Contract currencyPairContract = CurrencyPair.ContractFromCurrency(contract.Currency);
-                var rateOfExchangePrice = await CurrentPriceFromContract(currencyPairContract, marketDataTypes);
-                if(rateOfExchangePrice == null) {
-                    throw new NotImplementedException($"Can not retrieve rate of exchange for {contract.Currency}");
-                }
-                if (rateOfExchangePrice.Value == null)
+                (Contract currencyPairContract, bool usdIsInDenominator) = CurrencyPair.ContractFromCurrency(contract.Currency);
+                var rateOfExchangePrice = await CurrentPriceFromContract(currencyPairContract, marketDataTypes) 
+                    ?? throw new NotImplementedException($"Can not retrieve rate of exchange for {contract.Currency}");
+
+                if(rateOfExchangePrice.Value == 0)
                 {
-                    throw new NotImplementedException($"Price of rate of exchange for {contract.Currency} is null");
+                    throw new ApplicationException($"UNEXPECTED: rateOfExchangePrice.Value is zero");
                 }
-                currentPrice = currentPrice * rateOfExchangePrice.Value.Value;
+
+                currentPrice = usdIsInDenominator 
+                    ? currentPrice * rateOfExchangePrice.Value
+                    : currentPrice / rateOfExchangePrice.Value;
             }
 
             return new Price(currentPrice.Value, (int)marketDataType.Value, (int)tickType.Value);

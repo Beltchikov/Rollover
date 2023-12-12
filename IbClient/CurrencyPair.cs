@@ -34,16 +34,22 @@ namespace IbClient
             throw new NotImplementedException();
         }
 
-        public static Contract ContractFromCurrency(string currency)
+        /// <summary>
+        /// ContractFromCurrency - returns UsdIsInDenominator as a second return value
+        /// </summary>
+        /// <param name="currency"></param>
+        /// <returns></returns>
+        public static (Contract, bool) ContractFromCurrency(string currency)
         {
             CurrencyPair pair = BuildFor(currency);
-            return new Contract()
+            var contract = new Contract()
             {
                 SecType = "CASH",
                 Symbol = pair.UsdIsInDenominator ? currency : USD,
                 Currency = pair.UsdIsInDenominator ? USD : currency,
                 Exchange = IDEALPRO
             };
+            return (contract, pair.UsdIsInDenominator);
         }
     }
 }
