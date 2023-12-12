@@ -10,6 +10,7 @@ namespace IbClient.IbHost
         IIbConsumer Consumer { get; set; }
         Task<bool> ConnectAndStartReaderThread(string host, int port, int clientId, int timeout);
         void Disconnect();
+        Task<double?> RateOfExchange(string currency);
         Task<ContractDetails> RequestContractDetailsAsync(
             Contract contract,
             int timeout);

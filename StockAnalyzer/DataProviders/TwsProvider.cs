@@ -124,7 +124,7 @@ namespace StockAnalyzer.DataProviders
         public async Task<List<string>> MarginListFromContractStrings(List<string> contractStringsListTws, int timeout, int investmentAmount)
         {
             var result = new List<string>();
-            result.Add($"Ticker\tInitialQty\tQty\tTrialCnt\tMaint.Margin\tPrice");
+            result.Add($"Ticker\tInitialQty\tQty\tTrialCnt\tMaint.Margin\tAskPrice\tRateOfExchange");
             var targetMargin = investmentAmount;
 
             int cnt = 1;
@@ -138,6 +138,7 @@ namespace StockAnalyzer.DataProviders
                 Contract contract = ContractFromString(contractStringTrimmed);
                 TriggerStatus($"Retrieving current price for {contractStringTrimmed} {cnt++}/{contractStringsListTws.Count}");
                 double? currentAskPrice = await _ibHost.RequestMarketDataSnapshotAsync(contract, TickType.AskPrice);
+                double? rateOfExchange = await _ibHost.RateOfExchange(contract.Currency);
 
                 if (currentAskPrice == null)
                 {
@@ -161,7 +162,7 @@ namespace StockAnalyzer.DataProviders
                     TRIAL_AND_ERROR_PRECISION_IN_PERCENT);
 
                 result.Add($"{contract.Symbol}\t{initialQty}\t{marginResult.Quantity}\t{marginResult.TrialCount}\t{marginResult.Margin}" +
-                    $"\t{currentAskPrice.Value}");
+                    $"\t{currentAskPrice}\t{rateOfExchange}");
             }
 
             return result;
