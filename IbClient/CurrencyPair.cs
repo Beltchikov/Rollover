@@ -5,6 +5,9 @@ namespace IbClient
 {
     public class CurrencyPair
     {
+        private static readonly string USD = "USD";
+        private static readonly string IDEALPRO = "IDEALPRO";
+
         private CurrencyPair()
         {
         }
@@ -36,8 +39,10 @@ namespace IbClient
             CurrencyPair pair = BuildFor(currency);
             return new Contract()
             {
-                //SecType = "CASH",
-                //Symbol = pair.Us
+                SecType = "CASH",
+                Symbol = pair.UsdIsInDenominator ? currency : USD,
+                Currency = pair.UsdIsInDenominator ? USD : currency,
+                Exchange = IDEALPRO
             };
         }
     }

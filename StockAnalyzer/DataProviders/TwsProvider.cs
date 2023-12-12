@@ -490,8 +490,16 @@ namespace StockAnalyzer.DataProviders
 
             if (contract.Currency != "USD")
             {
-                // TODO
                 Contract currencyPairContract = CurrencyPair.ContractFromCurrency(contract.Currency);
+                var rateOfExchangePrice = await CurrentPriceFromContract(currencyPairContract, marketDataTypes);
+                if(rateOfExchangePrice == null) {
+                    throw new NotImplementedException($"Can not retrieve rate of exchange for {contract.Currency}");
+                }
+                if (rateOfExchangePrice.Value == null)
+                {
+                    throw new NotImplementedException($"Price of rate of exchange for {contract.Currency} is null");
+                }
+                currentPrice = currentPrice * rateOfExchangePrice.Value.Value;
             }
 
             return new Price(currentPrice.Value, (int)marketDataType.Value, (int)tickType.Value);
