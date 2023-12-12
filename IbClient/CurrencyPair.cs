@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IBApi;
+using System;
 
 namespace IbClient
 {
@@ -14,8 +15,8 @@ namespace IbClient
             UsdIsInDenominator = usdIsInDenominator;
         }
 
-        public static string Value { get; private set; }
-        public static bool UsdIsInDenominator { get; private set; }
+        public string Value { get; private set; }
+        public bool UsdIsInDenominator { get; private set; }
 
         public static CurrencyPair BuildFor(string currency)
         {
@@ -28,6 +29,16 @@ namespace IbClient
             }
 
             throw new NotImplementedException();
+        }
+
+        public static Contract ContractFromCurrency(string currency)
+        {
+            CurrencyPair pair = BuildFor(currency);
+            return new Contract()
+            {
+                //SecType = "CASH",
+                //Symbol = pair.Us
+            };
         }
     }
 }

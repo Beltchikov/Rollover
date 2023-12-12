@@ -482,7 +482,7 @@ namespace StockAnalyzer.DataProviders
             {
                 CurrencyPair currencyPair = CurrencyPair.BuildFor(contract.Currency);
                 // TODO
-                //Contract currencyPairContract = CurrencyPair.ContractFromCurrency(contract.Currency);
+                Contract currencyPairContract = CurrencyPair.ContractFromCurrency(contract.Currency);
             }
 
             return new Price(currentPrice, (int?)marketDataType, (int?)tickType);
