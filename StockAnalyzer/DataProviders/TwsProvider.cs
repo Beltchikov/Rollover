@@ -152,7 +152,7 @@ namespace StockAnalyzer.DataProviders
                     continue;
                 }
                 int initialQty = (int)Math.Floor(investmentAmount / (double)price);
-                double currentPriceUsd = currentPrice.Value * rateOfExchange.Value;
+                double currentPriceUsd = Math.Round(currentPrice.Value * rateOfExchange.Value,2);
                 
                 MarginResult marginResult = await TrialAndError.PositiveCorrelation(
                     MaintenanceMarginFromQty,
@@ -165,7 +165,7 @@ namespace StockAnalyzer.DataProviders
                 double marginInPct = Math.Round((double)marginResult.Margin * 100 / marketValue, 1);
 
                 result.Add($"{contract.Symbol}\t{initialQty}\t{marginResult.Quantity}\t{marginResult.TrialCount}\t{marginResult.Margin}" +
-                    $"\t{currentPrice}\t{tickType}\t{rateOfExchange}\t{Math.Round(currentPriceUsd, 2)}\t{marketValue}\t{marginInPct}");
+                    $"\t{currentPrice}\t{tickType}\t{rateOfExchange}\t{currentPriceUsd}\t{marketValue}\t{marginInPct}");
             }
 
             return result;
