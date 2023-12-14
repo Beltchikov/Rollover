@@ -124,7 +124,7 @@ namespace StockAnalyzer.DataProviders
         public async Task<List<string>> MarginListFromContractStrings(List<string> contractStringsListTws, int timeout, int investmentAmount)
         {
             var result = new List<string>();
-            result.Add($"Ticker\tInitialQty\tQty\tTrialCnt\tMaint.Margin\tPrice\tTickType\tRateOfExchange");
+            result.Add($"Ticker\tInitialQty\tQty\tTrialCnt\tMaint.Margin\tPrice\tTickType\tRateOfExchange\tPriceUsd");
             var targetMargin = investmentAmount;
 
             int cnt = 1;
@@ -162,7 +162,7 @@ namespace StockAnalyzer.DataProviders
                     TRIAL_AND_ERROR_PRECISION_IN_PERCENT);
 
                 result.Add($"{contract.Symbol}\t{initialQty}\t{marginResult.Quantity}\t{marginResult.TrialCount}\t{marginResult.Margin}" +
-                    $"\t{currentPrice}\t{tickType}\t{rateOfExchange}");
+                    $"\t{currentPrice}\t{tickType}\t{rateOfExchange}\t{Math.Round(currentPrice.Value*rateOfExchange.Value,2)}");
             }
 
             return result;
