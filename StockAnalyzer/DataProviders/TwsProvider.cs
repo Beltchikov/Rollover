@@ -698,7 +698,7 @@ namespace StockAnalyzer.DataProviders
             MarketDataType? marketDataType= MarketDataType.Live;
 
             double ? currentPrice = await _ibHost.RequestMarketDataSnapshotAsync(contract, TickType.AskPrice);
-            if (currentPrice == null)
+            if (currentPrice == null || currentPrice == 0)
             {
                 MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.DelayedFrozen };
                 (currentPrice, tickType, marketDataType) = await _ibHost.RequestMarketDataSnapshotAsync(contract, marketDataTypes);
