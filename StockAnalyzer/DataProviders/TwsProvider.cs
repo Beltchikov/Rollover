@@ -124,7 +124,7 @@ namespace StockAnalyzer.DataProviders
         public async Task<List<string>> MarginListFromContractStrings(List<string> contractStringsListTws, int timeout, int investmentAmount)
         {
             var result = new List<string>();
-            result.Add($"Ticker\tInitialQty\tQty\tTrialCnt\tMaint.Margin\tAskPrice\tRateOfExchange");
+            result.Add($"Ticker\tInitialQty\tQty\tTrialCnt\tMaint.Margin\tPrice\tTickType\tRateOfExchange");
             var targetMargin = investmentAmount;
 
             int cnt = 1;
@@ -137,7 +137,7 @@ namespace StockAnalyzer.DataProviders
                 }
                 Contract contract = ContractFromString(contractStringTrimmed);
                 TriggerStatus($"Retrieving current price for {contractStringTrimmed} {cnt++}/{contractStringsListTws.Count}");
-                double? currentPrice = await AskOrAnyPriceAsync(contract);
+                (double? currentPrice, TickType? tickType, MarketDataType? marketDataType) = await AskOrAnyPriceAsync(contract);
                 double? rateOfExchange = await _ibHost.RateOfExchange(contract.Currency);
 
                 if (currentPrice == null)
@@ -162,7 +162,7 @@ namespace StockAnalyzer.DataProviders
                     TRIAL_AND_ERROR_PRECISION_IN_PERCENT);
 
                 result.Add($"{contract.Symbol}\t{initialQty}\t{marginResult.Quantity}\t{marginResult.TrialCount}\t{marginResult.Margin}" +
-                    $"\t{currentPrice}\t{rateOfExchange}");
+                    $"\t{currentPrice}\t{tickType}\t{rateOfExchange}");
             }
 
             return result;
@@ -689,15 +689,18 @@ namespace StockAnalyzer.DataProviders
             return (int)Math.Round(maintMarginAsDouble, 0);
         }
 
-        private async Task<double?> AskOrAnyPriceAsync(Contract contract)
+        private async Task<(double?, TickType?, MarketDataType?)> AskOrAnyPriceAsync(Contract contract)
         {
-            double? currentPrice = await _ibHost.RequestMarketDataSnapshotAsync(contract, TickType.AskPrice);
+            TickType? tickType = TickType.AskPrice;
+            MarketDataType? marketDataType= MarketDataType.Live;
+
+            double ? currentPrice = await _ibHost.RequestMarketDataSnapshotAsync(contract, TickType.AskPrice);
             if (currentPrice == null)
             {
                 MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.DelayedFrozen };
-                await _ibHost.RequestMarketDataSnapshotAsync(contract, marketDataTypes);
+                (currentPrice, tickType, marketDataType) = await _ibHost.RequestMarketDataSnapshotAsync(contract, marketDataTypes);
             }
-            return currentPrice;
+            return (currentPrice, tickType, marketDataType);
         }
     }
 }
