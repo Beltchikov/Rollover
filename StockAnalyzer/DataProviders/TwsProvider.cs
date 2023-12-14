@@ -124,7 +124,7 @@ namespace StockAnalyzer.DataProviders
         public async Task<List<string>> MarginListFromContractStrings(List<string> contractStringsListTws, int timeout, int investmentAmount)
         {
             var result = new List<string>();
-            result.Add($"Ticker\tInitialQty\tQty\tTrialCnt\tMaint.Margin\tPrice\tTickType\tRateOfExchange\tPriceUsd");
+            result.Add($"Ticker\tInitialQty\tQty\tTrialCnt\tMaint.Margin\tPrice\tTickType\tRateOfExchange\tPriceUsd\tMarketVal\tMarginInPct");
             var targetMargin = investmentAmount;
 
             int cnt = 1;
@@ -139,7 +139,7 @@ namespace StockAnalyzer.DataProviders
                 TriggerStatus($"Retrieving current price for {contractStringTrimmed} {cnt++}/{contractStringsListTws.Count}");
                 (double? currentPrice, TickType? tickType, MarketDataType? marketDataType) = await AskOrAnyPriceAsync(contract);
                 double? rateOfExchange = await _ibHost.RateOfExchange(contract.Currency);
-
+                
                 if (currentPrice == null)
                 {
                     result.Add($"{contract.Symbol}\tcurrentPrice is null");
@@ -152,6 +152,7 @@ namespace StockAnalyzer.DataProviders
                     continue;
                 }
                 int initialQty = (int)Math.Floor(investmentAmount / (double)price);
+                double currentPriceUsd = currentPrice.Value * rateOfExchange.Value;
 
                 MarginResult marginResult = await TrialAndError.PositiveCorrelation(
                     MaintenanceMarginFromQty,
@@ -162,7 +163,7 @@ namespace StockAnalyzer.DataProviders
                     TRIAL_AND_ERROR_PRECISION_IN_PERCENT);
 
                 result.Add($"{contract.Symbol}\t{initialQty}\t{marginResult.Quantity}\t{marginResult.TrialCount}\t{marginResult.Margin}" +
-                    $"\t{currentPrice}\t{tickType}\t{rateOfExchange}\t{Math.Round(currentPrice.Value*rateOfExchange.Value,2)}");
+                    $"\t{currentPrice}\t{tickType}\t{rateOfExchange}\t{Math.Round(currentPriceUsd, 2)}");
             }
 
             return result;
