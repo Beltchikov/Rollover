@@ -137,7 +137,7 @@ namespace StockAnalyzer.DataProviders
                 }
                 Contract contract = ContractFromString(contractStringTrimmed);
                 TriggerStatus($"Retrieving current price for {contractStringTrimmed} {cnt++}/{contractStringsListTws.Count}");
-                double? currentPrice = await _ibHost.RequestMarketDataSnapshotAsync(contract, TickType.AskPrice);
+                double? currentPrice = await AskOrAnyPriceAsync(contract);
                 double? rateOfExchange = await _ibHost.RateOfExchange(contract.Currency);
 
                 if (currentPrice == null)
@@ -155,7 +155,7 @@ namespace StockAnalyzer.DataProviders
 
                 MarginResult marginResult = await TrialAndError.PositiveCorrelation(
                     MaintenanceMarginFromQty,
-                    timeout, 
+                    timeout,
                     contract,
                     initialQty,
                     targetMargin,
@@ -477,10 +477,12 @@ namespace StockAnalyzer.DataProviders
         {
             (var currentPrice, var tickType, var marketDataType)
                 = await _ibHost.RequestMarketDataSnapshotAsync(contract, marketDataTypes);
-            if(currentPrice == null) { 
+            if (currentPrice == null)
+            {
                 throw new ApplicationException($"currentPrice is null for {contract.Symbol}");
             }
-            if (tickType == null){
+            if (tickType == null)
+            {
                 throw new ApplicationException($"tickType is null for {contract.Symbol}");
             }
             if (marketDataType == null)
@@ -685,6 +687,17 @@ namespace StockAnalyzer.DataProviders
             OrderState orderState = await _ibHost.WhatIfOrderStateFromContract(contract, qty, timeout);
             double maintMarginAsDouble = orderState == null ? 0 : double.Parse(orderState.MaintMarginChange, new CultureInfo("EN-US"));
             return (int)Math.Round(maintMarginAsDouble, 0);
+        }
+
+        private async Task<double?> AskOrAnyPriceAsync(Contract contract)
+        {
+            double? currentPrice = await _ibHost.RequestMarketDataSnapshotAsync(contract, TickType.AskPrice);
+            if (currentPrice == null)
+            {
+                MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.DelayedFrozen };
+                await _ibHost.RequestMarketDataSnapshotAsync(contract, marketDataTypes);
+            }
+            return currentPrice;
         }
     }
 }
