@@ -161,7 +161,7 @@ namespace StockAnalyzer.DataProviders
                     initialQty,
                     targetMargin,
                     TRIAL_AND_ERROR_PRECISION_IN_PERCENT);
-                double marketValue = (double)Math.Round(currentPriceUsd * marginResult.Quantity, 2);
+                double marketValue = (double)Math.Round(currentPriceUsd * marginResult.Quantity, 0);
                 double marginInPct = Math.Round((double)marginResult.Margin * 100 / marketValue, 1);
 
                 result.Add($"{contract.Symbol}\t{initialQty}\t{marginResult.Quantity}\t{marginResult.TrialCount}\t{marginResult.Margin}" +
