@@ -151,6 +151,11 @@ namespace StockAnalyzer.DataProviders
                     result.Add($"{contract.Symbol}\tvalue of currentPrice is null");
                     continue;
                 }
+                if (price.Value < 0)
+                {
+                    result.Add($"{contract.Symbol}\tvalue of currentPrice is < 0: {price.Value}");
+                    continue;
+                }
                 int initialQty = (int)Math.Floor(investmentAmount / (double)price);
                 double currentPriceUsd = Math.Round(currentPrice.Value * rateOfExchange.Value,2);
                 
@@ -161,6 +166,13 @@ namespace StockAnalyzer.DataProviders
                     initialQty,
                     targetMargin,
                     TRIAL_AND_ERROR_PRECISION_IN_PERCENT);
+                
+                if(marginResult.Margin <= 0)
+                {
+                    result.Add($"{contract.Symbol}\tInvalid margin returned: {marginResult.Margin} Check messages in log.");
+                    continue;
+                }
+                
                 double marketValue = (double)Math.Round(currentPriceUsd * marginResult.Quantity, 0);
                 double marginInPct = Math.Round((double)marginResult.Margin * 100 / marketValue, 1);
 
@@ -698,7 +710,7 @@ namespace StockAnalyzer.DataProviders
             MarketDataType? marketDataType= MarketDataType.Live;
 
             double ? currentPrice = await _ibHost.RequestMarketDataSnapshotAsync(contract, TickType.AskPrice);
-            if (currentPrice == null || currentPrice == 0)
+            if (currentPrice == null || currentPrice <=0)
             {
                 MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.DelayedFrozen };
                 (currentPrice, tickType, marketDataType) = await _ibHost.RequestMarketDataSnapshotAsync(contract, marketDataTypes);

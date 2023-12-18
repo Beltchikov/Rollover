@@ -147,7 +147,8 @@ namespace IbClient.IbHost
                     while (!(_responses.TryGetValidPrice(reqId, m => m.Price > 0, out price, out tickType)
                         || _responses.SnaphotEnded(reqId)
                         || HasErrorMessage(reqId, 10168)
-                        || HasErrorMessage(reqId, 354))) { };
+                        || HasErrorMessage(reqId, 354)
+                        || HasErrorMessage(reqId, 201))) { };
 
                     if (price == null)
                     {
@@ -253,6 +254,10 @@ namespace IbClient.IbHost
                 _errorMessages.Add(new ErrorMessage(reqId, code, message));
             }
             if (code == 354)
+            {
+                _errorMessages.Add(new ErrorMessage(reqId, code, message));
+            }
+            if (code == 201)
             {
                 _errorMessages.Add(new ErrorMessage(reqId, code, message));
             }

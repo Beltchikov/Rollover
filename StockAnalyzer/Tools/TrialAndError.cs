@@ -42,7 +42,7 @@ namespace StockAnalyzer.Tools
                 }
                 margin = await maintenanceMarginFromQty(timeout, contract, qty);
                 trialCount++;
-            } while (!(lowestMargin <= margin && margin <= highestMargin));
+            } while (!(lowestMargin <= margin && margin <= highestMargin) && (margin != 0));
 
             return new MarginResult(margin, qty, --trialCount);
         }
