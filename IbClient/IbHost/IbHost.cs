@@ -21,6 +21,9 @@ namespace IbClient.IbHost
         public static readonly string DEFAULT_SEC_TYPE = "STK";
         public static readonly string DEFAULT_CURRENCY = "USD";
         public static readonly string DEFAULT_EXCHANGE = "SMART";
+        private readonly int ERROR_CODE_10168;
+        private readonly int ERROR_CODE_354;
+        private readonly int ERROR_CODE_201;
 
         public IbHost(IIbHostQueue queue)
         {
@@ -146,9 +149,9 @@ namespace IbClient.IbHost
 
                     while (!(_responses.TryGetValidPrice(reqId, m => m.Price > 0, out price, out tickType)
                         || _responses.SnaphotEnded(reqId)
-                        || HasErrorMessage(reqId, 10168)
-                        || HasErrorMessage(reqId, 354)
-                        || HasErrorMessage(reqId, 201))) { };
+                        || HasErrorMessage(reqId, ERROR_CODE_10168)
+                        || HasErrorMessage(reqId, ERROR_CODE_354)
+                        || HasErrorMessage(reqId, ERROR_CODE_201))) { };
 
                     if (price == null)
                     {
@@ -180,8 +183,10 @@ namespace IbClient.IbHost
 
                     while (!(_responses.TryGetValidPrice(reqId, m => m.Field == (int)tickType, out price, out tickTypeReceived)
                         || _responses.SnaphotEnded(reqId)
-                        || HasErrorMessage(reqId, 10168)
-                        || HasErrorMessage(reqId, 354))) { };
+                        || HasErrorMessage(reqId, ERROR_CODE_10168)
+                        || HasErrorMessage(reqId, ERROR_CODE_354)
+                        || HasErrorMessage(reqId, ERROR_CODE_201))) 
+                    { };
                 }
             });
 
@@ -249,15 +254,15 @@ namespace IbClient.IbHost
             }
             Consumer.TwsMessageCollection?.Add($"ReqId:{reqId} code:{code} message:{message} exception:{exception}");
 
-            if (code == 10168)
+            if (code == ERROR_CODE_10168)
             {
                 _errorMessages.Add(new ErrorMessage(reqId, code, message));
             }
-            if (code == 354)
+            if (code == ERROR_CODE_354)
             {
                 _errorMessages.Add(new ErrorMessage(reqId, code, message));
             }
-            if (code == 201)
+            if (code == ERROR_CODE_201)
             {
                 _errorMessages.Add(new ErrorMessage(reqId, code, message));
             }
