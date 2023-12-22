@@ -220,7 +220,7 @@ namespace IbClient.IbHost
             {
                 var startTime = DateTime.Now;
                 while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasMessageInQueue<OpenOrderMessage>()
-                || HasErrorMessage(_ibClient.NextOrderId, ERROR_CODE_201, out errorMessage)) { }
+                && !HasErrorMessage(_ibClient.NextOrderId, ERROR_CODE_201, out errorMessage)) { }
 
                 if (_queue.Dequeue() is OpenOrderMessage openOrderMessage)
                 {
