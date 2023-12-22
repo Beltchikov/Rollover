@@ -21,9 +21,9 @@ namespace IbClient.IbHost
         public static readonly string DEFAULT_SEC_TYPE = "STK";
         public static readonly string DEFAULT_CURRENCY = "USD";
         public static readonly string DEFAULT_EXCHANGE = "SMART";
-        private readonly int ERROR_CODE_10168;
-        private readonly int ERROR_CODE_354;
-        private readonly int ERROR_CODE_201;
+        private readonly int ERROR_CODE_10168 = 10168;
+        private readonly int ERROR_CODE_354 = 354;
+        private readonly int ERROR_CODE_201 = 201;
 
         public IbHost(IIbHostQueue queue)
         {
@@ -215,10 +215,12 @@ namespace IbClient.IbHost
 
             _ibClient.ClientSocket.placeOrder(_ibClient.NextOrderId, contract, order);
 
+            ErrorMessage errorMessage = null;   
             await Task.Run(() =>
             {
                 var startTime = DateTime.Now;
-                while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasMessageInQueue<OpenOrderMessage>()) { }
+                while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasMessageInQueue<OpenOrderMessage>()
+                || HasErrorMessage(_ibClient.NextOrderId, ERROR_CODE_201, out errorMessage)) { }
 
                 if (_queue.Dequeue() is OpenOrderMessage openOrderMessage)
                 {
