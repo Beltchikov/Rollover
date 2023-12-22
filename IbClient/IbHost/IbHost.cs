@@ -149,9 +149,9 @@ namespace IbClient.IbHost
 
                     while (!(_responses.TryGetValidPrice(reqId, m => m.Price > 0, out price, out tickType)
                         || _responses.SnaphotEnded(reqId)
-                        || HasErrorMessage(reqId, ERROR_CODE_10168)
-                        || HasErrorMessage(reqId, ERROR_CODE_354)
-                        || HasErrorMessage(reqId, ERROR_CODE_201))) { };
+                        || HasErrorMessage(reqId, ERROR_CODE_10168, out _)
+                        || HasErrorMessage(reqId, ERROR_CODE_354, out _)
+                        || HasErrorMessage(reqId, ERROR_CODE_201, out _))) { };
 
                     if (price == null)
                     {
@@ -183,9 +183,9 @@ namespace IbClient.IbHost
 
                     while (!(_responses.TryGetValidPrice(reqId, m => m.Field == (int)tickType, out price, out tickTypeReceived)
                         || _responses.SnaphotEnded(reqId)
-                        || HasErrorMessage(reqId, ERROR_CODE_10168)
-                        || HasErrorMessage(reqId, ERROR_CODE_354)
-                        || HasErrorMessage(reqId, ERROR_CODE_201))) 
+                        || HasErrorMessage(reqId, ERROR_CODE_10168, out _)
+                        || HasErrorMessage(reqId, ERROR_CODE_354, out _)
+                        || HasErrorMessage(reqId, ERROR_CODE_201, out _))) 
                     { };
                 }
             });
@@ -399,10 +399,15 @@ namespace IbClient.IbHost
             return fundamentalsMessageString.Contains(ticker);
         }
 
-        private bool HasErrorMessage(int reqId, int errorCode)
+        private bool HasErrorMessage(int reqId, int errorCode, out ErrorMessage errorMessage)
         {
             var errorMessagesCopy = _errorMessages.ToArray();
-            return errorMessagesCopy.Any(c => c.RequestId == reqId && c.ErrorCode == errorCode);
+            bool searchFunction(ErrorMessage c) => c.RequestId == reqId && c.ErrorCode == errorCode;
+            bool result =  errorMessagesCopy.Any(searchFunction);
+            errorMessage = result 
+                ? errorMessagesCopy.Single(searchFunction)
+                : null;
+            return result;
         }
     }
 }
