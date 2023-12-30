@@ -169,7 +169,8 @@ namespace StockAnalyzer.DataProviders
                 
                 if(marginResult.Margin <= 0)
                 {
-                    result.Add($"{contract.Symbol}\tInvalid margin returned: {marginResult.Margin} Check messages in log.");
+                    //result.Add($"{contract.Symbol}\tInvalid margin returned: {marginResult.Margin} Check messages in log.");
+                    result.Add($"{contract.Symbol}\t{marginResult.Error}");
                     continue;
                 }
                 
@@ -697,11 +698,19 @@ namespace StockAnalyzer.DataProviders
             var enumName = Enum.GetName(typeof(T), enumValue.Value);
             return enumName ?? NULL;
         }
-        private async Task<int> MaintenanceMarginFromQty(int timeout, Contract contract, int qty)
+        private async Task<IntWithError> MaintenanceMarginFromQty(int timeout, Contract contract, int qty)
         {
-            OrderState orderState = await _ibHost.WhatIfOrderStateFromContract(contract, qty, timeout);
-            double maintMarginAsDouble = orderState == null ? 0 : double.Parse(orderState.MaintMarginChange, new CultureInfo("EN-US"));
-            return (int)Math.Round(maintMarginAsDouble, 0);
+            OrderStateOrError orderStateOrError = await _ibHost.WhatIfOrderStateFromContract(contract, qty, timeout);
+            if(orderStateOrError.OrderState == null)
+            {
+                return new IntWithError(0, orderStateOrError.ErrorMessage);
+            }
+            else
+            {
+                double maintMarginAsDouble = double.Parse(orderStateOrError.OrderState.MaintMarginChange, new CultureInfo("EN-US"));
+                int margin = (int)Math.Round(maintMarginAsDouble, 0);
+                return new IntWithError(margin, "");
+            }
         }
 
         private async Task<(double?, TickType?, MarketDataType?)> AskOrAnyPriceAsync(Contract contract)

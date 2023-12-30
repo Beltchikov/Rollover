@@ -1,4 +1,4 @@
 ﻿namespace StockAnalyzer.Tools
 {
-    public record MarginResult (int Margin, int Quantity, int TrialCount);
+    public record MarginResult (int Margin, string Error, int Quantity, int TrialCount);
 }

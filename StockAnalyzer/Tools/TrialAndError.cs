@@ -1,4 +1,5 @@
 ﻿using IBApi;
+using StockAnalyzer.DataProviders.Types;
 using System;
 using System.Threading.Tasks;
 
@@ -18,7 +19,7 @@ namespace StockAnalyzer.Tools
         /// <exception cref="NotImplementedException"></exception>
         /// <param name="precision">In percent/// </param>
         public static async Task<MarginResult> PositiveCorrelation(
-            Func<int, Contract, int, Task<int>> maintenanceMarginFromQty,
+            Func<int, Contract, int, Task<IntWithError>> maintenanceMarginFromQty,
             int timeout,
             Contract contract,
             int initialQty,
@@ -26,25 +27,32 @@ namespace StockAnalyzer.Tools
             int precision)
         {
             var qty = initialQty;
-            
+
             double lowestMarginKoef = (100d - (double)precision) / 100d;
             double highestMarginKoef = (100d + (double)precision) / 100d;
             int lowestMargin = (int)Math.Round(targetMargin * lowestMarginKoef, 0);
             int highestMargin = (int)Math.Round(targetMargin * highestMarginKoef, 0);
-            int margin = 0;
+            IntWithError marginOrError = new IntWithError(0,"");
 
             int trialCount = 1;
             do
             {
-                if (margin != 0)
+                if (marginOrError.Value != 0)
                 {
-                    qty = (int)Math.Round((double)(targetMargin * (double)qty) / margin, 0);
+                    qty = (int)Math.Round((double)(targetMargin * (double)qty) / marginOrError.Value, 0);
                 }
-                margin = await maintenanceMarginFromQty(timeout, contract, qty);
+                marginOrError = await maintenanceMarginFromQty(timeout, contract, qty);
                 trialCount++;
-            } while (!(lowestMargin <= margin && margin <= highestMargin) && (margin != 0));
+            } while (!(lowestMargin <= marginOrError.Value && marginOrError.Value <= highestMargin) && (marginOrError.Value != 0));
 
-            return new MarginResult(margin, qty, --trialCount);
+            if (marginOrError.Value > 0)
+            {
+                return new MarginResult(marginOrError.Value, "", qty, --trialCount);
+            }
+            else
+            {
+                return new MarginResult(marginOrError.Value, marginOrError.ErrorMessage, qty, --trialCount);
+            }
         }
     }
 }

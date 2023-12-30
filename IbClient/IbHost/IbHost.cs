@@ -193,7 +193,7 @@ namespace IbClient.IbHost
             return price;
         }
 
-        public async Task<OrderState> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout)
+        public async Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout)
         {
             OrderState orderState = null;
             _ibClient.ClientSocket.reqIds(-1);
@@ -228,7 +228,14 @@ namespace IbClient.IbHost
                 }
             });
 
-            return orderState;
+            if (orderState == null)
+            {
+                return new OrderStateOrError(orderState, $"ReqId:{errorMessage.RequestId} Code:{errorMessage.ErrorCode} {errorMessage.Message}");
+            }
+            else
+            {
+                return new OrderStateOrError(orderState, "");
+            }
         }
 
         public async Task<double?> RateOfExchange(string currency)

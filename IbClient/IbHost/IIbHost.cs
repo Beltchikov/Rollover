@@ -20,7 +20,7 @@ namespace IbClient.IbHost
                     int timeout);
         Task<(double?, TickType?, MarketDataType?)> RequestMarketDataSnapshotAsync(Contract contract, MarketDataType[] marketDataTypes);
         Task<double?> RequestMarketDataSnapshotAsync(Contract contract, TickType tickType);
-        Task<OrderState> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout);
+        Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout);
 
         //public void ReqHistoricalData();
         //void ApplyDefaultHistoricalData();
