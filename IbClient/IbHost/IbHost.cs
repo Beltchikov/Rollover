@@ -185,7 +185,7 @@ namespace IbClient.IbHost
                         || _responses.SnaphotEnded(reqId)
                         || HasErrorMessage(reqId, ERROR_CODE_10168, out _)
                         || HasErrorMessage(reqId, ERROR_CODE_354, out _)
-                        || HasErrorMessage(reqId, ERROR_CODE_201, out _))) 
+                        || HasErrorMessage(reqId, ERROR_CODE_201, out _)))
                     { };
                 }
             });
@@ -215,11 +215,15 @@ namespace IbClient.IbHost
 
             _ibClient.ClientSocket.placeOrder(_ibClient.NextOrderId, contract, order);
 
-            ErrorMessage errorMessage = null;   
+            ErrorMessage errorMessage = null;
             await Task.Run(() =>
             {
                 var startTime = DateTime.Now;
                 while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasMessageInQueue<OpenOrderMessage>()
+
+                // TODO
+                // Check for all error messages
+
                 && !HasErrorMessage(_ibClient.NextOrderId, ERROR_CODE_201, out errorMessage)) { }
 
                 if (_queue.Dequeue() is OpenOrderMessage openOrderMessage)
@@ -250,7 +254,7 @@ namespace IbClient.IbHost
                 (Contract currencyPairContract, bool usdIsInDenominator) = CurrencyPair.ContractFromCurrency(currency);
                 MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.DelayedFrozen };
                 (var currentPrice, _, _) = await RequestMarketDataSnapshotAsync(currencyPairContract, marketDataTypes);
-                result = usdIsInDenominator ? currentPrice : Math.Round(1 / currentPrice.Value,5);
+                result = usdIsInDenominator ? currentPrice : Math.Round(1 / currentPrice.Value, 5);
             }
             return result;
         }
@@ -410,11 +414,37 @@ namespace IbClient.IbHost
 
         private bool HasErrorMessage(int reqId, int errorCode, out ErrorMessage errorMessage)
         {
-            var errorMessagesCopy = _errorMessages.ToArray();
             bool searchFunction(ErrorMessage c) => c.RequestId == reqId && c.ErrorCode == errorCode;
-            bool result =  errorMessagesCopy.Any(searchFunction);
-            errorMessage = result 
-                ? errorMessagesCopy.Single(searchFunction)
+            return HasErrorMessage(reqId, searchFunction, out errorMessage);
+
+            //var errorMessagesCopy = _errorMessages.ToArray();
+            //bool result =  errorMessagesCopy.Any(searchFunction);
+            //errorMessage = result 
+            //    ? errorMessagesCopy.Single(searchFunction)
+            //    : null;
+            //return result;
+        }
+
+        private bool HasErrorMessage(int reqId, out ErrorMessage errorMessage)
+        {
+            bool searchFunction(ErrorMessage c) => c.RequestId == reqId;
+            return HasErrorMessage(reqId, searchFunction, out errorMessage);
+
+
+            //var errorMessagesCopy = _errorMessages.ToArray();
+            //bool result = errorMessagesCopy.Any(searchFunction);
+            //errorMessage = result
+            //    ? errorMessagesCopy.Single(searchFunction)
+            //    : null;
+            //return result;
+        }
+
+        private bool HasErrorMessage(int reqId, Func<ErrorMessage, bool> errorFilterFunction, out ErrorMessage errorMessage)
+        {
+            var errorMessagesCopy = _errorMessages.ToArray();
+            bool result = errorMessagesCopy.Any(errorFilterFunction);
+            errorMessage = result
+                ? errorMessagesCopy.Single(errorFilterFunction)
                 : null;
             return result;
         }
