@@ -224,7 +224,7 @@ namespace IbClient.IbHost
                 // TODO
                 // Check for all error messages
 
-                && !HasErrorMessage(_ibClient.NextOrderId, ERROR_CODE_201, out errorMessage)) { }
+                && !HasErrorMessage(_ibClient.NextOrderId, out errorMessage)) { }
 
                 if (_queue.Dequeue() is OpenOrderMessage openOrderMessage)
                 {
@@ -234,7 +234,14 @@ namespace IbClient.IbHost
 
             if (orderState == null)
             {
-                return new OrderStateOrError(orderState, $"ReqId:{errorMessage.RequestId} Code:{errorMessage.ErrorCode} {errorMessage.Message}");
+                if (errorMessage == null)
+                {
+                    return new OrderStateOrError(orderState, $"Timeout exceeded.");
+                }
+                else
+                {
+                    return new OrderStateOrError(orderState, $"ReqId:{errorMessage.RequestId} Code:{errorMessage.ErrorCode} {errorMessage.Message}");
+                }
             }
             else
             {
