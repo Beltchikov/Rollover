@@ -195,7 +195,6 @@ namespace IbClient.IbHost
 
         public async Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout)
         {
-            OrderState orderState = null;
             _ibClient.ClientSocket.reqIds(-1);
 
             _lastOrderId = _nextOrderId;
@@ -215,33 +214,33 @@ namespace IbClient.IbHost
 
             _ibClient.ClientSocket.placeOrder(_ibClient.NextOrderId, contract, order);
 
+            OpenOrderMessage openOrderMessage = null;
             ErrorMessage errorMessage = null;
             await Task.Run(() =>
             {
                 var startTime = DateTime.Now;
-                while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasMessageInQueue<OpenOrderMessage>()
-                    && !HasErrorMessage(_ibClient.NextOrderId, out errorMessage)) { }
-
-                if (_queue.Dequeue() is OpenOrderMessage openOrderMessage)
-                {
-                    orderState = openOrderMessage.OrderState;
-                }
+                while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !DequeueMessage<OpenOrderMessage>(_ibClient.NextOrderId,out openOrderMessage)
+                    && !DequeueMessage<ErrorMessage>(_ibClient.NextOrderId, out errorMessage)) { }
             });
 
-            if (orderState == null)
+            if (openOrderMessage == null)
             {
                 if (errorMessage == null)
                 {
-                    return new OrderStateOrError(orderState, $"Timeout exceeded.");
+                    return new OrderStateOrError(null, $"Timeout exceeded.");
                 }
                 else
                 {
-                    return new OrderStateOrError(orderState, $"ReqId:{errorMessage.RequestId} Code:{errorMessage.ErrorCode} {errorMessage.Message}");
+                    return new OrderStateOrError(null, $"ReqId:{errorMessage.RequestId} Code:{errorMessage.ErrorCode} {errorMessage.Message}");
                 }
             }
             else
             {
-                return new OrderStateOrError(orderState, "");
+                if(errorMessage != null)
+                {
+                    throw new ApplicationException("Unexpected! Both OrderState and errorMessage are not null.");
+                }
+                return new OrderStateOrError(openOrderMessage.OrderState, "");
             }
         }
 
@@ -386,7 +385,29 @@ namespace IbClient.IbHost
                 return tickPriceMessage?.RequestId == reqId;
             }
 
+            if (message is OpenOrderMessage)
+            {
+                var openOrderMessage = message as OpenOrderMessage;
+                return openOrderMessage?.OrderId == reqId;
+            }
+
             throw new NotImplementedException();
+        }
+
+        private bool DequeueMessage<T>(int reqId, out T message)
+        {
+            object lockObject = new object();
+
+            lock (lockObject)
+            {
+                if (!HasMessageInQueue<T>(reqId))
+                {
+                    message = default(T);
+                    return false;
+                }
+                message = (T)_queue.Dequeue();
+                return true;
+            }
         }
 
         private bool HasMessageInQueue<T>()
@@ -421,12 +442,7 @@ namespace IbClient.IbHost
             return HasErrorMessage(reqId, searchFunction, out errorMessage);
         }
 
-        private bool HasErrorMessage(int reqId, out ErrorMessage errorMessage)
-        {
-            bool searchFunction(ErrorMessage c) => c.RequestId == reqId;
-            return HasErrorMessage(reqId, searchFunction, out errorMessage);
-        }
-
+       
         private bool HasErrorMessage(int reqId, Func<ErrorMessage, bool> errorFilterFunction, out ErrorMessage errorMessage)
         {
             var errorMessagesCopy = _errorMessages.ToArray();
