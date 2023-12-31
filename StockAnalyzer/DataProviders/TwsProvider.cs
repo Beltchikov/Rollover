@@ -104,7 +104,7 @@ namespace StockAnalyzer.DataProviders
                 Contract contract = ContractFromString(contractStringTrimmed);
                 TriggerStatus($"Retrieving current price for {contractStringTrimmed} {cnt++}/{contractStringsListTws.Count}");
 
-                MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.DelayedFrozen };
+                MarketDataType[] marketDataTypes = new[] { MarketDataType.DelayedFrozen, MarketDataType.Live};
 
                 try
                 {
