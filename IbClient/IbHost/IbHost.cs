@@ -158,6 +158,9 @@ namespace IbClient.IbHost
                         || HasErrorMessage(reqId, ERROR_CODE_201, out _))) { };
 
 
+                    // TickSnapshotEndMessage
+                    // TickPriceMessage
+
                     //while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !DequeueMessage<OpenOrderMessage>(_ibClient.NextOrderId, out openOrderMessage)
                     //&& !DequeueMessage<ErrorMessage>(_ibClient.NextOrderId, out errorMessage)) { }
 
