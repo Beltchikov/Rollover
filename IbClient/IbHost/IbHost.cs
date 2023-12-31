@@ -416,27 +416,12 @@ namespace IbClient.IbHost
         {
             bool searchFunction(ErrorMessage c) => c.RequestId == reqId && c.ErrorCode == errorCode;
             return HasErrorMessage(reqId, searchFunction, out errorMessage);
-
-            //var errorMessagesCopy = _errorMessages.ToArray();
-            //bool result =  errorMessagesCopy.Any(searchFunction);
-            //errorMessage = result 
-            //    ? errorMessagesCopy.Single(searchFunction)
-            //    : null;
-            //return result;
         }
 
         private bool HasErrorMessage(int reqId, out ErrorMessage errorMessage)
         {
             bool searchFunction(ErrorMessage c) => c.RequestId == reqId;
             return HasErrorMessage(reqId, searchFunction, out errorMessage);
-
-
-            //var errorMessagesCopy = _errorMessages.ToArray();
-            //bool result = errorMessagesCopy.Any(searchFunction);
-            //errorMessage = result
-            //    ? errorMessagesCopy.Single(searchFunction)
-            //    : null;
-            //return result;
         }
 
         private bool HasErrorMessage(int reqId, Func<ErrorMessage, bool> errorFilterFunction, out ErrorMessage errorMessage)
