@@ -128,7 +128,10 @@ namespace IbClient.IbHost
         }
 
         // full list of tick types: https://interactivebrokers.github.io/tws-api/tick_types.html</param>
-        public async Task<(double?, TickType?, MarketDataType?)> RequestMarketDataSnapshotAsync(Contract contract, MarketDataType[] marketDataTypes)
+        public async Task<(double?, TickType?, MarketDataType?)> RequestMarketDataSnapshotAsync(
+            Contract contract,
+            MarketDataType[] marketDataTypes,
+            int timeout)
         {
             double? price = null;
             TickType? tickType = null;
@@ -153,6 +156,10 @@ namespace IbClient.IbHost
                         || HasErrorMessage(reqId, ERROR_CODE_10168, out _)
                         || HasErrorMessage(reqId, ERROR_CODE_354, out _)
                         || HasErrorMessage(reqId, ERROR_CODE_201, out _))) { };
+
+
+                    //while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !DequeueMessage<OpenOrderMessage>(_ibClient.NextOrderId, out openOrderMessage)
+                    //&& !DequeueMessage<ErrorMessage>(_ibClient.NextOrderId, out errorMessage)) { }
 
                     if (price == null)
                     {
@@ -188,9 +195,6 @@ namespace IbClient.IbHost
                         || HasErrorMessage(reqId, ERROR_CODE_354, out _)
                         || HasErrorMessage(reqId, ERROR_CODE_201, out _)))
                     { };
-
-                    //while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !DequeueMessage<OpenOrderMessage>(_ibClient.NextOrderId, out openOrderMessage)
-                    //&& !DequeueMessage<ErrorMessage>(_ibClient.NextOrderId, out errorMessage)) { }
                 }
             });
 
@@ -223,7 +227,7 @@ namespace IbClient.IbHost
             await Task.Run(() =>
             {
                 var startTime = DateTime.Now;
-                while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !DequeueMessage<OpenOrderMessage>(_ibClient.NextOrderId,out openOrderMessage)
+                while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !DequeueMessage<OpenOrderMessage>(_ibClient.NextOrderId, out openOrderMessage)
                     && !DequeueMessage<ErrorMessage>(_ibClient.NextOrderId, out errorMessage)) { }
             });
 
@@ -240,7 +244,7 @@ namespace IbClient.IbHost
             }
             else
             {
-                if(errorMessage != null)
+                if (errorMessage != null)
                 {
                     throw new ApplicationException("Unexpected! Both OrderState and errorMessage are not null.");
                 }
@@ -248,7 +252,7 @@ namespace IbClient.IbHost
             }
         }
 
-        public async Task<double?> RateOfExchange(string currency)
+        public async Task<double?> RateOfExchange(string currency, int timeout)
         {
             double? result;
             if (currency.ToUpper() == "USD")
@@ -259,7 +263,7 @@ namespace IbClient.IbHost
             {
                 (Contract currencyPairContract, bool usdIsInDenominator) = CurrencyPair.ContractFromCurrency(currency);
                 MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.DelayedFrozen };
-                (var currentPrice, _, _) = await RequestMarketDataSnapshotAsync(currencyPairContract, marketDataTypes);
+                (var currentPrice, _, _) = await RequestMarketDataSnapshotAsync(currencyPairContract, marketDataTypes, timeout);
                 result = usdIsInDenominator ? currentPrice : Math.Round(1 / currentPrice.Value, 5);
             }
             return result;
@@ -446,7 +450,7 @@ namespace IbClient.IbHost
             return HasErrorMessage(reqId, searchFunction, out errorMessage);
         }
 
-       
+
         private bool HasErrorMessage(int reqId, Func<ErrorMessage, bool> errorFilterFunction, out ErrorMessage errorMessage)
         {
             var errorMessagesCopy = _errorMessages.ToArray();

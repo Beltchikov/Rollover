@@ -10,7 +10,7 @@ namespace IbClient.IbHost
         IIbConsumer Consumer { get; set; }
         Task<bool> ConnectAndStartReaderThread(string host, int port, int clientId, int timeout);
         void Disconnect();
-        Task<double?> RateOfExchange(string currency);
+        Task<double?> RateOfExchange(string currency, int timeout);
         Task<ContractDetails> RequestContractDetailsAsync(
             Contract contract,
             int timeout);
@@ -18,7 +18,7 @@ namespace IbClient.IbHost
                     Contract contract,
                     string reportType,
                     int timeout);
-        Task<(double?, TickType?, MarketDataType?)> RequestMarketDataSnapshotAsync(Contract contract, MarketDataType[] marketDataTypes);
+        Task<(double?, TickType?, MarketDataType?)> RequestMarketDataSnapshotAsync(Contract contract, MarketDataType[] marketDataTypes, int timeout);
         Task<double?> RequestMarketDataSnapshotAsync(Contract contract, TickType tickType, int timeout);
         Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout);
 

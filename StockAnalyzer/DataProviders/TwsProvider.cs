@@ -108,7 +108,7 @@ namespace StockAnalyzer.DataProviders
 
                 try
                 {
-                    Price? currentPrice = await CurrentPriceFromContract(contract, marketDataTypes);
+                    Price? currentPrice = await CurrentPriceFromContract(contract, marketDataTypes, timeout);
                     result.Add($"{contract.Symbol}\t{currentPrice.Value}\t{contract.Currency}" +
                         $"\t{EnumNameFromValue<MarketDataType>(currentPrice.MarketDataType)}\t{EnumNameFromValue<TickType>(currentPrice.TickType)}");
                 }
@@ -138,7 +138,7 @@ namespace StockAnalyzer.DataProviders
                 Contract contract = ContractFromString(contractStringTrimmed);
                 TriggerStatus($"Retrieving current price for {contractStringTrimmed} {cnt++}/{contractStringsListTws.Count}");
                 (double? currentPrice, TickType? tickType, MarketDataType? marketDataType) = await AskOrAnyPriceAsync(contract, timeout);
-                double? rateOfExchange = await _ibHost.RateOfExchange(contract.Currency);
+                double? rateOfExchange = await _ibHost.RateOfExchange(contract.Currency, timeout);
                 
                 if (currentPrice == null)
                 {
@@ -489,10 +489,10 @@ namespace StockAnalyzer.DataProviders
             return fundamentalData ?? $"{contract.Symbol}\tNO_FUNDAMENTAL_DATA";
         }
 
-        private async Task<Price> CurrentPriceFromContract(Contract contract, MarketDataType[] marketDataTypes)
+        private async Task<Price> CurrentPriceFromContract(Contract contract, MarketDataType[] marketDataTypes, int timeout)
         {
             (var currentPrice, var tickType, var marketDataType)
-                = await _ibHost.RequestMarketDataSnapshotAsync(contract, marketDataTypes);
+                = await _ibHost.RequestMarketDataSnapshotAsync(contract, marketDataTypes, timeout);
             if (currentPrice == null)
             {
                 throw new ApplicationException($"currentPrice is null for {contract.Symbol}");
@@ -722,7 +722,7 @@ namespace StockAnalyzer.DataProviders
             if (currentPrice == null || currentPrice <=0)
             {
                 MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.DelayedFrozen };
-                (currentPrice, tickType, marketDataType) = await _ibHost.RequestMarketDataSnapshotAsync(contract, marketDataTypes);
+                (currentPrice, tickType, marketDataType) = await _ibHost.RequestMarketDataSnapshotAsync(contract, marketDataTypes, timeout);
             }
             return (currentPrice, tickType, marketDataType);
         }
