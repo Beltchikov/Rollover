@@ -14,7 +14,7 @@ namespace StockAnalyzer
     public class ViewModel : ObservableObject, IIbConsumer
     {
         private const int TIMEOUT_SIMPLE_BROWSER = 0;
-        private const int TIMEOUT_TWS = 3000;
+        private const int TIMEOUT_TWS = 1000;
         private readonly string REPORT_SNAPSHOT = "ReportSnapshot";
         private readonly string REPORTS_FIN_STATEMENTS = "ReportsFinStatements";
         private readonly int INVESTMENT_AMOUNT = 6400;
