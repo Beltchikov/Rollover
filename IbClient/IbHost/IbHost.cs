@@ -4,6 +4,7 @@ using IbClient.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using TickType = IbClient.Types.TickType;
 
@@ -164,7 +165,7 @@ namespace IbClient.IbHost
         }
 
         // full list of tick types: https://interactivebrokers.github.io/tws-api/tick_types.html</param>
-        public async Task<double?> RequestMarketDataSnapshotAsync(Contract contract, TickType tickType)
+        public async Task<double?> RequestMarketDataSnapshotAsync(Contract contract, TickType tickType, int timeout)
         {
             double? price = null;
             TickType? tickTypeReceived = null;
@@ -187,6 +188,9 @@ namespace IbClient.IbHost
                         || HasErrorMessage(reqId, ERROR_CODE_354, out _)
                         || HasErrorMessage(reqId, ERROR_CODE_201, out _)))
                     { };
+
+                    //while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !DequeueMessage<OpenOrderMessage>(_ibClient.NextOrderId, out openOrderMessage)
+                    //&& !DequeueMessage<ErrorMessage>(_ibClient.NextOrderId, out errorMessage)) { }
                 }
             });
 

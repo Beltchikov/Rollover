@@ -137,7 +137,7 @@ namespace StockAnalyzer.DataProviders
                 }
                 Contract contract = ContractFromString(contractStringTrimmed);
                 TriggerStatus($"Retrieving current price for {contractStringTrimmed} {cnt++}/{contractStringsListTws.Count}");
-                (double? currentPrice, TickType? tickType, MarketDataType? marketDataType) = await AskOrAnyPriceAsync(contract);
+                (double? currentPrice, TickType? tickType, MarketDataType? marketDataType) = await AskOrAnyPriceAsync(contract, timeout);
                 double? rateOfExchange = await _ibHost.RateOfExchange(contract.Currency);
                 
                 if (currentPrice == null)
@@ -713,12 +713,12 @@ namespace StockAnalyzer.DataProviders
             }
         }
 
-        private async Task<(double?, TickType?, MarketDataType?)> AskOrAnyPriceAsync(Contract contract)
+        private async Task<(double?, TickType?, MarketDataType?)> AskOrAnyPriceAsync(Contract contract, int timeout)
         {
             TickType? tickType = TickType.AskPrice;
             MarketDataType? marketDataType= MarketDataType.Live;
 
-            double ? currentPrice = await _ibHost.RequestMarketDataSnapshotAsync(contract, TickType.AskPrice);
+            double ? currentPrice = await _ibHost.RequestMarketDataSnapshotAsync(contract, TickType.AskPrice, timeout);
             if (currentPrice == null || currentPrice <=0)
             {
                 MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.DelayedFrozen };
