@@ -200,7 +200,7 @@ namespace StockAnalyzer
                 ibHost.Consumer ??= this;
                 ConnectToTwsIfNeeded();
                 List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
-                List<string> currentPriceString = await twsProvider.CurrentPriceFromContractStrings(
+                List<string> currentPriceString = await twsProvider.DelayedFrozenPriceFromContractStrings(
                                                     contractStringsList,
                                                     TIMEOUT_TWS);
                 ResultCollectionTwsFinStatements = new ObservableCollection<string>(currentPriceString);

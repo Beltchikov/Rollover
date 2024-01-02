@@ -104,7 +104,7 @@ namespace StockAnalyzer.DataProviders
                 Contract contract = ContractFromString(contractStringTrimmed);
                 TriggerStatus($"Retrieving current price for {contractStringTrimmed} {cnt++}/{contractStringsListTws.Count}");
 
-                MarketDataType[] marketDataTypes = new[] { MarketDataType.DelayedFrozen, MarketDataType.Live};
+                MarketDataType[] marketDataTypes = new[] { MarketDataType.DelayedFrozen, MarketDataType.Live };
 
                 try
                 {
@@ -119,6 +119,11 @@ namespace StockAnalyzer.DataProviders
             }
 
             return result;
+        }
+
+        public Task<List<string>> DelayedFrozenPriceFromContractStrings(List<string> contractStringsList, int tIMEOUT_TWS)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<List<string>> MarginListFromContractStrings(List<string> contractStringsListTws, int timeout, int investmentAmount)
@@ -139,7 +144,7 @@ namespace StockAnalyzer.DataProviders
                 TriggerStatus($"Retrieving current price for {contractStringTrimmed} {cnt++}/{contractStringsListTws.Count}");
                 (double? currentPrice, TickType? tickType, MarketDataType? marketDataType) = await AskOrAnyPriceAsync(contract, timeout);
                 double? rateOfExchange = await _ibHost.RateOfExchange(contract.Currency, timeout);
-                
+
                 if (currentPrice == null)
                 {
                     result.Add($"{contract.Symbol}\tcurrentPrice is null");
@@ -157,8 +162,8 @@ namespace StockAnalyzer.DataProviders
                     continue;
                 }
                 int initialQty = (int)Math.Floor(investmentAmount / (double)price);
-                double currentPriceUsd = Math.Round(currentPrice.Value * rateOfExchange.Value,2);
-                
+                double currentPriceUsd = Math.Round(currentPrice.Value * rateOfExchange.Value, 2);
+
                 MarginResult marginResult = await TrialAndError.PositiveCorrelation(
                     MaintenanceMarginFromQty,
                     timeout,
@@ -166,14 +171,14 @@ namespace StockAnalyzer.DataProviders
                     initialQty,
                     targetMargin,
                     TRIAL_AND_ERROR_PRECISION_IN_PERCENT);
-                
-                if(marginResult.Margin <= 0)
+
+                if (marginResult.Margin <= 0)
                 {
                     //result.Add($"{contract.Symbol}\tInvalid margin returned: {marginResult.Margin} Check messages in log.");
                     result.Add($"{contract.Symbol}\t{marginResult.Error}");
                     continue;
                 }
-                
+
                 double marketValue = (double)Math.Round(currentPriceUsd * marginResult.Quantity, 0);
                 double marginInPct = Math.Round((double)marginResult.Margin * 100 / marketValue, 1);
 
@@ -701,7 +706,7 @@ namespace StockAnalyzer.DataProviders
         private async Task<IntWithError> MaintenanceMarginFromQty(int timeout, Contract contract, int qty)
         {
             OrderStateOrError orderStateOrError = await _ibHost.WhatIfOrderStateFromContract(contract, qty, timeout);
-            if(orderStateOrError.OrderState == null)
+            if (orderStateOrError.OrderState == null)
             {
                 return new IntWithError(0, orderStateOrError.ErrorMessage);
             }
@@ -716,10 +721,10 @@ namespace StockAnalyzer.DataProviders
         private async Task<(double?, TickType?, MarketDataType?)> AskOrAnyPriceAsync(Contract contract, int timeout)
         {
             TickType? tickType = TickType.AskPrice;
-            MarketDataType? marketDataType= MarketDataType.Live;
+            MarketDataType? marketDataType = MarketDataType.Live;
 
-            double ? currentPrice = await _ibHost.RequestMarketDataSnapshotAsync(contract, TickType.AskPrice, timeout);
-            if (currentPrice == null || currentPrice <=0)
+            double? currentPrice = await _ibHost.RequestMarketDataSnapshotAsync(contract, TickType.AskPrice, timeout);
+            if (currentPrice == null || currentPrice <= 0)
             {
                 MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.DelayedFrozen };
                 (currentPrice, tickType, marketDataType) = await _ibHost.RequestMarketDataSnapshotAsync(contract, marketDataTypes, timeout);
