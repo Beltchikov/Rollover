@@ -51,7 +51,7 @@ namespace StockAnalyzer
         public ICommand PayoutRatioQCommand { get; }
         public ICommand SharesOutYCommand { get; }
         public ICommand SharesOutQCommand { get; }
-        public ICommand CurrentPriceCommandCommand { get; }
+        public ICommand DelayedFrozenPriceCommand { get; }
         public ICommand MarginCommand { get; }
         public ICommand TwsSummaryCommand { get; }
 
@@ -195,7 +195,7 @@ namespace StockAnalyzer
             });
 
 
-            CurrentPriceCommandCommand = new RelayCommand(async () =>
+            DelayedFrozenPriceCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer ??= this;
                 ConnectToTwsIfNeeded();
