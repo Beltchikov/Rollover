@@ -1,5 +1,7 @@
 ﻿using IBApi;
+using IbClient.messages;
 using IbClient.Types;
+using System;
 using System.Threading.Tasks;
 using TickType = IbClient.Types.TickType;
 
@@ -20,6 +22,12 @@ namespace IbClient.IbHost
                     int timeout);
         Task<(double?, TickType?, MarketDataType?)> RequestMarketDataSnapshotAsync(Contract contract, MarketDataType[] marketDataTypes, int timeout);
         Task<double?> RequestMarketDataSnapshotAsync(Contract contract, TickType tickType, int timeout);
+        void RequestMarketDataSnapshotAsync(
+            Contract contract,
+            MarketDataType marketDataType,
+            Action<TickPriceMessage> onTickPriceMessage,
+            Action<TickSizeMessage> onTickSizeMessage,
+            Action<int> onTickSnapshotEnd);
         Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout);
 
         //public void ReqHistoricalData();

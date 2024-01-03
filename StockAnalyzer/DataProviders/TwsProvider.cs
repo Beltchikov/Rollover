@@ -1,6 +1,7 @@
 ﻿using IBApi;
 using IbClient;
 using IbClient.IbHost;
+using IbClient.messages;
 using IbClient.Types;
 using StockAnalyzer.DataProviders.FinancialStatements.Tws.Accounts;
 using StockAnalyzer.DataProviders.FinancialStatements.Tws.ComputedFinancials;
@@ -121,9 +122,35 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
-        public Task<List<string>> DelayedFrozenPriceFromContractStrings(List<string> contractStringsList, int tIMEOUT_TWS)
+        public async Task<List<string>> DelayedFrozenPriceFromContractStrings(List<string> contractStringsList, int timeout)
         {
-            throw new NotImplementedException();
+            var result = new List<string>();
+            result.Add($"Ticker\tPrice\tCurrency\tMarket Data Type\tTick Type\tComment");
+
+            int cnt = 1;
+            foreach (string contractString in contractStringsList.Select(s => s.Trim()))
+            {
+                if (string.IsNullOrWhiteSpace(contractString))
+                {
+                    continue;
+                }
+
+                Contract contract = ContractFromString(contractString);
+                TriggerStatus($"Retrieving current price for {contractString} {cnt++}/{contractStringsList.Count}");
+
+                PriceOrError priceOrError = await DelayedFrozenPriceFromContract(contract, timeout);
+                if (priceOrError != null && priceOrError.Price > 0)
+                {
+                    result.Add($"{contract.Symbol}\t{priceOrError.Price.Value}\t{contract.Currency}" +
+                        $"\t{EnumNameFromValue<MarketDataType>((int?)priceOrError?.MarketDataType)}\t{EnumNameFromValue<TickType>((int?)priceOrError?.TickType)}");
+                }
+                else
+                {
+                    result.Add($"{contract.Symbol}\tTimeout!");
+                }
+            }
+
+            return result;
         }
 
         public async Task<List<string>> MarginListFromContractStrings(List<string> contractStringsListTws, int timeout, int investmentAmount)
@@ -512,6 +539,20 @@ namespace StockAnalyzer.DataProviders
             }
 
             return new Price(currentPrice.Value, (int)marketDataType.Value, (int)tickType.Value);
+        }
+
+        private Task<PriceOrError> DelayedFrozenPriceFromContract(Contract contract, int timeout)
+        {
+            // TODO
+            
+            _ibHost.RequestMarketDataSnapshotAsync(
+                contract,
+                MarketDataType.DelayedFrozen,
+                (Action<TickPriceMessage>)(tickPriceMessage => { }),
+                (Action<TickSizeMessage>)(tickSizeMessage => { }),
+                (Action<int>)(reqId => { }));
+
+            throw new NotImplementedException();
         }
 
         private static IEnumerable<XElement>? StatementElementsFromXDocument(XDocument? xDocument, string periods)

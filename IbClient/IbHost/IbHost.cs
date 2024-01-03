@@ -204,6 +204,16 @@ namespace IbClient.IbHost
             return price;
         }
 
+        public void RequestMarketDataSnapshotAsync(
+            Contract contract,
+            MarketDataType marketDataType,
+            Action<TickPriceMessage> onTickPriceMessage,
+            Action<TickSizeMessage> onTickSizeMessage,
+            Action<int> onTickSnapshotEnd)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout)
         {
             _ibClient.ClientSocket.reqIds(-1);
