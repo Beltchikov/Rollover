@@ -545,15 +545,18 @@ namespace StockAnalyzer.DataProviders
         {
             // TODO
 
+            double? price = null;
+                        
             var startTime = DateTime.Now;
             await _ibHost.RequestMarketDataSnapshotAsync(
                 contract,
                 MarketDataType.DelayedFrozen,
-                (Action<TickPriceMessage>)(tickPriceMessage => { }),
-                (Action<TickSizeMessage>)(tickSizeMessage => { }),
+                tickPriceMessage =>  price = tickPriceMessage.Price > 0 ? tickPriceMessage.Price : null,
+                tickSizeMessage => { },
                 (Action<int>)(reqId => { }));
 
-            while ((DateTime.Now-startTime).TotalMilliseconds < timeout) { }
+            while ((DateTime.Now-startTime).TotalMilliseconds < timeout
+                && price == null) { }
 
             throw new NotImplementedException();
         }
