@@ -541,16 +541,19 @@ namespace StockAnalyzer.DataProviders
             return new Price(currentPrice.Value, (int)marketDataType.Value, (int)tickType.Value);
         }
 
-        private Task<PriceOrError> DelayedFrozenPriceFromContract(Contract contract, int timeout)
+        private async Task<PriceOrError> DelayedFrozenPriceFromContract(Contract contract, int timeout)
         {
             // TODO
-            
-            _ibHost.RequestMarketDataSnapshotAsync(
+
+            var startTime = DateTime.Now;
+            await _ibHost.RequestMarketDataSnapshotAsync(
                 contract,
                 MarketDataType.DelayedFrozen,
                 (Action<TickPriceMessage>)(tickPriceMessage => { }),
                 (Action<TickSizeMessage>)(tickSizeMessage => { }),
                 (Action<int>)(reqId => { }));
+
+            while ((DateTime.Now-startTime).TotalMilliseconds < timeout) { }
 
             throw new NotImplementedException();
         }

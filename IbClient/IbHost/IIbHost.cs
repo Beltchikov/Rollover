@@ -22,7 +22,7 @@ namespace IbClient.IbHost
                     int timeout);
         Task<(double?, TickType?, MarketDataType?)> RequestMarketDataSnapshotAsync(Contract contract, MarketDataType[] marketDataTypes, int timeout);
         Task<double?> RequestMarketDataSnapshotAsync(Contract contract, TickType tickType, int timeout);
-        void RequestMarketDataSnapshotAsync(
+        Task RequestMarketDataSnapshotAsync(
             Contract contract,
             MarketDataType marketDataType,
             Action<TickPriceMessage> onTickPriceMessage,

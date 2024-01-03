@@ -204,7 +204,7 @@ namespace IbClient.IbHost
             return price;
         }
 
-        public void RequestMarketDataSnapshotAsync(
+        public Task RequestMarketDataSnapshotAsync(
             Contract contract,
             MarketDataType marketDataType,
             Action<TickPriceMessage> onTickPriceMessage,
