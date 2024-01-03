@@ -543,24 +543,35 @@ namespace StockAnalyzer.DataProviders
 
         private async Task<PriceOrError> DelayedFrozenPriceFromContract(Contract contract, int timeout)
         {
-            // TODO
-
-            double? price = null;
+            bool timeoutExceeded = false;
             bool endOfSnapshot = false;
-                        
+            double? price = null;
+            TickType? tickType = null;
+            
             var startTime = DateTime.Now;
             await _ibHost.RequestMarketDataSnapshotAsync(
                 contract,
                 MarketDataType.DelayedFrozen,
-                tickPriceMessage =>  price = tickPriceMessage.Price > 0 ? tickPriceMessage.Price : null,
+                tickPriceMessage => { 
+                    price = tickPriceMessage.Price > 0 ? tickPriceMessage.Price : null;
+                    tickType = (TickType)tickPriceMessage.Field;
+                },
                 tickSizeMessage => { },
                 () => endOfSnapshot = true);
 
-            while ((DateTime.Now-startTime).TotalMilliseconds < timeout
-                && price == null
-                && !endOfSnapshot) { }
+            while ((timeoutExceeded=(DateTime.Now-startTime).TotalMilliseconds < timeout)
+                && !endOfSnapshot
+                && price == null) { }
 
-            throw new NotImplementedException();
+            if (timeoutExceeded) {
+                return new PriceOrError(null, tickType, MarketDataType.DelayedFrozen, "Timeout exceeded.");
+            }
+            if (endOfSnapshot)
+            {
+                return new PriceOrError(null, tickType, MarketDataType.DelayedFrozen, "End of snaphot.");
+            }
+
+            return new PriceOrError(price, tickType, MarketDataType.DelayedFrozen, "");
         }
 
         private static IEnumerable<XElement>? StatementElementsFromXDocument(XDocument? xDocument, string periods)
