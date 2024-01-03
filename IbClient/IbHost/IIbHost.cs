@@ -27,7 +27,7 @@ namespace IbClient.IbHost
             MarketDataType marketDataType,
             Action<TickPriceMessage> onTickPriceMessage,
             Action<TickSizeMessage> onTickSizeMessage,
-            Action<int> onTickSnapshotEnd);
+            Action onTickSnapshotEnd);
         Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout);
 
         //public void ReqHistoricalData();

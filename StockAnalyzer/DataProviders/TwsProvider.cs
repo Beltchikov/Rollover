@@ -546,6 +546,7 @@ namespace StockAnalyzer.DataProviders
             // TODO
 
             double? price = null;
+            bool endOfSnapshot = false;
                         
             var startTime = DateTime.Now;
             await _ibHost.RequestMarketDataSnapshotAsync(
@@ -553,10 +554,11 @@ namespace StockAnalyzer.DataProviders
                 MarketDataType.DelayedFrozen,
                 tickPriceMessage =>  price = tickPriceMessage.Price > 0 ? tickPriceMessage.Price : null,
                 tickSizeMessage => { },
-                (Action<int>)(reqId => { }));
+                () => endOfSnapshot = true);
 
             while ((DateTime.Now-startTime).TotalMilliseconds < timeout
-                && price == null) { }
+                && price == null
+                && !endOfSnapshot) { }
 
             throw new NotImplementedException();
         }

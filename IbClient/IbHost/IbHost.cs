@@ -209,7 +209,7 @@ namespace IbClient.IbHost
             MarketDataType marketDataType,
             Action<TickPriceMessage> onTickPriceMessage,
             Action<TickSizeMessage> onTickSizeMessage,
-            Action<int> onTickSnapshotEnd)
+            Action onTickSnapshotEnd)
         {
             throw new NotImplementedException();
         }
