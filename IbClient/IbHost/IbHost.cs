@@ -218,7 +218,8 @@ namespace IbClient.IbHost
             //onTickSnapshotEnd = () => _ibClient_TickSnapshotEnd(reqId);
 
             _ibClient.TickPrice += onTickPriceMessage;
-            //_ibClient.TickSnapshotEnd += _ibClient_TickSnapshotEnd;
+            Action<int> onTickSnapshotEndFunc = (requestId) => { if (requestId == reqId) onTickSnapshotEnd(); };
+            _ibClient.TickSnapshotEnd += onTickSnapshotEndFunc;
 
 
             _ibClient.ClientSocket.reqMktData(
@@ -233,7 +234,9 @@ namespace IbClient.IbHost
             {
                 var startTime = DateTime.Now;
                 while (!HasMessageInQueue<TickSnapshotEndMessage>()) { }
-
+                
+                _ibClient.TickPrice -= onTickPriceMessage;
+                _ibClient.TickSnapshotEnd -= onTickSnapshotEndFunc;
             });
         }
 
