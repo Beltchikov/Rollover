@@ -213,14 +213,9 @@ namespace IbClient.IbHost
         {
             var reqId = ++_currentReqId;
 
-            //onTickPriceMessage = _ibClient_TickPrice;
-            //// onTickSizeMessage - is not in use presently
-            //onTickSnapshotEnd = () => _ibClient_TickSnapshotEnd(reqId);
-
             _ibClient.TickPrice += onTickPriceMessage;
             Action<int> onTickSnapshotEndFunc = (requestId) => { if (requestId == reqId) onTickSnapshotEnd(); };
             _ibClient.TickSnapshotEnd += onTickSnapshotEndFunc;
-
 
             _ibClient.ClientSocket.reqMktData(
                    reqId,
@@ -232,7 +227,6 @@ namespace IbClient.IbHost
  
             await Task.Run(() =>
             {
-                var startTime = DateTime.Now;
                 while (!HasMessageInQueue<TickSnapshotEndMessage>()) { }
                 
                 _ibClient.TickPrice -= onTickPriceMessage;

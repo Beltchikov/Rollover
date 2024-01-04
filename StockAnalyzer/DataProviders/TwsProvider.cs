@@ -562,8 +562,7 @@ namespace StockAnalyzer.DataProviders
             //while (!(timeoutExceeded=(DateTime.Now-startTime).TotalMilliseconds > timeout)
             //    && !endOfSnapshot
             //    && price == null) { }
-            while (!endOfSnapshot
-                && price == null) { }
+            while (!endOfSnapshot) { }
 
             if (timeoutExceeded) {
                 return new PriceOrError(null, tickType, MarketDataType.DelayedFrozen, "Timeout exceeded.");
