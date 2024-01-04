@@ -204,14 +204,37 @@ namespace IbClient.IbHost
             return price;
         }
 
-        public Task RequestMarketDataSnapshotAsync(
+        public async Task RequestMarketDataSnapshotAsync(
             Contract contract,
             MarketDataType marketDataType,
             Action<TickPriceMessage> onTickPriceMessage,
             Action<TickSizeMessage> onTickSizeMessage,
             Action onTickSnapshotEnd)
         {
-            throw new NotImplementedException();
+            var reqId = ++_currentReqId;
+
+            //onTickPriceMessage = _ibClient_TickPrice;
+            //// onTickSizeMessage - is not in use presently
+            //onTickSnapshotEnd = () => _ibClient_TickSnapshotEnd(reqId);
+
+            _ibClient.TickPrice += onTickPriceMessage;
+            //_ibClient.TickSnapshotEnd += _ibClient_TickSnapshotEnd;
+
+
+            _ibClient.ClientSocket.reqMktData(
+                   reqId,
+                   contract,
+                   "",
+                   true,
+                   false,
+                   new List<TagValue>());
+ 
+            await Task.Run(() =>
+            {
+                var startTime = DateTime.Now;
+                while (!HasMessageInQueue<TickSnapshotEndMessage>()) { }
+
+            });
         }
 
         public async Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout)
@@ -357,7 +380,7 @@ namespace IbClient.IbHost
             }
             Consumer.TwsMessageCollection?.Add($"TickPriceMessage for {tickPriceMessage.RequestId} " +
                 $"field:{tickPriceMessage.Field} price:{tickPriceMessage.Price}");
-            _responses.AddTickPriceMessage(tickPriceMessage);
+            _queue.Enqueue(tickPriceMessage);
         }
 
         private void _ibClient_TickSnapshotEnd(int reqId)
@@ -367,7 +390,7 @@ namespace IbClient.IbHost
                 throw new ApplicationException("Unexpected! Consumer is null");
             }
             Consumer.TwsMessageCollection?.Add($"TickSnapshotEnd for {reqId} ");
-            _responses.SetSnapshotEnd(reqId);
+            _queue.Enqueue(new TickSnapshotEndMessage(reqId));
         }
 
         private void _ibClient_OpenOrder(OpenOrderMessage openOrderMessage)
