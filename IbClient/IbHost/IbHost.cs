@@ -85,15 +85,17 @@ namespace IbClient.IbHost
         public async Task<ContractDetails> RequestContractDetailsAsync(Contract contract, int timeout)
         {
             ContractDetails contractDetails = null;
+            ContractDetailsMessage contractDetailsMessage = null;
             var reqId = ++_currentReqId;
             _ibClient.ClientSocket.reqContractDetails(reqId, contract);
 
             await Task.Run(() =>
             {
                 var startTime = DateTime.Now;
-                while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasMessageInQueue<ContractDetailsMessage>(reqId)) { }
+                //while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasMessageInQueue<ContractDetailsMessage>(reqId)) { }
+                while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !DequeueMessage<ContractDetailsMessage>(reqId, out contractDetailsMessage)) { }
 
-                if (_queue.Dequeue() is ContractDetailsMessage contractDetailsMessage)
+                if (contractDetailsMessage != null)
                 {
                     contractDetails = contractDetailsMessage.ContractDetails;
                 }
