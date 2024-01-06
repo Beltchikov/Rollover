@@ -227,7 +227,7 @@ namespace IbClient.IbHost
  
             await Task.Run(() =>
             {
-                while (!HasMessageInQueue<TickSnapshotEndMessage>()) { }
+                while (!HasMessageInQueue<TickSnapshotEndMessage>(reqId)) { }
                 
                 _ibClient.TickPrice -= onTickPriceMessage;
                 _ibClient.TickSnapshotEnd -= onTickSnapshotEndFunc;
@@ -474,7 +474,7 @@ namespace IbClient.IbHost
                 return fundamentalsMessageString.Contains("ALD");
             }
 
-            return fundamentalsMessageString.Contains(ticker);
+            return fundamentalsMessageString.Contains(ticker) || fundamentalsMessageString.Contains(ticker.ToUpper());
         }
 
         private bool HasErrorMessage(int reqId, int errorCode, out ErrorMessage errorMessage)
