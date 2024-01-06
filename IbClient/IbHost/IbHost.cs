@@ -92,7 +92,8 @@ namespace IbClient.IbHost
             await Task.Run(() =>
             {
                 var startTime = DateTime.Now;
-                while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !DequeueMessage<ContractDetailsMessage>(reqId, out contractDetailsMessage)) { }
+                while ((DateTime.Now - startTime).TotalMilliseconds < timeout 
+                    && !DequeueMessage(reqId, out contractDetailsMessage)) { }
 
                 if (contractDetailsMessage != null)
                 {
