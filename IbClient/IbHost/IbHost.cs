@@ -115,6 +115,7 @@ namespace IbClient.IbHost
             {
                 var startTime = DateTime.Now;
                 while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasMessageInQueue<FundamentalsMessage>()) { }
+                // TODO New overloading of DequeueMessage without reqId
 
                 if (_queue.Dequeue() is FundamentalsMessage fundamentalsMessage)
                 {
