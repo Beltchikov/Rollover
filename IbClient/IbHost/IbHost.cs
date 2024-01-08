@@ -106,6 +106,7 @@ namespace IbClient.IbHost
 
         public async Task<string> RequestFundamentalDataAsync(Contract contract, string reportType, int timeout)
         {
+            FundamentalsMessage fundamentalsMessage = null;
             string fundamentalsMessageString = null;
 
             var reqId = ++_currentReqId;
@@ -114,10 +115,12 @@ namespace IbClient.IbHost
             await Task.Run(() =>
             {
                 var startTime = DateTime.Now;
-                while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasMessageInQueue<FundamentalsMessage>()) { }
+                //while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasMessageInQueue<FundamentalsMessage>()) { }
                 // TODO New overloading of DequeueMessage without reqId
+                while ((DateTime.Now - startTime).TotalMilliseconds < timeout
+                    && !DequeueMessage(out fundamentalsMessage)) { }
 
-                if (_queue.Dequeue() is FundamentalsMessage fundamentalsMessage)
+                if (fundamentalsMessage != null)
                 {
                     fundamentalsMessageString = fundamentalsMessage.Data;
                     if (!MessageForRightTickerContains(fundamentalsMessageString, contract.Symbol))
@@ -125,6 +128,15 @@ namespace IbClient.IbHost
                         fundamentalsMessageString = contract.Symbol + " ERROR!";
                     }
                 }
+
+                //if (_queue.Dequeue() is FundamentalsMessage fundamentalsMessage)
+                //{
+                //    fundamentalsMessageString = fundamentalsMessage.Data;
+                //    if (!MessageForRightTickerContains(fundamentalsMessageString, contract.Symbol))
+                //    {
+                //        fundamentalsMessageString = contract.Symbol + " ERROR!";
+                //    }
+                //}
             });
 
             return fundamentalsMessageString;
@@ -468,6 +480,22 @@ namespace IbClient.IbHost
             }
 
             return true;
+        }
+
+        private bool DequeueMessage<T>(out T message)
+        {
+            object lockObject = new object();
+
+            lock (lockObject)
+            {
+                if (!HasMessageInQueue<T>())
+                {
+                    message = default(T);
+                    return false;
+                }
+                message = (T)_queue.Dequeue();
+                return true;
+            }
         }
 
         private bool MessageForRightTickerContains(string fundamentalsMessageString, string ticker)
