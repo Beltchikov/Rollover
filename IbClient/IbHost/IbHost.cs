@@ -115,8 +115,6 @@ namespace IbClient.IbHost
             await Task.Run(() =>
             {
                 var startTime = DateTime.Now;
-                //while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !HasMessageInQueue<FundamentalsMessage>()) { }
-                // TODO New overloading of DequeueMessage without reqId
                 while ((DateTime.Now - startTime).TotalMilliseconds < timeout
                     && !DequeueMessage(out fundamentalsMessage)) { }
 
@@ -128,15 +126,6 @@ namespace IbClient.IbHost
                         fundamentalsMessageString = contract.Symbol + " ERROR!";
                     }
                 }
-
-                //if (_queue.Dequeue() is FundamentalsMessage fundamentalsMessage)
-                //{
-                //    fundamentalsMessageString = fundamentalsMessage.Data;
-                //    if (!MessageForRightTickerContains(fundamentalsMessageString, contract.Symbol))
-                //    {
-                //        fundamentalsMessageString = contract.Symbol + " ERROR!";
-                //    }
-                //}
             });
 
             return fundamentalsMessageString;
