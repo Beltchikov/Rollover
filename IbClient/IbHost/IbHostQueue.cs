@@ -1,4 +1,6 @@
-﻿using System.Collections.Concurrent;
+﻿using IbClient.messages;
+using System;
+using System.Collections.Concurrent;
 using System.Linq;
 
 namespace IbClient.IbHost
@@ -46,6 +48,89 @@ namespace IbClient.IbHost
         public int Count()
         {
             return _ibClientQueue.Count();
+        }
+
+        public bool DequeueMessage<T>(out T message)
+        {
+            object lockObject = new object();
+
+            lock (lockObject)
+            {
+                if (!HasMessageInQueue<T>())
+                {
+                    message = default(T);
+                    return false;
+                }
+                message = (T)Dequeue();
+                return true;
+            }
+        }
+
+        public bool DequeueMessage<T>(int reqId, out T message)
+        {
+            object lockObject = new object();
+
+            lock (lockObject)
+            {
+                if (!HasMessageInQueue<T>(reqId))
+                {
+                    message = default(T);
+                    return false;
+                }
+                message = (T)Dequeue();
+                return true;
+            }
+        }
+
+        private bool HasMessageInQueue<T>()
+        {
+            var message = Peek();
+            if (message == null)
+            {
+                return false;
+            }
+
+            if (!(message is T))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        //TODO make private
+        public bool HasMessageInQueue<T>(int reqId)
+        {
+            var message = Peek();
+            if (message == null)
+            {
+                return false;
+            }
+
+            if (!(message is T))
+            {
+                return false;
+            }
+
+            if (message is ContractDetailsMessage)
+            {
+                var contractDetailsMessage = message as ContractDetailsMessage;
+                return contractDetailsMessage?.RequestId == reqId;
+            }
+
+            if (message is TickPriceMessage)
+            {
+                var tickPriceMessage = message as TickPriceMessage;
+                return tickPriceMessage?.RequestId == reqId;
+            }
+
+            if (message is OpenOrderMessage)
+            {
+                var openOrderMessage = message as OpenOrderMessage;
+                return openOrderMessage?.OrderId == reqId;
+            }
+
+            throw new NotImplementedException();
         }
     }
 }

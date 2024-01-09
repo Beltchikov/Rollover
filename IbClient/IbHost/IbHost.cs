@@ -4,6 +4,7 @@ using IbClient.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TickType = IbClient.Types.TickType;
@@ -93,7 +94,7 @@ namespace IbClient.IbHost
             {
                 var startTime = DateTime.Now;
                 while ((DateTime.Now - startTime).TotalMilliseconds < timeout 
-                    && !DequeueMessage(reqId, out contractDetailsMessage)) { }
+                    && !_queue.DequeueMessage(reqId, out contractDetailsMessage)) { }
 
                 if (contractDetailsMessage != null)
                 {
@@ -116,7 +117,7 @@ namespace IbClient.IbHost
             {
                 var startTime = DateTime.Now;
                 while ((DateTime.Now - startTime).TotalMilliseconds < timeout
-                    && !DequeueMessage(out fundamentalsMessage)) { }
+                    && !_queue.DequeueMessage(out fundamentalsMessage)) { }
 
                 if (fundamentalsMessage != null)
                 {
@@ -231,7 +232,10 @@ namespace IbClient.IbHost
  
             await Task.Run(() =>
             {
-                while (!HasMessageInQueue<TickSnapshotEndMessage>(reqId)) { }
+                // TODO
+                // Replace while condition analogue RequestFundamentalDataAsync
+                // Make HasMessageInQueue private
+                while (!_queue.HasMessageInQueue<TickSnapshotEndMessage>(reqId)) { }
                 
                 _ibClient.TickPrice -= onTickPriceMessage;
                 _ibClient.TickSnapshotEnd -= onTickSnapshotEndFunc;
@@ -264,8 +268,8 @@ namespace IbClient.IbHost
             await Task.Run(() =>
             {
                 var startTime = DateTime.Now;
-                while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !DequeueMessage<OpenOrderMessage>(_ibClient.NextOrderId, out openOrderMessage)
-                    && !DequeueMessage<ErrorMessage>(_ibClient.NextOrderId, out errorMessage)) { }
+                while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !_queue.DequeueMessage<OpenOrderMessage>(_ibClient.NextOrderId, out openOrderMessage)
+                    && !_queue.DequeueMessage<ErrorMessage>(_ibClient.NextOrderId, out errorMessage)) { }
             });
 
             if (openOrderMessage == null)
@@ -404,89 +408,6 @@ namespace IbClient.IbHost
                 $"conId:{openOrderMessage.Contract.ConId}");
             _queue.Enqueue(openOrderMessage);
         }
-
-        private bool HasMessageInQueue<T>(int reqId)
-        {
-            var message = _queue.Peek();
-            if (message == null)
-            {
-                return false;
-            }
-
-            if (!(message is T))
-            {
-                return false;
-            }
-
-            if (message is ContractDetailsMessage)
-            {
-                var contractDetailsMessage = message as ContractDetailsMessage;
-                return contractDetailsMessage?.RequestId == reqId;
-            }
-
-            if (message is TickPriceMessage)
-            {
-                var tickPriceMessage = message as TickPriceMessage;
-                return tickPriceMessage?.RequestId == reqId;
-            }
-
-            if (message is OpenOrderMessage)
-            {
-                var openOrderMessage = message as OpenOrderMessage;
-                return openOrderMessage?.OrderId == reqId;
-            }
-
-            throw new NotImplementedException();
-        }
-
-        private bool DequeueMessage<T>(int reqId, out T message)
-        {
-            object lockObject = new object();
-
-            lock (lockObject)
-            {
-                if (!HasMessageInQueue<T>(reqId))
-                {
-                    message = default(T);
-                    return false;
-                }
-                message = (T)_queue.Dequeue();
-                return true;
-            }
-        }
-
-        private bool HasMessageInQueue<T>()
-        {
-            var message = _queue.Peek();
-            if (message == null)
-            {
-                return false;
-            }
-
-            if (!(message is T))
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool DequeueMessage<T>(out T message)
-        {
-            object lockObject = new object();
-
-            lock (lockObject)
-            {
-                if (!HasMessageInQueue<T>())
-                {
-                    message = default(T);
-                    return false;
-                }
-                message = (T)_queue.Dequeue();
-                return true;
-            }
-        }
-
         private bool MessageForRightTickerContains(string fundamentalsMessageString, string ticker)
         {
             if (ticker == "ALD1")
