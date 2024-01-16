@@ -230,7 +230,7 @@ namespace StockAnalyzer
                     twsProvider.DesriptionOfCompanyFromFundamentalDataList(fundamentalDataListSummary));
             });
 
-            MarketCap = 0.1;
+            MarketCap = 00.1;
             TickerCollectionYahoo = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA\r\n WT").Split("\r\n").ToList());
             ContractStringsTwsContractDetails = new ObservableCollection<string>(("ALD1;EUR;STK;SBF\r\nBWLPG;NOK;STK\r\nPFS\r\nSLCA").Split("\r\n").ToList());
             ContractStringsTwsFinStatements = new ObservableCollection<string>(("ALD1;EUR;STK;SBF\r\nBWLPG;NOK;\r\nPFS\r\nSLCA").Split("\r\n").ToList());
