@@ -48,7 +48,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwsUserControls", "TwsUserC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockAnalyzer", "StockAnalyzer\StockAnalyzer.csproj", "{456D1CF0-2A07-4FD4-ADCB-8922E2768264}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SsbHelper", "SsbHelper\SsbHelper.csproj", "{F2D25F47-2816-4F11-8DD9-12CD0338BE01}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SsbHelper", "SsbHelper\SsbHelper.csproj", "{F2D25F47-2816-4F11-8DD9-12CD0338BE01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrailingStopLimit", "TrailingStopLimit\TrailingStopLimit.csproj", "{1156A9AF-50B7-486A-BFE6-CDF91C2257AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -140,6 +142,10 @@ Global
 		{F2D25F47-2816-4F11-8DD9-12CD0338BE01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2D25F47-2816-4F11-8DD9-12CD0338BE01}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2D25F47-2816-4F11-8DD9-12CD0338BE01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1156A9AF-50B7-486A-BFE6-CDF91C2257AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1156A9AF-50B7-486A-BFE6-CDF91C2257AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1156A9AF-50B7-486A-BFE6-CDF91C2257AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1156A9AF-50B7-486A-BFE6-CDF91C2257AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
