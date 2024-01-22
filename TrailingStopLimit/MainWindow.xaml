@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TrailingStopLimit"
         mc:Ignorable="d"
-        Title="Trailing Stop Limit - Direction" Height="450" Width="800">
+        Title="Trailing Stop Limit" Height="450" Width="800">
     <Grid>
 
     </Grid>
