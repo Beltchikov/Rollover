@@ -153,6 +153,11 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
+        public Task<List<string>> RiskAndReturnFromContractStrings(List<string> contractStringsList, int timeout)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<List<string>> MarginListFromContractStrings(List<string> contractStringsListTws, int timeout, int investmentAmount)
         {
             var result = new List<string>();
@@ -483,12 +488,6 @@ namespace StockAnalyzer.DataProviders
         {
             // No need for TTM value
             SharesOutTwiceAYearCalculations(resultQuarterly, ticker, currency, periodsElement);
-        }
-
-
-        public Task<List<string>> RiskAndReturnFromContractStrings(List<string> contractStringsList, int timeout)
-        {
-            throw new NotImplementedException();
         }
 
         private XDocument? XDocumentFromStringWithChecks(string stringToParse, List<string> result)
