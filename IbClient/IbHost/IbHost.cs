@@ -209,39 +209,7 @@ namespace IbClient.IbHost
             return price;
         }
 
-        public async Task RequestMarketDataSnapshotAsync(
-            Contract contract,
-            MarketDataType marketDataType,
-            Action<TickPriceMessage> onTickPriceMessage,
-            Action<TickSizeMessage> onTickSizeMessage,
-            Action onTickSnapshotEnd)
-        {
-            var reqId = ++_currentReqId;
-
-            _ibClient.TickPrice += onTickPriceMessage;
-            Action<int> onTickSnapshotEndFunc = (requestId) => { if (requestId == reqId) onTickSnapshotEnd(); };
-            _ibClient.TickSnapshotEnd += onTickSnapshotEndFunc;
-
-            _ibClient.ClientSocket.reqMktData(
-                   reqId,
-                   contract,
-                   "",
-                   true,
-                   false,
-                   new List<TagValue>());
- 
-            await Task.Run(() =>
-            {
-                // TODO
-                // Replace while condition analogue RequestFundamentalDataAsync
-                // Make HasMessageInQueue private
-                while (!_queue.HasMessageInQueue<TickSnapshotEndMessage>(reqId)) { }
-                
-                _ibClient.TickPrice -= onTickPriceMessage;
-                _ibClient.TickSnapshotEnd -= onTickSnapshotEndFunc;
-            });
-        }
-
+        
         public async Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout)
         {
             _ibClient.ClientSocket.reqIds(-1);
