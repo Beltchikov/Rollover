@@ -153,9 +153,46 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
-        public Task<List<string>> RiskAndReturnFromContractStrings(List<string> contractStringsList, int timeout)
+        public async Task<List<string>> RiskAndReturnFromContractStrings(List<string> contractStringsList, int timeout)
         {
-            throw new NotImplementedException();
+            var result = new List<string>();
+            result.Add($"Ticker\tRisk\tReturn");
+
+            int cnt = 1;
+            foreach (string contractString in contractStringsList.Select(s => s.Trim()))
+            {
+                if (string.IsNullOrWhiteSpace(contractString))
+                {
+                    continue;
+                }
+
+                Contract contract = ContractFromString(contractString);
+                TriggerStatus($"Retrieving risk and return for {contractString} {cnt++}/{contractStringsList.Count}");
+
+                RiskAndReturnOrError riskAndReturnOrError = await RiskAndReturnFromContract(contract, timeout);
+                if(riskAndReturnOrError == null)
+                {
+                    result.Add($"{contract.Symbol}\tUnexpected! riskAndReturnOrError is null");
+                }
+                else if(riskAndReturnOrError.Risk == null)
+                {
+                    result.Add($"{contract.Symbol}\tUnexpected! riskAndReturnOrError.Risk is null");
+                }
+                else if (riskAndReturnOrError.Return == null)
+                {
+                    result.Add($"{contract.Symbol}\tUnexpected! riskAndReturnOrError.Return is null");
+                }
+                else if (!string.IsNullOrWhiteSpace(riskAndReturnOrError.Error))
+                {
+                    result.Add($"{contract.Symbol}\t{riskAndReturnOrError.Error}");
+                }
+                else 
+                {
+                    result.Add($"{contract.Symbol}\t{riskAndReturnOrError.Risk.Value}\t{riskAndReturnOrError.Return.Value}");
+                }
+            }
+
+            return result;
         }
 
         public async Task<List<string>> MarginListFromContractStrings(List<string> contractStringsListTws, int timeout, int investmentAmount)
@@ -578,6 +615,11 @@ namespace StockAnalyzer.DataProviders
             }
 
             return new PriceOrError(price, tickType, MarketDataType.DelayedFrozen, "");
+        }
+
+        private Task<RiskAndReturnOrError> RiskAndReturnFromContract(Contract contract, int timeout)
+        {
+            throw new NotImplementedException();
         }
 
         private static IEnumerable<XElement>? StatementElementsFromXDocument(XDocument? xDocument, string periods)
