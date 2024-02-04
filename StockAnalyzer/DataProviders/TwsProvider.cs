@@ -486,7 +486,7 @@ namespace StockAnalyzer.DataProviders
         }
 
 
-        public Task<List<string>> RiskAndReturnFromContractStrings(List<string> contractStringsList, int tIMEOUT_TWS, int iNVESTMENT_AMOUNT)
+        public Task<List<string>> RiskAndReturnFromContractStrings(List<string> contractStringsList, int timeout)
         {
             throw new NotImplementedException();
         }

@@ -220,14 +220,12 @@ namespace StockAnalyzer
 
             RiskAndReturnCommand = new RelayCommand(async () =>
             {
-                MessageBox.Show("RiskAndReturnCommand");
-
                 ibHost.Consumer ??= this;
                 ConnectToTwsIfNeeded();
                 List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
                 List<string> riskAndReturnListWithTicker = await twsProvider.RiskAndReturnFromContractStrings(
                                     contractStringsList,
-                                    TIMEOUT_TWS, INVESTMENT_AMOUNT);
+                                    TIMEOUT_TWS);
                 ResultCollectionTwsFinStatements = new ObservableCollection<string>(riskAndReturnListWithTicker);
             });
 
