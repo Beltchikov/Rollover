@@ -312,7 +312,7 @@ Foreground="White" Grid.ColumnSpan="3">
                                     HorizontalAlignment="Stretch" VerticalAlignment="Center" 
                                         Command="{Binding SharesOutYCommand}">Shares Outstd. (Y) >>
                                 </Button>
-                                <Button Padding="10 0 10 0" Margin="10,0,10,5" Height="25" 
+                                <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="25" 
                                     HorizontalAlignment="Stretch" VerticalAlignment="Center" 
                                         Command="{Binding SharesOutQCommand}">Shares Outstd. (Q) >>
                                 </Button>
@@ -320,9 +320,13 @@ Foreground="White" Grid.ColumnSpan="3">
                                     HorizontalAlignment="Stretch" VerticalAlignment="Center" 
                                         Command="{Binding DelayedFrozenPriceCommand}">Delayed Frozen Price >>
                                 </Button>
-                                <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="25" 
+                                <Button Padding="10 0 10 5" Margin="10,0,10,5" Height="25" 
                                     HorizontalAlignment="Stretch" VerticalAlignment="Center" 
                                         Command="{Binding MarginCommand}">Margin >>
+                                </Button>
+                                <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="25" 
+     HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+         Command="{Binding RiskAndReturnCommand}">Risk and Return >>
                                 </Button>
                             </StackPanel>
 
