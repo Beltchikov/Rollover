@@ -53,8 +53,8 @@ namespace StockAnalyzer
         public ICommand SharesOutQCommand { get; }
         public ICommand DelayedFrozenPriceCommand { get; }
         public ICommand MarginCommand { get; }
-        public ICommand TwsSummaryCommand { get; }
         public ICommand RiskAndReturnCommand { get; }
+        public ICommand TwsSummaryCommand { get; }
 
         public ViewModel(
             IInvestingProvider investingProvider,
@@ -218,6 +218,21 @@ namespace StockAnalyzer
                 ResultCollectionTwsFinStatements = new ObservableCollection<string>(marginListWithTicker);
             });
 
+            RiskAndReturnCommand = new RelayCommand(async () =>
+            {
+                MessageBox.Show("RiskAndReturnCommand");
+
+                //ibHost.Consumer ??= this;
+                //ConnectToTwsIfNeeded();
+                //List<string> contractStringsList = ContractStringsTwsSummary.ToList();
+                //List<DataStringWithTicker> fundamentalDataListSummary = await twsProvider.FundamentalDataFromContractStrings(
+                //                    contractStringsList,
+                //                    REPORT_SNAPSHOT,
+                //                    TIMEOUT_TWS);
+                //ResultCollectionTwsSummary = new ObservableCollection<string>(
+                //    twsProvider.DesriptionOfCompanyFromFundamentalDataList(fundamentalDataListSummary));
+            });
+
             TwsSummaryCommand = new RelayCommand(async () =>
             {
                 ibHost.Consumer ??= this;
@@ -230,22 +245,6 @@ namespace StockAnalyzer
                 ResultCollectionTwsSummary = new ObservableCollection<string>(
                     twsProvider.DesriptionOfCompanyFromFundamentalDataList(fundamentalDataListSummary));
             });
-
-
-            RiskAndReturnCommand = new RelayCommand(async () =>
-                {
-                    MessageBox.Show("RiskAndReturnCommand");
-                    
-                    //ibHost.Consumer ??= this;
-                    //ConnectToTwsIfNeeded();
-                    //List<string> contractStringsList = ContractStringsTwsSummary.ToList();
-                    //List<DataStringWithTicker> fundamentalDataListSummary = await twsProvider.FundamentalDataFromContractStrings(
-                    //                    contractStringsList,
-                    //                    REPORT_SNAPSHOT,
-                    //                    TIMEOUT_TWS);
-                    //ResultCollectionTwsSummary = new ObservableCollection<string>(
-                    //    twsProvider.DesriptionOfCompanyFromFundamentalDataList(fundamentalDataListSummary));
-                });
 
             MarketCap = 00.1;
             TickerCollectionYahoo = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA\r\n WT").Split("\r\n").ToList());
