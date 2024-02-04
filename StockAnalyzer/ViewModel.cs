@@ -222,15 +222,13 @@ namespace StockAnalyzer
             {
                 MessageBox.Show("RiskAndReturnCommand");
 
-                //ibHost.Consumer ??= this;
-                //ConnectToTwsIfNeeded();
-                //List<string> contractStringsList = ContractStringsTwsSummary.ToList();
-                //List<DataStringWithTicker> fundamentalDataListSummary = await twsProvider.FundamentalDataFromContractStrings(
-                //                    contractStringsList,
-                //                    REPORT_SNAPSHOT,
-                //                    TIMEOUT_TWS);
-                //ResultCollectionTwsSummary = new ObservableCollection<string>(
-                //    twsProvider.DesriptionOfCompanyFromFundamentalDataList(fundamentalDataListSummary));
+                ibHost.Consumer ??= this;
+                ConnectToTwsIfNeeded();
+                List<string> contractStringsList = ContractStringsTwsFinStatements.ToList();
+                List<string> riskAndReturnListWithTicker = await twsProvider.RiskAndReturnFromContractStrings(
+                                    contractStringsList,
+                                    TIMEOUT_TWS, INVESTMENT_AMOUNT);
+                ResultCollectionTwsFinStatements = new ObservableCollection<string>(riskAndReturnListWithTicker);
             });
 
             TwsSummaryCommand = new RelayCommand(async () =>

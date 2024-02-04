@@ -485,6 +485,12 @@ namespace StockAnalyzer.DataProviders
             SharesOutTwiceAYearCalculations(resultQuarterly, ticker, currency, periodsElement);
         }
 
+
+        public Task<List<string>> RiskAndReturnFromContractStrings(List<string> contractStringsList, int tIMEOUT_TWS, int iNVESTMENT_AMOUNT)
+        {
+            throw new NotImplementedException();
+        }
+
         private XDocument? XDocumentFromStringWithChecks(string stringToParse, List<string> result)
         {
             if (stringToParse.EndsWith(NO_FUNDAMENTAL_DATA))
