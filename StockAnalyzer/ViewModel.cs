@@ -64,6 +64,7 @@ namespace StockAnalyzer
             IInvestingProvider investingProvider,
             IYahooProvider yahooProvider,
             ITwsProvider twsProvider,
+            ISeekingAlphaProvider seekingAlphaProvider,
             IIbHost ibHost)
         {
             yahooProvider.Status += YahooProvider_Status;
@@ -248,18 +249,9 @@ namespace StockAnalyzer
 
             ComparePeersCommand = new RelayCommand(async () =>
             {
-                await Task.Run(()=>MessageBox.Show("ComparePeersCommand"));
-                
-                
-                // ibHost.Consumer ??= this;
-                // ConnectToTwsIfNeeded();
-                // List<string> contractStringsList = ContractStringsTwsSummary.ToList();
-                // List<DataStringWithTicker> fundamentalDataListSummary = await twsProvider.FundamentalDataFromContractStrings(
-                //                     contractStringsList,
-                //                     REPORT_SNAPSHOT,
-                //                     TIMEOUT_TWS);
-                // ResultCollectionTwsSummary = new ObservableCollection<string>(
-                //     twsProvider.DesriptionOfCompanyFromFundamentalDataList(fundamentalDataListSummary));
+                ResultCollectionAlpha = new ObservableCollection<string>(await seekingAlphaProvider.PeersComparison(
+                    TickerCollectionAlpha.ToList(),
+                    TIMEOUT_SIMPLE_BROWSER));
             });
 
             MarketCap = 00.1;
