@@ -454,7 +454,7 @@ AcceptsReturn="True"
        HorizontalAlignment="Left"
         Foreground="White"></Label>
                             <TextBox x:Name="txtResultsAlpha" 
-         Text="{Binding ResultCollectionYahooEps, Converter={StaticResource ListToStringConverter}}" 
+         Text="{Binding ResultCollectionAlpha, Converter={StaticResource ListToStringConverter}}" 
                                      Grid.Column="2" Grid.Row="2" 
                                      Margin="10 70 10 0" 
          AcceptsReturn="True"

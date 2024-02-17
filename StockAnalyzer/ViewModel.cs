@@ -25,6 +25,7 @@ namespace StockAnalyzer
         private ObservableCollection<string> _tickerCollectionYahoo = null!;
         private ObservableCollection<string> _tickerCollectionAlpha = null!;
         private ObservableCollection<string> _resultCollectionYahooEps = null!;
+        private ObservableCollection<string> _resultCollectionAlpha = null!;
         private string _messageYahoo = null!;
         private int _decimalSeparatorSelectedIndexYahoo;
 
@@ -446,6 +447,16 @@ namespace StockAnalyzer
                 SetProperty(ref _tickerCollectionAlpha, value);
             }
         }
+      
+        public ObservableCollection<string> ResultCollectionAlpha
+        {
+            get => _resultCollectionAlpha;
+            set
+            {
+                SetProperty(ref _resultCollectionAlpha, value);
+            }
+        }
+
 
         #endregion
 
