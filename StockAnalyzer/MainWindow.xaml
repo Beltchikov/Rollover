@@ -417,7 +417,7 @@ AcceptsReturn="True"
                         <RowDefinition Height="10"></RowDefinition>
                     </Grid.RowDefinitions>
 
-                    <GroupBox Grid.Column="1" Grid.Row="1" Header="Expected EPS"
+                    <GroupBox Grid.Column="1" Grid.Row="1" Header="Peers Comparison"
   Foreground="White" Grid.ColumnSpan="4">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -446,7 +446,7 @@ AcceptsReturn="True"
                   Height="25" 
             HorizontalAlignment="Stretch"
                 VerticalAlignment="Center" 
-                Command="{Binding LastEpsCommand}">Last EPS >>
+                Command="{Binding LastEpsCommand}">Compare >>
                                 </Button>
                             </StackPanel>
 
