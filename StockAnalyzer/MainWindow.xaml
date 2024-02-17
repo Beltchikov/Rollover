@@ -436,7 +436,7 @@ AcceptsReturn="True"
                             <Label Content="Tickers:" Grid.Column="1" Grid.Row="1" 
        HorizontalAlignment="Left"
         Foreground="White"></Label>
-                            <TextBox Text="{Binding TickerCollectionYahoo, Converter={StaticResource ListToStringConverter}}" Grid.Column="1" Grid.Row="2" 
+                            <TextBox Text="{Binding TickerCollectionAlpha, Converter={StaticResource ListToStringConverter}}" Grid.Column="1" Grid.Row="2" 
          Grid.RowSpan="3" AcceptsReturn="True"
             VerticalScrollBarVisibility="Visible"></TextBox>
 

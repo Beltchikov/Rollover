@@ -23,6 +23,7 @@ namespace StockAnalyzer
         private double _marketCap;
 
         private ObservableCollection<string> _tickerCollectionYahoo = null!;
+        private ObservableCollection<string> _tickerCollectionAlpha = null!;
         private ObservableCollection<string> _resultCollectionYahooEps = null!;
         private string _messageYahoo = null!;
         private int _decimalSeparatorSelectedIndexYahoo;
@@ -435,6 +436,18 @@ namespace StockAnalyzer
 
         #region TWS Summary
 
+        #region Seeking Alpha
+
+        public ObservableCollection<string> TickerCollectionAlpha
+        {
+            get => _tickerCollectionAlpha;
+            set
+            {
+                SetProperty(ref _tickerCollectionAlpha, value);
+            }
+        }
+
+        #endregion
 
         public ObservableCollection<string> ContractStringsTwsSummary
         {
