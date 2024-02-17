@@ -6,6 +6,7 @@ using StockAnalyzer.DataProviders.Types;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -57,6 +58,7 @@ namespace StockAnalyzer
         public ICommand MarginCommand { get; }
         public ICommand RiskAndReturnCommand { get; }
         public ICommand TwsSummaryCommand { get; }
+        public ICommand ComparePeersCommand { get; }
 
         public ViewModel(
             IInvestingProvider investingProvider,
@@ -242,6 +244,22 @@ namespace StockAnalyzer
                                     TIMEOUT_TWS);
                 ResultCollectionTwsSummary = new ObservableCollection<string>(
                     twsProvider.DesriptionOfCompanyFromFundamentalDataList(fundamentalDataListSummary));
+            });
+
+            ComparePeersCommand = new RelayCommand(async () =>
+            {
+                await Task.Run(()=>MessageBox.Show("ComparePeersCommand"));
+                
+                
+                // ibHost.Consumer ??= this;
+                // ConnectToTwsIfNeeded();
+                // List<string> contractStringsList = ContractStringsTwsSummary.ToList();
+                // List<DataStringWithTicker> fundamentalDataListSummary = await twsProvider.FundamentalDataFromContractStrings(
+                //                     contractStringsList,
+                //                     REPORT_SNAPSHOT,
+                //                     TIMEOUT_TWS);
+                // ResultCollectionTwsSummary = new ObservableCollection<string>(
+                //     twsProvider.DesriptionOfCompanyFromFundamentalDataList(fundamentalDataListSummary));
             });
 
             MarketCap = 00.1;

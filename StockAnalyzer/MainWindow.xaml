@@ -446,7 +446,7 @@ AcceptsReturn="True"
                   Height="25" 
             HorizontalAlignment="Stretch"
                 VerticalAlignment="Center" 
-                Command="{Binding LastEpsCommand}">Compare >>
+                Command="{Binding ComparePeersCommand}">Compare >>
                                 </Button>
                             </StackPanel>
 
