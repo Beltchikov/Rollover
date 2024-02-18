@@ -9,7 +9,9 @@ namespace StockAnalyzer.DataProviders
 {
     public class SeekingAlphaProvider : BrowserProviderBase, ISeekingAlphaProvider
     {
-        readonly string urlTemplate = $"https://seekingalpha.com/symbol/TICKER/peers/comparison";
+        readonly string urlTemplate = $"https://seekingalpha.com/symbol/MSFT/peers/comparison?compare=MSFT,ORCL,NOW,PANW,CRWD,FTNT";
+        //https://seekingalpha.com/symbol/MSFT/peers/comparison?compare=MSFT,ORCL,NOW,PANW,CRWD,FTNT
+        //https://seekingalpha.com/symbol/TICKER/peers/comparison
         public SeekingAlphaProvider(IBrowserWrapper browserWrapper) : base(browserWrapper) {}
 
         public async Task<IEnumerable<string>> PeersComparison(List<string> tickerList, int delay)
