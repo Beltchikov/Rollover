@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using StockAnalyzer.WebScraping;
 
 namespace StockAnalyzer.DataProviders
@@ -33,6 +34,9 @@ namespace StockAnalyzer.DataProviders
                     }
                     else
                     {
+                        var xDocument = _browserWrapper.XDocument;
+                        var anchorWithTicker = xDocument.Descendants("a").Where(d=>d.Attributes("href").First().Value.Contains(ticker));
+                        
                         var text = _browserWrapper.CurrentHtml;
                         var lines = text.Split("\r\n").ToList();
                         // var line = lines.FirstOrDefault(l => l.Contains("Earnings History"));
