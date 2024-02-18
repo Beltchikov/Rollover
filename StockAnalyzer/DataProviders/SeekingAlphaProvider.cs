@@ -35,7 +35,9 @@ namespace StockAnalyzer.DataProviders
                     else
                     {
                         var xDocument = _browserWrapper.XDocument;
-                        var anchorWithTicker = xDocument.Descendants("a").Where(d=>d.Attributes("href").First().Value.Contains(ticker));
+                        var anchorWithTicker = xDocument.Descendants("a")
+                            .FirstOrDefault(d=>d.Attributes("href").First().Value.Contains(ticker) && d.Value == ticker);
+                        var table = anchorWithTicker?.Parent?.Parent?.Parent?.Parent;
                         
                         var text = _browserWrapper.CurrentHtml;
                         var lines = text.Split("\r\n").ToList();
