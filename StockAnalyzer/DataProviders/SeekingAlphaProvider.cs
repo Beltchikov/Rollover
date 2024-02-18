@@ -10,7 +10,7 @@ namespace StockAnalyzer.DataProviders
 {
     public class SeekingAlphaProvider : BrowserProviderBase, ISeekingAlphaProvider
     {
-        readonly string urlTemplate = $"https://seekingalpha.com/symbol/MSFT/peers/comparison?compare=MSFT,ORCL,NOW,PANW,CRWD,FTNT";
+        readonly string urlTemplate = $"https://seekingalpha.com/symbol/TICKER/peers/comparison";
         //https://seekingalpha.com/symbol/MSFT/peers/comparison?compare=MSFT,ORCL,NOW,PANW,CRWD,FTNT
         //https://seekingalpha.com/symbol/TICKER/peers/comparison
         public SeekingAlphaProvider(IBrowserWrapper browserWrapper) : base(browserWrapper) {}
@@ -37,10 +37,19 @@ namespace StockAnalyzer.DataProviders
                         var xDocument = _browserWrapper.XDocument;
                         var anchorWithTicker = xDocument.Descendants("a")
                             .FirstOrDefault(d=>d.Attributes("href").First().Value.Contains(ticker) && d.Value == ticker);
-                        var table = anchorWithTicker?.Parent?.Parent?.Parent?.Parent;
+                        var trElement = anchorWithTicker?.Parent?.Parent;
+                        var allThElementsValues = trElement?.Elements()
+                            .Where(e=>!string.IsNullOrWhiteSpace(e.Value.Trim()))
+                            .Select(e=>e.Value.Trim())
+                            .ToList();
+                        //var table = trElement?.Parent?.Parent;
+                        if(allThElementsValues != null)
+                        {
+                            result.AddRange(allThElementsValues);
+                        }
                         
-                        var text = _browserWrapper.CurrentHtml;
-                        var lines = text.Split("\r\n").ToList();
+                        // var text = _browserWrapper.CurrentHtml;
+                        // var lines = text.Split("\r\n").ToList();
                         // var line = lines.FirstOrDefault(l => l.Contains("Earnings History"));
                         // var line2 = line?.Substring(line.IndexOf("EPS Actual"));
                         // var line3 = line2?.Substring(0, line2.IndexOf("</tr>"));
