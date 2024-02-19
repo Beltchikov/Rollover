@@ -38,21 +38,13 @@ namespace StockAnalyzer.DataProviders
                         .Where(e => !string.IsNullOrWhiteSpace(e.Value.Trim()))
                         .Select(e => e.Value.Trim())
                         .ToArray();
-                    var symbolLine = allThElementsValues == null ? "Symbol" : $"Symbol\t{string.Join("\t", allThElementsValues)}";
-                    result.Add(symbolLine);
+                    var symbolLine = allThElementsValues == null ? "" : $"{string.Join("\t", allThElementsValues)}";
+                    result.Add("Symbol\t"+symbolLine);
+                    result.Add("Company\t"+symbolLine);
 
                     var table = trElement?.Parent?.Parent;
-                    result.Add(ExtractDataLine(table, 3, "Company"));
                     result.Add(ExtractDataLine(table, 4, "Market Cap"));
 
-
-
-
-                    // var forthRow = table?.Descendants("tr").ToArray()[4];
-                    // var forthRowColumns = forthRow?.Descendants("td");
-                    // var forthRowValues = forthRowColumns?.Select(s => s.Descendants("div").FirstOrDefault()?.Value);
-                    // var marketCapLine = forthRowValues == null ? "Market Cap" : $"Market Cap\t{string.Join("\t", forthRowValues)}";
-                    // result.Add(marketCapLine);
                 }
 
                 Thread.Sleep(delay);
