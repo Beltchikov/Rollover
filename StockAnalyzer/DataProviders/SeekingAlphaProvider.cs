@@ -39,11 +39,11 @@ namespace StockAnalyzer.DataProviders
                         .Where(e => !string.IsNullOrWhiteSpace(e.Value.Trim()))
                         .Select(e => e.Value.Trim())
                         .ToArray();
-                    var allValuesString = allThElementsValues == null ? "" : string.Join("\t", allThElementsValues);
+                    var symbolLine = allThElementsValues == null ? "Symbol" : $"Symbol\t{string.Join("\t", allThElementsValues)}";
                     //var table = trElement?.Parent?.Parent;
                     if (allThElementsValues != null)
                     {
-                        result.Add(allValuesString);
+                        result.Add(symbolLine);
                     }
 
                     // var text = _browserWrapper.CurrentHtml;
