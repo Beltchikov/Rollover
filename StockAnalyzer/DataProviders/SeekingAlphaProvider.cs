@@ -43,6 +43,7 @@ namespace StockAnalyzer.DataProviders
                     result.Add("Company\t"+symbolLine);
 
                     var table = trElement?.Parent?.Parent;
+                    //result.Add(ExtractDataLine(table, 3, "span", "Industry"));
                     result.Add(ExtractDataLine(table, 4, "Market Cap"));
 
                 }
@@ -57,7 +58,7 @@ namespace StockAnalyzer.DataProviders
         private string ExtractDataLine(XElement? table, int rowIndex, string firstColumnData)
         {
             var row = table?.Descendants("tr").ToArray()[rowIndex];
-            var rowColumns = row?.Descendants("td");
+            var rowColumns = row?.Descendants();
             var rowValues = rowColumns?.Select(s => s.Descendants("div").FirstOrDefault()?.Value);
             var line = rowValues == null ? firstColumnData: $"{firstColumnData}\t{string.Join("\t", rowValues)}";
             return line;
