@@ -40,13 +40,19 @@ namespace StockAnalyzer.DataProviders
                         .ToArray();
                     var symbolLine = allThElementsValues == null ? "Symbol" : $"Symbol\t{string.Join("\t", allThElementsValues)}";
                     result.Add(symbolLine);
-                    
+
                     var table = trElement?.Parent?.Parent;
-                    var forthRow = table?.Descendants("tr").ToArray()[4];
-                    var forthRowColumns = forthRow?.Descendants("td");
-                    var forthRowValues = forthRowColumns?.Select(s => s.Descendants("div").FirstOrDefault()?.Value);
-                    var marketCapLine = forthRowValues == null ? "Market Cap" : $"Market Cap\t{string.Join("\t", forthRowValues)}";
-                    result.Add(marketCapLine);
+                    result.Add(ExtractDataLine(table, 3, "Company"));
+                    result.Add(ExtractDataLine(table, 4, "Market Cap"));
+
+
+
+
+                    // var forthRow = table?.Descendants("tr").ToArray()[4];
+                    // var forthRowColumns = forthRow?.Descendants("td");
+                    // var forthRowValues = forthRowColumns?.Select(s => s.Descendants("div").FirstOrDefault()?.Value);
+                    // var marketCapLine = forthRowValues == null ? "Market Cap" : $"Market Cap\t{string.Join("\t", forthRowValues)}";
+                    // result.Add(marketCapLine);
                 }
 
                 Thread.Sleep(delay);
@@ -54,6 +60,15 @@ namespace StockAnalyzer.DataProviders
 
 
             return result;
+        }
+
+        private string ExtractDataLine(XElement? table, int rowIndex, string firstColumnData)
+        {
+            var row = table?.Descendants("tr").ToArray()[rowIndex];
+            var rowColumns = row?.Descendants("td");
+            var rowValues = rowColumns?.Select(s => s.Descendants("div").FirstOrDefault()?.Value);
+            var line = rowValues == null ? firstColumnData: $"{firstColumnData}\t{string.Join("\t", rowValues)}";
+            return line;
         }
     }
 }
