@@ -43,8 +43,8 @@ namespace StockAnalyzer.DataProviders
                     result.Add("Company\t"+symbolLine);
 
                     var table = trElement?.Parent?.Parent;
-                    //result.Add(ExtractDataLine(table, 3, "span", "Industry"));
-                    result.Add(ExtractDataLine(table, 4, "Market Cap"));
+                    result.Add(ExtractDataLineTrAnchorSpan(table, 3, "Industry"));
+                    result.Add(ExtractDataLineTrDiv(table, 4, "Market Cap"));
 
                 }
 
@@ -55,12 +55,23 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
-        private string ExtractDataLine(XElement? table, int rowIndex, string firstColumnData)
+        private string ExtractDataLineTrDiv(XElement? table, int rowIndex, string firstColumnData)
         {
             var row = table?.Descendants("tr").ToArray()[rowIndex];
             var rowColumns = row?.Descendants();
             var rowValues = rowColumns?.Select(s => s.Descendants("div").FirstOrDefault()?.Value);
             var line = rowValues == null ? firstColumnData: $"{firstColumnData}\t{string.Join("\t", rowValues)}";
+            return line;
+        }
+
+        private string ExtractDataLineTrAnchorSpan(XElement? table, int rowIndex, string firstColumnData)
+        {
+            var row = table?.Descendants("tr").ToArray()[rowIndex];
+            var rowColumns = row?.Descendants();
+            var anchorElements = rowColumns?.Select(s => s.Descendants("a"));
+            var spanElementValues = anchorElements?.Select(s => s.Descendants("span").FirstOrDefault()?.Value);
+            
+            var line = spanElementValues == null ? firstColumnData: $"{firstColumnData}\t{string.Join("\t", spanElementValues)}";
             return line;
         }
     }
