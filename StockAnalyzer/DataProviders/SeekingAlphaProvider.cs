@@ -27,7 +27,7 @@ namespace StockAnalyzer.DataProviders
 
                 if (!_browserWrapper.Navigate(url))
                 {
-                    //AddDataToResultList(result, tickerTrimmed, null);
+                    result.Add($"PeersComparison\t_browserWrapper.Navigate returned false for url {url}");
                 }
                 else
                 {
