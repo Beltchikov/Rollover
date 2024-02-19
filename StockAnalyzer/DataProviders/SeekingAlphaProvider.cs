@@ -59,7 +59,8 @@ namespace StockAnalyzer.DataProviders
         {
             var row = table?.Descendants("tr").ToArray()[rowIndex];
             var rowColumns = row?.Descendants();
-            var rowValues = rowColumns?.Select(s => s.Descendants("div").FirstOrDefault()?.Value);
+            var rowValues = rowColumns?.Select(s => s.Descendants("div").FirstOrDefault()?.Value)
+                .Where(d=>!string.IsNullOrWhiteSpace(d));
             var line = rowValues == null ? firstColumnData: $"{firstColumnData}\t{string.Join("\t", rowValues)}";
             return line;
         }
@@ -69,7 +70,8 @@ namespace StockAnalyzer.DataProviders
             var row = table?.Descendants("tr").ToArray()[rowIndex];
             var rowColumns = row?.Descendants();
             var anchorElements = rowColumns?.Select(s => s.Descendants("a"));
-            var spanElementValues = anchorElements?.Select(s => s.Descendants("span").FirstOrDefault()?.Value);
+            var spanElementValues = anchorElements?.Select(s => s.Descendants("span").FirstOrDefault()?.Value)
+                .Where(d=>!string.IsNullOrWhiteSpace(d));
             
             var line = spanElementValues == null ? firstColumnData: $"{firstColumnData}\t{string.Join("\t", spanElementValues)}";
             return line;
