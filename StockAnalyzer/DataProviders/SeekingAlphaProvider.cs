@@ -18,6 +18,8 @@ namespace StockAnalyzer.DataProviders
         public async Task<IEnumerable<string>> PeersComparison(string ticker, int delay)
         {
             var result = new List<string>();
+            bool errorOccured = false;
+            string symbolLine="";
 
             var tickerTrimmed = ticker.Trim();
             await Task.Run(() =>
@@ -27,6 +29,7 @@ namespace StockAnalyzer.DataProviders
 
                 if (!_browserWrapper.Navigate(url))
                 {
+                    errorOccured = true;
                     result.Add($"PeersComparison\t_browserWrapper.Navigate returned false for url {url}");
                 }
                 else
@@ -38,21 +41,27 @@ namespace StockAnalyzer.DataProviders
                         .Where(e => !string.IsNullOrWhiteSpace(e.Value.Trim()))
                         .Select(e => e.Value.Trim())
                         .ToArray();
-                    var symbolLine = allThElementsValues == null ? "" : $"{string.Join("\t", allThElementsValues)}";
-                    result.Add("Symbol\t"+symbolLine);
-                    result.Add("Company\t"+symbolLine);
+                    symbolLine = allThElementsValues == null ? "" : $"{string.Join("\t", allThElementsValues)}";
+                    result.Add("Symbol\t" + symbolLine);
+                    result.Add("Company\t" + symbolLine);
 
                     var table = trElement?.Parent?.Parent;
                     result.Add(ExtractDataLineTrAnchorSpan(table, 3, "Industry"));
                     result.Add(ExtractDataLineTrDiv(table, 4, "Market Cap"));
-
                 }
-
-                Thread.Sleep(delay);
             });
 
+            if (!errorOccured)
+            {
+                AddMoreData(ref result, symbolLine);
+            }
 
             return result;
+        }
+
+        private void AddMoreData(ref List<string> result, string symbolLine)
+        {
+            throw new NotImplementedException();
         }
 
         private string ExtractDataLineTrDiv(XElement? table, int rowIndex, string firstColumnData)
@@ -60,8 +69,8 @@ namespace StockAnalyzer.DataProviders
             var row = table?.Descendants("tr").ToArray()[rowIndex];
             var rowColumns = row?.Descendants();
             var rowValues = rowColumns?.Select(s => s.Descendants("div").FirstOrDefault()?.Value)
-                .Where(d=>!string.IsNullOrWhiteSpace(d));
-            var line = rowValues == null ? firstColumnData: $"{firstColumnData}\t{string.Join("\t", rowValues)}";
+                .Where(d => !string.IsNullOrWhiteSpace(d));
+            var line = rowValues == null ? firstColumnData : $"{firstColumnData}\t{string.Join("\t", rowValues)}";
             return line;
         }
 
@@ -71,9 +80,9 @@ namespace StockAnalyzer.DataProviders
             var rowColumns = row?.Descendants();
             var anchorElements = rowColumns?.Select(s => s.Descendants("a"));
             var spanElementValues = anchorElements?.Select(s => s.Descendants("span").FirstOrDefault()?.Value)
-                .Where(d=>!string.IsNullOrWhiteSpace(d));
-            
-            var line = spanElementValues == null ? firstColumnData: $"{firstColumnData}\t{string.Join("\t", spanElementValues)}";
+                .Where(d => !string.IsNullOrWhiteSpace(d));
+
+            var line = spanElementValues == null ? firstColumnData : $"{firstColumnData}\t{string.Join("\t", spanElementValues)}";
             return line;
         }
     }
