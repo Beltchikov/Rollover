@@ -28,6 +28,7 @@ namespace StockAnalyzer.DataProviders
                 TriggerStatus($"Retrieving peers for {tickerTrimmed}");
                 var url = urlTemplate.Replace("TICKER", tickerTrimmed);
 
+                // TODO check with LastWebException
                 if (!_browserWrapper.Navigate(url))
                 {
                     errorOccured = true;
@@ -81,6 +82,8 @@ namespace StockAnalyzer.DataProviders
                     }
                     var sections = _browserWrapper.XDocument.Descendants("section")
                                         .FirstOrDefault(d => d.Attributes("data-test-id").First().Value == "symbol-chart");
+                    // TODO
+                    if(sections != null) result.Add(sections.Value);
 
                 });
 
