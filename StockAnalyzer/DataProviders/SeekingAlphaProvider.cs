@@ -39,13 +39,14 @@ namespace StockAnalyzer.DataProviders
                             .FirstOrDefault(d=>d.Attributes("href").First().Value.Contains(ticker) && d.Value == ticker);
                         var trElement = anchorWithTicker?.Parent?.Parent;
                         var allThElementsValues = trElement?.Elements()
-                            .Where(e=>!string.IsNullOrWhiteSpace(e.Value.Trim()))
-                            .Select(e=>e.Value.Trim())
-                            .ToList();
+                            .Where(e => !string.IsNullOrWhiteSpace(e.Value.Trim()))
+                            .Select(e => e.Value.Trim())
+                            .ToArray();
+                        var allValuesString = allThElementsValues == null ? "": string.Join("\t", allThElementsValues);   
                         //var table = trElement?.Parent?.Parent;
                         if(allThElementsValues != null)
                         {
-                            result.AddRange(allThElementsValues);
+                            result.Add(allValuesString);
                         }
                         
                         // var text = _browserWrapper.CurrentHtml;
