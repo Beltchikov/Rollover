@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Net;
 using System.Xml.Linq;
 using SimpleBrowser;
 
@@ -25,5 +26,7 @@ namespace StockAnalyzer.WebScraping
         public string Text => _browser.Text;
         public string CurrentHtml => _browser.CurrentHtml;
         public XDocument XDocument => _browser.XDocument;
+
+        public WebException LastWebException => _browser.LastWebException;
     }
 }

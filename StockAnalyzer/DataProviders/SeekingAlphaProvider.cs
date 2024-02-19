@@ -10,16 +10,17 @@ namespace StockAnalyzer.DataProviders
 {
     public class SeekingAlphaProvider : BrowserProviderBase, ISeekingAlphaProvider
     {
-        readonly string urlTemplate = $"https://seekingalpha.com/symbol/TICKER/peers/comparison";
-        //https://seekingalpha.com/symbol/MSFT/peers/comparison?compare=MSFT,ORCL,NOW,PANW,CRWD,FTNT
-        //https://seekingalpha.com/symbol/TICKER/peers/comparison
         public SeekingAlphaProvider(IBrowserWrapper browserWrapper) : base(browserWrapper) { }
 
         public async Task<IEnumerable<string>> PeersComparison(string ticker, int delay)
         {
+            string urlTemplate = $"https://seekingalpha.com/symbol/TICKER/peers/comparison";
+            //https://seekingalpha.com/symbol/TICKER
+            //https://seekingalpha.com/symbol/TICKER/peers/comparison
+
             var result = new List<string>();
             bool errorOccured = false;
-            string symbolLine="";
+            string symbolLine = "";
 
             var tickerTrimmed = ticker.Trim();
             await Task.Run(() =>
@@ -53,15 +54,39 @@ namespace StockAnalyzer.DataProviders
 
             if (!errorOccured)
             {
-                AddMoreData(ref result, symbolLine);
+                Thread.Sleep(delay);
+                result.AddRange(await MoreData(symbolLine));
             }
 
             return result;
         }
 
-        private void AddMoreData(ref List<string> result, string symbolLine)
+        private async Task<List<string>> MoreData(string symbolLine)
         {
-            throw new NotImplementedException();
+            var result = new List<string>();
+            string urlTemplate = $"https://seekingalpha.com/symbol/TICKER";
+
+            foreach (var ticker in symbolLine.Split("\t"))
+            {
+                await Task.Run(() =>
+                {
+                    var tickerTrimmed = ticker.Trim();
+                    TriggerStatus($"Retrieving more data for {tickerTrimmed}");
+                    var url = urlTemplate.Replace("TICKER", tickerTrimmed);
+
+                    _browserWrapper.Navigate(url);
+                    if (_browserWrapper.LastWebException != null)
+                    {
+                        result.Add($"Can not navigate to {url}. {_browserWrapper.LastWebException}");
+                    }
+                    var sections = _browserWrapper.XDocument.Descendants("section")
+                                        .FirstOrDefault(d => d.Attributes("data-test-id").First().Value == "symbol-chart");
+
+                });
+
+
+            }
+            return result;
         }
 
         private string ExtractDataLineTrDiv(XElement? table, int rowIndex, string firstColumnData)

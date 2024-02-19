@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using System.Net;
+using System.Xml.Linq;
 
 namespace StockAnalyzer.WebScraping
 {
@@ -8,5 +9,6 @@ namespace StockAnalyzer.WebScraping
         public string Text { get; }
         public string CurrentHtml { get; }
         public XDocument XDocument { get; }
+        WebException LastWebException { get; }
     }
 }
