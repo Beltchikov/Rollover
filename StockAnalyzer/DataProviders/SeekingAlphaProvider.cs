@@ -41,8 +41,12 @@ namespace StockAnalyzer.DataProviders
                     var symbolLine = allThElementsValues == null ? "Symbol" : $"Symbol\t{string.Join("\t", allThElementsValues)}";
                     result.Add(symbolLine);
                     
-                    //var table = trElement?.Parent?.Parent;
-                   
+                    var table = trElement?.Parent?.Parent;
+                    var forthRow = table?.Descendants("tr").ToArray()[4];
+                    var forthRowColumns = forthRow?.Descendants("td");
+                    var forthRowValues = forthRowColumns?.Select(s => s.Descendants("div").FirstOrDefault()?.Value);
+                    var marketCapLine = forthRowValues == null ? "Market Cap" : $"Market Cap\t{string.Join("\t", forthRowValues)}";
+                    result.Add(marketCapLine);
                 }
 
                 Thread.Sleep(delay);
