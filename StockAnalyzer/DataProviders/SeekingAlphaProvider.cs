@@ -55,20 +55,20 @@ namespace StockAnalyzer.DataProviders
 
             if (!errorOccured)
             {
-                Thread.Sleep(delay);
-                result.AddRange(await MoreData(symbolLine));
+                result.AddRange(await MoreData(symbolLine, delay));
             }
 
             return result;
         }
 
-        private async Task<List<string>> MoreData(string symbolLine)
+        private async Task<List<string>> MoreData(string symbolLine, int delay)
         {
             var result = new List<string>();
             string urlTemplate = $"https://seekingalpha.com/symbol/TICKER";
 
             foreach (var ticker in symbolLine.Split("\t"))
             {
+                Thread.Sleep(delay);
                 await Task.Run(() =>
                 {
                     var tickerTrimmed = ticker.Trim();
