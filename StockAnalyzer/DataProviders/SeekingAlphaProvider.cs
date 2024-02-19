@@ -31,8 +31,7 @@ namespace StockAnalyzer.DataProviders
                 }
                 else
                 {
-                    var xDocument = _browserWrapper.XDocument;
-                    var anchorWithTicker = xDocument.Descendants("a")
+                    var anchorWithTicker = _browserWrapper.XDocument.Descendants("a")
                         .FirstOrDefault(d => d.Attributes("href").First().Value.Contains(ticker) && d.Value == ticker);
                     var trElement = anchorWithTicker?.Parent?.Parent;
                     var allThElementsValues = trElement?.Elements()
@@ -40,20 +39,10 @@ namespace StockAnalyzer.DataProviders
                         .Select(e => e.Value.Trim())
                         .ToArray();
                     var symbolLine = allThElementsValues == null ? "Symbol" : $"Symbol\t{string.Join("\t", allThElementsValues)}";
+                    result.Add(symbolLine);
+                    
                     //var table = trElement?.Parent?.Parent;
-                    if (allThElementsValues != null)
-                    {
-                        result.Add(symbolLine);
-                    }
-
-                    // var text = _browserWrapper.CurrentHtml;
-                    // var lines = text.Split("\r\n").ToList();
-                    // var line = lines.FirstOrDefault(l => l.Contains("Earnings History"));
-                    // var line2 = line?.Substring(line.IndexOf("EPS Actual"));
-                    // var line3 = line2?.Substring(0, line2.IndexOf("</tr>"));
-                    // var line4 = line3?.Substring(line3.LastIndexOf("Ta(end)"));
-
-                    // AddDataToResultList(result, tickerTrimmed, line4);
+                   
                 }
 
                 Thread.Sleep(delay);
