@@ -1,11 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Linq;
-using StockAnalyzer.WebScraping;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
@@ -13,10 +8,10 @@ using SeleniumExtras.WaitHelpers;
 
 namespace StockAnalyzer.DataProviders
 {
-    public class SeekingAlphaProvider : BrowserProviderBase, ISeekingAlphaProvider
+    public class SeekingAlphaProvider : ProviderBase, ISeekingAlphaProvider
     {
         IWebDriver? driver = null;
-        public SeekingAlphaProvider(IBrowserWrapper browserWrapper) : base(browserWrapper) { }
+        public SeekingAlphaProvider() : base() { }
         public async Task<IEnumerable<string>> PeersComparison(string ticker, int delay)
         {
             string urlTemplate = $"https://seekingalpha.com/symbol/TICKER";
@@ -31,13 +26,11 @@ namespace StockAnalyzer.DataProviders
                 url = urlTemplate.Replace("TICKER", tickerTrimmed);
                 var headerUserAgent = $"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0";
 
-                ChromeOptions options = new ChromeOptions();
-                //options.AddArgument("--headless=new");
+                ChromeOptions options = new();
+                options.AddArgument("--headless=new");
                 driver = new ChromeDriver(options);
                 driver.Navigate().GoToUrl(url);
 
-                //IWebElement ele = driver.FindElement(By.CssSelector("li:nth-child(1)"));
-                //IWebElement ele = driver.FindElement(By.XPath("//div[text() = 'EPS (FWD)']"));
                 IWebElement ele = WaitUntilElementExists(By.XPath("//div[text() = 'EPS (FWD)']"));
 
             });
