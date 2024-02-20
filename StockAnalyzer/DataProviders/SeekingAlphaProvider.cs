@@ -12,7 +12,6 @@ namespace StockAnalyzer.DataProviders
     public class SeekingAlphaProvider : BrowserProviderBase, ISeekingAlphaProvider
     {
         public SeekingAlphaProvider(IBrowserWrapper browserWrapper) : base(browserWrapper) { }
-
         public async Task<IEnumerable<string>> PeersComparison(string ticker, int delay)
         {
             string urlTemplate = $"https://seekingalpha.com/symbol/TICKER/peers/comparison";
