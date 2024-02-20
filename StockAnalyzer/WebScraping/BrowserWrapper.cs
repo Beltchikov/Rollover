@@ -23,6 +23,11 @@ namespace StockAnalyzer.WebScraping
             return _browser.Navigate(url);
         }
 
+        public void SetHeader(string header)
+        {
+            _browser.SetHeader(header);
+        }
+
         public string Text => _browser.Text;
         public string CurrentHtml => _browser.CurrentHtml;
         public XDocument XDocument => _browser.XDocument;
