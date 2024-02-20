@@ -12,10 +12,7 @@ namespace StockAnalyzer.WebScraping
 
         public BrowserWrapper()
         {
-            _browser = new Browser
-            {
-                //UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.10 (KHTML, like Gecko) Chrome/8.0.552.224 Safari/534.10"
-            };
+            _browser = new Browser();
         }
 
         public bool Navigate(string url)
@@ -26,6 +23,11 @@ namespace StockAnalyzer.WebScraping
         public void SetHeader(string header)
         {
             _browser.SetHeader(header);
+        }
+
+        public void RemoveHeader(string header)
+        {
+            _browser.RemoveHeader(header);
         }
 
         public string Text => _browser.Text;

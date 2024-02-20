@@ -18,6 +18,7 @@ namespace StockAnalyzer.DataProviders
             string urlTemplate = $"https://seekingalpha.com/symbol/TICKER/peers/comparison";
             //https://seekingalpha.com/symbol/TICKER
             //https://seekingalpha.com/symbol/TICKER/peers/comparison
+            string url="";
 
             var result = new List<string>();
             bool errorOccured = false;
@@ -27,12 +28,11 @@ namespace StockAnalyzer.DataProviders
             await Task.Run(() =>
             {
                 TriggerStatus($"Retrieving peers for {tickerTrimmed}");
-                var url = urlTemplate.Replace("TICKER", tickerTrimmed);
+                url = urlTemplate.Replace("TICKER", tickerTrimmed);
                 var headerUserAgent = $"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0";
                 
                 // TODO check with LastWebException
                 _browserWrapper.SetHeader(headerUserAgent);
-                _browserWrapper.SetHeader($"Referer:{url}");
                 if (!_browserWrapper.Navigate(url))
                 {
                     errorOccured = true;
@@ -59,6 +59,7 @@ namespace StockAnalyzer.DataProviders
 
             if (!errorOccured)
             {
+                _browserWrapper.RemoveHeader($"Referer:{url}");
                 result.AddRange(await MoreData(symbolLine, delay));
             }
 

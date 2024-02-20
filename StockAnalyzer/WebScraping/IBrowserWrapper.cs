@@ -11,5 +11,6 @@ namespace StockAnalyzer.WebScraping
         public XDocument XDocument { get; }
         WebException LastWebException { get; }
         void SetHeader(string header);
+        void RemoveHeader(string header);
     }
 }
