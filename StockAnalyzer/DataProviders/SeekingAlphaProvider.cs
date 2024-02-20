@@ -28,16 +28,11 @@ namespace StockAnalyzer.DataProviders
             {
                 TriggerStatus($"Retrieving peers for {tickerTrimmed}");
                 var url = urlTemplate.Replace("TICKER", tickerTrimmed);
-                //var header = $"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0\r\nReferer: {url}";
-                //var header = $"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0{Environment.NewLine}Referer: {url}";
-                var header = $"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0";
-                string str2 = Encoding.UTF8.GetString(new byte[]{0x0D, 0x0A});
-                //header += str2;
-                var h2=$"Referer:{url}";
-
+                var headerUserAgent = $"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0";
+                
                 // TODO check with LastWebException
-                _browserWrapper.SetHeader(header);
-                _browserWrapper.SetHeader(h2);
+                _browserWrapper.SetHeader(headerUserAgent);
+                _browserWrapper.SetHeader($"Referer:{url}");
                 if (!_browserWrapper.Navigate(url))
                 {
                     errorOccured = true;
