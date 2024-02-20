@@ -38,19 +38,19 @@ namespace StockAnalyzer.DataProviders
 
                 //IWebElement ele = driver.FindElement(By.CssSelector("li:nth-child(1)"));
                 //IWebElement ele = driver.FindElement(By.XPath("//div[text() = 'EPS (FWD)']"));
-                IWebElement ele = WaitUntilElementVisible(By.XPath("//div[text() = 'EPS (FWD)']"));
+                IWebElement ele = WaitUntilElementExists(By.XPath("//div[text() = 'EPS (FWD)']"));
 
             });
 
             return result;
         }
 
-        public IWebElement WaitUntilElementVisible(By elementLocator, int timeout = 10)
+        public IWebElement WaitUntilElementExists(By elementLocator, int timeout = 10)
         {
             try
             {
                 var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
-                return wait.Until(ExpectedConditions.ElementIsVisible(elementLocator));
+                return wait.Until(ExpectedConditions.ElementExists(elementLocator));
             }
             catch (NoSuchElementException)
             {
