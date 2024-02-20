@@ -28,10 +28,12 @@ namespace StockAnalyzer.DataProviders
                 url = urlTemplate.Replace("TICKER", tickerTrimmed);
                 var headerUserAgent = $"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0";
 
-                IWebDriver driver = new ChromeDriver();
-                driver.Navigate().GoToUrl(url);  
+                ChromeOptions options = new ChromeOptions();
+                options.AddArgument("--headless=new");
+                IWebDriver driver = new ChromeDriver(options);
+                driver.Navigate().GoToUrl(url);
 
-                IWebElement ele = driver.FindElement(By.CssSelector("li:nth-child(1)"));  
+                IWebElement ele = driver.FindElement(By.CssSelector("li:nth-child(1)"));
 
             });
 
