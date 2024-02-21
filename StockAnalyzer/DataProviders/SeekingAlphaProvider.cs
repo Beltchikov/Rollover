@@ -27,11 +27,18 @@ namespace StockAnalyzer.DataProviders
                 var headerUserAgent = $"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0";
 
                 ChromeOptions options = new();
-                options.AddArgument("--headless=new");
+                //options.AddArgument("--headless=new");
                 driver = new ChromeDriver(options);
                 driver.Navigate().GoToUrl(url);
 
-                IWebElement ele = WaitUntilElementExists(By.XPath("//div[text() = 'EPS (FWD)']"));
+                IWebElement epsElement = WaitUntilElementExists(By.XPath("//div[text() = 'EPS (FWD)']"));
+                var epsElementParent = epsElement.FindElement(By.XPath("//parent::*"));
+                var silbing = epsElementParent.FindElement(By.XPath("//following-sibling::* "));
+                var epsValueElement = silbing.FindElement(By.XPath("//following-sibling::*"));
+
+                //result.Add(epsValueElement.Text);
+                var t = epsElementParent?.ToString();
+                if(t != null) result.Add(t);
 
             });
 
