@@ -24,11 +24,15 @@ namespace StockAnalyzer.DataProviders
             {
                 TriggerStatus($"Retrieving peers for {tickerTrimmed}");
                 url = urlTemplate.Replace("TICKER", tickerTrimmed);
-                var headerUserAgent = $"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0";
+                var userAgent = $"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0";
 
                 ChromeOptions options = new();
                 //options.AddArgument("--headless=new");
+                //options.AddArgument($"--user-agent={userAgent}");
+                // options.AddArgument($"--referer={url}");
+                options.AddArgument("--enable-javascript");
                 driver = new ChromeDriver(options);
+                driver.Manage().Cookies.DeleteAllCookies();
                 driver.Navigate().GoToUrl(url);
 
                 IWebElement epsElement = WaitUntilElementExists(By.XPath("//div[text() = 'EPS (FWD)']"));
@@ -37,7 +41,7 @@ namespace StockAnalyzer.DataProviders
                 var epsValueElement = silbing.FindElement(By.XPath("//following-sibling::*"));
 
                 //result.Add(epsValueElement.Text);
-                var t = epsElementParent?.ToString();
+                var t = epsElementParent?.GetCssValue("class");
                 if(t != null) result.Add(t);
 
             });
