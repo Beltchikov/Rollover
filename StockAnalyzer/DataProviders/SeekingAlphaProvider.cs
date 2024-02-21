@@ -16,7 +16,6 @@ namespace StockAnalyzer.DataProviders
         {
             string urlTemplate = $"https://seekingalpha.com/symbol/TICKER";
             string url = "";
-
             var result = new List<string>();
 
             var tickerTrimmed = ticker.Trim();
