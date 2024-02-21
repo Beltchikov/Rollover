@@ -35,13 +35,19 @@ namespace StockAnalyzer.DataProviders
                 driver.Manage().Cookies.DeleteAllCookies();
                 driver.Navigate().GoToUrl(url);
 
+                IWebElement peersElement = WaitUntilElementExists(By.XPath("//h2[text() = 'Peers']"));
+                var peersElementParent1 = peersElement.FindElement(By.XPath("parent::*"));
+                var peersElementParent2 = peersElementParent1.FindElement(By.XPath("parent::*"));
+                var peersElementParent3 = peersElementParent2.FindElement(By.XPath("parent::*"));
+                result.Add(peersElementParent3.GetAttribute("outerHTML"));
+
                 IWebElement epsElement = WaitUntilElementExists(By.XPath("//div[text() = 'EPS (FWD)']"));
                 var epsElementParent = epsElement.FindElement(By.XPath("parent::*"));
                 var silbing = epsElementParent.FindElement(By.XPath("following-sibling::* "));
                 var epsValueElement = silbing.FindElement(By.XPath("descendant::*"));
 
                 //var t = epsValueElement?.GetAttribute("outerHTML");
-                // TODO Fehler abfangen
+                // TODO Fehler
                 var t = epsValueElement?.Text;
                 if(t != null) result.Add(t);
 
