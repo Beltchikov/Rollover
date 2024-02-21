@@ -61,10 +61,12 @@ namespace StockAnalyzer.DataProviders
                 //driver.Manage().Cookies.DeleteAllCookies();
                 //driver.Navigate().GoToUrl("http://127.0.0.1:5555");
 
-                result.Add(driver.Url);
+                //result.Add(driver.Url);
 
                 
-                // IWebElement peersElement = WaitUntilElementExists(By.XPath("//h2[text() = 'Peers']"));
+                IWebElement peersElement = WaitUntilElementExists(By.XPath("//h2[text() = 'Peers']"));
+                result.Add(peersElement.GetAttribute("outerHTML"));
+
                 // var peersElementParent1 = peersElement.FindElement(By.XPath("parent::*"));
                 // var peersElementParent2 = peersElementParent1.FindElement(By.XPath("parent::*"));
                 // var peersElementParent3 = peersElementParent2.FindElement(By.XPath("parent::*"));
