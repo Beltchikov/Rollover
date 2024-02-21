@@ -5,6 +5,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
+using System.IO;
 
 namespace StockAnalyzer.DataProviders
 {
@@ -15,14 +16,16 @@ namespace StockAnalyzer.DataProviders
         public async Task<IEnumerable<string>> PeersComparison(string ticker, int delay)
         {
             string urlTemplate = $"https://seekingalpha.com/symbol/TICKER";
-            string url = "";
+            var tickerTrimmed = ticker.Trim();
+            string url = urlTemplate.Replace("TICKER", ticker.Trim());
+            var urlWithoutScheme = UrlWithoutScheme(url);
+
+
             var result = new List<string>();
 
-            var tickerTrimmed = ticker.Trim();
             await Task.Run(() =>
             {
                 TriggerStatus($"Retrieving peers for {tickerTrimmed}");
-                url = urlTemplate.Replace("TICKER", tickerTrimmed);
                 var userAgent = $"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0";
 
                 ChromeOptions options = new();
@@ -39,10 +42,10 @@ namespace StockAnalyzer.DataProviders
                 var peersElementParent2 = peersElementParent1.FindElement(By.XPath("parent::*"));
                 var peersElementParent3 = peersElementParent2.FindElement(By.XPath("parent::*"));
                 var peersSibling = peersElementParent3.FindElement(By.XPath("following-sibling::* "));
-                
+
                 // var firstTrElement = peersElementParent3.FindElement(By.XPath("//tr"));
                 // result.Add(firstTrElement.GetAttribute("outerHTML"));
-                
+
                 //result.Add(peersSibling.GetAttribute("outerHTML"));
                 result.Add(peersElementParent3.GetAttribute("outerHTML"));
 
@@ -54,11 +57,17 @@ namespace StockAnalyzer.DataProviders
                 //var t = epsValueElement?.GetAttribute("outerHTML");
                 // TODO Fehler
                 var t = epsValueElement?.Text;
-                if(t != null) result.Add(t);
+                if (t != null) result.Add(t);
 
             });
 
             return result;
+        }
+
+        private static string UrlWithoutScheme(string url)
+        {
+            Uri uri = new(url);
+            return uri.Host + uri.PathAndQuery + uri.Fragment;
         }
 
         public IWebElement WaitUntilElementExists(By elementLocator, int timeout = 10)
