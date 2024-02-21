@@ -6,6 +6,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System.IO;
+using System.Diagnostics;
 
 namespace StockAnalyzer.DataProviders
 {
@@ -20,6 +21,23 @@ namespace StockAnalyzer.DataProviders
             string url = urlTemplate.Replace("TICKER", ticker.Trim());
             var urlWithoutScheme = UrlWithoutScheme(url);
 
+            //call "C:\Program Files\Google\Chrome\Application\chrome.exe" --remote-debugging-port=5555 seekingalpha.com/symbol/MSFT
+            //string cmdCommand = "call \"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe \" --remote-debugging-port=5555 seekingalpha.com/symbol/MSFT";
+
+            var proc = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = @"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+                    Arguments = "--remote-debugging-port=5555 seekingalpha.com/symbol/MSFT"
+                    // UseShellExecute = false,
+                    // RedirectStandardOutput = true,
+                    // CreateNoWindow = true,
+                    // WorkingDirectory = @"C:\MyAndroidApp\"
+                }
+            };
+
+            proc.Start();
 
             var result = new List<string>();
 
