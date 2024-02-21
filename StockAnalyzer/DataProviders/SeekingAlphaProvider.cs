@@ -39,12 +39,18 @@ namespace StockAnalyzer.DataProviders
                 var peersElementParent1 = peersElement.FindElement(By.XPath("parent::*"));
                 var peersElementParent2 = peersElementParent1.FindElement(By.XPath("parent::*"));
                 var peersElementParent3 = peersElementParent2.FindElement(By.XPath("parent::*"));
+                var peersSibling = peersElementParent3.FindElement(By.XPath("following-sibling::* "));
+                
+                // var firstTrElement = peersElementParent3.FindElement(By.XPath("//tr"));
+                // result.Add(firstTrElement.GetAttribute("outerHTML"));
+                
+                //result.Add(peersSibling.GetAttribute("outerHTML"));
                 result.Add(peersElementParent3.GetAttribute("outerHTML"));
 
                 IWebElement epsElement = WaitUntilElementExists(By.XPath("//div[text() = 'EPS (FWD)']"));
                 var epsElementParent = epsElement.FindElement(By.XPath("parent::*"));
-                var silbing = epsElementParent.FindElement(By.XPath("following-sibling::* "));
-                var epsValueElement = silbing.FindElement(By.XPath("descendant::*"));
+                var epsSibling = epsElementParent.FindElement(By.XPath("following-sibling::* "));
+                var epsValueElement = epsSibling.FindElement(By.XPath("descendant::*"));
 
                 //var t = epsValueElement?.GetAttribute("outerHTML");
                 // TODO Fehler
