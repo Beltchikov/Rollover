@@ -40,8 +40,9 @@ namespace StockAnalyzer.DataProviders
                 var silbing = epsElementParent.FindElement(By.XPath("following-sibling::* "));
                 var epsValueElement = silbing.FindElement(By.XPath("descendant::*"));
 
-                //result.Add(epsValueElement.Text);
-                var t = epsValueElement?.GetAttribute("outerHTML");
+                //var t = epsValueElement?.GetAttribute("outerHTML");
+                // TODO Fehler abfangen
+                var t = epsValueElement?.Text;
                 if(t != null) result.Add(t);
 
             });
