@@ -37,11 +37,11 @@ namespace StockAnalyzer.DataProviders
 
                 IWebElement epsElement = WaitUntilElementExists(By.XPath("//div[text() = 'EPS (FWD)']"));
                 var epsElementParent = epsElement.FindElement(By.XPath("parent::*"));
-                var silbing = epsElementParent.FindElement(By.XPath("//following-sibling::* "));
+                var silbing = epsElementParent.FindElement(By.XPath("following-sibling::* "));
                 var epsValueElement = silbing.FindElement(By.XPath("//following-sibling::*"));
 
                 //result.Add(epsValueElement.Text);
-                var t = epsElementParent?.GetAttribute("outerHTML");
+                var t = silbing?.GetAttribute("outerHTML");
                 if(t != null) result.Add(t);
 
             });
