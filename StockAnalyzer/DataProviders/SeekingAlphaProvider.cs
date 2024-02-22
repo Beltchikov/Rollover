@@ -7,6 +7,7 @@ using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System.IO;
 using System.Diagnostics;
+using StockAnalyzer.DataProviders.Types;
 
 namespace StockAnalyzer.DataProviders
 {
@@ -21,51 +22,38 @@ namespace StockAnalyzer.DataProviders
             string url = urlTemplate.Replace("TICKER", ticker.Trim());
             var urlWithoutScheme = UrlWithoutScheme(url);
 
-            //call "C:\Program Files\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9977 seekingalpha.com/symbol/MSFT
-            //string cmdCommand = "call \"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe \" --remote-debugging-port=9977 seekingalpha.com/symbol/MSFT";
-
             var proc = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = @"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
                     Arguments = "--remote-debugging-port=9977 seekingalpha.com/symbol/MSFT"
-                    //Arguments = "--remote-debugging-port=9977"
-                    // UseShellExecute = false,
-                    // RedirectStandardOutput = true,
-                    // CreateNoWindow = true,
-                    // WorkingDirectory = @"C:\MyAndroidApp\"
                 }
             };
-
             proc.Start();
 
             var result = new List<string>();
-
             await Task.Run(() =>
             {
                 TriggerStatus($"Retrieving peers for {tickerTrimmed}");
-                var userAgent = $"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0";
-
-                ChromeOptions options = new();
-                //options.AddArgument("--headless=new");
-                //options.AddArgument($"--user-agent={userAgent}");
-                // options.AddArgument($"--referer={url}");
-                options.DebuggerAddress= "127.0.0.1:9977";
-
-                // ChromeDriverService service = ChromeDriverService.CreateDefaultService();
-                // service.Port = 9977;
-
+                ChromeOptions options = new()
+                {
+                    DebuggerAddress = "127.0.0.1:9977" // "http://127.0.0.1:9977"
+                };
                 options.AddArgument("--enable-javascript");
                 driver = new ChromeDriver(options);
-                //driver.Manage().Cookies.DeleteAllCookies();
-                //driver.Navigate().GoToUrl("http://127.0.0.1:9977");
 
-                //result.Add(driver.Url);
-
+                // Button Accept All Cookies
+                ClickButtonIfExists(driver, "//button[text() = 'Accept All Cookies']");
                 
-                IWebElement peersElement = WaitUntilElementExists(By.XPath("//h2[text() = 'Peers']"));
-                result.Add(peersElement.GetAttribute("outerHTML"));
+                // Get peers
+                var peersElementOrError = WaitUntilElementExists(By.XPath("//h2[text() = 'Peers']"));
+                if(peersElementOrError.Error != null) result.Add(peersElementOrError.Error);
+                else if(peersElementOrError.Value != null) result.Add(peersElementOrError.Value.GetAttribute("outerHTML"));
+                else throw new Exception("Unexpected");
+
+                // IWebElement peersElement = WaitUntilElementExists(By.XPath("//h2[text() = 'Peers']"));
+                // result.Add(peersElement.GetAttribute("outerHTML"));
 
                 // var peersElementParent1 = peersElement.FindElement(By.XPath("parent::*"));
                 // var peersElementParent2 = peersElementParent1.FindElement(By.XPath("parent::*"));
@@ -93,26 +81,51 @@ namespace StockAnalyzer.DataProviders
             return result;
         }
 
+        private static void ClickButtonIfExists(IWebDriver driver, string xPath)
+        {
+            var buttons = driver.FindElements(By.XPath(xPath));
+            if (buttons.Count > 0 && buttons[0].Enabled && buttons[0].Displayed)
+            {
+                buttons[0].Click();
+            }
+        }
+
         private static string UrlWithoutScheme(string url)
         {
             Uri uri = new(url);
             return uri.Host + uri.PathAndQuery + uri.Fragment;
         }
 
-        public IWebElement WaitUntilElementExists(By elementLocator, int timeout = 10)
+        public WithError<IWebElement> WaitUntilElementExists(By elementLocator, bool throwException = true, int timeout = 10)
         {
             try
             {
                 var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
-                return wait.Until(ExpectedConditions.ElementExists(elementLocator));
+                return new WithError<IWebElement>(wait.Until(ExpectedConditions.ElementExists(elementLocator)));
             }
-            catch (NoSuchElementException)
+            catch (NoSuchElementException e)
             {
-                Console.WriteLine("Element with locator: '" + elementLocator + "' was not found.");
-                throw;
+                if(throwException) throw;
+                return new WithError<IWebElement>(e.ToString());
             }
         }
 
 
     }
 }
+
+// Usefull code lines
+
+//var userAgent = $"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0";
+
+//call "C:\Program Files\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9977 seekingalpha.com/symbol/MSFT
+//string cmdCommand = "call \"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe \" --remote-debugging-port=9977 seekingalpha.com/symbol/MSFT";
+
+//ChromeOptions options = new();
+//options.AddArgument("--headless=new");
+//options.AddArgument($"--user-agent={userAgent}");
+// options.AddArgument($"--referer={url}");
+//options.DebuggerAddress= "127.0.0.1:9977";
+
+//driver.Manage().Cookies.DeleteAllCookies();
+//driver.Navigate().GoToUrl("http://127.0.0.1:9977");
