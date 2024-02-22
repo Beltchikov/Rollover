@@ -44,9 +44,6 @@ namespace StockAnalyzer.DataProviders
                 driver = new ChromeDriver(options);
 
                 // Button Accept All Cookies
-                ClickButtonIfExists(driver, "//button[text() = 'Accept All Cookies']");
-                // By.XPath(xPath)
-
                 var buttonAcceptAllCookiesOrError = WaitUntilElementExists(By.XPath("//button[text() = 'Accept All Cookies']"));
                 buttonAcceptAllCookiesOrError.Value?.Click();
                 
