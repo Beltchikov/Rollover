@@ -50,15 +50,16 @@ namespace StockAnalyzer.DataProviders
                 // Get peers
                 var peersElementOrError = WaitUntilElementExists(By.XPath("//h2[text() = 'Peers']"));
                 if(peersElementOrError.Error != null) result.Add(peersElementOrError.Error);
-                else if(peersElementOrError.Value != null) result.Add(peersElementOrError.Value.GetAttribute("outerHTML"));
-                else throw new Exception("Unexpected");
+                // else if(peersElementOrError.Value != null) result.Add(peersElementOrError.Value.GetAttribute("outerHTML"));
+                // else throw new Exception("Unexpected");
 
-                // IWebElement peersElement = WaitUntilElementExists(By.XPath("//h2[text() = 'Peers']"));
-                // result.Add(peersElement.GetAttribute("outerHTML"));
-
-                // var peersElementParent1 = peersElement.FindElement(By.XPath("parent::*"));
-                // var peersElementParent2 = peersElementParent1.FindElement(By.XPath("parent::*"));
-                // var peersElementParent3 = peersElementParent2.FindElement(By.XPath("parent::*"));
+                var peersElementParent1 = peersElementOrError.Value?.FindElement(By.XPath("parent::*"));
+                var peersElementParent2 = peersElementParent1?.FindElement(By.XPath("parent::*"));
+                var peersElementParent3 = peersElementParent2?.FindElement(By.XPath("parent::*"));
+                
+                if(peersElementParent3 != null) result.Add(peersElementParent3.GetAttribute("outerHTML"));
+                else result.Add("Unexpected! peersElementParent3 is null");
+                
                 // var peersSibling = peersElementParent3.FindElement(By.XPath("following-sibling::* "));
 
                 // // var firstTrElement = peersElementParent3.FindElement(By.XPath("//tr"));
