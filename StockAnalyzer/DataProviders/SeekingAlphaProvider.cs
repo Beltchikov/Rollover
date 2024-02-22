@@ -21,16 +21,16 @@ namespace StockAnalyzer.DataProviders
             string url = urlTemplate.Replace("TICKER", ticker.Trim());
             var urlWithoutScheme = UrlWithoutScheme(url);
 
-            //call "C:\Program Files\Google\Chrome\Application\chrome.exe" --remote-debugging-port=5555 seekingalpha.com/symbol/MSFT
-            //string cmdCommand = "call \"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe \" --remote-debugging-port=5555 seekingalpha.com/symbol/MSFT";
+            //call "C:\Program Files\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9977 seekingalpha.com/symbol/MSFT
+            //string cmdCommand = "call \"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe \" --remote-debugging-port=9977 seekingalpha.com/symbol/MSFT";
 
             var proc = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = @"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
-                    Arguments = "--remote-debugging-port=5555 seekingalpha.com/symbol/MSFT"
-                    //Arguments = "--remote-debugging-port=5555"
+                    Arguments = "--remote-debugging-port=9977 seekingalpha.com/symbol/MSFT"
+                    //Arguments = "--remote-debugging-port=9977"
                     // UseShellExecute = false,
                     // RedirectStandardOutput = true,
                     // CreateNoWindow = true,
@@ -51,15 +51,15 @@ namespace StockAnalyzer.DataProviders
                 //options.AddArgument("--headless=new");
                 //options.AddArgument($"--user-agent={userAgent}");
                 // options.AddArgument($"--referer={url}");
-                options.DebuggerAddress= "127.0.0.1:5555";
+                options.DebuggerAddress= "127.0.0.1:9977";
 
                 // ChromeDriverService service = ChromeDriverService.CreateDefaultService();
-                // service.Port = 5555;
+                // service.Port = 9977;
 
                 options.AddArgument("--enable-javascript");
                 driver = new ChromeDriver(options);
                 //driver.Manage().Cookies.DeleteAllCookies();
-                //driver.Navigate().GoToUrl("http://127.0.0.1:5555");
+                //driver.Navigate().GoToUrl("http://127.0.0.1:9977");
 
                 //result.Add(driver.Url);
 
