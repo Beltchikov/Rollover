@@ -250,6 +250,7 @@ namespace StockAnalyzer
 
             ComparePeersCommand = new RelayCommand(async () =>
             {
+                MessageBox.Show("All Chrome windows must be closed!");
                 ResultCollectionAlpha = new ObservableCollection<string>(await seekingAlphaProvider.PeersComparison(
                     TickerAlpha,
                     TIMEOUT_SIMPLE_BROWSER));
