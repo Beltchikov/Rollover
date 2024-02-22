@@ -45,6 +45,10 @@ namespace StockAnalyzer.DataProviders
 
                 // Button Accept All Cookies
                 ClickButtonIfExists(driver, "//button[text() = 'Accept All Cookies']");
+                // By.XPath(xPath)
+
+                var buttonAcceptAllCookiesOrError = WaitUntilElementExists(By.XPath("//button[text() = 'Accept All Cookies']"));
+                buttonAcceptAllCookiesOrError.Value?.Click();
                 
                 // Get peers
                 var peersElementOrError = WaitUntilElementExists(By.XPath("//h2[text() = 'Peers']"));
