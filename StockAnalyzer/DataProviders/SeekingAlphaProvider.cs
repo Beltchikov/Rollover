@@ -8,6 +8,7 @@ using SeleniumExtras.WaitHelpers;
 using System.IO;
 using System.Diagnostics;
 using StockAnalyzer.DataProviders.Types;
+using OpenQA.Selenium.Interactions;
 
 namespace StockAnalyzer.DataProviders
 {
@@ -46,20 +47,43 @@ namespace StockAnalyzer.DataProviders
                 // Button Accept All Cookies
                 var buttonAcceptAllCookiesOrError = WaitUntilElementExists(By.XPath("//button[text() = 'Accept All Cookies']"));
                 buttonAcceptAllCookiesOrError.Value?.Click();
-                
-                // Get peers
+
+                // Peers
                 var peersElementOrError = WaitUntilElementExists(By.XPath("//h2[text() = 'Peers']"));
-                if(peersElementOrError.Error != null) result.Add(peersElementOrError.Error);
+                if (peersElementOrError.Error != null) 
+                {
+                    result.Add(peersElementOrError.Error);
+                    return;
+                }
                 // else if(peersElementOrError.Value != null) result.Add(peersElementOrError.Value.GetAttribute("outerHTML"));
                 // else throw new Exception("Unexpected");
 
-                var peersElementParent1 = peersElementOrError.Value?.FindElement(By.XPath("parent::*"));
-                var peersElementParent2 = peersElementParent1?.FindElement(By.XPath("parent::*"));
-                var peersElementParent3 = peersElementParent2?.FindElement(By.XPath("parent::*"));
-                
-                if(peersElementParent3 != null) result.Add(peersElementParent3.GetAttribute("outerHTML"));
-                else result.Add("Unexpected! peersElementParent3 is null");
-                
+                // Scroll
+                Actions actions = new(driver);
+                actions.MoveToElement(peersElementOrError.Value);
+                actions.Perform();
+
+                // Get peers
+                // //h2[text() = 'Peers']/../../../following-sibling::*/descendant::tr
+                // //h2[text() = 'Peers']/../../../following-sibling::*/descendant::tr/descendant::th
+                var peersTrElementOrError = WaitUntilElementExists(By.XPath(
+                    "//h2[text() = 'Peers']/../../../following-sibling::*/descendant::tr"));
+                if (peersTrElementOrError.Value != null) result.Add(peersTrElementOrError.Value.GetAttribute("outerHTML"));
+                else result.Add($"Unexpected! {peersTrElementOrError.Error}");
+
+                // Actions actions = new(driver);
+                // actions.MoveToElement(peersElementOrError.Value);
+                // actions.Perform();
+
+                // var peersElementParent1 = peersElementOrError.Value?.FindElement(By.XPath("parent::*"));
+                // var peersElementParent2 = peersElementParent1?.FindElement(By.XPath("parent::*"));
+                // var peersElementParent3 = peersElementParent2?.FindElement(By.XPath("parent::*"));
+                // var peersElementParent4 = peersElementParent3?.FindElement(By.XPath("parent::*"));
+                // var peersElementParent5 = peersElementParent4?.FindElement(By.XPath("parent::*"));
+
+                // if (peersElementParent5 != null) result.Add(peersElementParent5.GetAttribute("outerHTML"));
+                // else result.Add("Unexpected! peersElementParent5 is null");
+
                 // var peersSibling = peersElementParent3.FindElement(By.XPath("following-sibling::* "));
 
                 // // var firstTrElement = peersElementParent3.FindElement(By.XPath("//tr"));
@@ -107,7 +131,7 @@ namespace StockAnalyzer.DataProviders
             }
             catch (NoSuchElementException e)
             {
-                if(throwException) throw;
+                if (throwException) throw;
                 return new WithError<IWebElement>(e.ToString());
             }
         }
