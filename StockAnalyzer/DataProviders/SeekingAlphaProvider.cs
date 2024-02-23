@@ -45,7 +45,7 @@ namespace StockAnalyzer.DataProviders
                 driver = new ChromeDriver(options);
 
                 // Button Accept All Cookies
-                var buttonAcceptAllCookiesOrError = WaitUntilElementExists(By.XPath("//button[text() = 'Accept All Cookies']"));
+                var buttonAcceptAllCookiesOrError = WaitUntilElementExists(By.XPath("//button[text() = 'Accept All Cookies']"),false);
                 buttonAcceptAllCookiesOrError.Value?.Click();
 
                 // Peers
@@ -127,9 +127,15 @@ namespace StockAnalyzer.DataProviders
             try
             {
                 var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
-                return new WithError<IWebElement>(wait.Until(ExpectedConditions.ElementExists(elementLocator)));
+                var element = wait.Until(ExpectedConditions.ElementExists(elementLocator));
+                return new WithError<IWebElement>(element);
             }
             catch (NoSuchElementException e)
+            {
+                if (throwException) throw;
+                return new WithError<IWebElement>(e.ToString());
+            }
+            catch (WebDriverTimeoutException e)
             {
                 if (throwException) throw;
                 return new WithError<IWebElement>(e.ToString());
