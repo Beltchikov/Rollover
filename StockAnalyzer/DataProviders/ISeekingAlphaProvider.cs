@@ -5,6 +5,6 @@ namespace StockAnalyzer.DataProviders
 {
     public interface ISeekingAlphaProvider
     {           
-        Task<IEnumerable<string>> PeersComparison(string tickerList, int delay);
+        Task<IEnumerable<string>> PeersComparison(List<string> tickerList, int delay);
     }
 }

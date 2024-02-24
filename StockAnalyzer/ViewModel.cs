@@ -24,6 +24,8 @@ namespace StockAnalyzer
         private double _marketCap;
 
         private ObservableCollection<string> _tickerCollectionYahoo = null!;
+        private ObservableCollection<string> _tickersAlphaList = null!;
+
         private ObservableCollection<string> _resultCollectionYahooEps = null!;
         private ObservableCollection<string> _resultCollectionAlpha = null!;
         private string _messageYahoo = null!;
@@ -42,8 +44,6 @@ namespace StockAnalyzer
 
         private ObservableCollection<string> _tickerCollectionTwsSummary = null!;
         private ObservableCollection<string> _resultCollectionTwsSummary = null!;
-
-        private string _tickerAlpha;
 
         public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
@@ -250,9 +250,11 @@ namespace StockAnalyzer
 
             ComparePeersCommand = new RelayCommand(async () =>
             {
-                MessageBox.Show("All Chrome windows must be closed!");
+                //TODO
+                //MessageBox.Show("All Chrome windows must be closed!");
+
                 ResultCollectionAlpha = new ObservableCollection<string>(await seekingAlphaProvider.PeersComparison(
-                    TickerAlpha,
+                    TickersAlphaList.ToList(),
                     TIMEOUT_SIMPLE_BROWSER));
             });
 
@@ -261,7 +263,8 @@ namespace StockAnalyzer
             ContractStringsTwsContractDetails = new ObservableCollection<string>(("ALD1;EUR;STK;SBF\r\nBWLPG;NOK;STK\r\nPFS\r\nSLCA").Split("\r\n").ToList());
             ContractStringsTwsFinStatements = new ObservableCollection<string>(("ALD1;EUR;STK;SBF\r\nBWLPG;NOK;\r\nPFS\r\nSLCA").Split("\r\n").ToList());
             ContractStringsTwsSummary = new ObservableCollection<string>(("BWLPG ;NOK ;STK ; SMART\r\nPFS\r\nSLCA").Split("\r\n").ToList());
-            TickerAlpha = "MSFT";
+            TickersAlphaList = new ObservableCollection<string>("MSFT	ORCL	NOW	PANW	CRWD	FTNT".Split(" ").ToList()
+                .Select(t => t.Trim()));
             RiskFreeRate = 5.5;
         }
 
@@ -452,12 +455,12 @@ namespace StockAnalyzer
 
         #region Seeking Alpha
 
-        public string TickerAlpha
+        public ObservableCollection<string> TickersAlphaList
         {
-            get => _tickerAlpha;
+            get => _tickersAlphaList;
             set
             {
-                SetProperty(ref _tickerAlpha, value);
+                SetProperty(ref _tickersAlphaList, value);
             }
         }
 
@@ -6213,7 +6216,7 @@ namespace StockAnalyzer
             
 </tbody>
 </table>";
-        
+
 
         #endregion
     }
