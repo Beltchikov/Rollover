@@ -5,10 +5,8 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
-using System.IO;
 using System.Diagnostics;
 using StockAnalyzer.DataProviders.Types;
-using OpenQA.Selenium.Interactions;
 
 namespace StockAnalyzer.DataProviders
 {
@@ -16,17 +14,17 @@ namespace StockAnalyzer.DataProviders
     {
         IWebDriver? driver = null;
         public SeekingAlphaProvider() : base() { }
-        public async Task<IEnumerable<string>> PeersComparison(List<string> tickerList, int delay)
+        public IEnumerable<string> PeersComparison(List<string> tickerList, int delay)
         {
             string urlTemplate = $"https://seekingalpha.com/symbol/TICKER";
             var result = new List<string>();
             var basePort = 9977;
-            
+
             int i = 1;
             foreach (var ticker in tickerList)
             {
                 var tickerTrimmed = ticker.Trim();
-                var port = basePort+i;
+                var port = basePort + i;
                 string url = urlTemplate.Replace("TICKER", ticker.Trim());
                 var urlWithoutScheme = UrlWithoutScheme(url);
 
@@ -40,100 +38,27 @@ namespace StockAnalyzer.DataProviders
                 };
                 process.Start();
 
-                
                 TriggerStatus($"Retrieving peers for {tickerTrimmed}");
-                    ChromeOptions options = new()
-                    {
-                        DebuggerAddress = $"127.0.0.1:{port}" // "http://127.0.0.1:9977"
-                    };
-                    options.AddArgument("--enable-javascript");
-                    driver = new ChromeDriver(options);
+                ChromeOptions options = new()
+                {
+                    DebuggerAddress = $"127.0.0.1:{port}" // "http://127.0.0.1:9977"
+                };
+                options.AddArgument("--enable-javascript");
+                driver = new ChromeDriver(options);
 
-                    // Button Accept All Cookies
-                    var buttonAcceptAllCookiesOrError = WaitUntilElementExists(driver, By.XPath(
-                        "//button[text() = 'Accept All Cookies']"), false);
-                    buttonAcceptAllCookiesOrError.Value?.Click();
+                // Button Accept All Cookies
+                var buttonAcceptAllCookiesOrError = WaitUntilElementExists(driver, By.XPath(
+                    "//button[text() = 'Accept All Cookies']"), false);
+                buttonAcceptAllCookiesOrError.Value?.Click();
 
-                    // EPS
-                    WithError<IWebElement> epsElement = WaitUntilElementExists(driver, By.XPath(
-                        "//div[text() = 'EPS (FWD)']/../following-sibling::*/div"));
-                    if(epsElement.Error != null) result.Add(epsElement.Error);
-                    if(epsElement.Value != null) result.Add(epsElement.Value.Text);
+                // EPS
+                WithError<IWebElement> epsElement = WaitUntilElementExists(driver, By.XPath(
+                    "//div[text() = 'EPS (FWD)']/../following-sibling::*/div"));
+                if (epsElement.Error != null) result.Add(epsElement.Error);
+                if (epsElement.Value != null) result.Add(epsElement.Value.Text);
 
-                    driver.Quit();
-                    process.Kill();
-
-                
-                // await Task.Run(() =>
-                // {
-                    // TriggerStatus($"Retrieving peers for {tickerTrimmed}");
-                    // ChromeOptions options = new()
-                    // {
-                    //     DebuggerAddress = $"127.0.0.1:{port}" // "http://127.0.0.1:9977"
-                    // };
-                    // options.AddArgument("--enable-javascript");
-                    // _drivers[i] = new ChromeDriver(options);
-
-                    // // EPS
-                    // WithError<IWebElement> epsElement = WaitUntilElementExists(_drivers[i], By.XPath(
-                    //     "//div[text() = 'EPS (FWD)']/../following-sibling::*/div"));
-                    // if(epsElement.Error != null) result.Add(epsElement.Error);
-                    // if(epsElement.Value != null) result.Add(epsElement.Value.Text);
-
-                    // // //var t = epsValueElement?.GetAttribute("outerHTML");
-
-                    // _drivers[i].Quit();
-                    
-                    // // Peers
-                    // var peersElementOrError = WaitUntilElementExists(By.XPath("//h2[text() = 'Peers']"));
-                    // if (peersElementOrError.Error != null)
-                    // {
-                    //     result.Add(peersElementOrError.Error);
-                    //     return;
-                    // }
-                    // else if(peersElementOrError.Value != null) result.Add(peersElementOrError.Value.GetAttribute("outerHTML"));
-                    // else throw new Exception("Unexpected");
-
-                    // // Scroll
-                    // Actions actions = new(driver);
-                    // actions.MoveToElement(peersElementOrError.Value);
-                    // actions.Perform();
-
-                    // Get peers
-                    // //h2[text() = 'Peers']/../../../following-sibling::*/descendant::tr
-                    // //h2[text() = 'Peers']/../../../following-sibling::*/descendant::tr/descendant::th
-                    // var peersTrElementOrError = WaitUntilElementExists(By.XPath(
-                    //     "//h2[text() = 'Peers']/../../../following-sibling::*/descendant::tr"));
-                    // if (peersTrElementOrError.Value != null) result.Add(peersTrElementOrError.Value.GetAttribute("outerHTML"));
-                    // else result.Add($"Unexpected! {peersTrElementOrError.Error}");
-
-                    // Actions actions = new(driver);
-                    // actions.MoveToElement(peersElementOrError.Value);
-                    // actions.Perform();
-
-                    // var peersElementParent1 = peersElementOrError.Value?.FindElement(By.XPath("parent::*"));
-                    // var peersElementParent2 = peersElementParent1?.FindElement(By.XPath("parent::*"));
-                    // var peersElementParent3 = peersElementParent2?.FindElement(By.XPath("parent::*"));
-                    // var peersElementParent4 = peersElementParent3?.FindElement(By.XPath("parent::*"));
-                    // var peersElementParent5 = peersElementParent4?.FindElement(By.XPath("parent::*"));
-
-                    // if (peersElementParent5 != null) result.Add(peersElementParent5.GetAttribute("outerHTML"));
-                    // else result.Add("Unexpected! peersElementParent5 is null");
-
-                    // var peersSibling = peersElementParent3.FindElement(By.XPath("following-sibling::* "));
-
-                    // // var firstTrElement = peersElementParent3.FindElement(By.XPath("//tr"));
-                    // // result.Add(firstTrElement.GetAttribute("outerHTML"));
-
-                    // //result.Add(peersSibling.GetAttribute("outerHTML"));
-                    // result.Add(peersElementParent3.GetAttribute("outerHTML"));
-
-                    
-                    // // TODO Fehler
-                    // var t = epsValueElement?.Text;
-                    // if (t != null) result.Add(t);
-
-                //});
+                driver.Quit();
+                process.Kill();
                 i++;
             }
 
@@ -182,7 +107,7 @@ namespace StockAnalyzer.DataProviders
     }
 }
 
-// Usefull code lines
+// Know How
 
 //var userAgent = $"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0";
 
@@ -197,3 +122,8 @@ namespace StockAnalyzer.DataProviders
 
 //driver.Manage().Cookies.DeleteAllCookies();
 //driver.Navigate().GoToUrl("http://127.0.0.1:9977");
+
+// // Scroll
+// Actions actions = new(driver);
+// actions.MoveToElement(peersElementOrError.Value);
+// actions.Perform();

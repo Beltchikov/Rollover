@@ -248,14 +248,12 @@ namespace StockAnalyzer
                     twsProvider.DesriptionOfCompanyFromFundamentalDataList(fundamentalDataListSummary));
             });
 
-            ComparePeersCommand = new RelayCommand(async () =>
+            ComparePeersCommand = new RelayCommand(() =>
             {
-                //TODO
-                //MessageBox.Show("All Chrome windows must be closed!");
-
-                ResultCollectionAlpha = new ObservableCollection<string>(await seekingAlphaProvider.PeersComparison(
-                    TickersAlphaList.ToList(),
-                    TIMEOUT_SIMPLE_BROWSER));
+                MessageBox.Show("All Chrome windows must be closed!");
+                ResultCollectionAlpha = new ObservableCollection<string>(seekingAlphaProvider.PeersComparison(
+                                    TickersAlphaList.ToList(),
+                                    TIMEOUT_SIMPLE_BROWSER));
             });
 
             MarketCap = 00.1;
