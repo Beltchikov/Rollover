@@ -10,34 +10,31 @@ namespace StockAnalyzer.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var resultListYahooEps = value as ObservableCollection<string>;
-
-            if (resultListYahooEps == null)
+            if (value is not ObservableCollection<string> resultList)
             {
                 return string.Empty;
             }
             else
             {
-                if (!resultListYahooEps.Any())
+                if (!resultList.Any())
                 {
                     return string.Empty;
                 }
                 else
                 {
-                    return resultListYahooEps.Aggregate((r, n) => r + " " + n);
+                    return resultList.Aggregate((r, n) => r + "\t" + n);
                 }
             }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var listAsString = value as string;
-            if (listAsString == null)
+            if (value is not string listAsString)
             {
                 return new ObservableCollection<string>();
             }
 
-            var resultList = listAsString.Split(" ", StringSplitOptions.TrimEntries).ToList();
+            var resultList = listAsString.Split("\t", StringSplitOptions.TrimEntries).ToList();
             return new ObservableCollection<string>(resultList);
         }
     }

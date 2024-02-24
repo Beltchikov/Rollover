@@ -263,7 +263,7 @@ namespace StockAnalyzer
             ContractStringsTwsContractDetails = new ObservableCollection<string>(("ALD1;EUR;STK;SBF\r\nBWLPG;NOK;STK\r\nPFS\r\nSLCA").Split("\r\n").ToList());
             ContractStringsTwsFinStatements = new ObservableCollection<string>(("ALD1;EUR;STK;SBF\r\nBWLPG;NOK;\r\nPFS\r\nSLCA").Split("\r\n").ToList());
             ContractStringsTwsSummary = new ObservableCollection<string>(("BWLPG ;NOK ;STK ; SMART\r\nPFS\r\nSLCA").Split("\r\n").ToList());
-            TickersAlphaList = new ObservableCollection<string>("MSFT	ORCL	NOW	PANW	CRWD	FTNT".Split(" ").ToList()
+            TickersAlphaList = new ObservableCollection<string>("MSFT	ORCL	NOW	PANW	CRWD	FTNT".Split("\t").ToList()
                 .Select(t => t.Trim()));
             RiskFreeRate = 5.5;
         }
