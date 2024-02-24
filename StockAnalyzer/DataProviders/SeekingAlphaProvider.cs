@@ -67,6 +67,7 @@ namespace StockAnalyzer.DataProviders
                     // //var t = epsValueElement?.GetAttribute("outerHTML");
 
                     _drivers[i].Quit();
+                    _processes[i].Kill();
 
                 // todo remove later
                 break;
