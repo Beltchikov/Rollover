@@ -21,20 +21,16 @@ namespace StockAnalyzer.DataProviders
             string urlTemplate = $"https://seekingalpha.com/symbol/TICKER";
             var result = new List<string>();
             var basePort = 9977;
-            Dictionary<string, int> _tickerPortMap = new Dictionary<string, int>();
-            Process[] _processes = new Process [tickerList.Count+1];
-            IWebDriver[] _drivers = new WebDriver [tickerList.Count+1];
-
+            
             int i = 1;
             foreach (var ticker in tickerList)
             {
                 var tickerTrimmed = ticker.Trim();
                 var port = basePort+i;
-                _tickerPortMap[tickerTrimmed] = port;
                 string url = urlTemplate.Replace("TICKER", ticker.Trim());
                 var urlWithoutScheme = UrlWithoutScheme(url);
 
-                _processes[i] = new Process
+                var process = new Process
                 {
                     StartInfo = new ProcessStartInfo
                     {
@@ -42,7 +38,7 @@ namespace StockAnalyzer.DataProviders
                         Arguments = $"--remote-debugging-port={port} seekingalpha.com/symbol/{tickerTrimmed}"
                     }
                 };
-                _processes[i].Start();
+                process.Start();
 
                 
                 TriggerStatus($"Retrieving peers for {tickerTrimmed}");
@@ -51,27 +47,22 @@ namespace StockAnalyzer.DataProviders
                         DebuggerAddress = $"127.0.0.1:{port}" // "http://127.0.0.1:9977"
                     };
                     options.AddArgument("--enable-javascript");
-                    _drivers[i] = new ChromeDriver(options);
+                    driver = new ChromeDriver(options);
 
                     // Button Accept All Cookies
-                    var buttonAcceptAllCookiesOrError = WaitUntilElementExists(_drivers[i], By.XPath(
+                    var buttonAcceptAllCookiesOrError = WaitUntilElementExists(driver, By.XPath(
                         "//button[text() = 'Accept All Cookies']"), false);
                     buttonAcceptAllCookiesOrError.Value?.Click();
 
                     // EPS
-                    WithError<IWebElement> epsElement = WaitUntilElementExists(_drivers[i], By.XPath(
+                    WithError<IWebElement> epsElement = WaitUntilElementExists(driver, By.XPath(
                         "//div[text() = 'EPS (FWD)']/../following-sibling::*/div"));
                     if(epsElement.Error != null) result.Add(epsElement.Error);
                     if(epsElement.Value != null) result.Add(epsElement.Value.Text);
 
-                    // //var t = epsValueElement?.GetAttribute("outerHTML");
+                    driver.Quit();
+                    process.Kill();
 
-                    _drivers[i].Quit();
-                    _processes[i].Kill();
-
-                // todo remove later
-                //break;
-                
                 
                 // await Task.Run(() =>
                 // {
