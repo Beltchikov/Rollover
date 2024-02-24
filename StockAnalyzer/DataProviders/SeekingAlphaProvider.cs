@@ -28,15 +28,15 @@ namespace StockAnalyzer.DataProviders
                 string url = urlTemplate.Replace("TICKER", ticker.Trim());
                 var urlWithoutScheme = UrlWithoutScheme(url);
 
-                // var process = new Process
-                // {
-                //     StartInfo = new ProcessStartInfo
-                //     {
-                //         FileName = @"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
-                //         Arguments = $"--remote-debugging-port={port} seekingalpha.com/symbol/{tickerTrimmed}"
-                //     }
-                // };
-                // process.Start();
+                var process = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = @"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+                        Arguments = $"--remote-debugging-port={port} seekingalpha.com/symbol/{tickerTrimmed}"
+                    }
+                };
+                process.Start();
 
                 TriggerStatus($"Retrieving peers for {tickerTrimmed}");
                 ChromeOptions options = new()
@@ -50,9 +50,9 @@ namespace StockAnalyzer.DataProviders
                 
 
                 // Button Accept All Cookies
-                // var buttonAcceptAllCookiesOrError = WaitUntilElementExists(driver, By.XPath(
-                //     "//button[text() = 'Accept All Cookies']"), false);
-                // buttonAcceptAllCookiesOrError.Value?.Click();
+                var buttonAcceptAllCookiesOrError = WaitUntilElementExists(driver, By.XPath(
+                    "//button[text() = 'Accept All Cookies']"), false);
+                buttonAcceptAllCookiesOrError.Value?.Click();
 
                 // EPS
                 WithError<IWebElement> epsElement = WaitUntilElementExists(driver, By.XPath(
@@ -82,10 +82,7 @@ namespace StockAnalyzer.DataProviders
                 if (betaElement.Value != null) result.Add(betaElement.Value.Text);
 
                 driver.Quit();
-                // process.Kill();
-
-                // TODO remove
-                break;
+                process.Kill();
 
                 i++;
             }
@@ -155,3 +152,9 @@ namespace StockAnalyzer.DataProviders
 // Actions actions = new(driver);
 // actions.MoveToElement(peersElementOrError.Value);
 // actions.Perform();
+
+// Switch to a tab
+// List<String> tabs = new List<String> (driver.WindowHandles);
+// driver.SwitchTo().Window(tabs[2]);
+// driver.Close();
+// driver.SwitchTo().Window(tabs[3]);
