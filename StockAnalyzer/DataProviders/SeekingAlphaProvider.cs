@@ -115,7 +115,6 @@ namespace StockAnalyzer.DataProviders
                 buttons[0].Click();
             }
         }
-
         private static string UrlWithoutScheme(string url)
         {
             Uri uri = new(url);
