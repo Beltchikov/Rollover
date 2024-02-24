@@ -53,6 +53,11 @@ namespace StockAnalyzer.DataProviders
                     options.AddArgument("--enable-javascript");
                     _drivers[i] = new ChromeDriver(options);
 
+                    // Button Accept All Cookies
+                    var buttonAcceptAllCookiesOrError = WaitUntilElementExists(_drivers[i], By.XPath(
+                        "//button[text() = 'Accept All Cookies']"), false);
+                    buttonAcceptAllCookiesOrError.Value?.Click();
+
                     // EPS
                     WithError<IWebElement> epsElement = WaitUntilElementExists(_drivers[i], By.XPath(
                         "//div[text() = 'EPS (FWD)']/../following-sibling::*/div"));
@@ -87,10 +92,6 @@ namespace StockAnalyzer.DataProviders
 
                     // _drivers[i].Quit();
                     
-                    // // Button Accept All Cookies
-                    // var buttonAcceptAllCookiesOrError = WaitUntilElementExists(By.XPath("//button[text() = 'Accept All Cookies']"), false);
-                    // buttonAcceptAllCookiesOrError.Value?.Click();
-
                     // // Peers
                     // var peersElementOrError = WaitUntilElementExists(By.XPath("//h2[text() = 'Peers']"));
                     // if (peersElementOrError.Error != null)
