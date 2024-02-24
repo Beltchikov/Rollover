@@ -70,7 +70,7 @@ namespace StockAnalyzer.DataProviders
                     _processes[i].Kill();
 
                 // todo remove later
-                break;
+                //break;
                 
                 
                 // await Task.Run(() =>
