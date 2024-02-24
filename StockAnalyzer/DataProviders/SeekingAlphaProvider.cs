@@ -20,7 +20,7 @@ namespace StockAnalyzer.DataProviders
             var result = new List<string>();
             var basePort = 9977;
 
-            int i = 1;
+            int i = 0;
             foreach (var ticker in tickerList)
             {
                 var tickerTrimmed = ticker.Trim();
@@ -28,15 +28,15 @@ namespace StockAnalyzer.DataProviders
                 string url = urlTemplate.Replace("TICKER", ticker.Trim());
                 var urlWithoutScheme = UrlWithoutScheme(url);
 
-                var process = new Process
-                {
-                    StartInfo = new ProcessStartInfo
-                    {
-                        FileName = @"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
-                        Arguments = $"--remote-debugging-port={port} seekingalpha.com/symbol/{tickerTrimmed}"
-                    }
-                };
-                process.Start();
+                // var process = new Process
+                // {
+                //     StartInfo = new ProcessStartInfo
+                //     {
+                //         FileName = @"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+                //         Arguments = $"--remote-debugging-port={port} seekingalpha.com/symbol/{tickerTrimmed}"
+                //     }
+                // };
+                // process.Start();
 
                 TriggerStatus($"Retrieving peers for {tickerTrimmed}");
                 ChromeOptions options = new()
@@ -45,20 +45,48 @@ namespace StockAnalyzer.DataProviders
                 };
                 options.AddArgument("--enable-javascript");
                 driver = new ChromeDriver(options);
+                //driver.SwitchTo().Window()
+                //var windowHandle = driver.CurrentWindowHandle;
+                
 
                 // Button Accept All Cookies
-                var buttonAcceptAllCookiesOrError = WaitUntilElementExists(driver, By.XPath(
-                    "//button[text() = 'Accept All Cookies']"), false);
-                buttonAcceptAllCookiesOrError.Value?.Click();
+                // var buttonAcceptAllCookiesOrError = WaitUntilElementExists(driver, By.XPath(
+                //     "//button[text() = 'Accept All Cookies']"), false);
+                // buttonAcceptAllCookiesOrError.Value?.Click();
 
                 // EPS
                 WithError<IWebElement> epsElement = WaitUntilElementExists(driver, By.XPath(
                     "//div[text() = 'EPS (FWD)']/../following-sibling::*/div"));
                 if (epsElement.Error != null) result.Add(epsElement.Error);
                 if (epsElement.Value != null) result.Add(epsElement.Value.Text);
+                
+                // ROE
+                //div[text() = 'Return on Equity']/../following-sibling::*/div
+                WithError<IWebElement> roeElement = WaitUntilElementExists(driver, By.XPath(
+                    "//div[text() = 'Return on Equity']/../following-sibling::*/div"));
+                if (roeElement.Error != null) result.Add(roeElement.Error);
+                if (roeElement.Value != null) result.Add(roeElement.Value.Text);
+
+                // DIV
+                // //div[text() = 'Latest Announced Dividend']/../following-sibling::*/div
+                WithError<IWebElement> divElement = WaitUntilElementExists(driver, By.XPath(
+                    "//div[text() = 'Latest Announced Dividend']/../following-sibling::*/div"));
+                if (divElement.Error != null) result.Add(divElement.Error);
+                if (divElement.Value != null) result.Add(divElement.Value.Text);
+
+                // Beta
+                // //div[text() = '24M Beta']/../following-sibling::*/div
+                WithError<IWebElement> betaElement = WaitUntilElementExists(driver, By.XPath(
+                    "//div[text() = '24M Beta']/../following-sibling::*/div"));
+                if (betaElement.Error != null) result.Add(betaElement.Error);
+                if (betaElement.Value != null) result.Add(betaElement.Value.Text);
 
                 driver.Quit();
-                process.Kill();
+                // process.Kill();
+
+                // TODO remove
+                break;
+
                 i++;
             }
 
