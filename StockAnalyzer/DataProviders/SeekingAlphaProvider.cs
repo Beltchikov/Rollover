@@ -39,7 +39,7 @@ namespace StockAnalyzer.DataProviders
                     StartInfo = new ProcessStartInfo
                     {
                         FileName = @"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
-                        Arguments = $"--remote-debugging-port={port} seekingalpha.com/symbol/MSFT"
+                        Arguments = $"--remote-debugging-port={port} seekingalpha.com/symbol/{tickerTrimmed}"
                     }
                 };
                 _processes[i].Start();
