@@ -315,7 +315,7 @@ namespace Prototype
 
         private void IbClient_TickNews(TickNewsMessage obj)
         {
-            var newsLine = String.Format("Tick News. Ticker Id: {0}, Time Stamp: {1}, Provider Code: {2}, Article Id: {3}, headline: {4}, extraData: {5}", 
+            var newsLine = String.Format("Tick News. Ticker Id: {0}, Time Stamp: {1}, Provider Code: {2}, Article Id: {3}, headline: {4}, extraData: {5}",
                 obj.TickerId, Util.LongMaxString(obj.TimeStamp), obj.ProviderCode, obj.ArticleId, obj.Headline, obj.ExtraData);
 
             AddLineToTextbox(txtMessage, newsLine);
@@ -536,23 +536,19 @@ namespace Prototype
 
         private void btBroadTapeNews_Click(object sender, EventArgs e)
         {
-            _broadNewsReqId++;
+            var symbols = new string[] { "BRFG:BRFG_ALL", "BRFUPDN:BRFUPDN_ALL", "DJNL:DJNL_ALL", "BZ:BZ_ALL", "DJTOP:DJTOP_ALL" };
+            var exchanges = symbols.Select(s => s[..s.IndexOf(":")]).ToList();
 
-            Contract contract = new Contract();
-            contract.Symbol = "BRFG:BRFG_ALL";
-            contract.SecType = "NEWS";
-            contract.Exchange = "BRFG";
-
-            ibClient.ClientSocket.reqMktData(_broadNewsReqId, contract, "mdoff,292", false, false, null);
-
-
-            //ibClient.ClientSocket.reqContractDetails(_broadNewsReqId, new Contract()
-            //{
-            //    Symbol = "BRFG:BRFG_ALL",
-            //    SecType = "NEWS",
-            //    Exchange = "BRFG",
-            //    LastTradeDateOrContractMonth = "20240404"
-            //});
+            for (int i = 0; i < symbols.Length; i++)
+            {
+                _broadNewsReqId++;
+                ibClient.ClientSocket.reqMktData(_broadNewsReqId, new Contract()
+                {
+                    Symbol = symbols[i],
+                    SecType = "NEWS",
+                    Exchange = exchanges[i],
+                }, "mdoff,292", false, false, null);
+            }
         }
     }
 }
