@@ -15,6 +15,7 @@ namespace Prototype
         private EReaderMonitorSignal signal;
         private IBClient ibClient;
         int _activeReqId = 700;
+        int _broadNewsReqId = 800;
         int _nextOrderId = 0;
 
         public const int RT_BARS_ID_BASE = 40000000;
@@ -52,6 +53,7 @@ namespace Prototype
             ibClient.ScannerData += OnScannerData;
             ibClient.ScannerDataEnd += OnScannerDataEnd;
             ibClient.ScannerParameters += OnScannerParameters;
+            ibClient.TickNews += IbClient_TickNews;
         }
 
         private void OnOpenOrder(OpenOrderMessage obj)
@@ -140,8 +142,8 @@ namespace Prototype
             btComboOrder.Enabled = enable;
             btReqContractDetails.Enabled = enable;
 
-            btReqScannerSubscription.Enabled = enable;  
-            btCancelScannerSubscription.Enabled = enable;  
+            btReqScannerSubscription.Enabled = enable;
+            btCancelScannerSubscription.Enabled = enable;
         }
 
         private void OnError(int id, int errorCode, string msg, Exception ex)
@@ -309,6 +311,14 @@ namespace Prototype
         {
             var msg = $"OnScannerData: Rank={obj.Rank}, Symbol={obj.ContractDetails.Contract.Symbol}";
             AddLineToTextbox(txtMessage, msg.ToString());
+        }
+
+        private void IbClient_TickNews(TickNewsMessage obj)
+        {
+            var newsLine = String.Format("Tick News. Ticker Id: {0}, Time Stamp: {1}, Provider Code: {2}, Article Id: {3}, headline: {4}, extraData: {5}", 
+                obj.TickerId, Util.LongMaxString(obj.TimeStamp), obj.ProviderCode, obj.ArticleId, obj.Headline, obj.ExtraData);
+
+            AddLineToTextbox(txtMessage, newsLine);
         }
 
         private void AddLineToTextbox(TextBox textBox, string msg)
@@ -508,12 +518,12 @@ namespace Prototype
                 NumberOfRows = 50  // Number of rows is capped to 50
             };
 
-            List<TagValue> filterOptions = new List<TagValue> 
+            List<TagValue> filterOptions = new List<TagValue>
             {
                 new TagValue{Tag = "avgVolumeAbove", Value="2000000"}
             };
-            
-            List<TagValue> scannerSubscriptionOptions = new List<TagValue> {};
+
+            List<TagValue> scannerSubscriptionOptions = new List<TagValue> { };
 
             reqScannerSubscription++;
             ibClient.ClientSocket.reqScannerSubscription(reqScannerSubscription, scannerSubscription, scannerSubscriptionOptions, filterOptions);
@@ -522,6 +532,27 @@ namespace Prototype
         private void btCancelScannerSubscription_Click(object sender, EventArgs e)
         {
             ibClient.ClientSocket.cancelScannerSubscription(reqScannerSubscription);
+        }
+
+        private void btBroadTapeNews_Click(object sender, EventArgs e)
+        {
+            _broadNewsReqId++;
+
+            Contract contract = new Contract();
+            contract.Symbol = "BRFG:BRFG_ALL";
+            contract.SecType = "NEWS";
+            contract.Exchange = "BRFG";
+
+            ibClient.ClientSocket.reqMktData(_broadNewsReqId, contract, "mdoff,292", false, false, null);
+
+
+            //ibClient.ClientSocket.reqContractDetails(_broadNewsReqId, new Contract()
+            //{
+            //    Symbol = "BRFG:BRFG_ALL",
+            //    SecType = "NEWS",
+            //    Exchange = "BRFG",
+            //    LastTradeDateOrContractMonth = "20240404"
+            //});
         }
     }
 }
