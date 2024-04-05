@@ -53,6 +53,7 @@ namespace Prototype
             ibClient.ScannerData += OnScannerData;
             ibClient.ScannerDataEnd += OnScannerDataEnd;
             ibClient.ScannerParameters += OnScannerParameters;
+            ibClient.NewsProviders += IbClient_NewsProviders;
             ibClient.TickNews += IbClient_TickNews;
         }
 
@@ -313,6 +314,13 @@ namespace Prototype
             AddLineToTextbox(txtMessage, msg.ToString());
         }
 
+        private void IbClient_NewsProviders(NewsProvider[] obj)
+        {
+            AddLineToTextbox(txtMessage, obj
+                .Select(p => p.ProviderCode + ":" + p.ProviderName)
+                .Aggregate((r, n) => r + ", " + n));
+        }
+
         private void IbClient_TickNews(TickNewsMessage obj)
         {
             var newsLine = String.Format("Tick News. Ticker Id: {0}, Time Stamp: {1}, Provider Code: {2}, Article Id: {3}, headline: {4}, extraData: {5}",
@@ -534,6 +542,11 @@ namespace Prototype
             ibClient.ClientSocket.cancelScannerSubscription(reqScannerSubscription);
         }
 
+        private void btNewsProvider_Click(object sender, EventArgs e)
+        {
+            ibClient.ClientSocket.reqNewsProviders();
+        }
+
         private void btBroadTapeNews_Click(object sender, EventArgs e)
         {
             var symbols = new string[] { "BRFG:BRFG_ALL", "BRFUPDN:BRFUPDN_ALL", "DJNL:DJNL_ALL", "BZ:BZ_ALL", "DJTOP:DJTOP_ALL" };
@@ -550,5 +563,7 @@ namespace Prototype
                 }, "mdoff,292", false, false, null);
             }
         }
+
+
     }
 }

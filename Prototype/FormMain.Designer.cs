@@ -118,6 +118,7 @@
             btReqScannerSubscription = new System.Windows.Forms.Button();
             groupBox9 = new System.Windows.Forms.GroupBox();
             btBroadTapeNews = new System.Windows.Forms.Button();
+            btNewsProvider = new System.Windows.Forms.Button();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -998,23 +999,34 @@
             // 
             // groupBox9
             // 
+            groupBox9.Controls.Add(btNewsProvider);
             groupBox9.Controls.Add(btBroadTapeNews);
             groupBox9.Location = new System.Drawing.Point(374, 367);
             groupBox9.Name = "groupBox9";
-            groupBox9.Size = new System.Drawing.Size(152, 57);
+            groupBox9.Size = new System.Drawing.Size(466, 57);
             groupBox9.TabIndex = 40;
             groupBox9.TabStop = false;
             groupBox9.Text = "News";
             // 
             // btBroadTapeNews
             // 
-            btBroadTapeNews.Location = new System.Drawing.Point(11, 23);
+            btBroadTapeNews.Location = new System.Drawing.Point(141, 22);
             btBroadTapeNews.Name = "btBroadTapeNews";
             btBroadTapeNews.Size = new System.Drawing.Size(126, 23);
             btBroadTapeNews.TabIndex = 0;
             btBroadTapeNews.Text = "Broad Tape News";
             btBroadTapeNews.UseVisualStyleBackColor = true;
             btBroadTapeNews.Click += btBroadTapeNews_Click;
+            // 
+            // btNewsProvider
+            // 
+            btNewsProvider.Location = new System.Drawing.Point(6, 22);
+            btNewsProvider.Name = "btNewsProvider";
+            btNewsProvider.Size = new System.Drawing.Size(128, 23);
+            btNewsProvider.TabIndex = 1;
+            btNewsProvider.Text = "News Provider";
+            btNewsProvider.UseVisualStyleBackColor = true;
+            btNewsProvider.Click += btNewsProvider_Click;
             // 
             // FormMain
             // 
@@ -1149,5 +1161,6 @@
         private System.Windows.Forms.Button btReqScannerSubscription;
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.Button btBroadTapeNews;
+        private System.Windows.Forms.Button btNewsProvider;
     }
 }
