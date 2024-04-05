@@ -549,7 +549,9 @@ namespace Prototype
 
         private void btBroadTapeNews_Click(object sender, EventArgs e)
         {
-            var symbols = new string[] { "BRFG:BRFG_ALL", "BRFUPDN:BRFUPDN_ALL", "DJNL:DJNL_ALL", "BZ:BZ_ALL", "DJTOP:DJTOP_ALL" };
+            // The entered news source is invalid. Valid are: [BRFG, BRFUPDN, DJNL, BZ, DJTOP]
+            //var symbols = new string[] { "BRFG:BRFG_ALL", "BRFUPDN:BRFUPDN_ALL", "DJNL:DJNL_ALL" };
+            var symbols = new string[] { "BRFG:BRFG_ALL", "DJNL:DJNL_ALL", "BZ:BZ_ALL" };
             var exchanges = symbols.Select(s => s[..s.IndexOf(":")]).ToList();
 
             for (int i = 0; i < symbols.Length; i++)
@@ -563,7 +565,5 @@ namespace Prototype
                 }, "mdoff,292", false, false, null);
             }
         }
-
-
     }
 }
