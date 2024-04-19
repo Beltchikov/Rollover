@@ -44,6 +44,7 @@
             btGo.TabIndex = 0;
             btGo.Text = "GO";
             btGo.UseVisualStyleBackColor = true;
+            btGo.Click += btGo_Click;
             // 
             // txtBuy
             // 
