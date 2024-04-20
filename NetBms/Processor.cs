@@ -22,6 +22,13 @@ namespace NetBms
 
             }
 
+            foreach (var symbol in buySymbols)
+            {
+                if(!buyDictionary.ContainsKey(symbol))
+                    buyDictionary[symbol] = 1;  
+                else buyDictionary[symbol]++;
+            }
+
             return (buyDictionary, sellDictionary);
         }
     }
