@@ -9,6 +9,9 @@ namespace NetBms
 
         private void btGo_Click(object sender, EventArgs e)
         {
+            var input = txtBuy.Text;
+            
+            
             var formResults = new FormResults();
             formResults.ShowDialog();
         }
