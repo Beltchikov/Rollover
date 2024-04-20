@@ -44,7 +44,7 @@
             btProcess.TabIndex = 0;
             btProcess.Text = "Process >>";
             btProcess.UseVisualStyleBackColor = true;
-            btProcess.Click += btGo_Click;
+            btProcess.Click += btGo_ClickAsync;
             // 
             // txtChatGptBatchResults
             // 

@@ -1,5 +1,15 @@
+using System.Text.Json;
+
 namespace NetBms
 {
+    public class ChatGptBatchResult
+    {
+        //public string[]? BUY { get; set; }
+        public string[] BUY { get; set; }
+        public string[] SELL { get; set; }
+    }
+
+
     public partial class FormStart : Form
     {
         public FormStart()
@@ -9,11 +19,25 @@ namespace NetBms
             txtChatGptBatchResults.Text = TestData();
         }
 
-        private void btGo_Click(object sender, EventArgs e)
+        private void btGo_ClickAsync(object sender, EventArgs e)
         {
             var input = txtChatGptBatchResults.Text;
             
-            
+            var batchesAsStringArray = input.Split(Environment.NewLine + Environment.NewLine);
+            var batches = new List<ChatGptBatchResult>();
+            var notConvertableStrings = new List<string>();
+            foreach ( var batch in batchesAsStringArray )
+            {
+                try
+                {
+                    ChatGptBatchResult chatGptBatchResult = JsonSerializer.Deserialize<ChatGptBatchResult>(batch)!;
+                    batches.Add(chatGptBatchResult);
+                }
+                catch (System.Text.Json.JsonException)
+                {
+                    notConvertableStrings.Add(batch);
+                }
+            }
             
 
 
