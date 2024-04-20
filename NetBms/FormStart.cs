@@ -14,8 +14,7 @@ namespace NetBms
             var input = txtChatGptBatchResults.Text;
             
             
-            var formResults = new FormResults();
-            formResults.ShowDialog();
+            
 
 
         }
