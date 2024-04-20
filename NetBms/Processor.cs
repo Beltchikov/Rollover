@@ -11,37 +11,39 @@ namespace NetBms
 
         internal (SortedDictionary<string, int> buyDictionary, SortedDictionary<string, int> sellDictionary) Process(List<ChatGptBatchResult> batches)
         {
-            SortedDictionary<string, int> buySortedDictionary = new SortedDictionary<string, int>();
+            
             SortedDictionary<string, int> sellSortedDictionary = new SortedDictionary<string, int>();
 
-            var buySymbols = new List<string>();
-            var sellSymbols = new List<string>();
+            var buySymbolsRedundant = new List<string>();
+            var sellSymbolsRedundant = new List<string>();
 
             foreach (var batch in batches)
             {
-                buySymbols = buySymbols.Concat(batch.BUY).ToList();
-                sellSymbols =sellSymbols.Concat(batch.SELL).ToList();
+                buySymbolsRedundant = buySymbolsRedundant.Concat(batch.BUY).ToList();
+                sellSymbolsRedundant = sellSymbolsRedundant.Concat(batch.SELL).ToList();
 
             }
 
-            foreach (var symbol in buySymbols)
+            //
+            SortedDictionary<string, int> buySortedDictionary = new SortedDictionary<string, int>();
+            Dictionary<string, int> resultBuyDictionary = new Dictionary<string, int>();
+            foreach (var symbol in buySymbolsRedundant)
             {
-                if(!buySortedDictionary.ContainsKey(symbol))
-                    buySortedDictionary[symbol] = 1;  
+                if (!buySortedDictionary.ContainsKey(symbol))
+                    buySortedDictionary[symbol] = 1;
                 else buySortedDictionary[symbol]++;
             }
 
-            var buyValues = buySortedDictionary.Values;
-            var buyValuesSorted = buyValues.OrderDescending().ToList();
+            var buyValuesSorted = buySortedDictionary.Values.OrderDescending().ToList();
 
-            Dictionary<string, int> buyDictionary = new Dictionary<string, int>();
             foreach (var buyValue in buyValuesSorted)
             {
                 var keyValuePair = buySortedDictionary.FirstOrDefault(d => d.Value == buyValue);
-                buyDictionary.Add(keyValuePair.Key, keyValuePair.Value);
+                resultBuyDictionary.Add(keyValuePair.Key, keyValuePair.Value);
                 buySortedDictionary.Remove(keyValuePair.Key);
-
             }
+
+            //Dictionary<string, int> resultBuyDictionary = 
 
             return (buySortedDictionary, sellSortedDictionary);
         }
