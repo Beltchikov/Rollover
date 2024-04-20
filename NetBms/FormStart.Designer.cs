@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             btGo = new Button();
-            txtBuy = new TextBox();
+            txtChatGptBatchResults = new TextBox();
             label1 = new Label();
             label2 = new Label();
             SuspendLayout();
@@ -44,14 +44,14 @@
             btGo.UseVisualStyleBackColor = true;
             btGo.Click += btGo_Click;
             // 
-            // txtBuy
+            // txtChatGptBatchResults
             // 
-            txtBuy.Location = new Point(12, 69);
-            txtBuy.Multiline = true;
-            txtBuy.Name = "txtBuy";
-            txtBuy.ScrollBars = ScrollBars.Vertical;
-            txtBuy.Size = new Size(776, 324);
-            txtBuy.TabIndex = 1;
+            txtChatGptBatchResults.Location = new Point(12, 69);
+            txtChatGptBatchResults.Multiline = true;
+            txtChatGptBatchResults.Name = "txtChatGptBatchResults";
+            txtChatGptBatchResults.ScrollBars = ScrollBars.Vertical;
+            txtChatGptBatchResults.Size = new Size(776, 324);
+            txtChatGptBatchResults.TabIndex = 1;
             // 
             // label1
             // 
@@ -79,7 +79,7 @@
             ClientSize = new Size(800, 450);
             Controls.Add(label2);
             Controls.Add(label1);
-            Controls.Add(txtBuy);
+            Controls.Add(txtChatGptBatchResults);
             Controls.Add(btGo);
             Name = "FormStart";
             Text = "NET_BMS";
@@ -90,7 +90,7 @@
         #endregion
 
         private Button btGo;
-        private TextBox txtBuy;
+        private TextBox txtChatGptBatchResults;
         private Label label1;
         private Label label2;
     }

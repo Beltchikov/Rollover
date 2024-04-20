@@ -6,12 +6,12 @@ namespace NetBms
         {
             InitializeComponent();
 
-            txtBuy.Text = TestData();
+            txtChatGptBatchResults.Text = TestData();
         }
 
         private void btGo_Click(object sender, EventArgs e)
         {
-            var input = txtBuy.Text;
+            var input = txtChatGptBatchResults.Text;
             
             
             var formResults = new FormResults();
