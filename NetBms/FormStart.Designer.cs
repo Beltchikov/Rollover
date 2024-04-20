@@ -28,21 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            btGo = new Button();
+            btProcess = new Button();
             txtChatGptBatchResults = new TextBox();
             label1 = new Label();
             label2 = new Label();
+            txtNetBmsResults = new TextBox();
+            label3 = new Label();
             SuspendLayout();
             // 
-            // btGo
+            // btProcess
             // 
-            btGo.Location = new Point(714, 410);
-            btGo.Name = "btGo";
-            btGo.Size = new Size(75, 23);
-            btGo.TabIndex = 0;
-            btGo.Text = "GO";
-            btGo.UseVisualStyleBackColor = true;
-            btGo.Click += btGo_Click;
+            btProcess.Location = new Point(462, 202);
+            btProcess.Name = "btProcess";
+            btProcess.Size = new Size(75, 23);
+            btProcess.TabIndex = 0;
+            btProcess.Text = "Process >>";
+            btProcess.UseVisualStyleBackColor = true;
+            btProcess.Click += btGo_Click;
             // 
             // txtChatGptBatchResults
             // 
@@ -50,7 +52,7 @@
             txtChatGptBatchResults.Multiline = true;
             txtChatGptBatchResults.Name = "txtChatGptBatchResults";
             txtChatGptBatchResults.ScrollBars = ScrollBars.Vertical;
-            txtChatGptBatchResults.Size = new Size(776, 324);
+            txtChatGptBatchResults.Size = new Size(444, 324);
             txtChatGptBatchResults.TabIndex = 1;
             // 
             // label1
@@ -72,15 +74,35 @@
             label2.TabIndex = 3;
             label2.Text = "NET_BMS";
             // 
+            // txtNetBmsResults
+            // 
+            txtNetBmsResults.Location = new Point(543, 69);
+            txtNetBmsResults.Multiline = true;
+            txtNetBmsResults.Name = "txtNetBmsResults";
+            txtNetBmsResults.ScrollBars = ScrollBars.Vertical;
+            txtNetBmsResults.Size = new Size(444, 324);
+            txtNetBmsResults.TabIndex = 4;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(543, 51);
+            label3.Name = "label3";
+            label3.Size = new Size(97, 15);
+            label3.TabIndex = 5;
+            label3.Text = "NET_BMS Results";
+            // 
             // FormStart
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1001, 450);
+            Controls.Add(label3);
+            Controls.Add(txtNetBmsResults);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(txtChatGptBatchResults);
-            Controls.Add(btGo);
+            Controls.Add(btProcess);
             Name = "FormStart";
             Text = "NET_BMS";
             ResumeLayout(false);
@@ -89,9 +111,11 @@
 
         #endregion
 
-        private Button btGo;
+        private Button btProcess;
         private TextBox txtChatGptBatchResults;
         private Label label1;
         private Label label2;
+        private TextBox txtNetBmsResults;
+        private Label label3;
     }
 }
