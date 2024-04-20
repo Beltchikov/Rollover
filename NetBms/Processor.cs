@@ -17,8 +17,8 @@ namespace NetBms
 
             foreach (var batch in batches)
             {
-                buySymbols.Concat(batch.BUY);
-                sellSymbols.Concat(batch.SELL);
+                buySymbols = buySymbols.Concat(batch.BUY).ToList();
+                sellSymbols =sellSymbols.Concat(batch.SELL).ToList();
 
             }
 
