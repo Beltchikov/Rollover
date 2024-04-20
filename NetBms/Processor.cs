@@ -7,10 +7,10 @@ namespace NetBms
         {
         }
 
-        internal (Dictionary<string, int> buyDictionary, Dictionary<string, int> sellDictionary) Process(List<ChatGptBatchResult> batches)
+        internal (SortedDictionary<string, int> buyDictionary, SortedDictionary<string, int> sellDictionary) Process(List<ChatGptBatchResult> batches)
         {
-            Dictionary<string, int> buyDictionary = new Dictionary<string, int>();
-            Dictionary<string, int> sellDictionary = new Dictionary<string, int>();
+            SortedDictionary<string, int> buyDictionary = new SortedDictionary<string, int>();
+            SortedDictionary<string, int> sellDictionary = new SortedDictionary<string, int>();
 
             var buySymbols = new List<string>();
             var sellSymbols = new List<string>();
@@ -28,6 +28,9 @@ namespace NetBms
                     buyDictionary[symbol] = 1;  
                 else buyDictionary[symbol]++;
             }
+
+            //SortedDictionary<int, string> buyDictionaryReversed = new SortedDictionary<int, string>()
+            //SortedDictionary<string, int> sellDictionary = new SortedDictionary<string, int>();
 
             return (buyDictionary, sellDictionary);
         }
