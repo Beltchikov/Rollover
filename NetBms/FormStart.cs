@@ -2,11 +2,11 @@ using System.Text.Json;
 
 namespace NetBms
 {
-    
-
-
     public partial class FormStart : Form
     {
+        readonly string BATCH_SEPARATOR = Environment.NewLine + Environment.NewLine;
+
+
         public FormStart()
         {
             InitializeComponent();
@@ -18,7 +18,7 @@ namespace NetBms
         {
             var input = txtChatGptBatchResults.Text;
             
-            var batchesAsStringArray = input.Split(Environment.NewLine + Environment.NewLine);
+            var batchesAsStringArray = input.Split(BATCH_SEPARATOR);
             var batches = new List<ChatGptBatchResult>();
             var notConvertableStrings = new List<string>();
             foreach ( var batch in batchesAsStringArray )
@@ -33,7 +33,11 @@ namespace NetBms
                     notConvertableStrings.Add(batch);
                 }
             }
-            
+
+            //txtChatGptBatchResults.Text += batchesAsStringArray;
+
+            txtErrors.Text = "";
+            txtErrors.Text += notConvertableStrings.Aggregate((r,n)=>r + BATCH_SEPARATOR + n);
 
 
         }

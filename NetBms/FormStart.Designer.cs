@@ -34,6 +34,8 @@
             label2 = new Label();
             txtNetBmsResults = new TextBox();
             label3 = new Label();
+            txtErrors = new TextBox();
+            label4 = new Label();
             SuspendLayout();
             // 
             // btProcess
@@ -52,7 +54,7 @@
             txtChatGptBatchResults.Multiline = true;
             txtChatGptBatchResults.Name = "txtChatGptBatchResults";
             txtChatGptBatchResults.ScrollBars = ScrollBars.Vertical;
-            txtChatGptBatchResults.Size = new Size(444, 324);
+            txtChatGptBatchResults.Size = new Size(444, 478);
             txtChatGptBatchResults.TabIndex = 1;
             // 
             // label1
@@ -76,6 +78,7 @@
             // 
             // txtNetBmsResults
             // 
+            txtNetBmsResults.BackColor = Color.LightCyan;
             txtNetBmsResults.Location = new Point(543, 69);
             txtNetBmsResults.Multiline = true;
             txtNetBmsResults.Name = "txtNetBmsResults";
@@ -92,11 +95,32 @@
             label3.TabIndex = 5;
             label3.Text = "NET_BMS Results";
             // 
+            // txtErrors
+            // 
+            txtErrors.BackColor = Color.MistyRose;
+            txtErrors.Location = new Point(543, 442);
+            txtErrors.Multiline = true;
+            txtErrors.Name = "txtErrors";
+            txtErrors.ScrollBars = ScrollBars.Vertical;
+            txtErrors.Size = new Size(444, 105);
+            txtErrors.TabIndex = 6;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(543, 424);
+            label4.Name = "label4";
+            label4.Size = new Size(99, 15);
+            label4.TabIndex = 7;
+            label4.Text = "Erroneous Strings";
+            // 
             // FormStart
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1001, 450);
+            ClientSize = new Size(1001, 559);
+            Controls.Add(label4);
+            Controls.Add(txtErrors);
             Controls.Add(label3);
             Controls.Add(txtNetBmsResults);
             Controls.Add(label2);
@@ -117,5 +141,7 @@
         private Label label2;
         private TextBox txtNetBmsResults;
         private Label label3;
+        private TextBox txtErrors;
+        private Label label4;
     }
 }
