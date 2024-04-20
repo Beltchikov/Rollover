@@ -32,8 +32,6 @@
             txtBuy = new TextBox();
             label1 = new Label();
             label2 = new Label();
-            label3 = new Label();
-            txtSell = new TextBox();
             SuspendLayout();
             // 
             // btGo
@@ -52,7 +50,7 @@
             txtBuy.Multiline = true;
             txtBuy.Name = "txtBuy";
             txtBuy.ScrollBars = ScrollBars.Vertical;
-            txtBuy.Size = new Size(343, 324);
+            txtBuy.Size = new Size(776, 324);
             txtBuy.TabIndex = 1;
             // 
             // label1
@@ -60,9 +58,9 @@
             label1.AutoSize = true;
             label1.Location = new Point(12, 51);
             label1.Name = "label1";
-            label1.Size = new Size(29, 15);
+            label1.Size = new Size(174, 15);
             label1.TabIndex = 2;
-            label1.Text = "BUY";
+            label1.Text = "Chat GPT Batch Results as JSON";
             // 
             // label2
             // 
@@ -74,31 +72,11 @@
             label2.TabIndex = 3;
             label2.Text = "NET_BMS";
             // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(433, 51);
-            label3.Name = "label3";
-            label3.Size = new Size(31, 15);
-            label3.TabIndex = 5;
-            label3.Text = "SELL";
-            // 
-            // txtSell
-            // 
-            txtSell.Location = new Point(433, 69);
-            txtSell.Multiline = true;
-            txtSell.Name = "txtSell";
-            txtSell.ScrollBars = ScrollBars.Vertical;
-            txtSell.Size = new Size(343, 324);
-            txtSell.TabIndex = 4;
-            // 
             // FormStart
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(label3);
-            Controls.Add(txtSell);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(txtBuy);
@@ -115,7 +93,5 @@
         private TextBox txtBuy;
         private Label label1;
         private Label label2;
-        private Label label3;
-        private TextBox txtSell;
     }
 }
