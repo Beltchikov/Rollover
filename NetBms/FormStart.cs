@@ -35,9 +35,9 @@ namespace NetBms
             }
 
             var processor = new Processor();
-            SortedDictionary<string, int> buyDictionary;
-            SortedDictionary<string, int> sellDictionary;
-            (buyDictionary, sellDictionary) = processor.Process(batches);
+            Dictionary<string, int> sumBuySignals;
+            Dictionary<string, int> sumSellSignals;
+            (sumBuySignals, sumSellSignals) = processor.SumBuySellSignals(batches);
 
             //txtChatGptBatchResults.Text += batchesAsStringArray;
 

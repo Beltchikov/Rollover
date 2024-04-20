@@ -5,14 +5,10 @@ namespace NetBms
 {
     internal class Processor
     {
-        public Processor()
-        {
-        }
-
-        internal (SortedDictionary<string, int> buyDictionary, SortedDictionary<string, int> sellDictionary) Process(List<ChatGptBatchResult> batches)
+        internal (Dictionary<string, int> buyDictionary, Dictionary<string, int> sellDictionary) SumBuySellSignals(List<ChatGptBatchResult> batches)
         {
             
-            SortedDictionary<string, int> sellSortedDictionary = new SortedDictionary<string, int>();
+            var sellSortedDictionary = new SortedDictionary<string, int>();
 
             var buySymbolsRedundant = new List<string>();
             var sellSymbolsRedundant = new List<string>();
@@ -21,31 +17,36 @@ namespace NetBms
             {
                 buySymbolsRedundant = buySymbolsRedundant.Concat(batch.BUY).ToList();
                 sellSymbolsRedundant = sellSymbolsRedundant.Concat(batch.SELL).ToList();
+}
 
-            }
+            var resultBuyDictionary = NetSignalDictionaryFromRedundantSymbolList(buySymbolsRedundant);
+            var resultSellDictionary = NetSignalDictionaryFromRedundantSymbolList(sellSymbolsRedundant);
 
-            //
-            SortedDictionary<string, int> buySortedDictionary = new SortedDictionary<string, int>();
-            Dictionary<string, int> resultBuyDictionary = new Dictionary<string, int>();
-            foreach (var symbol in buySymbolsRedundant)
+            return (resultBuyDictionary, resultSellDictionary);
+        }
+
+        private Dictionary<string, int> NetSignalDictionaryFromRedundantSymbolList(List<string> redundantSymbolList)
+        {
+            var sortedDictionary = new SortedDictionary<string, int>();
+            var resultDictionary = new Dictionary<string, int>();
+            foreach (var symbol in redundantSymbolList)
             {
-                if (!buySortedDictionary.ContainsKey(symbol))
-                    buySortedDictionary[symbol] = 1;
-                else buySortedDictionary[symbol]++;
+                if (!sortedDictionary.ContainsKey(symbol))
+                    sortedDictionary[symbol] = 1;
+                else sortedDictionary[symbol]++;
             }
 
-            var buyValuesSorted = buySortedDictionary.Values.OrderDescending().ToList();
+            var valuesSorted = sortedDictionary.Values.OrderDescending().ToList();
 
-            foreach (var buyValue in buyValuesSorted)
+            foreach (var value in valuesSorted)
             {
-                var keyValuePair = buySortedDictionary.FirstOrDefault(d => d.Value == buyValue);
-                resultBuyDictionary.Add(keyValuePair.Key, keyValuePair.Value);
-                buySortedDictionary.Remove(keyValuePair.Key);
+                var keyValuePair = sortedDictionary.FirstOrDefault(d => d.Value == value);
+                resultDictionary.Add(keyValuePair.Key, keyValuePair.Value);
+                sortedDictionary.Remove(keyValuePair.Key);
             }
 
-            //Dictionary<string, int> resultBuyDictionary = 
+            return resultDictionary;
 
-            return (buySortedDictionary, sellSortedDictionary);
         }
     }
 }
