@@ -59,6 +59,7 @@
             txtSell.Location = new Point(439, 72);
             txtSell.Multiline = true;
             txtSell.Name = "txtSell";
+            txtSell.ScrollBars = ScrollBars.Vertical;
             txtSell.Size = new Size(343, 324);
             txtSell.TabIndex = 8;
             // 
@@ -76,6 +77,7 @@
             txtBuy.Location = new Point(18, 72);
             txtBuy.Multiline = true;
             txtBuy.Name = "txtBuy";
+            txtBuy.ScrollBars = ScrollBars.Vertical;
             txtBuy.Size = new Size(343, 324);
             txtBuy.TabIndex = 6;
             // 
