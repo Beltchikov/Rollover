@@ -2,12 +2,7 @@ using System.Text.Json;
 
 namespace NetBms
 {
-    public class ChatGptBatchResult
-    {
-        //public string[]? BUY { get; set; }
-        public string[] BUY { get; set; }
-        public string[] SELL { get; set; }
-    }
+    
 
 
     public partial class FormStart : Form
