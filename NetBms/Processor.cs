@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+
 namespace NetBms
 {
     internal class Processor
@@ -9,8 +11,8 @@ namespace NetBms
 
         internal (SortedDictionary<string, int> buyDictionary, SortedDictionary<string, int> sellDictionary) Process(List<ChatGptBatchResult> batches)
         {
-            SortedDictionary<string, int> buyDictionary = new SortedDictionary<string, int>();
-            SortedDictionary<string, int> sellDictionary = new SortedDictionary<string, int>();
+            SortedDictionary<string, int> buySortedDictionary = new SortedDictionary<string, int>();
+            SortedDictionary<string, int> sellSortedDictionary = new SortedDictionary<string, int>();
 
             var buySymbols = new List<string>();
             var sellSymbols = new List<string>();
@@ -24,15 +26,24 @@ namespace NetBms
 
             foreach (var symbol in buySymbols)
             {
-                if(!buyDictionary.ContainsKey(symbol))
-                    buyDictionary[symbol] = 1;  
-                else buyDictionary[symbol]++;
+                if(!buySortedDictionary.ContainsKey(symbol))
+                    buySortedDictionary[symbol] = 1;  
+                else buySortedDictionary[symbol]++;
             }
 
-            //SortedDictionary<int, string> buyDictionaryReversed = new SortedDictionary<int, string>()
-            //SortedDictionary<string, int> sellDictionary = new SortedDictionary<string, int>();
+            var buyValues = buySortedDictionary.Values;
+            var buyValuesSorted = buyValues.OrderDescending().ToList();
 
-            return (buyDictionary, sellDictionary);
+            Dictionary<string, int> buyDictionary = new Dictionary<string, int>();
+            foreach (var buyValue in buyValuesSorted)
+            {
+                var keyValuePair = buySortedDictionary.FirstOrDefault(d => d.Value == buyValue);
+                buyDictionary.Add(keyValuePair.Key, keyValuePair.Value);
+                buySortedDictionary.Remove(keyValuePair.Key);
+
+            }
+
+            return (buySortedDictionary, sellSortedDictionary);
         }
     }
 }
