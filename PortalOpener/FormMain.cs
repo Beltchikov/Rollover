@@ -24,11 +24,6 @@ namespace PortalOpener
 
         private void btGo_Click(object sender, EventArgs e)
         {
-            
-
-            
-            
-
             var assemblyName = executingAssembly.FullName;
             if (assemblyName != null)
             {
@@ -37,16 +32,6 @@ namespace PortalOpener
                 unwraped.Execute(new string[1]);
             }
             else throw new Exception("Unexpected! assemblyName is null");
-
-            //Object o = Activator.CreateInstance(typeof(StringBuilder));
-
-            //// Append a string into the StringBuilder object and display the
-            //// StringBuilder.
-            //StringBuilder sb = (StringBuilder)o;
-            //sb.Append("Hello, there.");
-            //MessageBox.Show(sb.ToString());
-
-            ///////////////////////////////////////
         }
     }
 }
