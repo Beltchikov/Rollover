@@ -48,7 +48,8 @@ namespace NetBms
             (var netBuySignals, var netSellSignals) = processor.NetBuySellFromSum(sumBuySignals, sumSellSignals);
 
             // TODO sort 
-            //var netBuySortedBuyValue = SortDictionaryByValue(netBuySignals)
+            var netBuyOrderedBuyValue = processor.OrderDictionaryByValue(netBuySignals, false);
+            var netSellOrderedBuyValue = processor.OrderDictionaryByValue(netSellSignals, false );
 
             //txtChatGptBatchResults.Text += batchesAsStringArray;
 

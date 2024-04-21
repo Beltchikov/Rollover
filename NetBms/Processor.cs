@@ -53,14 +53,7 @@ namespace NetBms
 
         }
 
-        private Dictionary<string, int> NetSignalDictionaryFromRedundantSymbolList(List<string> redundantSymbolList)
-        {
-            var sortedDictionary = SortedDictionaryFromFromRedundantSymbolList(redundantSymbolList);
-            var resultDictionary = OrderDictionaryByValue(sortedDictionary, false);
-            return resultDictionary;
-        }
-
-        private Dictionary<TKey, TValue> OrderDictionaryByValue<TKey, TValue>(
+        internal Dictionary<TKey, TValue> OrderDictionaryByValue<TKey, TValue>(
             IDictionary<TKey, TValue> unorderedDictionary,
             bool asc = true) where TKey : notnull
         {
@@ -83,6 +76,13 @@ namespace NetBms
 
             return resultDictionary;
 
+        }
+
+        private Dictionary<string, int> NetSignalDictionaryFromRedundantSymbolList(List<string> redundantSymbolList)
+        {
+            var sortedDictionary = SortedDictionaryFromFromRedundantSymbolList(redundantSymbolList);
+            var resultDictionary = OrderDictionaryByValue(sortedDictionary, false);
+            return resultDictionary;
         }
 
         private SortedDictionary<string, int> SortedDictionaryFromFromRedundantSymbolList(List<string> redundantSymbolList)
