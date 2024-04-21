@@ -5,9 +5,10 @@ namespace NetBms
 {
     internal class Processor
     {
-        internal (Dictionary<string, int> buyDictionary, Dictionary<string, int> sellDictionary) SumBuySellSignals(List<ChatGptBatchResult> batches)
+        internal (Dictionary<string, int> buyDictionary, Dictionary<string, int> sellDictionary)
+            SumBuySellSignals(List<ChatGptBatchResult> batches)
         {
-            
+
             var sellSortedDictionary = new SortedDictionary<string, int>();
 
             var buySymbolsRedundant = new List<string>();
@@ -17,12 +18,18 @@ namespace NetBms
             {
                 buySymbolsRedundant = buySymbolsRedundant.Concat(batch.BUY).ToList();
                 sellSymbolsRedundant = sellSymbolsRedundant.Concat(batch.SELL).ToList();
-}
+            }
 
             var resultBuyDictionary = NetSignalDictionaryFromRedundantSymbolList(buySymbolsRedundant);
             var resultSellDictionary = NetSignalDictionaryFromRedundantSymbolList(sellSymbolsRedundant);
 
             return (resultBuyDictionary, resultSellDictionary);
+        }
+
+        internal (Dictionary<string, int> netBuySignals, Dictionary<string, int> netSellSignals)
+            NetBuySellSignals(Dictionary<string, int> sumBuySignals, Dictionary<string, int> sumSellSignals)
+        {
+            throw new NotImplementedException();
         }
 
         private Dictionary<string, int> NetSignalDictionaryFromRedundantSymbolList(List<string> redundantSymbolList)
@@ -47,11 +54,6 @@ namespace NetBms
 
             return resultDictionary;
 
-        }
-
-        internal (Dictionary<string, int> netBuySignals, Dictionary<string, int> netSellSignals) NetBuySellSignals(Dictionary<string, int> sumBuySignals, Dictionary<string, int> sumSellSignals)
-        {
-            throw new NotImplementedException();
         }
     }
 }
