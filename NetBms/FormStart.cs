@@ -41,6 +41,7 @@ namespace NetBms
             // SUM_BUY, SUM_SELL, then NET_BUY, NET_SELL
             var processor = new Processor();
             (var sumBuySignals, var sumSellSignals) = processor.SumBuySellSignals(batches);
+            var crossSection = sumBuySignals.Keys.Intersect(sumSellSignals.Keys).ToList();
             (var netBuySignals, var netSellSignals) = processor.NetBuySellSignals(sumBuySignals, sumSellSignals);
 
             //txtChatGptBatchResults.Text += batchesAsStringArray;
