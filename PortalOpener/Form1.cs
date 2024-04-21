@@ -1,8 +1,8 @@
 namespace PortalOpener
 {
-    public partial class frmMain : Form
+    public partial class FormMain : Form
     {
-        public frmMain()
+        public FormMain()
         {
             InitializeComponent();
         }
