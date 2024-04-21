@@ -47,14 +47,20 @@ namespace NetBms
             // NET_BUY, NET_SELL
             (var netBuySignals, var netSellSignals) = processor.NetBuySellFromSum(sumBuySignals, sumSellSignals);
 
-            // TODO sort 
+            // Order DESC by value
             var netBuyOrderedBuyValue = processor.OrderDictionaryByValue(netBuySignals, false);
             var netSellOrderedBuyValue = processor.OrderDictionaryByValue(netSellSignals, false );
 
+            // Display results
             txtBuyResults.Text = "";
             txtBuyResults.Text += netBuyOrderedBuyValue
                 .Select(r=>r.Key + '\t' + r.Value.ToString())
                 .Aggregate((r,n)=>r + Environment.NewLine + n);
+
+            txtSellResults.Text = "";
+            txtSellResults.Text += netSellOrderedBuyValue
+                .Select(r => r.Key + '\t' + r.Value.ToString())
+                .Aggregate((r, n) => r + Environment.NewLine + n);
 
             txtErrors.Text = "";
             txtErrors.Text += notConvertableStrings.Aggregate((r,n)=>r + BATCH_SEPARATOR + n);

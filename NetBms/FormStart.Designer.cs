@@ -36,6 +36,8 @@
             label3 = new Label();
             txtErrors = new TextBox();
             label4 = new Label();
+            label5 = new Label();
+            txtSellResults = new TextBox();
             SuspendLayout();
             // 
             // btProcess
@@ -97,12 +99,13 @@
             // 
             // txtErrors
             // 
-            txtErrors.BackColor = Color.MistyRose;
+            txtErrors.BackColor = Color.Firebrick;
+            txtErrors.ForeColor = Color.White;
             txtErrors.Location = new Point(543, 442);
             txtErrors.Multiline = true;
             txtErrors.Name = "txtErrors";
             txtErrors.ScrollBars = ScrollBars.Vertical;
-            txtErrors.Size = new Size(444, 105);
+            txtErrors.Size = new Size(446, 105);
             txtErrors.TabIndex = 6;
             // 
             // label4
@@ -114,11 +117,32 @@
             label4.TabIndex = 7;
             label4.Text = "Erroneous Strings";
             // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(780, 51);
+            label5.Name = "label5";
+            label5.Size = new Size(97, 15);
+            label5.TabIndex = 9;
+            label5.Text = "NET_SELL Results";
+            // 
+            // txtSellResults
+            // 
+            txtSellResults.BackColor = Color.MistyRose;
+            txtSellResults.Location = new Point(780, 69);
+            txtSellResults.Multiline = true;
+            txtSellResults.Name = "txtSellResults";
+            txtSellResults.ScrollBars = ScrollBars.Vertical;
+            txtSellResults.Size = new Size(207, 324);
+            txtSellResults.TabIndex = 8;
+            // 
             // FormStart
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1001, 559);
+            Controls.Add(label5);
+            Controls.Add(txtSellResults);
             Controls.Add(label4);
             Controls.Add(txtErrors);
             Controls.Add(label3);
@@ -143,5 +167,7 @@
         private Label label3;
         private TextBox txtErrors;
         private Label label4;
+        private Label label5;
+        private TextBox txtSellResults;
     }
 }
