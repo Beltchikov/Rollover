@@ -38,11 +38,16 @@ namespace NetBms
                 }
             }
 
-            // SUM_BUY, SUM_SELL, then NET_BUY, NET_SELL
+           
+            // SUM_BUY, SUM_SELL
             var processor = new Processor();
             (var sumBuySignals, var sumSellSignals) = processor.SumBuySellFromBatches(batches);
-            var crossSection = sumBuySignals.Keys.Intersect(sumSellSignals.Keys).ToList();
+            var crossSection = sumBuySignals.Keys.Intersect(sumSellSignals.Keys).ToList(); // Intersection. Evtl. for later
+
+            // NET_BUY, NET_SELL
             (var netBuySignals, var netSellSignals) = processor.NetBuySellFromSum(sumBuySignals, sumSellSignals);
+
+            // TODO sort 
 
             //txtChatGptBatchResults.Text += batchesAsStringArray;
 

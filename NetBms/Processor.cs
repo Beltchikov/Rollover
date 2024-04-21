@@ -26,25 +26,31 @@ namespace NetBms
         internal (Dictionary<string, int> netBuySignals, Dictionary<string, int> netSellSignals)
             NetBuySellFromSum(Dictionary<string, int> sumBuySignals, Dictionary<string, int> sumSellSignals)
         {
-            Dictionary<string, int> netBuySignals = new Dictionary<string, int>();
-            Dictionary<string, int> netSellSignals = new Dictionary<string, int>();
+            var netBuySignals = NetSignals(sumBuySignals, sumSellSignals);
+            var netSellSignals = NetSignals(sumSellSignals, sumBuySignals);
 
+            return (netBuySignals, netSellSignals);
+        }
 
-            foreach (var signal in sumBuySignals)
+        private Dictionary<string, int> NetSignals(Dictionary<string, int> mainSignals, Dictionary<string, int> oppositeSignals)
+        {
+            Dictionary<string, int> netSignals = new Dictionary<string, int>();
+
+            foreach (var signal in mainSignals)
             {
                 var symbol = signal.Key;
-                if (sumSellSignals.ContainsKey(symbol))
+                if (oppositeSignals.ContainsKey(symbol))
                 {
-                    int oppositeScore = sumSellSignals[symbol];
-                    netBuySignals.Add(symbol, signal.Value - oppositeScore);
+                    int oppositeScore = oppositeSignals[symbol];
+                    netSignals.Add(symbol, signal.Value - oppositeScore);
                 }
                 else
                 {
-                    netBuySignals.Add(symbol, signal.Value);
+                    netSignals.Add(symbol, signal.Value);
                 }
             }
+            return netSignals;
 
-            return (netBuySignals, netSellSignals);
         }
 
         private Dictionary<string, int> NetSignalDictionaryFromRedundantSymbolList(List<string> redundantSymbolList)
