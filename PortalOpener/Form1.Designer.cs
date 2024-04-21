@@ -30,6 +30,7 @@
         {
             txtSymbols = new TextBox();
             label1 = new Label();
+            btGo = new Button();
             SuspendLayout();
             // 
             // txtSymbols
@@ -50,11 +51,22 @@
             label1.TabIndex = 1;
             label1.Text = "Symbols";
             // 
+            // btGo
+            // 
+            btGo.Location = new Point(138, 442);
+            btGo.Name = "btGo";
+            btGo.Size = new Size(75, 23);
+            btGo.TabIndex = 2;
+            btGo.Text = "Go";
+            btGo.UseVisualStyleBackColor = true;
+            btGo.Click += btGo_Click;
+            // 
             // frmMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(230, 474);
+            Controls.Add(btGo);
             Controls.Add(label1);
             Controls.Add(txtSymbols);
             Name = "frmMain";
@@ -67,5 +79,6 @@
 
         private TextBox txtSymbols;
         private Label label1;
+        private Button btGo;
     }
 }

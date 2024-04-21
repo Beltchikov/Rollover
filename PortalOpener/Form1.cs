@@ -6,5 +6,10 @@ namespace PortalOpener
         {
             InitializeComponent();
         }
+
+        private void btGo_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
