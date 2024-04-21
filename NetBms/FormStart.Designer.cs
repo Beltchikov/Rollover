@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormStart));
             btProcess = new Button();
             txtChatGptBatchResults = new TextBox();
             label1 = new Label();
@@ -151,6 +152,7 @@
             Controls.Add(label1);
             Controls.Add(txtChatGptBatchResults);
             Controls.Add(btProcess);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormStart";
             Text = "NET_BMS";
             ResumeLayout(false);
