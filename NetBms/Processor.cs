@@ -28,13 +28,12 @@ namespace NetBms
         {
             var netBuySignals = NetSignals(sumBuySignals, sumSellSignals);
             var netSellSignals = NetSignals(sumSellSignals, sumBuySignals);
-
             return (netBuySignals, netSellSignals);
         }
 
         private Dictionary<string, int> NetSignals(Dictionary<string, int> mainSignals, Dictionary<string, int> oppositeSignals)
         {
-            Dictionary<string, int> netSignals = new Dictionary<string, int>();
+            Dictionary<string, int> netSignals = new();
 
             foreach (var signal in mainSignals)
             {
@@ -75,7 +74,6 @@ namespace NetBms
             }
 
             return resultDictionary;
-
         }
 
         private Dictionary<string, int> NetSignalDictionaryFromRedundantSymbolList(List<string> redundantSymbolList)
@@ -97,7 +95,6 @@ namespace NetBms
             }
 
             return sortedDictionary;
-
         }
     }
 }

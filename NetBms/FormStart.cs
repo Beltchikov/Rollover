@@ -10,7 +10,6 @@ namespace NetBms
         public FormStart()
         {
             InitializeComponent();
-
             txtChatGptBatchResults.Text = TestData();
         }
 
@@ -21,11 +20,11 @@ namespace NetBms
             // Deserialize text as ChatGptBatchResult JSON
             var batchesAsStringArray = input
                 .Split(BATCH_SEPARATOR)
-                .Select(s=>s.Trim())
+                .Select(s => s.Trim())
                 .ToArray();
             var batches = new List<ChatGptBatchResult>();
             var notConvertableStrings = new List<string>();
-            foreach ( var batch in batchesAsStringArray )
+            foreach (var batch in batchesAsStringArray)
             {
                 try
                 {
@@ -38,7 +37,6 @@ namespace NetBms
                 }
             }
 
-           
             // SUM_BUY, SUM_SELL
             var processor = new Processor();
             (var sumBuySignals, var sumSellSignals) = processor.SumBuySellFromBatches(batches);
@@ -49,13 +47,13 @@ namespace NetBms
 
             // Order DESC by value
             var netBuyOrderedBuyValue = processor.OrderDictionaryByValue(netBuySignals, false);
-            var netSellOrderedBuyValue = processor.OrderDictionaryByValue(netSellSignals, false );
+            var netSellOrderedBuyValue = processor.OrderDictionaryByValue(netSellSignals, false);
 
             // Display results
             txtBuyResults.Text = "";
             txtBuyResults.Text += netBuyOrderedBuyValue
-                .Select(r=>r.Key + '\t' + r.Value.ToString())
-                .Aggregate((r,n)=>r + Environment.NewLine + n);
+                .Select(r => r.Key + '\t' + r.Value.ToString())
+                .Aggregate((r, n) => r + Environment.NewLine + n);
 
             txtSellResults.Text = "";
             txtSellResults.Text += netSellOrderedBuyValue
@@ -63,9 +61,7 @@ namespace NetBms
                 .Aggregate((r, n) => r + Environment.NewLine + n);
 
             txtErrors.Text = "";
-            txtErrors.Text += notConvertableStrings.Aggregate((r,n)=>r + BATCH_SEPARATOR + n);
-
-
+            txtErrors.Text += notConvertableStrings.Aggregate((r, n) => r + BATCH_SEPARATOR + n);
         }
 
         private string TestData()
