@@ -33,12 +33,17 @@ namespace NetBms
             Dictionary<string, int> netSellSignals = new Dictionary<string, int>();
 
 
-            foreach (var sumBuySignal in sumBuySignals)
+            foreach (var signal in sumBuySignals)
             {
-                var symbol = sumBuySignal.Key;
+                var symbol = signal.Key;
                 if(sumSellSignals.ContainsKey(symbol))
                 {
-
+                    int oppositeScore = sumSellSignals[symbol];
+                    netBuySignals.Add(symbol, signal.Value - oppositeScore);
+                }
+                else
+                {
+                    netBuySignals.Add(symbol, signal.Value);   
                 }
             }
 

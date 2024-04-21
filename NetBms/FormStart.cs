@@ -17,7 +17,8 @@ namespace NetBms
         private void btGo_ClickAsync(object sender, EventArgs e)
         {
             var input = txtChatGptBatchResults.Text;
-            
+
+            // Deserialize text as ChatGptBatchResult JSON
             var batchesAsStringArray = input
                 .Split(BATCH_SEPARATOR)
                 .Select(s=>s.Trim())
@@ -37,15 +38,10 @@ namespace NetBms
                 }
             }
 
+            // SUM_BUY, SUM_SELL, then NET_BUY, NET_SELL
             var processor = new Processor();
-
-            Dictionary<string, int> sumBuySignals;
-            Dictionary<string, int> sumSellSignals;
-            (sumBuySignals, sumSellSignals) = processor.SumBuySellSignals(batches);
-
-            Dictionary<string, int> netBuySignals;
-            Dictionary<string, int> netSellSignals;
-            (netBuySignals, netSellSignals) = processor.NetBuySellSignals(sumBuySignals, sumSellSignals);
+            (var sumBuySignals, var sumSellSignals) = processor.SumBuySellSignals(batches);
+            (var netBuySignals, var netSellSignals) = processor.NetBuySellSignals(sumBuySignals, sumSellSignals);
 
             //txtChatGptBatchResults.Text += batchesAsStringArray;
 
