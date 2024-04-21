@@ -31,6 +31,8 @@
             txtSymbols = new TextBox();
             label1 = new Label();
             btGo = new Button();
+            cmbOpener = new ComboBox();
+            label2 = new Label();
             SuspendLayout();
             // 
             // txtSymbols
@@ -39,7 +41,7 @@
             txtSymbols.Multiline = true;
             txtSymbols.Name = "txtSymbols";
             txtSymbols.ScrollBars = ScrollBars.Vertical;
-            txtSymbols.Size = new Size(201, 379);
+            txtSymbols.Size = new Size(201, 234);
             txtSymbols.TabIndex = 0;
             // 
             // label1
@@ -53,7 +55,7 @@
             // 
             // btGo
             // 
-            btGo.Location = new Point(138, 442);
+            btGo.Location = new Point(363, 258);
             btGo.Name = "btGo";
             btGo.Size = new Size(75, 23);
             btGo.TabIndex = 2;
@@ -61,15 +63,34 @@
             btGo.UseVisualStyleBackColor = true;
             btGo.Click += btGo_Click;
             // 
-            // frmMain
+            // cmbOpener
+            // 
+            cmbOpener.FormattingEnabled = true;
+            cmbOpener.Location = new Point(238, 47);
+            cmbOpener.Name = "cmbOpener";
+            cmbOpener.Size = new Size(200, 23);
+            cmbOpener.TabIndex = 3;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(238, 27);
+            label2.Name = "label2";
+            label2.Size = new Size(51, 15);
+            label2.TabIndex = 4;
+            label2.Text = "Openers";
+            // 
+            // FormMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(230, 474);
+            ClientSize = new Size(449, 292);
+            Controls.Add(label2);
+            Controls.Add(cmbOpener);
             Controls.Add(btGo);
             Controls.Add(label1);
             Controls.Add(txtSymbols);
-            Name = "frmMain";
+            Name = "FormMain";
             Text = "Portal Opener";
             ResumeLayout(false);
             PerformLayout();
@@ -80,5 +101,7 @@
         private TextBox txtSymbols;
         private Label label1;
         private Button btGo;
+        private ComboBox cmbOpener;
+        private Label label2;
     }
 }
