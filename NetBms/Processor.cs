@@ -6,7 +6,7 @@ namespace NetBms
     internal class Processor
     {
         internal (Dictionary<string, int> buyDictionary, Dictionary<string, int> sellDictionary)
-            SumBuySellSignals(List<ChatGptBatchResult> batches)
+            SumBuySellFromBatches(List<ChatGptBatchResult> batches)
         {
             var buySymbolsRedundant = new List<string>();
             var sellSymbolsRedundant = new List<string>();
@@ -24,7 +24,7 @@ namespace NetBms
         }
 
         internal (Dictionary<string, int> netBuySignals, Dictionary<string, int> netSellSignals)
-            NetBuySellSignals(Dictionary<string, int> sumBuySignals, Dictionary<string, int> sumSellSignals)
+            NetBuySellFromSum(Dictionary<string, int> sumBuySignals, Dictionary<string, int> sumSellSignals)
         {
             Dictionary<string, int> netBuySignals = new Dictionary<string, int>();
             Dictionary<string, int> netSellSignals = new Dictionary<string, int>();
