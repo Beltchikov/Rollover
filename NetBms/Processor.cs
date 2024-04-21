@@ -29,7 +29,16 @@ namespace NetBms
         internal (Dictionary<string, int> netBuySignals, Dictionary<string, int> netSellSignals)
             NetBuySellSignals(Dictionary<string, int> sumBuySignals, Dictionary<string, int> sumSellSignals)
         {
-            throw new NotImplementedException();
+            Dictionary<string, int> netBuySignals = new Dictionary<string, int>();
+            Dictionary<string, int> netSellSignals = new Dictionary<string, int>();
+
+
+            foreach (var sumBuySignal in sumBuySignals)
+            {
+
+            }
+
+            return (netBuySignals, netSellSignals);
         }
 
         private Dictionary<string, int> NetSignalDictionaryFromRedundantSymbolList(List<string> redundantSymbolList)
