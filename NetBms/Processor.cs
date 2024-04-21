@@ -55,17 +55,20 @@ namespace NetBms
 
         private Dictionary<string, int> NetSignalDictionaryFromRedundantSymbolList(List<string> redundantSymbolList)
         {
-            var sortedDictionary = new SortedDictionary<string, int>();
-            var resultDictionary = new Dictionary<string, int>();
-            foreach (var symbol in redundantSymbolList)
-            {
-                if (!sortedDictionary.ContainsKey(symbol))
-                    sortedDictionary[symbol] = 1;
-                else sortedDictionary[symbol]++;
-            }
+            //var sortedDictionary = new SortedDictionary<string, int>();
+            //var resultDictionary = new Dictionary<string, int>();
+            //foreach (var symbol in redundantSymbolList)
+            //{
+            //    if (!sortedDictionary.ContainsKey(symbol))
+            //        sortedDictionary[symbol] = 1;
+            //    else sortedDictionary[symbol]++;
+            //}
+
+            var sortedDictionary = SortedDictionaryFromFromRedundantSymbolList(redundantSymbolList);
+
 
             var valuesSorted = sortedDictionary.Values.OrderDescending().ToList();
-
+            var resultDictionary = new Dictionary<string, int>();
             foreach (var value in valuesSorted)
             {
                 var keyValuePair = sortedDictionary.FirstOrDefault(d => d.Value == value);
@@ -74,6 +77,21 @@ namespace NetBms
             }
 
             return resultDictionary;
+
+        }
+
+        private SortedDictionary<string, int> SortedDictionaryFromFromRedundantSymbolList(List<string> redundantSymbolList)
+        {
+            var sortedDictionary = new SortedDictionary<string, int>();
+
+            foreach (var symbol in redundantSymbolList)
+            {
+                if (!sortedDictionary.ContainsKey(symbol))
+                    sortedDictionary[symbol] = 1;
+                else sortedDictionary[symbol]++;
+            }
+
+            return sortedDictionary;
 
         }
     }
