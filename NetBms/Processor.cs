@@ -48,5 +48,10 @@ namespace NetBms
             return resultDictionary;
 
         }
+
+        internal (Dictionary<string, int> netBuySignals, Dictionary<string, int> netSellSignals) NetBuySellSignals(Dictionary<string, int> sumBuySignals, Dictionary<string, int> sumSellSignals)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
