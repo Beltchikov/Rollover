@@ -25,33 +25,23 @@ namespace PortalOpener
         private void btGo_Click(object sender, EventArgs e)
         {
             var assemblyName = executingAssembly.FullName;
-            if (assemblyName != null)
-            {
-                var selectedItem = cmbOpener.SelectedItem;
-                if (selectedItem != null)
-                {
-                    var selectedOpenerFullName = selectedItem.ToString();
-                    if (selectedOpenerFullName != null)
-                    {
-                        var openerWraped = Activator.CreateInstance(assemblyName, selectedOpenerFullName.ToString());
-                        if (openerWraped != null)
-                        {
-                            var openerUnwrapped = openerWraped.Unwrap();
-                            if (openerUnwrapped != null)
-                            {
-                                var opener = (IOpener)openerUnwrapped;
-                                opener.Execute(new string[1]);
-                            }
-                            else throw new Exception("Unexpected! openerUnwrapped is null");
-                        }
-                        else
-                        {
-                            throw new Exception("Unexpected! openerWraped is null");
-                        }
-                    }
-                }
-            }
-            else throw new Exception("Unexpected! assemblyName is null");
+            if (assemblyName == null) throw new Exception("Unexpected! assemblyName is null");
+
+            var selectedItem = cmbOpener.SelectedItem;
+            if (selectedItem == null) throw new Exception("Unexpected! selectedItem is null");
+
+            var selectedOpenerFullName = selectedItem.ToString();
+            if (selectedOpenerFullName == null) throw new Exception("Unexpected! selectedOpenerFullName is null");
+
+            var openerWraped = Activator.CreateInstance(assemblyName, selectedOpenerFullName.ToString());
+            if (openerWraped == null) throw new Exception("Unexpected! openerWraped is null");
+
+            var openerUnwrapped = openerWraped.Unwrap();
+            if (openerUnwrapped == null) throw new Exception("Unexpected! openerUnwrapped is null");
+
+            var opener = (IOpener)openerUnwrapped;
+            var openerResult = opener.Execute(new string[1]);
+
         }
     }
 }
