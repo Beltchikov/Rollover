@@ -16,7 +16,7 @@ namespace PortalOpener
             Type[] openerTypes = executingAssembly.GetTypes()
                 .Where(t => t.GetInterfaces().Contains(typeof(IOpener)))
                 .ToArray();
-            openerNames = openerTypes.Select(t => t.FullName).ToArray();
+            openerNames = openerTypes.Select(t => t.FullName == null? "NULL" : t.FullName).ToArray();
 
             cmbOpener.Items.AddRange(openerNames);
         }
