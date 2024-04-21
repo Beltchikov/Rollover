@@ -51,7 +51,10 @@ namespace NetBms
             var netBuyOrderedBuyValue = processor.OrderDictionaryByValue(netBuySignals, false);
             var netSellOrderedBuyValue = processor.OrderDictionaryByValue(netSellSignals, false );
 
-            //txtChatGptBatchResults.Text += batchesAsStringArray;
+            txtBuyResults.Text = "";
+            txtBuyResults.Text += netBuyOrderedBuyValue
+                .Select(r=>r.Key + '\t' + r.Value.ToString())
+                .Aggregate((r,n)=>r + Environment.NewLine + n);
 
             txtErrors.Text = "";
             txtErrors.Text += notConvertableStrings.Aggregate((r,n)=>r + BATCH_SEPARATOR + n);

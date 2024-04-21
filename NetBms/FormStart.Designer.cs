@@ -32,7 +32,7 @@
             txtChatGptBatchResults = new TextBox();
             label1 = new Label();
             label2 = new Label();
-            txtNetBmsResults = new TextBox();
+            txtBuyResults = new TextBox();
             label3 = new Label();
             txtErrors = new TextBox();
             label4 = new Label();
@@ -76,24 +76,24 @@
             label2.TabIndex = 3;
             label2.Text = "NET_BMS";
             // 
-            // txtNetBmsResults
+            // txtBuyResults
             // 
-            txtNetBmsResults.BackColor = Color.LightCyan;
-            txtNetBmsResults.Location = new Point(543, 69);
-            txtNetBmsResults.Multiline = true;
-            txtNetBmsResults.Name = "txtNetBmsResults";
-            txtNetBmsResults.ScrollBars = ScrollBars.Vertical;
-            txtNetBmsResults.Size = new Size(444, 324);
-            txtNetBmsResults.TabIndex = 4;
+            txtBuyResults.BackColor = Color.LightCyan;
+            txtBuyResults.Location = new Point(543, 69);
+            txtBuyResults.Multiline = true;
+            txtBuyResults.Name = "txtBuyResults";
+            txtBuyResults.ScrollBars = ScrollBars.Vertical;
+            txtBuyResults.Size = new Size(207, 324);
+            txtBuyResults.TabIndex = 4;
             // 
             // label3
             // 
             label3.AutoSize = true;
             label3.Location = new Point(543, 51);
             label3.Name = "label3";
-            label3.Size = new Size(97, 15);
+            label3.Size = new Size(95, 15);
             label3.TabIndex = 5;
-            label3.Text = "NET_BMS Results";
+            label3.Text = "NET_BUY Results";
             // 
             // txtErrors
             // 
@@ -122,7 +122,7 @@
             Controls.Add(label4);
             Controls.Add(txtErrors);
             Controls.Add(label3);
-            Controls.Add(txtNetBmsResults);
+            Controls.Add(txtBuyResults);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(txtChatGptBatchResults);
@@ -139,7 +139,7 @@
         private TextBox txtChatGptBatchResults;
         private Label label1;
         private Label label2;
-        private TextBox txtNetBmsResults;
+        private TextBox txtBuyResults;
         private Label label3;
         private TextBox txtErrors;
         private Label label4;
