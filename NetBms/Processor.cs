@@ -8,9 +8,6 @@ namespace NetBms
         internal (Dictionary<string, int> buyDictionary, Dictionary<string, int> sellDictionary)
             SumBuySellSignals(List<ChatGptBatchResult> batches)
         {
-
-            var sellSortedDictionary = new SortedDictionary<string, int>();
-
             var buySymbolsRedundant = new List<string>();
             var sellSymbolsRedundant = new List<string>();
 
@@ -36,14 +33,14 @@ namespace NetBms
             foreach (var signal in sumBuySignals)
             {
                 var symbol = signal.Key;
-                if(sumSellSignals.ContainsKey(symbol))
+                if (sumSellSignals.ContainsKey(symbol))
                 {
                     int oppositeScore = sumSellSignals[symbol];
                     netBuySignals.Add(symbol, signal.Value - oppositeScore);
                 }
                 else
                 {
-                    netBuySignals.Add(symbol, signal.Value);   
+                    netBuySignals.Add(symbol, signal.Value);
                 }
             }
 
