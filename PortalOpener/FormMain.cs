@@ -6,20 +6,27 @@ namespace PortalOpener
 {
     public partial class FormMain : Form
     {
+        Assembly executingAssembly = Assembly.GetExecutingAssembly();
+        string[] openerNames;
+
         public FormMain()
         {
             InitializeComponent();
 
-            //this.cmbOpener.
-            //cmbOpener.Items.Add("Tokyo");
+            Type[] openerTypes = executingAssembly.GetTypes()
+                .Where(t => t.GetInterfaces().Contains(typeof(IOpener)))
+                .ToArray();
+            openerNames = openerTypes.Select(t => t.FullName).ToArray();
+
+            cmbOpener.Items.AddRange(openerNames);
         }
 
         private void btGo_Click(object sender, EventArgs e)
         {
-            var executingAssembly = Assembly.GetExecutingAssembly();
+            
 
-            var openerTypes = executingAssembly.GetTypes().Where(t => t.GetInterfaces().Contains(typeof(IOpener)));
-            var openerNames = openerTypes.Select(t => t.FullName).ToList();
+            
+            
 
             var assemblyName = executingAssembly.FullName;
             if (assemblyName != null)
