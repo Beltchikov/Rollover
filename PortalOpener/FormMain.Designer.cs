@@ -55,7 +55,7 @@
             // 
             // btGo
             // 
-            btGo.Location = new Point(363, 258);
+            btGo.Location = new Point(513, 258);
             btGo.Name = "btGo";
             btGo.Size = new Size(75, 23);
             btGo.TabIndex = 2;
@@ -68,7 +68,7 @@
             cmbOpener.FormattingEnabled = true;
             cmbOpener.Location = new Point(238, 47);
             cmbOpener.Name = "cmbOpener";
-            cmbOpener.Size = new Size(200, 23);
+            cmbOpener.Size = new Size(350, 23);
             cmbOpener.TabIndex = 3;
             // 
             // label2
@@ -84,7 +84,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(449, 292);
+            ClientSize = new Size(600, 292);
             Controls.Add(label2);
             Controls.Add(cmbOpener);
             Controls.Add(btGo);

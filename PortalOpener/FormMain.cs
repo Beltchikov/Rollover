@@ -19,6 +19,7 @@ namespace PortalOpener
             openerNames = openerTypes.Select(t => t.FullName == null? "NULL" : t.FullName).ToArray();
 
             cmbOpener.Items.AddRange(openerNames);
+            cmbOpener.SelectedItem = openerNames.First(n => n.EndsWith("SeekingAlphaOpener"));
         }
 
         private void btGo_Click(object sender, EventArgs e)
