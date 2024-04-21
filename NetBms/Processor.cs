@@ -56,14 +56,29 @@ namespace NetBms
         private Dictionary<string, int> NetSignalDictionaryFromRedundantSymbolList(List<string> redundantSymbolList)
         {
             var sortedDictionary = SortedDictionaryFromFromRedundantSymbolList(redundantSymbolList);
-            var valuesSorted = sortedDictionary.Values.OrderDescending().ToList();
-            
-            var resultDictionary = new Dictionary<string, int>();
+            var resultDictionary = OrderDictionaryByValue(sortedDictionary, false);
+            return resultDictionary;
+        }
+
+        private Dictionary<TKey, TValue> OrderDictionaryByValue<TKey, TValue>(
+            IDictionary<TKey, TValue> unorderedDictionary,
+            bool asc = true) where TKey : notnull
+        {
+            Dictionary<TKey, TValue> unorderdCopy = new(unorderedDictionary);
+
+            var valuesSorted = asc
+                ? unorderedDictionary.Values.Order().ToList()
+                : unorderedDictionary.Values.OrderDescending().ToList();
+
+            var resultDictionary = new Dictionary<TKey, TValue>();
             foreach (var value in valuesSorted)
             {
-                var keyValuePair = sortedDictionary.FirstOrDefault(d => d.Value == value);
-                resultDictionary.Add(keyValuePair.Key, keyValuePair.Value);
-                sortedDictionary.Remove(keyValuePair.Key);
+                KeyValuePair<TKey, TValue>? keyValuePair = unorderedDictionary
+                    .FirstOrDefault(d => d.Value == null ? false : d.Value.Equals(value));
+                if (keyValuePair == null) continue;
+
+                resultDictionary.Add(keyValuePair.Value.Key, keyValuePair.Value.Value);
+                unorderedDictionary.Remove(keyValuePair.Value.Key);
             }
 
             return resultDictionary;
