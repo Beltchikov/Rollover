@@ -18,7 +18,10 @@ namespace NetBms
         {
             var input = txtChatGptBatchResults.Text;
             
-            var batchesAsStringArray = input.Split(BATCH_SEPARATOR);
+            var batchesAsStringArray = input
+                .Split(BATCH_SEPARATOR)
+                .Select(s=>s.Trim())
+                .ToArray();
             var batches = new List<ChatGptBatchResult>();
             var notConvertableStrings = new List<string>();
             foreach ( var batch in batchesAsStringArray )

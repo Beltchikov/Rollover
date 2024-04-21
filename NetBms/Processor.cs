@@ -35,7 +35,11 @@ namespace NetBms
 
             foreach (var sumBuySignal in sumBuySignals)
             {
+                var symbol = sumBuySignal.Key;
+                if(sumSellSignals.ContainsKey(symbol))
+                {
 
+                }
             }
 
             return (netBuySignals, netSellSignals);
