@@ -22,8 +22,23 @@
             Connected="{Binding ConnectedToTws, Mode=OneWay}"
             Command="{Binding ConnectToTwsCommand, Mode=OneWay}" />
 
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0">Symbols:</Label>
+            <TextBox Grid.Row="1" x:Name="txtSymbols" HorizontalAlignment="Left" 
+                     TextWrapping="Wrap" Text="" VerticalAlignment="Stretch" 
+                     AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
+                     Width="220" />
+        </Grid>
+
         <tws_uc:TwsInformation Grid.Row="2" MessageCollection="{Binding TwsMessageCollection}">
         </tws_uc:TwsInformation>
+
+
+
 
     </Grid>
 </Window>
