@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PortfolioTrader"
         xmlns:tws_uc="clr-namespace:TwsUserControls;assembly=TwsUserControls"
         mc:Ignorable="d"
-        Title="BuyWindow" Height="800" Width="800">
+        Title="BuyWindow" Height="800" Width="800" Background="#FF5A74A9">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
@@ -22,12 +22,12 @@
             Connected="{Binding ConnectedToTws, Mode=OneWay}"
             Command="{Binding ConnectToTwsCommand, Mode=OneWay}" />
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Margin="16 0 0 0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <Label Grid.Row="0">Symbols:</Label>
+            <Label Grid.Row="0" Foreground="White">Symbols:</Label>
             <TextBox Grid.Row="1" x:Name="txtSymbols" HorizontalAlignment="Left" 
                      TextWrapping="Wrap" Text="" VerticalAlignment="Stretch" 
                      AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
