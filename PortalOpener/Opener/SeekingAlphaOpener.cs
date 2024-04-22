@@ -13,12 +13,8 @@ namespace PortalOpener.Opener
         {
             var url = "https://seekingalpha.com/symbol/";
 
-            // TODO
-            var symbolBatch = symbols
+            var arguments = symbols
                 .Where(s => !string.IsNullOrWhiteSpace(s))
-                .Take(100);
-
-            var arguments = symbolBatch
                 .Select(s => url+s.Trim())
                 .Aggregate((r,n)=>r+ " " +n);
 

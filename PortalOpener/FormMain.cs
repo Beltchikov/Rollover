@@ -14,12 +14,17 @@ namespace PortalOpener
         {
             InitializeComponent();
 
-            LoadTestData();
+            //LoadTestData();
+            LoadTestData50();
+            Initialize();
+        }
 
+        private void Initialize()
+        {
             Type[] openerTypes = executingAssembly.GetTypes()
-                .Where(t => t.GetInterfaces().Contains(typeof(IOpener)))
-                .ToArray();
-            openerNames = openerTypes.Select(t => t.FullName == null? "NULL" : t.FullName).ToArray();
+                            .Where(t => t.GetInterfaces().Contains(typeof(IOpener)))
+                            .ToArray();
+            openerNames = openerTypes.Select(t => t.FullName == null ? "NULL" : t.FullName).ToArray();
 
             cmbOpener.Items.AddRange(openerNames);
             cmbOpener.SelectedItem = openerNames.First(n => n.EndsWith("SeekingAlphaOpener"));
@@ -204,5 +209,60 @@ XPEV
 DKNG
 ";
         }
+
+        private void LoadTestData50()
+        {
+            txtSymbols.Text = @"PYPL
+CRM
+ABT
+JNJ
+MA
+NOW
+PG
+AAPL
+ABBV
+ACN
+ADBE
+AMZN
+BAC
+BMY
+CMCSA
+CSCO
+DIS
+GOOGL
+HD
+INTC
+JPM
+KO
+MRK
+MSFT
+NFLX
+NVDA
+PEP
+SBUX
+T
+TSLA
+UNH
+UPS
+V
+VZ
+WMT
+AMD
+COST
+FB
+FDX
+GS
+MCD
+NKE
+NOC
+ORCL
+QCOM
+TGT
+CI
+LOW
+TMO
+";
+        }
+
     }
 }
