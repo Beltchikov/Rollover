@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="BuyWindow" Height="800" Width="800" Background="#FF5A74A9">
     <Grid>
-        <Grid.RowDefinitions>
+       <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
             <RowDefinition />
             <RowDefinition Height="500"/>
@@ -20,22 +20,33 @@
             Port="{Binding Port, Mode=OneWay}"
             ClientId="{Binding ClientId, Mode=OneWay}"
             Connected="{Binding ConnectedToTws, Mode=OneWay}"
-            Command="{Binding ConnectToTwsCommand, Mode=OneWay}" />
+            Command="{Binding ConnectToTwsCommand, Mode=OneWay}" Grid.ColumnSpan="2" />
 
-        <Grid Grid.Row="1" Margin="16 0 0 0">
+        <Grid Grid.Row="1" Margin="16,0,0,0" Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition />
             </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="240"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
             <Label Grid.Row="0" Foreground="White">Symbols and NET__BMS Score:</Label>
             <TextBox Text="{Binding SymbolsAsString}"
                     Grid.Row="1" x:Name="txtSymbols" HorizontalAlignment="Left" 
                      TextWrapping="Wrap" VerticalAlignment="Stretch" 
                      AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
                      Width="220" />
+
+            <Button Grid.Column="1" Grid.Row="1" Height="30"  
+                    HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                    Padding="15 0 15 0">
+                To the Symbol Check >>
+            </Button>
         </Grid>
 
-        <tws_uc:TwsInformation Grid.Row="2" MessageCollection="{Binding TwsMessageCollection}">
+        <tws_uc:TwsInformation Grid.Row="1" MessageCollection="{Binding TwsMessageCollection}" Grid.ColumnSpan="2" Margin="0,214,0,0" Grid.RowSpan="2">
         </tws_uc:TwsInformation>
 
 
