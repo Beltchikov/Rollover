@@ -9,6 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IbClient\IbClient.csproj" />
     <ProjectReference Include="..\TwsUserControls\TwsUserControls.csproj" />
   </ItemGroup>
 
