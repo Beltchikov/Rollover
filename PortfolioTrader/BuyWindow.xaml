@@ -27,7 +27,7 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <Label Grid.Row="0" Foreground="White">Symbols:</Label>
+            <Label Grid.Row="0" Foreground="White">Symbols and NET__BMS Score:</Label>
             <TextBox Text="{Binding SymbolsAsString}"
                     Grid.Row="1" x:Name="txtSymbols" HorizontalAlignment="Left" 
                      TextWrapping="Wrap" VerticalAlignment="Stretch" 
