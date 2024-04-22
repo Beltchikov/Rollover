@@ -36,6 +36,7 @@ namespace IbClient.IbHost
             _ibClient.ManagedAccounts += _ibClient_ManagedAccounts;
             _ibClient.ConnectionClosed += _ibClient_ConnectionClosed;
             _ibClient.ContractDetails += _ibClient_ContractDetails;
+            _ibClient.SymbolSamples += _ibClient_SymbolSamples;
             _ibClient.FundamentalData += _ibClient_FundamentalData;
             _ibClient.TickPrice += _ibClient_TickPrice;
             _ibClient.TickSnapshotEnd += _ibClient_TickSnapshotEnd;
@@ -93,7 +94,7 @@ namespace IbClient.IbHost
             await Task.Run(() =>
             {
                 var startTime = DateTime.Now;
-                while ((DateTime.Now - startTime).TotalMilliseconds < timeout 
+                while ((DateTime.Now - startTime).TotalMilliseconds < timeout
                     && !_queue.DequeueMessage(reqId, out contractDetailsMessage)) { }
 
                 if (contractDetailsMessage != null)
@@ -103,6 +104,24 @@ namespace IbClient.IbHost
             });
 
             return contractDetails;
+        }
+
+        public async Task<SymbolSamplesMessage> RequestMatchingSymbolsAsync(string symbol, int timeout)
+        {
+            SymbolSamplesMessage symbolSamplesMessage = null;
+            var reqId = ++_currentReqId;
+            _ibClient.ClientSocket.reqMatchingSymbols(reqId, symbol);
+
+            await Task.Run(() =>
+            {
+                var startTime = DateTime.Now;
+                while (!_queue.DequeueMessage(reqId, out symbolSamplesMessage)
+                    && (DateTime.Now - startTime).TotalMilliseconds < timeout) { }
+
+                return symbolSamplesMessage;
+            });
+
+            return symbolSamplesMessage;
         }
 
         public async Task<string> RequestFundamentalDataAsync(Contract contract, string reportType, int timeout)
@@ -209,7 +228,7 @@ namespace IbClient.IbHost
             return price;
         }
 
-        
+
         public async Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout)
         {
             _ibClient.ClientSocket.reqIds(-1);
@@ -338,6 +357,16 @@ namespace IbClient.IbHost
             Consumer.TwsMessageCollection?.Add($"ContractDetailsMessage for {contractDetailsMessage.ContractDetails.Contract.LocalSymbol} " +
                 $"conId:{contractDetailsMessage.ContractDetails.Contract.ConId}");
             _queue.Enqueue(contractDetailsMessage);
+        }
+
+        private void _ibClient_SymbolSamples(SymbolSamplesMessage symbolSamplesMessage)
+        {
+            if (Consumer == null)
+            {
+                throw new ApplicationException("Unexpected! Consumer is null");
+            }
+            Consumer.TwsMessageCollection?.Add($"SymbolSamplesMessage for {symbolSamplesMessage.ReqId}");
+            _queue.Enqueue(symbolSamplesMessage);
         }
 
         private void _ibClient_FundamentalData(FundamentalsMessage fundamentalsMessage)

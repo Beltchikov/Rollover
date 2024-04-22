@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using IBApi;
 using IbClient.IbHost;
+using IbClient.messages;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -46,7 +48,7 @@ namespace PortfolioTrader
                 }
             });
 
-            SymbolCheckCommand = new RelayCommand(() =>
+            SymbolCheckCommand = new RelayCommand(async () =>
             {
                 //MessageBox.Show("SymbolCheckCommand");
 
@@ -64,8 +66,11 @@ namespace PortfolioTrader
                     })
                     .ToDictionary();
 
-                var t = 0;
-                //ibHost.RequestMatchingSymbols(string pattern, TIMEOUT);
+                foreach(var symbol in symbolAndScoreAsDictionary.Keys)
+                {
+                    SymbolSamplesMessage symbolSamplesMessage = await ibHost.RequestMatchingSymbolsAsync(symbol, TIMEOUT);
+                }
+                
 
 
 

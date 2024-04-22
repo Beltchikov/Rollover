@@ -130,6 +130,12 @@ namespace IbClient.IbHost
                 return openOrderMessage?.OrderId == reqId;
             }
 
+            if (message is SymbolSamplesMessage)
+            {
+                var symbolSamplesMessage = message as SymbolSamplesMessage;
+                return symbolSamplesMessage?.ReqId == reqId;
+            }
+
             throw new NotImplementedException();
         }
     }
