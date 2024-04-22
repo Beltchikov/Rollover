@@ -56,9 +56,13 @@ namespace PortfolioTrader
                     .Where(s => !string.IsNullOrWhiteSpace(s))
                     .Select(s => s.Trim())
                     .ToList();
-                var symbolArray = symbolAndScoreArray
-                    .Select(s => s.Split(([' ' ,'\t']))[0].Trim())
-                    .ToList();
+                var symbolAndScoreAsDictionary = symbolAndScoreArray
+                    .Select(s => { 
+                        var splitted = s.Split([' ', '\t']).Select(s=>s.Trim()).ToList();
+                        if (splitted != null) return new KeyValuePair<string, int>(splitted[0], Convert.ToInt32(splitted[1]));
+                        throw new Exception($"Unexpected. Can not build key value pair from the string {s}");
+                    })
+                    .ToDictionary();
 
                 var t = 0;
                 //ibHost.RequestMatchingSymbols(string pattern, TIMEOUT);
