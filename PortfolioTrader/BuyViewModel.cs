@@ -13,6 +13,8 @@ namespace PortfolioTrader
 {
     public class BuyViewModel : ObservableObject, IIbConsumer
     {
+        const int TIMEOUT = 1000;
+
         IIbHostQueue ibHostQueue = null!;
         IIbHost ibHost = null!;
 
@@ -46,7 +48,23 @@ namespace PortfolioTrader
 
             SymbolCheckCommand = new RelayCommand(() =>
             {
-                MessageBox.Show("SymbolCheckCommand");
+                //MessageBox.Show("SymbolCheckCommand");
+
+                ibHost.Consumer = ibHost.Consumer ?? this;
+
+                var symbolAndScoreArray = SymbolsAsString.Split(Environment.NewLine)
+                    .Where(s => !string.IsNullOrWhiteSpace(s))
+                    .Select(s => s.Trim())
+                    .ToList();
+                var symbolArray = symbolAndScoreArray
+                    .Select(s => s.Split(([' ' ,'\t']))[0].Trim())
+                    .ToList();
+
+                var t = 0;
+                //ibHost.RequestMatchingSymbols(string pattern, TIMEOUT);
+
+
+
             });
 
             SymbolsAsString = TestData();
