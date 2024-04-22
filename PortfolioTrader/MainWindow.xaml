@@ -12,8 +12,8 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <Button x:Name="btBuy" Content="Buy" Grid.Column="0" Background="#FFA5E836"/>
-        <Button x:Name="btSell" Content="Sell" Grid.Column="1" Background="#FFEFA79F"/>
+        <Button x:Name="btBuy" Content="Buy" Grid.Column="0" Background="#FFA5E836" Click="btBuy_Click"/>
+        <Button x:Name="btSell" Content="Sell" Grid.Column="1" Background="#FFEFA79F" Click="btSell_Click"/>
 
     </Grid>
  

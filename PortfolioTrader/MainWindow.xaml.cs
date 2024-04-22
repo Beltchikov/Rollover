@@ -20,5 +20,17 @@ namespace PortfolioTrader
         {
             InitializeComponent();
         }
+
+        private void btBuy_Click(object sender, RoutedEventArgs e)
+        {
+            var buyWindow = new BuyWindow();
+            buyWindow.Show();
+        }
+
+        private void btSell_Click(object sender, RoutedEventArgs e)
+        {
+            var sellWindow = new SellWindow();
+            sellWindow.Show();
+        }
     }
 }
