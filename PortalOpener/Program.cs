@@ -2,6 +2,9 @@ namespace PortalOpener
 {
     internal static class Program
     {
+        
+        public static string CHROME_PATH=@"C:\Program Files\Google\Chrome\Application\chrome.exe";
+        
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,20 @@ namespace PortalOpener.Opener
     {
         public string Execute(string[] symbols)
         {
-            MessageBox.Show("SeekingAlphaOpener");
+           // MessageBox.Show("SeekingAlphaOpener");
+
+            var process = new Process
+            {
+                StartInfo =
+                {
+                    FileName = Program.CHROME_PATH,
+                    //WorkingDirectory = @"C:\myproject",
+                    Arguments = "https://seekingalpha.com/symbol/GOOG https://seekingalpha.com/symbol/MSFT"
+                }
+            };
+
+            process.Start();
+
             return "";
         }
     }
