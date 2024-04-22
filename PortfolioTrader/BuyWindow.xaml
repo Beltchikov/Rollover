@@ -6,14 +6,24 @@
         xmlns:local="clr-namespace:PortfolioTrader"
         xmlns:tws_uc="clr-namespace:TwsUserControls;assembly=TwsUserControls"
         mc:Ignorable="d"
-        Title="BuyWindow" Height="450" Width="800">
+        Title="BuyWindow" Height="800" Width="800">
     <Grid>
-        <tws_uc:TwsConnection Grid.Column="1" Grid.Row="1"  Grid.ColumnSpan="3" 
-    Host="{Binding Host, Mode=OneWay}"
-    Port="{Binding Port, Mode=OneWay}"
-    ClientId="{Binding ClientId, Mode=OneWay}"
-    Connected="{Binding ConnectedToTws, Mode=OneWay}"
-    Command="{Binding ConnectToTwsCommand, Mode=OneWay}">
-        </tws_uc:TwsConnection>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition />
+            <RowDefinition Height="500"/>
+        </Grid.RowDefinitions>
+
+        <tws_uc:TwsConnection 
+            Grid.Row="0"
+            Host="{Binding Host, Mode=OneWay}"
+            Port="{Binding Port, Mode=OneWay}"
+            ClientId="{Binding ClientId, Mode=OneWay}"
+            Connected="{Binding ConnectedToTws, Mode=OneWay}"
+            Command="{Binding ConnectToTwsCommand, Mode=OneWay}" />
+
+        <tws_uc:TwsInformation Grid.Row="2" MessageCollection="{Binding TwsMessageCollection}">
+        </tws_uc:TwsInformation>
+
     </Grid>
 </Window>
