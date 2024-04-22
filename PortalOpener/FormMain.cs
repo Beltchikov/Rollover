@@ -13,6 +13,8 @@ namespace PortalOpener
         {
             InitializeComponent();
 
+            LoadTestData();
+
             Type[] openerTypes = executingAssembly.GetTypes()
                 .Where(t => t.GetInterfaces().Contains(typeof(IOpener)))
                 .ToArray();
@@ -20,6 +22,12 @@ namespace PortalOpener
 
             cmbOpener.Items.AddRange(openerNames);
             cmbOpener.SelectedItem = openerNames.First(n => n.EndsWith("SeekingAlphaOpener"));
+        }
+
+        private void LoadTestData()
+        {
+            txtSymbols.Text = @"GOOG
+MSFT";
         }
 
         private void btGo_Click(object sender, EventArgs e)

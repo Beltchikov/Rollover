@@ -19,7 +19,7 @@ namespace PortalOpener.Opener
                 {
                     FileName = Program.CHROME_PATH,
                     //WorkingDirectory = @"C:\myproject",
-                    Arguments = "https://seekingalpha.com/symbol/GOOG https://seekingalpha.com/symbol/MSFT"
+                    Arguments = ""
                 }
             };
 
