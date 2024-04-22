@@ -6,6 +6,7 @@ namespace PortalOpener
 {
     public partial class FormMain : Form
     {
+        const int MAX_SYMBOLS = 50;
         Assembly executingAssembly = Assembly.GetExecutingAssembly();
         string[] openerNames;
 
@@ -26,6 +27,19 @@ namespace PortalOpener
 
         private void btGo_Click(object sender, EventArgs e)
         {
+            var symbols = txtSymbols.Text.Split(Environment.NewLine);
+            if (symbols.Length > MAX_SYMBOLS)
+            {
+                MessageBox.Show($"Number of symbols may not exceed {MAX_SYMBOLS}");
+                return;
+            }
+
+            RunOpener(symbols);
+
+        }
+
+        private void RunOpener(string[] symbols)
+        {
             var assemblyName = executingAssembly.FullName;
             if (assemblyName == null) throw new Exception("Unexpected! assemblyName is null");
 
@@ -42,9 +56,7 @@ namespace PortalOpener
             if (openerUnwrapped == null) throw new Exception("Unexpected! openerUnwrapped is null");
 
             var opener = (IOpener)openerUnwrapped;
-            var symbols = txtSymbols.Text.Split(Environment.NewLine);
             var openerResult = opener.Execute(symbols);
-
         }
 
         private void LoadTestData()

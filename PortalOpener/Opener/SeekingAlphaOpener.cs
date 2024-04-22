@@ -16,7 +16,7 @@ namespace PortalOpener.Opener
             // TODO
             var symbolBatch = symbols
                 .Where(s => !string.IsNullOrWhiteSpace(s))
-                .Take(50);
+                .Take(100);
 
             var arguments = symbolBatch
                 .Select(s => url+s.Trim())
