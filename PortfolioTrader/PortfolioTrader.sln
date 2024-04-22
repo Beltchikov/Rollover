@@ -5,6 +5,8 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioTrader", "PortfolioTrader.csproj", "{73F26EC4-1502-4F1D-9EF5-9DDC71DD40D1}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwsUserControls", "..\TwsUserControls\TwsUserControls.csproj", "{F9EC11AA-1786-470D-850D-AD5282103869}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{73F26EC4-1502-4F1D-9EF5-9DDC71DD40D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73F26EC4-1502-4F1D-9EF5-9DDC71DD40D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73F26EC4-1502-4F1D-9EF5-9DDC71DD40D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9EC11AA-1786-470D-850D-AD5282103869}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9EC11AA-1786-470D-850D-AD5282103869}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9EC11AA-1786-470D-850D-AD5282103869}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9EC11AA-1786-470D-850D-AD5282103869}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

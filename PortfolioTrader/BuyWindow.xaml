@@ -4,9 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PortfolioTrader"
+        xmlns:tws_uc="clr-namespace:TwsUserControls;assembly=TwsUserControls"
         mc:Ignorable="d"
         Title="BuyWindow" Height="450" Width="800">
     <Grid>
-        
+        <tws_uc:TwsConnection Grid.Column="1" Grid.Row="1"  Grid.ColumnSpan="3" 
+    Host="{Binding Host, Mode=OneWay}"
+    Port="{Binding Port, Mode=OneWay}"
+    ClientId="{Binding ClientId, Mode=OneWay}"
+    Connected="{Binding ConnectedToTws, Mode=OneWay}"
+    Command="{Binding ConnectToTwsCommand, Mode=OneWay}">
+        </tws_uc:TwsConnection>
     </Grid>
 </Window>
