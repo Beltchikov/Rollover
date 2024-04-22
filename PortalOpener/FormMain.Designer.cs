@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             txtSymbols = new TextBox();
             label1 = new Label();
             btGo = new Button();
@@ -90,6 +91,7 @@
             Controls.Add(btGo);
             Controls.Add(label1);
             Controls.Add(txtSymbols);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormMain";
             Text = "Portal Opener";
             ResumeLayout(false);
