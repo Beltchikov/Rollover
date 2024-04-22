@@ -5,14 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PortfolioTrader"
         mc:Ignorable="d"
-        Title="Portfolio Trader" Height="450" Width="800">
+        Title="Portfolio Trader" Height="80" Width="350">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="29*"/>
-            <ColumnDefinition Width="19*"/>
-            <ColumnDefinition Width="751*"/>
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
+        <Button x:Name="btBuy" Content="Buy" Grid.Column="0" Background="#FFA5E836"/>
+        <Button x:Name="btSell" Content="Sell" Grid.Column="1" Background="#FFEFA79F"/>
+
     </Grid>
+ 
 </Window>
