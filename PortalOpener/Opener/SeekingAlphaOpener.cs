@@ -11,15 +11,23 @@ namespace PortalOpener.Opener
     {
         public string Execute(string[] symbols)
         {
-           // MessageBox.Show("SeekingAlphaOpener");
+            var url = "https://seekingalpha.com/symbol/";
+
+            // TODO
+            var symbolBatch = symbols
+                .Where(s => !string.IsNullOrWhiteSpace(s))
+                .Take(50);
+
+            var arguments = symbolBatch
+                .Select(s => url+s.Trim())
+                .Aggregate((r,n)=>r+ " " +n);
 
             var process = new Process
             {
                 StartInfo =
                 {
                     FileName = Program.CHROME_PATH,
-                    //WorkingDirectory = @"C:\myproject",
-                    Arguments = ""
+                    Arguments = arguments
                 }
             };
 
