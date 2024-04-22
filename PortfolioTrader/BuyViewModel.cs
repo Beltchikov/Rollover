@@ -24,6 +24,7 @@ namespace PortfolioTrader
         private string _symbolsAsString;
 
         public ICommand ConnectToTwsCommand { get; }
+        public ICommand SymbolCheckCommand { get; }
 
         public BuyViewModel()
         {
@@ -41,6 +42,11 @@ namespace PortfolioTrader
                 {
                     ibHost.Disconnect();
                 }
+            });
+
+            SymbolCheckCommand = new RelayCommand(() =>
+            {
+                MessageBox.Show("SymbolCheckCommand");
             });
 
             SymbolsAsString = TestData();
