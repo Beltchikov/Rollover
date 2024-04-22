@@ -28,8 +28,9 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Foreground="White">Symbols:</Label>
-            <TextBox Grid.Row="1" x:Name="txtSymbols" HorizontalAlignment="Left" 
-                     TextWrapping="Wrap" Text="" VerticalAlignment="Stretch" 
+            <TextBox Text="{Binding SymbolsAsString}"
+                    Grid.Row="1" x:Name="txtSymbols" HorizontalAlignment="Left" 
+                     TextWrapping="Wrap" VerticalAlignment="Stretch" 
                      AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
                      Width="220" />
         </Grid>
