@@ -29,22 +29,22 @@
               Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
-                <RowDefinition Height="65"/>
-                <RowDefinition Height="65"/>
-                <RowDefinition Height="65"/>
-                <RowDefinition Height="65"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="60"/>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="30" />
-                <RowDefinition Height="65"/>
-                <RowDefinition Height="65"/>
-                <RowDefinition Height="65"/>
-                <RowDefinition Height="65"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="60"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="230"/>
                 <ColumnDefinition Width="120"/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="120"/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -71,16 +71,22 @@
                 Check Symbols >>
             </Button>
 
-            <Label Name="lblResolvedLong" Grid.Row="0" Grid.Column="2" Foreground="White">Results: Resolved Long Symbols (N):</Label>
+            <Label Name="lblResolvedLong" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2"
+                   Foreground="White">Results: Resolved Long Symbols (N):</Label>
             <TextBox x:Name="txtLongSymbolsResolved" Text="{Binding LongSymbolsResolved}"
-                 Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" 
+                 Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" 
                   TextWrapping="Wrap" VerticalAlignment="Stretch" 
                   AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
                    Width="220" />
 
-            <Label Name="lblResolvedShort" Grid.Row="6" Grid.Column="2" Foreground="White">Results: Resolved Short Symbols (N):</Label>
+            <Label Name="lblUnresolvedLong" Grid.Row="3" Grid.Column="2" Foreground="White">Unresolved (N):</Label>
+
+            <Label Name="lblMultipleLong" Grid.Row="3" Grid.Column="3" Foreground="White">Multiple (N):</Label>
+
+            <Label Name="lblResolvedShort" Grid.Row="6" Grid.Column="2"  Grid.ColumnSpan="2"
+                   Foreground="White">Results: Resolved Short Symbols (N):</Label>
             <TextBox x:Name="txtShortSymbolsResolved" Text="{Binding ShortSymbolsResolved}"
-              Grid.Row="7" Grid.Column="2" HorizontalAlignment="Left" 
+              Grid.Row="7" Grid.Column="2"  Grid.ColumnSpan="2" HorizontalAlignment="Left" 
                TextWrapping="Wrap" VerticalAlignment="Stretch" 
                AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
                Width="220" />
