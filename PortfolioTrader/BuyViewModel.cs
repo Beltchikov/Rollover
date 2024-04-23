@@ -63,6 +63,7 @@ namespace PortfolioTrader
                 if (!ConnectedToTws) ConnectToTwsCommand?.Execute(null);
                 ibHost.Consumer = ibHost.Consumer ?? this;
                 
+                // Long
                 var longSymbolAndScoreArray = LongSymbolsAsString.Split(Environment.NewLine)
                     .Where(s => !string.IsNullOrWhiteSpace(s))
                     .Select(s => s.Trim())
@@ -75,7 +76,7 @@ namespace PortfolioTrader
                         throw new Exception($"Unexpected. Can not build key value pair from the string {s}");
                     })
                     .ToDictionary();
-                TwsMessageCollection?.Add($"{longSymbolAndScoreAsDictionary.Count()} symbols to resolve.");
+                TwsMessageCollection?.Add($"{longSymbolAndScoreAsDictionary.Count()} long symbols to resolve.");
 
                 var longResolved = new Dictionary<string, int>();
                 var longUnresolved = new Dictionary<string, int>();
@@ -125,17 +126,35 @@ namespace PortfolioTrader
                     LongSymbolsUnresolved = longUnresolved
                        .Select(r => r.Key + "\t" + r.Value.ToString())
                        .Aggregate((r, n) => r + Environment.NewLine + n);
-                   
-
-                    MessageBox.Show($@"LONG
+                 });
+                var longMessage = $@"LONG
 resolved: {longResolved.Count}
 multiple: {longMultiple.Count}
 unresolved: {longUnresolved}
 
 SHORT
-todo");
+todo";
+                TwsMessageCollection?.Add(longMessage);
 
-                });
+                // Short
+                var shortSymbolAndScoreArray = ShortSymbolsAsString.Split(Environment.NewLine)
+                    .Where(s => !string.IsNullOrWhiteSpace(s))
+                    .Select(s => s.Trim())
+                    .ToList();
+                var shortSymbolAndScoreAsDictionary = shortSymbolAndScoreArray
+                   .Select(s =>
+                   {
+                       var splitted = s.Split([' ', '\t']).Select(s => s.Trim()).ToList();
+                       if (splitted != null) return new KeyValuePair<string, int>(splitted[0], Convert.ToInt32(splitted[1]));
+                       throw new Exception($"Unexpected. Can not build key value pair from the string {s}");
+                   })
+                   .ToDictionary();
+                TwsMessageCollection?.Add($"{shortSymbolAndScoreAsDictionary.Count()} short symbols to resolve.");
+
+                // TODO
+
+
+                MessageBox.Show(longMessage + Environment.NewLine + "TODO");
             });
 
 
