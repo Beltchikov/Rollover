@@ -33,9 +33,11 @@ namespace PortfolioTrader
         private string _shortSymbolsResolved;
         private string _shortSymbolsUnresolved;
         private string _shortSymbolsMultiple;
-        
+
         public ICommand ConnectToTwsCommand { get; }
         public ICommand SymbolCheckCommand { get; }
+        public ICommand CalculateWeightsCommand { get; }
+
 
         public BuyViewModel()
         {
@@ -110,6 +112,13 @@ namespace PortfolioTrader
 
                 var t = 0;
 
+            });
+
+
+            CalculateWeightsCommand = new RelayCommand(() =>
+            {
+                ibHost.Consumer = ibHost.Consumer ?? this;
+                MessageBox.Show("Calculate Weights");
             });
 
             LongSymbolsAsString = TestDataLong();
