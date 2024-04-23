@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using IBApi;
 using IbClient.IbHost;
 using IbClient.messages;
+using PortfolioTrader.Commands;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -13,7 +14,7 @@ using System.Windows.Input;
 
 namespace PortfolioTrader
 {
-    public class BuyViewModel : ObservableObject, IIbConsumer
+    public class BuyViewModel : ObservableObject, IIbConsumer, ICommandVisitor
     {
         const int TIMEOUT = 1000;
         private readonly string SEC_TYPE_STK = "STK";
@@ -44,19 +45,9 @@ namespace PortfolioTrader
         {
             IIbHostQueue ibHostQueue = new IbHostQueue();
             if (ibHostQueue != null) ibHost = new IbHost(ibHostQueue);
+            ibHost.Consumer = ibHost.Consumer ?? this;
 
-            ConnectToTwsCommand = new RelayCommand(() =>
-            {
-                ibHost.Consumer = ibHost.Consumer ?? this;
-                if (!ibHost.Consumer.ConnectedToTws)
-                {
-                    ibHost.ConnectAndStartReaderThread(Host, Port, ClientId, 1000);
-                }
-                else
-                {
-                    ibHost.Disconnect();
-                }
-            });
+            ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
 
             SymbolCheckCommand = new RelayCommand(async () =>
             {
@@ -151,6 +142,9 @@ unresolved: {shortUnresolved.Count}";
             LongSymbolsAsString = TestDataLong();
             ShortSymbolsAsString = TestDataShort();
         }
+
+        public IIbHost IbHost => ibHost;
+        public int Timeout => TIMEOUT;
 
         public string Host
         {
