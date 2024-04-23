@@ -130,7 +130,7 @@ namespace PortfolioTrader
                 var longMessage = $@"LONG
 resolved: {longResolved.Count}
 multiple: {longMultiple.Count}
-unresolved: {longUnresolved}
+unresolved: {longUnresolved.Count}
 
 SHORT
 todo";
@@ -151,8 +151,9 @@ todo";
                    .ToDictionary();
                 TwsMessageCollection?.Add($"{shortSymbolAndScoreAsDictionary.Count()} short symbols to resolve.");
 
-                // TODO
-
+                var shortResolved = new Dictionary<string, int>();
+                var shortUnresolved = new Dictionary<string, int>();
+                var shortMultiple = new Dictionary<string, int>();
 
                 MessageBox.Show(longMessage + Environment.NewLine + "TODO");
             });
