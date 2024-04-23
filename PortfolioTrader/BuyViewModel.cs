@@ -25,7 +25,7 @@ namespace PortfolioTrader
         private int _clientId = 1;
         private bool _connectedToTws;
         private ObservableCollection<string> _twsMessageColllection = new ObservableCollection<string>();
-        private string _symbolsAsString;
+        private string _longSymbolsAsString;
 
         public ICommand ConnectToTwsCommand { get; }
         public ICommand SymbolCheckCommand { get; }
@@ -52,7 +52,7 @@ namespace PortfolioTrader
             {
                 if (!ConnectedToTws) ConnectToTwsCommand?.Execute(null);
                 ibHost.Consumer = ibHost.Consumer ?? this;
-                var symbolAndScoreArray = SymbolsAsString.Split(Environment.NewLine)
+                var symbolAndScoreArray = LongSymbolsAsString.Split(Environment.NewLine)
                     .Where(s => !string.IsNullOrWhiteSpace(s))
                     .Select(s => s.Trim())
                     .ToList();
@@ -103,7 +103,7 @@ namespace PortfolioTrader
 
             });
 
-            SymbolsAsString = TestData();
+            LongSymbolsAsString = TestData();
         }
 
         public string Host
@@ -150,12 +150,12 @@ namespace PortfolioTrader
                 SetProperty(ref _twsMessageColllection, value);
             }
         }
-        public string SymbolsAsString
+        public string LongSymbolsAsString
         {
-            get => _symbolsAsString;
+            get => _longSymbolsAsString;
             set
             {
-                SetProperty(ref _symbolsAsString, value);
+                SetProperty(ref _longSymbolsAsString, value);
             }
         }
 
