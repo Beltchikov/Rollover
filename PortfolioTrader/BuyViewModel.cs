@@ -53,7 +53,6 @@ namespace PortfolioTrader
                 //MessageBox.Show("SymbolCheckCommand");
 
                 ibHost.Consumer = ibHost.Consumer ?? this;
-
                 var symbolAndScoreArray = SymbolsAsString.Split(Environment.NewLine)
                     .Where(s => !string.IsNullOrWhiteSpace(s))
                     .Select(s => s.Trim())
@@ -65,6 +64,7 @@ namespace PortfolioTrader
                         throw new Exception($"Unexpected. Can not build key value pair from the string {s}");
                     })
                     .ToDictionary();
+                TwsMessageCollection?.Add($"{symbolAndScoreAsDictionary.Count()} symbols to resolve.");
 
                 var resolved = new Dictionary<string, int>();
                 var notResolved = new Dictionary<string, int>();
