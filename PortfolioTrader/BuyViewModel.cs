@@ -69,32 +69,36 @@ namespace PortfolioTrader
                 var resolved = new Dictionary<string, int>();
                 var notResolved = new Dictionary<string, int>();
                 var multiple = new Dictionary<string, int>();
-                foreach (var symbol in symbolAndScoreAsDictionary.Keys)
-                {
-                    SymbolSamplesMessage symbolSamplesMessage = await ibHost.RequestMatchingSymbolsAsync(symbol, TIMEOUT);
-                    if (symbolSamplesMessage == null)
+
+                await Task.Run(async () => {
+                    foreach (var symbol in symbolAndScoreAsDictionary.Keys)
                     {
-                        notResolved.Add(symbol, symbolAndScoreAsDictionary[symbol]);
-                    }
-                    else
-                    {
-                        if (symbolSamplesMessage.ContractDescriptions.Count() == 1)
-                        {
-                            resolved.Add(symbol, symbolAndScoreAsDictionary[symbol]);
-                        }
-                        else if (symbolSamplesMessage.ContractDescriptions.Count() == 0)
+                        SymbolSamplesMessage symbolSamplesMessage = await ibHost.RequestMatchingSymbolsAsync(symbol, TIMEOUT);
+                        if (symbolSamplesMessage == null)
                         {
                             notResolved.Add(symbol, symbolAndScoreAsDictionary[symbol]);
                         }
                         else
                         {
-                            multiple.Add(symbol, symbolAndScoreAsDictionary[symbol]);
+                            if (symbolSamplesMessage.ContractDescriptions.Count() == 1)
+                            {
+                                resolved.Add(symbol, symbolAndScoreAsDictionary[symbol]);
+                            }
+                            else if (symbolSamplesMessage.ContractDescriptions.Count() == 0)
+                            {
+                                notResolved.Add(symbol, symbolAndScoreAsDictionary[symbol]);
+                            }
+                            else
+                            {
+                                multiple.Add(symbol, symbolAndScoreAsDictionary[symbol]);
+                            }
                         }
+
+                        Thread.Sleep(TIMEOUT * 2);
                     }
 
-                    Thread.Sleep(TIMEOUT*2);
-                }
-
+                });
+                
 
                 var t = 0;
 
