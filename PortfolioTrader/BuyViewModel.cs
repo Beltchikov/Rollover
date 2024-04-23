@@ -16,7 +16,8 @@ namespace PortfolioTrader
     public class BuyViewModel : ObservableObject, IIbConsumer
     {
         const int TIMEOUT = 1000;
-
+        private readonly string SEC_TYPE_STK = "STK";
+        private readonly string USD = "USD";
         IIbHostQueue ibHostQueue = null!;
         IIbHost ibHost = null!;
 
@@ -101,7 +102,12 @@ namespace PortfolioTrader
                             }
                             else
                             {
-                                longMultiple.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
+                                var stkAndUsdList = symbolSamplesMessage.ContractDescriptions
+                                    .Where(d => d.Contract.SecType == SEC_TYPE_STK && d.Contract.Currency== USD)
+                                    .ToList();
+
+                                if(stkAndUsdList.Count == 1) longUnresolved.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
+                                else longMultiple.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
                             }
                         }
 
