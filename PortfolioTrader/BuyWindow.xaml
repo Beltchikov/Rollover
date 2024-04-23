@@ -6,13 +6,13 @@
         xmlns:local="clr-namespace:PortfolioTrader"
         xmlns:tws_uc="clr-namespace:TwsUserControls;assembly=TwsUserControls"
         mc:Ignorable="d"
-        WindowState="Maximized"
-        Title="BuyWindow" Width="1920" Height="1080" Background="#FF5A74A9">
+        WindowStartupLocation="CenterScreen"
+        Title="BuyWindow" Width="820" Height="900" Background="#FF5A74A9">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
-            <RowDefinition />
-            <RowDefinition Height="500"/>
+            <RowDefinition Height="510" />
+            <RowDefinition/>
         </Grid.RowDefinitions>
 
         <tws_uc:TwsConnection 
@@ -45,8 +45,7 @@
                 <ColumnDefinition Width="140"/>
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="120"/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="180"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
