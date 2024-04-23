@@ -78,62 +78,27 @@ namespace PortfolioTrader
                     .ToDictionary();
                 TwsMessageCollection?.Add($"{longSymbolAndScoreAsDictionary.Count()} long symbols to resolve.");
 
-                var longResolved = new Dictionary<string, int>();
-                var longUnresolved = new Dictionary<string, int>();
-                var longMultiple = new Dictionary<string, int>();
-
-                await Task.Run(async () =>
-                {
-                    foreach (var symbol in longSymbolAndScoreAsDictionary.Keys)
-                    {
-                        SymbolSamplesMessage symbolSamplesMessage = await ibHost.RequestMatchingSymbolsAsync(symbol, TIMEOUT);
-                        if (symbolSamplesMessage == null)
-                        {
-                            longUnresolved.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
-                        }
-                        else
-                        {
-                            if (symbolSamplesMessage.ContractDescriptions.Count() == 1)
-                            {
-                                longResolved.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
-                            }
-                            else if (symbolSamplesMessage.ContractDescriptions.Count() == 0)
-                            {
-                                longUnresolved.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
-                            }
-                            else
-                            {
-                                var stkAndUsdList = symbolSamplesMessage.ContractDescriptions
-                                    .Where(d => d.Contract.SecType == SEC_TYPE_STK 
-                                        && d.Contract.Currency== USD
-                                        && d.Contract.Symbol.ToUpper() == symbol.ToUpper())
-                                    .ToList();
-
-                                if(stkAndUsdList.Count == 1) longResolved.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
-                                else longMultiple.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
-                            }
-                        }
-
-                        Thread.Sleep((int)Math.Round(TIMEOUT * 1.5));
-                    }
-
-                    LongSymbolsResolved = longResolved
-                        .Select(r => r.Key + "\t" + r.Value.ToString())
-                        .Aggregate((r, n) => r + Environment.NewLine + n);
-                    LongSymbolsMultiple = longMultiple
-                      .Select(r => r.Key + "\t" + r.Value.ToString())
-                      .Aggregate((r, n) => r + Environment.NewLine + n);
-                    LongSymbolsUnresolved = longUnresolved
+                Dictionary<string, int> longResolved = null!;
+                Dictionary<string, int> longMultiple = null!;
+                Dictionary<string, int> longUnresolved = null!;
+                await Task.Run(async () => 
+                    (longResolved, longMultiple, longUnresolved)
+                    = await ResolveSymbols(longSymbolAndScoreAsDictionary)
+                );
+                LongSymbolsResolved = longResolved
                        .Select(r => r.Key + "\t" + r.Value.ToString())
                        .Aggregate((r, n) => r + Environment.NewLine + n);
-                 });
+                LongSymbolsMultiple = longMultiple
+                  .Select(r => r.Key + "\t" + r.Value.ToString())
+                  .Aggregate((r, n) => r + Environment.NewLine + n);
+                LongSymbolsUnresolved = longUnresolved
+                   .Select(r => r.Key + "\t" + r.Value.ToString())
+                   .Aggregate((r, n) => r + Environment.NewLine + n);
+
                 var longMessage = $@"LONG
 resolved: {longResolved.Count}
 multiple: {longMultiple.Count}
-unresolved: {longUnresolved.Count}
-
-SHORT
-todo";
+unresolved: {longUnresolved.Count}";
                 TwsMessageCollection?.Add(longMessage);
 
                 // Short
@@ -151,11 +116,29 @@ todo";
                    .ToDictionary();
                 TwsMessageCollection?.Add($"{shortSymbolAndScoreAsDictionary.Count()} short symbols to resolve.");
 
-                var shortResolved = new Dictionary<string, int>();
-                var shortUnresolved = new Dictionary<string, int>();
-                var shortMultiple = new Dictionary<string, int>();
+                Dictionary<string, int> shortResolved = null!;
+                Dictionary<string, int> shortMultiple = null!;
+                Dictionary<string, int> shortUnresolved = null!;
+                await Task.Run(async () => (shortResolved, shortMultiple, shortUnresolved) 
+                    = await ResolveSymbols(longSymbolAndScoreAsDictionary));
+                ShortSymbolsResolved = shortResolved
+                       .Select(r => r.Key + "\t" + r.Value.ToString())
+                       .Aggregate((r, n) => r + Environment.NewLine + n);
+                ShortSymbolsMultiple = shortMultiple
+                  .Select(r => r.Key + "\t" + r.Value.ToString())
+                  .Aggregate((r, n) => r + Environment.NewLine + n);
+                ShortSymbolsUnresolved = shortUnresolved
+                   .Select(r => r.Key + "\t" + r.Value.ToString())
+                   .Aggregate((r, n) => r + Environment.NewLine + n);
 
-                MessageBox.Show(longMessage + Environment.NewLine + "TODO");
+                var shortMessage = $@"SHORT
+resolved: {shortResolved.Count}
+multiple: {shortMultiple.Count}
+unresolved: {shortUnresolved.Count}";
+                TwsMessageCollection?.Add(shortMessage);
+
+                //
+                MessageBox.Show(longMessage + Environment.NewLine + shortMessage);
             });
 
 
@@ -285,7 +268,48 @@ todo";
             }
         }
 
+        private async Task<(Dictionary<string, int>, Dictionary<string, int>, Dictionary<string, int>)> 
+            ResolveSymbols(Dictionary<string, int> longSymbolAndScoreAsDictionary)
+        {
+            Dictionary<string, int> symbolsResolved = new Dictionary<string, int>();
+            Dictionary<string, int> symbolsMultiple= new Dictionary<string, int>();
+            Dictionary<string, int> symbolsUnresolved = new Dictionary<string, int>();
 
+            foreach (var symbol in longSymbolAndScoreAsDictionary.Keys)
+            {
+                SymbolSamplesMessage symbolSamplesMessage = await ibHost.RequestMatchingSymbolsAsync(symbol, TIMEOUT);
+                if (symbolSamplesMessage == null)
+                {
+                    symbolsUnresolved.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
+                }
+                else
+                {
+                    if (symbolSamplesMessage.ContractDescriptions.Count() == 1)
+                    {
+                        symbolsResolved.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
+                    }
+                    else if (symbolSamplesMessage.ContractDescriptions.Count() == 0)
+                    {
+                        symbolsUnresolved.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
+                    }
+                    else
+                    {
+                        var stkAndUsdList = symbolSamplesMessage.ContractDescriptions
+                            .Where(d => d.Contract.SecType == SEC_TYPE_STK
+                                && d.Contract.Currency == USD
+                                && d.Contract.Symbol.ToUpper() == symbol.ToUpper())
+                            .ToList();
+
+                        if (stkAndUsdList.Count == 1) symbolsResolved.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
+                        else symbolsMultiple.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
+                    }
+                }
+
+                Thread.Sleep((int)Math.Round(TIMEOUT * 1.5));
+            }
+
+            return (symbolsResolved, symbolsMultiple, symbolsUnresolved);
+        }
 
         private string TestDataLong()
         {
