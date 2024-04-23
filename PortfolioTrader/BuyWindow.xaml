@@ -12,7 +12,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
             <RowDefinition />
-            <RowDefinition Height="500"/>
+            <RowDefinition Height="300"/>
         </Grid.RowDefinitions>
 
         <tws_uc:TwsConnection 
@@ -29,15 +29,16 @@
               Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
+                <RowDefinition Height="65"/>
+                <RowDefinition Height="65"/>
+                <RowDefinition Height="65"/>
+                <RowDefinition Height="65"/>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="30" />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
+                <RowDefinition Height="65"/>
+                <RowDefinition Height="65"/>
+                <RowDefinition Height="65"/>
+                <RowDefinition Height="65"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="230"/>
@@ -54,7 +55,7 @@
                     Grid.Row="1" Grid.RowSpan="4" HorizontalAlignment="Left" 
                      TextWrapping="Wrap" VerticalAlignment="Stretch" 
                      AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
-                     Width="220" />
+                      Width="220" />
 
             <Label Grid.Row="6" Foreground="White">Short Symbols and NET__BMS Score:</Label>
             <TextBox x:Name="txtShortSymbols" Text="{Binding ShortSymbolsAsString}"
