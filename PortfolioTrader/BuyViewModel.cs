@@ -103,10 +103,12 @@ namespace PortfolioTrader
                             else
                             {
                                 var stkAndUsdList = symbolSamplesMessage.ContractDescriptions
-                                    .Where(d => d.Contract.SecType == SEC_TYPE_STK && d.Contract.Currency== USD)
+                                    .Where(d => d.Contract.SecType == SEC_TYPE_STK 
+                                        && d.Contract.Currency== USD
+                                        && d.Contract.Symbol.ToUpper() == symbol.ToUpper())
                                     .ToList();
 
-                                if(stkAndUsdList.Count == 1) longUnresolved.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
+                                if(stkAndUsdList.Count == 1) longResolved.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
                                 else longMultiple.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
                             }
                         }
@@ -117,12 +119,21 @@ namespace PortfolioTrader
                     LongSymbolsResolved = longResolved
                         .Select(r => r.Key + "\t" + r.Value.ToString())
                         .Aggregate((r, n) => r + Environment.NewLine + n);
+                    LongSymbolsMultiple = longMultiple
+                      .Select(r => r.Key + "\t" + r.Value.ToString())
+                      .Aggregate((r, n) => r + Environment.NewLine + n);
                     LongSymbolsUnresolved = longUnresolved
                        .Select(r => r.Key + "\t" + r.Value.ToString())
                        .Aggregate((r, n) => r + Environment.NewLine + n);
-                    LongSymbolsMultiple = longMultiple
-                       .Select(r => r.Key + "\t" + r.Value.ToString())
-                       .Aggregate((r, n) => r + Environment.NewLine + n);
+                   
+
+                    MessageBox.Show($@"LONG
+resolved: {longResolved.Count}
+multiple: {longMultiple.Count}
+unresolved: {longUnresolved}
+
+SHORT
+todo");
 
                 });
             });
