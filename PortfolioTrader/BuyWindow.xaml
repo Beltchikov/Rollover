@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:PortfolioTrader"
         xmlns:tws_uc="clr-namespace:TwsUserControls;assembly=TwsUserControls"
         mc:Ignorable="d"
+        WindowState="Maximized"
         Title="BuyWindow" Height="800" Width="800" Background="#FF5A74A9">
     <Grid>
         <Grid.RowDefinitions>
@@ -32,7 +33,7 @@
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition Height="40"/>
-                <RowDefinition />
+                <RowDefinition Height="30" />
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
@@ -48,11 +49,18 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Row="0" Foreground="White">Long Symbols and NET__BMS Score:</Label>
-            <TextBox Text="{Binding LongSymbolsAsString}"
-                    Grid.Row="1" Grid.RowSpan="4" x:Name="txtSymbols" HorizontalAlignment="Left" 
+            <TextBox x:Name="txtLongSymbols" Text="{Binding LongSymbolsAsString}"
+                    Grid.Row="1" Grid.RowSpan="4" HorizontalAlignment="Left" 
                      TextWrapping="Wrap" VerticalAlignment="Stretch" 
                      AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
                      Width="220" />
+
+            <Label Grid.Row="6" Foreground="White">Short Symbols and NET__BMS Score:</Label>
+            <TextBox x:Name="txtShortSymbols" Text="{Binding ShortSymbolsAsString}"
+                 Grid.Row="7" Grid.RowSpan="4" HorizontalAlignment="Left" 
+                  TextWrapping="Wrap" VerticalAlignment="Stretch" 
+                  AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
+                  Width="220" />    
 
             <Button Grid.Column="1" Grid.Row="5" Height="30"  
                     Command="{Binding SymbolCheckCommand}"

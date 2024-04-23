@@ -26,6 +26,7 @@ namespace PortfolioTrader
         private bool _connectedToTws;
         private ObservableCollection<string> _twsMessageColllection = new ObservableCollection<string>();
         private string _longSymbolsAsString;
+        private string _shortSymbolsAsString;
 
         public ICommand ConnectToTwsCommand { get; }
         public ICommand SymbolCheckCommand { get; }
@@ -57,8 +58,9 @@ namespace PortfolioTrader
                     .Select(s => s.Trim())
                     .ToList();
                 var symbolAndScoreAsDictionary = symbolAndScoreArray
-                    .Select(s => { 
-                        var splitted = s.Split([' ', '\t']).Select(s=>s.Trim()).ToList();
+                    .Select(s =>
+                    {
+                        var splitted = s.Split([' ', '\t']).Select(s => s.Trim()).ToList();
                         if (splitted != null) return new KeyValuePair<string, int>(splitted[0], Convert.ToInt32(splitted[1]));
                         throw new Exception($"Unexpected. Can not build key value pair from the string {s}");
                     })
@@ -69,7 +71,8 @@ namespace PortfolioTrader
                 var notResolved = new Dictionary<string, int>();
                 var multiple = new Dictionary<string, int>();
 
-                await Task.Run(async () => {
+                await Task.Run(async () =>
+                {
                     foreach (var symbol in symbolAndScoreAsDictionary.Keys)
                     {
                         SymbolSamplesMessage symbolSamplesMessage = await ibHost.RequestMatchingSymbolsAsync(symbol, TIMEOUT);
@@ -97,13 +100,14 @@ namespace PortfolioTrader
                     }
 
                 });
-                
+
 
                 var t = 0;
 
             });
 
-            LongSymbolsAsString = TestData();
+            LongSymbolsAsString = TestDataLong();
+            ShortSymbolsAsString = TestDataShort();
         }
 
         public string Host
@@ -159,7 +163,16 @@ namespace PortfolioTrader
             }
         }
 
-        private string TestData()
+        public string ShortSymbolsAsString
+        {
+            get => _shortSymbolsAsString;
+            set
+            {
+                SetProperty(ref _shortSymbolsAsString, value);
+            }
+        }
+
+        private string TestDataLong()
         {
             return @"PYPL	4
 CRM	3
@@ -303,5 +316,228 @@ UPST	0
 XPEV	0
 DKNG	-1";
         }
+
+        private string TestDataShort()
+        {
+            return @"MATIC	4
+SOS	3
+YFI	3
+1INCH	2
+AAVE	2
+ADA	2
+ALGO	2
+ATOM	2
+AVAX	2
+AXS	2
+BNB	2
+BTC	2
+CAKE	2
+COMP	2
+DOGE	2
+DOT	2
+EOS	2
+ETH	2
+FIL	2
+FSR	2
+FTT	2
+JMIA	2
+LINK	2
+LTC	2
+LUNA	2
+NEAR	2
+NKLA	2
+REN	2
+RIDE	2
+RUNE	2
+SAND	2
+SHIB	2
+SNX	2
+SOL	2
+SUSHI	2
+THETA	2
+TRX	2
+UNI	2
+VET	2
+WKHS	2
+XLM	2
+DKNG	1
+AAL	1
+ACB	1
+AMC	1
+ANKR	1
+APHA	1
+BAL	1
+BB	1
+BBBY	1
+BCH	1
+BLNK	1
+BNGO	1
+BTT	1
+BYND	1
+CCIV	1
+CCL	1
+CHZ	1
+CLNE	1
+COIN	1
+CRO	1
+CRSP	1
+CRSR	1
+CRV	1
+DAL	1
+DASH	1
+EGLD	1
+EH	1
+ENJ	1
+ENPH	1
+ETC	1
+EXPR	1
+FCEL	1
+GE	1
+GME	1
+GNO	1
+GRT	1
+GRWG	1
+GSAT	1
+HEXO	1
+HNT	1
+HT	1
+HUYA	1
+HYLN	1
+ICP	1
+IOST	1
+IQ	1
+KHC	1
+KNC	1
+KNDI	1
+KSM	1
+LAZR	1
+LI	1
+LVS	1
+MANA	1
+MGM	1
+MKR	1
+MRNA	1
+MRO	1
+MVIS	1
+NCLH	1
+NOK	1
+OCGN	1
+OXY	1
+PDD	1
+PENN	1
+PLUG	1
+PSTH	1
+PTON	1
+QS	1
+QTUM	1
+RCL	1
+RIOT	1
+RKT	1
+RMO	1
+RSR	1
+SAVE	1
+SKLZ	1
+SNDL	1
+SPCE	1
+SPG	1
+TFUEL	1
+TIGR	1
+TLRY	1
+UAL	1
+UWMC	1
+VIAC	1
+VXRT	1
+WATT	1
+WAVES	1
+WISH	1
+WORK	1
+WYNN	1
+X	1
+XMR	1
+ZRX	1
+MDT	0
+MMC	0
+CRWD	0
+F	0
+FSLY	0
+FUBO	0
+HUM	0
+JD	0
+NET	0
+SNAP	0
+UBER	0
+UPST	0
+XPEV	0
+CI	-1
+LOW	-1
+TMO	-1
+TXN	-1
+ADP	-1
+AMGN	-1
+ANTM	-1
+BDX	-1
+BRK-A	-1
+BRK-B	-1
+CAT	-1
+CHTR	-1
+CVX	-1
+D	-1
+DE	-1
+DHR	-1
+HON	-1
+IBM	-1
+ICE	-1
+INTU	-1
+ISRG	-1
+LIN	-1
+LLY	-1
+LMT	-1
+MMM	-1
+MO	-1
+MU	-1
+NEE	-1
+PM	-1
+RIVN	-1
+ROKU	-1
+RTX	-1
+SO	-1
+SYK	-1
+UNP	-1
+VRTX	-1
+XOM	-1
+ZM	-1
+ZTS	-1
+AAPL	-2
+ABBV	-2
+ACN	-2
+ADBE	-2
+AMZN	-2
+BAC	-2
+BMY	-2
+CMCSA	-2
+CSCO	-2
+DIS	-2
+GOOGL	-2
+HD	-2
+INTC	-2
+JPM	-2
+KO	-2
+MRK	-2
+MSFT	-2
+NFLX	-2
+NVDA	-2
+PEP	-2
+SBUX	-2
+T	-2
+TSLA	-2
+UNH	-2
+UPS	-2
+V	-2
+VZ	-2
+WMT	-2
+CRM	-3
+PYPL	-4";
+        }
+
     }
 }
