@@ -70,6 +70,21 @@
                     Padding="15 0 15 0" Margin="0 5 0 5">
                 Check Symbols >>
             </Button>
+
+            <Label Name="lblResolvedLong" Grid.Row="0" Grid.Column="2" Foreground="White">Results: Resolved Long Symbols (N):</Label>
+            <TextBox x:Name="txtLongSymbolsResolved" Text="{Binding LongSymbolsResolved}"
+                 Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" 
+                  TextWrapping="Wrap" VerticalAlignment="Stretch" 
+                  AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
+                   Width="220" />
+
+            <Label Name="lblResolvedShort" Grid.Row="6" Grid.Column="2" Foreground="White">Results: Resolved Short Symbols (N):</Label>
+            <TextBox x:Name="txtShortSymbolsResolved" Text="{Binding ShortSymbolsResolved}"
+              Grid.Row="7" Grid.Column="2" HorizontalAlignment="Left" 
+               TextWrapping="Wrap" VerticalAlignment="Stretch" 
+               AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
+               Width="220" />
+
         </Grid>
 
         <tws_uc:TwsInformation Grid.Row="2" MessageCollection="{Binding TwsMessageCollection}" Grid.ColumnSpan="2" Margin="0,0,0,0" Grid.RowSpan="2">

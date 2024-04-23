@@ -27,6 +27,9 @@ namespace PortfolioTrader
         private ObservableCollection<string> _twsMessageColllection = new ObservableCollection<string>();
         private string _longSymbolsAsString;
         private string _shortSymbolsAsString;
+        private string _longSymbolsResolved;
+        private string _shortSymbolsResolved;
+        
 
         public ICommand ConnectToTwsCommand { get; }
         public ICommand SymbolCheckCommand { get; }
@@ -171,6 +174,25 @@ namespace PortfolioTrader
                 SetProperty(ref _shortSymbolsAsString, value);
             }
         }
+
+        public string LongSymbolsResolved
+        {
+            get => _longSymbolsResolved;
+            set
+            {
+                SetProperty(ref _longSymbolsResolved, value);
+            }
+        }
+
+        public string ShortSymbolsResolved
+        {
+            get => _shortSymbolsResolved;
+            set
+            {
+                SetProperty(ref _shortSymbolsResolved, value);
+            }
+        }
+
 
         private string TestDataLong()
         {
