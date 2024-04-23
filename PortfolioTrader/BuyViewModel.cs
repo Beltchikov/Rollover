@@ -50,8 +50,7 @@ namespace PortfolioTrader
 
             SymbolCheckCommand = new RelayCommand(async () =>
             {
-                //MessageBox.Show("SymbolCheckCommand");
-
+                if (!ConnectedToTws) ConnectToTwsCommand?.Execute(null);
                 ibHost.Consumer = ibHost.Consumer ?? this;
                 var symbolAndScoreArray = SymbolsAsString.Split(Environment.NewLine)
                     .Where(s => !string.IsNullOrWhiteSpace(s))
