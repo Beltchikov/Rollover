@@ -12,7 +12,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
             <RowDefinition />
-            <RowDefinition Height="300"/>
+            <RowDefinition Height="500"/>
         </Grid.RowDefinitions>
 
         <tws_uc:TwsConnection 
@@ -30,14 +30,14 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="60"/>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="30" />
                 <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="60"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -80,8 +80,18 @@
                    Width="220" />
 
             <Label Name="lblUnresolvedLong" Grid.Row="3" Grid.Column="2" Foreground="White">Unresolved (N):</Label>
+            <TextBox x:Name="txtLongSymbolsUnresolved" Text="{Binding LongSymbolsUnresolved}"
+              Grid.Row="4" Grid.Column="2"  HorizontalAlignment="Left" 
+               TextWrapping="Wrap" VerticalAlignment="Stretch" 
+               AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
+                Width="220" />  
 
             <Label Name="lblMultipleLong" Grid.Row="3" Grid.Column="3" Foreground="White">Multiple (N):</Label>
+            <TextBox x:Name="txtLongSymbolsMultiple" Text="{Binding LongSymbolsMultiple}"
+               Grid.Row="4" Grid.Column="3"  HorizontalAlignment="Left" 
+                TextWrapping="Wrap" VerticalAlignment="Stretch" 
+                AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
+                 Width="220" />
 
             <Label Name="lblResolvedShort" Grid.Row="6" Grid.Column="2"  Grid.ColumnSpan="2"
                    Foreground="White">Results: Resolved Short Symbols (N):</Label>
