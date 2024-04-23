@@ -28,13 +28,13 @@
         <Grid x:Name="Processing" Grid.Row="1" Margin="16,16,16,16" 
               Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="26"/>
                 <RowDefinition Height="60"/>
                 <RowDefinition Height="10"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="60"/>
                 <RowDefinition Height="40"/>
-                <RowDefinition Height="30" />
+                <RowDefinition Height="26" />
                 <RowDefinition Height="60"/>
                 <RowDefinition Height="10"/>
                 <RowDefinition Height="30"/>
