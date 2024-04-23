@@ -84,14 +84,14 @@
               Grid.Row="4" Grid.Column="2"  HorizontalAlignment="Left" 
                TextWrapping="Wrap" VerticalAlignment="Stretch" 
                AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
-                Width="110" />  
+                Width="110" Background="#FFFFC7CE" />  
 
             <Label Name="lblMultipleLong" Grid.Row="3" Grid.Column="3" Foreground="White">Multiple (N):</Label>
             <TextBox x:Name="txtLongSymbolsMultiple" Text="{Binding LongSymbolsMultiple}"
                Grid.Row="4" Grid.Column="3"  HorizontalAlignment="Left" 
                 TextWrapping="Wrap" VerticalAlignment="Stretch" 
                 AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
-                Width="110" />
+                Width="110" Background="#FFFEEB9C" />
 
             <Label Name="lblResolvedShort" Grid.Row="6" Grid.Column="2"  Grid.ColumnSpan="2"
                    Foreground="White">Results: Resolved Short Symbols (N):</Label>
@@ -107,14 +107,14 @@
                 Grid.Row="10" Grid.Column="2"  HorizontalAlignment="Left" 
                  TextWrapping="Wrap" VerticalAlignment="Stretch" 
                  AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
-                  Width="110" />
+                  Width="110" Background="#FFFFC7CE" />
 
             <Label Name="lblMultipleShort" Grid.Row="9" Grid.Column="3" Foreground="White">Multiple (N):</Label>
             <TextBox x:Name="txtShortSymbolsMultiple" Text="{Binding ShortSymbolsMultiple}"
                 Grid.Row="10" Grid.Column="3"  HorizontalAlignment="Left" 
                  TextWrapping="Wrap" VerticalAlignment="Stretch" 
                  AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
-                  Width="110" />
+                  Width="110" Background="#FFFEEB9C" />
 
         </Grid>
 
