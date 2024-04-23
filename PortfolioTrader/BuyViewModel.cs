@@ -31,8 +31,9 @@ namespace PortfolioTrader
         private string _longSymbolsMultiple;
         private string _shortSymbolsAsString;
         private string _shortSymbolsResolved;
+        private string _shortSymbolsUnresolved;
+        private string _shortSymbolsMultiple;
         
-
         public ICommand ConnectToTwsCommand { get; }
         public ICommand SymbolCheckCommand { get; }
 
@@ -213,7 +214,24 @@ namespace PortfolioTrader
             }
         }
 
-        
+        public string ShortSymbolsUnresolved
+        {
+            get => _shortSymbolsUnresolved;
+            set
+            {
+                SetProperty(ref _shortSymbolsUnresolved, value);
+            }
+        }
+
+        public string ShortSymbolsMultiple
+        {
+            get => _shortSymbolsMultiple;
+            set
+            {
+                SetProperty(ref _shortSymbolsMultiple, value);
+            }
+        }
+
 
 
         private string TestDataLong()
