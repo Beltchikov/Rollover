@@ -61,11 +61,12 @@ namespace PortfolioTrader
             {
                 if (!ConnectedToTws) ConnectToTwsCommand?.Execute(null);
                 ibHost.Consumer = ibHost.Consumer ?? this;
-                var symbolAndScoreArray = LongSymbolsAsString.Split(Environment.NewLine)
+                
+                var longSymbolAndScoreArray = LongSymbolsAsString.Split(Environment.NewLine)
                     .Where(s => !string.IsNullOrWhiteSpace(s))
                     .Select(s => s.Trim())
                     .ToList();
-                var symbolAndScoreAsDictionary = symbolAndScoreArray
+                var longSymbolAndScoreAsDictionary = longSymbolAndScoreArray
                     .Select(s =>
                     {
                         var splitted = s.Split([' ', '\t']).Select(s => s.Trim()).ToList();
@@ -73,45 +74,51 @@ namespace PortfolioTrader
                         throw new Exception($"Unexpected. Can not build key value pair from the string {s}");
                     })
                     .ToDictionary();
-                TwsMessageCollection?.Add($"{symbolAndScoreAsDictionary.Count()} symbols to resolve.");
+                TwsMessageCollection?.Add($"{longSymbolAndScoreAsDictionary.Count()} symbols to resolve.");
 
-                var resolved = new Dictionary<string, int>();
-                var notResolved = new Dictionary<string, int>();
-                var multiple = new Dictionary<string, int>();
+                var longResolved = new Dictionary<string, int>();
+                var longUnresolved = new Dictionary<string, int>();
+                var longMultiple = new Dictionary<string, int>();
 
                 await Task.Run(async () =>
                 {
-                    foreach (var symbol in symbolAndScoreAsDictionary.Keys)
+                    foreach (var symbol in longSymbolAndScoreAsDictionary.Keys)
                     {
                         SymbolSamplesMessage symbolSamplesMessage = await ibHost.RequestMatchingSymbolsAsync(symbol, TIMEOUT);
                         if (symbolSamplesMessage == null)
                         {
-                            notResolved.Add(symbol, symbolAndScoreAsDictionary[symbol]);
+                            longUnresolved.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
                         }
                         else
                         {
                             if (symbolSamplesMessage.ContractDescriptions.Count() == 1)
                             {
-                                resolved.Add(symbol, symbolAndScoreAsDictionary[symbol]);
+                                longResolved.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
                             }
                             else if (symbolSamplesMessage.ContractDescriptions.Count() == 0)
                             {
-                                notResolved.Add(symbol, symbolAndScoreAsDictionary[symbol]);
+                                longUnresolved.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
                             }
                             else
                             {
-                                multiple.Add(symbol, symbolAndScoreAsDictionary[symbol]);
+                                longMultiple.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
                             }
                         }
 
-                        Thread.Sleep(TIMEOUT * 2);
+                        Thread.Sleep((int)Math.Round(TIMEOUT * 1.5));
                     }
 
+                    LongSymbolsResolved = longResolved
+                        .Select(r => r.Key + "\t" + r.Value.ToString())
+                        .Aggregate((r, n) => r + Environment.NewLine + n);
+                    LongSymbolsUnresolved = longUnresolved
+                       .Select(r => r.Key + "\t" + r.Value.ToString())
+                       .Aggregate((r, n) => r + Environment.NewLine + n);
+                    LongSymbolsMultiple = longMultiple
+                       .Select(r => r.Key + "\t" + r.Value.ToString())
+                       .Aggregate((r, n) => r + Environment.NewLine + n);
+
                 });
-
-
-                var t = 0;
-
             });
 
 
