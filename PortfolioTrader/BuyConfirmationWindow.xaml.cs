@@ -62,7 +62,6 @@ namespace PortfolioTrader
                     .ToDictionary(grp => grp.Key, grp => grp.Count());
                 var keyOfLargestGroup = groupsDictionary.MaxBy(entry => entry.Value).Key;
                 var keyToApplyCorrection = stocksDictionaryWithWeights.Where(kvp => kvp.Value == keyOfLargestGroup)
-                    .OrderBy(kvp => kvp.Key)
                     .First()
                     .Key;
                 stocksDictionaryWithWeights[keyToApplyCorrection] += correction;
