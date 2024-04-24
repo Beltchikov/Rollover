@@ -24,10 +24,11 @@ namespace PortfolioTrader
         public BuyConfirmationWindow(IBuyModelVisitor visitor)
         {
             InitializeComponent();
-            DataContext = new BuyConfirmationViewModel() { 
+            DataContext = new BuyConfirmationViewModel()
+            {
                 ConnectedToTws = visitor.ConnectedToTws,
-                StocksToBuyAsString = visitor.LongSymbolsAsString,
-                StocksToSellAsString = visitor.ShortSymbolsAsString
+                StocksToBuyAsString = visitor.LongSymbolsResolved,
+                StocksToSellAsString = visitor.ShortSymbolsResolved
             };
 
             ApplyBusinessRules();
@@ -45,13 +46,11 @@ namespace PortfolioTrader
             {
                 stocksToBuyDictionary = stocksToBuyDictionary.Take(App.MAX_BUY_SELL).ToDictionary();
                 model.StocksToBuyAsString = SymbolsAndScore.DictionaryToString(stocksToBuyDictionary);
-                AddBusinessInformation($"The number of stocks in the buy list was reduced to {App.MAX_BUY_SELL} according to the business rules.");
             }
             if (stocksToSellDictionary.Count > App.MAX_BUY_SELL)
             {
                 stocksToSellDictionary = stocksToSellDictionary.Take(App.MAX_BUY_SELL).ToDictionary();
                 model.StocksToSellAsString = SymbolsAndScore.DictionaryToString(stocksToSellDictionary);
-                AddBusinessInformation($"The number of stocks in the sell list was reduced to {App.MAX_BUY_SELL} according to the business rules.");
             }
             if (stocksToBuyDictionary.Count != stocksToSellDictionary.Count)
             {
@@ -61,18 +60,13 @@ namespace PortfolioTrader
                     var equalQty = stocksToBuyDictionary.Count - moreInBuyList;
                     stocksToBuyDictionary = stocksToBuyDictionary.Take(equalQty).ToDictionary();
                     model.StocksToBuyAsString = SymbolsAndScore.DictionaryToString(stocksToBuyDictionary);
-                    AddBusinessInformation("The number of stocks in the buy lists was reduced to {equalQty} to equal the sell list.");
                 }
                 else
                 {
                     var equalQty = stocksToSellDictionary.Count + moreInBuyList;
                     stocksToSellDictionary = stocksToSellDictionary.Take(equalQty).ToDictionary();
                     model.StocksToSellAsString = SymbolsAndScore.DictionaryToString(stocksToSellDictionary);
-                    AddBusinessInformation("The number of stocks in the sell lists was reduced to {equalQty} to equal the buy list.");
                 }
-
-                model.StocksToSellAsString = SymbolsAndScore.DictionaryToString(stocksToSellDictionary.Take(App.MAX_BUY_SELL).ToDictionary());
-                AddBusinessInformation($"The number of stocks in the sell list was reduced to {App.MAX_BUY_SELL} according to the business rules.");
             }
         }
 
