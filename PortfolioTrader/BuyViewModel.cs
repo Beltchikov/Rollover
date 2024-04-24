@@ -53,7 +53,7 @@ namespace PortfolioTrader
             {
                 if (!ConnectedToTws) ConnectToTwsCommand?.Execute(null);
                 ibHost.Consumer = ibHost.Consumer ?? this;
-                
+
                 // Long
                 var longSymbolAndScoreArray = LongSymbolsAsString.Split(Environment.NewLine)
                     .Where(s => !string.IsNullOrWhiteSpace(s))
@@ -72,7 +72,7 @@ namespace PortfolioTrader
                 Dictionary<string, int> longResolved = null!;
                 Dictionary<string, int> longMultiple = null!;
                 Dictionary<string, int> longUnresolved = null!;
-                await Task.Run(async () => 
+                await Task.Run(async () =>
                     (longResolved, longMultiple, longUnresolved)
                     = await ResolveSymbols(longSymbolAndScoreAsDictionary)
                 );
@@ -110,7 +110,7 @@ unresolved: {longUnresolved.Count}";
                 Dictionary<string, int> shortResolved = null!;
                 Dictionary<string, int> shortMultiple = null!;
                 Dictionary<string, int> shortUnresolved = null!;
-                await Task.Run(async () => (shortResolved, shortMultiple, shortUnresolved) 
+                await Task.Run(async () => (shortResolved, shortMultiple, shortUnresolved)
                     = await ResolveSymbols(longSymbolAndScoreAsDictionary));
                 ShortSymbolsResolved = shortResolved
                        .Select(r => r.Key + "\t" + r.Value.ToString())
@@ -132,12 +132,7 @@ unresolved: {shortUnresolved.Count}";
                 MessageBox.Show(longMessage + Environment.NewLine + shortMessage);
             });
 
-
-            CalculateWeightsCommand = new RelayCommand(() =>
-            {
-                ibHost.Consumer = ibHost.Consumer ?? this;
-                MessageBox.Show("Calculate Weights");
-            });
+            CalculateWeightsCommand = new RelayCommand(() => CalculateWeights.Run(this));
 
             LongSymbolsAsString = TestDataLong();
             ShortSymbolsAsString = TestDataShort();
@@ -262,11 +257,11 @@ unresolved: {shortUnresolved.Count}";
             }
         }
 
-        private async Task<(Dictionary<string, int>, Dictionary<string, int>, Dictionary<string, int>)> 
+        private async Task<(Dictionary<string, int>, Dictionary<string, int>, Dictionary<string, int>)>
             ResolveSymbols(Dictionary<string, int> longSymbolAndScoreAsDictionary)
         {
             Dictionary<string, int> symbolsResolved = new Dictionary<string, int>();
-            Dictionary<string, int> symbolsMultiple= new Dictionary<string, int>();
+            Dictionary<string, int> symbolsMultiple = new Dictionary<string, int>();
             Dictionary<string, int> symbolsUnresolved = new Dictionary<string, int>();
 
             foreach (var symbol in longSymbolAndScoreAsDictionary.Keys)
