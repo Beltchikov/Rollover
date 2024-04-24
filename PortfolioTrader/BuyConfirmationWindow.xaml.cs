@@ -43,12 +43,14 @@ namespace PortfolioTrader
 
             if (stocksToBuyDictionary.Count > App.MAX_BUY_SELL)
             {
-                model.StocksToBuyAsString = SymbolsAndScore.DictionaryToString(stocksToBuyDictionary.Take(App.MAX_BUY_SELL).ToDictionary());
+                stocksToBuyDictionary = stocksToBuyDictionary.Take(App.MAX_BUY_SELL).ToDictionary();
+                model.StocksToBuyAsString = SymbolsAndScore.DictionaryToString(stocksToBuyDictionary);
                 AddBusinessInformation($"The number of stocks in the buy list was reduced to {App.MAX_BUY_SELL} according to the business rules.");
             }
             if (stocksToSellDictionary.Count > App.MAX_BUY_SELL)
             {
-                model.StocksToSellAsString = SymbolsAndScore.DictionaryToString(stocksToSellDictionary.Take(App.MAX_BUY_SELL).ToDictionary());
+                stocksToSellDictionary = stocksToSellDictionary.Take(App.MAX_BUY_SELL).ToDictionary();
+                model.StocksToSellAsString = SymbolsAndScore.DictionaryToString(stocksToSellDictionary);
                 AddBusinessInformation($"The number of stocks in the sell list was reduced to {App.MAX_BUY_SELL} according to the business rules.");
             }
             if (stocksToBuyDictionary.Count != stocksToSellDictionary.Count)
