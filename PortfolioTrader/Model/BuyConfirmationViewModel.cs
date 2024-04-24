@@ -42,10 +42,22 @@ namespace PortfolioTrader.Model
             ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
 
             InvestmentAmount = 100000;
-            BusinessLogicInformation = "TODO";
+            BusinessLogicInformation = BuildBusinessLogicInformation();
             TooExpensiveStocks = "TODO 2";
             StocksToBuyAsString = "TODO 3";
             StocksToSellAsString = "TODO 4";
+        }
+
+        private string BuildBusinessLogicInformation()
+        {
+            return @$"1. The number of stocks 
+in the sell and buy list 
+is reduced to {App.MAX_BUY_SELL}.
+
+2. The number of stocks 
+in the sell and buy list 
+is kept equal.
+";
         }
 
         public IIbHost IbHost => ibHost;
