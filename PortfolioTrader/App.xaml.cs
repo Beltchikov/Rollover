@@ -10,6 +10,7 @@ namespace PortfolioTrader
     public partial class App : Application
     {
         internal static readonly int TIMEOUT = 1000;
+        internal static readonly int MAX_BUY_SELL = 20;
     }
 
 }

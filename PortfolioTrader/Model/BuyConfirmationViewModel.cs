@@ -45,14 +45,7 @@ namespace PortfolioTrader.Model
             BusinessLogicInformation = "TODO";
             TooExpensiveStocks = "TODO 2";
             StocksToBuyAsString = "TODO 3";
-            StocksToBuyAsString = "TODO 4";
-
-            ApplyBusinessRules();
-        }
-
-        private void ApplyBusinessRules()
-        {
-            // TODO
+            StocksToSellAsString = "TODO 4";
         }
 
         public IIbHost IbHost => ibHost;
@@ -147,10 +140,5 @@ namespace PortfolioTrader.Model
                 SetProperty(ref _stocksToSellAsString, value);
             }
         }
-
-
-
-
-
     }
 }
