@@ -62,21 +62,10 @@ namespace PortfolioTrader
                     (longResolved, longMultiple, longUnresolved)
                     = await ResolveSymbols(longSymbolAndScoreAsDictionary)
                 );
-                LongSymbolsResolved = longResolved.Any()
-                    ? longResolved
-                       .Select(r => r.Key + "\t" + r.Value.ToString())
-                       .Aggregate((r, n) => r + Environment.NewLine + n)
-                     : string.Empty;
-                LongSymbolsMultiple = longMultiple.Any()
-                    ? longMultiple
-                      .Select(r => r.Key + "\t" + r.Value.ToString())
-                      .Aggregate((r, n) => r + Environment.NewLine + n)
-                    : string.Empty;
-                LongSymbolsUnresolved = longUnresolved.Any()
-                    ? longUnresolved
-                       .Select(r => r.Key + "\t" + r.Value.ToString())
-                       .Aggregate((r, n) => r + Environment.NewLine + n)
-                    : string.Empty;
+               
+                LongSymbolsResolved = SymbolAndScoreDictionaryToString(longResolved);
+                LongSymbolsMultiple = SymbolAndScoreDictionaryToString(longMultiple);
+                LongSymbolsUnresolved = SymbolAndScoreDictionaryToString(longUnresolved);
 
                 var longMessage = BuildLogMessage(isLong: true, longResolved, longMultiple, longUnresolved);
                 TwsMessageCollection?.Add(longMessage);
@@ -88,21 +77,10 @@ namespace PortfolioTrader
                 Dictionary<string, int> shortResolved = null!, shortMultiple = null!, shortUnresolved = null!;
                 await Task.Run(async () => (shortResolved, shortMultiple, shortUnresolved)
                     = await ResolveSymbols(longSymbolAndScoreAsDictionary));
-                ShortSymbolsResolved = shortResolved.Any()
-                    ? shortResolved
-                       .Select(r => r.Key + "\t" + r.Value.ToString())
-                       .Aggregate((r, n) => r + Environment.NewLine + n)
-                    : string.Empty;
-                ShortSymbolsMultiple = shortMultiple.Any()
-                    ? shortMultiple
-                      .Select(r => r.Key + "\t" + r.Value.ToString())
-                      .Aggregate((r, n) => r + Environment.NewLine + n)
-                    : string.Empty;
-                ShortSymbolsUnresolved = shortUnresolved.Any()
-                    ? shortUnresolved
-                       .Select(r => r.Key + "\t" + r.Value.ToString())
-                       .Aggregate((r, n) => r + Environment.NewLine + n)
-                    : string.Empty;
+                
+                ShortSymbolsResolved = SymbolAndScoreDictionaryToString(shortResolved);
+                ShortSymbolsMultiple = SymbolAndScoreDictionaryToString(shortMultiple);
+                ShortSymbolsUnresolved = SymbolAndScoreDictionaryToString(shortUnresolved);
 
                 var shortMessage = BuildLogMessage(isLong: false, shortResolved, shortMultiple, shortUnresolved);
                 TwsMessageCollection?.Add(shortMessage);
@@ -293,6 +271,15 @@ namespace PortfolioTrader
                     throw new Exception($"Unexpected. Can not build key value pair from the string {s}");
                 })
                 .ToDictionary();
+        }
+
+        private string SymbolAndScoreDictionaryToString(Dictionary<string, int> dictionary)
+        {
+            return dictionary.Any()
+                ? dictionary
+                   .Select(r => r.Key + "\t" + r.Value.ToString())
+                   .Aggregate((r, n) => r + Environment.NewLine + n)
+                 : string.Empty;
         }
 
         private string BuildLogMessage(
