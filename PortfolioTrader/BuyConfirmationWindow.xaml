@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Buy Confirmation Window" Width="1370" Height="700"
         Background="#FF5A74A9">
-    <Grid>
+    <Grid x:Name="Processing">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="35"/>
