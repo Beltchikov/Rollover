@@ -12,7 +12,8 @@ namespace PortfolioTrader.Commands
         public static void Run(ICommandVisitor visitor)
         {
             // TODO
-            MessageBox.Show("Calculate Weights");
+            var buyConfirmationWindow = new BuyConfirmationWindow();
+            buyConfirmationWindow.ShowDialog(); 
         }
     }
 }
