@@ -6,13 +6,13 @@
         xmlns:local="clr-namespace:PortfolioTrader"
         xmlns:tws_uc="clr-namespace:TwsUserControls;assembly=TwsUserControls"
         mc:Ignorable="d"
-        Title="Buy Confirmation Window" Width="1370" Height="700"
+        Title="Buy Confirmation Window" Width="1370" Height="1100"
         Background="#FF5A74A9">
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
-            <RowDefinition Height="470" />
+            <RowDefinition Height="580" />
             <RowDefinition/>
         </Grid.RowDefinitions>
 
@@ -25,7 +25,7 @@
          Command="{Binding ConnectToTwsCommand, Mode=OneWay}" Grid.ColumnSpan="2" />
 
         <GroupBox Header="Processing" Grid.Row="1" Foreground="White" ></GroupBox>
-        <Grid x:Name="Processing" Grid.Row="1" >
+        <Grid x:Name="Processing" Grid.Row="1" Margin="10 10 10 10" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="35"/>
@@ -66,13 +66,13 @@
             <Label Grid.Column="4" Content="SELL:" Foreground="White" 
             Margin="10 0 0 0" VerticalAlignment="Bottom"/>
             <TextBox Name="txtSell" Grid.Row="1" Grid.Column="4" Grid.RowSpan="6" 
-       TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
-       Text="{Binding StocksToSellAsString}" VerticalAlignment="Stretch"
+               TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
+               Text="{Binding StocksToSellAsString}" VerticalAlignment="Stretch"
               Margin="10 0 0 10">
             </TextBox>
 
-            <Button Grid.Column="5" Grid.Row="5" Height="25"
-                VerticalAlignment="Top" Margin="5 0 5 0">Send Orders >>
+            <Button Grid.Column="5" Grid.Row="3" Height="25"
+                VerticalAlignment="Bottom" Margin="5 0 5 0">Send Orders >>
             </Button>
 
         </Grid>
