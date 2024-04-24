@@ -11,7 +11,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
-            <RowDefinition Height="510" />
+            <RowDefinition Height="470" />
             <RowDefinition/>
         </Grid.RowDefinitions>
 
@@ -33,7 +33,7 @@
                 <RowDefinition Height="10"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="60"/>
-                <RowDefinition Height="80"/>
+                <RowDefinition Height="40"/>
                 <RowDefinition Height="26" />
                 <RowDefinition Height="60"/>
                 <RowDefinition Height="10"/>
@@ -61,11 +61,11 @@
                  Grid.Row="7" Grid.RowSpan="4" HorizontalAlignment="Left" 
                   TextWrapping="Wrap" VerticalAlignment="Stretch" 
                   AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
-                  Width="220" />    
+                  Width="220" />
 
-            <Button Grid.Column="1" Grid.Row="5" Height="80"  
+            <Button Grid.Column="1" Grid.Row="5" Height="30"  
                     Command="{Binding SymbolCheckCommand}"
-                    HorizontalAlignment="Left" VerticalAlignment="Stretch"
+                    HorizontalAlignment="Left" VerticalAlignment="Bottom"
                     Padding="15 0 15 0" Margin="0 5 5 5">
                 Check Symbols >>
             </Button>
@@ -83,7 +83,7 @@
               Grid.Row="4" Grid.Column="2"  HorizontalAlignment="Left" 
                TextWrapping="Wrap" VerticalAlignment="Stretch" 
                AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
-                Width="110" Background="#FFFFC7CE" />  
+                Width="110" Background="#FFFFC7CE" />
 
             <Label Name="lblMultipleLong" Grid.Row="3" Grid.Column="3" Foreground="White">Multiple (N):</Label>
             <TextBox x:Name="txtLongSymbolsMultiple" Text="{Binding LongSymbolsMultiple}"
@@ -115,14 +115,12 @@
                  AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
                   Width="110" Background="#FFFEEB9C" />
 
-            <Button Grid.Column="4" Grid.Row="5" Height="70"  
+            <Button Grid.Column="4" Grid.Row="5" Height="30"  
                   Command="{Binding CalculateWeightsCommand}"
                   HorizontalAlignment="Left" VerticalAlignment="Bottom"
                   Padding="15 0 15 0" Margin="0 5 5 5">
-                <TextBlock TextAlignment="Center">Calculate Weights<LineBreak/>
-                    with the Data <LineBreak/>
-                in the two Resolved Fields</TextBlock>
-             </Button>
+                Order Confirmation >>
+            </Button>
 
         </Grid>
 
