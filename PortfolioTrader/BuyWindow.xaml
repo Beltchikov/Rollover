@@ -116,7 +116,7 @@
                   Width="110" Background="#FFFEEB9C" />
 
             <Button Grid.Column="4" Grid.Row="5" Height="30"  
-                  Command="{Binding CalculateWeightsCommand}"
+                  Command="{Binding OrderConfirmationCommand}"
                   HorizontalAlignment="Left" VerticalAlignment="Bottom"
                   Padding="15 0 15 0" Margin="0 5 5 5">
                 Order Confirmation >>

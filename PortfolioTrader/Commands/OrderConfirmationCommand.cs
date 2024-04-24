@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace PortfolioTrader.Commands
 {
-    internal class CalculateWeights
+    internal class OrderConfirmationCommand
     {
         public static void Run(ICommandVisitor visitor)
         {

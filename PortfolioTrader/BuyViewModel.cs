@@ -36,7 +36,7 @@ namespace PortfolioTrader
 
         public ICommand ConnectToTwsCommand { get; }
         public ICommand SymbolCheckCommand { get; }
-        public ICommand CalculateWeightsCommand { get; }
+        public ICommand OrderConfirmationCommand { get; }
 
 
         public BuyViewModel()
@@ -51,7 +51,7 @@ namespace PortfolioTrader
                     if (!ConnectedToTws) ConnectToTwsCommand?.Execute(null);
                     await SymbolCheck.Run(this);
                 });
-            CalculateWeightsCommand = new RelayCommand(() => CalculateWeights.Run(this));
+            OrderConfirmationCommand = new RelayCommand(() => Commands.OrderConfirmationCommand.Run(this));
 
             //LongSymbolsAsString = TestDataLong();
             LongSymbolsAsString = TestDataLong10Symbols();
