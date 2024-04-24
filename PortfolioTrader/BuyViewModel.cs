@@ -54,16 +54,7 @@ namespace PortfolioTrader
                 if (!ConnectedToTws) ConnectToTwsCommand?.Execute(null);
 
                 // Long
-                var longSymbolAndScoreAsDictionary = LongSymbolsAsString
-                    .Split(Environment.NewLine)
-                    .Where(s => !string.IsNullOrWhiteSpace(s))
-                    .Select(s =>
-                    {
-                        var splitted = s.Trim().Split([' ', '\t']).Select(s => s.Trim()).ToList();
-                        if (splitted != null) return new KeyValuePair<string, int>(splitted[0], Convert.ToInt32(splitted[1]));
-                        throw new Exception($"Unexpected. Can not build key value pair from the string {s}");
-                    })
-                    .ToDictionary();
+                var longSymbolAndScoreAsDictionary = SymbolAndScoreStringToDictionary(LongSymbolsAsString);
                 TwsMessageCollection?.Add($"{longSymbolAndScoreAsDictionary.Count()} long symbols to resolve.");
 
                 Dictionary<string, int> longResolved = null!, longMultiple = null!, longUnresolved = null!;
@@ -91,16 +82,7 @@ namespace PortfolioTrader
                 TwsMessageCollection?.Add(longMessage);
 
                 // Short
-                var shortSymbolAndScoreAsDictionary = ShortSymbolsAsString
-                    .Split(Environment.NewLine)
-                    .Where(s => !string.IsNullOrWhiteSpace(s))
-                    .Select(s =>
-                    {
-                        var splitted = s.Trim().Split([' ', '\t']).Select(s => s.Trim()).ToList();
-                        if (splitted != null) return new KeyValuePair<string, int>(splitted[0], Convert.ToInt32(splitted[1]));
-                        throw new Exception($"Unexpected. Can not build key value pair from the string {s}");
-                    })
-                   .ToDictionary();
+                var shortSymbolAndScoreAsDictionary = SymbolAndScoreStringToDictionary(ShortSymbolsAsString);
                 TwsMessageCollection?.Add($"{shortSymbolAndScoreAsDictionary.Count()} short symbols to resolve.");
 
                 Dictionary<string, int> shortResolved = null!, shortMultiple = null!, shortUnresolved = null!;
@@ -135,17 +117,6 @@ namespace PortfolioTrader
             LongSymbolsAsString = TestDataLong10Symbols();
             //ShortSymbolsAsString = TestDataShort();
             ShortSymbolsAsString = TestDataShort10Symbols();
-        }
-
-        private string BuildLogMessage(
-            bool isLong,
-            Dictionary<string, int> resolved,
-            Dictionary<string, int> multiple,
-            Dictionary<string, int> unresolved)
-        {
-            var longMessage = isLong ? "LONG" : "SHORT";
-            longMessage += $" resolved:{resolved.Count} multiple:{multiple.Count} unresolved:{unresolved.Count}";
-            return longMessage;
         }
 
         public IIbHost IbHost => ibHost;
@@ -308,6 +279,31 @@ namespace PortfolioTrader
             }
 
             return (symbolsResolved, symbolsMultiple, symbolsUnresolved);
+        }
+
+        private Dictionary<string, int> SymbolAndScoreStringToDictionary(string symbolsAsString)
+        {
+            return symbolsAsString
+                .Split(Environment.NewLine)
+                .Where(s => !string.IsNullOrWhiteSpace(s))
+                .Select(s =>
+                {
+                    var splitted = s.Trim().Split([' ', '\t']).Select(s => s.Trim()).ToList();
+                    if (splitted != null) return new KeyValuePair<string, int>(splitted[0], Convert.ToInt32(splitted[1]));
+                    throw new Exception($"Unexpected. Can not build key value pair from the string {s}");
+                })
+                .ToDictionary();
+        }
+
+        private string BuildLogMessage(
+            bool isLong,
+            Dictionary<string, int> resolved,
+            Dictionary<string, int> multiple,
+            Dictionary<string, int> unresolved)
+        {
+            var longMessage = isLong ? "LONG" : "SHORT";
+            longMessage += $" resolved:{resolved.Count} multiple:{multiple.Count} unresolved:{unresolved.Count}";
+            return longMessage;
         }
 
         private string TestDataLong()
