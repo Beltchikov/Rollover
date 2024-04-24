@@ -37,7 +37,7 @@ namespace PortfolioTrader
 
         private void CalculateWeights()
         {
-            BuyConfirmationViewModel model = DataContext as BuyConfirmationViewModel 
+            BuyConfirmationViewModel model = DataContext as BuyConfirmationViewModel
                 ?? throw new Exception("Unexpected. model is null");
             model.StocksToBuyAsString = ConvertScoreToWeights(model.StocksToBuyAsString);
             model.StocksToSellAsString = ConvertScoreToWeights(model.StocksToSellAsString);
@@ -53,30 +53,20 @@ namespace PortfolioTrader
                 stocksDictionaryWithWeights.Add(kvp.Key, Math.Round(kvp.Value / scaler, 2));
             }
 
-            var sum = stocksDictionaryWithWeights.Values.Sum(); 
-            if(sum < 1)
+            var sum = stocksDictionaryWithWeights.Values.Sum();
+            if (sum < 1)
             {
                 var correction = 1 - sum;
-
-                // Test remove later
-                stocksDictionaryWithWeights.Add("test", 0.5);
-
-                //
-
                 var groupsDictionary = stocksDictionaryWithWeights
                     .GroupBy(kvp => kvp.Value)
                     .ToDictionary(grp => grp.Key, grp => grp.Count());
                 var keyOfLargestGroup = groupsDictionary.MaxBy(entry => entry.Value).Key;
                 var keyToApplyCorrection = stocksDictionaryWithWeights.Where(kvp => kvp.Value == keyOfLargestGroup)
-                    .OrderByDescending(kvp => kvp.Key)
+                    .OrderBy(kvp => kvp.Key)
                     .First()
                     .Key;
                 stocksDictionaryWithWeights[keyToApplyCorrection] += correction;
-
-                var t = 0;
             }
-
-
 
             return SymbolsAndScore.DictionaryToString(stocksDictionaryWithWeights);
         }
