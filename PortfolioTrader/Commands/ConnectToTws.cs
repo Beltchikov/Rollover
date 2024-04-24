@@ -9,7 +9,7 @@ namespace PortfolioTrader.Commands
 {
     class ConnectToTws
     {
-        public static void Run(ICommandVisitor visitor)
+        public static void Run(ITwsVisitor visitor)
         {
             if (!visitor.IbHost.Consumer.ConnectedToTws)
             {

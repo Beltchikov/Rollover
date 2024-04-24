@@ -22,6 +22,7 @@ namespace PortfolioTrader
         public BuyConfirmationWindow()
         {
             InitializeComponent();
+            DataContext = new BuyConfirmationViewModel();
         }
     }
 }

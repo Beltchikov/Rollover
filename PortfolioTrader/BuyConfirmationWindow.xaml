@@ -8,6 +8,19 @@
         Title="Buy Confirmation Window" Height="450" Width="800"
         Background="#FF5A74A9">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
         
+        <Label x:Name="label" Content="Inv. Amount:" Foreground="White"/>
+        <TextBox Name="txtInvestmentAmount" Text="{Binding InvestmentAmount}" Grid.Row="1"></TextBox>
+
+
     </Grid>
 </Window>

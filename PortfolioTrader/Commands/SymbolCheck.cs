@@ -11,11 +11,11 @@ namespace PortfolioTrader.Commands
 {
     internal class SymbolCheck
     {
-        private static ICommandVisitor _visitor = null!;
+        private static IBuyModelVisitor _visitor = null!;
         private static readonly string SEC_TYPE_STK = "STK";
         private static readonly string USD = "USD";
 
-        public static async Task Run(ICommandVisitor visitor)
+        public static async Task Run(IBuyModelVisitor visitor)
         {
             _visitor = visitor;
 

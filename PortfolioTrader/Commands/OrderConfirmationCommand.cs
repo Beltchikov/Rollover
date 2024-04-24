@@ -9,7 +9,7 @@ namespace PortfolioTrader.Commands
 {
     internal class OrderConfirmationCommand
     {
-        public static void Run(ICommandVisitor visitor)
+        public static void Run(IBuyModelVisitor visitor)
         {
             // TODO
             var buyConfirmationWindow = new BuyConfirmationWindow();

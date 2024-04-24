@@ -14,7 +14,7 @@ using System.Windows.Input;
 
 namespace PortfolioTrader
 {
-    public class BuyViewModel : ObservableObject, IIbConsumer, ICommandVisitor
+    public class BuyViewModel : ObservableObject, IIbConsumer, IBuyModelVisitor
     {
         const int TIMEOUT = 1000;
         IIbHostQueue ibHostQueue = null!;
