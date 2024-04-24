@@ -54,10 +54,10 @@ namespace PortfolioTrader.Model
 
             //LongSymbolsAsString = TestDataLong();
             //LongSymbolsAsString = TestDataLong10Symbols();
-            LongSymbolsAsString = TestDataLong3Symbols();
+            LongSymbolsAsString = TestDataLong4Symbols();
             //ShortSymbolsAsString = TestDataShort();
             //ShortSymbolsAsString = TestDataShort10Symbols();
-            ShortSymbolsAsString = TestDataShort3Symbols();
+            ShortSymbolsAsString = TestDataShort4Symbols();
         }
 
         public IIbHost IbHost => ibHost;
@@ -339,11 +339,12 @@ ACN	2
 ";
         }
 
-        private string TestDataLong3Symbols()
+        private string TestDataLong4Symbols()
         {
             return @"PYPL	4
 CRM	3
 ABT	3
+JNJ	3
 
 ";
         }
@@ -585,11 +586,12 @@ AXS	2
 ";
         }
 
-        private string TestDataShort3Symbols()
+        private string TestDataShort4Symbols()
         {
             return @"MATIC	4
 SOS	3
 YFI	3
+1INCH	2
 ";
         }
 

@@ -32,6 +32,26 @@ namespace PortfolioTrader
             };
 
             ApplyBusinessRules();
+            CalculateWeights();
+        }
+
+        private void CalculateWeights()
+        {
+            var model = DataContext as BuyConfirmationViewModel;
+            if (model == null) throw new Exception("Unexpected. model is null");
+
+            // Long
+            var stocksToBuyDictionary = SymbolsAndScore.StringToDictionary(model.StocksToBuyAsString);
+            var scaler = (double)stocksToBuyDictionary.Values.Sum()/1d;
+            var stocksToBuyDictionaryWithWeights = new Dictionary<string, double>();    
+            foreach ( var kvp in stocksToBuyDictionary )
+            {
+                stocksToBuyDictionaryWithWeights.Add(kvp.Key, Math.Round(kvp.Value/scaler, 2));
+            }
+
+
+            // Short
+            var stocksToSellDictionary = SymbolsAndScore.StringToDictionary(model.StocksToSellAsString);
         }
 
         private void ApplyBusinessRules()
@@ -68,16 +88,6 @@ namespace PortfolioTrader
                     model.StocksToSellAsString = SymbolsAndScore.DictionaryToString(stocksToSellDictionary);
                 }
             }
-        }
-
-
-        private void AddBusinessInformation(string information)
-        {
-            var model = DataContext as BuyConfirmationViewModel;
-            if (model == null) throw new Exception("Unexpected. model is null");
-
-            if (model.BusinessLogicInformation != "") model.BusinessLogicInformation += "{\r\n}";
-            model.BusinessLogicInformation += information;
         }
     }
 }
