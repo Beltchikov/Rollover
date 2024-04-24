@@ -16,7 +16,6 @@ namespace PortfolioTrader.Model
 {
     public class BuyConfirmationViewModel : ObservableObject, IIbConsumer, IBuyConfirmationModelVisitor
     {
-        const int TIMEOUT = 1000;
         IIbHostQueue ibHostQueue = null!;
         IIbHost ibHost = null!;
 
@@ -50,7 +49,7 @@ namespace PortfolioTrader.Model
         }
 
         public IIbHost IbHost => ibHost;
-        public int Timeout => TIMEOUT;
+        public int Timeout => App.TIMEOUT;
 
         public string Host
         {

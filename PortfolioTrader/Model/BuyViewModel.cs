@@ -16,7 +16,6 @@ namespace PortfolioTrader.Model
 {
     public class BuyViewModel : ObservableObject, IIbConsumer, IBuyModelVisitor
     {
-        const int TIMEOUT = 1000;
         IIbHostQueue ibHostQueue = null!;
         IIbHost ibHost = null!;
 
@@ -54,13 +53,15 @@ namespace PortfolioTrader.Model
             OrderConfirmationCommand = new RelayCommand(() => Commands.OrderConfirmationCommand.Run(this));
 
             //LongSymbolsAsString = TestDataLong();
-            LongSymbolsAsString = TestDataLong10Symbols();
+            //LongSymbolsAsString = TestDataLong10Symbols();
+            LongSymbolsAsString = TestDataLong3Symbols();
             //ShortSymbolsAsString = TestDataShort();
-            ShortSymbolsAsString = TestDataShort10Symbols();
+            //ShortSymbolsAsString = TestDataShort10Symbols();
+            ShortSymbolsAsString = TestDataShort3Symbols();
         }
 
         public IIbHost IbHost => ibHost;
-        public int Timeout => TIMEOUT;
+        public int Timeout => App.TIMEOUT;
 
         public string Host
         {
@@ -338,6 +339,15 @@ ACN	2
 ";
         }
 
+        private string TestDataLong3Symbols()
+        {
+            return @"PYPL	4
+CRM	3
+ABT	3
+
+";
+        }
+
         private string TestDataShort()
         {
             return @"MATIC	4
@@ -572,6 +582,14 @@ ALGO	2
 ATOM	2
 AVAX	2
 AXS	2
+";
+        }
+
+        private string TestDataShort3Symbols()
+        {
+            return @"MATIC	4
+SOS	3
+YFI	3
 ";
         }
 

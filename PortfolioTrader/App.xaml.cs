@@ -9,6 +9,7 @@ namespace PortfolioTrader
     /// </summary>
     public partial class App : Application
     {
+        internal static readonly int TIMEOUT = 1000;
     }
 
 }
