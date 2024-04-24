@@ -1,4 +1,5 @@
-﻿using PortfolioTrader.Model;
+﻿using PortfolioTrader.Commands;
+using PortfolioTrader.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +21,14 @@ namespace PortfolioTrader
     /// </summary>
     public partial class BuyConfirmationWindow : Window
     {
-        public BuyConfirmationWindow(bool connectedToTws)
+        public BuyConfirmationWindow(IBuyModelVisitor visitor)
         {
             InitializeComponent();
-            DataContext = new BuyConfirmationViewModel() { ConnectedToTws = connectedToTws };
+            DataContext = new BuyConfirmationViewModel() { 
+                ConnectedToTws = visitor.ConnectedToTws,
+                StocksToBuyAsString = visitor.LongSymbolsAsString,
+                StocksToSellAsString = visitor.ShortSymbolsAsString
+            };
         }
     }
 }

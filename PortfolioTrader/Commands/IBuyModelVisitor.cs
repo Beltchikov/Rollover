@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PortfolioTrader.Commands
 {
-    interface IBuyModelVisitor : ITwsVisitor
+    public interface IBuyModelVisitor : ITwsVisitor
     {
         string LongSymbolsAsString { get; set; }
         string ShortSymbolsAsString { get; set; }

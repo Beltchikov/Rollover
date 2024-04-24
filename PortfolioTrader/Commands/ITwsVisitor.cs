@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PortfolioTrader.Commands
 {
-    interface ITwsVisitor
+    public interface ITwsVisitor
     {
         IIbHost IbHost { get; } 
         string Host { get; } 
