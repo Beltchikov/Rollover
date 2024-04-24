@@ -22,6 +22,7 @@
             <ColumnDefinition Width="80"/>
             <ColumnDefinition Width="80"/>
             <ColumnDefinition Width="500"/>
+            <ColumnDefinition Width="500"/>
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         
@@ -37,6 +38,19 @@
         <Label Grid.Row="4" Grid.ColumnSpan="2" Content="Too Expensive Stocks:" Foreground="White" VerticalAlignment="Bottom"/>
         <Label Grid.Row="5" Grid.ColumnSpan="3" Content="{Binding TooExpensiveStocks}" Background="#FFFFC7CE" VerticalAlignment="Top" Height="190"/>
 
+        <Label Grid.Column="3" Content="BUY:" Foreground="White" VerticalAlignment="Bottom"/>
+        <TextBox Name="txtBuy" Grid.Row="1" Grid.Column="3" Grid.RowSpan="6" 
+                 TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
+                 Text="{Binding StocksToBuyAsString}" VerticalAlignment="Stretch">
+        </TextBox>
+
+        <Label Grid.Column="4" Content="SELL:" Foreground="White" 
+               Margin="10 0 0 0" VerticalAlignment="Bottom"/>
+        <TextBox Name="txtSell" Grid.Row="1" Grid.Column="4" Grid.RowSpan="6" 
+          TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
+          Text="{Binding StocksToSellAsString}" VerticalAlignment="Stretch"
+                 Margin="10 0 0 0">
+        </TextBox>
 
 
     </Grid>

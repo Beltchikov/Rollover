@@ -29,6 +29,8 @@ namespace PortfolioTrader
         private int _investmentAmount = 0;
         private string _businessLogicInformation;
         private string _tooExpensiveStocks;
+        private string _stocksToBuyAsString;
+        private string _stocksToSellAsString;
 
         public ICommand ConnectToTwsCommand { get; }
 
@@ -43,6 +45,8 @@ namespace PortfolioTrader
             InvestmentAmount = 100000;
             BusinessLogicInformation = "TODO";
             TooExpensiveStocks = "TODO 2";
+            StocksToBuyAsString = "TODO 3";
+            StocksToBuyAsString = "TODO 4";
         }
 
         public IIbHost IbHost => ibHost;
@@ -120,7 +124,26 @@ namespace PortfolioTrader
             }
         }
 
+        public string StocksToBuyAsString
+        {
+            get => _stocksToBuyAsString;
+            set
+            {
+                SetProperty(ref _stocksToBuyAsString, value);
+            }
+        }
+
+        public string StocksToSellAsString
+        {
+            get => _stocksToSellAsString;
+            set
+            {
+                SetProperty(ref _stocksToSellAsString, value);
+            }
+        }
         
+
+
 
 
     }
