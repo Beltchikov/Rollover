@@ -37,22 +37,22 @@ namespace PortfolioTrader
 
         private void CalculateWeights()
         {
-            var model = DataContext as BuyConfirmationViewModel;
-            if (model == null) throw new Exception("Unexpected. model is null");
+            BuyConfirmationViewModel? model = DataContext as BuyConfirmationViewModel 
+                ?? throw new Exception("Unexpected. model is null");
+            model.StocksToBuyAsString = ConvertScoreToWeights(model.StocksToBuyAsString);
+            model.StocksToSellAsString = ConvertScoreToWeights(model.StocksToSellAsString);
+        }
 
-            // Long
-            var stocksToBuyDictionary = SymbolsAndScore.StringToDictionary(model.StocksToBuyAsString);
-            var scaler = (double)stocksToBuyDictionary.Values.Sum()/1d;
-            var stocksToBuyDictionaryWithWeights = new Dictionary<string, double>();    
-            foreach ( var kvp in stocksToBuyDictionary )
+        private string ConvertScoreToWeights(string stocksAsString)
+        {
+            var stocksDictionary = SymbolsAndScore.StringToDictionary(stocksAsString);
+            var scaler = (double)stocksDictionary.Values.Sum() / 1d;
+            var stocksDictionaryWithWeights = new Dictionary<string, double>();
+            foreach (var kvp in stocksDictionary)
             {
-                stocksToBuyDictionaryWithWeights.Add(kvp.Key, Math.Round(kvp.Value/scaler, 2));
+                stocksDictionaryWithWeights.Add(kvp.Key, Math.Round(kvp.Value / scaler, 2));
             }
-            model.StocksToBuyAsString = SymbolsAndScore.DictionaryToString(stocksToBuyDictionaryWithWeights);   
-
-
-            // Short
-            var stocksToSellDictionary = SymbolsAndScore.StringToDictionary(model.StocksToSellAsString);
+            return SymbolsAndScore.DictionaryToString(stocksDictionaryWithWeights);
         }
 
         private void ApplyBusinessRules()
