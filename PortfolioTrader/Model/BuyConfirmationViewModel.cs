@@ -46,6 +46,13 @@ namespace PortfolioTrader.Model
             TooExpensiveStocks = "TODO 2";
             StocksToBuyAsString = "TODO 3";
             StocksToBuyAsString = "TODO 4";
+
+            ApplyBusinessRules();
+        }
+
+        private void ApplyBusinessRules()
+        {
+            // TODO
         }
 
         public IIbHost IbHost => ibHost;
