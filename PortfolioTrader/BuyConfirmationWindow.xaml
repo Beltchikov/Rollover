@@ -4,57 +4,82 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PortfolioTrader"
+        xmlns:tws_uc="clr-namespace:TwsUserControls;assembly=TwsUserControls"
         mc:Ignorable="d"
         Title="Buy Confirmation Window" Width="1370" Height="700"
         Background="#FF5A74A9">
-    <Grid x:Name="Processing">
+
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="35"/>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="200"/>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="200"/>
-            <RowDefinition />
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="470" />
+            <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="80"/>
-            <ColumnDefinition Width="80"/>
-            <ColumnDefinition Width="80"/>
-            <ColumnDefinition Width="500"/>
-            <ColumnDefinition Width="500"/>
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
 
-        <Label Content="Inv. Amount:" Foreground="White" VerticalAlignment="Bottom"/>
-        <TextBox Name="txtInvestmentAmount" Text="{Binding InvestmentAmount}" Grid.Row="1"
-                 Height="25" VerticalAlignment="Top"></TextBox>
-        <Button Grid.Column="1" Grid.Row="1" Height="25"
-                VerticalAlignment="Top" Margin="5 0 0 0">Recalculate</Button>
+        <tws_uc:TwsConnection 
+         Grid.Row="0"
+         Host="{Binding Host, Mode=OneWay}"
+         Port="{Binding Port, Mode=OneWay}"
+         ClientId="{Binding ClientId, Mode=OneWay}"
+         Connected="{Binding ConnectedToTws, Mode=OneWay}"
+         Command="{Binding ConnectToTwsCommand, Mode=OneWay}" Grid.ColumnSpan="2" />
 
-        <Label Grid.Row="2" Content="Information:" Foreground="White" VerticalAlignment="Bottom"/>
-        <Label Grid.Row="3" Grid.ColumnSpan="3" Content="{Binding BusinessLogicInformation}" Background="#FFFEEB9C" VerticalAlignment="Top" Height="190"/>
+        <GroupBox Header="Processing" Grid.Row="1" Foreground="White" ></GroupBox>
+        <Grid x:Name="Processing" Grid.Row="1" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="200"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="200"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="500"/>
+                <ColumnDefinition Width="500"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="4" Grid.ColumnSpan="2" Content="Too Expensive Stocks:" Foreground="White" VerticalAlignment="Bottom"/>
-        <Label Grid.Row="5" Grid.ColumnSpan="3" Content="{Binding TooExpensiveStocks}" Background="#FFFFC7CE" VerticalAlignment="Top" Height="190"/>
+            <Label Content="Inv. Amount:" Foreground="White" VerticalAlignment="Bottom"/>
+            <TextBox Name="txtInvestmentAmount" Text="{Binding InvestmentAmount}" Grid.Row="1"
+              Height="25" VerticalAlignment="Top"></TextBox>
+            <Button Grid.Column="1" Grid.Row="1" Height="25"
+             VerticalAlignment="Top" Margin="5 0 0 0">Recalculate</Button>
 
-        <Label Grid.Column="3" Content="BUY:" Foreground="White" VerticalAlignment="Bottom"/>
-        <TextBox Name="txtBuy" Grid.Row="1" Grid.Column="3" Grid.RowSpan="6" 
-                 TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
-                 Text="{Binding StocksToBuyAsString}" VerticalAlignment="Stretch"
-                 Margin="10 0 0 10">
-        </TextBox>
+            <Label Grid.Row="2" Content="Information:" Foreground="White" VerticalAlignment="Bottom"/>
+            <Label Grid.Row="3" Grid.ColumnSpan="3" Content="{Binding BusinessLogicInformation}" Background="#FFFEEB9C" VerticalAlignment="Top" Height="190"/>
 
-        <Label Grid.Column="4" Content="SELL:" Foreground="White" 
-               Margin="10 0 0 0" VerticalAlignment="Bottom"/>
-        <TextBox Name="txtSell" Grid.Row="1" Grid.Column="4" Grid.RowSpan="6" 
-          TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
-          Text="{Binding StocksToSellAsString}" VerticalAlignment="Stretch"
-                 Margin="10 0 0 10">
-        </TextBox>
+            <Label Grid.Row="4" Grid.ColumnSpan="2" Content="Too Expensive Stocks:" Foreground="White" VerticalAlignment="Bottom"/>
+            <Label Grid.Row="5" Grid.ColumnSpan="3" Content="{Binding TooExpensiveStocks}" Background="#FFFFC7CE" VerticalAlignment="Top" Height="190"/>
 
-        <Button Grid.Column="5" Grid.Row="5" Height="25"
-         VerticalAlignment="Top" Margin="5 0 5 0">Send Orders >></Button>
+            <Label Grid.Column="3" Content="BUY:" Foreground="White" VerticalAlignment="Bottom"/>
+            <TextBox Name="txtBuy" Grid.Row="1" Grid.Column="3" Grid.RowSpan="6" 
+              TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
+              Text="{Binding StocksToBuyAsString}" VerticalAlignment="Stretch"
+              Margin="10 0 0 10">
+            </TextBox>
+
+            <Label Grid.Column="4" Content="SELL:" Foreground="White" 
+            Margin="10 0 0 0" VerticalAlignment="Bottom"/>
+            <TextBox Name="txtSell" Grid.Row="1" Grid.Column="4" Grid.RowSpan="6" 
+       TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
+       Text="{Binding StocksToSellAsString}" VerticalAlignment="Stretch"
+              Margin="10 0 0 10">
+            </TextBox>
+
+            <Button Grid.Column="5" Grid.Row="5" Height="25"
+                VerticalAlignment="Top" Margin="5 0 5 0">Send Orders >>
+            </Button>
+
+        </Grid>
+
+        <tws_uc:TwsInformation Grid.Row="2" MessageCollection="{Binding TwsMessageCollection}" Grid.ColumnSpan="2" Margin="0,0,0,0" Grid.RowSpan="2">
+        </tws_uc:TwsInformation>
 
     </Grid>
+
 </Window>
