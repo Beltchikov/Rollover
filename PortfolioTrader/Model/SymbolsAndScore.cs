@@ -22,11 +22,11 @@ namespace PortfolioTrader.Model
                 .ToDictionary();
         }
 
-        public static string DictionaryToString(Dictionary<string, int> dictionary)
+        public static string DictionaryToString<TKey,TValue>(Dictionary<TKey, TValue> dictionary) where TKey: notnull
         {
             return dictionary.Any()
                 ? dictionary
-                   .Select(r => r.Key + "\t" + r.Value.ToString())
+                   .Select(r => r.Key + "\t" + (r.Value==null? "": r.Value.ToString()))
                    .Aggregate((r, n) => r + Environment.NewLine + n)
                  : string.Empty;
         }

@@ -48,6 +48,7 @@ namespace PortfolioTrader
             {
                 stocksToBuyDictionaryWithWeights.Add(kvp.Key, Math.Round(kvp.Value/scaler, 2));
             }
+            model.StocksToBuyAsString = SymbolsAndScore.DictionaryToString(stocksToBuyDictionaryWithWeights);   
 
 
             // Short
