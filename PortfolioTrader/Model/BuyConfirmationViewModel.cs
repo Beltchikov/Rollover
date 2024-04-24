@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace PortfolioTrader
+namespace PortfolioTrader.Model
 {
     public class BuyConfirmationViewModel : ObservableObject, IIbConsumer, IBuyConfirmationModelVisitor
     {
@@ -141,7 +141,7 @@ namespace PortfolioTrader
                 SetProperty(ref _stocksToSellAsString, value);
             }
         }
-        
+
 
 
 

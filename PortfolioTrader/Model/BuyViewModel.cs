@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace PortfolioTrader
+namespace PortfolioTrader.Model
 {
     public class BuyViewModel : ObservableObject, IIbConsumer, IBuyModelVisitor
     {
