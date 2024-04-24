@@ -6,13 +6,13 @@
         xmlns:local="clr-namespace:PortfolioTrader"
         xmlns:tws_uc="clr-namespace:TwsUserControls;assembly=TwsUserControls"
         mc:Ignorable="d"
-        Title="Buy Confirmation Window" Width="1370" Height="1100"
+        Title="Buy Confirmation Window" Width="1380" Height="900"
         Background="#FF5A74A9">
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
-            <RowDefinition Height="580" />
+            <RowDefinition Height="500" />
             <RowDefinition/>
         </Grid.RowDefinitions>
 
@@ -30,9 +30,9 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="35"/>
                 <RowDefinition Height="50"/>
-                <RowDefinition Height="200"/>
+                <RowDefinition Height="150"/>
                 <RowDefinition Height="50"/>
-                <RowDefinition Height="200"/>
+                <RowDefinition Height="150"/>
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -57,18 +57,18 @@
             <Label Grid.Row="5" Grid.ColumnSpan="3" Content="{Binding TooExpensiveStocks}" Background="#FFFFC7CE" VerticalAlignment="Top" Height="190"/>
 
             <Label Grid.Column="3" Content="BUY:" Foreground="White" VerticalAlignment="Bottom"/>
-            <TextBox Name="txtBuy" Grid.Row="1" Grid.Column="3" Grid.RowSpan="6" 
+            <TextBox Name="txtBuy" Grid.Row="1" Grid.Column="3" Grid.RowSpan="5" 
               TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
               Text="{Binding StocksToBuyAsString}" VerticalAlignment="Stretch"
-              Margin="10 0 0 10">
+              Margin="10 0 0 0">
             </TextBox>
 
             <Label Grid.Column="4" Content="SELL:" Foreground="White" 
             Margin="10 0 0 0" VerticalAlignment="Bottom"/>
-            <TextBox Name="txtSell" Grid.Row="1" Grid.Column="4" Grid.RowSpan="6" 
+            <TextBox Name="txtSell" Grid.Row="1" Grid.Column="4" Grid.RowSpan="5" 
                TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
                Text="{Binding StocksToSellAsString}" VerticalAlignment="Stretch"
-              Margin="10 0 0 10">
+              Margin="10 0 0 0">
             </TextBox>
 
             <Button Grid.Column="5" Grid.Row="3" Height="25"
