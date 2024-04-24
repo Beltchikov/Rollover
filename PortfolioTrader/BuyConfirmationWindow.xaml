@@ -12,7 +12,9 @@
             <RowDefinition Height="30"/>
             <RowDefinition Height="35"/>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="200"/>
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -30,7 +32,11 @@
                 VerticalAlignment="Top" Margin="5 0 0 0">Recalculate</Button>
 
         <Label Grid.Row="2" Content="Information:" Foreground="White" VerticalAlignment="Bottom"/>
-        <Label Grid.Row="3" Grid.ColumnSpan="3" Content="{Binding BusinessLogicInformation}" Background="#FFFEEB9C" VerticalAlignment="Top" Height="90"/>
+        <Label Grid.Row="3" Grid.ColumnSpan="3" Content="{Binding BusinessLogicInformation}" Background="#FFFEEB9C" VerticalAlignment="Top" Height="190"/>
+
+        <Label Grid.Row="4" Grid.ColumnSpan="2" Content="Too Expensive Stocks:" Foreground="White" VerticalAlignment="Bottom"/>
+        <Label Grid.Row="5" Grid.ColumnSpan="3" Content="{Binding TooExpensiveStocks}" Background="#FFFFC7CE" VerticalAlignment="Top" Height="190"/>
+
 
 
     </Grid>
