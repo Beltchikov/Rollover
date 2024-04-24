@@ -17,8 +17,6 @@ namespace PortfolioTrader
     public class BuyViewModel : ObservableObject, IIbConsumer, ICommandVisitor
     {
         const int TIMEOUT = 1000;
-        private readonly string SEC_TYPE_STK = "STK";
-        private readonly string USD = "USD";
         IIbHostQueue ibHostQueue = null!;
         IIbHost ibHost = null!;
 
@@ -48,47 +46,11 @@ namespace PortfolioTrader
             ibHost.Consumer = ibHost.Consumer ?? this;
 
             ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
-
             SymbolCheckCommand = new RelayCommand(async () =>
-            {
-                if (!ConnectedToTws) ConnectToTwsCommand?.Execute(null);
-
-                // Long
-                var longSymbolAndScoreAsDictionary = SymbolAndScoreStringToDictionary(LongSymbolsAsString);
-                TwsMessageCollection?.Add($"{longSymbolAndScoreAsDictionary.Count()} long symbols to resolve.");
-
-                Dictionary<string, int> longResolved = null!, longMultiple = null!, longUnresolved = null!;
-                await Task.Run(async () =>
-                    (longResolved, longMultiple, longUnresolved)
-                    = await ResolveSymbols(longSymbolAndScoreAsDictionary)
-                );
-               
-                LongSymbolsResolved = SymbolAndScoreDictionaryToString(longResolved);
-                LongSymbolsMultiple = SymbolAndScoreDictionaryToString(longMultiple);
-                LongSymbolsUnresolved = SymbolAndScoreDictionaryToString(longUnresolved);
-
-                var longMessage = BuildLogMessage(isLong: true, longResolved, longMultiple, longUnresolved);
-                TwsMessageCollection?.Add(longMessage);
-
-                // Short
-                var shortSymbolAndScoreAsDictionary = SymbolAndScoreStringToDictionary(ShortSymbolsAsString);
-                TwsMessageCollection?.Add($"{shortSymbolAndScoreAsDictionary.Count()} short symbols to resolve.");
-
-                Dictionary<string, int> shortResolved = null!, shortMultiple = null!, shortUnresolved = null!;
-                await Task.Run(async () => (shortResolved, shortMultiple, shortUnresolved)
-                    = await ResolveSymbols(longSymbolAndScoreAsDictionary));
-                
-                ShortSymbolsResolved = SymbolAndScoreDictionaryToString(shortResolved);
-                ShortSymbolsMultiple = SymbolAndScoreDictionaryToString(shortMultiple);
-                ShortSymbolsUnresolved = SymbolAndScoreDictionaryToString(shortUnresolved);
-
-                var shortMessage = BuildLogMessage(isLong: false, shortResolved, shortMultiple, shortUnresolved);
-                TwsMessageCollection?.Add(shortMessage);
-
-                //
-                MessageBox.Show(longMessage + Environment.NewLine + shortMessage);
-            });
-
+                {
+                    if (!ConnectedToTws) ConnectToTwsCommand?.Execute(null);
+                    await SymbolCheck.Run(this);
+                });
             CalculateWeightsCommand = new RelayCommand(() => CalculateWeights.Run(this));
 
             //LongSymbolsAsString = TestDataLong();
@@ -214,83 +176,6 @@ namespace PortfolioTrader
             {
                 SetProperty(ref _shortSymbolsMultiple, value);
             }
-        }
-
-        private async Task<(Dictionary<string, int>, Dictionary<string, int>, Dictionary<string, int>)>
-            ResolveSymbols(Dictionary<string, int> longSymbolAndScoreAsDictionary)
-        {
-            Dictionary<string, int> symbolsResolved = new Dictionary<string, int>();
-            Dictionary<string, int> symbolsMultiple = new Dictionary<string, int>();
-            Dictionary<string, int> symbolsUnresolved = new Dictionary<string, int>();
-
-            foreach (var symbol in longSymbolAndScoreAsDictionary.Keys)
-            {
-                SymbolSamplesMessage symbolSamplesMessage = await ibHost.RequestMatchingSymbolsAsync(symbol, TIMEOUT);
-                if (symbolSamplesMessage == null)
-                {
-                    symbolsUnresolved.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
-                }
-                else
-                {
-                    if (symbolSamplesMessage.ContractDescriptions.Count() == 1)
-                    {
-                        symbolsResolved.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
-                    }
-                    else if (symbolSamplesMessage.ContractDescriptions.Count() == 0)
-                    {
-                        symbolsUnresolved.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
-                    }
-                    else
-                    {
-                        var stkAndUsdList = symbolSamplesMessage.ContractDescriptions
-                            .Where(d => d.Contract.SecType == SEC_TYPE_STK
-                                && d.Contract.Currency == USD
-                                && d.Contract.Symbol.ToUpper() == symbol.ToUpper())
-                            .ToList();
-
-                        if (stkAndUsdList.Count == 1) symbolsResolved.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
-                        else symbolsMultiple.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
-                    }
-                }
-
-                Thread.Sleep((int)Math.Round(TIMEOUT * 1.5));
-            }
-
-            return (symbolsResolved, symbolsMultiple, symbolsUnresolved);
-        }
-
-        private Dictionary<string, int> SymbolAndScoreStringToDictionary(string symbolsAsString)
-        {
-            return symbolsAsString
-                .Split(Environment.NewLine)
-                .Where(s => !string.IsNullOrWhiteSpace(s))
-                .Select(s =>
-                {
-                    var splitted = s.Trim().Split([' ', '\t']).Select(s => s.Trim()).ToList();
-                    if (splitted != null) return new KeyValuePair<string, int>(splitted[0], Convert.ToInt32(splitted[1]));
-                    throw new Exception($"Unexpected. Can not build key value pair from the string {s}");
-                })
-                .ToDictionary();
-        }
-
-        private string SymbolAndScoreDictionaryToString(Dictionary<string, int> dictionary)
-        {
-            return dictionary.Any()
-                ? dictionary
-                   .Select(r => r.Key + "\t" + r.Value.ToString())
-                   .Aggregate((r, n) => r + Environment.NewLine + n)
-                 : string.Empty;
-        }
-
-        private string BuildLogMessage(
-            bool isLong,
-            Dictionary<string, int> resolved,
-            Dictionary<string, int> multiple,
-            Dictionary<string, int> unresolved)
-        {
-            var longMessage = isLong ? "LONG" : "SHORT";
-            longMessage += $" resolved:{resolved.Count} multiple:{multiple.Count} unresolved:{unresolved.Count}";
-            return longMessage;
         }
 
         private string TestDataLong()
