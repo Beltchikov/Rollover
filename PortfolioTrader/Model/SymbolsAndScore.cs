@@ -22,6 +22,23 @@ namespace PortfolioTrader.Model
                 .ToDictionary();
         }
 
+        //public static Dictionary<string, TValue?> StringToDictionary<TValue>(string symbolsAsString) where TValue : class?
+        //{
+        //    return symbolsAsString
+        //        .Split(Environment.NewLine)
+        //        .Where(s => !string.IsNullOrWhiteSpace(s))
+        //        .Select(s =>
+        //        {
+        //            var splitted = s.Trim().Split([' ', '\t']).Select(s => s.Trim()).ToList();
+        //            if (splitted != null)
+        //            {
+        //                return new KeyValuePair<string, TValue?>(splitted[0], splitted[1] as TValue);
+        //            }
+        //            throw new Exception($"Unexpected. Can not build key value pair from the string {s}");
+        //        })
+        //        .ToDictionary();
+        //}
+
         public static string DictionaryToString<TKey,TValue>(Dictionary<TKey, TValue> dictionary) where TKey: notnull
         {
             return dictionary.Any()

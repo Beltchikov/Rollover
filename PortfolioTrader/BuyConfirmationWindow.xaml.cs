@@ -1,4 +1,5 @@
-﻿using PortfolioTrader.Commands;
+﻿using IbClient.messages;
+using PortfolioTrader.Commands;
 using PortfolioTrader.Model;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,38 @@ namespace PortfolioTrader
 
             ApplyBusinessRules();
             CalculateWeights();
+            AddPriceColumn();
+        }
+
+        private void AddPriceColumn()
+        {
+            BuyConfirmationViewModel model = DataContext as BuyConfirmationViewModel
+                ?? throw new Exception("Unexpected. model is null");
+
+            //var stocksToBuyDictionary = SymbolsAndScore.StringToDictionary(model.StocksToBuyAsString);
+            //foreach ( var kvp in stocksToBuyDictionary )
+            //{
+            //    // TODO
+
+                
+
+
+            //    //model.IbHost.RequestMarketDataSnapshotAsync
+            //}
+
+            //private void _ibClient_TickPrice(TickPriceMessage tickPriceMessage)
+            //{
+            //    if (tickPriceMessage.Field == 1)  // bid. Use 2 for ask
+            //    {
+            //        if (tickPriceMessage.RequestId == REQ_MKT_DATA_UNDERLYING)
+            //        {
+            //            ViewModel.UnderlyingPrice = tickPriceMessage.Price;
+            //            //_atmStrikeUtility.SetAtmStrikesInViewModel(this, tickPriceMessage.Price);
+            //        }
+            //    }
+            //}
+
+
         }
 
         private void CalculateWeights()
