@@ -24,8 +24,10 @@ namespace PortfolioTrader
         private int _port = 4001;
         private int _clientId = 1;
         private bool _connectedToTws;
-        private int _investmentAmount = 0;
         private ObservableCollection<string> _twsMessageColllection = new ObservableCollection<string>();
+
+        private int _investmentAmount = 0;
+        private string _businessLogicInformation;
 
         public ICommand ConnectToTwsCommand { get; }
 
@@ -38,6 +40,7 @@ namespace PortfolioTrader
             ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
 
             InvestmentAmount = 100000;
+            BusinessLogicInformation = "TODO";
         }
 
         public IIbHost IbHost => ibHost;
@@ -79,6 +82,15 @@ namespace PortfolioTrader
             }
         }
 
+        public ObservableCollection<string> TwsMessageCollection
+        {
+            get => _twsMessageColllection;
+            set
+            {
+                SetProperty(ref _twsMessageColllection, value);
+            }
+        }
+
         public int InvestmentAmount
         {
             get => _investmentAmount;
@@ -88,13 +100,15 @@ namespace PortfolioTrader
             }
         }
 
-        public ObservableCollection<string> TwsMessageCollection
+        public string BusinessLogicInformation
         {
-            get => _twsMessageColllection;
+            get => _businessLogicInformation;
             set
             {
-                SetProperty(ref _twsMessageColllection, value);
+                SetProperty(ref _businessLogicInformation, value);
             }
         }
+
+        
     }
 }
