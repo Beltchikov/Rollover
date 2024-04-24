@@ -66,27 +66,28 @@ namespace PortfolioTrader
                     .ToDictionary();
                 TwsMessageCollection?.Add($"{longSymbolAndScoreAsDictionary.Count()} long symbols to resolve.");
 
-                Dictionary<string, int> longResolved = null!;
-                Dictionary<string, int> longMultiple = null!;
-                Dictionary<string, int> longUnresolved = null!;
+                Dictionary<string, int> longResolved = null!, longMultiple = null!, longUnresolved = null!;
                 await Task.Run(async () =>
                     (longResolved, longMultiple, longUnresolved)
                     = await ResolveSymbols(longSymbolAndScoreAsDictionary)
                 );
-                LongSymbolsResolved = longResolved
+                LongSymbolsResolved = longResolved.Any()
+                    ? longResolved
                        .Select(r => r.Key + "\t" + r.Value.ToString())
-                       .Aggregate((r, n) => r + Environment.NewLine + n);
-                LongSymbolsMultiple = longMultiple
-                  .Select(r => r.Key + "\t" + r.Value.ToString())
-                  .Aggregate((r, n) => r + Environment.NewLine + n);
-                LongSymbolsUnresolved = longUnresolved
-                   .Select(r => r.Key + "\t" + r.Value.ToString())
-                   .Aggregate((r, n) => r + Environment.NewLine + n);
+                       .Aggregate((r, n) => r + Environment.NewLine + n)
+                     : string.Empty;
+                LongSymbolsMultiple = longMultiple.Any()
+                    ? longMultiple
+                      .Select(r => r.Key + "\t" + r.Value.ToString())
+                      .Aggregate((r, n) => r + Environment.NewLine + n)
+                    : string.Empty;
+                LongSymbolsUnresolved = longUnresolved.Any()
+                    ? longUnresolved
+                       .Select(r => r.Key + "\t" + r.Value.ToString())
+                       .Aggregate((r, n) => r + Environment.NewLine + n)
+                    : string.Empty;
 
-                var longMessage = $@"LONG
-resolved: {longResolved.Count}
-multiple: {longMultiple.Count}
-unresolved: {longUnresolved.Count}";
+                var longMessage = BuildLogMessage(isLong: true, longResolved, longMultiple, longUnresolved);
                 TwsMessageCollection?.Add(longMessage);
 
                 // Short
@@ -102,25 +103,26 @@ unresolved: {longUnresolved.Count}";
                    .ToDictionary();
                 TwsMessageCollection?.Add($"{shortSymbolAndScoreAsDictionary.Count()} short symbols to resolve.");
 
-                Dictionary<string, int> shortResolved = null!;
-                Dictionary<string, int> shortMultiple = null!;
-                Dictionary<string, int> shortUnresolved = null!;
+                Dictionary<string, int> shortResolved = null!, shortMultiple = null!, shortUnresolved = null!;
                 await Task.Run(async () => (shortResolved, shortMultiple, shortUnresolved)
                     = await ResolveSymbols(longSymbolAndScoreAsDictionary));
-                ShortSymbolsResolved = shortResolved
+                ShortSymbolsResolved = shortResolved.Any()
+                    ? shortResolved
                        .Select(r => r.Key + "\t" + r.Value.ToString())
-                       .Aggregate((r, n) => r + Environment.NewLine + n);
-                ShortSymbolsMultiple = shortMultiple
-                  .Select(r => r.Key + "\t" + r.Value.ToString())
-                  .Aggregate((r, n) => r + Environment.NewLine + n);
-                ShortSymbolsUnresolved = shortUnresolved
-                   .Select(r => r.Key + "\t" + r.Value.ToString())
-                   .Aggregate((r, n) => r + Environment.NewLine + n);
+                       .Aggregate((r, n) => r + Environment.NewLine + n)
+                    : string.Empty;
+                ShortSymbolsMultiple = shortMultiple.Any()
+                    ? shortMultiple
+                      .Select(r => r.Key + "\t" + r.Value.ToString())
+                      .Aggregate((r, n) => r + Environment.NewLine + n)
+                    : string.Empty;
+                ShortSymbolsUnresolved = shortUnresolved.Any()
+                    ? shortUnresolved
+                       .Select(r => r.Key + "\t" + r.Value.ToString())
+                       .Aggregate((r, n) => r + Environment.NewLine + n)
+                    : string.Empty;
 
-                var shortMessage = $@"SHORT
-resolved: {shortResolved.Count}
-multiple: {shortMultiple.Count}
-unresolved: {shortUnresolved.Count}";
+                var shortMessage = BuildLogMessage(isLong: false, shortResolved, shortMultiple, shortUnresolved);
                 TwsMessageCollection?.Add(shortMessage);
 
                 //
@@ -129,8 +131,21 @@ unresolved: {shortUnresolved.Count}";
 
             CalculateWeightsCommand = new RelayCommand(() => CalculateWeights.Run(this));
 
-            LongSymbolsAsString = TestDataLong();
-            ShortSymbolsAsString = TestDataShort();
+            //LongSymbolsAsString = TestDataLong();
+            LongSymbolsAsString = TestDataLong10Symbols();
+            //ShortSymbolsAsString = TestDataShort();
+            ShortSymbolsAsString = TestDataShort10Symbols();
+        }
+
+        private string BuildLogMessage(
+            bool isLong,
+            Dictionary<string, int> resolved,
+            Dictionary<string, int> multiple,
+            Dictionary<string, int> unresolved)
+        {
+            var longMessage = isLong ? "LONG" : "SHORT";
+            longMessage += $" resolved:{resolved.Count} multiple:{multiple.Count} unresolved:{unresolved.Count}";
+            return longMessage;
         }
 
         public IIbHost IbHost => ibHost;
@@ -440,6 +455,21 @@ XPEV	0
 DKNG	-1";
         }
 
+        private string TestDataLong10Symbols()
+        {
+            return @"PYPL	4
+CRM	3
+ABT	3
+JNJ	3
+MA	3
+NOW	3
+PG	3
+AAPL	2
+ABBV	2
+ACN	2
+";
+        }
+
         private string TestDataShort()
         {
             return @"MATIC	4
@@ -660,6 +690,21 @@ VZ	-2
 WMT	-2
 CRM	-3
 PYPL	-4";
+        }
+
+        private string TestDataShort10Symbols()
+        {
+            return @"MATIC	4
+SOS	3
+YFI	3
+1INCH	2
+AAVE	2
+ADA	2
+ALGO	2
+ATOM	2
+AVAX	2
+AXS	2
+";
         }
 
     }
