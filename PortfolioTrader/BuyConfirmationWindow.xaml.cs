@@ -43,7 +43,7 @@ namespace PortfolioTrader
             model.StocksToSellAsString = ConvertScoreToWeights(model.StocksToSellAsString);
         }
 
-        private string ConvertScoreToWeights(string stocksAsString)
+        private static string ConvertScoreToWeights(string stocksAsString)
         {
             var stocksDictionary = SymbolsAndScore.StringToDictionary(stocksAsString);
             var scaler = (double)stocksDictionary.Values.Sum() / 1d;
@@ -68,6 +68,9 @@ namespace PortfolioTrader
                 stocksDictionaryWithWeights[keyToApplyCorrection] += correction;
             }
 
+            if(stocksDictionaryWithWeights.Values.Sum() != 1)
+                throw new Exception("Unexpected. Weights do not sum up to 1");
+           
             return SymbolsAndScore.DictionaryToString(stocksDictionaryWithWeights);
         }
 
