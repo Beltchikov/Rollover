@@ -15,7 +15,8 @@ namespace PortfolioTrader.Commands
         int Port { get; } 
         int ClientId { get; } 
         int Timeout { get; }
-
+        
+        bool ConnectedToTws { get; }
         ObservableCollection<string> TwsMessageCollection { get; }
     }
 }

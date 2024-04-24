@@ -12,7 +12,7 @@ namespace PortfolioTrader.Commands
         public static void Run(IBuyModelVisitor visitor)
         {
             // TODO
-            var buyConfirmationWindow = new BuyConfirmationWindow();
+            var buyConfirmationWindow = new BuyConfirmationWindow(visitor.ConnectedToTws);
             buyConfirmationWindow.ShowDialog(); 
         }
     }

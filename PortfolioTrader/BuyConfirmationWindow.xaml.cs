@@ -19,10 +19,10 @@ namespace PortfolioTrader
     /// </summary>
     public partial class BuyConfirmationWindow : Window
     {
-        public BuyConfirmationWindow()
+        public BuyConfirmationWindow(bool connectedToTws)
         {
             InitializeComponent();
-            DataContext = new BuyConfirmationViewModel();
+            DataContext = new BuyConfirmationViewModel() { ConnectedToTws = connectedToTws };
         }
     }
 }
