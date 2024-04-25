@@ -42,7 +42,7 @@ namespace PortfolioTrader.Model
             ibHost.Consumer = ibHost.Consumer ?? this;
 
             ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
-            CalculatePositionsCommand = new RelayCommand(() => CalculatePositions.RunAsync(this));
+            CalculatePositionsCommand = new RelayCommand(async () => await CalculatePositions.RunAsync(this));
 
             InvestmentAmount = 100000;
             BusinessLogicInformation = BuildBusinessLogicInformation();
