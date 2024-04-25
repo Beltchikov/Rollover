@@ -1,4 +1,5 @@
-﻿using PortfolioTrader.Model;
+﻿using IBApi;
+using PortfolioTrader.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,12 +29,13 @@ namespace PortfolioTrader.Commands
             var stocksToBuyDictionary = SymbolsAndScore.StringToDictionary(_visitor.StocksToBuyAsString);
             foreach (var kvp in stocksToBuyDictionary)
             {
-                // TODO
-
-
-
-
-                //var contract = new Contract();
+                //var contract = new Contract()
+                //{
+                //    SecType = App.SEC_TYPE_STK,
+                //    Symbol = kvp.Key,
+                //    Currency = App.USD,
+                //    Exchange = IDEALPRO
+                //};
                 //(double? price, TickType? tickType) = await model.IbHost.RequestMarketData(contract, "", true, false, null, App.TIMEOUT);
             }
 

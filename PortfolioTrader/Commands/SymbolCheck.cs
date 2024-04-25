@@ -13,9 +13,7 @@ namespace PortfolioTrader.Commands
     internal class SymbolCheck
     {
         private static IBuyModelVisitor _visitor = null!;
-        private static readonly string SEC_TYPE_STK = "STK";
-        private static readonly string USD = "USD";
-
+        
         public static async Task Run(IBuyModelVisitor visitor)
         {
             _visitor = visitor;
@@ -81,8 +79,8 @@ namespace PortfolioTrader.Commands
                     else
                     {
                         var stkAndUsdList = symbolSamplesMessage.ContractDescriptions
-                            .Where(d => d.Contract.SecType == SEC_TYPE_STK
-                                && d.Contract.Currency == USD
+                            .Where(d => d.Contract.SecType == App.SEC_TYPE_STK
+                                && d.Contract.Currency == App.USD
                                 && d.Contract.Symbol.ToUpper() == symbol.ToUpper())
                             .ToList();
 
