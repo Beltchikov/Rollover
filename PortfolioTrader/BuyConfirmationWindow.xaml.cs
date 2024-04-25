@@ -53,7 +53,6 @@ namespace PortfolioTrader
             var stocksDictionaryWithWeights = new Dictionary<string, Position>();
             foreach (var kvp in stocksDictionary)
             {
-                //stocksDictionaryWithWeights.Add(kvp.Key, (int)Math.Round(kvp.Value * hundert / scaler, 2));
                 stocksDictionaryWithWeights.Add(kvp.Key, new Position()
                 {
                     NetBms = kvp.Value.NetBms,
@@ -66,18 +65,7 @@ namespace PortfolioTrader
             if (sumOfWeights < hundert)
             {
                 var correction = hundert - sumOfWeights;
-
-                //var groupsDictionary = stocksDictionaryWithWeights
-                //    .Where(kvp => kvp.Value.Weight != null)
-                //    .Select(kvp => new KeyValuePair<string, int>(kvp.Key, kvp.Value.Weight == null?0: kvp.Value.Weight.Value))
-                //    .GroupBy(a => a.Value)
-                //    .ToDictionary(grp => grp.Key, grp => grp.Count());
-
-                //var groupsDictionary = stocksDictionaryWithWeights
-                //   .Where(kvp => kvp.Value.Weight != null)
-                //   .GroupBy(a => a.Value)
-                //   .ToDictionary(grp => grp.Key.Weight == null ? 0 : grp.Key.Weight, grp => grp.Count());
-
+                
                 var groupsDictionary = stocksDictionaryWithWeights
                     .Select(kvp => new KeyValuePair<string, int>(kvp.Key, kvp.Value.Weight == null ? 0 : kvp.Value.Weight.Value))
                     .GroupBy(a => a.Value)
