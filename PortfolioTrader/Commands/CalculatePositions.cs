@@ -18,6 +18,7 @@ namespace PortfolioTrader.Commands
         {
             _visitor = visitor;
             _visitor.StocksToBuyAsString = await AddPriceColumnAsync();
+            _visitor.StocksToSellAsString = await AddPriceColumnAsync();
         }
 
         private static async Task<string> AddPriceColumnAsync()
