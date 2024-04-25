@@ -21,6 +21,7 @@ namespace IbClient.IbHost
                     string reportType,
                     int timeout);
         Task<(double?, TickType?, MarketDataType?)> RequestMarketDataSnapshotAsync(Contract contract, MarketDataType[] marketDataTypes, int timeout);
+        Task<(double?, TickType?)> RequestMarketData(Contract contract, int timeout);
         Task<double?> RequestMarketDataSnapshotAsync(Contract contract, TickType tickType, int timeout);
         Task<SymbolSamplesMessage> RequestMatchingSymbolsAsync(string symbol, int timeout);
         Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout);

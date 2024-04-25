@@ -43,15 +43,15 @@ namespace PortfolioTrader
                 ?? throw new Exception("Unexpected. model is null");
 
             var stocksToBuyDictionary = SymbolsAndScore.StringToDictionary(model.StocksToBuyAsString);
-            //foreach ( var kvp in stocksToBuyDictionary )
-            //{
-            //    // TODO
-
-                
+            foreach (var kvp in stocksToBuyDictionary)
+            {
+                // TODO
 
 
-            //    //model.IbHost.RequestMarketDataSnapshotAsync
-            //}
+
+
+                //model.IbHost.RequestMarketDataSnapshotAsync
+            }
 
             //private void _ibClient_TickPrice(TickPriceMessage tickPriceMessage)
             //{

@@ -229,6 +229,15 @@ namespace IbClient.IbHost
         }
 
 
+        public Task<(double?, TickType?)> RequestMarketData(Contract contract, int timeout)
+        {
+            //TODO
+            //throw new NotImplementedException();
+
+            return (Task<(double?, TickType?)>)Task.Run(()=> { return null; });
+        }
+
+
         public async Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout)
         {
             _ibClient.ClientSocket.reqIds(-1);
