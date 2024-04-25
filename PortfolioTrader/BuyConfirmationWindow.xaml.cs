@@ -42,7 +42,7 @@ namespace PortfolioTrader
             BuyConfirmationViewModel model = DataContext as BuyConfirmationViewModel
                 ?? throw new Exception("Unexpected. model is null");
 
-            //var stocksToBuyDictionary = SymbolsAndScore.StringToDictionary(model.StocksToBuyAsString);
+            var stocksToBuyDictionary = SymbolsAndScore.StringToDictionary(model.StocksToBuyAsString);
             //foreach ( var kvp in stocksToBuyDictionary )
             //{
             //    // TODO
@@ -78,18 +78,19 @@ namespace PortfolioTrader
 
         private static string ConvertScoreToWeights(string stocksAsString)
         {
+            const int hundert = 100;   
             var stocksDictionary = SymbolsAndScore.StringToDictionary(stocksAsString);
             var scaler = (double)stocksDictionary.Values.Sum() / 1d;
-            var stocksDictionaryWithWeights = new Dictionary<string, double>();
+            var stocksDictionaryWithWeights = new Dictionary<string, int>();
             foreach (var kvp in stocksDictionary)
             {
-                stocksDictionaryWithWeights.Add(kvp.Key, Math.Round(kvp.Value / scaler, 2));
+                stocksDictionaryWithWeights.Add(kvp.Key, (int)Math.Round(kvp.Value *hundert / scaler, 2));
             }
 
             var sum = stocksDictionaryWithWeights.Values.Sum();
-            if (sum < 1)
+            if (sum < hundert)
             {
-                var correction = 1 - sum;
+                var correction = hundert - sum;
                 var groupsDictionary = stocksDictionaryWithWeights
                     .GroupBy(kvp => kvp.Value)
                     .ToDictionary(grp => grp.Key, grp => grp.Count());
@@ -100,8 +101,8 @@ namespace PortfolioTrader
                 stocksDictionaryWithWeights[keyToApplyCorrection] += correction;
             }
 
-            if(stocksDictionaryWithWeights.Values.Sum() != 1)
-                throw new Exception("Unexpected. Weights do not sum up to 1");
+            if(stocksDictionaryWithWeights.Values.Sum() != hundert)
+                throw new Exception($"Unexpected. Weights do not sum up to {hundert}");
            
             return SymbolsAndScore.DictionaryToString(stocksDictionaryWithWeights);
         }
