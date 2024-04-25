@@ -250,6 +250,7 @@ namespace IbClient.IbHost
                     && (DateTime.Now - startTime).TotalMilliseconds < timeout) { }
             });
 
+            _queueTickPriceMessage = null;
             return (tickPriceMessage?.Price, (TickType?)tickPriceMessage?.Field);
         }
 
