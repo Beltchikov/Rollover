@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using TickType = IbClient.Types.TickType;
 
 namespace PortfolioTrader.Commands
 {
@@ -26,18 +27,15 @@ namespace PortfolioTrader.Commands
             //BuyConfirmationViewModel model = DataContext as BuyConfirmationViewModel
             //    ?? throw new Exception("Unexpected. model is null");
 
-            var stocksToBuyDictionary = SymbolsAndScore.StringToDictionary(_visitor.StocksToBuyAsString);
+            var stocksToBuyDictionary = SymbolsAndScore.StringToPositionDictionary(_visitor.StocksToBuyAsString);
             foreach (var kvp in stocksToBuyDictionary)
             {
-                //var contract = new Contract()
-                //{
-                //    SecType = App.SEC_TYPE_STK,
-                //    Symbol = kvp.Key,
-                //    Currency = App.USD,
-                //    Exchange = IDEALPRO
-                //};
-                //(double? price, TickType? tickType) = await model.IbHost.RequestMarketData(contract, "", true, false, null, App.TIMEOUT);
+                if (kvp.Value.ConId == null) throw new Exception("Unexpected. Contract ID is null");
+                var contract = new Contract() { ConId = kvp.Value.ConId.Value, Exchange = App.EXCHANGE };
+                (double? price, TickType? tickType) = await _visitor.IbHost.RequestMarketData(contract, "", true, false, null, App.TIMEOUT);
+
             }
+
 
             //private void _ibClient_TickPrice(TickPriceMessage tickPriceMessage)
             //{

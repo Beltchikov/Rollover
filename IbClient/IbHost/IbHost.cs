@@ -250,7 +250,7 @@ namespace IbClient.IbHost
                 while (!_queueTickPriceMessage.DequeueMessage(reqId, out tickPriceMessage)
                     && (DateTime.Now - startTime).TotalMilliseconds < timeout) { }
 
-                return (tickPriceMessage.Price, (TickType)tickPriceMessage.Field);
+                return (tickPriceMessage?.Price, (TickType)tickPriceMessage?.Field);
             });
 
             if (tickPriceMessage == null)
@@ -417,6 +417,8 @@ namespace IbClient.IbHost
             }
             Consumer.TwsMessageCollection?.Add($"TickPriceMessage for {tickPriceMessage.RequestId} " +
                 $"field:{tickPriceMessage.Field} price:{tickPriceMessage.Price}");
+            
+            if(_queueTickPriceMessage == null) _queueTickPriceMessage = new IbHostQueue(); 
             _queueTickPriceMessage.Enqueue(tickPriceMessage);
         }
 
