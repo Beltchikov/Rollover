@@ -230,7 +230,7 @@ namespace IbClient.IbHost
         }
 
 
-        public async Task<(double?, TickType?)> RequestMarketData(
+        public async Task<(double?, TickType?)> RequestMktData(
             Contract contract,
             string genericTickList,
             bool snapshot,
