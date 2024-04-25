@@ -48,32 +48,53 @@ namespace PortfolioTrader
         private static string ConvertScoreToWeights(string stocksAsString)
         {
             const int hundert = 100;
-            var stocksDictionary = SymbolsAndScore.StringToDictionary(stocksAsString);
-            var scaler = (double)stocksDictionary.Values.Sum() / 1d;
-            var stocksDictionaryWithWeights = new Dictionary<string, int>();
+            var stocksDictionary = SymbolsAndScore.StringToPositionDictionary(stocksAsString);
+            var scaler = (double)stocksDictionary.Values.Select(p => p.NetBms).Sum() / 1d;
+            var stocksDictionaryWithWeights = new Dictionary<string, Position>();
             foreach (var kvp in stocksDictionary)
             {
-                stocksDictionaryWithWeights.Add(kvp.Key, (int)Math.Round(kvp.Value * hundert / scaler, 2));
+                //stocksDictionaryWithWeights.Add(kvp.Key, (int)Math.Round(kvp.Value * hundert / scaler, 2));
+                stocksDictionaryWithWeights.Add(kvp.Key, new Position()
+                {
+                    NetBms = kvp.Value.NetBms,
+                    ConId = kvp.Value.ConId,
+                    Weight = (int)Math.Round(kvp.Value.NetBms * hundert / scaler, 2)
+                });
             }
 
-            var sum = stocksDictionaryWithWeights.Values.Sum();
-            if (sum < hundert)
+            var sumOfWeights = stocksDictionaryWithWeights.Values.Select(p => p.Weight).Sum();
+            if (sumOfWeights < hundert)
             {
-                var correction = hundert - sum;
+                var correction = hundert - sumOfWeights;
+
+                //var groupsDictionary = stocksDictionaryWithWeights
+                //    .Where(kvp => kvp.Value.Weight != null)
+                //    .Select(kvp => new KeyValuePair<string, int>(kvp.Key, kvp.Value.Weight == null?0: kvp.Value.Weight.Value))
+                //    .GroupBy(a => a.Value)
+                //    .ToDictionary(grp => grp.Key, grp => grp.Count());
+
+                //var groupsDictionary = stocksDictionaryWithWeights
+                //   .Where(kvp => kvp.Value.Weight != null)
+                //   .GroupBy(a => a.Value)
+                //   .ToDictionary(grp => grp.Key.Weight == null ? 0 : grp.Key.Weight, grp => grp.Count());
+
                 var groupsDictionary = stocksDictionaryWithWeights
-                    .GroupBy(kvp => kvp.Value)
+                    .Select(kvp => new KeyValuePair<string, int>(kvp.Key, kvp.Value.Weight == null ? 0 : kvp.Value.Weight.Value))
+                    .GroupBy(a => a.Value)
                     .ToDictionary(grp => grp.Key, grp => grp.Count());
+
                 var keyOfLargestGroup = groupsDictionary.MaxBy(entry => entry.Value).Key;
-                var keyToApplyCorrection = stocksDictionaryWithWeights.Where(kvp => kvp.Value == keyOfLargestGroup)
+                var keyToApplyCorrection = stocksDictionaryWithWeights.Where(kvp => kvp.Value.Weight == keyOfLargestGroup)
                     .First()
                     .Key;
-                stocksDictionaryWithWeights[keyToApplyCorrection] += correction;
+                                
+                stocksDictionaryWithWeights[keyToApplyCorrection].Weight += correction;
             }
 
-            if (stocksDictionaryWithWeights.Values.Sum() != hundert)
+            if (stocksDictionaryWithWeights.Values.Select(p => p.Weight).Sum() != hundert)
                 throw new Exception($"Unexpected. Weights do not sum up to {hundert}");
 
-            return SymbolsAndScore.DictionaryToString(stocksDictionaryWithWeights);
+            return SymbolsAndScore.PositionDictionaryToString(stocksDictionaryWithWeights);
         }
 
         private void ApplyBusinessRules()
@@ -81,18 +102,18 @@ namespace PortfolioTrader
             var model = DataContext as BuyConfirmationViewModel;
             if (model == null) throw new Exception("Unexpected. model is null");
 
-            var stocksToBuyDictionary = SymbolsAndScore.StringToDictionary(model.StocksToBuyAsString);
-            var stocksToSellDictionary = SymbolsAndScore.StringToDictionary(model.StocksToSellAsString);
+            var stocksToBuyDictionary = SymbolsAndScore.StringToPositionDictionary(model.StocksToBuyAsString);
+            var stocksToSellDictionary = SymbolsAndScore.StringToPositionDictionary(model.StocksToSellAsString);
 
             if (stocksToBuyDictionary.Count > App.MAX_BUY_SELL)
             {
                 stocksToBuyDictionary = stocksToBuyDictionary.Take(App.MAX_BUY_SELL).ToDictionary();
-                model.StocksToBuyAsString = SymbolsAndScore.DictionaryToString(stocksToBuyDictionary);
+                model.StocksToBuyAsString = SymbolsAndScore.PositionDictionaryToString(stocksToBuyDictionary);
             }
             if (stocksToSellDictionary.Count > App.MAX_BUY_SELL)
             {
                 stocksToSellDictionary = stocksToSellDictionary.Take(App.MAX_BUY_SELL).ToDictionary();
-                model.StocksToSellAsString = SymbolsAndScore.DictionaryToString(stocksToSellDictionary);
+                model.StocksToSellAsString = SymbolsAndScore.PositionDictionaryToString(stocksToSellDictionary);
             }
             if (stocksToBuyDictionary.Count != stocksToSellDictionary.Count)
             {
@@ -101,13 +122,13 @@ namespace PortfolioTrader
                 {
                     var equalQty = stocksToBuyDictionary.Count - moreInBuyList;
                     stocksToBuyDictionary = stocksToBuyDictionary.Take(equalQty).ToDictionary();
-                    model.StocksToBuyAsString = SymbolsAndScore.DictionaryToString(stocksToBuyDictionary);
+                    model.StocksToBuyAsString = SymbolsAndScore.PositionDictionaryToString(stocksToBuyDictionary);
                 }
                 else
                 {
                     var equalQty = stocksToSellDictionary.Count + moreInBuyList;
                     stocksToSellDictionary = stocksToSellDictionary.Take(equalQty).ToDictionary();
-                    model.StocksToSellAsString = SymbolsAndScore.DictionaryToString(stocksToSellDictionary);
+                    model.StocksToSellAsString = SymbolsAndScore.PositionDictionaryToString(stocksToSellDictionary);
                 }
             }
         }
