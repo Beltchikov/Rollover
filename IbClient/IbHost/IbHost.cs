@@ -229,7 +229,6 @@ namespace IbClient.IbHost
             return price;
         }
 
-
         public async Task<(double?, TickType?)> RequestMktData(
             Contract contract,
             string genericTickList,
@@ -249,18 +248,9 @@ namespace IbClient.IbHost
                 var startTime = DateTime.Now;
                 while (!_queueTickPriceMessage.DequeueMessage(reqId, out tickPriceMessage)
                     && (DateTime.Now - startTime).TotalMilliseconds < timeout) { }
-
-                return (tickPriceMessage?.Price, (TickType?)tickPriceMessage?.Field);
             });
 
-            if (tickPriceMessage == null)
-            {
-                return (null, null);
-            }
-            else
-            {
-                return (tickPriceMessage.Price, (TickType)tickPriceMessage.Field);
-            }
+            return (tickPriceMessage?.Price, (TickType?)tickPriceMessage?.Field);
         }
 
 
