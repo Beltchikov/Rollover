@@ -22,9 +22,6 @@ namespace PortfolioTrader.Commands
 
         private static async Task<string> AddPriceColumnAsync()
         {
-            //BuyConfirmationViewModel model = DataContext as BuyConfirmationViewModel
-            //    ?? throw new Exception("Unexpected. model is null");
-
             var stocksToBuyDictionary = SymbolsAndScore.StringToPositionDictionary(_visitor.StocksToBuyAsString);
             foreach (var kvp in stocksToBuyDictionary)
             {
@@ -33,19 +30,6 @@ namespace PortfolioTrader.Commands
                 (double? price, TickType? tickType) = await _visitor.IbHost.RequestMktData(contract, "", true, false, null, App.TIMEOUT);
 
             }
-
-
-            //private void _ibClient_TickPrice(TickPriceMessage tickPriceMessage)
-            //{
-            //    if (tickPriceMessage.Field == 1)  // bid. Use 2 for ask
-            //    {
-            //        if (tickPriceMessage.RequestId == REQ_MKT_DATA_UNDERLYING)
-            //        {
-            //            ViewModel.UnderlyingPrice = tickPriceMessage.Price;
-            //            //_atmStrikeUtility.SetAtmStrikesInViewModel(this, tickPriceMessage.Price);
-            //        }
-            //    }
-            //}
 
             return "TODO";
 
