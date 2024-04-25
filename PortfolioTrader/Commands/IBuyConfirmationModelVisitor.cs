@@ -10,6 +10,7 @@ namespace PortfolioTrader.Commands
 {
     interface IBuyConfirmationModelVisitor : ITwsVisitor
     {
-        
+        string StocksToBuyAsString { get; set; }
+        string StocksToSellAsString { get; set; }
     }
 }

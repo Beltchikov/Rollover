@@ -2,6 +2,7 @@
 using IbClient.messages;
 using IbClient.Types;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TickType = IbClient.Types.TickType;
 
@@ -21,8 +22,14 @@ namespace IbClient.IbHost
                     string reportType,
                     int timeout);
         Task<(double?, TickType?, MarketDataType?)> RequestMarketDataSnapshotAsync(Contract contract, MarketDataType[] marketDataTypes, int timeout);
-        Task<(double?, TickType?)> RequestMarketData(Contract contract, int timeout);
         Task<double?> RequestMarketDataSnapshotAsync(Contract contract, TickType tickType, int timeout);
+        Task<(double?, TickType?)> RequestMarketData(
+            Contract contract,
+            string genericTickList,
+            bool snapshot,
+            bool regulatorySnapshot,
+            List<TagValue> mktDataOptions,
+            int timeout);
         Task<SymbolSamplesMessage> RequestMatchingSymbolsAsync(string symbol, int timeout);
         Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout);
 

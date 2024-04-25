@@ -1,4 +1,5 @@
-﻿using IbClient.messages;
+﻿using IBApi;
+using IbClient.messages;
 using PortfolioTrader.Commands;
 using PortfolioTrader.Model;
 using System;
@@ -34,38 +35,6 @@ namespace PortfolioTrader
 
             ApplyBusinessRules();
             CalculateWeights();
-            AddPriceColumn();
-        }
-
-        private void AddPriceColumn()
-        {
-            BuyConfirmationViewModel model = DataContext as BuyConfirmationViewModel
-                ?? throw new Exception("Unexpected. model is null");
-
-            var stocksToBuyDictionary = SymbolsAndScore.StringToDictionary(model.StocksToBuyAsString);
-            foreach (var kvp in stocksToBuyDictionary)
-            {
-                // TODO
-
-
-
-
-                //model.IbHost.RequestMarketDataSnapshotAsync
-            }
-
-            //private void _ibClient_TickPrice(TickPriceMessage tickPriceMessage)
-            //{
-            //    if (tickPriceMessage.Field == 1)  // bid. Use 2 for ask
-            //    {
-            //        if (tickPriceMessage.RequestId == REQ_MKT_DATA_UNDERLYING)
-            //        {
-            //            ViewModel.UnderlyingPrice = tickPriceMessage.Price;
-            //            //_atmStrikeUtility.SetAtmStrikesInViewModel(this, tickPriceMessage.Price);
-            //        }
-            //    }
-            //}
-
-
         }
 
         private void CalculateWeights()
@@ -78,13 +47,13 @@ namespace PortfolioTrader
 
         private static string ConvertScoreToWeights(string stocksAsString)
         {
-            const int hundert = 100;   
+            const int hundert = 100;
             var stocksDictionary = SymbolsAndScore.StringToDictionary(stocksAsString);
             var scaler = (double)stocksDictionary.Values.Sum() / 1d;
             var stocksDictionaryWithWeights = new Dictionary<string, int>();
             foreach (var kvp in stocksDictionary)
             {
-                stocksDictionaryWithWeights.Add(kvp.Key, (int)Math.Round(kvp.Value *hundert / scaler, 2));
+                stocksDictionaryWithWeights.Add(kvp.Key, (int)Math.Round(kvp.Value * hundert / scaler, 2));
             }
 
             var sum = stocksDictionaryWithWeights.Values.Sum();
@@ -101,9 +70,9 @@ namespace PortfolioTrader
                 stocksDictionaryWithWeights[keyToApplyCorrection] += correction;
             }
 
-            if(stocksDictionaryWithWeights.Values.Sum() != hundert)
+            if (stocksDictionaryWithWeights.Values.Sum() != hundert)
                 throw new Exception($"Unexpected. Weights do not sum up to {hundert}");
-           
+
             return SymbolsAndScore.DictionaryToString(stocksDictionaryWithWeights);
         }
 

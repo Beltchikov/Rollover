@@ -32,6 +32,8 @@ namespace PortfolioTrader.Model
         private string _stocksToSellAsString;
 
         public ICommand ConnectToTwsCommand { get; }
+        public ICommand CalculatePositionsCommand { get; }
+        
 
         public BuyConfirmationViewModel()
         {
@@ -40,6 +42,7 @@ namespace PortfolioTrader.Model
             ibHost.Consumer = ibHost.Consumer ?? this;
 
             ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
+            CalculatePositionsCommand = new RelayCommand(() => CalculatePositions.RunAsync(this));
 
             InvestmentAmount = 100000;
             BusinessLogicInformation = BuildBusinessLogicInformation();

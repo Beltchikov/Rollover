@@ -15,6 +15,7 @@ namespace IbClient.IbHost
     {
         IIBClient _ibClient;
         private IIbHostQueue _queue;
+        private IIbHostQueue _queueTickPriceMessage;
         private int _currentReqId = 0;
         private IResponses _responses;
         private List<ErrorMessage> _errorMessages;
@@ -229,12 +230,37 @@ namespace IbClient.IbHost
         }
 
 
-        public Task<(double?, TickType?)> RequestMarketData(Contract contract, int timeout)
+        public async Task<(double?, TickType?)> RequestMarketData(
+            Contract contract,
+            string genericTickList,
+            bool snapshot,
+            bool regulatorySnapshot,
+            List<TagValue> mktDataOptions,
+            int timeout)
         {
-            //TODO
-            //throw new NotImplementedException();
+            TickPriceMessage tickPriceMessage = null;
+            var reqId = ++_currentReqId;
+            
+            _queueTickPriceMessage = new IbHostQueue();
+            _ibClient.ClientSocket.reqMktData(reqId, contract, genericTickList, snapshot, regulatorySnapshot, mktDataOptions);
 
-            return (Task<(double?, TickType?)>)Task.Run(()=> { return null; });
+            await Task.Run(() =>
+            {
+                var startTime = DateTime.Now;
+                while (!_queueTickPriceMessage.DequeueMessage(reqId, out tickPriceMessage)
+                    && (DateTime.Now - startTime).TotalMilliseconds < timeout) { }
+
+                return (tickPriceMessage.Price, (TickType)tickPriceMessage.Field);
+            });
+
+            if (tickPriceMessage == null)
+            {
+                return (null, null);
+            }
+            else
+            {
+                return (tickPriceMessage.Price, (TickType)tickPriceMessage.Field);
+            }
         }
 
 
@@ -391,7 +417,7 @@ namespace IbClient.IbHost
             }
             Consumer.TwsMessageCollection?.Add($"TickPriceMessage for {tickPriceMessage.RequestId} " +
                 $"field:{tickPriceMessage.Field} price:{tickPriceMessage.Price}");
-            _queue.Enqueue(tickPriceMessage);
+            _queueTickPriceMessage.Enqueue(tickPriceMessage);
         }
 
         private void _ibClient_TickSnapshotEnd(int reqId)
