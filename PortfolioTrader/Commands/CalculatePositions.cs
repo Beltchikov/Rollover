@@ -16,8 +16,6 @@ namespace PortfolioTrader.Commands
 
         public static async Task RunAsync(IBuyConfirmationModelVisitor visitor)
         {
-            MessageBox.Show("CalculatePositions");
-
             _visitor = visitor;
             _visitor.StocksToBuyAsString = await AddPriceColumnAsync();
         }

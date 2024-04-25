@@ -250,7 +250,8 @@ namespace IbClient.IbHost
                 while (!_queueTickPriceMessage.DequeueMessage(reqId, out tickPriceMessage)
                     && (DateTime.Now - startTime).TotalMilliseconds < timeout) { }
 
-                return (tickPriceMessage?.Price, (TickType)tickPriceMessage?.Field);
+                var result = (tickPriceMessage?.Price, (TickType?)tickPriceMessage?.Field);
+                return result;
             });
 
             if (tickPriceMessage == null)
