@@ -1,4 +1,5 @@
-﻿using IbClient.IbHost;
+﻿using IBApi;
+using IbClient.IbHost;
 using IbClient.messages;
 using PortfolioTrader.Model;
 using System;
@@ -13,7 +14,7 @@ namespace PortfolioTrader.Commands
     internal class SymbolCheck
     {
         private static IBuyModelVisitor _visitor = null!;
-        
+
         public static async Task Run(IBuyModelVisitor visitor)
         {
             _visitor = visitor;
@@ -22,13 +23,14 @@ namespace PortfolioTrader.Commands
             var longSymbolAndScoreAsDictionary = SymbolsAndScore.StringToDictionary(visitor.LongSymbolsAsString);
             visitor.TwsMessageCollection?.Add($"{longSymbolAndScoreAsDictionary.Count()} long symbols to resolve.");
 
-            Dictionary<string, int> longResolved = null!, longMultiple = null!, longUnresolved = null!;
+            Dictionary<string, Position> longResolved = null!;
+            Dictionary<string, int> longMultiple = null!, longUnresolved = null!;
             await Task.Run(async () =>
                 (longResolved, longMultiple, longUnresolved)
                 = await ResolveSymbols(longSymbolAndScoreAsDictionary)
             );
 
-            visitor.LongSymbolsResolved = SymbolsAndScore.DictionaryToString(longResolved);
+            visitor.LongSymbolsResolved = SymbolsAndScore.PositionDictionaryToString(longResolved);
             visitor.LongSymbolsMultiple = SymbolsAndScore.DictionaryToString(longMultiple);
             visitor.LongSymbolsUnresolved = SymbolsAndScore.DictionaryToString(longUnresolved);
 
@@ -39,11 +41,12 @@ namespace PortfolioTrader.Commands
             var shortSymbolAndScoreAsDictionary = SymbolsAndScore.StringToDictionary(visitor.ShortSymbolsAsString);
             visitor.TwsMessageCollection?.Add($"{shortSymbolAndScoreAsDictionary.Count()} short symbols to resolve.");
 
-            Dictionary<string, int> shortResolved = null!, shortMultiple = null!, shortUnresolved = null!;
+            Dictionary<string, Position> shortResolved = null!;
+            Dictionary<string, int> shortMultiple = null!, shortUnresolved = null!;
             await Task.Run(async () => (shortResolved, shortMultiple, shortUnresolved)
                 = await ResolveSymbols(longSymbolAndScoreAsDictionary));
 
-            visitor.ShortSymbolsResolved = SymbolsAndScore.DictionaryToString(shortResolved);
+            visitor.ShortSymbolsResolved = SymbolsAndScore.PositionDictionaryToString(shortResolved);
             visitor.ShortSymbolsMultiple = SymbolsAndScore.DictionaryToString(shortMultiple);
             visitor.ShortSymbolsUnresolved = SymbolsAndScore.DictionaryToString(shortUnresolved);
 
@@ -51,16 +54,16 @@ namespace PortfolioTrader.Commands
             visitor.TwsMessageCollection?.Add(shortMessage);
         }
 
-        private static async Task<(Dictionary<string, int>, Dictionary<string, int>, Dictionary<string, int>)>
+        private static async Task<(Dictionary<string, Position>, Dictionary<string, int>, Dictionary<string, int>)>
             ResolveSymbols(Dictionary<string, int> longSymbolAndScoreAsDictionary)
         {
-            Dictionary<string, int> symbolsResolved = new Dictionary<string, int>();
+            Dictionary<string, Position> symbolsResolved = new Dictionary<string, Position>();
             Dictionary<string, int> symbolsMultiple = new Dictionary<string, int>();
             Dictionary<string, int> symbolsUnresolved = new Dictionary<string, int>();
 
             foreach (var symbol in longSymbolAndScoreAsDictionary.Keys)
             {
-                SymbolSamplesMessage symbolSamplesMessage 
+                SymbolSamplesMessage symbolSamplesMessage
                     = await _visitor.IbHost.RequestMatchingSymbolsAsync(symbol, _visitor.Timeout);
                 if (symbolSamplesMessage == null)
                 {
@@ -68,23 +71,35 @@ namespace PortfolioTrader.Commands
                 }
                 else
                 {
-                    if (symbolSamplesMessage.ContractDescriptions.Count() == 1)
+                    var contractDescriptions = symbolSamplesMessage.ContractDescriptions;
+                    if (contractDescriptions.Count() == 1)
                     {
-                        symbolsResolved.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
+                        symbolsResolved.Add(symbol, new Position()
+                        {
+                            NetBms = longSymbolAndScoreAsDictionary[symbol],
+                            ConId = contractDescriptions.First().Contract.ConId
+                        });
                     }
-                    else if (symbolSamplesMessage.ContractDescriptions.Count() == 0)
+                    else if (contractDescriptions.Count() == 0)
                     {
                         symbolsUnresolved.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
                     }
                     else
                     {
-                        var stkAndUsdList = symbolSamplesMessage.ContractDescriptions
+                        var contractDescriptionsNarrowed = symbolSamplesMessage.ContractDescriptions
                             .Where(d => d.Contract.SecType == App.SEC_TYPE_STK
                                 && d.Contract.Currency == App.USD
                                 && d.Contract.Symbol.ToUpper() == symbol.ToUpper())
                             .ToList();
 
-                        if (stkAndUsdList.Count == 1) symbolsResolved.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
+                        if (contractDescriptionsNarrowed.Count == 1)
+                        {
+                            symbolsResolved.Add(symbol, new Position()
+                            {
+                                NetBms = longSymbolAndScoreAsDictionary[symbol],
+                                ConId = contractDescriptionsNarrowed.First().Contract.ConId
+                            });
+                        }
                         else symbolsMultiple.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
                     }
                 }
@@ -95,11 +110,11 @@ namespace PortfolioTrader.Commands
             return (symbolsResolved, symbolsMultiple, symbolsUnresolved);
         }
 
-        
+
 
         private static string BuildLogMessage(
            bool isLong,
-           Dictionary<string, int> resolved,
+           Dictionary<string, Position> resolved,
            Dictionary<string, int> multiple,
            Dictionary<string, int> unresolved)
         {

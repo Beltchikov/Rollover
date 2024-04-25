@@ -22,28 +22,42 @@ namespace PortfolioTrader.Model
                 .ToDictionary();
         }
 
-        //public static Dictionary<string, TValue?> StringToDictionary<TValue>(string symbolsAsString) where TValue : class?
-        //{
-        //    return symbolsAsString
-        //        .Split(Environment.NewLine)
-        //        .Where(s => !string.IsNullOrWhiteSpace(s))
-        //        .Select(s =>
-        //        {
-        //            var splitted = s.Trim().Split([' ', '\t']).Select(s => s.Trim()).ToList();
-        //            if (splitted != null)
-        //            {
-        //                return new KeyValuePair<string, TValue?>(splitted[0], splitted[1] as TValue);
-        //            }
-        //            throw new Exception($"Unexpected. Can not build key value pair from the string {s}");
-        //        })
-        //        .ToDictionary();
-        //}
+        public static Dictionary<string, Position> StringToPositionDictionary(string symbolsAsString)
+        {
+            return symbolsAsString
+                .Split(Environment.NewLine)
+                .Where(s => !string.IsNullOrWhiteSpace(s))
+                .Select(s =>
+                {
+                    var splitted = s.Trim().Split([' ', '\t']).Select(s => s.Trim()).ToList();
+                    if (splitted != null) return new KeyValuePair<string, Position>(splitted[0], new Position(splitted));
+                    throw new Exception($"Unexpected. Can not build key value pair from the string {s}");
+                })
+                .ToDictionary();
+        }
 
-        public static string DictionaryToString<TKey,TValue>(Dictionary<TKey, TValue> dictionary) where TKey: notnull
+        public static string DictionaryToString<TKey, TValue>(Dictionary<TKey, TValue> dictionary) where TKey : notnull
         {
             return dictionary.Any()
                 ? dictionary
-                   .Select(r => r.Key + "\t" + (r.Value==null? "": r.Value.ToString()))
+                   .Select(r => r.Key + "\t" + (r.Value == null ? "" : r.Value.ToString()))
+                   .Aggregate((r, n) => r + Environment.NewLine + n)
+                 : string.Empty;
+        }
+
+        public static string PositionDictionaryToString(Dictionary<string, Position> dictionary)
+        {
+            return dictionary.Any()
+                ? dictionary
+                   .Select(r =>
+                   {
+                       string line = r.Key + "\t" + r.Value.NetBms.ToString();
+                       line += r.Value.ConId == null ? "" : "\t" + r.Value.ConId.ToString();
+                       line += r.Value.Weight == null ? "" : "\t" + r.Value.Weight.ToString();
+                       line += r.Value.Quantity == null ? "" : "\t" + r.Value.Quantity.ToString();
+                       line += r.Value.Margin == null ? "" : "\t" + r.Value.Margin.ToString();
+                       return line;
+                   })
                    .Aggregate((r, n) => r + Environment.NewLine + n)
                  : string.Empty;
         }
