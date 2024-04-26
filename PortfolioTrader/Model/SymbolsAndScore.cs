@@ -16,7 +16,13 @@ namespace PortfolioTrader.Model
                 .Select(s =>
                 {
                     var splitted = s.Trim().Split([' ', '\t']).Select(s => s.Trim()).ToList();
-                    if (splitted != null) return new KeyValuePair<string, int>(splitted[0], Convert.ToInt32(splitted[1]));
+                    if (splitted != null)
+                    {
+                        if (Int32.TryParse(splitted[1], out int netBms))
+                            return new KeyValuePair<string, int>(splitted[0], netBms);
+                        else
+                            return new KeyValuePair<string, int>(splitted[0], 0);
+                    }
                     throw new Exception($"Unexpected. Can not build key value pair from the string {s}");
                 })
                 .ToDictionary();
