@@ -53,13 +53,9 @@ namespace PortfolioTrader.Model
             OrderConfirmationCommand = new RelayCommand(() => Commands.OrderConfirmationCommand.Run(this));
 
             //LongSymbolsAsString = TestDataLong();
-            //LongSymbolsAsString = TestDataLong10Symbols();
-            LongSymbolsAsString = TestDataLong6Symbols();
-            //LongSymbolsAsString = TestDataLong4Symbols();
+            LongSymbolsAsString = TestDataLong15Symbols();
             //ShortSymbolsAsString = TestDataShort();
-            //ShortSymbolsAsString = TestDataShort10Symbols();
-            ShortSymbolsAsString = TestDataShort6Symbols();
-            //ShortSymbolsAsString = TestDataShort4Symbols();
+            ShortSymbolsAsString = TestDataShort15Symbols();
         }
 
         public IIbHost IbHost => ibHost;
@@ -326,6 +322,26 @@ XPEV	0
 DKNG	-1";
         }
 
+        private string TestDataLong15Symbols()
+        {
+            return @"PYPL	4
+CRM	3
+ABT	3
+JNJ	3
+MA	3
+NOW	3
+PG	3
+AAPL	2
+ABBV	2
+ACN	2
+ADBE	2
+AMZN	2
+BAC	2
+BMY	2
+CMCSA	2
+";
+        }
+
         private string TestDataLong10Symbols()
         {
             return @"PYPL	4
@@ -583,6 +599,26 @@ VZ	-2
 WMT	-2
 CRM	-3
 PYPL	-4";
+        }
+
+        private string TestDataShort15Symbols()
+        {
+            return @"MATIC	4
+SOS	3
+YFI	3
+1INCH	2
+AAVE	2
+ADA	2
+ALGO	2
+ATOM	2
+AVAX	2
+AXS	2
+BNB	2
+BTC	2
+CAKE	2
+COMP	2
+DOGE	2
+";
         }
 
         private string TestDataShort10Symbols()

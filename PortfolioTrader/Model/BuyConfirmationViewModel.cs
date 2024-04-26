@@ -177,7 +177,10 @@ is kept equal.
                 {
                     NetBms = kvp.Value.NetBms,
                     ConId = kvp.Value.ConId,
-                    Weight = (int)Math.Round(kvp.Value.NetBms * hundert / scaler, 2)
+                    Weight = (int)Math.Round(kvp.Value.NetBms * hundert / scaler, 2),
+                    PriceInCents = kvp.Value.PriceInCents,
+                    PriceType = kvp.Value.PriceType,
+                    Quantity = kvp.Value.Quantity,
                 });
             }
 

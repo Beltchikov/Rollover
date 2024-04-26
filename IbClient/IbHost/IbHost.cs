@@ -125,6 +125,20 @@ namespace IbClient.IbHost
             return symbolSamplesMessage;
         }
 
+
+        public async Task<int> ReqIdsAsync(int idParam)
+        {
+            _ibClient.ClientSocket.reqIds(idParam);
+
+            _lastOrderId = _nextOrderId;
+            await Task.Run(() =>
+            {
+                while (_lastOrderId == _nextOrderId) { _nextOrderId = _ibClient.NextOrderId; }
+            });
+
+            return _nextOrderId;    
+        }
+
         public async Task<string> RequestFundamentalDataAsync(Contract contract, string reportType, int timeout)
         {
             FundamentalsMessage fundamentalsMessage = null;
@@ -459,5 +473,6 @@ namespace IbClient.IbHost
                 : null;
             return result;
         }
+
     }
 }

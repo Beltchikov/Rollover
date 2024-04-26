@@ -13,6 +13,7 @@ namespace IbClient.IbHost
         IIbConsumer Consumer { get; set; }
         Task<bool> ConnectAndStartReaderThread(string host, int port, int clientId, int timeout);
         void Disconnect();
+        Task<int> ReqIdsAsync(int idParam);
         Task<double?> RateOfExchange(string currency, int timeout);
         Task<ContractDetails> RequestContractDetailsAsync(
             Contract contract,
@@ -32,7 +33,7 @@ namespace IbClient.IbHost
             int timeout);
         Task<SymbolSamplesMessage> RequestMatchingSymbolsAsync(string symbol, int timeout);
         Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout);
-
+        
         //public void ReqHistoricalData();
         //void ApplyDefaultHistoricalData();
         //void ReqPositions();
