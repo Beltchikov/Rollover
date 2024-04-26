@@ -17,22 +17,40 @@ namespace PortfolioTrader.Commands
 
             foreach (TradePair tradePair in tradePairs)
             {
-                var nextOrderId = await visitor.IbHost.ReqIdsAsync(-1);
-
-
+                // Buy
+                var nextOrderIdBuy = await visitor.IbHost.ReqIdsAsync(-1);
                 Contract contractBuy = new Contract() { ConId = tradePair.ConIdBuy, Exchange = App.EXCHANGE };
-                var lmtPrice = Math.Round((double)tradePair.PriceInCentsBuy / 100d, 2);
+                var lmtPriceBuy = Math.Round((double)tradePair.PriceInCentsBuy / 100d, 2);
 
                 Order orderBuy = new Order()
                 {
-                    OrderId = nextOrderId,
+                    OrderId = nextOrderIdBuy,
                     Action = "BUY",
                     OrderType = "LIMIT",
-                    LmtPrice = lmtPrice,
+                    LmtPrice = lmtPriceBuy,
                     TotalQuantity = tradePair.QuantityBuy
                 };
 
-                await _visitor.IbHost.PlaceOrderAsync(nextOrderId, contractBuy, orderBuy, App.TIMEOUT);
+                var resultBuy = await _visitor.IbHost.PlaceOrderAsync(nextOrderIdBuy, contractBuy, orderBuy, App.TIMEOUT);
+                visitor.TwsMessageCollection.Add($"orderId={nextOrderIdBuy} Order state: {resultBuy.OrderState}  error:{resultBuy.ErrorMessage}");
+
+                // sell
+                var nextOrderIdSell = await visitor.IbHost.ReqIdsAsync(-1);
+                Contract contractSell= new Contract() { ConId = tradePair.ConIdSell, Exchange = App.EXCHANGE };
+                var lmtPriceSell = Math.Round((double)tradePair.PriceInCentsSell / 100d, 2);
+
+                Order orderSell= new Order()
+                {
+                    OrderId = nextOrderIdSell,
+                    Action = "SELL",
+                    OrderType = "LIMIT",
+                    LmtPrice = lmtPriceSell,
+                    TotalQuantity = tradePair.QuantitySell
+                };
+
+                var resultSell = await _visitor.IbHost.PlaceOrderAsync(nextOrderIdSell, contractSell, orderSell, App.TIMEOUT);
+                visitor.TwsMessageCollection.Add($"orderId={nextOrderIdSell} Order state: {resultSell.OrderState}  error:{resultSell.ErrorMessage}");
+
             }
         }
 
