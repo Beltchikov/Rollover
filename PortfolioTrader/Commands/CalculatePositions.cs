@@ -18,6 +18,41 @@ namespace PortfolioTrader.Commands
 
             _visitor.StocksToBuyAsString = RemoveZeroPriceLines(_visitor.StocksToBuyAsString);
             _visitor.StocksToSellAsString = RemoveZeroPriceLines(_visitor.StocksToSellAsString);
+
+            (_visitor.StocksToBuyAsString, _visitor.StocksToSellAsString)
+                = EqualizeBuysAndSells(_visitor.StocksToBuyAsString, _visitor.StocksToSellAsString);
+        }
+
+        private static (string, string) EqualizeBuysAndSells(string stocksToBuyAsString, string stocksToSellAsString)
+        {
+            var buyDictionary = SymbolsAndScore.StringToPositionDictionary(stocksToBuyAsString);
+            var sellDictionary = SymbolsAndScore.StringToPositionDictionary(stocksToSellAsString);
+
+
+            var min = Math.Min(buyDictionary.Count, sellDictionary.Count);
+            if (buyDictionary.Count > min)
+            {
+                buyDictionary = RemoveDictionaryEntriesAtEnd(buyDictionary, buyDictionary.Count - min);
+            }
+            if (sellDictionary.Count > min)
+            {
+                sellDictionary = RemoveDictionaryEntriesAtEnd(sellDictionary, sellDictionary.Count - min);
+            }
+
+            return (
+                SymbolsAndScore.PositionDictionaryToString(buyDictionary),
+                SymbolsAndScore.PositionDictionaryToString(sellDictionary));
+
+        }
+
+        private static Dictionary<string, Position> RemoveDictionaryEntriesAtEnd(Dictionary<string, Position> dictionary, int removeCount)
+        {
+            var keysToRemove = dictionary.Keys.Reverse().Take(removeCount);
+            foreach (var keyToRemove in keysToRemove)
+            {
+                dictionary.Remove(keyToRemove);
+            }
+            return dictionary;
         }
 
         private static string RemoveZeroPriceLines(string stocksAsString)
@@ -47,7 +82,7 @@ namespace PortfolioTrader.Commands
         {
             var stocksDictionary = SymbolsAndScore.StringToPositionDictionary(stocksAsString);
             var resultDictionary = new Dictionary<string, Position>();
-            
+
             foreach (var kvp in stocksDictionary)
             {
                 if (kvp.Value.ConId == null) throw new Exception("Unexpected. Contract ID is null");
@@ -70,7 +105,7 @@ namespace PortfolioTrader.Commands
                 resultDictionary[kvp.Key].PriceType = tickType.ToString();
                 resultDictionary[kvp.Key].Quantity = quantity;
             }
-            
+
             return SymbolsAndScore.PositionDictionaryToString(resultDictionary);
         }
 
