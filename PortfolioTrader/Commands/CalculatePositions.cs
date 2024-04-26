@@ -12,28 +12,49 @@ namespace PortfolioTrader.Commands
         public static async Task RunAsync(IBuyConfirmationModelVisitor visitor)
         {
             _visitor = visitor;
+
             _visitor.StocksToBuyAsString = await AddPriceColumnsAsync(_visitor.StocksToBuyAsString);
             _visitor.StocksToSellAsString = await AddPriceColumnsAsync(_visitor.StocksToSellAsString);
+
+            _visitor.StocksToBuyAsString = RemoveZeroPriceLines(_visitor.StocksToBuyAsString);
+            _visitor.StocksToSellAsString = RemoveZeroPriceLines(_visitor.StocksToSellAsString);
+        }
+
+        private static string RemoveZeroPriceLines(string stocksAsString)
+        {
+            var stocksDictionary = SymbolsAndScore.StringToPositionDictionary(stocksAsString);
+            var resultDictionary = new Dictionary<string, Position>();
+            var priceZeroList = new List<string>();
+
+            foreach (var kvp in stocksDictionary)
+            {
+                if (kvp.Value.PriceInCents == null || kvp.Value.PriceInCents == 0)
+                {
+                    priceZeroList.Add(kvp.Key);
+                }
+                else
+                {
+                    resultDictionary[kvp.Key] = kvp.Value;
+                }
+            }
+
+            if (priceZeroList.Any()) _visitor.TwsMessageCollection.Add(
+                $"Can not retrieve price for the following symbols: {priceZeroList.Aggregate((r, n) => r + ", " + n)}");
+            return SymbolsAndScore.PositionDictionaryToString(resultDictionary);
         }
 
         private static async Task<string> AddPriceColumnsAsync(string stocksAsString)
         {
-            var stocksToBuyDictionary = SymbolsAndScore.StringToPositionDictionary(stocksAsString);
+            var stocksDictionary = SymbolsAndScore.StringToPositionDictionary(stocksAsString);
             var resultDictionary = new Dictionary<string, Position>();
-            var priceZeroList = new List<string>();
-            foreach (var kvp in stocksToBuyDictionary)
+            
+            foreach (var kvp in stocksDictionary)
             {
                 if (kvp.Value.ConId == null) throw new Exception("Unexpected. Contract ID is null");
                 var contract = new Contract() { ConId = kvp.Value.ConId.Value, Exchange = App.EXCHANGE };
 
                 (double? price, TickType? tickType) = await _visitor.IbHost.RequestMktData(contract, "", true, false, null, App.TIMEOUT);
                 resultDictionary[kvp.Key] = kvp.Value;
-
-                if(price == null || price <0)
-                {
-                    priceZeroList.Add(kvp.Key);
-                    continue;
-                }
 
                 var priceNotNullable = price == null ? 0 : price.Value;
                 int priceInCents = (int)(priceNotNullable * 100d);
@@ -49,10 +70,7 @@ namespace PortfolioTrader.Commands
                 resultDictionary[kvp.Key].PriceType = tickType.ToString();
                 resultDictionary[kvp.Key].Quantity = quantity;
             }
-
-            if(priceZeroList.Any()) _visitor.TwsMessageCollection.Add(
-                $"Can not retrieve price for the following symbols: {priceZeroList.Aggregate((r,n)=> r+", "+n)}");
-
+            
             return SymbolsAndScore.PositionDictionaryToString(resultDictionary);
         }
 
