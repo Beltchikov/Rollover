@@ -12,7 +12,6 @@ namespace PortfolioTrader.Commands
         public static async Task RunAsync(IBuyConfirmationModelVisitor visitor)
         {
             _visitor = visitor;
-
             List<TradePair> tradePairs = BuildTradePairs();
 
             // buy
@@ -38,7 +37,7 @@ namespace PortfolioTrader.Commands
                 Thread.Sleep(App.TIMEOUT * 2);
             }
 
-            Thread.Sleep(App.TIMEOUT*2);
+            Thread.Sleep(App.TIMEOUT * 2);
 
             // sell
             foreach (TradePair tradePair in tradePairs)

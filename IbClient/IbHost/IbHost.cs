@@ -128,7 +128,7 @@ namespace IbClient.IbHost
 
         public async Task<int> ReqIdsAsync(int idParam)
         {
-            _ibClient.ClientSocket.reqIds(idParam);
+            await Task.Run(() => _ibClient.ClientSocket.reqIds(idParam));
             return _ibClient.NextOrderId;
         }
 
@@ -322,9 +322,9 @@ namespace IbClient.IbHost
             await Task.Run(() =>
             {
                 var startTime = DateTime.Now;
-                while ((DateTime.Now - startTime).TotalMilliseconds < timeout 
-                    && !_queue.DequeueMessage<OpenOrderMessage>(nextOrderId, out openOrderMessage)
-                    && !_queue.DequeueMessage<ErrorMessage>(nextOrderId, out errorMessage)) { }
+                while ( !_queue.DequeueMessage<OpenOrderMessage>(nextOrderId, out openOrderMessage)
+                    && !_queue.DequeueMessage<ErrorMessage>(nextOrderId, out errorMessage)
+                    && (DateTime.Now - startTime).TotalMilliseconds < timeout) { }
             });
 
             if (openOrderMessage == null)
