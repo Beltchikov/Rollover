@@ -73,6 +73,7 @@
             </TextBox>
 
             <Button Grid.Column="5" Grid.Row="3" Height="25"
+                    Command="{Binding SendOrdersCommand}"
                 VerticalAlignment="Bottom" Margin="5 0 5 0">Send Orders >>
             </Button>
 

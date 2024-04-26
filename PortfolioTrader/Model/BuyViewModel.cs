@@ -53,10 +53,12 @@ namespace PortfolioTrader.Model
             OrderConfirmationCommand = new RelayCommand(() => Commands.OrderConfirmationCommand.Run(this));
 
             //LongSymbolsAsString = TestDataLong();
-            LongSymbolsAsString = TestDataLong10Symbols();
+            //LongSymbolsAsString = TestDataLong10Symbols();
+            LongSymbolsAsString = TestDataLong6Symbols();
             //LongSymbolsAsString = TestDataLong4Symbols();
             //ShortSymbolsAsString = TestDataShort();
-            ShortSymbolsAsString = TestDataShort10Symbols();
+            //ShortSymbolsAsString = TestDataShort10Symbols();
+            ShortSymbolsAsString = TestDataShort6Symbols();
             //ShortSymbolsAsString = TestDataShort4Symbols();
         }
 
@@ -339,6 +341,18 @@ ACN	2
 ";
         }
 
+        private string TestDataLong6Symbols()
+        {
+            return @"PYPL	4
+CRM	3
+ABT	3
+JNJ	3
+MA	3
+NOW	3
+
+";
+        }
+
         private string TestDataLong4Symbols()
         {
             return @"PYPL	4
@@ -583,6 +597,18 @@ ALGO	2
 ATOM	2
 AVAX	2
 AXS	2
+";
+        }
+
+        private string TestDataShort6Symbols()
+        {
+            return @"MATIC	4
+SOS	3
+YFI	3
+1INCH	2
+AAVE	2
+ADA	2
+
 ";
         }
 
