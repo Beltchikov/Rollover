@@ -34,6 +34,8 @@ namespace PortfolioTrader.Commands
 
                 var resultBuy = await _visitor.IbHost.PlaceOrderAsync(nextOrderIdBuy, contractBuy, orderBuy, App.TIMEOUT);
                 visitor.TwsMessageCollection.Add($"orderId={nextOrderIdBuy} Order state: {resultBuy.OrderState}  error:{resultBuy.ErrorMessage}");
+
+                Thread.Sleep(App.TIMEOUT * 2);
             }
 
             Thread.Sleep(App.TIMEOUT*2);
@@ -57,6 +59,7 @@ namespace PortfolioTrader.Commands
                 var resultSell = await _visitor.IbHost.PlaceOrderAsync(nextOrderIdSell, contractSell, orderSell, App.TIMEOUT);
                 visitor.TwsMessageCollection.Add($"orderId={nextOrderIdSell} Order state: {resultSell.OrderState}  error:{resultSell.ErrorMessage}");
 
+                Thread.Sleep(App.TIMEOUT * 2);
             }
         }
 
