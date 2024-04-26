@@ -129,14 +129,7 @@ namespace IbClient.IbHost
         public async Task<int> ReqIdsAsync(int idParam)
         {
             _ibClient.ClientSocket.reqIds(idParam);
-
-            _lastOrderId = _nextOrderId;
-            await Task.Run(() =>
-            {
-                while (_lastOrderId == _nextOrderId) { _nextOrderId = _ibClient.NextOrderId; }
-            });
-
-            return _nextOrderId;    
+            return _ibClient.NextOrderId;
         }
 
         public async Task<string> RequestFundamentalDataAsync(Contract contract, string reportType, int timeout)
@@ -253,7 +246,7 @@ namespace IbClient.IbHost
         {
             TickPriceMessage tickPriceMessage = null;
             var reqId = ++_currentReqId;
-            
+
             _queueTickPriceMessage = new IbHostQueue();
             _ibClient.ClientSocket.reqMktData(reqId, contract, genericTickList, snapshot, regulatorySnapshot, mktDataOptions);
 
@@ -288,6 +281,40 @@ namespace IbClient.IbHost
                 WhatIf = true
             };
 
+            _ibClient.ClientSocket.placeOrder(_ibClient.NextOrderId, contract, order);
+
+            OpenOrderMessage openOrderMessage = null;
+            ErrorMessage errorMessage = null;
+            await Task.Run(() =>
+            {
+                var startTime = DateTime.Now;
+                while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !_queue.DequeueMessage<OpenOrderMessage>(_ibClient.NextOrderId, out openOrderMessage)
+                    && !_queue.DequeueMessage<ErrorMessage>(_ibClient.NextOrderId, out errorMessage)) { }
+            });
+
+            if (openOrderMessage == null)
+            {
+                if (errorMessage == null)
+                {
+                    return new OrderStateOrError(null, $"Timeout exceeded.");
+                }
+                else
+                {
+                    return new OrderStateOrError(null, $"ReqId:{errorMessage.RequestId} Code:{errorMessage.ErrorCode} {errorMessage.Message}");
+                }
+            }
+            else
+            {
+                if (errorMessage != null)
+                {
+                    throw new ApplicationException("Unexpected! Both OrderState and errorMessage are not null.");
+                }
+                return new OrderStateOrError(openOrderMessage.OrderState, "");
+            }
+        }
+
+        public async Task<OrderStateOrError> PlaceOrderAsync(int nextOrderId, Contract contract, Order order, int timeout)
+        {
             _ibClient.ClientSocket.placeOrder(_ibClient.NextOrderId, contract, order);
 
             OpenOrderMessage openOrderMessage = null;
@@ -422,8 +449,8 @@ namespace IbClient.IbHost
             }
             Consumer.TwsMessageCollection?.Add($"TickPriceMessage for {tickPriceMessage.RequestId} " +
                 $"field:{tickPriceMessage.Field} price:{tickPriceMessage.Price}");
-            
-            if(_queueTickPriceMessage == null) _queueTickPriceMessage = new IbHostQueue(); 
+
+            if (_queueTickPriceMessage == null) _queueTickPriceMessage = new IbHostQueue();
             _queueTickPriceMessage.Enqueue(tickPriceMessage);
         }
 
@@ -473,6 +500,5 @@ namespace IbClient.IbHost
                 : null;
             return result;
         }
-
     }
 }

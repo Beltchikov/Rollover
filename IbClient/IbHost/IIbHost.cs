@@ -33,7 +33,8 @@ namespace IbClient.IbHost
             int timeout);
         Task<SymbolSamplesMessage> RequestMatchingSymbolsAsync(string symbol, int timeout);
         Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout);
-        
+        Task<OrderStateOrError> PlaceOrderAsync(int nextOrderId, Contract contract, Order order, int timeout);
+
         //public void ReqHistoricalData();
         //void ApplyDefaultHistoricalData();
         //void ReqPositions();
