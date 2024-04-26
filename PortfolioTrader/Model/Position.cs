@@ -28,9 +28,9 @@ namespace PortfolioTrader.Model
         public int NetBms { get; set; }
         public int? ConId { get; set; }
         public int? Weight { get; set; }
-        public int? Quantity { get; set; }
         public int? PriceInCents { get; set; }
         public string? PriceType{ get; set; }
         public int? Margin { get; set; }
+        public int? Quantity { get; set; }
     }
 }
