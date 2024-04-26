@@ -315,15 +315,16 @@ namespace IbClient.IbHost
 
         public async Task<OrderStateOrError> PlaceOrderAsync(int nextOrderId, Contract contract, Order order, int timeout)
         {
-            _ibClient.ClientSocket.placeOrder(_ibClient.NextOrderId, contract, order);
+            _ibClient.ClientSocket.placeOrder(nextOrderId, contract, order);
 
             OpenOrderMessage openOrderMessage = null;
             ErrorMessage errorMessage = null;
             await Task.Run(() =>
             {
                 var startTime = DateTime.Now;
-                while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !_queue.DequeueMessage<OpenOrderMessage>(_ibClient.NextOrderId, out openOrderMessage)
-                    && !_queue.DequeueMessage<ErrorMessage>(_ibClient.NextOrderId, out errorMessage)) { }
+                while ((DateTime.Now - startTime).TotalMilliseconds < timeout 
+                    && !_queue.DequeueMessage<OpenOrderMessage>(nextOrderId, out openOrderMessage)
+                    && !_queue.DequeueMessage<ErrorMessage>(nextOrderId, out errorMessage)) { }
             });
 
             if (openOrderMessage == null)
