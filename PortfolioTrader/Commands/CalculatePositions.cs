@@ -29,7 +29,7 @@ namespace PortfolioTrader.Commands
                 resultDictionary[kvp.Key] = kvp.Value;
 
                 var priceNotNullable = price == null ? 0 : price.Value;
-                int priceInCents = (int)priceNotNullable * 100;
+                int priceInCents = (int)(priceNotNullable * 100d);
 
                 int weightNotNullable = kvp.Value.Weight ?? throw new Exception("Unexpected. Weight is null");
 
