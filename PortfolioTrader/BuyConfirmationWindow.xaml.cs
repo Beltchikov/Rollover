@@ -34,55 +34,7 @@ namespace PortfolioTrader
             };
 
             ApplyBusinessRules();
-            CalculateWeights();
-        }
-
-        private void CalculateWeights()
-        {
-            BuyConfirmationViewModel model = DataContext as BuyConfirmationViewModel
-                ?? throw new Exception("Unexpected. model is null");
-            model.StocksToBuyAsString = ConvertScoreToWeights(model.StocksToBuyAsString);
-            model.StocksToSellAsString = ConvertScoreToWeights(model.StocksToSellAsString);
-        }
-
-        private static string ConvertScoreToWeights(string stocksAsString)
-        {
-            const int hundert = 100;
-            var stocksDictionary = SymbolsAndScore.StringToPositionDictionary(stocksAsString);
-            var scaler = (double)stocksDictionary.Values.Select(p => p.NetBms).Sum() / 1d;
-            var stocksDictionaryWithWeights = new Dictionary<string, Position>();
-            foreach (var kvp in stocksDictionary)
-            {
-                stocksDictionaryWithWeights.Add(kvp.Key, new Position()
-                {
-                    NetBms = kvp.Value.NetBms,
-                    ConId = kvp.Value.ConId,
-                    Weight = (int)Math.Round(kvp.Value.NetBms * hundert / scaler, 2)
-                });
-            }
-
-            var sumOfWeights = stocksDictionaryWithWeights.Values.Select(p => p.Weight).Sum();
-            if (sumOfWeights < hundert)
-            {
-                var correction = hundert - sumOfWeights;
-                
-                var groupsDictionary = stocksDictionaryWithWeights
-                    .Select(kvp => new KeyValuePair<string, int>(kvp.Key, kvp.Value.Weight == null ? 0 : kvp.Value.Weight.Value))
-                    .GroupBy(a => a.Value)
-                    .ToDictionary(grp => grp.Key, grp => grp.Count());
-
-                var keyOfLargestGroup = groupsDictionary.MaxBy(entry => entry.Value).Key;
-                var keyToApplyCorrection = stocksDictionaryWithWeights.Where(kvp => kvp.Value.Weight == keyOfLargestGroup)
-                    .First()
-                    .Key;
-                                
-                stocksDictionaryWithWeights[keyToApplyCorrection].Weight += correction;
-            }
-
-            if (stocksDictionaryWithWeights.Values.Select(p => p.Weight).Sum() != hundert)
-                throw new Exception($"Unexpected. Weights do not sum up to {hundert}");
-
-            return SymbolsAndScore.PositionDictionaryToString(stocksDictionaryWithWeights);
+            (DataContext as BuyConfirmationViewModel).CalculateWeights();
         }
 
         private void ApplyBusinessRules()
