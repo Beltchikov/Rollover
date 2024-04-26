@@ -15,6 +15,7 @@ namespace PortfolioTrader.Commands
 
             List<TradePair> tradePairs = BuildTradePairs();
 
+            // buy
             foreach (TradePair tradePair in tradePairs)
             {
                 // Buy
@@ -33,13 +34,18 @@ namespace PortfolioTrader.Commands
 
                 var resultBuy = await _visitor.IbHost.PlaceOrderAsync(nextOrderIdBuy, contractBuy, orderBuy, App.TIMEOUT);
                 visitor.TwsMessageCollection.Add($"orderId={nextOrderIdBuy} Order state: {resultBuy.OrderState}  error:{resultBuy.ErrorMessage}");
+            }
 
-                // sell
+            Thread.Sleep(App.TIMEOUT*2);
+
+            // sell
+            foreach (TradePair tradePair in tradePairs)
+            {
                 var nextOrderIdSell = await visitor.IbHost.ReqIdsAsync(-1);
-                Contract contractSell= new Contract() { ConId = tradePair.ConIdSell, Exchange = App.EXCHANGE };
+                Contract contractSell = new Contract() { ConId = tradePair.ConIdSell, Exchange = App.EXCHANGE };
                 var lmtPriceSell = Math.Round((double)tradePair.PriceInCentsSell / 100d, 2);
 
-                Order orderSell= new Order()
+                Order orderSell = new Order()
                 {
                     OrderId = nextOrderIdSell,
                     Action = "SELL",
