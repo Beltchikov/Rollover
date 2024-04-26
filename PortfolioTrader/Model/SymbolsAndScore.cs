@@ -54,6 +54,8 @@ namespace PortfolioTrader.Model
                        string line = r.Key + "\t" + r.Value.NetBms.ToString();
                        line += r.Value.ConId == null ? "" : "\t" + r.Value.ConId.ToString();
                        line += r.Value.Weight == null ? "" : "\t" + r.Value.Weight.ToString();
+                       line += r.Value.PriceInCents == null ? "" : "\t" + r.Value.PriceInCents.ToString();
+                       line += r.Value.PriceType == null ? "" : "\t" + r.Value.PriceType.ToString();
                        line += r.Value.Quantity == null ? "" : "\t" + r.Value.Quantity.ToString();
                        line += r.Value.Margin == null ? "" : "\t" + r.Value.Margin.ToString();
                        return line;
