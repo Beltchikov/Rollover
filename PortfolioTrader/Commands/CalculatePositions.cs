@@ -91,17 +91,15 @@ namespace PortfolioTrader.Commands
                 (double? price, TickType? tickType) = await _visitor.IbHost.RequestMktData(contract, "", true, false, null, App.TIMEOUT);
                 resultDictionary[kvp.Key] = kvp.Value;
 
-                var priceNotNullable = price == null ? 0 : price.Value;
-                int priceInCents = (int)(priceNotNullable * 100d);
-
+                int priceInCentsNotNullable = (int)((price == null ? 0d : price.Value) * 100d);
                 int weightNotNullable = kvp.Value.Weight ?? throw new Exception("Unexpected. Weight is null");
 
                 int quantity = 0;
-                if (priceNotNullable > 0 && kvp.Value.Weight.HasValue)
+                if (priceInCentsNotNullable > 0 && kvp.Value.Weight.HasValue)
                 {
-                    quantity = CalculateQuantity(_visitor.InvestmentAmount, priceInCents, weightNotNullable);
+                    quantity = CalculateQuantity(_visitor.InvestmentAmount, priceInCentsNotNullable, weightNotNullable);
                 }
-                resultDictionary[kvp.Key].PriceInCents = priceInCents;
+                resultDictionary[kvp.Key].PriceInCents = priceInCentsNotNullable;
                 resultDictionary[kvp.Key].PriceType = tickType.ToString();
                 resultDictionary[kvp.Key].Quantity = quantity;
             }
