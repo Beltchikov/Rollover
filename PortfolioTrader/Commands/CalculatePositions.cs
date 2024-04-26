@@ -21,6 +21,8 @@ namespace PortfolioTrader.Commands
 
             (_visitor.StocksToBuyAsString, _visitor.StocksToSellAsString)
                 = EqualizeBuysAndSells(_visitor.StocksToBuyAsString, _visitor.StocksToSellAsString);
+
+            _visitor.CalculateWeights();
         }
 
         private static (string, string) EqualizeBuysAndSells(string stocksToBuyAsString, string stocksToSellAsString)

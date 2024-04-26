@@ -156,7 +156,7 @@ is kept equal.
             }
         }
 
-        internal void CalculateWeights()
+        public void CalculateWeights()
         {
             StocksToBuyAsString = ConvertScoreToWeights(StocksToBuyAsString);
             StocksToSellAsString = ConvertScoreToWeights(StocksToSellAsString);

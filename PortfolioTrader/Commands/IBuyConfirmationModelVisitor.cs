@@ -13,5 +13,7 @@ namespace PortfolioTrader.Commands
         string StocksToBuyAsString { get; set; }
         string StocksToSellAsString { get; set; }
         public int InvestmentAmount { get; set; }
+
+        public void CalculateWeights();
     }
 }
