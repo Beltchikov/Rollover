@@ -39,6 +39,7 @@
             label4 = new Label();
             label5 = new Label();
             txtSellResults = new TextBox();
+            label6 = new Label();
             SuspendLayout();
             // 
             // btProcess
@@ -137,11 +138,22 @@
             txtSellResults.Size = new Size(207, 324);
             txtSellResults.TabIndex = 8;
             // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.ForeColor = Color.Red;
+            label6.Location = new Point(192, 51);
+            label6.Name = "label6";
+            label6.Size = new Size(198, 15);
+            label6.TabIndex = 10;
+            label6.Text = "Two new lines must separte batches!";
+            // 
             // FormStart
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1001, 559);
+            Controls.Add(label6);
             Controls.Add(label5);
             Controls.Add(txtSellResults);
             Controls.Add(label4);
@@ -171,5 +183,6 @@
         private Label label4;
         private Label label5;
         private TextBox txtSellResults;
+        private Label label6;
     }
 }
