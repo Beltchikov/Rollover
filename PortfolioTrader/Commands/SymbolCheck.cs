@@ -44,7 +44,7 @@ namespace PortfolioTrader.Commands
             Dictionary<string, Position> shortResolved = null!;
             Dictionary<string, int> shortMultiple = null!, shortUnresolved = null!;
             await Task.Run(async () => (shortResolved, shortMultiple, shortUnresolved)
-                = await ResolveSymbols(longSymbolAndScoreAsDictionary));
+                = await ResolveSymbols(shortSymbolAndScoreAsDictionary));
 
             visitor.ShortSymbolsResolved = SymbolsAndScore.PositionDictionaryToString(shortResolved);
             visitor.ShortSymbolsMultiple = SymbolsAndScore.DictionaryToString(shortMultiple);
