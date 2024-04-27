@@ -46,7 +46,7 @@ namespace PortfolioTrader.Model
             CalculatePositionsCommand = new RelayCommand(async () => await CalculatePositions.RunAsync(this));
             SendOrdersCommand = new RelayCommand(async () => await SendOrders.RunAsync(this));
 
-            InvestmentAmount = 100000;
+            InvestmentAmount = 400000;
             BusinessLogicInformation = BuildBusinessLogicInformation();
             TooExpensiveStocks = "TODO 2";
             StocksToBuyAsString = "TODO 3";
