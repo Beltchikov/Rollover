@@ -40,6 +40,8 @@
             label5 = new Label();
             txtSellResults = new TextBox();
             label6 = new Label();
+            label7 = new Label();
+            txtSymbolErrors = new TextBox();
             SuspendLayout();
             // 
             // btProcess
@@ -64,6 +66,7 @@
             // label1
             // 
             label1.AutoSize = true;
+            label1.ForeColor = Color.White;
             label1.Location = new Point(12, 51);
             label1.Name = "label1";
             label1.Size = new Size(174, 15);
@@ -74,6 +77,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
+            label2.ForeColor = Color.White;
             label2.Location = new Point(12, 9);
             label2.Name = "label2";
             label2.Size = new Size(111, 30);
@@ -93,6 +97,7 @@
             // label3
             // 
             label3.AutoSize = true;
+            label3.ForeColor = Color.White;
             label3.Location = new Point(543, 51);
             label3.Name = "label3";
             label3.Size = new Size(95, 15);
@@ -107,21 +112,23 @@
             txtErrors.Multiline = true;
             txtErrors.Name = "txtErrors";
             txtErrors.ScrollBars = ScrollBars.Vertical;
-            txtErrors.Size = new Size(446, 105);
+            txtErrors.Size = new Size(207, 105);
             txtErrors.TabIndex = 6;
             // 
             // label4
             // 
             label4.AutoSize = true;
+            label4.ForeColor = Color.White;
             label4.Location = new Point(543, 424);
             label4.Name = "label4";
-            label4.Size = new Size(99, 15);
+            label4.Size = new Size(130, 15);
             label4.TabIndex = 7;
-            label4.Text = "Erroneous Strings";
+            label4.Text = "Erroneous JSON Strings";
             // 
             // label5
             // 
             label5.AutoSize = true;
+            label5.ForeColor = Color.White;
             label5.Location = new Point(780, 51);
             label5.Name = "label5";
             label5.Size = new Size(97, 15);
@@ -141,18 +148,42 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.ForeColor = Color.Red;
+            label6.ForeColor = Color.LightSalmon;
             label6.Location = new Point(192, 51);
             label6.Name = "label6";
             label6.Size = new Size(198, 15);
             label6.TabIndex = 10;
             label6.Text = "Two new lines must separte batches!";
             // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.ForeColor = Color.White;
+            label7.Location = new Point(780, 424);
+            label7.Name = "label7";
+            label7.Size = new Size(108, 15);
+            label7.TabIndex = 12;
+            label7.Text = "Erroneous Symbols";
+            // 
+            // txtSymbolErrors
+            // 
+            txtSymbolErrors.BackColor = Color.Firebrick;
+            txtSymbolErrors.ForeColor = Color.White;
+            txtSymbolErrors.Location = new Point(780, 442);
+            txtSymbolErrors.Multiline = true;
+            txtSymbolErrors.Name = "txtSymbolErrors";
+            txtSymbolErrors.ScrollBars = ScrollBars.Vertical;
+            txtSymbolErrors.Size = new Size(207, 105);
+            txtSymbolErrors.TabIndex = 11;
+            // 
             // FormStart
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.ControlDarkDark;
             ClientSize = new Size(1001, 559);
+            Controls.Add(label7);
+            Controls.Add(txtSymbolErrors);
             Controls.Add(label6);
             Controls.Add(label5);
             Controls.Add(txtSellResults);
@@ -184,5 +215,7 @@
         private Label label5;
         private TextBox txtSellResults;
         private Label label6;
+        private Label label7;
+        private TextBox txtSymbolErrors;
     }
 }
