@@ -16,8 +16,9 @@ namespace PortfolioTrader.Commands
             _visitor.StocksToBuyAsString = await AddPriceColumnsAsync(_visitor.StocksToBuyAsString);
             _visitor.StocksToSellAsString = await AddPriceColumnsAsync(_visitor.StocksToSellAsString);
 
-            _visitor.StocksToBuyAsString = RemoveZeroPriceLines(_visitor.StocksToBuyAsString);
-            _visitor.StocksToSellAsString = RemoveZeroPriceLines(_visitor.StocksToSellAsString);
+            (_visitor.StocksToBuyAsString, string stocksToBuyWithoutPriceAsString) = RemoveZeroPriceLines(_visitor.StocksToBuyAsString);
+            (_visitor.StocksToSellAsString, string stocksToSellWithoutPriceAsString) = RemoveZeroPriceLines(_visitor.StocksToSellAsString);
+            _visitor.StocksWithoutPrice = stocksToBuyWithoutPriceAsString + Environment.NewLine + stocksToSellWithoutPriceAsString;
 
             (_visitor.StocksToBuyAsString, _visitor.StocksToSellAsString)
                 = EqualizeBuysAndSells(_visitor.StocksToBuyAsString, _visitor.StocksToSellAsString);
@@ -58,17 +59,17 @@ namespace PortfolioTrader.Commands
             return dictionary;
         }
 
-        private static string RemoveZeroPriceLines(string stocksAsString)
+        private static (string, string) RemoveZeroPriceLines(string stocksAsString)
         {
             var stocksDictionary = SymbolsAndScore.StringToPositionDictionary(stocksAsString);
             var resultDictionary = new Dictionary<string, Position>();
-            var priceZeroList = new List<string>();
+            var stocksWithoutPrice = new List<string>();
 
             foreach (var kvp in stocksDictionary)
             {
                 if (kvp.Value.PriceInCents == null || kvp.Value.PriceInCents == 0)
                 {
-                    priceZeroList.Add(kvp.Key);
+                    stocksWithoutPrice.Add(kvp.Key);
                 }
                 else
                 {
@@ -76,9 +77,17 @@ namespace PortfolioTrader.Commands
                 }
             }
 
-            if (priceZeroList.Any()) _visitor.TwsMessageCollection.Add(
-                $"Can not retrieve price for the following symbols: {priceZeroList.Aggregate((r, n) => r + ", " + n)}");
-            return SymbolsAndScore.PositionDictionaryToString(resultDictionary);
+            string stocksWithoutPriceString = "";
+            if (stocksWithoutPrice.Any())
+            {
+                string separator = ", ";
+                stocksWithoutPriceString = stocksWithoutPrice.Aggregate((r, n) => r + separator + n);
+                _visitor.TwsMessageCollection.Add(
+                $"Can not retrieve price for the following symbols: {stocksWithoutPriceString}");
+                stocksWithoutPriceString = stocksWithoutPriceString.Replace(separator, Environment.NewLine);
+            }
+            
+            return (SymbolsAndScore.PositionDictionaryToString(resultDictionary), stocksWithoutPriceString);
         }
 
         private static async Task<string> AddPriceColumnsAsync(string stocksAsString)

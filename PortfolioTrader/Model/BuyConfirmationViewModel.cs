@@ -169,9 +169,10 @@ is kept equal.
 
         public void CalculateWeights()
         {
-            StocksToBuyAsString = ConvertScoreToWeights(StocksToBuyAsString);
-            StocksToSellAsString = ConvertScoreToWeights(StocksToSellAsString);
-
+            if (!string.IsNullOrWhiteSpace(StocksToBuyAsString))
+                StocksToBuyAsString = ConvertScoreToWeights(StocksToBuyAsString);
+            if (!string.IsNullOrWhiteSpace(StocksToSellAsString))
+                StocksToSellAsString = ConvertScoreToWeights(StocksToSellAsString);
         }
 
         private static string ConvertScoreToWeights(string stocksAsString)
