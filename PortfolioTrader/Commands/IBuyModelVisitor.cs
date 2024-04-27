@@ -18,6 +18,6 @@ namespace PortfolioTrader.Commands
         string ShortSymbolsResolved { get; set; }
         string ShortSymbolsMultiple { get; set; }
         string ShortSymbolsUnresolved { get; set; }
-
+        bool SymbolsChecked { get; set; }
     }
 }

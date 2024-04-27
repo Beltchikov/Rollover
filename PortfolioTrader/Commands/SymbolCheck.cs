@@ -52,6 +52,9 @@ namespace PortfolioTrader.Commands
 
             var shortMessage = BuildLogMessage(isLong: false, shortResolved, shortMultiple, shortUnresolved);
             visitor.TwsMessageCollection?.Add(shortMessage);
+
+            //
+            visitor.SymbolsChecked = true;
         }
 
         private static async Task<(Dictionary<string, Position>, Dictionary<string, int>, Dictionary<string, int>)>

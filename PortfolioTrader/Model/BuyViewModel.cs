@@ -32,6 +32,7 @@ namespace PortfolioTrader.Model
         private string _shortSymbolsResolved;
         private string _shortSymbolsUnresolved;
         private string _shortSymbolsMultiple;
+        private bool _symbolsChecked;
 
         public ICommand ConnectToTwsCommand { get; }
         public ICommand SymbolCheckCommand { get; }
@@ -53,9 +54,9 @@ namespace PortfolioTrader.Model
             OrderConfirmationCommand = new RelayCommand(() => Commands.OrderConfirmationCommand.Run(this));
 
             //LongSymbolsAsString = TestDataLong();
-            LongSymbolsAsString = TestDataLong15Symbols();
+            LongSymbolsAsString = TestDataLong4Symbols();
             //ShortSymbolsAsString = TestDataShort();
-            ShortSymbolsAsString = TestDataShort15Symbols();
+            ShortSymbolsAsString = TestDataShort4Symbols();
         }
 
         public IIbHost IbHost => ibHost;
@@ -174,6 +175,15 @@ namespace PortfolioTrader.Model
             set
             {
                 SetProperty(ref _shortSymbolsMultiple, value);
+            }
+        }
+
+        public bool SymbolsChecked
+        {
+            get => _symbolsChecked;
+            set
+            {
+                SetProperty(ref _symbolsChecked, value);
             }
         }
 
