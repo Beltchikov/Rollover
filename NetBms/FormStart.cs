@@ -6,7 +6,6 @@ namespace NetBms
     {
         readonly string BATCH_SEPARATOR = Environment.NewLine + Environment.NewLine;
 
-
         public FormStart()
         {
             InitializeComponent();
@@ -38,8 +37,11 @@ namespace NetBms
                 }
             }
 
-            // SUM_BUY, SUM_SELL
+            // Remove wrong symbols
             var processor = new Processor();
+            (batches, List<string> wrongSymbols) = processor.RemoveWrongSymbols(batches);
+
+            // SUM_BUY, SUM_SELL
             (var sumBuySignals, var sumSellSignals) = processor.SumBuySellFromBatches(batches);
             var crossSection = sumBuySignals.Keys.Intersect(sumSellSignals.Keys).ToList(); // Intersection. Evtl. for later
 
@@ -64,6 +66,10 @@ namespace NetBms
             txtErrors.Text = "";
             if(notConvertableStrings.Any())
                 txtErrors.Text += notConvertableStrings.Aggregate((r, n) => r + BATCH_SEPARATOR + n);
+
+            txtSymbolErrors.Text = "";
+            if (wrongSymbols.Any())
+                txtSymbolErrors.Text += wrongSymbols.Aggregate((r, n) => r + Environment.NewLine + n);
         }
 
         private string TestData2()

@@ -1,10 +1,40 @@
 ﻿
-using System.Collections.Generic;
-
 namespace NetBms
 {
     internal class Processor
     {
+        private readonly char WHITESPACE = ' ';
+
+        internal (List<ChatGptBatchResult> batches, List<string> wrongSymbols) RemoveWrongSymbols(List<ChatGptBatchResult> batches)
+        {
+            List<string> wrongSymbols = new List<string>();
+            List<ChatGptBatchResult> resultBatches = new List<ChatGptBatchResult>();
+
+            foreach (ChatGptBatchResult batch in batches)
+            {
+                var resultBatch = new ChatGptBatchResult();
+                foreach (var buySymbol in batch.BUY)
+                {
+                    if (buySymbol.Contains(WHITESPACE))
+                        wrongSymbols.Add(buySymbol);
+                    else
+                        resultBatch.BUY.Add(buySymbol);
+                }
+
+                foreach (var sellSymbol in batch.SELL)
+                {
+                    if (sellSymbol.Contains(WHITESPACE))
+                        wrongSymbols.Add(sellSymbol);
+                    else
+                        resultBatch.SELL.Add(sellSymbol);
+                }
+
+                resultBatches.Add(resultBatch);
+            }
+
+            return (resultBatches, wrongSymbols);
+        }
+
         internal (Dictionary<string, int> buyDictionary, Dictionary<string, int> sellDictionary)
             SumBuySellFromBatches(List<ChatGptBatchResult> batches)
         {
