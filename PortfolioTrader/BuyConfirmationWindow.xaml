@@ -52,10 +52,14 @@
              VerticalAlignment="Top" Margin="5 0 0 0">Calculate Positions</Button>
 
             <Label Grid.Row="2" Content="Information:" Foreground="White" VerticalAlignment="Bottom"/>
-            <Label Grid.Row="3" Grid.ColumnSpan="3" Content="{Binding BusinessLogicInformation}" Background="#FFFEEB9C" VerticalAlignment="Top" Height="190"/>
+            <Label Grid.Row="3" Grid.ColumnSpan="3" Content="{Binding BusinessLogicInformation}" Background="#FFFEEB9C" VerticalAlignment="Stretch" Height="148"/>
 
-            <Label Grid.Row="4" Grid.ColumnSpan="2" Content="Too Expensive Stocks:" Foreground="White" VerticalAlignment="Bottom"/>
-            <Label Grid.Row="5" Grid.ColumnSpan="3" Content="{Binding TooExpensiveStocks}" Background="#FFFFC7CE" VerticalAlignment="Top" Height="190"/>
+            <Label Grid.Row="4" Grid.ColumnSpan="3" Content="Stocks, the price cannot be obtained for:" Foreground="White" VerticalAlignment="Bottom"/>
+            <TextBox Name="txtStocksWithoutPrice" Grid.Row="5" Grid.ColumnSpan="3"
+                TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
+                Text="{Binding StocksWithoutPrice}" VerticalAlignment="Stretch"
+                Background="#FFFFC7CE">    
+            </TextBox>
 
             <Label Grid.Column="3" Content="BUY: Symb | NetBms | ConId | Weight | PriceCt | PriceType | Qty" Foreground="White" VerticalAlignment="Bottom"/>
             <TextBox Name="txtBuy" Grid.Row="1" Grid.Column="3" Grid.RowSpan="5" 
@@ -74,6 +78,7 @@
 
             <Button Grid.Column="5" Grid.Row="3" Height="25"
                     Command="{Binding SendOrdersCommand}"
+                    IsEnabled="{Binding PositionsCalculated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 VerticalAlignment="Bottom" Margin="5 0 5 0">Send Orders >>
             </Button>
 

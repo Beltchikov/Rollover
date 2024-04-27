@@ -27,14 +27,15 @@ namespace PortfolioTrader.Model
 
         private int _investmentAmount = 0;
         private string _businessLogicInformation;
-        private string _tooExpensiveStocks;
+        private string _stocksWithoutPrice;
         private string _stocksToBuyAsString;
         private string _stocksToSellAsString;
+        private bool _positionsCalculated;
 
         public ICommand ConnectToTwsCommand { get; }
         public ICommand CalculatePositionsCommand { get; }
         public ICommand SendOrdersCommand { get; }
-        
+
 
         public BuyConfirmationViewModel()
         {
@@ -48,7 +49,6 @@ namespace PortfolioTrader.Model
 
             InvestmentAmount = 400000;
             BusinessLogicInformation = BuildBusinessLogicInformation();
-            TooExpensiveStocks = "TODO 2";
             StocksToBuyAsString = "TODO 3";
             StocksToSellAsString = "TODO 4";
         }
@@ -131,12 +131,12 @@ is kept equal.
             }
         }
 
-        public string TooExpensiveStocks
+        public string StocksWithoutPrice
         {
-            get => _tooExpensiveStocks;
+            get => _stocksWithoutPrice;
             set
             {
-                SetProperty(ref _tooExpensiveStocks, value);
+                SetProperty(ref _stocksWithoutPrice, value);
             }
         }
 
@@ -155,6 +155,15 @@ is kept equal.
             set
             {
                 SetProperty(ref _stocksToSellAsString, value);
+            }
+        }
+
+        public bool PositionsCalculated
+        {
+            get => _positionsCalculated;
+            set
+            {
+                SetProperty(ref _positionsCalculated, value);
             }
         }
 
