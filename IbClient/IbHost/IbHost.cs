@@ -253,15 +253,60 @@ namespace IbClient.IbHost
             await Task.Run(() =>
             {
                 var startTime = DateTime.Now;
-                while (!_queueTickPriceMessage.DequeueMessage(reqId, out tickPriceMessage)
-                    //&& (tickPriceMessage == null || tickPriceMessage.Price == 0)
-                    && (DateTime.Now - startTime).TotalMilliseconds < timeout) { }
+                //while (!_queueTickPriceMessage.DequeueMessage(reqId, out tickPriceMessage)
+                //    //&& (tickPriceMessage == null || tickPriceMessage.Price == 0)
+                //    && (DateTime.Now - startTime).TotalMilliseconds < timeout) { }
+                double price = 0;
+                while (LoopMustGoOnMktData(
+                    _queueTickPriceMessage,
+                    reqId,
+                    startTime,
+                    timeout,
+                    out price)) { }
             });
 
             _queueTickPriceMessage = null;
             return (tickPriceMessage?.Price, (TickType?)tickPriceMessage?.Field);
         }
-        
+
+        private bool LoopMustGoOnMktData(
+            IIbHostQueue queueTickPriceMessage,
+            int reqId,
+            DateTime startTime,
+            int timeout,
+            out double price)
+        {
+            TickPriceMessage tickPriceMessage = null;
+            if (queueTickPriceMessage.DequeueMessage(reqId, out tickPriceMessage))
+            {
+                if (tickPriceMessage != null)
+                {
+                    if (tickPriceMessage.Price != 0)
+                    {
+                        price = tickPriceMessage.Price;
+                        return false;
+                    }
+                    else
+                    {
+                        price = 0;
+                        //return (DateTime.Now - startTime).TotalMilliseconds < timeout;
+                        return true;
+                    }
+                }
+                else
+                {
+                    price = 0;
+                    //return (DateTime.Now - startTime).TotalMilliseconds < timeout;
+                    return true;
+                }
+            }
+            else
+            {
+                price = 0;
+                //return (DateTime.Now - startTime).TotalMilliseconds < timeout;
+                return true;
+            }
+        }
 
         public async Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout)
         {
@@ -323,7 +368,7 @@ namespace IbClient.IbHost
             await Task.Run(() =>
             {
                 var startTime = DateTime.Now;
-                while ( !_queue.DequeueMessage<OpenOrderMessage>(nextOrderId, out openOrderMessage)
+                while (!_queue.DequeueMessage<OpenOrderMessage>(nextOrderId, out openOrderMessage)
                     && !_queue.DequeueMessage<ErrorMessage>(nextOrderId, out errorMessage)
                     && (DateTime.Now - startTime).TotalMilliseconds < timeout) { }
             });
