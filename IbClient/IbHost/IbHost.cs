@@ -254,13 +254,14 @@ namespace IbClient.IbHost
             {
                 var startTime = DateTime.Now;
                 while (!_queueTickPriceMessage.DequeueMessage(reqId, out tickPriceMessage)
+                    //&& (tickPriceMessage == null || tickPriceMessage.Price == 0)
                     && (DateTime.Now - startTime).TotalMilliseconds < timeout) { }
             });
 
             _queueTickPriceMessage = null;
             return (tickPriceMessage?.Price, (TickType?)tickPriceMessage?.Field);
         }
-
+        
 
         public async Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout)
         {
