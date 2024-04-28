@@ -112,6 +112,12 @@ namespace IbClient.IbHost
                 return false;
             }
 
+
+            if (message is ErrorMessage)
+            {
+                var errorMessage = message as ErrorMessage;
+                return errorMessage?.RequestId == reqId;
+            }
             if (message is ContractDetailsMessage)
             {
                 var contractDetailsMessage = message as ContractDetailsMessage;

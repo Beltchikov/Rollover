@@ -22,8 +22,6 @@ namespace IbClient.IbHost
                     Contract contract,
                     string reportType,
                     int timeout);
-        Task<(double?, TickType?, MarketDataType?)> RequestMarketDataSnapshotAsync(Contract contract, MarketDataType[] marketDataTypes, int timeout);
-        Task<double?> RequestMarketDataSnapshotAsync(Contract contract, TickType tickType, int timeout);
         Task<(double?, TickType?)> RequestMktData(
             Contract contract,
             string genericTickList,

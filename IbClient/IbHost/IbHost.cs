@@ -14,10 +14,10 @@ namespace IbClient.IbHost
     public class IbHost : IIbHost
     {
         IIBClient _ibClient;
+        [Obsolete]
         private IIbHostQueue _queue;
         private IIbHostQueue _queueTickPriceMessage;
         private int _currentReqId = 0;
-        private IResponses _responses;
         private List<ErrorMessage> _errorMessages;
         private int _nextOrderId;
         private int _lastOrderId;
@@ -28,6 +28,7 @@ namespace IbClient.IbHost
         private readonly int ERROR_CODE_354 = 354;
         private readonly int ERROR_CODE_201 = 201;
 
+        [Obsolete]
         public IbHost(IIbHostQueue queue)
         {
             _ibClient = IBClient.CreateClient();
@@ -44,7 +45,6 @@ namespace IbClient.IbHost
             _ibClient.OpenOrder += _ibClient_OpenOrder;
 
             _queue = queue;
-            _responses = new Responses();
             _errorMessages = new List<ErrorMessage>();
 
             //_ibClient.HistoricalData += _ibClient_HistoricalData;
@@ -159,83 +159,6 @@ namespace IbClient.IbHost
             return fundamentalsMessageString;
         }
 
-        // full list of tick types: https://interactivebrokers.github.io/tws-api/tick_types.html</param>
-        public async Task<(double?, TickType?, MarketDataType?)> RequestMarketDataSnapshotAsync(
-            Contract contract,
-            MarketDataType[] marketDataTypes,
-            int timeout)
-        {
-            double? price = null;
-            TickType? tickType = null;
-            MarketDataType? marketDataType = marketDataTypes[0];
-            await Task.Run(() =>
-            {
-                while (price == null)
-                {
-                    _ibClient.ClientSocket.reqMarketDataType(((int)marketDataType));
-
-                    var reqId = ++_currentReqId;
-                    _ibClient.ClientSocket.reqMktData(
-                        reqId,
-                        contract,
-                        "",
-                        true,
-                        false,
-                        new List<TagValue>());
-
-                    while (!(_responses.TryGetValidPrice(reqId, m => m.Price > 0, out price, out tickType)
-                        || _responses.SnaphotEnded(reqId)
-                        || HasErrorMessage(reqId, ERROR_CODE_10168, out _)
-                        || HasErrorMessage(reqId, ERROR_CODE_354, out _)
-                        || HasErrorMessage(reqId, ERROR_CODE_201, out _))) { };
-
-
-                    // TickSnapshotEndMessage
-                    // TickPriceMessage
-
-                    //while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !DequeueMessage<OpenOrderMessage>(_ibClient.NextOrderId, out openOrderMessage)
-                    //&& !DequeueMessage<ErrorMessage>(_ibClient.NextOrderId, out errorMessage)) { }
-
-                    if (price == null)
-                    {
-                        marketDataType = marketDataTypes[1];
-                    }
-                }
-            });
-
-            return (price, tickType, marketDataType);
-        }
-
-        // full list of tick types: https://interactivebrokers.github.io/tws-api/tick_types.html</param>
-        public async Task<double?> RequestMarketDataSnapshotAsync(Contract contract, TickType tickType, int timeout)
-        {
-            double? price = null;
-            TickType? tickTypeReceived = null;
-            await Task.Run(() =>
-            {
-                while (price == null)
-                {
-                    var reqId = ++_currentReqId;
-                    _ibClient.ClientSocket.reqMktData(
-                        reqId,
-                        contract,
-                        "",
-                        true,
-                        false,
-                        new List<TagValue>());
-
-                    while (!(_responses.TryGetValidPrice(reqId, m => m.Field == (int)tickType, out price, out tickTypeReceived)
-                        || _responses.SnaphotEnded(reqId)
-                        || HasErrorMessage(reqId, ERROR_CODE_10168, out _)
-                        || HasErrorMessage(reqId, ERROR_CODE_354, out _)
-                        || HasErrorMessage(reqId, ERROR_CODE_201, out _)))
-                    { };
-                }
-            });
-
-            return price;
-        }
-
         public async Task<(double?, TickType?)> RequestMktData(
             Contract contract,
             string genericTickList,
@@ -276,8 +199,7 @@ namespace IbClient.IbHost
             int timeout,
             out double price)
         {
-            TickPriceMessage tickPriceMessage = null;
-            if (queueTickPriceMessage.DequeueMessage(reqId, out tickPriceMessage))
+            if (queueTickPriceMessage.DequeueMessage(reqId, out TickPriceMessage tickPriceMessage))
             {
                 if (tickPriceMessage != null)
                 {
@@ -289,23 +211,31 @@ namespace IbClient.IbHost
                     else
                     {
                         price = 0;
-                        //return (DateTime.Now - startTime).TotalMilliseconds < timeout;
                         return true;
+                        // TODO
+                        //return !CheckErrorAndTimeout(reqId, startTime, timeout);
                     }
                 }
                 else
                 {
                     price = 0;
-                    //return (DateTime.Now - startTime).TotalMilliseconds < timeout;
                     return true;
+                    // TODO
+                    //return !CheckErrorAndTimeout(reqId, startTime, timeout);
                 }
             }
             else
             {
                 price = 0;
-                //return (DateTime.Now - startTime).TotalMilliseconds < timeout;
                 return true;
+                // TODO
+                //return !CheckErrorAndTimeout(reqId, startTime, timeout);
             }
+        }
+
+        private bool CheckErrorAndTimeout(int reqId, DateTime startTime, int timeout)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout)
@@ -405,7 +335,8 @@ namespace IbClient.IbHost
             {
                 (Contract currencyPairContract, bool usdIsInDenominator) = CurrencyPair.ContractFromCurrency(currency);
                 MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.DelayedFrozen };
-                (var currentPrice, _, _) = await RequestMarketDataSnapshotAsync(currencyPairContract, marketDataTypes, timeout);
+                //(var currentPrice, _, _) = await RequestMarketDataSnapshotAsync(currencyPairContract, marketDataTypes, timeout);
+                (var currentPrice, _) = await RequestMktData(currencyPairContract, "", true, false, null, timeout);
                 result = usdIsInDenominator ? currentPrice : Math.Round(1 / currentPrice.Value, 5);
             }
             return result;
