@@ -225,7 +225,7 @@ namespace IbClient.IbHost
             }
             else
             {
-                return false;
+                return (DateTime.Now - startTime).TotalMilliseconds >= timeout;
             }
         }
 
