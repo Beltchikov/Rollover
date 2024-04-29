@@ -199,6 +199,8 @@ namespace IbClient.IbHost
             int timeout,
             out TickPriceMessage tickPriceMessage)
         {
+            _queueTickPriceMessage.DequeueAllTickPriceMessageExcept(reqId);
+
             if (_queueTickPriceMessage.DequeueMessage(reqId, out tickPriceMessage))
             {
                 if (tickPriceMessage != null)
