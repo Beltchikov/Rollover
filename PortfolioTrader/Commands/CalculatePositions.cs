@@ -18,7 +18,9 @@ namespace PortfolioTrader.Commands
 
             (_visitor.StocksToBuyAsString, string stocksToBuyWithoutPriceAsString) = RemoveZeroPriceLines(_visitor.StocksToBuyAsString);
             (_visitor.StocksToSellAsString, string stocksToSellWithoutPriceAsString) = RemoveZeroPriceLines(_visitor.StocksToSellAsString);
-            _visitor.StocksWithoutPrice = stocksToBuyWithoutPriceAsString + Environment.NewLine + stocksToSellWithoutPriceAsString;
+            _visitor.StocksWithoutPrice = stocksToBuyWithoutPriceAsString == "" 
+                ? stocksToSellWithoutPriceAsString
+                : stocksToBuyWithoutPriceAsString + Environment.NewLine + stocksToSellWithoutPriceAsString;
 
             (_visitor.StocksToBuyAsString, _visitor.StocksToSellAsString)
                 = EqualizeBuysAndSells(_visitor.StocksToBuyAsString, _visitor.StocksToSellAsString);
