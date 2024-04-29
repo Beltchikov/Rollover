@@ -22,7 +22,7 @@ namespace PortfolioTrader.Model
             PriceInCents = splitted.Count > 4 ? Convert.ToInt32(splitted[4]) : null;
             PriceType = splitted.Count > 5 ? splitted[5] : null;
             Quantity = splitted.Count > 6 ? Convert.ToInt32(splitted[6]) : null;
-            Margin = splitted.Count > 7 ? Convert.ToInt32(splitted[7]) : null;
+            Margin = splitted.Count > 7 ? splitted[7] : null;
         }
 
         public int NetBms { get; set; }
@@ -30,7 +30,7 @@ namespace PortfolioTrader.Model
         public int? Weight { get; set; }
         public int? PriceInCents { get; set; }
         public string? PriceType{ get; set; }
-        public int? Margin { get; set; }
         public int? Quantity { get; set; }
+        public string? Margin { get; set; }
     }
 }

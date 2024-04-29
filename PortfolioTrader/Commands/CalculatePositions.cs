@@ -1,4 +1,5 @@
 ﻿using IBApi;
+using IbClient.Types;
 using PortfolioTrader.Model;
 using System.Windows.Controls;
 using TickType = IbClient.Types.TickType;
@@ -15,6 +16,9 @@ namespace PortfolioTrader.Commands
 
             _visitor.StocksToBuyAsString = await AddPriceColumnsAsync(_visitor.StocksToBuyAsString);
             _visitor.StocksToSellAsString = await AddPriceColumnsAsync(_visitor.StocksToSellAsString);
+
+            //_visitor.StocksToBuyAsString = await AddMarginColumnsAsync(_visitor.StocksToBuyAsString);
+            //_visitor.StocksToSellAsString = await AddMarginColumnsAsync(_visitor.StocksToSellAsString);
 
             (_visitor.StocksToBuyAsString, string stocksToBuyWithoutPriceAsString) = RemoveZeroPriceLines(_visitor.StocksToBuyAsString);
             (_visitor.StocksToSellAsString, string stocksToSellWithoutPriceAsString) = RemoveZeroPriceLines(_visitor.StocksToSellAsString);
@@ -118,6 +122,35 @@ namespace PortfolioTrader.Commands
                 resultDictionary[kvp.Key].Quantity = quantity;
 
                 await Task.Run(()=>Thread.Sleep(App.TIMEOUT));
+            }
+
+            return SymbolsAndScore.PositionDictionaryToString(resultDictionary);
+        }
+
+        private static async Task<string> AddMarginColumnsAsync(string stocksAsString)
+        {
+            var stocksDictionary = SymbolsAndScore.StringToPositionDictionary(stocksAsString);
+            var resultDictionary = new Dictionary<string, Position>();
+
+            foreach (var kvp in stocksDictionary)
+            {
+                if (kvp.Value.ConId == null) throw new Exception("Unexpected. Contract ID is null");
+                var contract = new Contract() { ConId = kvp.Value.ConId.Value, Exchange = App.EXCHANGE };
+
+                if (kvp.Value.Quantity == null) throw new Exception("Unexpected. Quantity is null");
+                OrderStateOrError orderStateOrError = await _visitor.IbHost.WhatIfOrderStateFromContract(contract, kvp.Value.Quantity.Value, App.TIMEOUT);
+                resultDictionary[kvp.Key] = kvp.Value;
+
+                // consider int
+                if (orderStateOrError.ErrorMessage != "")
+                {
+                    _visitor.TwsMessageCollection.Add(orderStateOrError.ErrorMessage);
+                    resultDictionary[kvp.Key].Margin = "0";
+                }
+                else if (orderStateOrError.OrderState != null) resultDictionary[kvp.Key].Margin = orderStateOrError.OrderState.InitMarginChange;
+                else throw new Exception("Unexpected. Both ErrorMessage and OrderState are invalid.");
+  
+                await Task.Run(() => Thread.Sleep(App.TIMEOUT));
             }
 
             return SymbolsAndScore.PositionDictionaryToString(resultDictionary);
