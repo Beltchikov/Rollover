@@ -40,7 +40,7 @@ namespace PortfolioTrader.Model
         public BuyConfirmationViewModel()
         {
             IIbHostQueue ibHostQueue = new IbHostQueue();
-            if (ibHostQueue != null) ibHost = new IbHost(ibHostQueue);
+            if (ibHostQueue != null) ibHost = new IbHost();
             ibHost.Consumer = ibHost.Consumer ?? this;
 
             ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));

@@ -14,8 +14,7 @@ namespace IbClient.IbHost
     public class IbHost : IIbHost
     {
         IIBClient _ibClient;
-        [Obsolete]
-        private IIbHostQueue _queue;
+        private IIbHostQueue _queueCommon;
         private IIbHostQueue _queueTickPriceMessage;
         private IIbHostQueue _queueMktDataErrors;
         private int _currentReqId = 0;
@@ -30,8 +29,7 @@ namespace IbClient.IbHost
         private readonly int ERROR_CODE_354 = 354;
         private readonly int ERROR_CODE_201 = 201;
 
-        [Obsolete]
-        public IbHost(IIbHostQueue queue)
+        public IbHost()
         {
             _ibClient = IBClient.CreateClient();
 
@@ -46,7 +44,7 @@ namespace IbClient.IbHost
             _ibClient.TickSnapshotEnd += _ibClient_TickSnapshotEnd;
             _ibClient.OpenOrder += _ibClient_OpenOrder;
 
-            _queue = queue;
+            _queueCommon = new IbHostQueue();
             _queueTickPriceMessage = new IbHostQueue();
             _queueMktDataErrors = new IbHostQueue();
 
@@ -102,7 +100,7 @@ namespace IbClient.IbHost
             {
                 var startTime = DateTime.Now;
                 while ((DateTime.Now - startTime).TotalMilliseconds < timeout
-                    && !_queue.DequeueMessage(reqId, out contractDetailsMessage)) { }
+                    && !_queueCommon.DequeueMessage(reqId, out contractDetailsMessage)) { }
 
                 if (contractDetailsMessage != null)
                 {
@@ -122,7 +120,7 @@ namespace IbClient.IbHost
             await Task.Run(() =>
             {
                 var startTime = DateTime.Now;
-                while (!_queue.DequeueMessage(reqId, out symbolSamplesMessage)
+                while (!_queueCommon.DequeueMessage(reqId, out symbolSamplesMessage)
                     && (DateTime.Now - startTime).TotalMilliseconds < timeout) { }
 
                 return symbolSamplesMessage;
@@ -150,7 +148,7 @@ namespace IbClient.IbHost
             {
                 var startTime = DateTime.Now;
                 while ((DateTime.Now - startTime).TotalMilliseconds < timeout
-                    && !_queue.DequeueMessage(out fundamentalsMessage)) { }
+                    && !_queueCommon.DequeueMessage(out fundamentalsMessage)) { }
 
                 if (fundamentalsMessage != null)
                 {
@@ -257,8 +255,8 @@ namespace IbClient.IbHost
             await Task.Run(() =>
             {
                 var startTime = DateTime.Now;
-                while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !_queue.DequeueMessage<OpenOrderMessage>(_ibClient.NextOrderId, out openOrderMessage)
-                    && !_queue.DequeueMessage<ErrorMessage>(_ibClient.NextOrderId, out errorMessage)) { }
+                while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !_queueCommon.DequeueMessage<OpenOrderMessage>(_ibClient.NextOrderId, out openOrderMessage)
+                    && !_queueCommon.DequeueMessage<ErrorMessage>(_ibClient.NextOrderId, out errorMessage)) { }
             });
 
             if (openOrderMessage == null)
@@ -291,8 +289,8 @@ namespace IbClient.IbHost
             await Task.Run(() =>
             {
                 var startTime = DateTime.Now;
-                while (!_queue.DequeueMessage<OpenOrderMessage>(nextOrderId, out openOrderMessage)
-                    && !_queue.DequeueMessage<ErrorMessage>(nextOrderId, out errorMessage)
+                while (!_queueCommon.DequeueMessage<OpenOrderMessage>(nextOrderId, out openOrderMessage)
+                    && !_queueCommon.DequeueMessage<ErrorMessage>(nextOrderId, out errorMessage)
                     && (DateTime.Now - startTime).TotalMilliseconds < timeout) { }
             });
 
@@ -371,7 +369,7 @@ namespace IbClient.IbHost
             }
             Consumer.TwsMessageCollection?.Add($"ContractDetailsMessage for {contractDetailsMessage.ContractDetails.Contract.LocalSymbol} " +
                 $"conId:{contractDetailsMessage.ContractDetails.Contract.ConId}");
-            _queue.Enqueue(contractDetailsMessage);
+            _queueCommon.Enqueue(contractDetailsMessage);
         }
 
         private void _ibClient_SymbolSamples(SymbolSamplesMessage symbolSamplesMessage)
@@ -381,12 +379,12 @@ namespace IbClient.IbHost
                 throw new ApplicationException("Unexpected! Consumer is null");
             }
             Consumer.TwsMessageCollection?.Add($"SymbolSamplesMessage for {symbolSamplesMessage.ReqId}");
-            _queue.Enqueue(symbolSamplesMessage);
+            _queueCommon.Enqueue(symbolSamplesMessage);
         }
 
         private void _ibClient_FundamentalData(FundamentalsMessage fundamentalsMessage)
         {
-            _queue.Enqueue(fundamentalsMessage);
+            _queueCommon.Enqueue(fundamentalsMessage);
         }
 
         private void _ibClient_Error(int reqId, int code, string message, Exception exception)
@@ -420,7 +418,7 @@ namespace IbClient.IbHost
                 throw new ApplicationException("Unexpected! Consumer is null");
             }
             Consumer.TwsMessageCollection?.Add($"TickSnapshotEnd for {reqId} ");
-            _queue.Enqueue(new TickSnapshotEndMessage(reqId));
+            _queueCommon.Enqueue(new TickSnapshotEndMessage(reqId));
         }
 
         private void _ibClient_OpenOrder(OpenOrderMessage openOrderMessage)
@@ -431,7 +429,7 @@ namespace IbClient.IbHost
             }
             Consumer.TwsMessageCollection?.Add($"OpenOrderMessage for {openOrderMessage.Contract.LocalSymbol} " +
                 $"conId:{openOrderMessage.Contract.ConId}");
-            _queue.Enqueue(openOrderMessage);
+            _queueCommon.Enqueue(openOrderMessage);
         }
         private bool MessageForRightTickerContains(string fundamentalsMessageString, string ticker)
         {

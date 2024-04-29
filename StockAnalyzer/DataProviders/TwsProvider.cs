@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
@@ -139,11 +140,11 @@ namespace StockAnalyzer.DataProviders
                 TriggerStatus($"Retrieving risk and return for {contractString} {cnt++}/{contractStringsList.Count}");
 
                 RiskAndReturnOrError riskAndReturnOrError = await RiskAndReturnFromContract(contract, timeout);
-                if(riskAndReturnOrError == null)
+                if (riskAndReturnOrError == null)
                 {
                     result.Add($"{contract.Symbol}\tUnexpected! riskAndReturnOrError is null");
                 }
-                else if(riskAndReturnOrError.Risk == null)
+                else if (riskAndReturnOrError.Risk == null)
                 {
                     result.Add($"{contract.Symbol}\tUnexpected! riskAndReturnOrError.Risk is null");
                 }
@@ -155,7 +156,7 @@ namespace StockAnalyzer.DataProviders
                 {
                     result.Add($"{contract.Symbol}\t{riskAndReturnOrError.Error}");
                 }
-                else 
+                else
                 {
                     result.Add($"{contract.Symbol}\t{riskAndReturnOrError.Risk.Value}\t{riskAndReturnOrError.Return.Value}");
                 }
@@ -534,8 +535,7 @@ namespace StockAnalyzer.DataProviders
 
         private async Task<Price> CurrentPriceFromContract(Contract contract, MarketDataType[] marketDataTypes, int timeout)
         {
-            (var currentPrice, var tickType, var marketDataType)
-                = await _ibHost.RequestMarketDataSnapshotAsync(contract, marketDataTypes, timeout);
+            (var currentPrice, var tickType) = await _ibHost.RequestMktData(contract, "", true, false, null, timeout);
             if (currentPrice == null)
             {
                 throw new ApplicationException($"currentPrice is null for {contract.Symbol}");
@@ -544,12 +544,8 @@ namespace StockAnalyzer.DataProviders
             {
                 throw new ApplicationException($"tickType is null for {contract.Symbol}");
             }
-            if (marketDataType == null)
-            {
-                throw new ApplicationException($"marketDataType is null for {contract.Symbol}");
-            }
 
-            return new Price(currentPrice.Value, (int)marketDataType.Value, (int)tickType.Value);
+            return new Price(currentPrice.Value, (int)MarketDataType.Live, (int)tickType.Value);
         }
 
         private Task<RiskAndReturnOrError> RiskAndReturnFromContract(Contract contract, int timeout)
@@ -763,14 +759,30 @@ namespace StockAnalyzer.DataProviders
 
         private async Task<(double?, TickType?, MarketDataType?)> AskOrAnyPriceAsync(Contract contract, int timeout)
         {
+            //    TickType? tickType = TickType.AskPrice;
+            //    MarketDataType? marketDataType = MarketDataType.Live;
+
+            //    double? currentPrice = await _ibHost.RequestMarketDataSnapshotAsync(contract, TickType.AskPrice, timeout);
+            //    if (currentPrice == null || currentPrice <= 0)
+            //    {
+            //        MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.DelayedFrozen };
+            //        (currentPrice, tickType, marketDataType) = await _ibHost.RequestMarketDataSnapshotAsync(contract, marketDataTypes, timeout);
+            //    }
+            //    return (currentPrice, tickType, marketDataType);
+
+
+            // New implementation after the removal of IBQueue from constructor of IbHost
+            // Implementation is knownly wrong, but considered as obsolete.
+            // If not new overloading of RequestMktData ist to introduce
+            
             TickType? tickType = TickType.AskPrice;
             MarketDataType? marketDataType = MarketDataType.Live;
 
-            double? currentPrice = await _ibHost.RequestMarketDataSnapshotAsync(contract, TickType.AskPrice, timeout);
+            (double? currentPrice, TickType? tickTypeReceived) = await _ibHost.RequestMktData(contract, "", true, false, null, timeout);
             if (currentPrice == null || currentPrice <= 0)
             {
                 MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.DelayedFrozen };
-                (currentPrice, tickType, marketDataType) = await _ibHost.RequestMarketDataSnapshotAsync(contract, marketDataTypes, timeout);
+                (currentPrice, tickType) = await _ibHost.RequestMktData(contract, "", true, false, null, timeout);
             }
             return (currentPrice, tickType, marketDataType);
         }
