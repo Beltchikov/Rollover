@@ -116,6 +116,8 @@ namespace PortfolioTrader.Commands
                 resultDictionary[kvp.Key].PriceInCents = priceInCentsNotNullable;
                 resultDictionary[kvp.Key].PriceType = tickType.ToString();
                 resultDictionary[kvp.Key].Quantity = quantity;
+
+                Thread.Sleep(App.TIMEOUT);
             }
 
             return SymbolsAndScore.PositionDictionaryToString(resultDictionary);
