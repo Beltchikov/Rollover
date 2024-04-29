@@ -107,7 +107,7 @@ namespace PortfolioTrader.Commands
                     }
                 }
 
-                Thread.Sleep((int)Math.Round(_visitor.Timeout * 1.5));
+                await Task.Run(() => Thread.Sleep((int)Math.Round(_visitor.Timeout * 1.5)));
             }
 
             return (symbolsResolved, symbolsMultiple, symbolsUnresolved);
