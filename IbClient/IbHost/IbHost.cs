@@ -189,7 +189,7 @@ namespace IbClient.IbHost
                     out tickPriceMessage)) { }
             });
 
-            _queueTickPriceMessage.DequeueAllTickPriceMessageExcept(reqId + 1);
+            //_queueTickPriceMessage.DequeueAllTickPriceMessageExcept(reqId + 1);
             return (tickPriceMessage?.Price, (TickType?)tickPriceMessage?.Field);
         }
 
