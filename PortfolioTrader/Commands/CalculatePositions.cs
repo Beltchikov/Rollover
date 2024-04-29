@@ -102,7 +102,7 @@ namespace PortfolioTrader.Commands
                 if (kvp.Value.ConId == null) throw new Exception("Unexpected. Contract ID is null");
                 var contract = new Contract() { ConId = kvp.Value.ConId.Value, Exchange = App.EXCHANGE };
 
-                (double? price, TickType? tickType) = await _visitor.IbHost.RequestMktData(contract, "", true, false, null, App.TIMEOUT);
+                (double? price, TickType? tickType) = await _visitor.IbHost.RequestMktData(contract, "", true, false, null, App.TIMEOUT * 11);
                 resultDictionary[kvp.Key] = kvp.Value;
 
                 int priceInCentsNotNullable = (int)((price == null ? 0d : price.Value) * 100d);
