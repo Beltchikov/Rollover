@@ -99,7 +99,6 @@ namespace IbClient.IbHost
             return true;
         }
 
-
         // TODO make generic
         public void DequeueAllTickPriceMessageExcept(int reqId)
         {

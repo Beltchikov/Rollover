@@ -174,7 +174,6 @@ namespace IbClient.IbHost
             int timeout)
         {
             TickPriceMessage tickPriceMessage = null;
-            //double price = 0;
             var reqId = ++_currentReqId;
             _mktDataReqIds.Add(reqId);
 
@@ -183,9 +182,6 @@ namespace IbClient.IbHost
             await Task.Run(() =>
             {
                 var startTime = DateTime.Now;
-                //while (!_queueTickPriceMessage.DequeueMessage(reqId, out tickPriceMessage)
-                //    //&& (tickPriceMessage == null || tickPriceMessage.Price == 0)
-                //    && (DateTime.Now - startTime).TotalMilliseconds < timeout) { }
                 while (LoopMustGoOnMktData(
                     reqId,
                     startTime,
@@ -193,7 +189,6 @@ namespace IbClient.IbHost
                     out tickPriceMessage)) { }
             });
 
-            //_queueTickPriceMessage = null;
             _queueTickPriceMessage.DequeueAllTickPriceMessageExcept(reqId + 1);
             return (tickPriceMessage?.Price, (TickType?)tickPriceMessage?.Field);
         }
@@ -208,14 +203,8 @@ namespace IbClient.IbHost
             {
                 if (tickPriceMessage != null)
                 {
-                    if (tickPriceMessage.Price != 0)
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        return !HasErrorOrTimeout(reqId, startTime, timeout);
-                    }
+                    if (tickPriceMessage.Price != 0) return false;
+                    else return !HasErrorOrTimeout(reqId, startTime, timeout);
                 }
                 else
                 {
@@ -419,7 +408,6 @@ namespace IbClient.IbHost
             Consumer.TwsMessageCollection?.Add($"TickPriceMessage for {tickPriceMessage.RequestId} " +
                 $"field:{tickPriceMessage.Field} price:{tickPriceMessage.Price}");
 
-            if (_queueTickPriceMessage == null) _queueTickPriceMessage = new IbHostQueue();
             _queueTickPriceMessage.Enqueue(tickPriceMessage);
         }
 
