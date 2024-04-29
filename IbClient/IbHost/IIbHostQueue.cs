@@ -1,4 +1,6 @@
-﻿namespace IbClient.IbHost
+﻿using System;
+
+namespace IbClient.IbHost
 {
     public interface IIbHostQueue
     {
@@ -11,5 +13,6 @@
 
         // TODO remove later
         bool HasMessageInQueue<T>(int reqId);
+        void DequeueAllTickPriceMessageExcept(int reqId);
     }
 }

@@ -174,10 +174,10 @@ namespace IbClient.IbHost
             int timeout)
         {
             TickPriceMessage tickPriceMessage = null;
+            //double price = 0;
             var reqId = ++_currentReqId;
             _mktDataReqIds.Add(reqId);
 
-            _queueTickPriceMessage = new IbHostQueue();
             _ibClient.ClientSocket.reqMktData(reqId, contract, genericTickList, snapshot, regulatorySnapshot, mktDataOptions);
 
             await Task.Run(() =>
@@ -186,63 +186,57 @@ namespace IbClient.IbHost
                 //while (!_queueTickPriceMessage.DequeueMessage(reqId, out tickPriceMessage)
                 //    //&& (tickPriceMessage == null || tickPriceMessage.Price == 0)
                 //    && (DateTime.Now - startTime).TotalMilliseconds < timeout) { }
-                double price = 0;
                 while (LoopMustGoOnMktData(
-                    _queueTickPriceMessage,
                     reqId,
                     startTime,
                     timeout,
-                    out price)) { }
+                    out tickPriceMessage)) { }
             });
 
-            _queueTickPriceMessage = null;
+            //_queueTickPriceMessage = null;
+            _queueTickPriceMessage.DequeueAllTickPriceMessageExcept(reqId + 1);
             return (tickPriceMessage?.Price, (TickType?)tickPriceMessage?.Field);
         }
 
         private bool LoopMustGoOnMktData(
-            IIbHostQueue queueTickPriceMessage,
             int reqId,
             DateTime startTime,
             int timeout,
-            out double price)
+            out TickPriceMessage tickPriceMessage)
         {
-            if (queueTickPriceMessage.DequeueMessage(reqId, out TickPriceMessage tickPriceMessage))
+            if (_queueTickPriceMessage.DequeueMessage(reqId, out tickPriceMessage))
             {
                 if (tickPriceMessage != null)
                 {
                     if (tickPriceMessage.Price != 0)
                     {
-                        price = tickPriceMessage.Price;
                         return false;
                     }
                     else
                     {
-                        price = 0;
-                        return !CheckErrorAndTimeout(reqId, startTime, timeout);
+                        return !HasErrorOrTimeout(reqId, startTime, timeout);
                     }
                 }
                 else
                 {
-                    price = 0;
-                    return !CheckErrorAndTimeout(reqId, startTime, timeout);
+                    return !HasErrorOrTimeout(reqId, startTime, timeout);
                 }
             }
             else
             {
-                price = 0;
-                return !CheckErrorAndTimeout(reqId, startTime, timeout);
+                return !HasErrorOrTimeout(reqId, startTime, timeout);
             }
         }
 
-        private bool CheckErrorAndTimeout(int reqId, DateTime startTime, int timeout)
+        private bool HasErrorOrTimeout(int reqId, DateTime startTime, int timeout)
         {
             if (_queueMktDataErrors.DequeueMessage(reqId, out ErrorMessage errorMessage))
             {
-                return false;
+                return true;
             }
             else
             {
-                return true;
+                return false;
             }
         }
 
@@ -349,19 +343,6 @@ namespace IbClient.IbHost
             }
             return result;
         }
-
-        private void _ibClient_Error(int reqId, int code, string message, Exception exception)
-        {
-            if (Consumer == null)
-            {
-                throw new ApplicationException("Unexpected! Consumer is null");
-            }
-
-            if (_mktDataReqIds.Contains(reqId)) 
-                _queueMktDataErrors.Enqueue(new ErrorMessage(reqId, code, message));
-            Consumer.TwsMessageCollection?.Add($"ReqId:{reqId} code:{code} message:{message} exception:{exception}");
-        }
-
         private void _ibClient_ManagedAccounts(ManagedAccountsMessage message)
         {
             if (Consumer == null)
@@ -415,6 +396,18 @@ namespace IbClient.IbHost
         private void _ibClient_FundamentalData(FundamentalsMessage fundamentalsMessage)
         {
             _queue.Enqueue(fundamentalsMessage);
+        }
+
+        private void _ibClient_Error(int reqId, int code, string message, Exception exception)
+        {
+            if (Consumer == null)
+            {
+                throw new ApplicationException("Unexpected! Consumer is null");
+            }
+
+            if (_mktDataReqIds.Contains(reqId))
+                _queueMktDataErrors.Enqueue(new ErrorMessage(reqId, code, message));
+            Consumer.TwsMessageCollection?.Add($"ReqId:{reqId} code:{code} message:{message} exception:{exception}");
         }
 
         private void _ibClient_TickPrice(TickPriceMessage tickPriceMessage)

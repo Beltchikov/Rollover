@@ -1,6 +1,7 @@
 ﻿using IbClient.messages;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace IbClient.IbHost
@@ -98,6 +99,31 @@ namespace IbClient.IbHost
             return true;
         }
 
+
+        // TODO make generic
+        public void DequeueAllTickPriceMessageExcept(int reqId)
+        {
+            var itemsToKeep = new List<object>();
+            object item = null;
+
+            while (_ibClientQueue.TryDequeue(out item))
+            {
+                if(item is TickPriceMessage)
+                {
+                    var itemTyped = item as TickPriceMessage;
+                    if(itemTyped.RequestId == reqId)
+                    {
+                        itemsToKeep.Add(item);
+                    }
+                }
+            }
+
+            foreach(var itemToAdd in itemsToKeep)
+            {
+                _ibClientQueue.Enqueue(itemToAdd);
+            }
+        }
+
         //TODO make private
         public bool HasMessageInQueue<T>(int reqId)
         {
@@ -111,7 +137,6 @@ namespace IbClient.IbHost
             {
                 return false;
             }
-
 
             if (message is ErrorMessage)
             {
