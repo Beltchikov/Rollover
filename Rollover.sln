@@ -15,12 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rollover.IntegrationTests",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rollover.Tests.Shared", "Rollover.Tests.Shared\Rollover.Tests.Shared.csproj", "{557B49F3-7E33-4051-83E8-076BEDB639A3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UsMoversOpening", "UsMoversOpening\UsMoversOpening.csproj", "{A4412324-F1BB-446C-856D-70FFC6BC9986}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UsMoversOpening.Tests", "UsMoversOpening.Tests\UsMoversOpening.Tests.csproj", "{C5BBB543-F6D1-469E-B464-C96692B3225B}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioAlert", "PortfolioAlert\PortfolioAlert.csproj", "{64F6279B-6FBA-4FAD-A3D9-DD9DB7F73302}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrototypeWpf", "PrototypeWpf\PrototypeWpf.csproj", "{6158B877-961D-449C-827D-2F33DEF241A9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IbClient", "IbClient\IbClient.csproj", "{142E18AC-0D5B-4B58-B9B3-58F523B91911}"
@@ -50,13 +44,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockAnalyzer", "StockAnaly
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SsbHelper", "SsbHelper\SsbHelper.csproj", "{F2D25F47-2816-4F11-8DD9-12CD0338BE01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrailingStopLimit", "TrailingStopLimit\TrailingStopLimit.csproj", "{1156A9AF-50B7-486A-BFE6-CDF91C2257AB}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetBms", "NetBms\NetBms.csproj", "{BEF4DA63-854B-4692-BF3B-019862BFB4A0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortalOpener", "PortalOpener\PortalOpener.csproj", "{BDC5D923-6583-4C49-A2AD-456EF02D9219}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortfolioTrader", "PortfolioTrader\PortfolioTrader.csproj", "{C821CD23-9A79-4A9C-BEDD-ED3A2C0B4269}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioTrader", "PortfolioTrader\PortfolioTrader.csproj", "{C821CD23-9A79-4A9C-BEDD-ED3A2C0B4269}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -88,18 +80,6 @@ Global
 		{557B49F3-7E33-4051-83E8-076BEDB639A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{557B49F3-7E33-4051-83E8-076BEDB639A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{557B49F3-7E33-4051-83E8-076BEDB639A3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A4412324-F1BB-446C-856D-70FFC6BC9986}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A4412324-F1BB-446C-856D-70FFC6BC9986}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A4412324-F1BB-446C-856D-70FFC6BC9986}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A4412324-F1BB-446C-856D-70FFC6BC9986}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C5BBB543-F6D1-469E-B464-C96692B3225B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C5BBB543-F6D1-469E-B464-C96692B3225B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C5BBB543-F6D1-469E-B464-C96692B3225B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C5BBB543-F6D1-469E-B464-C96692B3225B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{64F6279B-6FBA-4FAD-A3D9-DD9DB7F73302}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{64F6279B-6FBA-4FAD-A3D9-DD9DB7F73302}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{64F6279B-6FBA-4FAD-A3D9-DD9DB7F73302}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{64F6279B-6FBA-4FAD-A3D9-DD9DB7F73302}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6158B877-961D-449C-827D-2F33DEF241A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6158B877-961D-449C-827D-2F33DEF241A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6158B877-961D-449C-827D-2F33DEF241A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -148,10 +128,6 @@ Global
 		{F2D25F47-2816-4F11-8DD9-12CD0338BE01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2D25F47-2816-4F11-8DD9-12CD0338BE01}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2D25F47-2816-4F11-8DD9-12CD0338BE01}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1156A9AF-50B7-486A-BFE6-CDF91C2257AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1156A9AF-50B7-486A-BFE6-CDF91C2257AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1156A9AF-50B7-486A-BFE6-CDF91C2257AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1156A9AF-50B7-486A-BFE6-CDF91C2257AB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BEF4DA63-854B-4692-BF3B-019862BFB4A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BEF4DA63-854B-4692-BF3B-019862BFB4A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEF4DA63-854B-4692-BF3B-019862BFB4A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
