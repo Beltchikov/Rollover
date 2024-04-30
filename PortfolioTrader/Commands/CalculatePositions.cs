@@ -20,14 +20,21 @@ namespace PortfolioTrader.Commands
 
             (_visitor.StocksToBuyAsString, string stocksWithoutMarginLong) = await AddMarginColumnsAsync(_visitor.StocksToBuyAsString);
             (_visitor.StocksToSellAsString, string stocksWithoutMarginShort) = await AddMarginColumnsAsync(_visitor.StocksToSellAsString);
-            _visitor.StocksWithoutMargin = stocksWithoutMarginLong + Environment.NewLine + stocksWithoutMarginShort;
+
+            //_visitor.StocksWithoutMargin = stocksWithoutMarginLong + Environment.NewLine + stocksWithoutMarginShort;
+            _visitor.StocksWithoutMargin = ConcatStringsWithNewLine(stocksWithoutMarginLong, stocksWithoutMarginShort);
+
+
             _visitor.TwsMessageCollection.Add("Calculated Position command: margin column added.");
 
             (_visitor.StocksToBuyAsString, string stocksToBuyWithoutPriceAsString) = RemoveZeroPriceLines(_visitor.StocksToBuyAsString);
             (_visitor.StocksToSellAsString, string stocksToSellWithoutPriceAsString) = RemoveZeroPriceLines(_visitor.StocksToSellAsString);
-            _visitor.StocksWithoutPrice = stocksToBuyWithoutPriceAsString == ""
-                ? stocksToSellWithoutPriceAsString
-                : stocksToBuyWithoutPriceAsString + Environment.NewLine + stocksToSellWithoutPriceAsString;
+
+            //_visitor.StocksWithoutPrice = stocksToBuyWithoutPriceAsString == ""
+            //    ? stocksToSellWithoutPriceAsString
+            //    : stocksToBuyWithoutPriceAsString + Environment.NewLine + stocksToSellWithoutPriceAsString;
+            _visitor.StocksWithoutPrice = ConcatStringsWithNewLine(stocksToBuyWithoutPriceAsString, stocksToSellWithoutPriceAsString);
+
             _visitor.TwsMessageCollection.Add("Calculated Position command: zero price positions removed.");
 
             (_visitor.StocksToBuyAsString, _visitor.StocksToSellAsString)
@@ -39,6 +46,13 @@ namespace PortfolioTrader.Commands
             _visitor.TwsMessageCollection.Add("Calculated Position command: weights are reccalculated after the equalizing.");
 
             _visitor.TwsMessageCollection.Add("DONE! Calculated Position command executed.");
+        }
+
+        private static string ConcatStringsWithNewLine(string string1, string string2)
+        {
+            return string1 == ""
+                ? string2
+                : string1 + Environment.NewLine + string2;
         }
 
         private static (string, string) EqualizeBuysAndSells(string stocksToBuyAsString, string stocksToSellAsString)
@@ -150,7 +164,6 @@ namespace PortfolioTrader.Commands
                 else if (orderStateOrError.OrderState != null)
                 {
                     resultDictionary[kvp.Key] = kvp.Value;
-                    //resultDictionary[kvp.Key].Margin = orderStateOrError.OrderState.InitMarginChange;
                     resultDictionary[kvp.Key].Margin = ConvertMarginToInt(orderStateOrError.OrderState.InitMarginChange);
                 }
                 else throw new Exception("Unexpected. Both ErrorMessage and OrderState are invalid.");
