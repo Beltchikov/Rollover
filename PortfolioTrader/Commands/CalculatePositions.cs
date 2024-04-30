@@ -16,21 +16,29 @@ namespace PortfolioTrader.Commands
 
             _visitor.StocksToBuyAsString = await AddPriceColumnsAsync(_visitor.StocksToBuyAsString);
             _visitor.StocksToSellAsString = await AddPriceColumnsAsync(_visitor.StocksToSellAsString);
+            _visitor.TwsMessageCollection.Add("Calculated Position command: price column added.");
 
-            //_visitor.StocksToBuyAsString = await AddMarginColumnsAsync(_visitor.StocksToBuyAsString);
-            //_visitor.StocksToSellAsString = await AddMarginColumnsAsync(_visitor.StocksToSellAsString);
+            (_visitor.StocksToBuyAsString, string stocksWithoutMarginLong) = await AddMarginColumnsAsync(_visitor.StocksToBuyAsString);
+            (_visitor.StocksToSellAsString, string stocksWithoutMarginShort) = await AddMarginColumnsAsync(_visitor.StocksToSellAsString);
+            _visitor.StocksWithoutMargin = stocksWithoutMarginLong + Environment.NewLine + stocksWithoutMarginShort;
+            _visitor.TwsMessageCollection.Add("Calculated Position command: margin column added.");
 
             (_visitor.StocksToBuyAsString, string stocksToBuyWithoutPriceAsString) = RemoveZeroPriceLines(_visitor.StocksToBuyAsString);
             (_visitor.StocksToSellAsString, string stocksToSellWithoutPriceAsString) = RemoveZeroPriceLines(_visitor.StocksToSellAsString);
             _visitor.StocksWithoutPrice = stocksToBuyWithoutPriceAsString == "" 
                 ? stocksToSellWithoutPriceAsString
                 : stocksToBuyWithoutPriceAsString + Environment.NewLine + stocksToSellWithoutPriceAsString;
+            _visitor.TwsMessageCollection.Add("Calculated Position command: zero price positions removed.");
 
             (_visitor.StocksToBuyAsString, _visitor.StocksToSellAsString)
                 = EqualizeBuysAndSells(_visitor.StocksToBuyAsString, _visitor.StocksToSellAsString);
+            _visitor.TwsMessageCollection.Add("Calculated Position command: buy and sell positions equalized.");
 
             _visitor.CalculateWeights();
             _visitor.PositionsCalculated = _visitor.StocksToBuyAsString !="" && _visitor.StocksToSellAsString!="";
+            _visitor.TwsMessageCollection.Add("Calculated Position command: weights are reccalculated after the equalizing.");
+
+            _visitor.TwsMessageCollection.Add("DONE! Calculated Position command executed.");
         }
 
         private static (string, string) EqualizeBuysAndSells(string stocksToBuyAsString, string stocksToSellAsString)
@@ -127,7 +135,7 @@ namespace PortfolioTrader.Commands
             return SymbolsAndScore.PositionDictionaryToString(resultDictionary);
         }
 
-        private static async Task<string> AddMarginColumnsAsync(string stocksAsString)
+        private static async Task<(string, string)> AddMarginColumnsAsync(string stocksAsString)
         {
             var stocksDictionary = SymbolsAndScore.StringToPositionDictionary(stocksAsString);
             var resultDictionary = new Dictionary<string, Position>();
@@ -153,7 +161,7 @@ namespace PortfolioTrader.Commands
                 await Task.Run(() => Thread.Sleep(App.TIMEOUT));
             }
 
-            return SymbolsAndScore.PositionDictionaryToString(resultDictionary);
+            return (SymbolsAndScore.PositionDictionaryToString(resultDictionary), "TODO");
         }
 
         private static int CalculateQuantity(int investmentAmount, int priceInCents, int weight)

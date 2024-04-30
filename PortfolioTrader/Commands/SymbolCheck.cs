@@ -55,6 +55,7 @@ namespace PortfolioTrader.Commands
 
             //
             visitor.SymbolsChecked = true;
+            visitor.TwsMessageCollection?.Add("DONE! Check Symbols command executed.");
         }
 
         private static async Task<(Dictionary<string, Position>, Dictionary<string, int>, Dictionary<string, int>)>

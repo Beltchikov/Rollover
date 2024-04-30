@@ -15,6 +15,7 @@ namespace PortfolioTrader.Commands
         public int InvestmentAmount { get; set; }
         bool PositionsCalculated { get; set; }
         string StocksWithoutPrice { get; set; }
+        string StocksWithoutMargin { get; set; }
 
         public void CalculateWeights();
     }
