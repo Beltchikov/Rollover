@@ -69,5 +69,12 @@ namespace PortfolioTrader.Model
                    .Aggregate((r, n) => r + Environment.NewLine + n)
                  : string.Empty;
         }
+
+        public static string ListToCsvString(List<string> listOfString, string separator)
+        {
+            string newLineSeparatedString = "";
+            if (listOfString.Any()) newLineSeparatedString = listOfString.Aggregate((r, n) => r + separator + n);
+            return newLineSeparatedString;
+        }
     }
 }

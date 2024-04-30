@@ -25,7 +25,7 @@ namespace PortfolioTrader.Commands
 
             (_visitor.StocksToBuyAsString, string stocksToBuyWithoutPriceAsString) = RemoveZeroPriceLines(_visitor.StocksToBuyAsString);
             (_visitor.StocksToSellAsString, string stocksToSellWithoutPriceAsString) = RemoveZeroPriceLines(_visitor.StocksToSellAsString);
-            _visitor.StocksWithoutPrice = stocksToBuyWithoutPriceAsString == "" 
+            _visitor.StocksWithoutPrice = stocksToBuyWithoutPriceAsString == ""
                 ? stocksToSellWithoutPriceAsString
                 : stocksToBuyWithoutPriceAsString + Environment.NewLine + stocksToSellWithoutPriceAsString;
             _visitor.TwsMessageCollection.Add("Calculated Position command: zero price positions removed.");
@@ -35,7 +35,7 @@ namespace PortfolioTrader.Commands
             _visitor.TwsMessageCollection.Add("Calculated Position command: buy and sell positions equalized.");
 
             _visitor.CalculateWeights();
-            _visitor.PositionsCalculated = _visitor.StocksToBuyAsString !="" && _visitor.StocksToSellAsString!="";
+            _visitor.PositionsCalculated = _visitor.StocksToBuyAsString != "" && _visitor.StocksToSellAsString != "";
             _visitor.TwsMessageCollection.Add("Calculated Position command: weights are reccalculated after the equalizing.");
 
             _visitor.TwsMessageCollection.Add("DONE! Calculated Position command executed.");
@@ -91,16 +91,10 @@ namespace PortfolioTrader.Commands
                 }
             }
 
-            string stocksWithoutPriceString = "";
-            if (stocksWithoutPrice.Any())
-            {
-                string separator = ", ";
-                stocksWithoutPriceString = stocksWithoutPrice.Aggregate((r, n) => r + separator + n);
-                _visitor.TwsMessageCollection.Add(
-                $"Can not retrieve price for the following symbols: {stocksWithoutPriceString}");
-                stocksWithoutPriceString = stocksWithoutPriceString.Replace(separator, Environment.NewLine);
-            }
-            
+            string stocksWithoutPriceString = SymbolsAndScore.ListToCsvString(stocksWithoutPrice, Environment.NewLine);
+            //_visitor.TwsMessageCollection.Add(
+            //    $"Can not retrieve price for the following symbols: {newLineSeparatedString}");
+
             return (SymbolsAndScore.PositionDictionaryToString(resultDictionary), stocksWithoutPriceString);
         }
 
@@ -129,7 +123,7 @@ namespace PortfolioTrader.Commands
                 resultDictionary[kvp.Key].PriceType = tickType.ToString();
                 resultDictionary[kvp.Key].Quantity = quantity;
 
-                await Task.Run(()=>Thread.Sleep(App.TIMEOUT));
+                await Task.Run(() => Thread.Sleep(App.TIMEOUT));
             }
 
             return SymbolsAndScore.PositionDictionaryToString(resultDictionary);
@@ -139,6 +133,7 @@ namespace PortfolioTrader.Commands
         {
             var stocksDictionary = SymbolsAndScore.StringToPositionDictionary(stocksAsString);
             var resultDictionary = new Dictionary<string, Position>();
+            var positionsWithoutMargin = new List<string>();
 
             foreach (var kvp in stocksDictionary)
             {
@@ -147,21 +142,26 @@ namespace PortfolioTrader.Commands
 
                 if (kvp.Value.Quantity == null) throw new Exception("Unexpected. Quantity is null");
                 OrderStateOrError orderStateOrError = await _visitor.IbHost.WhatIfOrderStateFromContract(contract, kvp.Value.Quantity.Value, App.TIMEOUT);
-                resultDictionary[kvp.Key] = kvp.Value;
 
                 // consider int
                 if (orderStateOrError.ErrorMessage != "")
                 {
+                    positionsWithoutMargin.Add(kvp.Key);
                     _visitor.TwsMessageCollection.Add(orderStateOrError.ErrorMessage);
-                    resultDictionary[kvp.Key].Margin = "0";
+
                 }
-                else if (orderStateOrError.OrderState != null) resultDictionary[kvp.Key].Margin = orderStateOrError.OrderState.InitMarginChange;
+                else if (orderStateOrError.OrderState != null)
+                {
+                    resultDictionary[kvp.Key] = kvp.Value;
+                    resultDictionary[kvp.Key].Margin = orderStateOrError.OrderState.InitMarginChange;
+                }
                 else throw new Exception("Unexpected. Both ErrorMessage and OrderState are invalid.");
-  
+
                 await Task.Run(() => Thread.Sleep(App.TIMEOUT));
             }
 
-            return (SymbolsAndScore.PositionDictionaryToString(resultDictionary), "TODO");
+            string positionsWithoutMarginString = SymbolsAndScore.ListToCsvString(positionsWithoutMargin, Environment.NewLine);
+            return (SymbolsAndScore.PositionDictionaryToString(resultDictionary), positionsWithoutMarginString);
         }
 
         private static int CalculateQuantity(int investmentAmount, int priceInCents, int weight)
