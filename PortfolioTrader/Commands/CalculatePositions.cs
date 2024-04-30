@@ -37,9 +37,9 @@ namespace PortfolioTrader.Commands
 
             _visitor.CalculateWeights();
             _visitor.PositionsCalculated = _visitor.StocksToBuyAsString != "" && _visitor.StocksToSellAsString != "";
-            _visitor.TwsMessageCollection.Add("Calculated Position command: weights are reccalculated after the equalizing.");
+            _visitor.TwsMessageCollection.Add("Calculated Position command: weights are recalculated after the equalizing.");
 
-            _visitor.TwsMessageCollection.Add("DONE! Calculated Position command executed.");
+            _visitor.TwsMessageCollection.Add($"DONE! Calculated Position command executed.");
         }
 
         private static string ConcatStringsWithNewLine(string string1, string string2)
