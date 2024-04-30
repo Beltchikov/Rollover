@@ -1,15 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using IBApi;
 using IbClient.IbHost;
-using IbClient.messages;
 using PortfolioTrader.Commands;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Runtime.InteropServices.JavaScript;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 
 namespace PortfolioTrader.Model
@@ -28,6 +21,7 @@ namespace PortfolioTrader.Model
         private int _investmentAmount = 0;
         private string _businessLogicInformation;
         private string _stocksWithoutPrice;
+        private string _stocksWithoutMargin;
         private string _stocksToBuyAsString;
         private string _stocksToSellAsString;
         private bool _positionsCalculated;
@@ -137,6 +131,15 @@ is kept equal.
             set
             {
                 SetProperty(ref _stocksWithoutPrice, value);
+            }
+        }
+
+        public string StocksWithoutMargin
+        {
+            get => _stocksWithoutMargin;
+            set
+            {
+                SetProperty(ref _stocksWithoutMargin, value);
             }
         }
 

@@ -12,7 +12,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
-            <RowDefinition Height="500" />
+            <RowDefinition Height="560" />
             <RowDefinition/>
         </Grid.RowDefinitions>
 
@@ -31,8 +31,10 @@
                 <RowDefinition Height="35"/>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="150"/>
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="150"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="100"/>
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -60,6 +62,15 @@
                 Text="{Binding StocksWithoutPrice}" VerticalAlignment="Stretch"
                 Background="#FFFFC7CE">    
             </TextBox>
+
+            <Label Grid.Row="6" Grid.ColumnSpan="3" 
+                   Content="Stocks, the margin cannot be obtained for:" Foreground="White" VerticalAlignment="Bottom"/>
+            <TextBox Name="txtStocksWithoutMargin" Grid.Row="7" Grid.ColumnSpan="3"
+                TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
+                Text="{Binding StocksWithoutMargin}" VerticalAlignment="Stretch"
+                Background="#FFFFC7CE">
+            </TextBox>
+
 
             <Label Grid.Column="3" Content="BUY: Symb | NetBms | ConId | Weight | PriceCt | PriceType | Qty" Foreground="White" VerticalAlignment="Bottom"/>
             <TextBox Name="txtBuy" Grid.Row="1" Grid.Column="3" Grid.RowSpan="5" 
