@@ -187,7 +187,6 @@ namespace IbClient.IbHost
                     out tickPriceMessage)) { }
             });
 
-            //_queueTickPriceMessage.DequeueAllTickPriceMessageExcept(reqId + 1);
             return (tickPriceMessage?.Price, (TickType?)tickPriceMessage?.Field);
         }
 
@@ -245,6 +244,7 @@ namespace IbClient.IbHost
                 Action = "BUY",
                 OrderType = "MARKET",
                 TotalQuantity = qty,
+                OutsideRth = true,
                 WhatIf = true
             };
 
