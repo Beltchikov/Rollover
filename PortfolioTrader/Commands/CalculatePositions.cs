@@ -18,26 +18,31 @@ namespace PortfolioTrader.Commands
             _visitor.StocksToSellAsString = await AddPriceColumnsAsync(_visitor.StocksToSellAsString);
             _visitor.TwsMessageCollection.Add("Calculated Position command: price column added.");
 
-            (_visitor.StocksToBuyAsString, string stocksWithoutMarginLong) = await AddMarginColumnsAsync(_visitor.StocksToBuyAsString);
-            (_visitor.StocksToSellAsString, string stocksWithoutMarginShort) = await AddMarginColumnsAsync(_visitor.StocksToSellAsString);
-            _visitor.StocksWithoutMargin = ConcatStringsWithNewLine(stocksWithoutMarginLong, stocksWithoutMarginShort);
-
-
-            _visitor.TwsMessageCollection.Add("Calculated Position command: margin column added.");
-
             (_visitor.StocksToBuyAsString, string stocksToBuyWithoutPriceAsString) = RemoveZeroPriceLines(_visitor.StocksToBuyAsString);
             (_visitor.StocksToSellAsString, string stocksToSellWithoutPriceAsString) = RemoveZeroPriceLines(_visitor.StocksToSellAsString);
             _visitor.StocksWithoutPrice = ConcatStringsWithNewLine(stocksToBuyWithoutPriceAsString, stocksToSellWithoutPriceAsString);
-
             _visitor.TwsMessageCollection.Add("Calculated Position command: zero price positions removed.");
 
             (_visitor.StocksToBuyAsString, _visitor.StocksToSellAsString)
                 = EqualizeBuysAndSells(_visitor.StocksToBuyAsString, _visitor.StocksToSellAsString);
-            _visitor.TwsMessageCollection.Add("Calculated Position command: buy and sell positions equalized.");
+            _visitor.TwsMessageCollection.Add("Calculated Position command: buy and sell positions equalized after zero price removal.");
 
             _visitor.CalculateWeights();
             _visitor.PositionsCalculated = _visitor.StocksToBuyAsString != "" && _visitor.StocksToSellAsString != "";
-            _visitor.TwsMessageCollection.Add("Calculated Position command: weights are recalculated after the equalizing.");
+            _visitor.TwsMessageCollection.Add("Calculated Position command: weights are recalculated after zero price removal.");
+
+            (_visitor.StocksToBuyAsString, string stocksWithoutMarginLong) = await AddMarginColumnsAsync(_visitor.StocksToBuyAsString);
+            (_visitor.StocksToSellAsString, string stocksWithoutMarginShort) = await AddMarginColumnsAsync(_visitor.StocksToSellAsString);
+            _visitor.StocksWithoutMargin = ConcatStringsWithNewLine(stocksWithoutMarginLong, stocksWithoutMarginShort);
+            _visitor.TwsMessageCollection.Add("Calculated Position command: margin column added.");
+
+            (_visitor.StocksToBuyAsString, _visitor.StocksToSellAsString)
+               = EqualizeBuysAndSells(_visitor.StocksToBuyAsString, _visitor.StocksToSellAsString);
+            _visitor.TwsMessageCollection.Add("Calculated Position command: buy and sell positions equalized after adding the margin column.");
+
+            _visitor.CalculateWeights();
+            _visitor.PositionsCalculated = _visitor.StocksToBuyAsString != "" && _visitor.StocksToSellAsString != "";
+            _visitor.TwsMessageCollection.Add("Calculated Position command: weights are recalculated after adding the margin column.");
 
             _visitor.TwsMessageCollection.Add($"DONE! Calculated Position command executed.");
         }
