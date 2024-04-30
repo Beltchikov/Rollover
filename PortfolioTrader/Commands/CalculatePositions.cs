@@ -92,9 +92,6 @@ namespace PortfolioTrader.Commands
             }
 
             string stocksWithoutPriceString = SymbolsAndScore.ListToCsvString(stocksWithoutPrice, Environment.NewLine);
-            //_visitor.TwsMessageCollection.Add(
-            //    $"Can not retrieve price for the following symbols: {newLineSeparatedString}");
-
             return (SymbolsAndScore.PositionDictionaryToString(resultDictionary), stocksWithoutPriceString);
         }
 
@@ -153,7 +150,8 @@ namespace PortfolioTrader.Commands
                 else if (orderStateOrError.OrderState != null)
                 {
                     resultDictionary[kvp.Key] = kvp.Value;
-                    resultDictionary[kvp.Key].Margin = orderStateOrError.OrderState.InitMarginChange;
+                    //resultDictionary[kvp.Key].Margin = orderStateOrError.OrderState.InitMarginChange;
+                    resultDictionary[kvp.Key].Margin = ConvertMarginToInt(orderStateOrError.OrderState.InitMarginChange);
                 }
                 else throw new Exception("Unexpected. Both ErrorMessage and OrderState are invalid.");
 
@@ -162,6 +160,21 @@ namespace PortfolioTrader.Commands
 
             string positionsWithoutMarginString = SymbolsAndScore.ListToCsvString(positionsWithoutMargin, Environment.NewLine);
             return (SymbolsAndScore.PositionDictionaryToString(resultDictionary), positionsWithoutMarginString);
+        }
+
+        private static int ConvertMarginToInt(string marginAsString)
+        {
+            string marginStringWithoutCents;
+            if(marginAsString.Contains("."))
+            {
+                marginStringWithoutCents = marginAsString.Split(".")[0];
+            }
+            else  marginStringWithoutCents = marginAsString; 
+
+            if(Int32.TryParse(marginStringWithoutCents, out int margin)) 
+                return margin;
+            else 
+                return 0;
         }
 
         private static int CalculateQuantity(int investmentAmount, int priceInCents, int weight)

@@ -226,27 +226,6 @@ namespace IbClient.IbHost
             int timeout,
             out OpenOrderMessage openOrderMessage)
         {
-            //_queueTickPriceMessage.DequeueAllTickPriceMessageExcept(reqId);
-
-            //if (_queueTickPriceMessage.DequeueMessage(reqId, out tickPriceMessage))
-            //{
-            //    if (tickPriceMessage != null)
-            //    {
-            //        if (tickPriceMessage.Price != 0) return false;
-            //        else return !HasErrorOrTimeout(reqId, startTime, timeout);
-            //    }
-            //    else
-            //    {
-            //        return !HasErrorOrTimeout(reqId, startTime, timeout);
-            //    }
-            //}
-            //else
-            //{
-            //    return !HasErrorOrTimeout(reqId, startTime, timeout);
-            //}
-
-
-
             if (_queueOrderOpenMessage.DequeueMessage(nextOrderId, out openOrderMessage))
             {
                 if (openOrderMessage != null)
@@ -281,55 +260,6 @@ namespace IbClient.IbHost
         // return simply OrderState
         public async Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout)
         {
-            //_ibClient.ClientSocket.reqIds(-1);
-
-            //_lastOrderId = _nextOrderId;
-            //await Task.Run(() =>
-            //{
-            //    while (_lastOrderId == _nextOrderId) { _nextOrderId = _ibClient.NextOrderId; }
-            //});
-
-            //Order order = new Order()
-            //{
-            //    OrderId = _nextOrderId,
-            //    Action = "BUY",
-            //    OrderType = "MARKET",
-            //    TotalQuantity = qty,
-            //    OutsideRth = true,
-            //    WhatIf = true
-            //};
-
-            //_ibClient.ClientSocket.placeOrder(_ibClient.NextOrderId, contract, order);
-
-            //OpenOrderMessage openOrderMessage = null;
-            //ErrorMessage errorMessage = null;
-            //await Task.Run(() =>
-            //{
-            //    var startTime = DateTime.Now;
-            //    while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !_queueCommon.DequeueMessage<OpenOrderMessage>(_ibClient.NextOrderId, out openOrderMessage)
-            //        && !_queueCommon.DequeueMessage<ErrorMessage>(_ibClient.NextOrderId, out errorMessage)) { }
-            //});
-
-            //if (openOrderMessage == null)
-            //{
-            //    if (errorMessage == null)
-            //    {
-            //        return new OrderStateOrError(null, $"Timeout exceeded.");
-            //    }
-            //    else
-            //    {
-            //        return new OrderStateOrError(null, $"ReqId:{errorMessage.RequestId} Code:{errorMessage.ErrorCode} {errorMessage.Message}");
-            //    }
-            //}
-            //else
-            //{
-            //    if (errorMessage != null)
-            //    {
-            //        throw new ApplicationException("Unexpected! Both OrderState and errorMessage are not null.");
-            //    }
-            //    return new OrderStateOrError(openOrderMessage.OrderState, "");
-            //}
-
             _ibClient.ClientSocket.reqIds(-1);
             _lastOrderId = _nextOrderId;
             await Task.Run(() =>
