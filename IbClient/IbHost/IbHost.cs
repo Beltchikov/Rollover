@@ -257,7 +257,7 @@ namespace IbClient.IbHost
         }
 
         // TODO
-        // return simply OrderState
+        // eventually return simply OrderState
         public async Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout)
         {
             _ibClient.ClientSocket.reqIds(-1);

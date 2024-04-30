@@ -98,7 +98,7 @@
             <TextBox Name="txtBuy" Grid.Row="1" Grid.Column="3" Grid.RowSpan="5" 
               TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
               Text="{Binding StocksToBuyAsString}" VerticalAlignment="Stretch"
-              Margin="10 0 0 0" FontSize="8">
+              Margin="10 0 0 0" FontSize="10">
             </TextBox>
 
             <Label Grid.Column="4" Content="SELL:  Symb | NetBms | ConId | Weight | PriceCt | PriceType | Qty" Foreground="White" 
@@ -106,7 +106,7 @@
             <TextBox Name="txtSell" Grid.Row="1" Grid.Column="4" Grid.RowSpan="5" 
                TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
                Text="{Binding StocksToSellAsString}" VerticalAlignment="Stretch"
-              Margin="10 0 0 0" FontSize="8">
+              Margin="10 0 0 0" FontSize="10">
             </TextBox>
 
             <Button Grid.Column="5" Grid.Row="3" Height="25"
