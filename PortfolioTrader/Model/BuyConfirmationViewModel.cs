@@ -215,6 +215,7 @@ is kept equal.
                     PriceInCents = kvp.Value.PriceInCents,
                     PriceType = kvp.Value.PriceType,
                     Quantity = kvp.Value.Quantity,
+                    Margin = kvp.Value.Margin,  
                 });
             }
 

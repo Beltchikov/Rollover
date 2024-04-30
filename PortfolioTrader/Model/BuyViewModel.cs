@@ -54,9 +54,9 @@ namespace PortfolioTrader.Model
             OrderConfirmationCommand = new RelayCommand(() => Commands.OrderConfirmationCommand.Run(this));
 
             //LongSymbolsAsString = TestDataLong();
-            LongSymbolsAsString = TestDataLong15Symbols();
+            LongSymbolsAsString = TestDataLong4Symbols();
             //ShortSymbolsAsString = TestDataShort();
-            ShortSymbolsAsString = TestDataShort15Symbols();
+            ShortSymbolsAsString = TestDataShort4Symbols();
         }
 
         public IIbHost IbHost => ibHost;

@@ -18,10 +18,10 @@ namespace PortfolioTrader.Commands
             _visitor.StocksToSellAsString = await AddPriceColumnsAsync(_visitor.StocksToSellAsString);
             _visitor.TwsMessageCollection.Add("Calculated Position command: price column added.");
 
-            //(_visitor.StocksToBuyAsString, string stocksWithoutMarginLong) = await AddMarginColumnsAsync(_visitor.StocksToBuyAsString);
-            //(_visitor.StocksToSellAsString, string stocksWithoutMarginShort) = await AddMarginColumnsAsync(_visitor.StocksToSellAsString);
-            //_visitor.StocksWithoutMargin = stocksWithoutMarginLong + Environment.NewLine + stocksWithoutMarginShort;
-            //_visitor.TwsMessageCollection.Add("Calculated Position command: margin column added.");
+            (_visitor.StocksToBuyAsString, string stocksWithoutMarginLong) = await AddMarginColumnsAsync(_visitor.StocksToBuyAsString);
+            (_visitor.StocksToSellAsString, string stocksWithoutMarginShort) = await AddMarginColumnsAsync(_visitor.StocksToSellAsString);
+            _visitor.StocksWithoutMargin = stocksWithoutMarginLong + Environment.NewLine + stocksWithoutMarginShort;
+            _visitor.TwsMessageCollection.Add("Calculated Position command: margin column added.");
 
             (_visitor.StocksToBuyAsString, string stocksToBuyWithoutPriceAsString) = RemoveZeroPriceLines(_visitor.StocksToBuyAsString);
             (_visitor.StocksToSellAsString, string stocksToSellWithoutPriceAsString) = RemoveZeroPriceLines(_visitor.StocksToSellAsString);
@@ -141,7 +141,7 @@ namespace PortfolioTrader.Commands
                 var contract = new Contract() { ConId = kvp.Value.ConId.Value, Exchange = App.EXCHANGE };
 
                 if (kvp.Value.Quantity == null) throw new Exception("Unexpected. Quantity is null");
-                OrderStateOrError orderStateOrError = await _visitor.IbHost.WhatIfOrderStateFromContract(contract, kvp.Value.Quantity.Value, App.TIMEOUT);
+                OrderStateOrError orderStateOrError = await _visitor.IbHost.WhatIfOrderStateFromContract(contract, kvp.Value.Quantity.Value, App.TIMEOUT*2);
 
                 // consider int
                 if (orderStateOrError.ErrorMessage != "")
