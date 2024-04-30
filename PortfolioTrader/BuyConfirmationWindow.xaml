@@ -12,7 +12,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
-            <RowDefinition Height="560" />
+            <RowDefinition Height="530" />
             <RowDefinition/>
         </Grid.RowDefinitions>
 
@@ -29,7 +29,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="35"/>
-                <RowDefinition Height="50"/>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="150"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="100"/>
@@ -71,8 +71,30 @@
                 Background="#FFFFC7CE">
             </TextBox>
 
+            <Label Grid.Row="6" Grid.ColumnSpan="3" 
+                Content="Erroneous Long Orders:" Foreground="White" 
+                Grid.Column="3" VerticalAlignment="Bottom"  Margin="10 0 0 0"/>
+            <TextBox Name="txtOrdersLongWithError" Grid.Row="7" Grid.Column="3" 
+                TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
+                Text="{Binding OrdersLongWithError}" VerticalAlignment="Stretch"
+                     Margin="10 0 0 0"
+                Background="#FFFFC7CE"> 
+            </TextBox>
 
-            <Label Grid.Column="3" Content="BUY: Symb | NetBms | ConId | Weight | PriceCt | PriceType | Qty" Foreground="White" VerticalAlignment="Bottom"/>
+            <Label Grid.Row="6" Grid.ColumnSpan="3" 
+                 Content="Erroneous Short Orders:" Foreground="White" 
+                 Grid.Column="4" VerticalAlignment="Bottom"  Margin="10 0 0 0"/>
+            <TextBox Name="txtOrdersShortWithError" Grid.Row="7" Grid.Column="4" 
+                 TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
+                 Text="{Binding OrdersShortWithError}" VerticalAlignment="Stretch"
+                      Margin="10 0 0 0"
+                 Background="#FFFFC7CE">
+            </TextBox>
+
+            <Label Grid.Column="3" 
+                   Content="BUY: Symb | NetBms | ConId | Weight | PriceCt | PriceType | Qty" 
+                   Foreground="White" VerticalAlignment="Bottom"
+                   Margin="5 0 0 0"/>
             <TextBox Name="txtBuy" Grid.Row="1" Grid.Column="3" Grid.RowSpan="5" 
               TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
               Text="{Binding StocksToBuyAsString}" VerticalAlignment="Stretch"

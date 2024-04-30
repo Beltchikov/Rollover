@@ -24,6 +24,8 @@ namespace PortfolioTrader.Model
         private string _stocksWithoutMargin;
         private string _stocksToBuyAsString;
         private string _stocksToSellAsString;
+        private string _ordersLongWithError;
+        private string _ordersShortWithError;
         private bool _positionsCalculated;
 
         public ICommand ConnectToTwsCommand { get; }
@@ -158,6 +160,25 @@ is kept equal.
             set
             {
                 SetProperty(ref _stocksToSellAsString, value);
+            }
+        }
+        
+
+        public string OrdersLongWithError
+        {
+            get => _ordersLongWithError;
+            set
+            {
+                SetProperty(ref _ordersLongWithError, value);
+            }
+        }
+
+        public string OrdersShortWithError
+        {
+            get => _ordersShortWithError;
+            set
+            {
+                SetProperty(ref _ordersShortWithError, value);
             }
         }
 
