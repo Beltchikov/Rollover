@@ -20,8 +20,6 @@ namespace PortfolioTrader.Commands
 
             (_visitor.StocksToBuyAsString, string stocksWithoutMarginLong) = await AddMarginColumnsAsync(_visitor.StocksToBuyAsString);
             (_visitor.StocksToSellAsString, string stocksWithoutMarginShort) = await AddMarginColumnsAsync(_visitor.StocksToSellAsString);
-
-            //_visitor.StocksWithoutMargin = stocksWithoutMarginLong + Environment.NewLine + stocksWithoutMarginShort;
             _visitor.StocksWithoutMargin = ConcatStringsWithNewLine(stocksWithoutMarginLong, stocksWithoutMarginShort);
 
 
@@ -29,10 +27,6 @@ namespace PortfolioTrader.Commands
 
             (_visitor.StocksToBuyAsString, string stocksToBuyWithoutPriceAsString) = RemoveZeroPriceLines(_visitor.StocksToBuyAsString);
             (_visitor.StocksToSellAsString, string stocksToSellWithoutPriceAsString) = RemoveZeroPriceLines(_visitor.StocksToSellAsString);
-
-            //_visitor.StocksWithoutPrice = stocksToBuyWithoutPriceAsString == ""
-            //    ? stocksToSellWithoutPriceAsString
-            //    : stocksToBuyWithoutPriceAsString + Environment.NewLine + stocksToSellWithoutPriceAsString;
             _visitor.StocksWithoutPrice = ConcatStringsWithNewLine(stocksToBuyWithoutPriceAsString, stocksToSellWithoutPriceAsString);
 
             _visitor.TwsMessageCollection.Add("Calculated Position command: zero price positions removed.");
