@@ -92,7 +92,7 @@
             </TextBox>
 
             <Label Grid.Column="3" 
-                   Content="BUY: Symb | NetBms | ConId | Weight | PriceCt | PriceType | Qty | Margin" 
+                   Content="BUY: Symb | NetBms | ConId | PriceCt | PriceType |  Weight | Qty | Margin" 
                    Foreground="White" VerticalAlignment="Bottom"
                    Margin="5 0 0 0"/>
             <TextBox Name="txtBuy" Grid.Row="1" Grid.Column="3" Grid.RowSpan="5" 
@@ -101,7 +101,7 @@
               Margin="10 0 0 0" FontSize="10">
             </TextBox>
 
-            <Label Grid.Column="4" Content="SELL:  Symb | NetBms | ConId | Weight | PriceCt | PriceType | Qty | Margin " Foreground="White" 
+            <Label Grid.Column="4" Content="SELL:  Symb | NetBms | ConId | PriceCt | PriceType | Weight | Qty | Margin " Foreground="White" 
             Margin="10 0 0 0" VerticalAlignment="Bottom"/>
             <TextBox Name="txtSell" Grid.Row="1" Grid.Column="4" Grid.RowSpan="5" 
                TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
