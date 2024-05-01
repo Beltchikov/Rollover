@@ -48,6 +48,10 @@ namespace PortfolioTrader.Commands
             _visitor.PositionsCalculated = _visitor.StocksToBuyAsString != "" && _visitor.StocksToSellAsString != "";
             _visitor.TwsMessageCollection.Add("Calculated Position command: weights are recalculated after adding the margin column.");
 
+            _visitor.StocksToBuyAsString = CalculateQuantity(_visitor.StocksToBuyAsString, _visitor.InvestmentAmount);
+            _visitor.StocksToSellAsString = CalculateQuantity(_visitor.StocksToSellAsString, _visitor.InvestmentAmount);
+            _visitor.TwsMessageCollection.Add("Calculated Position command: position sizes recalculted after adding the margin column.");
+
             _visitor.TwsMessageCollection.Add($"DONE! Calculated Position command executed.");
         }
 
