@@ -20,7 +20,7 @@ namespace PortfolioTrader.Commands
 
             (_visitor.StocksToBuyAsString, string stocksToBuyWithoutPriceAsString) = RemoveZeroPriceLines(_visitor.StocksToBuyAsString);
             (_visitor.StocksToSellAsString, string stocksToSellWithoutPriceAsString) = RemoveZeroPriceLines(_visitor.StocksToSellAsString);
-            _visitor.StocksWithoutPrice = ConcatStringsWithNewLine(stocksToBuyWithoutPriceAsString, stocksToSellWithoutPriceAsString);
+            _visitor.StocksWithoutPrice = SymbolsAndScore.ConcatStringsWithNewLine(stocksToBuyWithoutPriceAsString, stocksToSellWithoutPriceAsString);
             _visitor.TwsMessageCollection.Add("Calculated Position command: zero price positions removed.");
 
             (_visitor.StocksToBuyAsString, _visitor.StocksToSellAsString)
@@ -37,7 +37,7 @@ namespace PortfolioTrader.Commands
 
             (_visitor.StocksToBuyAsString, string stocksWithoutMarginLong) = await AddMarginColumnsAsync(_visitor.StocksToBuyAsString);
             (_visitor.StocksToSellAsString, string stocksWithoutMarginShort) = await AddMarginColumnsAsync(_visitor.StocksToSellAsString);
-            _visitor.StocksWithoutMargin = ConcatStringsWithNewLine(stocksWithoutMarginLong, stocksWithoutMarginShort);
+            _visitor.StocksWithoutMargin = SymbolsAndScore.ConcatStringsWithNewLine(stocksWithoutMarginLong, stocksWithoutMarginShort);
             _visitor.TwsMessageCollection.Add("Calculated Position command: margin column added.");
 
             // Adding a margin column removes lines without margin after the addition. That's why recalculations are necessary.
@@ -54,13 +54,6 @@ namespace PortfolioTrader.Commands
             _visitor.TwsMessageCollection.Add("Calculated Position command: position sizes recalculted after adding the margin column.");
 
             _visitor.TwsMessageCollection.Add($"DONE! Calculated Position command executed.");
-        }
-
-        private static string ConcatStringsWithNewLine(string string1, string string2)
-        {
-            return string1 == ""
-                ? string2
-                : string1 + Environment.NewLine + string2;
         }
 
         private static (string, string) EqualizeBuysAndSells(string stocksToBuyAsString, string stocksToSellAsString)

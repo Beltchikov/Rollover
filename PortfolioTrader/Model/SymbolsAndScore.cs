@@ -78,5 +78,12 @@ namespace PortfolioTrader.Model
             if (listOfString.Any()) newLineSeparatedString = listOfString.Aggregate((r, n) => r + separator + n);
             return newLineSeparatedString;
         }
+
+        public static string ConcatStringsWithNewLine(string string1, string string2)
+        {
+            return string1 == ""
+                ? string2
+                : string1 + Environment.NewLine + string2;
+        }
     }
 }

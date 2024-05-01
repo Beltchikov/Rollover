@@ -32,7 +32,18 @@ namespace PortfolioTrader.Commands
                 };
 
                 var resultBuy = await _visitor.IbHost.PlaceOrderAsync(nextOrderIdBuy, contractBuy, orderBuy, App.TIMEOUT);
-                visitor.TwsMessageCollection.Add($"orderId={nextOrderIdBuy} Order state: {resultBuy.OrderState}  error:{resultBuy.ErrorMessage}");
+                if (resultBuy.ErrorMessage != "")
+                {
+                    visitor.TwsMessageCollection.Add($"orderId={nextOrderIdBuy} error:{resultBuy.ErrorMessage}");
+                    visitor.OrdersLongWithError = SymbolsAndScore.ConcatStringsWithNewLine(
+                        visitor.OrdersLongWithError, 
+                        tradePair.SymbolBuy + " " + resultBuy.ErrorMessage);
+                }
+                else if (resultBuy.OrderState != null)
+                {
+                    visitor.TwsMessageCollection.Add($"orderId={nextOrderIdBuy} {tradePair.SymbolBuy} order submitted.");
+                }
+                else throw new Exception("Unexpected. Both ErrorMessage nad OrderState are not set.");
 
                 await Task.Run(() => Thread.Sleep(App.TIMEOUT * 2));
             }
@@ -56,7 +67,18 @@ namespace PortfolioTrader.Commands
                 };
 
                 var resultSell = await _visitor.IbHost.PlaceOrderAsync(nextOrderIdSell, contractSell, orderSell, App.TIMEOUT);
-                visitor.TwsMessageCollection.Add($"orderId={nextOrderIdSell} Order state: {resultSell.OrderState}  error:{resultSell.ErrorMessage}");
+                if (resultSell.ErrorMessage != "")
+                {
+                    visitor.TwsMessageCollection.Add($"orderId={nextOrderIdSell} error:{resultSell.ErrorMessage}");
+                    visitor.OrdersShortWithError = SymbolsAndScore.ConcatStringsWithNewLine(
+                        visitor.OrdersShortWithError,
+                        tradePair.SymbolSell + " " + resultSell.ErrorMessage);
+                }
+                else if (resultSell.OrderState != null)
+                {
+                    visitor.TwsMessageCollection.Add($"orderId={nextOrderIdSell} {tradePair.SymbolSell} order submitted.");
+                }
+                else throw new Exception("Unexpected. Both ErrorMessage nad OrderState are not set.");
 
                 await Task.Run(() => Thread.Sleep(App.TIMEOUT * 2));
             }
