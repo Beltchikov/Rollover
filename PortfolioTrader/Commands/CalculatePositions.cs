@@ -29,7 +29,11 @@ namespace PortfolioTrader.Commands
 
             _visitor.CalculateWeights();
             _visitor.PositionsCalculated = _visitor.StocksToBuyAsString != "" && _visitor.StocksToSellAsString != "";
-            _visitor.TwsMessageCollection.Add("Calculated Position command: weights are recalculated after zero price removal.");
+            _visitor.TwsMessageCollection.Add("Calculated Position command: weights are calculated after zero price removal.");
+
+            _visitor.StocksToBuyAsString = CalculateQuantity(_visitor.StocksToBuyAsString, _visitor.InvestmentAmount);
+            _visitor.StocksToSellAsString = CalculateQuantity(_visitor.StocksToSellAsString, _visitor.InvestmentAmount);
+            _visitor.TwsMessageCollection.Add("Calculated Position command: position sizes calculted.");
 
             (_visitor.StocksToBuyAsString, string stocksWithoutMarginLong) = await AddMarginColumnsAsync(_visitor.StocksToBuyAsString);
             (_visitor.StocksToSellAsString, string stocksWithoutMarginShort) = await AddMarginColumnsAsync(_visitor.StocksToSellAsString);
@@ -122,18 +126,33 @@ namespace PortfolioTrader.Commands
                 resultDictionary[kvp.Key] = kvp.Value;
 
                 int priceInCentsNotNullable = (int)((price == null ? 0d : price.Value) * 100d);
-                int weightNotNullable = kvp.Value.Weight ?? throw new Exception("Unexpected. Weight is null");
-
-                int quantity = 0;
-                if (priceInCentsNotNullable > 0 && kvp.Value.Weight.HasValue)
-                {
-                    quantity = CalculateQuantity(_visitor.InvestmentAmount, priceInCentsNotNullable, weightNotNullable);
-                }
                 resultDictionary[kvp.Key].PriceInCents = priceInCentsNotNullable;
                 resultDictionary[kvp.Key].PriceType = tickType.ToString();
-                resultDictionary[kvp.Key].Quantity = quantity;
 
                 await Task.Run(() => Thread.Sleep(App.TIMEOUT));
+            }
+
+            return SymbolsAndScore.PositionDictionaryToString(resultDictionary);
+        }
+
+        private static string CalculateQuantity(string stocksAsString, int investmentAmount)
+        {
+            var stocksDictionary = SymbolsAndScore.StringToPositionDictionary(stocksAsString);
+            var resultDictionary = new Dictionary<string, Position>();
+
+            foreach (var kvp in stocksDictionary)
+            {
+                if (kvp.Value.ConId == null) throw new Exception("Unexpected. Contract ID is null");
+                int weightNotNullable = kvp.Value.Weight ?? throw new Exception("Unexpected. Weight is null");
+                int priceInCentsNotNullable = kvp.Value.PriceInCents ?? throw new Exception("Unexpected. PriceInCents is null");
+
+                int quantity = 0;
+                if (priceInCentsNotNullable > 0)
+                {
+                    quantity = CalculateQuantity(investmentAmount, priceInCentsNotNullable, weightNotNullable);
+                }
+                resultDictionary[kvp.Key] = kvp.Value;
+                resultDictionary[kvp.Key].Quantity = quantity;
             }
 
             return SymbolsAndScore.PositionDictionaryToString(resultDictionary);
