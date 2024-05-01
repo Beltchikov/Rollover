@@ -34,7 +34,6 @@ namespace PortfolioTrader
             };
 
             ApplyBusinessRules();
-            (DataContext as BuyConfirmationViewModel).CalculateWeights();
         }
 
         private void ApplyBusinessRules()
