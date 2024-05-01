@@ -60,6 +60,8 @@ namespace PortfolioTrader.Commands
 
                 await Task.Run(() => Thread.Sleep(App.TIMEOUT * 2));
             }
+
+            _visitor.TwsMessageCollection.Add($"DONE! Send Orders command executed.");
         }
 
         private static List<TradePair> BuildTradePairs()
