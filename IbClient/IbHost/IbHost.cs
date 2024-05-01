@@ -264,7 +264,12 @@ namespace IbClient.IbHost
             }
             else
             {
-                return (DateTime.Now - startTime).TotalMilliseconds >= timeout;
+                if((DateTime.Now - startTime).TotalMilliseconds >= timeout)
+                {
+                    errorMessage = new ErrorMessage(reqId, 0, $"Timeout {timeout} ms.");
+                    return true;   
+                }
+                else return false;
             }
         }
 
@@ -310,7 +315,7 @@ namespace IbClient.IbHost
                 if (errorMessage != null)
                     return new OrderStateOrError(null, $"NextOrderId:{_nextOrderId} ReqId:{errorMessage.RequestId} code:{errorMessage.ErrorCode} message:{errorMessage.Message}");
                 else
-                    return new OrderStateOrError(null, $"NextOrderId:{_nextOrderId} Timeout.");
+                    return new OrderStateOrError(null, $"NextOrderId:{_nextOrderId} Undefined error.");
             }
             else
             {
@@ -341,7 +346,7 @@ namespace IbClient.IbHost
                 if (errorMessage != null)
                     return new OrderStateOrError(null, $"NextOrderId:{_nextOrderId} ReqId:{errorMessage.RequestId} code:{errorMessage.ErrorCode} message:{errorMessage.Message}");
                 else
-                    return new OrderStateOrError(null, $"NextOrderId:{_nextOrderId} Timeout.");
+                    return new OrderStateOrError(null, $"NextOrderId:{_nextOrderId} Undefined error.");
             }
             else
             {
