@@ -314,12 +314,23 @@ namespace IbClient.IbHost
 
             OpenOrderMessage openOrderMessage = null;
             ErrorMessage errorMessage = null;
+
+            //await Task.Run(() =>
+            //{
+            //    var startTime = DateTime.Now;
+            //    while (!_queueCommon.DequeueMessage<OpenOrderMessage>(nextOrderId, out openOrderMessage)
+            //        && !_queueCommon.DequeueMessage<ErrorMessage>(nextOrderId, out errorMessage)
+            //        && (DateTime.Now - startTime).TotalMilliseconds < timeout) { }
+            //});
             await Task.Run(() =>
             {
                 var startTime = DateTime.Now;
-                while (!_queueCommon.DequeueMessage<OpenOrderMessage>(nextOrderId, out openOrderMessage)
-                    && !_queueCommon.DequeueMessage<ErrorMessage>(nextOrderId, out errorMessage)
-                    && (DateTime.Now - startTime).TotalMilliseconds < timeout) { }
+                while (LoopMustGoOnPlaceOrder(
+                    _nextOrderId,
+                    startTime,
+                    timeout,
+                    SUBMITTED,
+                    out openOrderMessage)) { }
             });
 
             if (openOrderMessage == null)
