@@ -29,6 +29,8 @@ namespace IbClient.IbHost
         private readonly int ERROR_CODE_10168 = 10168;
         private readonly int ERROR_CODE_354 = 354;
         private readonly int ERROR_CODE_201 = 201;
+        private readonly string SUBMITTED = "Submitted";
+        private readonly string PRESUBMITTED = "PreSubmitted";
 
         public IbHost()
         {
@@ -224,13 +226,18 @@ namespace IbClient.IbHost
             int nextOrderId,
             DateTime startTime,
             int timeout,
+            string orderStatus, 
             out OpenOrderMessage openOrderMessage)
         {
             if (_queueOrderOpenMessage.DequeueMessage(nextOrderId, out openOrderMessage))
             {
                 if (openOrderMessage != null)
                 {
-                    if (openOrderMessage.OrderState != null) return false;
+                    if (openOrderMessage.OrderState != null)
+                    {
+                        if (openOrderMessage.OrderState.Status == orderStatus) return false;
+                        else return !HasErrorOrTimeout(nextOrderId, startTime, timeout);
+                    }
                     else return !HasErrorOrTimeout(nextOrderId, startTime, timeout);
                 }
                 else
@@ -287,6 +294,7 @@ namespace IbClient.IbHost
                     _nextOrderId,
                     startTime,
                     timeout,
+                    PRESUBMITTED, 
                     out openOrderMessage)) { }
             });
 
