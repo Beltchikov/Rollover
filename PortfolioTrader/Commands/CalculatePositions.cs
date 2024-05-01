@@ -40,6 +40,7 @@ namespace PortfolioTrader.Commands
             _visitor.StocksWithoutMargin = ConcatStringsWithNewLine(stocksWithoutMarginLong, stocksWithoutMarginShort);
             _visitor.TwsMessageCollection.Add("Calculated Position command: margin column added.");
 
+            // Adding a margin column removes lines without margin after the addition. That's why recalculations are necessary.
             (_visitor.StocksToBuyAsString, _visitor.StocksToSellAsString)
                = EqualizeBuysAndSells(_visitor.StocksToBuyAsString, _visitor.StocksToSellAsString);
             _visitor.TwsMessageCollection.Add("Calculated Position command: buy and sell positions equalized after adding the margin column.");
