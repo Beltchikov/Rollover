@@ -226,7 +226,7 @@ namespace IbClient.IbHost
             int nextOrderId,
             DateTime startTime,
             int timeout,
-            string orderStatus, 
+            string orderStatus,
             out OpenOrderMessage openOrderMessage)
         {
             if (_queueOrderOpenMessage.DequeueMessage(nextOrderId, out openOrderMessage))
@@ -294,7 +294,7 @@ namespace IbClient.IbHost
                     _nextOrderId,
                     startTime,
                     timeout,
-                    PRESUBMITTED, 
+                    PRESUBMITTED,
                     out openOrderMessage)) { }
             });
 
@@ -311,17 +311,8 @@ namespace IbClient.IbHost
         public async Task<OrderStateOrError> PlaceOrderAsync(int nextOrderId, Contract contract, Order order, int timeout)
         {
             _ibClient.ClientSocket.placeOrder(nextOrderId, contract, order);
-
             OpenOrderMessage openOrderMessage = null;
-            ErrorMessage errorMessage = null;
 
-            //await Task.Run(() =>
-            //{
-            //    var startTime = DateTime.Now;
-            //    while (!_queueCommon.DequeueMessage<OpenOrderMessage>(nextOrderId, out openOrderMessage)
-            //        && !_queueCommon.DequeueMessage<ErrorMessage>(nextOrderId, out errorMessage)
-            //        && (DateTime.Now - startTime).TotalMilliseconds < timeout) { }
-            //});
             await Task.Run(() =>
             {
                 var startTime = DateTime.Now;
@@ -335,21 +326,10 @@ namespace IbClient.IbHost
 
             if (openOrderMessage == null)
             {
-                if (errorMessage == null)
-                {
-                    return new OrderStateOrError(null, $"Timeout exceeded.");
-                }
-                else
-                {
-                    return new OrderStateOrError(null, $"ReqId:{errorMessage.RequestId} Code:{errorMessage.ErrorCode} {errorMessage.Message}");
-                }
+                return new OrderStateOrError(null, $"Some error happened. See log for details.");
             }
             else
             {
-                if (errorMessage != null)
-                {
-                    throw new ApplicationException("Unexpected! Both OrderState and errorMessage are not null.");
-                }
                 return new OrderStateOrError(openOrderMessage.OrderState, "");
             }
         }
