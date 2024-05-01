@@ -103,7 +103,7 @@ namespace PortfolioTrader.Commands
 
             foreach (var kvp in stocksDictionary)
             {
-                if (kvp.Value.PriceInCents == null || kvp.Value.PriceInCents == 0)
+                if (kvp.Value.PriceInCents == null || kvp.Value.PriceInCents <= 0)
                 {
                     stocksWithoutPrice.Add(kvp.Key);
                 }
