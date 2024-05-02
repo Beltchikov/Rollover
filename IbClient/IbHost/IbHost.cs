@@ -232,7 +232,7 @@ namespace IbClient.IbHost
             DateTime startTime,
             int timeout,
             string orderStatus,
-            out OpenOrderMessage openOrderMessage, 
+            out OpenOrderMessage openOrderMessage,
             out ErrorMessage errorMessage)
         {
             if (_queueOrderOpenMessage.DequeueMessage(nextOrderId, out openOrderMessage))
@@ -269,14 +269,12 @@ namespace IbClient.IbHost
             }
             else
             {
-                //if((DateTime.Now - startTime).TotalMilliseconds >= timeout)
-                //{
-                //    errorMessage = new ErrorMessage(reqId, 0, $"Timeout {timeout} ms.");
-                //    return true;   
-                //}
-                //else return false;
-
-                return false;
+                if ((DateTime.Now - startTime).TotalMilliseconds >= timeout)
+                {
+                    errorMessage = new ErrorMessage(reqId, 0, $"Timeout {timeout} ms.");
+                    return true;
+                }
+                else return false;
             }
         }
 
@@ -294,8 +292,6 @@ namespace IbClient.IbHost
                     return true;
                 }
                 else return false;
-
-                return false;
             }
         }
 
@@ -336,7 +332,7 @@ namespace IbClient.IbHost
                     startTime,
                     timeout,
                     PRESUBMITTED,
-                    out openOrderMessage, 
+                    out openOrderMessage,
                     out errorMessage)) { }
             });
 
@@ -368,7 +364,7 @@ namespace IbClient.IbHost
                     startTime,
                     timeout,
                     SUBMITTED,
-                    out openOrderMessage, 
+                    out openOrderMessage,
                     out errorMessage)) { }
             });
 
@@ -476,7 +472,7 @@ namespace IbClient.IbHost
             if (_placeOrderOrderIds.Contains(reqId))
                 _queuePlaceOrderErrors.Enqueue(new ErrorMessage(reqId, code, message));
 
-            
+
 
             Consumer.TwsMessageCollection?.Add($"ReqId:{reqId} code:{code} message:{message} exception:{exception}");
         }
