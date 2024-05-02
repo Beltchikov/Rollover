@@ -17,9 +17,11 @@ namespace IbClient.IbHost
         private IIbHostQueue _queueCommon;
         private IIbHostQueue _queueTickPriceMessage;
         private IIbHostQueue _queueMktDataErrors;
+        private IIbHostQueue _queuePlaceOrderErrors;
         private IIbHostQueue _queueOrderOpenMessage;
         private int _currentReqId = 0;
         List<int> _mktDataReqIds;
+        List<int> _placeOrderOrderIds;
         private List<ErrorMessage> _errorMessages;
         private int _nextOrderId;
         private int _lastOrderId;
@@ -46,14 +48,17 @@ namespace IbClient.IbHost
             _ibClient.TickPrice += _ibClient_TickPrice;
             _ibClient.TickSnapshotEnd += _ibClient_TickSnapshotEnd;
             _ibClient.OpenOrder += _ibClient_OpenOrder;
+            _ibClient.OrderStatus += _ibClient_OrderStatus;
 
             _queueCommon = new IbHostQueue();
             _queueTickPriceMessage = new IbHostQueue();
             _queueMktDataErrors = new IbHostQueue();
+            _queuePlaceOrderErrors = new IbHostQueue();
             _queueOrderOpenMessage = new IbHostQueue();
 
             _errorMessages = new List<ErrorMessage>();
             _mktDataReqIds = new List<int> { };
+            _placeOrderOrderIds = new List<int> { };
 
             //_ibClient.HistoricalData += _ibClient_HistoricalData;
             //_ibClient.HistoricalDataUpdate += _ibClient_HistoricalDataUpdate;
@@ -208,16 +213,16 @@ namespace IbClient.IbHost
                 if (tickPriceMessage != null)
                 {
                     if (tickPriceMessage.Price != 0) return false;
-                    else return !HasErrorOrTimeout(reqId, startTime, timeout, out _);
+                    else return !HasErrorOrTimeoutMktData(reqId, startTime, timeout, out _);
                 }
                 else
                 {
-                    return !HasErrorOrTimeout(reqId, startTime, timeout, out _);
+                    return !HasErrorOrTimeoutMktData(reqId, startTime, timeout, out _);
                 }
             }
             else
             {
-                return !HasErrorOrTimeout(reqId, startTime, timeout, out _);
+                return !HasErrorOrTimeoutMktData(reqId, startTime, timeout, out _);
             }
         }
 
@@ -241,22 +246,41 @@ namespace IbClient.IbHost
                             errorMessage = null;
                             return false;
                         }
-                        else return !HasErrorOrTimeout(nextOrderId, startTime, timeout, out errorMessage);
+                        else return !HasErrorOrTimeoutPlaceOrder(nextOrderId, startTime, timeout, out errorMessage);
                     }
-                    else return !HasErrorOrTimeout(nextOrderId, startTime, timeout, out errorMessage);
+                    else return !HasErrorOrTimeoutPlaceOrder(nextOrderId, startTime, timeout, out errorMessage);
                 }
                 else
                 {
-                    return !HasErrorOrTimeout(nextOrderId, startTime, timeout, out errorMessage);
+                    return !HasErrorOrTimeoutPlaceOrder(nextOrderId, startTime, timeout, out errorMessage);
                 }
             }
             else
             {
-                return !HasErrorOrTimeout(nextOrderId, startTime, timeout, out errorMessage);
+                return !HasErrorOrTimeoutPlaceOrder(nextOrderId, startTime, timeout, out errorMessage);
             }
         }
 
-        private bool HasErrorOrTimeout(int reqId, DateTime startTime, int timeout, out ErrorMessage errorMessage)
+        private bool HasErrorOrTimeoutPlaceOrder(int reqId, DateTime startTime, int timeout, out ErrorMessage errorMessage)
+        {
+            if (_queuePlaceOrderErrors.DequeueMessage(reqId, out errorMessage))
+            {
+                return true;
+            }
+            else
+            {
+                //if((DateTime.Now - startTime).TotalMilliseconds >= timeout)
+                //{
+                //    errorMessage = new ErrorMessage(reqId, 0, $"Timeout {timeout} ms.");
+                //    return true;   
+                //}
+                //else return false;
+
+                return false;
+            }
+        }
+
+        private bool HasErrorOrTimeoutMktData(int reqId, DateTime startTime, int timeout, out ErrorMessage errorMessage)
         {
             if (_queueMktDataErrors.DequeueMessage(reqId, out errorMessage))
             {
@@ -264,12 +288,14 @@ namespace IbClient.IbHost
             }
             else
             {
-                if((DateTime.Now - startTime).TotalMilliseconds >= timeout)
+                if ((DateTime.Now - startTime).TotalMilliseconds >= timeout)
                 {
                     errorMessage = new ErrorMessage(reqId, 0, $"Timeout {timeout} ms.");
-                    return true;   
+                    return true;
                 }
                 else return false;
+
+                return false;
             }
         }
 
@@ -295,6 +321,10 @@ namespace IbClient.IbHost
             };
             OpenOrderMessage openOrderMessage = null;
             ErrorMessage errorMessage = null;
+
+            _placeOrderOrderIds.Add(_nextOrderId);
+            // TODO
+            if (_nextOrderId != _ibClient.NextOrderId) throw new Exception("_nextOrderId != _ibClient.NextOrderId");
 
             _ibClient.ClientSocket.placeOrder(_ibClient.NextOrderId, contract, order);
 
@@ -325,6 +355,7 @@ namespace IbClient.IbHost
 
         public async Task<OrderStateOrError> PlaceOrderAsync(int nextOrderId, Contract contract, Order order, int timeout)
         {
+            _placeOrderOrderIds.Add(nextOrderId);
             _ibClient.ClientSocket.placeOrder(nextOrderId, contract, order);
             OpenOrderMessage openOrderMessage = null;
             ErrorMessage errorMessage = null;
@@ -352,6 +383,12 @@ namespace IbClient.IbHost
             {
                 return new OrderStateOrError(openOrderMessage.OrderState, "");
             }
+        }
+
+
+        public void ClearQueueOrderOpenMessage()
+        {
+            _queueOrderOpenMessage.Clear();
         }
 
         public async Task<double?> RateOfExchange(string currency, int timeout)
@@ -435,6 +472,12 @@ namespace IbClient.IbHost
 
             if (_mktDataReqIds.Contains(reqId))
                 _queueMktDataErrors.Enqueue(new ErrorMessage(reqId, code, message));
+
+            if (_placeOrderOrderIds.Contains(reqId))
+                _queuePlaceOrderErrors.Enqueue(new ErrorMessage(reqId, code, message));
+
+            
+
             Consumer.TwsMessageCollection?.Add($"ReqId:{reqId} code:{code} message:{message} exception:{exception}");
         }
 
@@ -466,11 +509,22 @@ namespace IbClient.IbHost
             {
                 throw new ApplicationException("Unexpected! Consumer is null");
             }
-            Consumer.TwsMessageCollection?.Add($"OpenOrderMessage for {openOrderMessage.Contract.LocalSymbol} " +
+            Consumer.TwsMessageCollection?.Add($"OpenOrderMessage for order id:{openOrderMessage.OrderId} {openOrderMessage.Contract.LocalSymbol} " +
                 $"conId:{openOrderMessage.Contract.ConId}");
             //_queueCommon.Enqueue(openOrderMessage);
             _queueOrderOpenMessage.Enqueue(openOrderMessage);
         }
+
+        private void _ibClient_OrderStatus(OrderStatusMessage orderStatusMessage)
+        {
+            if (Consumer == null)
+            {
+                throw new ApplicationException("Unexpected! Consumer is null");
+            }
+            Consumer.TwsMessageCollection?.Add($"OrderStatusMessage for oredr id:{orderStatusMessage.OrderId} " +
+                  $"why held:{orderStatusMessage.WhyHeld}");
+        }
+
         private bool MessageForRightTickerContains(string fundamentalsMessageString, string ticker)
         {
             if (ticker == "ALD1")

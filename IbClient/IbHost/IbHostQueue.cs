@@ -168,5 +168,10 @@ namespace IbClient.IbHost
 
             throw new NotImplementedException();
         }
+
+        public void Clear()
+        {
+            while (_ibClientQueue.TryDequeue(out _)){}
+        }
     }
 }

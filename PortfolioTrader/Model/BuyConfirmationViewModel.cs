@@ -162,7 +162,7 @@ is kept equal.
                 SetProperty(ref _stocksToSellAsString, value);
             }
         }
-        
+
 
         public string OrdersLongWithError
         {
@@ -199,6 +199,11 @@ is kept equal.
                 StocksToSellAsString = ConvertScoreToWeights(StocksToSellAsString);
         }
 
+        public void ClearQueueOrderOpenMessage()
+        {
+            ibHost.ClearQueueOrderOpenMessage();
+        }
+
         private static string ConvertScoreToWeights(string stocksAsString)
         {
             const int hundert = 100;
@@ -215,7 +220,7 @@ is kept equal.
                     PriceInCents = kvp.Value.PriceInCents,
                     PriceType = kvp.Value.PriceType,
                     Quantity = kvp.Value.Quantity,
-                    Margin = kvp.Value.Margin,  
+                    Margin = kvp.Value.Margin,
                 });
             }
 

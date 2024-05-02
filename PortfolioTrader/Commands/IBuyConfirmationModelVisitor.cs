@@ -20,5 +20,6 @@ namespace PortfolioTrader.Commands
         string OrdersShortWithError { get; set; }
 
         public void CalculateWeights();
+        void ClearQueueOrderOpenMessage();
     }
 }

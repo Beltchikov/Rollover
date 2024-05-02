@@ -28,7 +28,6 @@ namespace PortfolioTrader.Commands
             _visitor.TwsMessageCollection.Add("Calculated Position command: buy and sell positions equalized after zero price removal.");
 
             _visitor.CalculateWeights();
-            _visitor.PositionsCalculated = _visitor.StocksToBuyAsString != "" && _visitor.StocksToSellAsString != "";
             _visitor.TwsMessageCollection.Add("Calculated Position command: weights are calculated after zero price removal.");
 
             _visitor.StocksToBuyAsString = CalculateQuantity(_visitor.StocksToBuyAsString, _visitor.InvestmentAmount);
@@ -46,14 +45,17 @@ namespace PortfolioTrader.Commands
             _visitor.TwsMessageCollection.Add("Calculated Position command: buy and sell positions equalized after adding the margin column.");
 
             _visitor.CalculateWeights();
-            _visitor.PositionsCalculated = _visitor.StocksToBuyAsString != "" && _visitor.StocksToSellAsString != "";
             _visitor.TwsMessageCollection.Add("Calculated Position command: weights are recalculated after adding the margin column.");
 
             _visitor.StocksToBuyAsString = CalculateQuantity(_visitor.StocksToBuyAsString, _visitor.InvestmentAmount);
             _visitor.StocksToSellAsString = CalculateQuantity(_visitor.StocksToSellAsString, _visitor.InvestmentAmount);
             _visitor.TwsMessageCollection.Add("Calculated Position command: position sizes recalculted after adding the margin column.");
 
+            _visitor.ClearQueueOrderOpenMessage();
+            _visitor.TwsMessageCollection.Add("Calculated Position command: open order queue cleared.");
+
             _visitor.TwsMessageCollection.Add($"DONE! Calculated Position command executed.");
+            _visitor.PositionsCalculated = _visitor.StocksToBuyAsString != "" && _visitor.StocksToSellAsString != "";
         }
 
         private static (string, string) EqualizeBuysAndSells(string stocksToBuyAsString, string stocksToSellAsString)
@@ -158,34 +160,62 @@ namespace PortfolioTrader.Commands
 
         private static async Task<(string, string)> AddMarginColumnsAsync(string stocksAsString)
         {
+            //var stocksDictionary = SymbolsAndScore.StringToPositionDictionary(stocksAsString);
+            //var resultDictionary = new Dictionary<string, Position>();
+            //var positionsWithoutMargin = new List<string>();
+
+            //foreach (var kvp in stocksDictionary)
+            //{
+            //    if (kvp.Value.ConId == null) throw new Exception("Unexpected. Contract ID is null");
+            //    var contract = new Contract() { ConId = kvp.Value.ConId.Value, Exchange = App.EXCHANGE };
+
+            //    if (kvp.Value.Quantity == null) throw new Exception("Unexpected. Quantity is null");
+            //    OrderStateOrError orderStateOrError = await _visitor.IbHost.WhatIfOrderStateFromContract(contract, kvp.Value.Quantity.Value, App.TIMEOUT*2);
+
+            //    if (orderStateOrError.ErrorMessage != "")
+            //    {
+            //        positionsWithoutMargin.Add(kvp.Key);
+            //        _visitor.TwsMessageCollection.Add(orderStateOrError.ErrorMessage);
+
+            //    }
+            //    else if (orderStateOrError.OrderState != null)
+            //    {
+            //        resultDictionary[kvp.Key] = kvp.Value;
+            //        resultDictionary[kvp.Key].Margin = ConvertMarginToInt(orderStateOrError.OrderState.InitMarginChange);
+            //    }
+            //    else throw new Exception("Unexpected. Both ErrorMessage and OrderState are invalid.");
+
+            //    await Task.Run(() => Thread.Sleep(App.TIMEOUT));
+            //}
+
+            //string positionsWithoutMarginString = SymbolsAndScore.ListToCsvString(positionsWithoutMargin, Environment.NewLine);
+            //return (SymbolsAndScore.PositionDictionaryToString(resultDictionary), positionsWithoutMarginString);
+
             var stocksDictionary = SymbolsAndScore.StringToPositionDictionary(stocksAsString);
             var resultDictionary = new Dictionary<string, Position>();
             var positionsWithoutMargin = new List<string>();
 
-            foreach (var kvp in stocksDictionary)
-            {
-                if (kvp.Value.ConId == null) throw new Exception("Unexpected. Contract ID is null");
-                var contract = new Contract() { ConId = kvp.Value.ConId.Value, Exchange = App.EXCHANGE };
+            
+                //if (kvp.Value.ConId == null) throw new Exception("Unexpected. Contract ID is null");
+                var contract = new Contract() { ConId = 618179551, Exchange = App.EXCHANGE };
 
-                if (kvp.Value.Quantity == null) throw new Exception("Unexpected. Quantity is null");
-                OrderStateOrError orderStateOrError = await _visitor.IbHost.WhatIfOrderStateFromContract(contract, kvp.Value.Quantity.Value, App.TIMEOUT*2);
+                OrderStateOrError orderStateOrError = await _visitor.IbHost.WhatIfOrderStateFromContract(contract, 10, App.TIMEOUT * 2);
 
                 // consider int
                 if (orderStateOrError.ErrorMessage != "")
                 {
-                    positionsWithoutMargin.Add(kvp.Key);
+                    positionsWithoutMargin.Add("AAVE");
                     _visitor.TwsMessageCollection.Add(orderStateOrError.ErrorMessage);
 
                 }
                 else if (orderStateOrError.OrderState != null)
                 {
-                    resultDictionary[kvp.Key] = kvp.Value;
-                    resultDictionary[kvp.Key].Margin = ConvertMarginToInt(orderStateOrError.OrderState.InitMarginChange);
+                    //resultDictionary[kvp.Key] = kvp.Value;
+                    //resultDictionary[kvp.Key].Margin = ConvertMarginToInt(orderStateOrError.OrderState.InitMarginChange);
                 }
                 else throw new Exception("Unexpected. Both ErrorMessage and OrderState are invalid.");
 
-                await Task.Run(() => Thread.Sleep(App.TIMEOUT));
-            }
+          
 
             string positionsWithoutMarginString = SymbolsAndScore.ListToCsvString(positionsWithoutMargin, Environment.NewLine);
             return (SymbolsAndScore.PositionDictionaryToString(resultDictionary), positionsWithoutMarginString);

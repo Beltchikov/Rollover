@@ -14,5 +14,6 @@ namespace IbClient.IbHost
         // TODO remove later
         bool HasMessageInQueue<T>(int reqId);
         void DequeueAllTickPriceMessageExcept(int reqId);
+        void Clear();
     }
 }
