@@ -22,7 +22,7 @@ namespace IbClient.IbHost
                     Contract contract,
                     string reportType,
                     int timeout);
-        Task<(double?, TickType?)> RequestMktData(
+        Task<(double?, TickType?, string)> RequestMktData(
             Contract contract,
             string genericTickList,
             bool snapshot,

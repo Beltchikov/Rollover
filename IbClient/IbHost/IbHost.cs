@@ -172,7 +172,7 @@ namespace IbClient.IbHost
             return fundamentalsMessageString;
         }
 
-        public async Task<(double?, TickType?)> RequestMktData(
+        public async Task<(double?, TickType?, string)> RequestMktData(
             Contract contract,
             string genericTickList,
             bool snapshot,
@@ -181,10 +181,12 @@ namespace IbClient.IbHost
             int timeout)
         {
             TickPriceMessage tickPriceMessage = null;
+            ErrorMessage errorMessage = null;
             var reqId = ++_currentReqId;
             _mktDataReqIds.Add(reqId);
 
-            _ibClient.ClientSocket.reqMktData(reqId, contract, genericTickList, snapshot, regulatorySnapshot, mktDataOptions);
+            _ibClient.ClientSocket.reqMktData(
+                reqId, contract, genericTickList, snapshot, regulatorySnapshot, mktDataOptions);
 
             await Task.Run(() =>
             {
@@ -194,10 +196,13 @@ namespace IbClient.IbHost
                     startTime,
                     timeout,
                     (msg => msg.Price != 0),
-                    out tickPriceMessage)) { }
+                    out tickPriceMessage,
+                    out errorMessage)) { }
             });
 
-            return (tickPriceMessage?.Price, (TickType?)tickPriceMessage?.Field);
+            var errorText= errorMessage == null
+                ? "" : $"Error: reqId:{errorMessage.RequestId} code:{errorMessage.ErrorCode} message:{errorMessage.Message}";
+            return (tickPriceMessage?.Price, (TickType?)tickPriceMessage?.Field, errorText);
         }
 
         // TODO make generic
@@ -206,7 +211,8 @@ namespace IbClient.IbHost
             DateTime startTime,
             int timeout,
             Predicate<TickPriceMessage> messageIsValid,
-            out TickPriceMessage tickPriceMessage)
+            out TickPriceMessage tickPriceMessage,
+            out ErrorMessage errorMessage)
         {
             _queueTickPriceMessage.DequeueAllTickPriceMessageExcept(reqId);
 
@@ -214,17 +220,21 @@ namespace IbClient.IbHost
             {
                 if (tickPriceMessage != null)
                 {
-                    if (messageIsValid(tickPriceMessage)) return false;
-                    else return !HasErrorOrTimeoutMktData(reqId, startTime, timeout, out _);
+                    if (messageIsValid(tickPriceMessage))
+                    {
+                        errorMessage = null;
+                        return false;
+                    }
+                    else return !HasErrorOrTimeoutMktData(reqId, startTime, timeout, out errorMessage);
                 }
                 else
                 {
-                    return !HasErrorOrTimeoutMktData(reqId, startTime, timeout, out _);
+                    return !HasErrorOrTimeoutMktData(reqId, startTime, timeout, out errorMessage);
                 }
             }
             else
             {
-                return !HasErrorOrTimeoutMktData(reqId, startTime, timeout, out _);
+                return !HasErrorOrTimeoutMktData(reqId, startTime, timeout, out errorMessage);
             }
         }
 
@@ -401,7 +411,7 @@ namespace IbClient.IbHost
                 (Contract currencyPairContract, bool usdIsInDenominator) = CurrencyPair.ContractFromCurrency(currency);
                 MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.DelayedFrozen };
                 //(var currentPrice, _, _) = await RequestMarketDataSnapshotAsync(currencyPairContract, marketDataTypes, timeout);
-                (var currentPrice, _) = await RequestMktData(currencyPairContract, "", true, false, null, timeout);
+                (var currentPrice, _, _) = await RequestMktData(currencyPairContract, "", true, false, null, timeout);
                 result = usdIsInDenominator ? currentPrice : Math.Round(1 / currentPrice.Value, 5);
             }
             return result;
