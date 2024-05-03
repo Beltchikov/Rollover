@@ -200,7 +200,7 @@ namespace IbClient.IbHost
                     out errorMessage)) { }
             });
 
-            var errorText= errorMessage == null
+            var errorText = errorMessage == null
                 ? "" : $"Error: reqId:{errorMessage.RequestId} code:{errorMessage.ErrorCode} message:{errorMessage.Message}";
             return (tickPriceMessage?.Price, (TickType?)tickPriceMessage?.Field, errorText);
         }
@@ -243,7 +243,7 @@ namespace IbClient.IbHost
             int nextOrderId,
             DateTime startTime,
             int timeout,
-            string orderStatus,
+            Predicate<OpenOrderMessage> messageIsValid,
             out OpenOrderMessage openOrderMessage,
             out ErrorMessage errorMessage)
         {
@@ -251,14 +251,35 @@ namespace IbClient.IbHost
             {
                 if (openOrderMessage != null)
                 {
-                    if (openOrderMessage.OrderState != null)
+                    //if (openOrderMessage.OrderState != null)
+                    //{
+                    //    if (openOrderMessage.OrderState.Status == PRESUBMITTED)
+                    //    {
+                    //        errorMessage = null;
+                    //        return false;
+                    //    }
+                    //    else return !HasErrorOrTimeoutPlaceOrder(nextOrderId, startTime, timeout, out errorMessage);
+
+
+                    //}
+                    //else return !HasErrorOrTimeoutPlaceOrder(nextOrderId, startTime, timeout, out errorMessage);
+
+                    //if (openOrderMessage.OrderState == null) return !HasErrorOrTimeoutPlaceOrder(nextOrderId, startTime, timeout, out errorMessage);
+                    //if (openOrderMessage.OrderState.Status == PRESUBMITTED)
+                    //{
+                    //    errorMessage = null;
+                    //    return false;
+                    //}
+                    //else return !HasErrorOrTimeoutPlaceOrder(nextOrderId, startTime, timeout, out errorMessage);
+
+
+
+
+
+                    if (messageIsValid(openOrderMessage))
                     {
-                        if (openOrderMessage.OrderState.Status == orderStatus)
-                        {
-                            errorMessage = null;
-                            return false;
-                        }
-                        else return !HasErrorOrTimeoutPlaceOrder(nextOrderId, startTime, timeout, out errorMessage);
+                        errorMessage = null;
+                        return false;
                     }
                     else return !HasErrorOrTimeoutPlaceOrder(nextOrderId, startTime, timeout, out errorMessage);
                 }
@@ -343,7 +364,12 @@ namespace IbClient.IbHost
                     _nextOrderId,
                     startTime,
                     timeout,
-                    PRESUBMITTED,
+                    (msg) =>
+                    {
+                        if (msg.OrderState == null) return false;
+                        if (msg.OrderState.Status == PRESUBMITTED) return true;
+                        return false;
+                    },
                     out openOrderMessage,
                     out errorMessage)) { }
             });
@@ -375,7 +401,12 @@ namespace IbClient.IbHost
                     _nextOrderId,
                     startTime,
                     timeout,
-                    SUBMITTED,
+                    (msg) =>
+                    {
+                        if (msg.OrderState == null) return true;
+                        if (msg.OrderState.Status == PRESUBMITTED) return false;
+                        return true;
+                    },
                     out openOrderMessage,
                     out errorMessage)) { }
             });
