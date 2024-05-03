@@ -100,7 +100,7 @@ namespace IbClient.IbHost
         }
 
         // TODO make generic
-        public void DequeueAllTickPriceMessageExcept(int reqId)
+        public void DequeueAllTickPriceMessagesExcept(int reqId)
         {
             var itemsToKeep = new List<object>();
             object item = null;
@@ -118,6 +118,29 @@ namespace IbClient.IbHost
             }
 
             foreach(var itemToAdd in itemsToKeep)
+            {
+                _ibClientQueue.Enqueue(itemToAdd);
+            }
+        }
+
+        public void DequeueAllOpenOrderMessagesExcept(int nextOrderId)
+        {
+            var itemsToKeep = new List<object>();
+            object item = null;
+
+            while (_ibClientQueue.TryDequeue(out item))
+            {
+                if (item is OpenOrderMessage)
+                {
+                    var itemTyped = item as OpenOrderMessage;
+                    if (itemTyped.OrderId == nextOrderId)
+                    {
+                        itemsToKeep.Add(item);
+                    }
+                }
+            }
+
+            foreach (var itemToAdd in itemsToKeep)
             {
                 _ibClientQueue.Enqueue(itemToAdd);
             }

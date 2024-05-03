@@ -214,7 +214,7 @@ namespace IbClient.IbHost
             out TickPriceMessage tickPriceMessage,
             out ErrorMessage errorMessage)
         {
-            _queueTickPriceMessage.DequeueAllTickPriceMessageExcept(reqId);
+            _queueTickPriceMessage.DequeueAllTickPriceMessagesExcept(reqId);
 
             if (_queueTickPriceMessage.DequeueMessage(reqId, out tickPriceMessage))
             {
@@ -244,6 +244,7 @@ namespace IbClient.IbHost
             DateTime startTime,
             int timeout,
             Predicate<OpenOrderMessage> messageIsValid,
+            string testFlag,
             out OpenOrderMessage openOrderMessage,
             out ErrorMessage errorMessage)
         {
@@ -256,16 +257,16 @@ namespace IbClient.IbHost
                         errorMessage = null;
                         return false;
                     }
-                    else return !HasErrorOrTimeout(_queueOrderOpenMessage, nextOrderId, startTime, timeout, out errorMessage);
+                    else return !HasErrorOrTimeoutTest(_queueOrderOpenMessage, nextOrderId, startTime, timeout, testFlag, out errorMessage);
                 }
                 else
                 {
-                    return !HasErrorOrTimeout(_queueOrderOpenMessage, nextOrderId, startTime, timeout, out errorMessage);
+                    return !HasErrorOrTimeoutTest(_queueOrderOpenMessage, nextOrderId, startTime, timeout, testFlag, out errorMessage);
                 }
             }
             else
             {
-                return !HasErrorOrTimeout(_queueOrderOpenMessage, nextOrderId, startTime, timeout, out errorMessage);
+                return !HasErrorOrTimeoutTest(_queueOrderOpenMessage, nextOrderId, startTime, timeout, testFlag, out errorMessage);
             }
         }
 
@@ -280,6 +281,25 @@ namespace IbClient.IbHost
                     return true;
                 }
                 else return false;
+            }
+        }
+
+        private bool HasErrorOrTimeoutTest(IIbHostQueue _queue, int reqId, DateTime startTime, int timeout, string testFlag, out ErrorMessage errorMessage)
+        {
+            if (_queue.DequeueMessage(reqId, out errorMessage)) return true;
+            else
+            {
+                if (testFlag == "PlaceOrderAsync")
+                    return false;
+                else
+                {
+                    if ((DateTime.Now - startTime).TotalMilliseconds >= timeout)
+                    {
+                        errorMessage = new ErrorMessage(reqId, 0, $"Timeout {timeout} ms.");
+                        return true;
+                    }
+                    else return false;
+                }
             }
         }
 
@@ -325,10 +345,12 @@ namespace IbClient.IbHost
                         if (msg.OrderState.Status == PRESUBMITTED) return true;
                         return false;
                     },
+                    "",
                     out openOrderMessage,
                     out errorMessage)) { }
             });
 
+            _placeOrderOrderIds.Remove(_nextOrderId);
             if (openOrderMessage == null)
             {
                 if (errorMessage != null)
@@ -342,10 +364,18 @@ namespace IbClient.IbHost
             }
         }
 
-        public async Task<OrderStateOrError> PlaceOrderAsync(int nextOrderId, Contract contract, Order order, int timeout)
+        public async Task<OrderStateOrError> PlaceOrderAsync(Contract contract, Order order, int timeout)
         {
-            _placeOrderOrderIds.Add(nextOrderId);
-            _ibClient.ClientSocket.placeOrder(nextOrderId, contract, order);
+            _ibClient.ClientSocket.reqIds(-1);
+            _lastOrderId = _nextOrderId;
+            await Task.Run(() =>
+            {
+                while (_lastOrderId == _nextOrderId) { _nextOrderId = _ibClient.NextOrderId; }
+            });
+            order.OrderId = _nextOrderId;
+
+            _placeOrderOrderIds.Add(_nextOrderId);
+            _ibClient.ClientSocket.placeOrder(_nextOrderId, contract, order);
             OpenOrderMessage openOrderMessage = null;
             ErrorMessage errorMessage = null;
 
@@ -359,13 +389,15 @@ namespace IbClient.IbHost
                     (msg) =>
                     {
                         if (msg.OrderState == null) return false;
-                        if (msg.OrderState.Status == SUBMITTED) return true;
+                        if (msg.OrderState.Status == PRESUBMITTED) return true;
                         return false;
                     },
+                    "PlaceOrderAsync",
                     out openOrderMessage,
                     out errorMessage)) { }
             });
 
+            _placeOrderOrderIds.Remove(_nextOrderId);
             if (openOrderMessage == null)
             {
                 if (errorMessage != null)
@@ -506,6 +538,8 @@ namespace IbClient.IbHost
             Consumer.TwsMessageCollection?.Add($"OpenOrderMessage for order id:{openOrderMessage.OrderId} {openOrderMessage.Contract.LocalSymbol} " +
                 $"conId:{openOrderMessage.Contract.ConId}");
             //_queueCommon.Enqueue(openOrderMessage);
+
+            _queueOrderOpenMessage.DequeueAllOpenOrderMessagesExcept(openOrderMessage.OrderId);
             _queueOrderOpenMessage.Enqueue(openOrderMessage);
         }
 

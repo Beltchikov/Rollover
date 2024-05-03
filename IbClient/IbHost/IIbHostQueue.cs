@@ -13,7 +13,8 @@ namespace IbClient.IbHost
 
         // TODO remove later
         bool HasMessageInQueue<T>(int reqId);
-        void DequeueAllTickPriceMessageExcept(int reqId);
+        void DequeueAllTickPriceMessagesExcept(int reqId);
+        void DequeueAllOpenOrderMessagesExcept(int nextOrderId);
         void Clear();
     }
 }
