@@ -18,13 +18,11 @@ namespace PortfolioTrader.Commands
             foreach (TradePair tradePair in tradePairs)
             {
                 // Buy
-                //var nextOrderIdBuy = await visitor.IbHost.ReqIdsAsync(-1);
-                Contract contractBuy = new Contract() { ConId = tradePair.ConIdBuy, Exchange = App.EXCHANGE };
+                Contract contractBuy = new() { ConId = tradePair.ConIdBuy, Exchange = App.EXCHANGE };
                 var lmtPriceBuy = Math.Round((double)tradePair.PriceInCentsBuy / 100d, 2);
 
                 Order orderBuy = new Order()
                 {
-                    //OrderId = nextOrderIdBuy,
                     Action = "BUY",
                     OrderType = "LIMIT",
                     LmtPrice = lmtPriceBuy,
@@ -52,9 +50,8 @@ namespace PortfolioTrader.Commands
                 Contract contractSell = new Contract() { ConId = tradePair.ConIdSell, Exchange = App.EXCHANGE };
                 var lmtPriceSell = Math.Round((double)tradePair.PriceInCentsSell / 100d, 2);
 
-                Order orderSell = new Order()
+                Order orderSell = new()
                 {
-                    //OrderId = nextOrderIdSell,
                     Action = "SELL",
                     OrderType = "LIMIT",
                     LmtPrice = lmtPriceSell,

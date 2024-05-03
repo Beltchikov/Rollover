@@ -307,9 +307,6 @@ namespace IbClient.IbHost
             ErrorMessage errorMessage = null;
 
             _placeOrderOrderIds.Add(_nextOrderId);
-            // TODO
-            if (_nextOrderId != _ibClient.NextOrderId) throw new Exception("_nextOrderId != _ibClient.NextOrderId");
-
             _ibClient.ClientSocket.placeOrder(_ibClient.NextOrderId, contract, order);
 
             await Task.Run(() =>
@@ -515,8 +512,6 @@ namespace IbClient.IbHost
             }
             Consumer.TwsMessageCollection?.Add($"OpenOrderMessage for order id:{openOrderMessage.OrderId} {openOrderMessage.Contract.LocalSymbol} " +
                 $"conId:{openOrderMessage.Contract.ConId}");
-            //_queueCommon.Enqueue(openOrderMessage);
-
             _queueOrderOpenMessage.DequeueAllOpenOrderMessagesExcept(openOrderMessage.OrderId);
             _queueOrderOpenMessage.Enqueue(openOrderMessage);
         }
