@@ -225,16 +225,16 @@ namespace IbClient.IbHost
                         errorMessage = null;
                         return false;
                     }
-                    else return !HasErrorOrTimeoutMktData(reqId, startTime, timeout, out errorMessage);
+                    else return !HasErrorOrTimeout(_queueTickPriceMessage, reqId, startTime, timeout, out errorMessage);
                 }
                 else
                 {
-                    return !HasErrorOrTimeoutMktData(reqId, startTime, timeout, out errorMessage);
+                    return !HasErrorOrTimeout(_queueTickPriceMessage, reqId, startTime, timeout, out errorMessage);
                 }
             }
             else
             {
-                return !HasErrorOrTimeoutMktData(reqId, startTime, timeout, out errorMessage);
+                return !HasErrorOrTimeout(_queueTickPriceMessage, reqId, startTime, timeout, out errorMessage);
             }
         }
 
@@ -256,42 +256,22 @@ namespace IbClient.IbHost
                         errorMessage = null;
                         return false;
                     }
-                    else return !HasErrorOrTimeoutPlaceOrder(nextOrderId, startTime, timeout, out errorMessage);
+                    else return !HasErrorOrTimeout(_queueOrderOpenMessage, nextOrderId, startTime, timeout, out errorMessage);
                 }
                 else
                 {
-                    return !HasErrorOrTimeoutPlaceOrder(nextOrderId, startTime, timeout, out errorMessage);
+                    return !HasErrorOrTimeout(_queueOrderOpenMessage, nextOrderId, startTime, timeout, out errorMessage);
                 }
             }
             else
             {
-                return !HasErrorOrTimeoutPlaceOrder(nextOrderId, startTime, timeout, out errorMessage);
+                return !HasErrorOrTimeout(_queueOrderOpenMessage, nextOrderId, startTime, timeout, out errorMessage);
             }
         }
 
-        private bool HasErrorOrTimeoutPlaceOrder(int reqId, DateTime startTime, int timeout, out ErrorMessage errorMessage)
+        private bool HasErrorOrTimeout(IIbHostQueue _queue, int reqId, DateTime startTime, int timeout, out ErrorMessage errorMessage)
         {
-            if (_queuePlaceOrderErrors.DequeueMessage(reqId, out errorMessage))
-            {
-                return true;
-            }
-            else
-            {
-                if ((DateTime.Now - startTime).TotalMilliseconds >= timeout)
-                {
-                    errorMessage = new ErrorMessage(reqId, 0, $"Timeout {timeout} ms.");
-                    return true;
-                }
-                else return false;
-            }
-        }
-
-        private bool HasErrorOrTimeoutMktData(int reqId, DateTime startTime, int timeout, out ErrorMessage errorMessage)
-        {
-            if (_queueMktDataErrors.DequeueMessage(reqId, out errorMessage))
-            {
-                return true;
-            }
+            if (_queue.DequeueMessage(reqId, out errorMessage)) return true;
             else
             {
                 if ((DateTime.Now - startTime).TotalMilliseconds >= timeout)
