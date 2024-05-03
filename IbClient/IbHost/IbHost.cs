@@ -193,6 +193,7 @@ namespace IbClient.IbHost
                     reqId,
                     startTime,
                     timeout,
+                    (msg => msg.Price != 0),
                     out tickPriceMessage)) { }
             });
 
@@ -204,6 +205,7 @@ namespace IbClient.IbHost
             int reqId,
             DateTime startTime,
             int timeout,
+            Predicate<TickPriceMessage> messageIsValid,
             out TickPriceMessage tickPriceMessage)
         {
             _queueTickPriceMessage.DequeueAllTickPriceMessageExcept(reqId);
@@ -212,7 +214,7 @@ namespace IbClient.IbHost
             {
                 if (tickPriceMessage != null)
                 {
-                    if (tickPriceMessage.Price != 0) return false;
+                    if (messageIsValid(tickPriceMessage)) return false;
                     else return !HasErrorOrTimeoutMktData(reqId, startTime, timeout, out _);
                 }
                 else
