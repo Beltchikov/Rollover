@@ -244,7 +244,6 @@ namespace IbClient.IbHost
             DateTime startTime,
             int timeout,
             Predicate<OpenOrderMessage> messageIsValid,
-            string testFlag,
             out OpenOrderMessage openOrderMessage,
             out ErrorMessage errorMessage)
         {
@@ -257,16 +256,16 @@ namespace IbClient.IbHost
                         errorMessage = null;
                         return false;
                     }
-                    else return !HasErrorOrTimeoutTest(_queueOrderOpenMessage, nextOrderId, startTime, timeout, testFlag, out errorMessage);
+                    else return !HasErrorOrTimeout(_queueOrderOpenMessage, nextOrderId, startTime, timeout, out errorMessage);
                 }
                 else
                 {
-                    return !HasErrorOrTimeoutTest(_queueOrderOpenMessage, nextOrderId, startTime, timeout, testFlag, out errorMessage);
+                    return !HasErrorOrTimeout(_queueOrderOpenMessage, nextOrderId, startTime, timeout, out errorMessage);
                 }
             }
             else
             {
-                return !HasErrorOrTimeoutTest(_queueOrderOpenMessage, nextOrderId, startTime, timeout, testFlag, out errorMessage);
+                return !HasErrorOrTimeout(_queueOrderOpenMessage, nextOrderId, startTime, timeout, out errorMessage);
             }
         }
 
@@ -281,25 +280,6 @@ namespace IbClient.IbHost
                     return true;
                 }
                 else return false;
-            }
-        }
-
-        private bool HasErrorOrTimeoutTest(IIbHostQueue _queue, int reqId, DateTime startTime, int timeout, string testFlag, out ErrorMessage errorMessage)
-        {
-            if (_queue.DequeueMessage(reqId, out errorMessage)) return true;
-            else
-            {
-                if (testFlag == "PlaceOrderAsync")
-                    return false;
-                else
-                {
-                    if ((DateTime.Now - startTime).TotalMilliseconds >= timeout)
-                    {
-                        errorMessage = new ErrorMessage(reqId, 0, $"Timeout {timeout} ms.");
-                        return true;
-                    }
-                    else return false;
-                }
             }
         }
 
@@ -345,7 +325,6 @@ namespace IbClient.IbHost
                         if (msg.OrderState.Status == PRESUBMITTED) return true;
                         return false;
                     },
-                    "",
                     out openOrderMessage,
                     out errorMessage)) { }
             });
@@ -392,7 +371,6 @@ namespace IbClient.IbHost
                         if (msg.OrderState.Status == PRESUBMITTED) return true;
                         return false;
                     },
-                    "PlaceOrderAsync",
                     out openOrderMessage,
                     out errorMessage)) { }
             });
