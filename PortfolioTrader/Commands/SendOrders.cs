@@ -43,7 +43,7 @@ namespace PortfolioTrader.Commands
                 }
                 else throw new Exception("Unexpected. Both ErrorMessage nad OrderState are not set.");
 
-                await Task.Run(() => Thread.Sleep(App.TIMEOUT * 2));
+                await Task.Run(() => Thread.Sleep(App.TIMEOUT));
 
                 // sell
                 var nextOrderIdSell = await visitor.IbHost.ReqIdsAsync(-1);
@@ -72,11 +72,10 @@ namespace PortfolioTrader.Commands
                 }
                 else throw new Exception("Unexpected. Both ErrorMessage nad OrderState are not set.");
 
-                await Task.Run(() => Thread.Sleep(App.TIMEOUT * 2));
+                await Task.Run(() => Thread.Sleep(App.TIMEOUT));
             }
 
-            await Task.Run(() => Thread.Sleep(App.TIMEOUT * 2));
-            _visitor.TwsMessageCollection.Add($"DONE! Send Orders command executed.");
+           _visitor.TwsMessageCollection.Add($"DONE! Send Orders command executed.");
         }
 
         private static List<TradePair> BuildTradePairs()
