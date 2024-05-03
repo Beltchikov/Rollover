@@ -251,31 +251,6 @@ namespace IbClient.IbHost
             {
                 if (openOrderMessage != null)
                 {
-                    //if (openOrderMessage.OrderState != null)
-                    //{
-                    //    if (openOrderMessage.OrderState.Status == PRESUBMITTED)
-                    //    {
-                    //        errorMessage = null;
-                    //        return false;
-                    //    }
-                    //    else return !HasErrorOrTimeoutPlaceOrder(nextOrderId, startTime, timeout, out errorMessage);
-
-
-                    //}
-                    //else return !HasErrorOrTimeoutPlaceOrder(nextOrderId, startTime, timeout, out errorMessage);
-
-                    //if (openOrderMessage.OrderState == null) return !HasErrorOrTimeoutPlaceOrder(nextOrderId, startTime, timeout, out errorMessage);
-                    //if (openOrderMessage.OrderState.Status == PRESUBMITTED)
-                    //{
-                    //    errorMessage = null;
-                    //    return false;
-                    //}
-                    //else return !HasErrorOrTimeoutPlaceOrder(nextOrderId, startTime, timeout, out errorMessage);
-
-
-
-
-
                     if (messageIsValid(openOrderMessage))
                     {
                         errorMessage = null;
@@ -403,9 +378,9 @@ namespace IbClient.IbHost
                     timeout,
                     (msg) =>
                     {
-                        if (msg.OrderState == null) return true;
-                        if (msg.OrderState.Status == PRESUBMITTED) return false;
-                        return true;
+                        if (msg.OrderState == null) return false;
+                        if (msg.OrderState.Status == SUBMITTED) return true;
+                        return false;
                     },
                     out openOrderMessage,
                     out errorMessage)) { }
