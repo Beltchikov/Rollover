@@ -54,9 +54,12 @@ namespace PortfolioTrader.Model
             OrderConfirmationCommand = new RelayCommand(() => Commands.OrderConfirmationCommand.Run(this));
 
             //LongSymbolsAsString = TestDataLong();
-            LongSymbolsAsString = TestDataLong10Symbols();
+            LongSymbolsAsString = TestDataLongRepository();
+            //LongSymbolsAsString = TestDataLong10Symbols();
+            
             //ShortSymbolsAsString = TestDataShort();
-            ShortSymbolsAsString = TestDataShort10Symbols();
+            ShortSymbolsAsString = TestDataShortRepository();
+            //ShortSymbolsAsString = TestDataShort10Symbols();
         }
 
         public IIbHost IbHost => ibHost;
@@ -389,6 +392,18 @@ JNJ	3
 ";
         }
 
+        private string TestDataLongRepository()
+        {
+            return @"PYPL	4
+NVDA 	3
+MSFT	3
+AMZN	3
+GOOG	3
+NOW	3
+
+";
+        }
+
         private string TestDataShort()
         {
             return @"MATIC	4
@@ -664,6 +679,18 @@ ADA	2
 SOS	3
 YFI	3
 1INCH	2
+";
+        }
+
+        private string TestDataShortRepository()
+        {
+            return @"MATIC	4
+AAPL 	3
+TSLA	3
+IBM	2
+CAT	2
+ADA	2
+
 ";
         }
 

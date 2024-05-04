@@ -46,17 +46,17 @@ namespace PortfolioTrader.Commands
                 = await ResolveSymbolsByTws(unresolvedByRepository)
             );
 
+            var allResolved = resolved.Concat(resolvedByRepository)
+                    .OrderByDescending(kvp => kvp.Value.NetBms).ToDictionary();
             if (isLong)
             {
-                visitor.LongSymbolsResolved = SymbolsAndScore.PositionDictionaryToString(
-                    resolved.Concat(resolvedByRepository).ToDictionary());
+                visitor.LongSymbolsResolved = SymbolsAndScore.PositionDictionaryToString(allResolved);
                 visitor.LongSymbolsMultiple = SymbolsAndScore.DictionaryToString(multiple);
                 visitor.LongSymbolsUnresolved = SymbolsAndScore.DictionaryToString(unresolved);
             }
             else
             {
-                visitor.ShortSymbolsResolved = SymbolsAndScore.PositionDictionaryToString(
-                    resolved.Concat(resolvedByRepository).ToDictionary());
+                visitor.ShortSymbolsResolved = SymbolsAndScore.PositionDictionaryToString(allResolved);
                 visitor.ShortSymbolsMultiple = SymbolsAndScore.DictionaryToString(multiple);
                 visitor.ShortSymbolsUnresolved = SymbolsAndScore.DictionaryToString(unresolved);
             }
