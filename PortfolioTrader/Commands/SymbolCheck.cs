@@ -28,7 +28,11 @@ namespace PortfolioTrader.Commands
             var symbolsAndScoreAsDictionary = isLong
                 ? SymbolsAndScore.StringToDictionary(visitor.LongSymbolsAsString)
                 : SymbolsAndScore.StringToDictionary(visitor.ShortSymbolsAsString);
-           
+
+            (Dictionary<string, Position> resolvedByRepository, Dictionary<string, int> unresolvedByRepository)
+                = ResolveSymbolsByRepository(symbolsAndScoreAsDictionary);
+
+            // TODO use unresolvedByRepository instead symbolsAndScoreAsDictionary
             var startMessage = BuildResolveSymbolsStartMessage(isLong: isLong, symbolsAndScoreAsDictionary);
             visitor.TwsMessageCollection?.Add(startMessage);
 
@@ -54,6 +58,18 @@ namespace PortfolioTrader.Commands
 
             var endMessage = BuildResolveSymbolsEndMessage(isLong: isLong, resolved, multiple, unresolved);
             visitor.TwsMessageCollection?.Add(endMessage);
+        }
+
+        private static (Dictionary<string, Position> resolvedByRepository, Dictionary<string, int> unresolvedByRepository)
+            ResolveSymbolsByRepository(Dictionary<string, int> symbolsAndScoreAsDictionary)
+        {
+            Dictionary<string, Position> symbolsResolved = new Dictionary<string, Position>();
+            Dictionary<string, int> symbolsUnresolved = new Dictionary<string, int>();
+            foreach (var symbol in symbolsAndScoreAsDictionary.Keys)
+            {
+            }
+
+            return (symbolsResolved, symbolsUnresolved);
         }
 
         private static async Task<(Dictionary<string, Position>, Dictionary<string, int>, Dictionary<string, int>)>
