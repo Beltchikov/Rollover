@@ -23,6 +23,9 @@ namespace PortfolioTrader.Commands
 
             await ResolveSymbolsAndLog(visitor, true);
             await ResolveSymbolsAndLog(visitor, false);
+
+            visitor.SymbolsChecked = true;
+            visitor.TwsMessageCollection?.Add("DONE! Check Symbols command executed.");
         }
 
         private static async Task ResolveSymbolsAndLog(IBuyModelVisitor visitor, bool isLong)
