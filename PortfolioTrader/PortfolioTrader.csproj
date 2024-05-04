@@ -28,6 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Repository\NotTradeableSymbols.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Repository\KnownSymbols.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
