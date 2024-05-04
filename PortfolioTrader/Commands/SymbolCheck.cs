@@ -31,23 +31,31 @@ namespace PortfolioTrader.Commands
                 ? SymbolsAndScore.StringToDictionary(visitor.LongSymbolsAsString)
                 : SymbolsAndScore.StringToDictionary(visitor.ShortSymbolsAsString);
 
+            // ResolveSymbolsByRepository
             (Dictionary<string, Position> resolvedByRepository, Dictionary<string, int> unresolvedByRepository)
                 = ResolveSymbolsByRepository(symbolsAndScoreAsDictionary);
             visitor.TwsMessageCollection?.Add($"{resolvedByRepository.Count} symbols resolved by JSON repository. {unresolvedByRepository} remaining.");
 
-            // 
+            // ResolveSymbolsByTws
             var startMessage = BuildResolveTwsStartMessage(isLong: isLong, unresolvedByRepository);
             visitor.TwsMessageCollection?.Add(startMessage);
 
-            Dictionary<string, Position> resolved = null!;
+            Dictionary<string, Position> resolvedByTws = null!;
             Dictionary<string, int> multiple = null!, unresolved = null!;
             await Task.Run(async () =>
-                (resolved, multiple, unresolved)
+                (resolvedByTws, multiple, unresolved)
                 = await ResolveSymbolsByTws(unresolvedByRepository)
             );
 
-            var allResolved = resolved.Concat(resolvedByRepository)
-                    .OrderByDescending(kvp => kvp.Value.NetBms).ToDictionary();
+            // Join resolvedByRepository and resolvedByTws
+            Dictionary<string, Position> allResolved = [];
+            foreach ( var key in symbolsAndScoreAsDictionary.Keys) 
+            { 
+                if(resolvedByRepository.ContainsKey(key)) allResolved.Add(key, resolvedByRepository[key]);  
+                else if (resolvedByTws.ContainsKey(key)) allResolved.Add(key, resolvedByTws[key]);
+            }
+
+            // Assign results
             if (isLong)
             {
                 visitor.LongSymbolsResolved = SymbolsAndScore.PositionDictionaryToString(allResolved);
@@ -61,7 +69,7 @@ namespace PortfolioTrader.Commands
                 visitor.ShortSymbolsUnresolved = SymbolsAndScore.DictionaryToString(unresolved);
             }
 
-            var endMessage = BuildResolveTwsEndMessage(isLong: isLong, resolved, multiple, unresolved);
+            var endMessage = BuildResolveTwsEndMessage(isLong: isLong, resolvedByTws, multiple, unresolved);
             visitor.TwsMessageCollection?.Add(endMessage);
         }
 
