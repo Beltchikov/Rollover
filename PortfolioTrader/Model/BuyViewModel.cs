@@ -54,11 +54,13 @@ namespace PortfolioTrader.Model
             OrderConfirmationCommand = new RelayCommand(() => Commands.OrderConfirmationCommand.Run(this));
 
             //LongSymbolsAsString = TestDataLong();
-            LongSymbolsAsString = TestDataLongRepository();
+            //LongSymbolsAsString = TestDataLongRepository();
+            LongSymbolsAsString = TestDataLongNotTradeable();
             //LongSymbolsAsString = TestDataLong10Symbols();
             
             //ShortSymbolsAsString = TestDataShort();
-            ShortSymbolsAsString = TestDataShortRepository();
+            //ShortSymbolsAsString = TestDataShortRepository();
+            ShortSymbolsAsString = TestDataShortNotTradeable();
             //ShortSymbolsAsString = TestDataShort10Symbols();
         }
 
@@ -404,6 +406,16 @@ NOW	3
 ";
         }
 
+        private string TestDataLongNotTradeable()
+        {
+            return @"NVDA	3
+IDIG	3
+ARRT	3
+GOOG	3
+
+";
+        }
+
         private string TestDataShort()
         {
             return @"MATIC	4
@@ -690,6 +702,17 @@ TSLA	3
 IBM	2
 CAT	2
 ADA	2
+
+";
+        }
+
+        private string TestDataShortNotTradeable()
+        {
+            return @"AAPL	3
+ATWT	3
+AAVE	2
+CAT	2
+
 
 ";
         }
