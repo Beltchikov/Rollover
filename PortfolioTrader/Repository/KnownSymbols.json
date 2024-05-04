@@ -6,5 +6,29 @@
   {
     "Name": "MSFT",
     "ContractId": 272093
+  },
+  {
+    "Name": "AMZN",
+    "ContractId": 3691937
+  },
+  {
+    "Name": "GOOG",
+    "ContractId": 208813720
+  },
+  {
+    "Name": "AAPL",
+    "ContractId": 265598
+  },
+  {
+    "Name": "TSLA",
+    "ContractId": 76792991
+  },
+  {
+    "Name": "IBM",
+    "ContractId": 8314
+  },
+  {
+    "Name": "CAT",
+    "ContractId": 5437
   }
 ]

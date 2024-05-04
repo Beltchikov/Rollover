@@ -19,7 +19,6 @@ namespace PortfolioTrader.Repository
             string jsonFilePath = Path.Combine(dir, JSON_REPOSITORY);
             string knownSymbolsAsString = File.ReadAllText(jsonFilePath);
             _knownSymbols = JsonSerializer.Deserialize<List<KnownSymbol>>(knownSymbolsAsString)!;
-            //ChatGptBatchResult chatGptBatchResult = JsonSerializer.Deserialize<ChatGptBatchResult>(batch)!;
         }
 
         public int? GetContractId(string symbol)
