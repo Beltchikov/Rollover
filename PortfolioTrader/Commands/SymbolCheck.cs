@@ -33,17 +33,17 @@ namespace PortfolioTrader.Commands
 
             (Dictionary<string, Position> resolvedByRepository, Dictionary<string, int> unresolvedByRepository)
                 = ResolveSymbolsByRepository(symbolsAndScoreAsDictionary);
-            // TODO message
+            visitor.TwsMessageCollection?.Add($"{resolvedByRepository.Count} symbols resolved by JSON repository. {unresolvedByRepository} remaining.");
 
             // 
-            var startMessage = BuildResolveSymbolsStartMessage(isLong: isLong, symbolsAndScoreAsDictionary);
+            var startMessage = BuildResolveTwsStartMessage(isLong: isLong, unresolvedByRepository);
             visitor.TwsMessageCollection?.Add(startMessage);
 
             Dictionary<string, Position> resolved = null!;
             Dictionary<string, int> multiple = null!, unresolved = null!;
             await Task.Run(async () =>
                 (resolved, multiple, unresolved)
-                = await ResolveSymbolsByTws(symbolsAndScoreAsDictionary)
+                = await ResolveSymbolsByTws(unresolvedByRepository)
             );
 
             if (isLong)
@@ -59,7 +59,7 @@ namespace PortfolioTrader.Commands
                 visitor.ShortSymbolsUnresolved = SymbolsAndScore.DictionaryToString(unresolved);
             }
 
-            var endMessage = BuildResolveSymbolsEndMessage(isLong: isLong, resolved, multiple, unresolved);
+            var endMessage = BuildResolveTwsEndMessage(isLong: isLong, resolved, multiple, unresolved);
             visitor.TwsMessageCollection?.Add(endMessage);
         }
 
@@ -84,19 +84,19 @@ namespace PortfolioTrader.Commands
         }
 
         private static async Task<(Dictionary<string, Position>, Dictionary<string, int>, Dictionary<string, int>)>
-            ResolveSymbolsByTws(Dictionary<string, int> longSymbolAndScoreAsDictionary)
+            ResolveSymbolsByTws(Dictionary<string, int> symbolsAndScoreAsDictionary)
         {
             Dictionary<string, Position> symbolsResolved = new Dictionary<string, Position>();
             Dictionary<string, int> symbolsMultiple = new Dictionary<string, int>();
             Dictionary<string, int> symbolsUnresolved = new Dictionary<string, int>();
 
-            foreach (var symbol in longSymbolAndScoreAsDictionary.Keys)
+            foreach (var symbol in symbolsAndScoreAsDictionary.Keys)
             {
                 SymbolSamplesMessage symbolSamplesMessage
                     = await _visitor.IbHost.RequestMatchingSymbolsAsync(symbol, _visitor.Timeout);
                 if (symbolSamplesMessage == null)
                 {
-                    symbolsUnresolved.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
+                    symbolsUnresolved.Add(symbol, symbolsAndScoreAsDictionary[symbol]);
                 }
                 else
                 {
@@ -105,13 +105,13 @@ namespace PortfolioTrader.Commands
                     {
                         symbolsResolved.Add(symbol, new Position()
                         {
-                            NetBms = longSymbolAndScoreAsDictionary[symbol],
+                            NetBms = symbolsAndScoreAsDictionary[symbol],
                             ConId = contractDescriptions.First().Contract.ConId
                         });
                     }
                     else if (contractDescriptions.Count() == 0)
                     {
-                        symbolsUnresolved.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
+                        symbolsUnresolved.Add(symbol, symbolsAndScoreAsDictionary[symbol]);
                     }
                     else
                     {
@@ -125,11 +125,11 @@ namespace PortfolioTrader.Commands
                         {
                             symbolsResolved.Add(symbol, new Position()
                             {
-                                NetBms = longSymbolAndScoreAsDictionary[symbol],
+                                NetBms = symbolsAndScoreAsDictionary[symbol],
                                 ConId = contractDescriptionsNarrowed.First().Contract.ConId
                             });
                         }
-                        else symbolsMultiple.Add(symbol, longSymbolAndScoreAsDictionary[symbol]);
+                        else symbolsMultiple.Add(symbol, symbolsAndScoreAsDictionary[symbol]);
                     }
                 }
 
@@ -139,7 +139,7 @@ namespace PortfolioTrader.Commands
             return (symbolsResolved, symbolsMultiple, symbolsUnresolved);
         }
 
-        private static string BuildResolveSymbolsStartMessage(
+        private static string BuildResolveTwsStartMessage(
           bool isLong,
           Dictionary<string, int> symbols)
         {
@@ -148,7 +148,7 @@ namespace PortfolioTrader.Commands
             return message;
         }
 
-        private static string BuildResolveSymbolsEndMessage(
+        private static string BuildResolveTwsEndMessage(
            bool isLong,
            Dictionary<string, Position> resolved,
            Dictionary<string, int> multiple,
