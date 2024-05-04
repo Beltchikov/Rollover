@@ -36,7 +36,7 @@ namespace PortfolioTrader.Commands
             Dictionary<string, int> multiple = null!, unresolved = null!;
             await Task.Run(async () =>
                 (resolved, multiple, unresolved)
-                = await ResolveSymbols(symbolsAndScoreAsDictionary)
+                = await ResolveSymbolsByTws(symbolsAndScoreAsDictionary)
             );
 
             if (isLong)
@@ -57,7 +57,7 @@ namespace PortfolioTrader.Commands
         }
 
         private static async Task<(Dictionary<string, Position>, Dictionary<string, int>, Dictionary<string, int>)>
-            ResolveSymbols(Dictionary<string, int> longSymbolAndScoreAsDictionary)
+            ResolveSymbolsByTws(Dictionary<string, int> longSymbolAndScoreAsDictionary)
         {
             Dictionary<string, Position> symbolsResolved = new Dictionary<string, Position>();
             Dictionary<string, int> symbolsMultiple = new Dictionary<string, int>();
