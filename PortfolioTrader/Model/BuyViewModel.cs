@@ -395,7 +395,7 @@ JNJ	3
         private string TestDataLongRepository()
         {
             return @"PYPL	4
-NVDA 	3
+NVDA	3
 MSFT	3
 AMZN	3
 GOOG	3
@@ -685,7 +685,7 @@ YFI	3
         private string TestDataShortRepository()
         {
             return @"MATIC	4
-AAPL 	3
+AAPL	3
 TSLA	3
 IBM	2
 CAT	2

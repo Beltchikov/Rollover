@@ -15,7 +15,7 @@ namespace PortfolioTrader.Commands
     internal class SymbolCheck
     {
         private static IBuyModelVisitor _visitor = null!;
-        private static readonly IRepository _repository  = new JsonRepository();
+        private static readonly IRepository _repository = new JsonRepository();
 
         public static async Task Run(IBuyModelVisitor visitor)
         {
@@ -70,16 +70,16 @@ namespace PortfolioTrader.Commands
         {
             Dictionary<string, Position> symbolsResolved = new Dictionary<string, Position>();
             Dictionary<string, int> symbolsUnresolved = new Dictionary<string, int>();
-            foreach (string symbol in symbolsAndScoreAsDictionary.Keys)
+            foreach (var kvp in symbolsAndScoreAsDictionary)
             {
                 int? conId = null;
-                if ((conId = _repository.GetContractId(symbol)) != null)
-                    symbolsResolved.Add(symbol, new Position()
+                if ((conId = _repository.GetContractId(kvp.Key)) != null)
+                    symbolsResolved.Add(kvp.Key, new Position()
                     {
-                        NetBms = symbolsAndScoreAsDictionary[symbol],
-                        ConId = conId
+                        NetBms = kvp.Value,
+                        ConId = conId,
                     });
-                else symbolsUnresolved.Add(symbol, symbolsAndScoreAsDictionary[symbol]);
+                else symbolsUnresolved.Add(kvp.Key, kvp.Value);
             }
 
             return (symbolsResolved, symbolsUnresolved);
