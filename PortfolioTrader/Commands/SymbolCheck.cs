@@ -2,6 +2,7 @@
 using IbClient.IbHost;
 using IbClient.messages;
 using PortfolioTrader.Model;
+using PortfolioTrader.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace PortfolioTrader.Commands
     internal class SymbolCheck
     {
         private static IBuyModelVisitor _visitor = null!;
+        private static readonly IRepository _repository  = new JsonRepository();
 
         public static async Task Run(IBuyModelVisitor visitor)
         {
@@ -31,8 +33,9 @@ namespace PortfolioTrader.Commands
 
             (Dictionary<string, Position> resolvedByRepository, Dictionary<string, int> unresolvedByRepository)
                 = ResolveSymbolsByRepository(symbolsAndScoreAsDictionary);
+            // TODO message
 
-            // TODO use unresolvedByRepository instead symbolsAndScoreAsDictionary
+            // 
             var startMessage = BuildResolveSymbolsStartMessage(isLong: isLong, symbolsAndScoreAsDictionary);
             visitor.TwsMessageCollection?.Add(startMessage);
 
@@ -65,8 +68,16 @@ namespace PortfolioTrader.Commands
         {
             Dictionary<string, Position> symbolsResolved = new Dictionary<string, Position>();
             Dictionary<string, int> symbolsUnresolved = new Dictionary<string, int>();
-            foreach (var symbol in symbolsAndScoreAsDictionary.Keys)
+            foreach (string symbol in symbolsAndScoreAsDictionary.Keys)
             {
+                int? conId = null;
+                if ((conId = _repository.GetContractId(symbol)) != null)
+                    symbolsResolved.Add(symbol, new Position()
+                    {
+                        NetBms = symbolsAndScoreAsDictionary[symbol],
+                        ConId = conId
+                    });
+                else symbolsUnresolved.Add(symbol, symbolsAndScoreAsDictionary[symbol]);
             }
 
             return (symbolsResolved, symbolsUnresolved);
