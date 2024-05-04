@@ -48,13 +48,15 @@ namespace PortfolioTrader.Commands
 
             if (isLong)
             {
-                visitor.LongSymbolsResolved = SymbolsAndScore.PositionDictionaryToString(resolved);
+                visitor.LongSymbolsResolved = SymbolsAndScore.PositionDictionaryToString(
+                    resolved.Concat(resolvedByRepository).ToDictionary());
                 visitor.LongSymbolsMultiple = SymbolsAndScore.DictionaryToString(multiple);
                 visitor.LongSymbolsUnresolved = SymbolsAndScore.DictionaryToString(unresolved);
             }
             else
             {
-                visitor.ShortSymbolsResolved = SymbolsAndScore.PositionDictionaryToString(resolved);
+                visitor.ShortSymbolsResolved = SymbolsAndScore.PositionDictionaryToString(
+                    resolved.Concat(resolvedByRepository).ToDictionary());
                 visitor.ShortSymbolsMultiple = SymbolsAndScore.DictionaryToString(multiple);
                 visitor.ShortSymbolsUnresolved = SymbolsAndScore.DictionaryToString(unresolved);
             }
