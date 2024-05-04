@@ -19,43 +19,41 @@ namespace PortfolioTrader.Commands
         {
             _visitor = visitor;
 
-            // Long
-            var longSymbolAndScoreAsDictionary = SymbolsAndScore.StringToDictionary(visitor.LongSymbolsAsString);
-            visitor.TwsMessageCollection?.Add($"{longSymbolAndScoreAsDictionary.Count()} long symbols to resolve.");
+            await ResolveSymbolsAndLog(visitor, true);
+            await ResolveSymbolsAndLog(visitor, false);
+        }
 
-            Dictionary<string, Position> longResolved = null!;
-            Dictionary<string, int> longMultiple = null!, longUnresolved = null!;
+        private static async Task ResolveSymbolsAndLog(IBuyModelVisitor visitor, bool isLong)
+        {
+            var symbolsAndScoreAsDictionary = isLong
+                ? SymbolsAndScore.StringToDictionary(visitor.LongSymbolsAsString)
+                : SymbolsAndScore.StringToDictionary(visitor.ShortSymbolsAsString);
+           
+            var startMessage = BuildResolveSymbolsStartMessage(isLong: isLong, symbolsAndScoreAsDictionary);
+            visitor.TwsMessageCollection?.Add(startMessage);
+
+            Dictionary<string, Position> resolved = null!;
+            Dictionary<string, int> multiple = null!, unresolved = null!;
             await Task.Run(async () =>
-                (longResolved, longMultiple, longUnresolved)
-                = await ResolveSymbols(longSymbolAndScoreAsDictionary)
+                (resolved, multiple, unresolved)
+                = await ResolveSymbols(symbolsAndScoreAsDictionary)
             );
 
-            visitor.LongSymbolsResolved = SymbolsAndScore.PositionDictionaryToString(longResolved);
-            visitor.LongSymbolsMultiple = SymbolsAndScore.DictionaryToString(longMultiple);
-            visitor.LongSymbolsUnresolved = SymbolsAndScore.DictionaryToString(longUnresolved);
+            if (isLong)
+            {
+                visitor.LongSymbolsResolved = SymbolsAndScore.PositionDictionaryToString(resolved);
+                visitor.LongSymbolsMultiple = SymbolsAndScore.DictionaryToString(multiple);
+                visitor.LongSymbolsUnresolved = SymbolsAndScore.DictionaryToString(unresolved);
+            }
+            else
+            {
+                visitor.ShortSymbolsResolved = SymbolsAndScore.PositionDictionaryToString(resolved);
+                visitor.ShortSymbolsMultiple = SymbolsAndScore.DictionaryToString(multiple);
+                visitor.ShortSymbolsUnresolved = SymbolsAndScore.DictionaryToString(unresolved);
+            }
 
-            var longMessage = BuildLogMessage(isLong: true, longResolved, longMultiple, longUnresolved);
-            visitor.TwsMessageCollection?.Add(longMessage);
-
-            // Short
-            var shortSymbolAndScoreAsDictionary = SymbolsAndScore.StringToDictionary(visitor.ShortSymbolsAsString);
-            visitor.TwsMessageCollection?.Add($"{shortSymbolAndScoreAsDictionary.Count()} short symbols to resolve.");
-
-            Dictionary<string, Position> shortResolved = null!;
-            Dictionary<string, int> shortMultiple = null!, shortUnresolved = null!;
-            await Task.Run(async () => (shortResolved, shortMultiple, shortUnresolved)
-                = await ResolveSymbols(shortSymbolAndScoreAsDictionary));
-
-            visitor.ShortSymbolsResolved = SymbolsAndScore.PositionDictionaryToString(shortResolved);
-            visitor.ShortSymbolsMultiple = SymbolsAndScore.DictionaryToString(shortMultiple);
-            visitor.ShortSymbolsUnresolved = SymbolsAndScore.DictionaryToString(shortUnresolved);
-
-            var shortMessage = BuildLogMessage(isLong: false, shortResolved, shortMultiple, shortUnresolved);
-            visitor.TwsMessageCollection?.Add(shortMessage);
-
-            //
-            visitor.SymbolsChecked = true;
-            visitor.TwsMessageCollection?.Add("DONE! Check Symbols command executed.");
+            var endMessage = BuildResolveSymbolsEndMessage(isLong: isLong, resolved, multiple, unresolved);
+            visitor.TwsMessageCollection?.Add(endMessage);
         }
 
         private static async Task<(Dictionary<string, Position>, Dictionary<string, int>, Dictionary<string, int>)>
@@ -114,17 +112,24 @@ namespace PortfolioTrader.Commands
             return (symbolsResolved, symbolsMultiple, symbolsUnresolved);
         }
 
+        private static string BuildResolveSymbolsStartMessage(
+          bool isLong,
+          Dictionary<string, int> symbols)
+        {
+            string longOrShort = isLong ? " LONG" : " SHORT";
+            var message = $"{symbols.Count()} {longOrShort} symbols to resolve.";
+            return message;
+        }
 
-
-        private static string BuildLogMessage(
+        private static string BuildResolveSymbolsEndMessage(
            bool isLong,
            Dictionary<string, Position> resolved,
            Dictionary<string, int> multiple,
            Dictionary<string, int> unresolved)
         {
-            var longMessage = isLong ? "LONG" : "SHORT";
-            longMessage += $" resolved:{resolved.Count} multiple:{multiple.Count} unresolved:{unresolved.Count}";
-            return longMessage;
+            var message = isLong ? "LONG" : "SHORT";
+            message += $" resolved:{resolved.Count} multiple:{multiple.Count} unresolved:{unresolved.Count}";
+            return message;
         }
     }
 }
