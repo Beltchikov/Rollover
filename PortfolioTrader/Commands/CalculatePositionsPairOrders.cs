@@ -6,7 +6,7 @@ using TickType = IbClient.Types.TickType;
 
 namespace PortfolioTrader.Commands
 {
-    internal class CalculatePositions
+    internal class CalculatePositionsPairOrders
     {
         private static IBuyConfirmationModelVisitor _visitor = null!;
 
@@ -16,43 +16,43 @@ namespace PortfolioTrader.Commands
 
             _visitor.StocksToBuyAsString = await AddPriceColumnsAsync(_visitor.StocksToBuyAsString);
             _visitor.StocksToSellAsString = await AddPriceColumnsAsync(_visitor.StocksToSellAsString);
-            _visitor.TwsMessageCollection.Add("Calculate Positions command: price column added.");
+            _visitor.TwsMessageCollection.Add("Calculate Positions Pair Orders command: price column added.");
 
             (_visitor.StocksToBuyAsString, string stocksToBuyWithoutPriceAsString) = RemoveZeroPriceLines(_visitor.StocksToBuyAsString);
             (_visitor.StocksToSellAsString, string stocksToSellWithoutPriceAsString) = RemoveZeroPriceLines(_visitor.StocksToSellAsString);
             _visitor.StocksWithoutPrice = SymbolsAndScore.ConcatStringsWithNewLine(stocksToBuyWithoutPriceAsString, stocksToSellWithoutPriceAsString);
-            _visitor.TwsMessageCollection.Add("Calculate Positions command: zero price positions removed.");
+            _visitor.TwsMessageCollection.Add("Calculate Positions Pair Orders command: zero price positions removed.");
 
             (_visitor.StocksToBuyAsString, _visitor.StocksToSellAsString)
                 = EqualizeBuysAndSells(_visitor.StocksToBuyAsString, _visitor.StocksToSellAsString);
-            _visitor.TwsMessageCollection.Add("Calculate Positions command: buy and sell positions equalized after zero price removal.");
+            _visitor.TwsMessageCollection.Add("Calculate Positions Pair Orders command: buy and sell positions equalized after zero price removal.");
 
             _visitor.CalculateWeights();
-            _visitor.TwsMessageCollection.Add("Calculate Positions command: weights are calculated after zero price removal.");
+            _visitor.TwsMessageCollection.Add("Calculate Positions Pair Orders command: weights are calculated after zero price removal.");
 
             _visitor.StocksToBuyAsString = CalculateQuantity(_visitor.StocksToBuyAsString, _visitor.InvestmentAmount);
             _visitor.StocksToSellAsString = CalculateQuantity(_visitor.StocksToSellAsString, _visitor.InvestmentAmount);
-            _visitor.TwsMessageCollection.Add("Calculate Positions command: position sizes calculted.");
+            _visitor.TwsMessageCollection.Add("Calculate Positions Pair Orders command: position sizes calculted.");
 
             (_visitor.StocksToBuyAsString, string stocksWithoutMarginLong) = await AddMarginColumnsAsync(_visitor.StocksToBuyAsString);
             (_visitor.StocksToSellAsString, string stocksWithoutMarginShort) = await AddMarginColumnsAsync(_visitor.StocksToSellAsString);
             _visitor.StocksWithoutMargin = SymbolsAndScore.ConcatStringsWithNewLine(stocksWithoutMarginLong, stocksWithoutMarginShort);
-            _visitor.TwsMessageCollection.Add("Calculate Positions command: margin column added.");
+            _visitor.TwsMessageCollection.Add("Calculate Positions Pair Orders command: margin column added.");
 
             // Adding a margin column removes lines without margin after the addition. That's why recalculations are necessary.
             (_visitor.StocksToBuyAsString, _visitor.StocksToSellAsString)
                = EqualizeBuysAndSells(_visitor.StocksToBuyAsString, _visitor.StocksToSellAsString);
-            _visitor.TwsMessageCollection.Add("Calculate Positions command: buy and sell positions equalized after adding the margin column.");
+            _visitor.TwsMessageCollection.Add("Calculate Positions Pair Orders command: buy and sell positions equalized after adding the margin column.");
 
             _visitor.CalculateWeights();
-            _visitor.TwsMessageCollection.Add("Calculate Positions command: weights are recalculated after adding the margin column.");
+            _visitor.TwsMessageCollection.Add("Calculate Positions Pair Orders command: weights are recalculated after adding the margin column.");
 
             _visitor.StocksToBuyAsString = CalculateQuantity(_visitor.StocksToBuyAsString, _visitor.InvestmentAmount);
             _visitor.StocksToSellAsString = CalculateQuantity(_visitor.StocksToSellAsString, _visitor.InvestmentAmount);
-            _visitor.TwsMessageCollection.Add("Calculate Positions command: position sizes recalculted after adding the margin column.");
+            _visitor.TwsMessageCollection.Add("Calculate Positions Pair Orders command: position sizes recalculted after adding the margin column.");
 
             _visitor.ClearQueueOrderOpenMessage();
-            _visitor.TwsMessageCollection.Add("Calculate Positions command: open order queue cleared.");
+            _visitor.TwsMessageCollection.Add("Calculate Positions Pair Orders command: open order queue cleared.");
 
             _visitor.TwsMessageCollection.Add($"DONE! Calculated Position command executed.");
             _visitor.PositionsCalculated = _visitor.StocksToBuyAsString != "" && _visitor.StocksToSellAsString != "";
