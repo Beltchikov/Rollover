@@ -62,7 +62,7 @@ namespace PortfolioTrader.Commands
             
             MessageBox.Show("TODO: CalculatePositionsPairOrders");
 
-            visitor.PairOrdersAsString = await AddPriceColumnsAsync(visitor);
+            //visitor.PairOrdersAsString = await AddPriceColumnsAsync(visitor);
             visitor.TwsMessageCollection.Add("Calculate Positions Pair Orders command: price column added.");
 
         }
