@@ -36,7 +36,7 @@ namespace PortfolioTrader
 
         private void ApplyBusinessRules()
         {
-            var model = DataContext as BuyConfirmationViewModel;
+            var model = DataContext as PairOrdersConfirmationViewModel;
             if (model == null) throw new Exception("Unexpected. model is null");
 
             var stocksToBuyDictionary = SymbolsAndScore.StringToPositionDictionary(model.StocksToBuyAsString);

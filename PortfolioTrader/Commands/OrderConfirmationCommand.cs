@@ -11,9 +11,18 @@ namespace PortfolioTrader.Commands
     {
         public static void Run(IBuyModelVisitor visitor)
         {
-            // TODO
-            var buyConfirmationWindow = new BuyConfirmationWindow(visitor);
-            buyConfirmationWindow.ShowDialog(); 
+            if (MessageBox.Show("Do you want to use pair orders?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                var pairOrdersConfirmationWindow = new PairOrdersConfirmationWindow(visitor);
+                pairOrdersConfirmationWindow.ShowDialog();
+            }
+            else
+            {
+                var buyConfirmationWindow = new BuyConfirmationWindow(visitor);
+                buyConfirmationWindow.ShowDialog();
+            }
+
+           
         }
     }
 }
