@@ -24,6 +24,7 @@ namespace PortfolioTrader.Model
         private string _stocksWithoutMargin;
         private string _stocksToBuyAsString;
         private string _stocksToSellAsString;
+        private string _pairOrdersAsString;
         private string _ordersLongWithError;
         private string _ordersShortWithError;
         private bool _positionsCalculated;
@@ -45,8 +46,7 @@ namespace PortfolioTrader.Model
 
             InvestmentAmount = 400000;
             BusinessLogicInformation = BuildBusinessLogicInformation();
-            StocksToBuyAsString = "TODO 3";
-            StocksToSellAsString = "TODO 4";
+            PairOrdersAsString = "TODO";
         }
 
         private string BuildBusinessLogicInformation()
@@ -163,6 +163,14 @@ is kept equal.
             }
         }
 
+        public string PairOrdersAsString
+        {
+            get => _pairOrdersAsString;
+            set
+            {
+                SetProperty(ref _pairOrdersAsString, value);
+            }
+        }
 
         public string OrdersLongWithError
         {

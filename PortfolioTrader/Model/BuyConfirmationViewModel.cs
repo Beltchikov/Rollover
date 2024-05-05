@@ -45,8 +45,6 @@ namespace PortfolioTrader.Model
 
             InvestmentAmount = 400000;
             BusinessLogicInformation = BuildBusinessLogicInformation();
-            StocksToBuyAsString = "TODO 3";
-            StocksToSellAsString = "TODO 4";
         }
 
         private string BuildBusinessLogicInformation()

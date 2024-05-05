@@ -95,19 +95,29 @@
               Background="#FFFFC7CE">
             </TextBox>
 
-            <Label Grid.Column="3" 
+            <Label Grid.Column="3" Grid.ColumnSpan="2"
+                 Content="BuySymb | BuyNetBms | BuyConId | BuyPriceCt | BuyPriceType |  BuyWeight | BuyQty | BuyMargin | SellSymb | SellNetBms | SellConId | SellPriceCt | SellPriceType |  SellWeight | SellQty | SellMargin | TotMargin" 
+                 Foreground="White" VerticalAlignment="Bottom"
+                 Margin="5 0 0 0"/>
+            <TextBox Name="txtPairOrders" Grid.Row="1" Grid.Column="3" Grid.RowSpan="3" Grid.ColumnSpan="2" 
+                TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
+                Text="{Binding PairOrdersAsString}" VerticalAlignment="Stretch"
+                Margin="10 0 0 0" FontSize="10">
+            </TextBox>
+
+            <Label Grid.Column="3" Grid.Row="4"
                 Content="BUY: Symb | NetBms | ConId | PriceCt | PriceType |  Weight | Qty | Margin" 
                 Foreground="White" VerticalAlignment="Bottom"
                 Margin="5 0 0 0"/>
-            <TextBox Name="txtBuy" Grid.Row="1" Grid.Column="3" Grid.RowSpan="5" 
+            <TextBox Name="txtBuy" Grid.Row="5" Grid.Column="3" Grid.RowSpan="5" 
            TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
            Text="{Binding StocksToBuyAsString}" VerticalAlignment="Stretch"
            Margin="10 0 0 0" FontSize="10">
             </TextBox>
 
-            <Label Grid.Column="4" Content="SELL:  Symb | NetBms | ConId | PriceCt | PriceType | Weight | Qty | Margin " Foreground="White" 
+            <Label Grid.Column="4" Grid.Row="4" Content="SELL:  Symb | NetBms | ConId | PriceCt | PriceType | Weight | Qty | Margin " Foreground="White" 
          Margin="10 0 0 0" VerticalAlignment="Bottom"/>
-            <TextBox Name="txtSell" Grid.Row="1" Grid.Column="4" Grid.RowSpan="5" 
+            <TextBox Name="txtSell" Grid.Row="5" Grid.Column="4" Grid.RowSpan="5" 
             TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
             Text="{Binding StocksToSellAsString}" VerticalAlignment="Stretch"
            Margin="10 0 0 0" FontSize="10">
