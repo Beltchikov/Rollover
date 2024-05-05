@@ -27,11 +27,71 @@ namespace PortfolioTrader
             DataContext = new PairOrdersConfirmationViewModel()
             {
                 ConnectedToTws = visitor.ConnectedToTws,
-                StocksToBuyAsString = visitor.LongSymbolsResolved,
-                StocksToSellAsString = visitor.ShortSymbolsResolved
+                StocksToBuyAsString = visitor.LongSymbolsResolved,  // Remove later TODO
+                StocksToSellAsString = visitor.ShortSymbolsResolved, // Remove later TODO
+
+                PairOrdersAsString = PairOrdersAsString(visitor)
             };
 
             ApplyBusinessRules();
+        }
+
+        private string PairOrdersAsString(IBuyModelVisitor visitor)
+        {
+            Dictionary<string, PairOrderPosition> pairOrderDictionary = new();
+                        
+            var stocksToBuyDictionary = SymbolsAndScore.StringToPositionDictionary(visitor.LongSymbolsResolved);
+            var stocksToSellDictionary = SymbolsAndScore.StringToPositionDictionary(visitor.ShortSymbolsResolved);
+            if (stocksToBuyDictionary.Keys.Count != stocksToSellDictionary.Keys.Count)
+                throw new Exception("Unexpected. The number of symbols in the buy and sell lists is not equal.");
+            
+            var buyKeys = stocksToBuyDictionary.Keys.ToList(); 
+            var sellKeys = stocksToSellDictionary.Keys.ToList(); 
+            for (int i = 0; i < buyKeys.Count; i++)
+            {
+                var buyKey = buyKeys[i];
+                var sellKey = sellKeys[i];
+                var buyPosition = stocksToBuyDictionary[buyKey];
+                var sellPosition = stocksToSellDictionary[sellKey];
+
+                pairOrderDictionary.Add($"{buyKey} {sellKey}" , new PairOrderPosition()
+                { 
+                    BuySymbol = buyKey,
+                    BuyNetBms = buyPosition.NetBms,
+                    BuyConId = buyPosition.ConId,
+                    BuyPriceInCents = buyPosition.PriceInCents,
+                    BuyPriceType = buyPosition.PriceType,
+                    BuyWeight = buyPosition.Weight,
+                    BuyQuantity = buyPosition.Quantity,
+                    BuyMargin = buyPosition.Margin,
+                    BuyMarketValue = CalculateMarketValue(buyPosition.PriceInCents, buyPosition.Quantity),
+
+                    SellSymbol = sellKey,
+                    SellNetBms = sellPosition.NetBms,
+                    SellConId = sellPosition.ConId,
+                    SellPriceInCents = sellPosition.PriceInCents,
+                    SellPriceType = sellPosition.PriceType,
+                    SellWeight = sellPosition.Weight,
+                    SellQuantity = sellPosition.Quantity,
+                    SellMargin = sellPosition.Margin,
+                    SellMarketValue = CalculateMarketValue(sellPosition.PriceInCents, sellPosition.Quantity),
+
+                    TotalMargin = buyPosition.Margin + sellPosition.Margin,
+                    Delta = (buyPosition.Margin + sellPosition.Margin)/(buyPosition.Margin - sellPosition.Margin)
+                });
+
+
+            }
+
+            return SymbolsAndScore.PairOrderPositionDictionaryToString(pairOrderDictionary);
+        }
+
+        private int? CalculateMarketValue(int? priceInCents, int? quantity)
+        {
+            if(priceInCents == null) return null;   
+            if(quantity == null) return null;
+
+            return (int)Math.Floor((double)quantity.Value * (double)priceInCents.Value / 100d);
         }
 
         private void ApplyBusinessRules()

@@ -85,5 +85,10 @@ namespace PortfolioTrader.Model
                 ? string2
                 : string1 + Environment.NewLine + string2;
         }
+
+        internal static string PairOrderPositionDictionaryToString(Dictionary<string, PairOrderPosition> pairOrderDictionary)
+        {
+            return "TODO SymbolsAndScore";
+        }
     }
 }
