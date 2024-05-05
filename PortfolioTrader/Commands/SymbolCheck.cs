@@ -69,8 +69,8 @@ namespace PortfolioTrader.Commands
         private static async Task ResolveSymbolsAndLog(IBuyModelVisitor visitor, bool isLong)
         {
             var symbolsAndScoreAsDictionary = isLong
-                ? SymbolsAndScore.StringToDictionary(visitor.LongSymbolsAsString)
-                : SymbolsAndScore.StringToDictionary(visitor.ShortSymbolsAsString);
+                ? SymbolsAndScore.StringToDictionary(visitor.LongSymbolsResolved)
+                : SymbolsAndScore.StringToDictionary(visitor.ShortSymbolsResolved);
 
             // ResolveSymbolsByRepository
             (Dictionary<string, Position> resolvedByRepository, Dictionary<string, int> unresolvedByRepository)
