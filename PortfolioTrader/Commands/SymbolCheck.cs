@@ -53,14 +53,14 @@ namespace PortfolioTrader.Commands
             if (isLong)
             {
                 visitor.LongSymbolsResolved = SymbolsAndScore.DictionaryToString(resultDictionary);
-                visitor.LongSymbolsUnresolved = notTradebleList
-                    .Select(nt => nt + " NT!")
-                    .Aggregate((r, n) => r + Environment.NewLine + n);
+                if(notTradebleList.Any()) visitor.LongSymbolsUnresolved = notTradebleList
+                        .Select(nt => nt + " NT!")
+                        .Aggregate((r, n) => r + Environment.NewLine + n);
             }
             else
             {
                 visitor.ShortSymbolsResolved = SymbolsAndScore.DictionaryToString(resultDictionary);
-                visitor.ShortSymbolsUnresolved = notTradebleList
+                if (notTradebleList.Any()) visitor.ShortSymbolsUnresolved = notTradebleList
                     .Select(nt => nt + " NT!")
                     .Aggregate((r, n) => r + Environment.NewLine + n);
             }
