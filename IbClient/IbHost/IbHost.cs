@@ -195,7 +195,7 @@ namespace IbClient.IbHost
                     reqId,
                     startTime,
                     timeout,
-                    (msg => msg.Price != 0),
+                    (msg => msg.Price > 0),
                     out tickPriceMessage,
                     out errorMessage)) { }
             });
