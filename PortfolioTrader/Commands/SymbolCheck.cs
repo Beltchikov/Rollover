@@ -75,7 +75,8 @@ namespace PortfolioTrader.Commands
             // ResolveSymbolsByRepository
             (Dictionary<string, Position> resolvedByRepository, Dictionary<string, int> unresolvedByRepository)
                 = ResolveSymbolsByRepository(symbolsAndScoreAsDictionary);
-            visitor.TwsMessageCollection?.Add($"{resolvedByRepository.Count} symbols resolved by JSON repository. {unresolvedByRepository} remaining.");
+            visitor.TwsMessageCollection
+                ?.Add($"{resolvedByRepository.Count} symbols resolved by JSON repository. {unresolvedByRepository.Count} remaining.");
 
             // ResolveSymbolsByTws
             var startMessage = BuildResolveTwsStartMessage(isLong: isLong, unresolvedByRepository);

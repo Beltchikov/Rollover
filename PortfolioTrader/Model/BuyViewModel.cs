@@ -55,13 +55,13 @@ namespace PortfolioTrader.Model
 
             //LongSymbolsAsString = TestDataLong();
             //LongSymbolsAsString = TestDataLongRepository();
-            LongSymbolsAsString = TestDataLongNotTradeable();
-            //LongSymbolsAsString = TestDataLong10Symbols();
+            //LongSymbolsAsString = TestDataLongNotTradeable();
+            LongSymbolsAsString = TestDataLong10Symbols();
             
             //ShortSymbolsAsString = TestDataShort();
             //ShortSymbolsAsString = TestDataShortRepository();
-            ShortSymbolsAsString = TestDataShortNotTradeable();
-            //ShortSymbolsAsString = TestDataShort10Symbols();
+            //ShortSymbolsAsString = TestDataShortNotTradeable();
+            ShortSymbolsAsString = TestDataShort10Symbols();
         }
 
         public IIbHost IbHost => ibHost;
