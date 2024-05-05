@@ -24,7 +24,7 @@ namespace PortfolioTrader
         public PairOrdersConfirmationWindow(IBuyModelVisitor visitor)
         {
             InitializeComponent();
-            DataContext = new BuyConfirmationViewModel()
+            DataContext = new PairOrdersConfirmationViewModel()
             {
                 ConnectedToTws = visitor.ConnectedToTws,
                 StocksToBuyAsString = visitor.LongSymbolsResolved,
