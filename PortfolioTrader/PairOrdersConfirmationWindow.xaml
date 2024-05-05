@@ -6,7 +6,7 @@
         xmlns:tws_uc="clr-namespace:TwsUserControls;assembly=TwsUserControls"
         xmlns:local="clr-namespace:PortfolioTrader"
         mc:Ignorable="d"
-        Title="Pair Orders Confirmation Window" Width="1380" Height="900" >
+        Title="Pair Orders Confirmation Window" Width="1420" Height="900" >
     <Window.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="Black"/>
@@ -45,8 +45,8 @@
                 <ColumnDefinition Width="80"/>
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="40"/>
-                <ColumnDefinition Width="500"/>
-                <ColumnDefinition Width="500"/>
+                <ColumnDefinition Width="520"/>
+                <ColumnDefinition Width="520"/>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
@@ -96,9 +96,9 @@
             </TextBox>
 
             <Label Grid.Column="3" Grid.ColumnSpan="2"
-                 Content="BuySymb | BuyNetBms | BuyConId | BuyPriceCt | BuyPriceType |  BuyWeight | BuyQty | BuyMargin | SellSymb | SellNetBms | SellConId | SellPriceCt | SellPriceType |  SellWeight | SellQty | SellMargin | TotMargin" 
+                 Content="BuySymb | BuyNetBms | BuyConId | BuyPriceCt | BuyPriceT |  BuyWeight | BuyQty | BuyMargin | BuyMktV | SellSymb | SellNetBms | SellConId | SellPriceCt | SellPriceT |  SellWeight | SellQty | SellMargin | SellMktV | TotMargin | Delta" 
                  Foreground="White" VerticalAlignment="Bottom"
-                 Margin="5 0 0 0"/>
+                 Margin="5 0 0 0" FontSize="10"/>
             <TextBox Name="txtPairOrders" Grid.Row="1" Grid.Column="3" Grid.RowSpan="3" Grid.ColumnSpan="2" 
                 TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
                 Text="{Binding PairOrdersAsString}" VerticalAlignment="Stretch"
