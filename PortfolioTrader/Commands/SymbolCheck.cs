@@ -54,14 +54,14 @@ namespace PortfolioTrader.Commands
             {
                 visitor.LongSymbolsResolved = SymbolsAndScore.DictionaryToString(resultDictionary);
                 visitor.LongSymbolsUnresolved = notTradebleList
-                    .Select(nt => nt + " NOT TRADEABLE")
+                    .Select(nt => nt + " NT!")
                     .Aggregate((r, n) => r + Environment.NewLine + n);
             }
             else
             {
                 visitor.ShortSymbolsResolved = SymbolsAndScore.DictionaryToString(resultDictionary);
                 visitor.ShortSymbolsUnresolved = notTradebleList
-                    .Select(nt => nt + " NOT TRADEABLE")
+                    .Select(nt => nt + " NT!")
                     .Aggregate((r, n) => r + Environment.NewLine + n);
             }
         }
@@ -101,13 +101,13 @@ namespace PortfolioTrader.Commands
             {
                 visitor.LongSymbolsResolved = SymbolsAndScore.PositionDictionaryToString(allResolved);
                 visitor.LongSymbolsMultiple = SymbolsAndScore.DictionaryToString(multiple);
-                visitor.LongSymbolsUnresolved = SymbolsAndScore.DictionaryToString(unresolved);
+                visitor.LongSymbolsUnresolved += Environment.NewLine + SymbolsAndScore.DictionaryToString(unresolved);
             }
             else
             {
                 visitor.ShortSymbolsResolved = SymbolsAndScore.PositionDictionaryToString(allResolved);
                 visitor.ShortSymbolsMultiple = SymbolsAndScore.DictionaryToString(multiple);
-                visitor.ShortSymbolsUnresolved = SymbolsAndScore.DictionaryToString(unresolved);
+                visitor.ShortSymbolsUnresolved += Environment.NewLine + SymbolsAndScore.DictionaryToString(unresolved);
             }
 
             var endMessage = BuildResolveTwsEndMessage(isLong: isLong, resolvedByTws, multiple, unresolved);
