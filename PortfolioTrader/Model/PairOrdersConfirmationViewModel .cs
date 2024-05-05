@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace PortfolioTrader.Model
 {
-    public class PairOrdersConfirmationViewModel : ObservableObject, IIbConsumer, IBuyConfirmationModelVisitor
+    public class PairOrdersConfirmationViewModel : ObservableObject, IIbConsumer, IPairOrdersConfirmationlVisitor
     {
         IIbHostQueue ibHostQueue = null!;
         IIbHost ibHost = null!;
@@ -42,7 +42,7 @@ namespace PortfolioTrader.Model
 
             ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
             CalculatePositionsCommand = new RelayCommand(async () => await CalculatePositionsPairOrders.RunAsync(this));
-            SendOrdersCommand = new RelayCommand(async () => await SendOrders.RunAsync(this));
+            SendOrdersCommand = new RelayCommand(async () => await SendPairOrders.RunAsync(this));
 
             InvestmentAmount = 400000;
             BusinessLogicInformation = BuildBusinessLogicInformation();

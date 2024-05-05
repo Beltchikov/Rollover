@@ -9,9 +9,9 @@ namespace PortfolioTrader.Commands
 {
     internal class CalculatePositionsPairOrders
     {
-        private static IBuyConfirmationModelVisitor _visitor = null!;
+        //private static IPairOrdersConfirmationlVisitor _visitor = null!;
 
-        public static async Task RunAsync(IBuyConfirmationModelVisitor visitor)
+        public static async Task RunAsync(IPairOrdersConfirmationlVisitor visitor)
         {
             //_visitor = visitor;
 
@@ -58,7 +58,12 @@ namespace PortfolioTrader.Commands
             //_visitor.TwsMessageCollection.Add($"DONE! Calculated Position command executed.");
             //_visitor.PositionsCalculated = _visitor.StocksToBuyAsString != "" && _visitor.StocksToSellAsString != "";
 
+            //***************************************************
+            
             MessageBox.Show("TODO: CalculatePositionsPairOrders");
+
+            visitor.PairOrdersAsString = await AddPriceColumnsAsync(visitor);
+            visitor.TwsMessageCollection.Add("Calculate Positions Pair Orders command: price column added.");
 
         }
 
@@ -116,9 +121,9 @@ namespace PortfolioTrader.Commands
             return (SymbolsAndScore.PositionDictionaryToString(resultDictionary), stocksWithoutPriceString);
         }
 
-        private static async Task<string> AddPriceColumnsAsync(string stocksAsString)
+        private static async Task<string> AddPriceColumnsAsync(IPairOrdersConfirmationlVisitor visitor)
         {
-            var stocksDictionary = SymbolsAndScore.StringToPositionDictionary(stocksAsString);
+            var stocksDictionary = SymbolsAndScore.StringToPositionDictionary(visitor.PairOrdersAsString);
             var resultDictionary = new Dictionary<string, Position>();
 
             foreach (var kvp in stocksDictionary)
@@ -127,8 +132,8 @@ namespace PortfolioTrader.Commands
                 var contract = new Contract() { ConId = kvp.Value.ConId.Value, Exchange = App.EXCHANGE };
 
                 (double? price, TickType? tickType, string error) 
-                    = await _visitor.IbHost.RequestMktData(contract, "", true, false, null, App.TIMEOUT * 12);
-                if(error!= "") _visitor.TwsMessageCollection.Add(error);
+                    = await visitor.IbHost.RequestMktData(contract, "", true, false, null, App.TIMEOUT * 12);
+                if(error!= "") visitor.TwsMessageCollection.Add(error);
                 resultDictionary[kvp.Key] = kvp.Value;
 
                 int priceInCentsNotNullable = (int)((price == null ? 0d : price.Value) * 100d);
@@ -164,9 +169,9 @@ namespace PortfolioTrader.Commands
             return SymbolsAndScore.PositionDictionaryToString(resultDictionary);
         }
 
-        private static async Task<(string, string)> AddMarginColumnsAsync(string stocksAsString)
+        private static async Task<(string, string)> AddMarginColumnsAsync(IPairOrdersConfirmationlVisitor visitor)
         {
-            var stocksDictionary = SymbolsAndScore.StringToPositionDictionary(stocksAsString);
+            var stocksDictionary = SymbolsAndScore.StringToPositionDictionary(visitor.PairOrdersAsString);
             var resultDictionary = new Dictionary<string, Position>();
             var positionsWithoutMargin = new List<string>();
 
@@ -176,12 +181,12 @@ namespace PortfolioTrader.Commands
                 var contract = new Contract() { ConId = kvp.Value.ConId.Value, Exchange = App.EXCHANGE };
 
                 if (kvp.Value.Quantity == null) throw new Exception("Unexpected. Quantity is null");
-                OrderStateOrError orderStateOrError = await _visitor.IbHost.WhatIfOrderStateFromContract(contract, kvp.Value.Quantity.Value, App.TIMEOUT * 2);
+                OrderStateOrError orderStateOrError = await visitor.IbHost.WhatIfOrderStateFromContract(contract, kvp.Value.Quantity.Value, App.TIMEOUT * 2);
 
                 if (orderStateOrError.ErrorMessage != "")
                 {
                     positionsWithoutMargin.Add(kvp.Key);
-                    _visitor.TwsMessageCollection.Add(orderStateOrError.ErrorMessage);
+                    visitor.TwsMessageCollection.Add(orderStateOrError.ErrorMessage);
 
                 }
                 else if (orderStateOrError.OrderState != null)
