@@ -205,84 +205,6 @@ namespace IbClient.IbHost
             return (tickPriceMessage?.Price, (TickType?)tickPriceMessage?.Field, errorText);
         }
 
-        // TODO make generic
-        private bool LoopMustGoOnMktData(
-            int reqId,
-            DateTime startTime,
-            int timeout,
-            Predicate<TickPriceMessage> messageIsValid,
-            out TickPriceMessage tickPriceMessage,
-            out ErrorMessage errorMessage)
-        {
-            _queueTickPriceMessage.DequeueAllTickPriceMessagesExcept(reqId);
-
-            if (_queueTickPriceMessage.DequeueMessage(reqId, out tickPriceMessage))
-            {
-                if (tickPriceMessage != null)
-                {
-                    if (messageIsValid(tickPriceMessage))
-                    {
-                        errorMessage = null;
-                        return false;
-                    }
-                    else return !HasErrorOrTimeout(_queueTickPriceMessage, reqId, startTime, timeout, out errorMessage);
-                }
-                else
-                {
-                    return !HasErrorOrTimeout(_queueTickPriceMessage, reqId, startTime, timeout, out errorMessage);
-                }
-            }
-            else
-            {
-                return !HasErrorOrTimeout(_queueTickPriceMessage, reqId, startTime, timeout, out errorMessage);
-            }
-        }
-
-        // TODO make generic
-        private bool LoopMustGoOnPlaceOrder(
-            int nextOrderId,
-            DateTime startTime,
-            int timeout,
-            Predicate<OpenOrderMessage> messageIsValid,
-            out OpenOrderMessage openOrderMessage,
-            out ErrorMessage errorMessage)
-        {
-            if (_queueOrderOpenMessage.DequeueMessage(nextOrderId, out openOrderMessage))
-            {
-                if (openOrderMessage != null)
-                {
-                    if (messageIsValid(openOrderMessage))
-                    {
-                        errorMessage = null;
-                        return false;
-                    }
-                    else return !HasErrorOrTimeout(_queueOrderOpenMessage, nextOrderId, startTime, timeout, out errorMessage);
-                }
-                else
-                {
-                    return !HasErrorOrTimeout(_queueOrderOpenMessage, nextOrderId, startTime, timeout, out errorMessage);
-                }
-            }
-            else
-            {
-                return !HasErrorOrTimeout(_queueOrderOpenMessage, nextOrderId, startTime, timeout, out errorMessage);
-            }
-        }
-
-        private bool HasErrorOrTimeout(IIbHostQueue _queue, int reqId, DateTime startTime, int timeout, out ErrorMessage errorMessage)
-        {
-            if (_queue.DequeueMessage(reqId, out errorMessage)) return true;
-            else
-            {
-                if ((DateTime.Now - startTime).TotalMilliseconds >= timeout)
-                {
-                    errorMessage = new ErrorMessage(reqId, 0, $"Timeout {timeout} ms.");
-                    return true;
-                }
-                else return false;
-            }
-        }
-
         // TODO
         // eventually return simply OrderState
         public async Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout)
@@ -409,6 +331,85 @@ namespace IbClient.IbHost
             }
             return result;
         }
+
+        // TODO make generic
+        private bool LoopMustGoOnMktData(
+            int reqId,
+            DateTime startTime,
+            int timeout,
+            Predicate<TickPriceMessage> messageIsValid,
+            out TickPriceMessage tickPriceMessage,
+            out ErrorMessage errorMessage)
+        {
+            _queueTickPriceMessage.DequeueAllTickPriceMessagesExcept(reqId);
+
+            if (_queueTickPriceMessage.DequeueMessage(reqId, out tickPriceMessage))
+            {
+                if (tickPriceMessage != null)
+                {
+                    if (messageIsValid(tickPriceMessage))
+                    {
+                        errorMessage = null;
+                        return false;
+                    }
+                    else return !HasErrorOrTimeout(_queueTickPriceMessage, reqId, startTime, timeout, out errorMessage);
+                }
+                else
+                {
+                    return !HasErrorOrTimeout(_queueTickPriceMessage, reqId, startTime, timeout, out errorMessage);
+                }
+            }
+            else
+            {
+                return !HasErrorOrTimeout(_queueTickPriceMessage, reqId, startTime, timeout, out errorMessage);
+            }
+        }
+
+        // TODO make generic
+        private bool LoopMustGoOnPlaceOrder(
+            int nextOrderId,
+            DateTime startTime,
+            int timeout,
+            Predicate<OpenOrderMessage> messageIsValid,
+            out OpenOrderMessage openOrderMessage,
+            out ErrorMessage errorMessage)
+        {
+            if (_queueOrderOpenMessage.DequeueMessage(nextOrderId, out openOrderMessage))
+            {
+                if (openOrderMessage != null)
+                {
+                    if (messageIsValid(openOrderMessage))
+                    {
+                        errorMessage = null;
+                        return false;
+                    }
+                    else return !HasErrorOrTimeout(_queueOrderOpenMessage, nextOrderId, startTime, timeout, out errorMessage);
+                }
+                else
+                {
+                    return !HasErrorOrTimeout(_queueOrderOpenMessage, nextOrderId, startTime, timeout, out errorMessage);
+                }
+            }
+            else
+            {
+                return !HasErrorOrTimeout(_queueOrderOpenMessage, nextOrderId, startTime, timeout, out errorMessage);
+            }
+        }
+
+        private bool HasErrorOrTimeout(IIbHostQueue _queue, int reqId, DateTime startTime, int timeout, out ErrorMessage errorMessage)
+        {
+            if (_queue.DequeueMessage(reqId, out errorMessage)) return true;
+            else
+            {
+                if ((DateTime.Now - startTime).TotalMilliseconds >= timeout)
+                {
+                    errorMessage = new ErrorMessage(reqId, 0, $"Timeout {timeout} ms.");
+                    return true;
+                }
+                else return false;
+            }
+        }
+
         private void _ibClient_ManagedAccounts(ManagedAccountsMessage message)
         {
             if (Consumer == null)
