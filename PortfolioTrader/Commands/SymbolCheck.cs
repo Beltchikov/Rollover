@@ -6,9 +6,11 @@ using PortfolioTrader.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace PortfolioTrader.Commands
 {
@@ -21,11 +23,47 @@ namespace PortfolioTrader.Commands
         {
             _visitor = visitor;
 
-            await ResolveSymbolsAndLog(visitor, true);
-            await ResolveSymbolsAndLog(visitor, false);
+            RemoveNotTradeableSymbols(visitor, isLong: true);
+            RemoveNotTradeableSymbols(visitor, isLong: false);
+
+            await ResolveSymbolsAndLog(visitor, isLong: true);
+            await ResolveSymbolsAndLog(visitor, isLong: false);
 
             visitor.SymbolsChecked = true;
             visitor.TwsMessageCollection?.Add("DONE! Check Symbols command executed.");
+        }
+
+        private static void RemoveNotTradeableSymbols(IBuyModelVisitor visitor, bool isLong)
+        {
+            Dictionary<string, int> resultDictionary = new Dictionary<string, int>();
+            List<string> notTradebleList = new();
+            var symbolsAndScoreAsDictionary = isLong
+                ? SymbolsAndScore.StringToDictionary(visitor.LongSymbolsAsString)
+                : SymbolsAndScore.StringToDictionary(visitor.ShortSymbolsAsString);
+
+            foreach (var kvp in symbolsAndScoreAsDictionary)
+            {
+                if (_repository.NotTradebleSymbols().Contains(kvp.Key))
+                    notTradebleList.Add(kvp.Key);
+                else
+                    resultDictionary.Add(kvp.Key, kvp.Value);
+            }
+
+            // Assign results
+            if (isLong)
+            {
+                visitor.LongSymbolsResolved = SymbolsAndScore.DictionaryToString(resultDictionary);
+                visitor.LongSymbolsUnresolved = notTradebleList
+                    .Select(nt => nt + " NOT TRADEABLE")
+                    .Aggregate((r, n) => r + Environment.NewLine + n);
+            }
+            else
+            {
+                visitor.ShortSymbolsResolved = SymbolsAndScore.DictionaryToString(resultDictionary);
+                visitor.ShortSymbolsUnresolved = notTradebleList
+                    .Select(nt => nt + " NOT TRADEABLE")
+                    .Aggregate((r, n) => r + Environment.NewLine + n);
+            }
         }
 
         private static async Task ResolveSymbolsAndLog(IBuyModelVisitor visitor, bool isLong)
@@ -52,9 +90,9 @@ namespace PortfolioTrader.Commands
 
             // Join resolvedByRepository and resolvedByTws
             Dictionary<string, Position> allResolved = [];
-            foreach ( var key in symbolsAndScoreAsDictionary.Keys) 
-            { 
-                if(resolvedByRepository.ContainsKey(key)) allResolved.Add(key, resolvedByRepository[key]);  
+            foreach (var key in symbolsAndScoreAsDictionary.Keys)
+            {
+                if (resolvedByRepository.ContainsKey(key)) allResolved.Add(key, resolvedByRepository[key]);
                 else if (resolvedByTws.ContainsKey(key)) allResolved.Add(key, resolvedByTws[key]);
             }
 

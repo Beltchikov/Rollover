@@ -19,7 +19,7 @@ namespace PortfolioTrader.Repository
         public JsonRepository()
         {
             string dir = Directory.GetCurrentDirectory();
-            
+
             string knownSymbolsAsString = File.ReadAllText(Path.Combine(dir, KNOWN_SYMBOLS_PATH));
             _knownSymbols = JsonSerializer.Deserialize<List<KnownSymbol>>(knownSymbolsAsString)!;
 
@@ -29,7 +29,12 @@ namespace PortfolioTrader.Repository
 
         public int? GetContractId(string symbol)
         {
-            return _knownSymbols.FirstOrDefault(s=>s.Name == symbol)?.ContractId;
+            return _knownSymbols.FirstOrDefault(s => s.Name == symbol)?.ContractId;
+        }
+
+        public IEnumerable<string> NotTradebleSymbols()
+        {
+            return _notTradeableSymbols;
         }
     }
 }
