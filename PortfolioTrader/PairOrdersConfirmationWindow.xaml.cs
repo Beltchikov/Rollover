@@ -60,10 +60,9 @@ namespace PortfolioTrader
                 var sellKey = sellKeys[i];
                 var buyPosition = stocksToBuyDictionary[buyKey];
                 var sellPosition = stocksToSellDictionary[sellKey];
-
+                    
                 pairOrderDictionary.Add($"{buyKey}-{sellKey}" , new PairOrderPosition()
                 { 
-                    BuySymbol = buyKey,
                     BuyNetBms = buyPosition.NetBms,
                     BuyConId = buyPosition.ConId,
                     BuyPriceInCents = buyPosition.PriceInCents,
@@ -73,7 +72,6 @@ namespace PortfolioTrader
                     BuyMargin = buyPosition.Margin,
                     BuyMarketValue = CalculateMarketValue(buyPosition.PriceInCents, buyPosition.Quantity),
 
-                    SellSymbol = sellKey,
                     SellNetBms = sellPosition.NetBms,
                     SellConId = sellPosition.ConId,
                     SellPriceInCents = sellPosition.PriceInCents,

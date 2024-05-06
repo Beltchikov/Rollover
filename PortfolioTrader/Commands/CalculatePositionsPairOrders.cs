@@ -59,10 +59,10 @@ namespace PortfolioTrader.Commands
             //_visitor.PositionsCalculated = _visitor.StocksToBuyAsString != "" && _visitor.StocksToSellAsString != "";
 
             //***************************************************
-            
-            MessageBox.Show("TODO: CalculatePositionsPairOrders");
 
-            //visitor.PairOrdersAsString = await AddPriceColumnsAsync(visitor);
+            //MessageBox.Show("TODO: CalculatePositionsPairOrders");
+
+            visitor.PairOrdersAsString = await AddPriceColumnsAsync(visitor);
             visitor.TwsMessageCollection.Add("Calculate Positions Pair Orders command: price column added.");
 
         }
@@ -123,27 +123,60 @@ namespace PortfolioTrader.Commands
 
         private static async Task<string> AddPriceColumnsAsync(IPairOrdersConfirmationlVisitor visitor)
         {
-            var stocksDictionary = SymbolsAndScore.StringToPositionDictionary(visitor.PairOrdersAsString);
-            var resultDictionary = new Dictionary<string, Position>();
+            var pairDictionary = SymbolsAndScore.StringToPairOrderPositionDictionary(visitor.PairOrdersAsString);
+            var resultDictionary = new Dictionary<string, PairOrderPosition>();
 
-            foreach (var kvp in stocksDictionary)
+            foreach (var kvp in pairDictionary)
             {
-                if (kvp.Value.ConId == null) throw new Exception("Unexpected. Contract ID is null");
-                var contract = new Contract() { ConId = kvp.Value.ConId.Value, Exchange = App.EXCHANGE };
+                await AddPriceDataToDictionaryAsync(isLong: true, visitor, kvp, resultDictionary);
+                await Task.Run(() => Thread.Sleep(App.TIMEOUT));
 
-                (double? price, TickType? tickType, string error) 
-                    = await visitor.IbHost.RequestMktData(contract, "", true, false, null, App.TIMEOUT * 12);
-                if(error!= "") visitor.TwsMessageCollection.Add(error);
-                resultDictionary[kvp.Key] = kvp.Value;
-
-                int priceInCentsNotNullable = (int)((price == null ? 0d : price.Value) * 100d);
-                resultDictionary[kvp.Key].PriceInCents = priceInCentsNotNullable;
-                resultDictionary[kvp.Key].PriceType = tickType.ToString();
-
+                await AddPriceDataToDictionaryAsync(isLong: false, visitor, kvp, resultDictionary);
                 await Task.Run(() => Thread.Sleep(App.TIMEOUT));
             }
 
-            return SymbolsAndScore.PositionDictionaryToString(resultDictionary);
+            return SymbolsAndScore.PairOrderPositionDictionaryToString(resultDictionary);
+        }
+
+        private static async Task AddPriceDataToDictionaryAsync(
+            bool isLong,
+            IPairOrdersConfirmationlVisitor visitor,
+            KeyValuePair<string, PairOrderPosition> sourceKvp,
+            Dictionary<string, PairOrderPosition> dictionary)
+        {
+            var contract = new Contract() { Exchange = App.EXCHANGE };
+            var exceptionMessage = isLong
+                            ? "Unexpected. BUY Contract ID is null"
+                            : "Unexpected. SELL Contract ID is null";
+
+            if (isLong)
+            {
+                if (sourceKvp.Value.BuyConId == null) throw new Exception(exceptionMessage);
+                contract.ConId = sourceKvp.Value.BuyConId.Value;
+            }
+            else
+            {
+                if (sourceKvp.Value.SellConId == null) throw new Exception(exceptionMessage);
+                contract.ConId = sourceKvp.Value.SellConId.Value;
+            }
+
+            (double? price, TickType? tickType, string error)
+                = await visitor.IbHost.RequestMktData(contract, "", true, false, null, App.TIMEOUT * 12);
+            if (error != "") visitor.TwsMessageCollection.Add(error);
+            dictionary[sourceKvp.Key] = sourceKvp.Value;
+
+            int priceInCentsNotNullable = (int)((price == null ? 0d : price.Value) * 100d);
+
+            if (isLong)
+            {
+                dictionary[sourceKvp.Key].BuyPriceInCents = priceInCentsNotNullable;
+                dictionary[sourceKvp.Key].BuyPriceType = tickType.ToString();
+            }
+            else
+            {
+                dictionary[sourceKvp.Key].SellPriceInCents = priceInCentsNotNullable;
+                dictionary[sourceKvp.Key].SellPriceType = tickType.ToString();
+            }
         }
 
         private static string CalculateQuantity(string stocksAsString, int investmentAmount)
