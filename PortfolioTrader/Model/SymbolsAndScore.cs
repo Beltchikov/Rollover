@@ -20,14 +20,23 @@ namespace PortfolioTrader.Model
                     var splitted = s.Trim().Split([' ', '\t']).Select(s => s.Trim()).ToList();
                     if (splitted != null)
                     {
-                        if (Int32.TryParse(splitted[1], out int netBms))
-                            return new KeyValuePair<string, int>(splitted[0], netBms);
+                        if (Int32.TryParse(splitted[1], out int intValue))
+                            return new KeyValuePair<string, int>(splitted[0], intValue);
                         else
                             return new KeyValuePair<string, int>(splitted[0], 0);
                     }
                     throw new Exception($"Unexpected. Can not build key value pair from the string {s}");
                 })
                 .ToDictionary();
+        }
+
+        public static string DictionaryToString<TKey, TValue>(Dictionary<TKey, TValue> dictionary) where TKey : notnull
+        {
+            return dictionary.Any()
+                ? dictionary
+                   .Select(r => r.Key + "\t" + (r.Value == null ? "" : r.Value.ToString()))
+                   .Aggregate((r, n) => r + Environment.NewLine + n)
+                 : string.Empty;
         }
 
         public static Dictionary<string, Position> StringToPositionDictionary(string symbolsAsString)
@@ -42,15 +51,6 @@ namespace PortfolioTrader.Model
                     throw new Exception($"Unexpected. Can not build key value pair from the string {s}");
                 })
                 .ToDictionary();
-        }
-
-        public static string DictionaryToString<TKey, TValue>(Dictionary<TKey, TValue> dictionary) where TKey : notnull
-        {
-            return dictionary.Any()
-                ? dictionary
-                   .Select(r => r.Key + "\t" + (r.Value == null ? "" : r.Value.ToString()))
-                   .Aggregate((r, n) => r + Environment.NewLine + n)
-                 : string.Empty;
         }
 
         public static string PositionDictionaryToString(Dictionary<string, Position> dictionary)
@@ -79,14 +79,14 @@ namespace PortfolioTrader.Model
                   .Select(r =>
                   {
                       string line = r.Key + "\t" + r.Value.BuyNetBms.ToString();
-                      line += r.Value.BuyConId == null ? "" : "\t" + r.Value.BuyConId.ToString();
+                      line += r.Value.BuyConId == null ? "\tnull" : "\t" + r.Value.BuyConId.ToString();
 
-                      line += r.Value.BuyPriceInCents == null ? "" : "\t" + r.Value.BuyPriceInCents.ToString();
-                      line += r.Value.BuyPriceType == null ? "" : "\t" + r.Value.BuyPriceType.ToString();
-                      line += r.Value.BuyWeight == null ? "" : "\t" + r.Value.BuyWeight.ToString();
-                      line += r.Value.BuyQuantity == null ? "" : "\t" + r.Value.BuyQuantity.ToString();
-                      line += r.Value.BuyMargin == null ? "" : "\t" + r.Value.BuyMargin.ToString();
-                      line += r.Value.BuyMarketValue == null ? "" : "\t" + r.Value.BuyMarketValue.ToString();
+                      line += r.Value.BuyPriceInCents == null ? "\tnull" : "\t" + r.Value.BuyPriceInCents.ToString();
+                      line += r.Value.BuyPriceType == null ? "\tnull" : "\t" + r.Value.BuyPriceType.ToString();
+                      line += r.Value.BuyWeight == null ? "\tnull" : "\t" + r.Value.BuyWeight.ToString();
+                      line += r.Value.BuyQuantity == null ? "\tnull" : "\t" + r.Value.BuyQuantity.ToString();
+                      line += r.Value.BuyMargin == null ? "\tnull" : "\t" + r.Value.BuyMargin.ToString();
+                      line += r.Value.BuyMarketValue == null ? "\tnull" : "\t" + r.Value.BuyMarketValue.ToString();
                       return line;
                   })
                   .Aggregate((r, n) => r + Environment.NewLine + n)
