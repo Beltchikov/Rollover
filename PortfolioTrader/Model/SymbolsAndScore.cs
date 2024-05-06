@@ -72,6 +72,20 @@ namespace PortfolioTrader.Model
                  : string.Empty;
         }
 
+        public static string PairOrderPositionDictionaryToString(Dictionary<string, PairOrderPosition> dictionary)
+        {
+            return dictionary.Any()
+               ? dictionary
+                  .Select(r =>
+                  {
+                      string line = r.Key + "\t" + r.Value.BuyNetBms.ToString();
+                      line += r.Value.BuyConId == null ? "" : "\t" + r.Value.BuyConId.ToString();
+                      return line;
+                  })
+                  .Aggregate((r, n) => r + Environment.NewLine + n)
+                : string.Empty;
+        }
+
         public static string ListToCsvString(List<string> listOfString, string separator)
         {
             string newLineSeparatedString = "";
@@ -116,11 +130,6 @@ namespace PortfolioTrader.Model
                 dictionary.Remove(keyToRemove);
             }
             return dictionary;
-        }
-
-        internal static string PairOrderPositionDictionaryToString(Dictionary<string, PairOrderPosition> pairOrderDictionary)
-        {
-            return "TODO SymbolsAndScore";
         }
     }
 }

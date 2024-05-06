@@ -93,8 +93,8 @@
              Background="#FFFFC7CE">
             </TextBox>
 
-           <Label Grid.Column="4" Grid.ColumnSpan="2"
-                 Content="BuySymb | BuyNetBms | BuyConId | BuyPriceCt | BuyPriceT |  BuyWeight | BuyQty | BuyMargin | BuyMktV | SellSymb | SellNetBms | SellConId | SellPriceCt | SellPriceT |  SellWeight | SellQty | SellMargin | SellMktV | TotMargin | Delta" 
+           <Label Grid.Column="3" Grid.ColumnSpan="2"
+                 Content="Pair | BuyNetBms | BuyConId | BuyPriceCt | BuyPriceT |  BuyWeight | BuyQty | BuyMargin | BuyMktV | SellNetBms | SellConId | SellPriceCt | SellPriceT |  SellWeight | SellQty | SellMargin | SellMktV | TotMargin | Delta" 
                  Foreground="White" VerticalAlignment="Bottom"
                  Margin="5 0 0 0" FontSize="10"/>
             <TextBox Name="txtPairOrders" Grid.Row="1" Grid.Column="3" Grid.RowSpan="3" Grid.ColumnSpan="2" 
