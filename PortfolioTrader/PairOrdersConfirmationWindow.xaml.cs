@@ -24,24 +24,28 @@ namespace PortfolioTrader
         public PairOrdersConfirmationWindow(IBuyModelVisitor visitor)
         {
             InitializeComponent();
+
+            (string stocksToBuyAsString, string stocksToSellAsString)
+                = SymbolsAndScore.EqualizeBuysAndSells(visitor.LongSymbolsResolved, visitor.ShortSymbolsResolved);
+
             DataContext = new PairOrdersConfirmationViewModel()
             {
                 ConnectedToTws = visitor.ConnectedToTws,
-                StocksToBuyAsString = visitor.LongSymbolsResolved,  // Remove later TODO
-                StocksToSellAsString = visitor.ShortSymbolsResolved, // Remove later TODO
+                StocksToBuyAsString = stocksToBuyAsString,  // Remove later TODO
+                StocksToSellAsString = stocksToBuyAsString, // Remove later TODO
 
-                //PairOrdersAsString = PairOrdersAsString(visitor)
+                PairOrdersAsString = PairOrdersAsString(stocksToBuyAsString, stocksToSellAsString)
             };
 
             ApplyBusinessRules();
         }
 
-        private string PairOrdersAsString(IBuyModelVisitor visitor)
+        private string PairOrdersAsString(string stocksToBuyAsString, string stocksToSellAsString)
         {
             Dictionary<string, PairOrderPosition> pairOrderDictionary = new();
                         
-            var stocksToBuyDictionary = SymbolsAndScore.StringToPositionDictionary(visitor.LongSymbolsResolved);
-            var stocksToSellDictionary = SymbolsAndScore.StringToPositionDictionary(visitor.ShortSymbolsResolved);
+            var stocksToBuyDictionary = SymbolsAndScore.StringToPositionDictionary(stocksToBuyAsString);
+            var stocksToSellDictionary = SymbolsAndScore.StringToPositionDictionary(stocksToSellAsString);
             if (stocksToBuyDictionary.Keys.Count != stocksToSellDictionary.Keys.Count)
                 throw new Exception("Unexpected. The number of symbols in the buy and sell lists is not equal.");
             
