@@ -79,14 +79,28 @@ namespace PortfolioTrader.Model
                   .Select(r =>
                   {
                       string line = r.Key + "\t" + r.Value.BuyNetBms.ToString();
+                      
                       line += r.Value.BuyConId == null ? "\tnull" : "\t" + r.Value.BuyConId.ToString();
-
                       line += r.Value.BuyPriceInCents == null ? "\tnull" : "\t" + r.Value.BuyPriceInCents.ToString();
                       line += r.Value.BuyPriceType == null ? "\tnull" : "\t" + r.Value.BuyPriceType.ToString();
                       line += r.Value.BuyWeight == null ? "\tnull" : "\t" + r.Value.BuyWeight.ToString();
                       line += r.Value.BuyQuantity == null ? "\tnull" : "\t" + r.Value.BuyQuantity.ToString();
                       line += r.Value.BuyMargin == null ? "\tnull" : "\t" + r.Value.BuyMargin.ToString();
                       line += r.Value.BuyMarketValue == null ? "\tnull" : "\t" + r.Value.BuyMarketValue.ToString();
+
+                      line += "\t" + r.Value.SellNetBms.ToString();
+
+                      line += r.Value.SellConId == null ? "\tnull" : "\t" + r.Value.SellConId.ToString();
+                      line += r.Value.SellPriceInCents == null ? "\tnull" : "\t" + r.Value.SellPriceInCents.ToString();
+                      line += r.Value.SellPriceType == null ? "\tnull" : "\t" + r.Value.SellPriceType.ToString();
+                      line += r.Value.SellWeight == null ? "\tnull" : "\t" + r.Value.SellWeight.ToString();
+                      line += r.Value.SellQuantity == null ? "\tnull" : "\t" + r.Value.SellQuantity.ToString();
+                      line += r.Value.SellMargin == null ? "\tnull" : "\t" + r.Value.SellMargin.ToString();
+                      line += r.Value.SellMarketValue == null ? "\tnull" : "\t" + r.Value.SellMarketValue.ToString();
+
+                      line += r.Value.TotalMargin == null ? "\tnull" : "\t" + r.Value.TotalMargin.ToString();
+                      line += r.Value.Delta == null ? "\tnull" : "\t" + r.Value.Delta.ToString();
+
                       return line;
                   })
                   .Aggregate((r, n) => r + Environment.NewLine + n)
