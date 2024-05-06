@@ -30,7 +30,7 @@ namespace PortfolioTrader
                 StocksToBuyAsString = visitor.LongSymbolsResolved,  // Remove later TODO
                 StocksToSellAsString = visitor.ShortSymbolsResolved, // Remove later TODO
 
-                PairOrdersAsString = PairOrdersAsString(visitor)
+                //PairOrdersAsString = PairOrdersAsString(visitor)
             };
 
             ApplyBusinessRules();

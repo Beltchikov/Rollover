@@ -6,7 +6,7 @@
         xmlns:tws_uc="clr-namespace:TwsUserControls;assembly=TwsUserControls"
         xmlns:local="clr-namespace:PortfolioTrader"
         mc:Ignorable="d"
-        Title="Pair Orders Confirmation Window" Width="1420" Height="900" >
+        Title="Pair Orders Confirmation Window" Width="1460" Height="900" >
     <Window.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="Black"/>
@@ -43,8 +43,9 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="80"/>
-                <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="120"/>
+               
                 <ColumnDefinition Width="520"/>
                 <ColumnDefinition Width="520"/>
                 <ColumnDefinition />
@@ -53,49 +54,46 @@
             <Label Content="Inv. Amount:" Foreground="White" VerticalAlignment="Bottom"/>
             <TextBox Name="txtInvestmentAmount" Text="{Binding InvestmentAmount}" Grid.Row="1"
            Height="25" VerticalAlignment="Top"></TextBox>
-            <Button Grid.Column="1" Grid.Row="1" Height="25"
+            <Button Grid.Column="1" Grid.Row="1" 
+                    Grid.ColumnSpan="2" Height="25"
                  Command="{Binding CalculatePositionsCommand}"
           VerticalAlignment="Top" Margin="5 0 0 0">Calculate Positions</Button>
 
             <Label Grid.Row="2" Content="Information:" Foreground="White" VerticalAlignment="Bottom"/>
             <Label Grid.Row="3" Grid.ColumnSpan="3" Content="{Binding BusinessLogicInformation}" Background="#FFFEEB9C" VerticalAlignment="Stretch" Height="148"/>
 
-            <Label Grid.Row="4" Grid.ColumnSpan="3" Content="Stocks, the price cannot be obtained for:" Foreground="White" VerticalAlignment="Bottom"/>
-            <TextBox Name="txtStocksWithoutPrice" Grid.Row="5" Grid.ColumnSpan="3"
+            <Label Grid.Row="4" Content="Equalized:" Foreground="White" VerticalAlignment="Bottom"/>
+            <TextBox Name="txtStocksWithoutPrice" Grid.Row="5" Grid.Column="2" Margin="5 0 0 0"
+              TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
+              Text="{Binding StocksWithoutPrice}" VerticalAlignment="Stretch"
+              Background="#FFFFC7CE">
+            </TextBox>
+
+            <Label Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" Content="Without price:" Foreground="White" VerticalAlignment="Bottom"/>
+            <TextBox Name="txtStocksExcludedAfterEqualizing" Grid.Row="5" Grid.ColumnSpan="2"
              TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
              Text="{Binding StocksWithoutPrice}" VerticalAlignment="Stretch"
              Background="#FFFFC7CE">
             </TextBox>
 
-            <Label Grid.Row="6" Grid.ColumnSpan="3" 
-                Content="Stocks, the margin cannot be obtained for:" Foreground="White" VerticalAlignment="Bottom"/>
-            <TextBox Name="txtStocksWithoutMargin" Grid.Row="7" Grid.ColumnSpan="3"
+            <Label Grid.Row="6" Grid.ColumnSpan="2" 
+                Content="Without margin:" Foreground="White" VerticalAlignment="Bottom"/>
+            <TextBox Name="txtStocksWithoutMargin" Grid.Row="7" Grid.ColumnSpan="2"
              TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
              Text="{Binding StocksWithoutMargin}" VerticalAlignment="Stretch"
              Background="#FFFFC7CE">
             </TextBox>
 
             <Label Grid.Row="6" Grid.ColumnSpan="3" 
-             Content="Erroneous Long Orders:" Foreground="White" 
-             Grid.Column="3" VerticalAlignment="Bottom"  Margin="10 0 0 0"/>
-            <TextBox Name="txtOrdersLongWithError" Grid.Row="7" Grid.Column="3" 
-             TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
+             Content="Erroneous Orders:" Foreground="White" 
+             Grid.Column="2" VerticalAlignment="Bottom"  Margin="10 0 0 0"/>
+            <TextBox Name="txtOrdersWithError" Grid.Row="7" Grid.Column="2" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
              Text="{Binding OrdersLongWithError}" VerticalAlignment="Stretch"
                   Margin="10 0 0 0"
              Background="#FFFFC7CE">
             </TextBox>
 
-            <Label Grid.Row="6" Grid.ColumnSpan="3" 
-              Content="Erroneous Short Orders:" Foreground="White" 
-              Grid.Column="4" VerticalAlignment="Bottom"  Margin="10 0 0 0"/>
-            <TextBox Name="txtOrdersShortWithError" Grid.Row="7" Grid.Column="4" 
-              TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
-              Text="{Binding OrdersShortWithError}" VerticalAlignment="Stretch"
-                   Margin="10 0 0 0"
-              Background="#FFFFC7CE">
-            </TextBox>
-
-            <Label Grid.Column="3" Grid.ColumnSpan="2"
+           <Label Grid.Column="4" Grid.ColumnSpan="2"
                  Content="BuySymb | BuyNetBms | BuyConId | BuyPriceCt | BuyPriceT |  BuyWeight | BuyQty | BuyMargin | BuyMktV | SellSymb | SellNetBms | SellConId | SellPriceCt | SellPriceT |  SellWeight | SellQty | SellMargin | SellMktV | TotMargin | Delta" 
                  Foreground="White" VerticalAlignment="Bottom"
                  Margin="5 0 0 0" FontSize="10"/>
