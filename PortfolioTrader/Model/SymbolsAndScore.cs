@@ -86,6 +86,38 @@ namespace PortfolioTrader.Model
                 : string1 + Environment.NewLine + string2;
         }
 
+        public static (string, string) EqualizeBuysAndSells(string stocksToBuyAsString, string stocksToSellAsString)
+        {
+            var buyDictionary = SymbolsAndScore.StringToPositionDictionary(stocksToBuyAsString);
+            var sellDictionary = SymbolsAndScore.StringToPositionDictionary(stocksToSellAsString);
+
+
+            var min = Math.Min(buyDictionary.Count, sellDictionary.Count);
+            if (buyDictionary.Count > min)
+            {
+                buyDictionary = RemoveDictionaryEntriesAtEnd(buyDictionary, buyDictionary.Count - min);
+            }
+            if (sellDictionary.Count > min)
+            {
+                sellDictionary = RemoveDictionaryEntriesAtEnd(sellDictionary, sellDictionary.Count - min);
+            }
+
+            return (
+                SymbolsAndScore.PositionDictionaryToString(buyDictionary),
+                SymbolsAndScore.PositionDictionaryToString(sellDictionary));
+
+        }
+
+        private static Dictionary<string, Position> RemoveDictionaryEntriesAtEnd(Dictionary<string, Position> dictionary, int removeCount)
+        {
+            var keysToRemove = dictionary.Keys.Reverse().Take(removeCount);
+            foreach (var keyToRemove in keysToRemove)
+            {
+                dictionary.Remove(keyToRemove);
+            }
+            return dictionary;
+        }
+
         internal static string PairOrderPositionDictionaryToString(Dictionary<string, PairOrderPosition> pairOrderDictionary)
         {
             return "TODO SymbolsAndScore";

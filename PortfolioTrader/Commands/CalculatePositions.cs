@@ -20,7 +20,7 @@ namespace PortfolioTrader.Commands
             visitor.TwsMessageCollection.Add("Calculate Positions command: zero price positions removed.");
 
             (visitor.StocksToBuyAsString, visitor.StocksToSellAsString)
-                = EqualizeBuysAndSells(visitor.StocksToBuyAsString, visitor.StocksToSellAsString);
+                = SymbolsAndScore.EqualizeBuysAndSells(visitor.StocksToBuyAsString, visitor.StocksToSellAsString);
             visitor.TwsMessageCollection.Add("Calculate Positions command: buy and sell positions equalized after zero price removal.");
 
             visitor.CalculateWeights();
@@ -37,7 +37,7 @@ namespace PortfolioTrader.Commands
 
             // Adding a margin column removes lines without margin after the addition. That's why recalculations are necessary.
             (visitor.StocksToBuyAsString, visitor.StocksToSellAsString)
-               = EqualizeBuysAndSells(visitor.StocksToBuyAsString, visitor.StocksToSellAsString);
+               = SymbolsAndScore.EqualizeBuysAndSells(visitor.StocksToBuyAsString, visitor.StocksToSellAsString);
             visitor.TwsMessageCollection.Add("Calculate Positions command: buy and sell positions equalized after adding the margin column.");
 
             visitor.CalculateWeights();
@@ -52,38 +52,6 @@ namespace PortfolioTrader.Commands
 
             visitor.TwsMessageCollection.Add($"DONE! Calculated Position command executed.");
             visitor.PositionsCalculated = visitor.StocksToBuyAsString != "" && visitor.StocksToSellAsString != "";
-        }
-
-        private static (string, string) EqualizeBuysAndSells(string stocksToBuyAsString, string stocksToSellAsString)
-        {
-            var buyDictionary = SymbolsAndScore.StringToPositionDictionary(stocksToBuyAsString);
-            var sellDictionary = SymbolsAndScore.StringToPositionDictionary(stocksToSellAsString);
-
-
-            var min = Math.Min(buyDictionary.Count, sellDictionary.Count);
-            if (buyDictionary.Count > min)
-            {
-                buyDictionary = RemoveDictionaryEntriesAtEnd(buyDictionary, buyDictionary.Count - min);
-            }
-            if (sellDictionary.Count > min)
-            {
-                sellDictionary = RemoveDictionaryEntriesAtEnd(sellDictionary, sellDictionary.Count - min);
-            }
-
-            return (
-                SymbolsAndScore.PositionDictionaryToString(buyDictionary),
-                SymbolsAndScore.PositionDictionaryToString(sellDictionary));
-
-        }
-
-        private static Dictionary<string, Position> RemoveDictionaryEntriesAtEnd(Dictionary<string, Position> dictionary, int removeCount)
-        {
-            var keysToRemove = dictionary.Keys.Reverse().Take(removeCount);
-            foreach (var keyToRemove in keysToRemove)
-            {
-                dictionary.Remove(keyToRemove);
-            }
-            return dictionary;
         }
 
         private static (string, string) RemoveZeroPriceLines(string stocksAsString)

@@ -89,7 +89,7 @@
              Grid.Column="2" VerticalAlignment="Bottom"  Margin="10 0 0 0"/>
             <TextBox Name="txtOrdersWithError" Grid.Row="7" Grid.Column="2" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
              Text="{Binding OrdersLongWithError}" VerticalAlignment="Stretch"
-                  Margin="10 0 0 0"
+                  Margin="5 0 0 0"
              Background="#FFFFC7CE">
             </TextBox>
 
