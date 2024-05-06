@@ -25,7 +25,7 @@ namespace PortfolioTrader
         {
             InitializeComponent();
 
-            (string stocksToBuyAsString, string stocksToSellAsString)
+            (string stocksToBuyAsString, string stocksToSellAsString, List<string> removedSymbols)
                 = SymbolsAndScore.EqualizeBuysAndSells(visitor.LongSymbolsResolved, visitor.ShortSymbolsResolved);
 
             DataContext = new PairOrdersConfirmationViewModel()
@@ -34,7 +34,10 @@ namespace PortfolioTrader
                 StocksToBuyAsString = stocksToBuyAsString,  // Remove later TODO
                 StocksToSellAsString = stocksToBuyAsString, // Remove later TODO
 
-                PairOrdersAsString = PairOrdersAsString(stocksToBuyAsString, stocksToSellAsString)
+                PairOrdersAsString = PairOrdersAsString(stocksToBuyAsString, stocksToSellAsString),
+                StocksExcludedAfterEqualizing = removedSymbols.Any()
+                    ? removedSymbols.Aggregate((r, n) => r + Environment.NewLine + n)
+                    : ""
             };
 
             ApplyBusinessRules();

@@ -20,6 +20,7 @@ namespace PortfolioTrader.Model
 
         private int _investmentAmount = 0;
         private string _businessLogicInformation;
+        private string _stocksExcludedAfterEqualizing;
         private string _stocksWithoutPrice;
         private string _stocksWithoutMargin;
         private string _stocksToBuyAsString;
@@ -124,6 +125,15 @@ is kept equal.
             set
             {
                 SetProperty(ref _businessLogicInformation, value);
+            }
+        }
+
+        public string StocksExcludedAfterEqualizing
+        {
+            get => _stocksExcludedAfterEqualizing;
+            set
+            {
+                SetProperty(ref _stocksExcludedAfterEqualizing, value);
             }
         }
 

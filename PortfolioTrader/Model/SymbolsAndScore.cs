@@ -79,7 +79,7 @@ namespace PortfolioTrader.Model
                   .Select(r =>
                   {
                       string line = r.Key + "\t" + r.Value.BuyNetBms.ToString();
-                      
+
                       line += r.Value.BuyConId == null ? "\tnull" : "\t" + r.Value.BuyConId.ToString();
                       line += r.Value.BuyPriceInCents == null ? "\tnull" : "\t" + r.Value.BuyPriceInCents.ToString();
                       line += r.Value.BuyPriceType == null ? "\tnull" : "\t" + r.Value.BuyPriceType.ToString();
@@ -121,36 +121,39 @@ namespace PortfolioTrader.Model
                 : string1 + Environment.NewLine + string2;
         }
 
-        public static (string, string) EqualizeBuysAndSells(string stocksToBuyAsString, string stocksToSellAsString)
+        public static (string, string, List<string>) EqualizeBuysAndSells(string stocksToBuyAsString, string stocksToSellAsString)
         {
             var buyDictionary = SymbolsAndScore.StringToPositionDictionary(stocksToBuyAsString);
             var sellDictionary = SymbolsAndScore.StringToPositionDictionary(stocksToSellAsString);
-
+            var removedKeys = new List<string>();
 
             var min = Math.Min(buyDictionary.Count, sellDictionary.Count);
             if (buyDictionary.Count > min)
             {
-                buyDictionary = RemoveDictionaryEntriesAtEnd(buyDictionary, buyDictionary.Count - min);
+                (buyDictionary, removedKeys) = RemoveDictionaryEntriesAtEnd(buyDictionary, buyDictionary.Count - min);
             }
             if (sellDictionary.Count > min)
             {
-                sellDictionary = RemoveDictionaryEntriesAtEnd(sellDictionary, sellDictionary.Count - min);
+                (sellDictionary, removedKeys) = RemoveDictionaryEntriesAtEnd(sellDictionary, sellDictionary.Count - min);
             }
 
             return (
                 SymbolsAndScore.PositionDictionaryToString(buyDictionary),
-                SymbolsAndScore.PositionDictionaryToString(sellDictionary));
-
+                SymbolsAndScore.PositionDictionaryToString(sellDictionary),
+                removedKeys);
         }
 
-        private static Dictionary<string, Position> RemoveDictionaryEntriesAtEnd(Dictionary<string, Position> dictionary, int removeCount)
+        private static (Dictionary<string, Position>, List<string>) RemoveDictionaryEntriesAtEnd(Dictionary<string, Position> dictionary, int removeCount)
         {
             var keysToRemove = dictionary.Keys.Reverse().Take(removeCount);
+            var removedKeys = new List<string>();
+
             foreach (var keyToRemove in keysToRemove)
             {
                 dictionary.Remove(keyToRemove);
+                removedKeys.Add(keyToRemove);
             }
-            return dictionary;
+            return (dictionary, removedKeys);
         }
     }
 }

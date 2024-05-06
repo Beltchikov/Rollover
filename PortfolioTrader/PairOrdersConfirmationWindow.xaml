@@ -72,7 +72,7 @@
             <Label Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" Content="Without price:" Foreground="White" VerticalAlignment="Bottom"/>
             <TextBox Name="txtStocksExcludedAfterEqualizing" Grid.Row="5" Grid.ColumnSpan="2"
              TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
-             Text="{Binding StocksWithoutPrice}" VerticalAlignment="Stretch"
+             Text="{Binding StocksExcludedAfterEqualizing}" VerticalAlignment="Stretch"
              Background="#FFFFC7CE">
             </TextBox>
 

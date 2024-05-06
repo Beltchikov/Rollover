@@ -19,7 +19,7 @@ namespace PortfolioTrader.Commands
             visitor.StocksWithoutPrice = SymbolsAndScore.ConcatStringsWithNewLine(stocksToBuyWithoutPriceAsString, stocksToSellWithoutPriceAsString);
             visitor.TwsMessageCollection.Add("Calculate Positions command: zero price positions removed.");
 
-            (visitor.StocksToBuyAsString, visitor.StocksToSellAsString)
+            (visitor.StocksToBuyAsString, visitor.StocksToSellAsString, _)
                 = SymbolsAndScore.EqualizeBuysAndSells(visitor.StocksToBuyAsString, visitor.StocksToSellAsString);
             visitor.TwsMessageCollection.Add("Calculate Positions command: buy and sell positions equalized after zero price removal.");
 
@@ -36,7 +36,7 @@ namespace PortfolioTrader.Commands
             visitor.TwsMessageCollection.Add("Calculate Positions command: margin column added.");
 
             // Adding a margin column removes lines without margin after the addition. That's why recalculations are necessary.
-            (visitor.StocksToBuyAsString, visitor.StocksToSellAsString)
+            (visitor.StocksToBuyAsString, visitor.StocksToSellAsString, _)
                = SymbolsAndScore.EqualizeBuysAndSells(visitor.StocksToBuyAsString, visitor.StocksToSellAsString);
             visitor.TwsMessageCollection.Add("Calculate Positions command: buy and sell positions equalized after adding the margin column.");
 
