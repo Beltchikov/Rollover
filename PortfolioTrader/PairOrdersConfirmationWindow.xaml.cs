@@ -58,7 +58,7 @@ namespace PortfolioTrader
                 var buyPosition = stocksToBuyDictionary[buyKey];
                 var sellPosition = stocksToSellDictionary[sellKey];
 
-                pairOrderDictionary.Add($"{buyKey} {sellKey}" , new PairOrderPosition()
+                pairOrderDictionary.Add($"{buyKey}-{sellKey}" , new PairOrderPosition()
                 { 
                     BuySymbol = buyKey,
                     BuyNetBms = buyPosition.NetBms,

@@ -80,6 +80,13 @@ namespace PortfolioTrader.Model
                   {
                       string line = r.Key + "\t" + r.Value.BuyNetBms.ToString();
                       line += r.Value.BuyConId == null ? "" : "\t" + r.Value.BuyConId.ToString();
+
+                      line += r.Value.BuyPriceInCents == null ? "" : "\t" + r.Value.BuyPriceInCents.ToString();
+                      line += r.Value.BuyPriceType == null ? "" : "\t" + r.Value.BuyPriceType.ToString();
+                      line += r.Value.BuyWeight == null ? "" : "\t" + r.Value.BuyWeight.ToString();
+                      line += r.Value.BuyQuantity == null ? "" : "\t" + r.Value.BuyQuantity.ToString();
+                      line += r.Value.BuyMargin == null ? "" : "\t" + r.Value.BuyMargin.ToString();
+                      line += r.Value.BuyMarketValue == null ? "" : "\t" + r.Value.BuyMarketValue.ToString();
                       return line;
                   })
                   .Aggregate((r, n) => r + Environment.NewLine + n)
