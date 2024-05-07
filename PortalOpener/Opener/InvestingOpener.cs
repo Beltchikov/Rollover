@@ -15,18 +15,16 @@ namespace PortalOpener.Opener
         private readonly int TIMEOUT_WAIT = 5000;
 
         private readonly string URL_INVESTING = "https://www.investing.com/search/?q=";
-        private readonly string STRONG_BUY = "Strong Buy";
-        private readonly string BUY = "Buy";
-        private readonly string NEUTRAL = "Neutral";
-        private readonly string SELL = "Sell";
-        private readonly string STRONG_SELL = "Strong Sell";
+        private readonly string[] TA_LABELS = ["Strong Buy", "Buy", "Neutral", "Sell", "Strong Sell"];
 
         public string Execute(string[] symbols)
         {
             var _webDriver = new ChromeDriver();
 
-            foreach (var symbol in symbols)
+            foreach (var symbol in symbols.Select(s=>s.Trim()))
             {
+                if(string.IsNullOrWhiteSpace(symbol)) continue;
+                
                 _webDriver.Navigate().GoToUrl(URL_INVESTING + symbol);
 
                 var wait = new WebDriverWait(_webDriver, TimeSpan.FromMilliseconds(TIMEOUT_WAIT));
@@ -36,9 +34,19 @@ namespace PortalOpener.Opener
                 var secondUrl = linkWithEquitiesHref.GetAttribute("href");
                 _webDriver.Navigate().GoToUrl(secondUrl);
 
-                var divTechnical = wait.Until(x =>
-                    x.FindElement(By.XPath($"//div[text()='{STRONG_BUY}']")
-                ));
+                try
+                {
+                    var divTechnical = wait.Until(x =>
+                                x.FindElement(By.XPath($"//div[text()='{TA_LABELS[0]}']")
+                            ));
+                }
+                catch (NoSuchElementException)
+                {
+
+                    var divTechnical = wait.Until(x =>
+                                x.FindElement(By.XPath($"//div[text()='{TA_LABELS[4]}']")
+                            ));
+                }
 
                 //IWebElement divTechnical = wait.Until(x => {
                 //    if (x.FindElement(By.XPath($"//div[text()='{STRONG_BUY}']")).Displayed)
