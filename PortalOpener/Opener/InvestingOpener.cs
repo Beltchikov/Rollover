@@ -21,10 +21,13 @@ namespace PortalOpener.Opener
         {
             var _webDriver = new ChromeDriver();
 
-            foreach (var symbol in symbols.Select(s=>s.Trim()))
+            int i = 0;
+            var symbolsCopy = symbols
+                .Where(m=> !string.IsNullOrWhiteSpace(m))
+                .Select(s => s.Trim())
+                .ToArray();
+            foreach (var symbol in symbolsCopy)
             {
-                if(string.IsNullOrWhiteSpace(symbol)) continue;
-                
                 _webDriver.Navigate().GoToUrl(URL_INVESTING + symbol);
 
                 var wait = new WebDriverWait(_webDriver, TimeSpan.FromMilliseconds(TIMEOUT_WAIT));
@@ -56,7 +59,8 @@ namespace PortalOpener.Opener
                 //    else throw new NoSuchElementException();  
                 //}); 
 
-                _webDriver.SwitchTo().NewWindow(WindowType.Tab);
+                i++;
+                if(i < symbolsCopy.Length) _webDriver.SwitchTo().NewWindow(WindowType.Tab);
             }
 
             return "";
