@@ -535,7 +535,7 @@ namespace StockAnalyzer.DataProviders
 
         private async Task<Price> CurrentPriceFromContract(Contract contract, MarketDataType[] marketDataTypes, int timeout)
         {
-            (var currentPrice, var tickType) = await _ibHost.RequestMktData(contract, "", true, false, null, timeout);
+            (var currentPrice, var tickType, _) = await _ibHost.RequestMktData(contract, "", true, false, null, timeout);
             if (currentPrice == null)
             {
                 throw new ApplicationException($"currentPrice is null for {contract.Symbol}");
@@ -778,11 +778,11 @@ namespace StockAnalyzer.DataProviders
             TickType? tickType = TickType.AskPrice;
             MarketDataType? marketDataType = MarketDataType.Live;
 
-            (double? currentPrice, TickType? tickTypeReceived) = await _ibHost.RequestMktData(contract, "", true, false, null, timeout);
+            (double? currentPrice, TickType? tickTypeReceived, _) = await _ibHost.RequestMktData(contract, "", true, false, null, timeout);
             if (currentPrice == null || currentPrice <= 0)
             {
                 MarketDataType[] marketDataTypes = new[] { MarketDataType.Live, MarketDataType.DelayedFrozen };
-                (currentPrice, tickType) = await _ibHost.RequestMktData(contract, "", true, false, null, timeout);
+                (currentPrice, tickType, _) = await _ibHost.RequestMktData(contract, "", true, false, null, timeout);
             }
             return (currentPrice, tickType, marketDataType);
         }
