@@ -12,6 +12,8 @@ namespace PortalOpener.Opener
 {
     internal class InvestingOpener : IOpener
     {
+        private readonly int TIMEOUT_WAIT = 5000;
+
         private readonly string URL_INVESTING = "https://www.investing.com/search/?q=";
         private readonly string STRONG_BUY = "Strong Buy";
         private readonly string BUY = "Buy";
@@ -27,7 +29,7 @@ namespace PortalOpener.Opener
             {
                 _webDriver.Navigate().GoToUrl(URL_INVESTING + symbol);
 
-                var wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(5));
+                var wait = new WebDriverWait(_webDriver, TimeSpan.FromMilliseconds(TIMEOUT_WAIT));
                 var searchSectionMain = wait.Until(x => x.FindElement(By.CssSelector("div.searchSectionMain")));
                 var linkWithEquitiesHref = searchSectionMain.FindElement(By.CssSelector("a[href^=\"/equities/\"]"));
 
@@ -45,6 +47,8 @@ namespace PortalOpener.Opener
                 //    }
                 //    else throw new NoSuchElementException();  
                 //}); 
+
+                _webDriver.SwitchTo().NewWindow(WindowType.Tab);
             }
 
             return "";
