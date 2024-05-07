@@ -37,33 +37,54 @@ namespace PortalOpener.Opener
                 var secondUrl = linkWithEquitiesHref.GetAttribute("href");
                 _webDriver.Navigate().GoToUrl(secondUrl);
 
-                try
-                {
-                    var divTechnical = wait.Until(x =>
-                                x.FindElement(By.XPath($"//div[text()='{TA_LABELS[0]}']")
-                            ));
-                }
-                catch (NoSuchElementException)
-                {
+                //try
+                //{
+                //    var divTechnical = wait.Until(x =>
+                //                x.FindElement(By.XPath($"//div[text()='{TA_LABELS[0]}']")
+                //            ));
+                //}
+                //catch (NoSuchElementException)
+                //{
 
-                    var divTechnical = wait.Until(x =>
-                                x.FindElement(By.XPath($"//div[text()='{TA_LABELS[4]}']")
-                            ));
-                }
+                //    var divTechnical = wait.Until(x =>
+                //                x.FindElement(By.XPath($"//div[text()='{TA_LABELS[4]}']")
+                //            ));
+                //}
 
-                //IWebElement divTechnical = wait.Until(x => {
-                //    if (x.FindElement(By.XPath($"//div[text()='{STRONG_BUY}']")).Displayed)
-                //    {
-                //        return x.FindElement(By.XPath($"//div[text()='{STRONG_BUY}']"));
-                //    }
-                //    else throw new NoSuchElementException();  
-                //}); 
+                //IWebElement divTechnical;
+                //string taLabel = TA_LABELS[0];
+                //while (!(divTechnical = WaitForSomeText(wait, taLabel)).Displayed)
+                //{
+
+                //}
+
+                var divTechnical = WaitForSomeText(wait, TA_LABELS);
+
 
                 i++;
                 if(i < symbolsCopy.Length) _webDriver.SwitchTo().NewWindow(WindowType.Tab);
             }
 
             return "";
+        }
+
+        private IWebElement WaitForSomeText(WebDriverWait wait, string[] allTexts, int index = 0)
+        {
+            for(int i = index; i < allTexts.Length; i++)
+            {
+                var text = allTexts[i];
+                try
+                {
+                    return wait.Until(x => x.FindElement(By.XPath($"//div[text()='{text}']")));
+                }
+                catch (NoSuchElementException)
+                {
+                    if (i == allTexts.Length - 1) throw;
+                    return WaitForSomeText(wait, allTexts, i);
+                }
+            }
+            
+           throw new NoSuchElementException();
         }
     }
 }
