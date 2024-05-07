@@ -22,30 +22,31 @@ namespace PortalOpener.Opener
         public string Execute(string[] symbols)
         {
             var _webDriver = new ChromeDriver();
-            _webDriver.Navigate().GoToUrl(URL_INVESTING + "tsla");
 
-            var wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(5));
-            var searchSectionMain = wait.Until(x => x.FindElement(By.CssSelector("div.searchSectionMain")));
+            foreach (var symbol in symbols)
+            {
+                _webDriver.Navigate().GoToUrl(URL_INVESTING + symbol);
 
-            var linkWithEquitiesHref = searchSectionMain.FindElement(By.CssSelector("a[href^=\"/equities/\"]"));
+                var wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(5));
+                var searchSectionMain = wait.Until(x => x.FindElement(By.CssSelector("div.searchSectionMain")));
+                var linkWithEquitiesHref = searchSectionMain.FindElement(By.CssSelector("a[href^=\"/equities/\"]"));
 
+                var secondUrl = linkWithEquitiesHref.GetAttribute("href");
+                _webDriver.Navigate().GoToUrl(secondUrl);
 
-            var secondUrl = linkWithEquitiesHref.GetAttribute("href");
-            _webDriver.Navigate().GoToUrl(secondUrl);
+                var divTechnical = wait.Until(x =>
+                    x.FindElement(By.XPath($"//div[text()='{STRONG_BUY}']")
+                ));
 
-            var divTechnical = wait.Until(x =>
-            x.FindElement(By.XPath($"//div[text()='{STRONG_BUY}']")
-            ));
+                //IWebElement divTechnical = wait.Until(x => {
+                //    if (x.FindElement(By.XPath($"//div[text()='{STRONG_BUY}']")).Displayed)
+                //    {
+                //        return x.FindElement(By.XPath($"//div[text()='{STRONG_BUY}']"));
+                //    }
+                //    else throw new NoSuchElementException();  
+                //}); 
+            }
 
-            //IWebElement divTechnical = wait.Until(x => {
-            //    if (x.FindElement(By.XPath($"//div[text()='{STRONG_BUY}']")).Displayed)
-            //    {
-            //        return x.FindElement(By.XPath($"//div[text()='{STRONG_BUY}']"));
-            //    }
-            //    else throw new NoSuchElementException();  
-            //}); 
-
-            // TODO
             return "";
         }
     }

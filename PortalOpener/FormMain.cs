@@ -15,7 +15,8 @@ namespace PortalOpener
             InitializeComponent();
 
             //LoadTestData();
-            LoadTestData50();
+            //LoadTestData50();
+            LoadTestDataInvesting();
             Initialize();
         }
 
@@ -261,6 +262,15 @@ TGT
 CI
 LOW
 TMO
+";
+        }
+
+        private void LoadTestDataInvesting()
+        {
+            txtSymbols.Text = @"TSLA
+PYPL
+CRM
+ABT
 ";
         }
 
