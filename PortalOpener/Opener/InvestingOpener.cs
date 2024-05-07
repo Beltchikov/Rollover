@@ -37,29 +37,7 @@ namespace PortalOpener.Opener
                 var secondUrl = linkWithEquitiesHref.GetAttribute("href");
                 _webDriver.Navigate().GoToUrl(secondUrl);
 
-                //try
-                //{
-                //    var divTechnical = wait.Until(x =>
-                //                x.FindElement(By.XPath($"//div[text()='{TA_LABELS[0]}']")
-                //            ));
-                //}
-                //catch (NoSuchElementException)
-                //{
-
-                //    var divTechnical = wait.Until(x =>
-                //                x.FindElement(By.XPath($"//div[text()='{TA_LABELS[4]}']")
-                //            ));
-                //}
-
-                //IWebElement divTechnical;
-                //string taLabel = TA_LABELS[0];
-                //while (!(divTechnical = WaitForSomeText(wait, taLabel)).Displayed)
-                //{
-
-                //}
-
                 var divTechnical = WaitForSomeText(wait, TA_LABELS);
-
 
                 i++;
                 if(i < symbolsCopy.Length) _webDriver.SwitchTo().NewWindow(WindowType.Tab);

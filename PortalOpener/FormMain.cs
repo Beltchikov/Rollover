@@ -15,8 +15,8 @@ namespace PortalOpener
             InitializeComponent();
 
             //LoadTestData();
-            //LoadTestData50();
-            LoadTestDataInvesting();
+            LoadTestData50();
+            //LoadTestDataInvesting();
             Initialize();
         }
 
