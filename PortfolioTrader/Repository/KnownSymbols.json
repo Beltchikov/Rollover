@@ -30,5 +30,17 @@
   {
     "Name": "CAT",
     "ContractId": 5437
+  },
+  {
+    "Name": "CS",
+    "ContractId": 13435351
+  },
+  {
+    "Name": "TWTR",
+    "ContractId": 137780444
+  },
+  {
+    "Name": "LILM",
+    "ContractId": 514456437
   }
 ]
