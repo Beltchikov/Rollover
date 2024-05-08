@@ -54,5 +54,169 @@
   {
     "Name": "NIO",
     "ContractId": 332794741
+  },
+  {
+    "Name": "META",
+    "ContractId": 107113386
+  },
+  {
+    "Name": "MO",
+    "ContractId": 9769
+  },
+  {
+    "Name": "NOW",
+    "ContractId": 109911821
+  },
+  {
+    "Name": "REGN",
+    "ContractId": 273733
+  },
+  {
+    "Name": "SPGI",
+    "ContractId": 229629397
+  },
+  {
+    "Name": "TMO",
+    "ContractId": 12869
+  },
+  {
+    "Name": "ZTS",
+    "ContractId": 121665622
+  },
+  {
+    "Name": "BA",
+    "ContractId": 4762
+  },
+  {
+    "Name": "CVX",
+    "ContractId": 5684
+  },
+  {
+    "Name": "DE",
+    "ContractId": 6393
+  },
+  {
+    "Name": "GS",
+    "ContractId": 4627828
+  },
+  {
+    "Name": "MMM",
+    "ContractId": 9720
+  },
+  {
+    "Name": "CRM",
+    "ContractId": 275850
+  },
+  {
+    "Name": "VRTX",
+    "ContractId": 6393
+  },
+  {
+    "Name": "CVS",
+    "ContractId": 2585769
+  },
+  {
+    "Name": "HD",
+    "ContractId": 7930
+  },
+  {
+    "Name": "FIS",
+    "ContractId": 37866641
+  },
+  {
+    "Name": "WM",
+    "ContractId": 13379
+  },
+  {
+    "Name": "NSC",
+    "ContractId": 10497
+  },
+  {
+    "Name": "SO",
+    "ContractId": 12300
+  },
+  {
+    "Name": "GPS",
+    "ContractId": 7765
+  },
+  {
+    "Name": "BBY",
+    "ContractId": 4817
+  },
+  {
+    "Name": "MRO",
+    "ContractId": 9831
+  },
+  {
+    "Name": "DVN",
+    "ContractId": 754442
+  },
+  {
+    "Name": "JWN",
+    "ContractId": 272428
+  },
+  {
+    "Name": "M",
+    "ContractId": 44475946
+  },
+  {
+    "Name": "OXY",
+    "ContractId": 10880
+  },
+  {
+    "Name": "VLO",
+    "ContractId": 13497
+  },
+  {
+    "Name": "AAL",
+    "ContractId": 139673266
+  },
+  {
+    "Name": "DAL",
+    "ContractId": 44001820
+  },
+  {
+    "Name": "HAL",
+    "ContractId": 7890
+  },
+  {
+    "Name": "KSS",
+    "ContractId": 8942
+  },
+  {
+    "Name": "MPC",
+    "ContractId": 89495776
+  },
+  {
+    "Name": "SLB",
+    "ContractId": 12200
+  },
+  {
+    "Name": "UAL",
+    "ContractId": 79498203
+  },
+  {
+    "Name": "GME",
+    "ContractId": 79498203
+  },
+  {
+    "Name": "HBI",
+    "ContractId": 40369429
+  },
+  {
+    "Name": "LUV",
+    "ContractId": 9282
+  },
+  {
+    "Name": "PSX",
+    "ContractId": 105669270
+  },
+  {
+    "Name": "CCL",
+    "ContractId": 5516
+  },
+  {
+    "Name": "NCLH",
+    "ContractId": 120643512
   }
 ]
