@@ -1,4 +1,4 @@
-{
+
     "BUY": [
       "AAPL", "MSFT", "TSLA", "GOOGL", "AMZN", "NVDA", "INTC", "PFE", "CVX", "AMD",
       "JNJ", "UNH", "META", "PG", "V", "HD", "MA", "BAC", "DIS", "XOM",
