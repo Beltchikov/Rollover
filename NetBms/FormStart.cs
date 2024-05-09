@@ -9,6 +9,9 @@ namespace NetBms
         public FormStart()
         {
             InitializeComponent();
+            txtChatGptBatchResults.MaxLength = 0;
+
+
             //txtChatGptBatchResults.Text = TestData();
             txtChatGptBatchResults.Text = TestData2();
         }
