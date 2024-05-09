@@ -218,5 +218,213 @@
   {
     "Name": "NCLH",
     "ContractId": 120643512
+  },
+  {
+    "Name": "XOM",
+    "ContractId": 13977
+  },
+  {
+    "Name": "CSX",
+    "ContractId": 6150
+  },
+  {
+    "Name": "FDX",
+    "ContractId": 5100583
+  },
+  {
+    "Name": "MCD",
+    "ContractId": 9408
+  },
+  {
+    "Name": "RMD",
+    "ContractId": 4817352
+  },
+  {
+    "Name": "UPS",
+    "ContractId": 6231002
+  },
+  {
+    "Name": "VZ",
+    "ContractId": 4901
+  },
+  {
+    "Name": "ADI",
+    "ContractId": 4157
+  },
+  {
+    "Name": "AMGN",
+    "ContractId": 75960201
+  },
+  {
+    "Name": "NEE",
+    "ContractId": 4817352
+  },
+  {
+    "Name": "PFE",
+    "ContractId": 11031
+  },
+  {
+    "Name": "UNP",
+    "ContractId": 13284
+  },
+  {
+    "Name": "CCI",
+    "ContractId": 176571182
+  },
+  {
+    "Name": "CDNS",
+    "ContractId": 5552
+  },
+  {
+    "Name": "IQV",
+    "ContractId": 295757261
+  },
+  {
+    "Name": "ROP",
+    "ContractId": 2585629
+  },
+  {
+    "Name": "TEL",
+    "ContractId": 85548741
+  },
+  {
+    "Name": "GE",
+    "ContractId": 498843743
+  },
+  {
+    "Name": "ORCL",
+    "ContractId": 272800
+  },
+  {
+    "Name": "A",
+    "ContractId": 1715006
+  },
+
+
+  {
+    "Name": "CMCSA",
+    "ContractId": 267748
+  },
+  {
+    "Name": "MMC",
+    "ContractId": 9705
+  },
+  {
+    "Name": "GM",
+    "ContractId": 80986742
+  },
+  {
+    "Name": "CMI",
+    "ContractId": 6207
+  },
+  {
+    "Name": "NKE",
+    "ContractId": 10291
+  },
+  {
+    "Name": "KR",
+    "ContractId": 8908
+  },
+  {
+    "Name": "MAR",
+    "ContractId": 9358
+  },
+  {
+    "Name": "PVH",
+    "ContractId": 90794895
+  },
+  {
+    "Name": "ALK",
+    "ContractId": 4352
+  },
+  {
+    "Name": "JBLU",
+    "ContractId": 14765981
+  },
+  {
+    "Name": "SAVE",
+    "ContractId": 88850795
+  },
+  {
+    "Name": "WFC",
+    "ContractId": 10375
+  },
+  {
+    "Name": "CFG",
+    "ContractId": 167955370
+  },
+  {
+    "Name": "CMA",
+    "ContractId": 5800
+  },
+  {
+    "Name": "FITB",
+    "ContractId": 269318
+  },
+  {
+    "Name": "HBAN",
+    "ContractId": 270018
+  },
+  {
+    "Name": "KEY",
+    "ContractId": 8809
+  },
+  {
+    "Name": "MTB",
+    "ContractId": 2585323
+  },
+  {
+    "Name": "RF",
+    "ContractId": 273815
+  },
+  {
+    "Name": "ROST",
+    "ContractId": 273939
+  },
+  {
+    "Name": "STT",
+    "ContractId": 2730980
+  },
+  {
+    "Name": "DFS",
+    "ContractId": 44652220
+  },
+  {
+    "Name": "FHN",
+    "ContractId": 269555
+  },
+  {
+    "Name": "FTI",
+    "ContractId": 262072228
+  },
+  {
+    "Name": "HLT",
+    "ContractId": 257944570
+  },
+  {
+    "Name": "NOV",
+    "ContractId": 462100032
+  },
+  {
+    "Name": "NTRS",
+    "ContractId": 272565
+  },
+  {
+    "Name": "SJM",
+    "ContractId": 15130038
+  },
+  {
+    "Name": "SM",
+    "ContractId": 75472988
+  },
+  {
+    "Name": "WYNN",
+    "ContractId": 16454492
+  },
+  {
+    "Name": "ZION",
+    "ContractId": 276329
   }
+
+
 ]
