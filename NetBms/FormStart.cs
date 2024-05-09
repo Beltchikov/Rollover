@@ -1,3 +1,4 @@
+using System;
 using System.Text.Json;
 
 namespace NetBms
@@ -5,6 +6,7 @@ namespace NetBms
     public partial class FormStart : Form
     {
         string _currentDirectory = Directory.GetCurrentDirectory();
+        List<string> _exceptions = new List<string>();
 
         readonly string BATCH_SEPARATOR = Environment.NewLine + Environment.NewLine;
         private readonly string TEST_DATA_PATH = "TestData\\";
@@ -39,8 +41,9 @@ namespace NetBms
                     ChatGptBatchResult chatGptBatchResult = JsonSerializer.Deserialize<ChatGptBatchResult>(batch)!;
                     batches.Add(chatGptBatchResult);
                 }
-                catch (JsonException)
+                catch (JsonException jsonException)
                 {
+                    _exceptions.Add(jsonException.ToString());
                     notConvertableStrings.Add(batch);
                 }
             }
@@ -78,6 +81,9 @@ namespace NetBms
             txtSymbolErrors.Text = "";
             if (wrongSymbols.Any())
                 txtSymbolErrors.Text += wrongSymbols.Aggregate((r, n) => r + Environment.NewLine + n);
+
+            if (!_exceptions.Any()) MessageBox.Show("Done!");
+            else MessageBox.Show(_exceptions.Aggregate((r,n)=> r + Environment.NewLine + r));
         }
 
         private string TestData2()
