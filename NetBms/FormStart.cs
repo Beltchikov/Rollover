@@ -10,6 +10,7 @@ namespace NetBms
 
         readonly string BATCH_SEPARATOR = Environment.NewLine + Environment.NewLine;
         private readonly string TEST_DATA_PATH = "TestData\\";
+        private readonly char CURLY_BRACKET = '{';
 
         public FormStart()
         {
@@ -36,15 +37,17 @@ namespace NetBms
             var notConvertableStrings = new List<string>();
             foreach (var batch in batchesAsStringArray)
             {
+                string batchValidated = ValidateBatch(batch);
+                
                 try
                 {
-                    ChatGptBatchResult chatGptBatchResult = JsonSerializer.Deserialize<ChatGptBatchResult>(batch)!;
+                    ChatGptBatchResult chatGptBatchResult = JsonSerializer.Deserialize<ChatGptBatchResult>(batchValidated)!;
                     batches.Add(chatGptBatchResult);
                 }
                 catch (JsonException jsonException)
                 {
                     _exceptions.Add(jsonException.ToString());
-                    notConvertableStrings.Add(batch);
+                    notConvertableStrings.Add(batchValidated);
                 }
             }
 
@@ -83,7 +86,14 @@ namespace NetBms
                 txtSymbolErrors.Text += wrongSymbols.Aggregate((r, n) => r + Environment.NewLine + n);
 
             if (!_exceptions.Any()) MessageBox.Show("Done!");
-            else MessageBox.Show(_exceptions.Aggregate((r,n)=> r + Environment.NewLine + r));
+            else MessageBox.Show(_exceptions
+                .Aggregate((r,n)=> r + Environment.NewLine + Environment.NewLine + r));
+        }
+
+        private string ValidateBatch(string batch)
+        {
+            if (!batch.StartsWith(CURLY_BRACKET)) throw new Exception($"The following batch dpes not start with {CURLY_BRACKET}. Batch: {batch}");
+            return batch;
         }
 
         private string TestData2()
