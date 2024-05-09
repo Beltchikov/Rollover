@@ -8,7 +8,7 @@ namespace NetBms
         string _currentDirectory = Directory.GetCurrentDirectory();
         List<string> _exceptions = new List<string>();
 
-        readonly string BATCH_SEPARATOR = Environment.NewLine + Environment.NewLine;
+        readonly char BATCH_SEPARATOR = '$';
         private readonly string TEST_DATA_PATH = "TestData\\";
 
         public FormStart()

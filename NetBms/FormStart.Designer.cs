@@ -151,9 +151,9 @@
             label6.ForeColor = Color.LightSalmon;
             label6.Location = new Point(192, 51);
             label6.Name = "label6";
-            label6.Size = new Size(198, 15);
+            label6.Size = new Size(157, 15);
             label6.TabIndex = 10;
-            label6.Text = "Two new lines must separte batches!";
+            label6.Text = "Use $ to separte the batches!";
             // 
             // label7
             // 

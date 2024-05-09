@@ -24,7 +24,7 @@
       "SWN", "GPS", "BBY", "KMX", "LRN", "S", "CHKP", "TWTR", "SNAP", "PINS"
     ]
   }
-  
+  $
 
   {
     "BUY": [
@@ -52,7 +52,7 @@
       "CMS", "XEL", "PNW", "D", "WEC", "SCG", "GAS", "SJI", "SR", "UGI"
     ]
   }
-  
+  $
 
   {
     "BUY": [
@@ -81,7 +81,7 @@
     ]
   }
   
-
+$
   {
     "BUY": [
       "MSFT", "AAPL", "GOOGL", "AMZN", "META", "TSLA", "NVDA", "BRK.B", "V", "JNJ",
@@ -109,7 +109,7 @@
     ]
   }
   
-
+$
   {
     "BUY": [
       "MSFT", "AAPL", "GOOGL", "AMZN", "TSLA", "META", "NVDA", "BRK.B", "V", "JNJ",
@@ -136,7 +136,7 @@
       "SJT", "SM", "SNDE", "TALO", "TISI", "TPLM", "UNT", "USEG", "WTI", "YUMA"
     ]
   }
-  
+  $
 
   {
     "BUY": [
@@ -165,7 +165,7 @@
     ]
   }
   
-
+$
   {
     "BUY": [
       "AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "META", "NVDA", "V", "JNJ", "WMT",
@@ -193,7 +193,7 @@
     ]
   }
   
-
+$
   {
     "BUY": [
       "AAPL", "MSFT", "GOOGL", "AMZN", "META", "TSLA", "BRK.B", "JNJ", "V", "PG",
@@ -220,7 +220,7 @@
       "GPS", "FL", "DLTR", "KR", "SPLS", "ODP", "BBBY", "WMT", "TGT", "DG"
     ]
   }
-  
+  $
   
   {
     "BUY": [
@@ -248,7 +248,7 @@
       "COP", "CVX", "XEC", "CLR", "FANG", "EOG", "APA", "MUR", "NFX", "SWN"
     ]
   }
-  
+  $
 
   {
     "BUY": [
@@ -275,7 +275,7 @@
       "LONE", "PARR", "PVAC", "CRZO", "QEP", "SMPL", "NGVC", "SEB", "SFM", "KR"
     ]
   }
-  
+  $
 
   {
     "BUY": [
@@ -304,7 +304,7 @@
     ]
   }
   
-
+$
   {
     "BUY": [
       "AAPL", "MSFT", "GOOGL", "AMZN", "META", "NVDA", "TSLA", "V", "JNJ", "PG",
@@ -331,7 +331,7 @@
       "OGS", "VST", "NRG", "AES", "CPLG", "PEG", "SCG", "DYN", "PCG", "SRE"
     ]
   }
-  
+  $
 
   {
     "BUY": [
@@ -358,7 +358,7 @@
       "IBKC", "ASB", "CIT", "FFIN", "BOKF", "WTFC", "FCNCA", "HOMB", "HWC", "TCF"
     ]
   }
-  
+  $
 
   {
     "BUY": [
@@ -385,7 +385,7 @@
       "HBNC", "BMRC", "INDB", "FFIN", "CATY", "COLB", "WAFD", "CUBI", "ONB", "PNFP"
     ]
   }
-  
+  $
 
   {
     "BUY": [
@@ -412,7 +412,7 @@
       "WAFD", "CUBI", "ONB", "PNFP", "TROW", "VTRS", "KR", "SJM", "MDLZ", "CPB"
     ]
   }
-  
+  $
 
   {
     "BUY": [
@@ -439,7 +439,7 @@
       "IFF", "NEM", "AA", "FCX", "CLF", "WPM", "AG", "AUY", "PAAS", "BTG"
     ]
   }
-  
+  $
 
   {
     "BUY": [
@@ -466,7 +466,7 @@
       "WAFD", "CUBI", "ONB", "PNFP", "TROW", "VTRS", "KR", "SJM", "MDLZ", "CPB"
     ]
   }
-  
+  $
 
   {
     "BUY": [
@@ -493,7 +493,7 @@
       "GPS", "ANF", "URBN", "DDS", "SKX", "FL", "TJX", "ROST", "BURL", "MAR"
     ]
   }
-  
+  $
 
   {
     "BUY": [
@@ -520,7 +520,7 @@
       "GPS", "ANF", "URBN", "DDS", "SKX", "FL", "TJX", "ROST", "BURL", "MAR"
     ]
   }
-  
+  $
 
   {
     "BUY": [
@@ -547,7 +547,7 @@
       "GPS", "ANF", "URBN", "DDS", "SKX", "FL", "TJX", "ROST", "BURL", "MAR"
     ]
   }
-  
+  $
 
   {
     "BUY": [
@@ -574,7 +574,7 @@
       "KR", "SJM", "CPB", "MDLZ", "FLO", "IFF", "ADM", "BG", "HRL", "MKC"
     ]
   }
-  
+  $
 
   {
     "BUY": [
@@ -601,7 +601,7 @@
       "GPS", "ANF", "URBN", "DDS", "SKX", "FL", "TJX", "ROST", "BURL", "MAR"
     ]
   }
-  
+  $
   
   {
     "BUY": [
@@ -628,7 +628,7 @@
       "GPS", "ANF", "URBN", "DDS", "SKX", "FL", "TJX", "ROST", "BURL", "MAR"
     ]
   }
-  
+  $
 
   {
     "BUY": [
