@@ -56,13 +56,13 @@ namespace PortfolioTrader.Model
             //LongSymbolsAsString = TestDataLong();
             //LongSymbolsAsString = TestDataLongRepository();
             //LongSymbolsAsString = TestDataLongNotTradeable();
-            LongSymbolsAsString = TestDataLong10Symbols();
+            LongSymbolsAsString = TestDataLong4Symbols();
             //LongSymbolsAsString = TestDataLongNotResolved();
             
             //ShortSymbolsAsString = TestDataShort();
             //ShortSymbolsAsString = TestDataShortRepository();
             //ShortSymbolsAsString = TestDataShortNotTradeable();
-            ShortSymbolsAsString = TestDataShort10Symbols();
+            ShortSymbolsAsString = TestDataShort4Symbols();
             //ShortSymbolsAsString = TestDataShortNotResolved();
         }
 
