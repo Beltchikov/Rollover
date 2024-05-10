@@ -29,6 +29,9 @@ namespace PortfolioTrader.Commands
                 string whatToShow = "TRADES";
                 int useRTH = 0;
                 bool keepUpToDate = false;
+
+
+                double auxPriceBuy = 0;
                 await _visitor.IbHost.RequestHistoricalDataAsync(
                     contractBuy,
                     endDateTime,
@@ -38,36 +41,35 @@ namespace PortfolioTrader.Commands
                     useRTH,
                     1,
                     keepUpToDate,
-                    new List<TagValue>(),
+                    [],
                     App.TIMEOUT,
-                    (d) => { var todo = 0; },
-                    (u) => { var todo = 0; },
-                    (e) => { var todo = 0; });
+                    (d) => auxPriceBuy = d.High + 0.01,
+                    (u) => { },
+                    (e) => { });
 
 
-                //var lmtPriceBuy = Math.Round((double)tradePair.PriceInCentsBuy / 100d, 2);
+                Order orderBuy = new Order()
+                {
+                    Action = "BUY",
+                    OrderType = "STP LMT",
+                    AuxPrice = auxPriceBuy,
+                    LmtPrice = auxPriceBuy,
+                    TotalQuantity = tradePair.QuantityBuy
+                };
 
-                //Order orderBuy = new Order()
-                //{
-                //    Action = "BUY",
-                //    OrderType = "LIMIT",
-                //    LmtPrice = lmtPriceBuy,
-                //    TotalQuantity = tradePair.QuantityBuy
-                //};
-
-                //var resultBuy = await _visitor.IbHost.PlaceOrderAsync(contractBuy, orderBuy, App.TIMEOUT);
-                //if (resultBuy.ErrorMessage != "")
-                //{
-                //    visitor.TwsMessageCollection.Add($"ConId={tradePair.ConIdBuy} error:{resultBuy.ErrorMessage}");
-                //    visitor.OrdersLongWithError = SymbolsAndScore.ConcatStringsWithNewLine(
-                //        visitor.OrdersLongWithError,
-                //        tradePair.SymbolBuy + " " + resultBuy.ErrorMessage);
-                //}
-                //else if (resultBuy.OrderState != null)
-                //{
-                //    visitor.TwsMessageCollection.Add($"ConId={tradePair.ConIdBuy} {tradePair.SymbolBuy} order submitted.");
-                //}
-                //else throw new Exception("Unexpected. Both ErrorMessage nad OrderState are not set.");
+                var resultBuy = await _visitor.IbHost.PlaceOrderAsync(contractBuy, orderBuy, App.TIMEOUT);
+                if (resultBuy.ErrorMessage != "")
+                {
+                    visitor.TwsMessageCollection.Add($"ConId={tradePair.ConIdBuy} error:{resultBuy.ErrorMessage}");
+                    visitor.OrdersLongWithError = SymbolsAndScore.ConcatStringsWithNewLine(
+                        visitor.OrdersLongWithError,
+                        tradePair.SymbolBuy + " " + resultBuy.ErrorMessage);
+                }
+                else if (resultBuy.OrderState != null)
+                {
+                    visitor.TwsMessageCollection.Add($"ConId={tradePair.ConIdBuy} {tradePair.SymbolBuy} order submitted.");
+                }
+                else throw new Exception("Unexpected. Both ErrorMessage nad OrderState are not set.");
 
                 await Task.Run(() => Thread.Sleep(App.TIMEOUT));
 
