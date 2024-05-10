@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using IbClient.IbHost;
 using PortfolioTrader.Commands;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Windows.Input;
 
 namespace PortfolioTrader.Model
@@ -27,6 +28,7 @@ namespace PortfolioTrader.Model
         private string _ordersLongWithError;
         private string _ordersShortWithError;
         private bool _positionsCalculated;
+        private DateTime _timeEntryBar;
 
         public ICommand ConnectToTwsCommand { get; }
         public ICommand CalculatePositionsCommand { get; }
@@ -47,6 +49,7 @@ namespace PortfolioTrader.Model
 
             InvestmentAmount = 400000;
             BusinessLogicInformation = BuildBusinessLogicInformation();
+            TimeEntryBar = DateTime.ParseExact("15:35", "HH:mm", CultureInfo.InvariantCulture);
         }
 
         private string BuildBusinessLogicInformation()
@@ -188,6 +191,16 @@ is kept equal.
             set
             {
                 SetProperty(ref _positionsCalculated, value);
+            }
+        }
+
+        
+        public DateTime TimeEntryBar
+        {
+            get => _timeEntryBar;
+            set
+            {
+                SetProperty(ref _timeEntryBar, value);
             }
         }
 

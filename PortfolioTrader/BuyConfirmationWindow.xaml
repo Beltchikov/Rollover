@@ -5,10 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PortfolioTrader"
         xmlns:tws_uc="clr-namespace:TwsUserControls;assembly=TwsUserControls"
+        xmlns:converters="clr-namespace:PortfolioTrader.Converters"
         mc:Ignorable="d"
         Title="Buy Confirmation Window" Width="1450" Height="900"
         Background="#FF5A74A9">
-
+    <Window.Resources>
+        <converters:TimeStringConverter x:Key="TimeStringConverter"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
@@ -119,7 +122,8 @@
 
             <Label Grid.Column="5" Grid.Row="5" Foreground="White" 
                    HorizontalAlignment="Right" >Entry Bar Time:</Label>
-            <TextBox Name="txtTimeEntryBar" Grid.Column="6" Grid.Row="5" Height="25" Margin="5 0 5 0" VerticalAlignment="Center" ></TextBox>
+            <TextBox Name="txtTimeEntryBar" Grid.Column="6" Grid.Row="5" Height="25" Margin="5 0 5 0" VerticalAlignment="Center" 
+                     Text="{Binding TimeEntryBar, Converter={StaticResource TimeStringConverter}, Mode=TwoWay}" ></TextBox>
 
             <Button Grid.Column="5" Grid.Row="6" Grid.ColumnSpan="2"  Height="25"
          Command="{Binding SendStopLimitOrdersCommand}"
