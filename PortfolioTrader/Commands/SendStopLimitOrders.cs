@@ -11,6 +11,8 @@ namespace PortfolioTrader.Commands
 
         public static async Task RunAsync(IBuyConfirmationModelVisitor visitor)
         {
+            MessageBox.Show("SendStopLimitOrders");
+
             //_visitor = visitor;
             //List<TradePair> tradePairs = BuildTradePairs();
 
@@ -77,7 +79,7 @@ namespace PortfolioTrader.Commands
 
             //_visitor.TwsMessageCollection.Add($"DONE! Send Orders command executed.");
 
-            MessageBox.Show("SendStopLimitOrders");
+
 
         }
 

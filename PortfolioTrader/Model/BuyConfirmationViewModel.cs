@@ -46,7 +46,7 @@ namespace PortfolioTrader.Model
             CalculatePositionsCommand = new RelayCommand(async () => await CalculatePositions.RunAsync(this));
             SendLimitOrdersCommand = new RelayCommand(async () => await SendLimitOrders.RunAsync(this));
             SendStopLimitOrdersCommand = new RelayCommand(async () => await SendStopLimitOrders.RunAsync(this));
-
+            
             InvestmentAmount = 400000;
             BusinessLogicInformation = BuildBusinessLogicInformation();
             TimeEntryBar = DateTime.ParseExact("15:35", "HH:mm", CultureInfo.InvariantCulture);
