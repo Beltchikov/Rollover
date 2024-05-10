@@ -44,6 +44,7 @@
                 <ColumnDefinition Width="40"/>
                 <ColumnDefinition Width="500"/>
                 <ColumnDefinition Width="500"/>
+                <ColumnDefinition Width="100"/>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
@@ -110,15 +111,17 @@
               Margin="10 0 0 0" FontSize="10">
             </TextBox>
 
-            <Button Grid.Column="5" Grid.Row="3" Height="25"
+            <Button Grid.Column="5" Grid.Row="3" Grid.ColumnSpan="2" Height="25"
                     Command="{Binding SendLimitOrdersCommand}"
                     IsEnabled="{Binding PositionsCalculated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 VerticalAlignment="Bottom" Margin="5 0 5 0">Send Limit Orders >>
             </Button>
 
-            <DatePicker Name="dateEntryBar" Grid.Column="5" Grid.Row="5" Margin="5 0 5 0" />
+            <Label Grid.Column="5" Grid.Row="5" Foreground="White" 
+                   HorizontalAlignment="Right" >Entry Bar Time:</Label>
+            <TextBox Name="txtTimeEntryBar" Grid.Column="6" Grid.Row="5" Height="25" Margin="5 0 5 0" VerticalAlignment="Center" ></TextBox>
 
-            <Button Grid.Column="5" Grid.Row="6" Height="25"
+            <Button Grid.Column="5" Grid.Row="6" Grid.ColumnSpan="2"  Height="25"
          Command="{Binding SendStopLimitOrdersCommand}"
          IsEnabled="{Binding PositionsCalculated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
      VerticalAlignment="Top" Margin="5 0 5 0">Send Stop Limit Orders >>
