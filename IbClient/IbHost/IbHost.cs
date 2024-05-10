@@ -205,6 +205,21 @@ namespace IbClient.IbHost
             return (tickPriceMessage?.Price, (TickType?)tickPriceMessage?.Field, errorText);
         }
 
+        public Task RequestHistoricalData(
+            Contract contractBuy,
+            string endDateTime,
+            string durationString,
+            string barSizeSetting,
+            string whatToShow,
+            int useRTH,
+            int formatDate,
+            bool keepUpToDate,
+            List<TagValue> tagValues,
+            int timeout)
+        {
+            throw new NotImplementedException();
+        }
+
         // TODO
         // eventually return simply OrderState
         public async Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout)

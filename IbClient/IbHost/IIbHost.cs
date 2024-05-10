@@ -29,10 +29,23 @@ namespace IbClient.IbHost
             bool regulatorySnapshot,
             List<TagValue> mktDataOptions,
             int timeout);
+
+        Task RequestHistoricalData(
+            Contract contractBuy,
+            string endDateTime,
+            string durationString,
+            string barSizeSetting,
+            string whatToShow,
+            int useRTH,
+            int formatDate,
+            bool keepUpToDate,
+            List<TagValue> tagValues,
+            int timeout);
         Task<SymbolSamplesMessage> RequestMatchingSymbolsAsync(string symbol, int timeout);
         Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout);
         Task<OrderStateOrError> PlaceOrderAsync(Contract contract, Order order, int timeout);
         void ClearQueueOrderOpenMessage();
+        
 
         //public void ReqHistoricalData();
         //void ApplyDefaultHistoricalData();
