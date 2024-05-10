@@ -1,6 +1,7 @@
 ﻿using IBApi;
 using IbClient.Types;
 using PortfolioTrader.Model;
+using System.Windows;
 
 namespace PortfolioTrader.Commands
 {
@@ -10,6 +11,13 @@ namespace PortfolioTrader.Commands
 
         public static async Task RunAsync(IBuyConfirmationModelVisitor visitor)
         {
+            if (MessageBox.Show(
+                "Orders will be sent now to the broker. Proceed?",
+                "Confirm",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question) == MessageBoxResult.No)
+                return;
+
             _visitor = visitor;
             List<TradePair> tradePairs = BuildTradePairs();
 
