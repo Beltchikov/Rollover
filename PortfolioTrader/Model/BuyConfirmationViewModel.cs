@@ -30,7 +30,8 @@ namespace PortfolioTrader.Model
 
         public ICommand ConnectToTwsCommand { get; }
         public ICommand CalculatePositionsCommand { get; }
-        public ICommand SendOrdersCommand { get; }
+        public ICommand SendLimitOrdersCommand { get; }
+        public ICommand SendStopLimitOrdersCommand { get; }
 
 
         public BuyConfirmationViewModel()
@@ -41,7 +42,8 @@ namespace PortfolioTrader.Model
 
             ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
             CalculatePositionsCommand = new RelayCommand(async () => await CalculatePositions.RunAsync(this));
-            SendOrdersCommand = new RelayCommand(async () => await SendOrders.RunAsync(this));
+            SendLimitOrdersCommand = new RelayCommand(async () => await SendLimitOrders.RunAsync(this));
+            SendStopLimitOrdersCommand = new RelayCommand(async () => await SendStopLimitOrders.RunAsync(this));
 
             InvestmentAmount = 400000;
             BusinessLogicInformation = BuildBusinessLogicInformation();
