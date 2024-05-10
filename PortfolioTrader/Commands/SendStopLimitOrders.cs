@@ -11,27 +11,32 @@ namespace PortfolioTrader.Commands
 
         public static async Task RunAsync(IBuyConfirmationModelVisitor visitor)
         {
-            MessageBox.Show("SendStopLimitOrders");
+
+            if (MessageBox.Show(
+                "STOP LIMIT orders will be sent now to the broker. Proceed?",
+                "Confirm",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question) == MessageBoxResult.No)
+                return;
 
             _visitor = visitor;
             List<TradePair> tradePairs = BuildTradePairs();
+            if (_visitor.TimeEntryBar > DateTime.Now) _visitor.TimeEntryBar = _visitor.TimeEntryBar.AddDays(-1);
+
+            string endDateTime = _visitor.TimeEntryBar.ToString("yyyyMMdd HH:mm:ss"); ;
+            string durationString = "300 S";
+            string barSizeSetting = "5 mins";
+            string whatToShow = "TRADES";
+            int useRTH = 0;
+            bool keepUpToDate = false;
 
             // buy
             foreach (TradePair tradePair in tradePairs)
             {
                 // Buy
                 Contract contractBuy = new() { ConId = tradePair.ConIdBuy, Exchange = App.EXCHANGE };
-
-                if (_visitor.TimeEntryBar > DateTime.Now) _visitor.TimeEntryBar = _visitor.TimeEntryBar.AddDays(-1);
-                string endDateTime = _visitor.TimeEntryBar.ToString("yyyyMMdd HH:mm:ss"); ;
-                string durationString = "300 S";
-                string barSizeSetting = "5 mins";
-                string whatToShow = "TRADES";
-                int useRTH = 0;
-                bool keepUpToDate = false;
-
-
                 double auxPriceBuy = 0;
+                
                 await _visitor.IbHost.RequestHistoricalDataAsync(
                     contractBuy,
                     endDateTime,
@@ -46,7 +51,6 @@ namespace PortfolioTrader.Commands
                     (d) => auxPriceBuy = d.High + 0.01,
                     (u) => { },
                     (e) => { });
-
 
                 Order orderBuy = new Order()
                 {
@@ -76,36 +80,51 @@ namespace PortfolioTrader.Commands
                 // sell
                 var nextOrderIdSell = await visitor.IbHost.ReqIdsAsync(-1);  // Is line needed?
                 Contract contractSell = new Contract() { ConId = tradePair.ConIdSell, Exchange = App.EXCHANGE };
-                //var lmtPriceSell = Math.Round((double)tradePair.PriceInCentsSell / 100d, 2);
 
-                //Order orderSell = new()
-                //{
-                //    Action = "SELL",
-                //    OrderType = "LIMIT",
-                //    LmtPrice = lmtPriceSell,
-                //    TotalQuantity = tradePair.QuantitySell
-                //};
+                double auxPriceSell = 0;
 
-                //var resultSell = await _visitor.IbHost.PlaceOrderAsync(contractSell, orderSell, App.TIMEOUT);
-                //if (resultSell.ErrorMessage != "")
-                //{
-                //    visitor.TwsMessageCollection.Add($"ConId={tradePair.ConIdSell} error:{resultSell.ErrorMessage}");
-                //    visitor.OrdersShortWithError = SymbolsAndScore.ConcatStringsWithNewLine(
-                //        visitor.OrdersShortWithError,
-                //        tradePair.SymbolSell + " " + resultSell.ErrorMessage);
-                //}
-                //else if (resultSell.OrderState != null)
-                //{
-                //    visitor.TwsMessageCollection.Add($"ConId={tradePair.ConIdSell} {tradePair.SymbolSell} order submitted.");
-                //}
-                //else throw new Exception("Unexpected. Both ErrorMessage nad OrderState are not set.");
+                await _visitor.IbHost.RequestHistoricalDataAsync(
+                    contractSell,
+                    endDateTime,
+                    durationString,
+                    barSizeSetting,
+                    whatToShow,
+                    useRTH,
+                    1,
+                    keepUpToDate,
+                    [],
+                    App.TIMEOUT,
+                    (d) => auxPriceSell = d.Low - 0.01,
+                    (u) => { },
+                    (e) => { });
+
+                Order orderSell = new()
+                {
+                    Action = "SELL",
+                    OrderType = "STP LMT",
+                    AuxPrice = auxPriceSell,
+                    LmtPrice = auxPriceSell,
+                    TotalQuantity = tradePair.QuantitySell
+                };
+
+                var resultSell = await _visitor.IbHost.PlaceOrderAsync(contractSell, orderSell, App.TIMEOUT);
+                if (resultSell.ErrorMessage != "")
+                {
+                    visitor.TwsMessageCollection.Add($"ConId={tradePair.ConIdSell} error:{resultSell.ErrorMessage}");
+                    visitor.OrdersShortWithError = SymbolsAndScore.ConcatStringsWithNewLine(
+                        visitor.OrdersShortWithError,
+                        tradePair.SymbolSell + " " + resultSell.ErrorMessage);
+                }
+                else if (resultSell.OrderState != null)
+                {
+                    visitor.TwsMessageCollection.Add($"ConId={tradePair.ConIdSell} {tradePair.SymbolSell} order submitted.");
+                }
+                else throw new Exception("Unexpected. Both ErrorMessage nad OrderState are not set.");
 
                 await Task.Run(() => Thread.Sleep(App.TIMEOUT));
             }
 
             _visitor.TwsMessageCollection.Add($"DONE! Send Orders command executed.");
-
-
 
         }
 

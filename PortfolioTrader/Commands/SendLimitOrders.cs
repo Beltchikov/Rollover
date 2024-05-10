@@ -12,7 +12,7 @@ namespace PortfolioTrader.Commands
         public static async Task RunAsync(IBuyConfirmationModelVisitor visitor)
         {
             if (MessageBox.Show(
-                "Orders will be sent now to the broker. Proceed?",
+                "LIMIT orders will be sent now to the broker. Proceed?",
                 "Confirm",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question) == MessageBoxResult.No)
