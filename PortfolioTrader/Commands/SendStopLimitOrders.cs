@@ -11,19 +11,20 @@ namespace PortfolioTrader.Commands
 
         public static async Task RunAsync(IBuyConfirmationModelVisitor visitor)
         {
+            _visitor = visitor;
+            if (_visitor.TimeEntryBar > DateTime.Now) _visitor.TimeEntryBar = _visitor.TimeEntryBar.AddDays(-1);
+            string timeEntryBarString = _visitor.TimeEntryBar.ToString("yyyyMMdd HH:mm:ss");
 
             if (MessageBox.Show(
-                "STOP LIMIT orders will be sent now to the broker. Proceed?",
+                $"STOP LIMIT orders will be sent now to the broker. Time of entry bar: {timeEntryBarString} Proceed?",
                 "Confirm",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question) == MessageBoxResult.No)
                 return;
 
-            _visitor = visitor;
             List<TradePair> tradePairs = BuildTradePairs();
-            if (_visitor.TimeEntryBar > DateTime.Now) _visitor.TimeEntryBar = _visitor.TimeEntryBar.AddDays(-1);
-
-            string endDateTime = _visitor.TimeEntryBar.ToString("yyyyMMdd HH:mm:ss"); ;
+            
+            string endDateTime = timeEntryBarString;
             string durationString = "300 S";
             string barSizeSetting = "5 mins";
             string whatToShow = "TRADES";
