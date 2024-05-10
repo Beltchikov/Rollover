@@ -123,7 +123,7 @@
             <Label Grid.Column="5" Grid.Row="5" Foreground="White" 
                    HorizontalAlignment="Right" >Entry Bar Time:</Label>
             <TextBox Name="txtTimeEntryBar" Grid.Column="6" Grid.Row="5" Height="25" Margin="5 0 5 0" VerticalAlignment="Center" 
-                     Text="{Binding TimeEntryBar, Converter={StaticResource TimeStringConverter}, Mode=TwoWay}" ></TextBox>
+                     Text="{Binding TimeEntryBar, Converter={StaticResource TimeStringConverter}}" ></TextBox>
 
             <Button Grid.Column="5" Grid.Row="6" Grid.ColumnSpan="2"  Height="25"
          Command="{Binding SendStopLimitOrdersCommand}"
