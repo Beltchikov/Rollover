@@ -29,7 +29,7 @@ namespace PortfolioTrader.Commands
                 string whatToShow = "TRADES";
                 int useRTH = 0;
                 bool keepUpToDate = false;
-                _visitor.IbHost.RequestHistoricalData(
+                await _visitor.IbHost.RequestHistoricalDataAsync(
                     contractBuy,
                     endDateTime,
                     durationString,

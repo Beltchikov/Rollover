@@ -196,5 +196,10 @@ namespace IbClient.IbHost
         {
             while (_ibClientQueue.TryDequeue(out _)){}
         }
+
+        public bool TryDequeue(out object item)
+        {
+            return _ibClientQueue.TryDequeue(out item);
+        }
     }
 }

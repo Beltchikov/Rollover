@@ -16,5 +16,6 @@ namespace IbClient.IbHost
         void DequeueAllTickPriceMessagesExcept(int reqId);
         void DequeueAllOpenOrderMessagesExcept(int nextOrderId);
         void Clear();
+        bool TryDequeue(out object item);
     }
 }

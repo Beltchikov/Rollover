@@ -20,6 +20,9 @@ namespace IbClient.IbHost
         private IIbHostQueue _queueMktDataErrors;
         private IIbHostQueue _queuePlaceOrderErrors;
         private IIbHostQueue _queueOrderOpenMessage;
+        private IIbHostQueue _queueHistoricalData;
+        private IIbHostQueue _queueHistoricalDataUpdate;
+        private IIbHostQueue _queueHistoricalDataEnd;
         private int _currentReqId = 0;
         List<int> _mktDataReqIds;
         List<int> _placeOrderOrderIds;
@@ -59,6 +62,9 @@ namespace IbClient.IbHost
             _queueMktDataErrors = new IbHostQueue();
             _queuePlaceOrderErrors = new IbHostQueue();
             _queueOrderOpenMessage = new IbHostQueue();
+            _queueHistoricalData = new IbHostQueue();
+            _queueHistoricalDataUpdate = new IbHostQueue();
+            _queueHistoricalDataEnd = new IbHostQueue();
 
             _errorMessages = new List<ErrorMessage>();
             _mktDataReqIds = new List<int> { };
@@ -209,7 +215,7 @@ namespace IbClient.IbHost
             return (tickPriceMessage?.Price, (TickType?)tickPriceMessage?.Field, errorText);
         }
 
-        public void RequestHistoricalData(
+        public async Task RequestHistoricalDataAsync(
             Contract contract,
             string endDateTime,
             string durationString,
@@ -224,6 +230,7 @@ namespace IbClient.IbHost
             Action<HistoricalDataMessage> historicalDataUpdateCallback,
             Action<HistoricalDataEndMessage> historicalDataEndCallback)
         {
+
             var reqId = ++_currentReqId;
             _ibClient.ClientSocket.reqHistoricalData(
                 reqId,
@@ -236,6 +243,28 @@ namespace IbClient.IbHost
                 formatDate,
                 keepUpToDate,
                 tagValues);
+
+            object endMessage = null;
+            await Task.Run(() =>
+            {
+                var startTime = DateTime.Now;
+                while (!_queueHistoricalDataEnd.TryDequeue(out endMessage)){}
+
+            });
+
+            object dataMessage = null;
+            while (_queueHistoricalData.TryDequeue(out dataMessage)) {
+                historicalDataCallback((HistoricalDataMessage)dataMessage);
+            }
+
+            object updateMessage = null;
+            while (_queueHistoricalDataUpdate.TryDequeue(out updateMessage))
+            {
+                historicalDataUpdateCallback((HistoricalDataMessage)dataMessage);
+            }
+
+            historicalDataEndCallback((HistoricalDataEndMessage)endMessage);
+
         }
 
         // TODO
@@ -587,19 +616,19 @@ namespace IbClient.IbHost
             return result;
         }
 
-        private void _ibClient_HistoricalDataEnd(HistoricalDataEndMessage obj)
+        private void _ibClient_HistoricalData(HistoricalDataMessage obj)
         {
-            var todo = 0;
+            _queueHistoricalData.Enqueue(obj);
         }
 
         private void _ibClient_HistoricalDataUpdate(HistoricalDataMessage obj)
         {
-            var todo = 0;
+            _queueHistoricalDataUpdate.Enqueue(obj);
         }
 
-        private void _ibClient_HistoricalData(HistoricalDataMessage obj)
+        private void _ibClient_HistoricalDataEnd(HistoricalDataEndMessage obj)
         {
-            var todo = 0;
+            _queueHistoricalDataEnd.Enqueue(obj);
         }
     }
 }

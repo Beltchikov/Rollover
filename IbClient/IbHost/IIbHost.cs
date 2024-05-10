@@ -30,7 +30,7 @@ namespace IbClient.IbHost
             List<TagValue> mktDataOptions,
             int timeout);
 
-        void RequestHistoricalData(
+        Task RequestHistoricalDataAsync(
             Contract contractBuy,
             string endDateTime,
             string durationString,
