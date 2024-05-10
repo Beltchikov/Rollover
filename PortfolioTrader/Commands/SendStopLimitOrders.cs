@@ -22,14 +22,14 @@ namespace PortfolioTrader.Commands
                 // Buy
                 Contract contractBuy = new() { ConId = tradePair.ConIdBuy, Exchange = App.EXCHANGE };
 
-
-                string endDateTime = "";
-                string durationString = "";
+                if (_visitor.TimeEntryBar > DateTime.Now) _visitor.TimeEntryBar = _visitor.TimeEntryBar.AddDays(-1);
+                string endDateTime = _visitor.TimeEntryBar.ToString("yyyyMMdd HH:mm:ss"); ;
+                string durationString = "300 S";
                 string barSizeSetting = "5 mins";
-                string whatToShow = "MIDPOINT";
+                string whatToShow = "TRADES";
                 int useRTH = 0;
                 bool keepUpToDate = false;
-                await _visitor.IbHost.RequestHistoricalData(
+                _visitor.IbHost.RequestHistoricalData(
                     contractBuy,
                     endDateTime,
                     durationString,
@@ -39,7 +39,10 @@ namespace PortfolioTrader.Commands
                     1,
                     keepUpToDate,
                     new List<TagValue>(),
-                    App.TIMEOUT);
+                    App.TIMEOUT,
+                    (d) => { var todo = 0; },
+                    (u) => { var todo = 0; },
+                    (e) => { var todo = 0; });
 
 
                 //var lmtPriceBuy = Math.Round((double)tradePair.PriceInCentsBuy / 100d, 2);

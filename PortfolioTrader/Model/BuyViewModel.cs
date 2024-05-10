@@ -56,14 +56,16 @@ namespace PortfolioTrader.Model
             //LongSymbolsAsString = TestDataLong();
             //LongSymbolsAsString = TestDataLongRepository();
             //LongSymbolsAsString = TestDataLongNotTradeable();
-            LongSymbolsAsString = TestDataLong4Symbols();
+            //LongSymbolsAsString = TestDataLong4Symbols();
             //LongSymbolsAsString = TestDataLongNotResolved();
-            
+            LongSymbolsAsString = TestDataLongHistoricalData();
+
             //ShortSymbolsAsString = TestDataShort();
             //ShortSymbolsAsString = TestDataShortRepository();
             //ShortSymbolsAsString = TestDataShortNotTradeable();
-            ShortSymbolsAsString = TestDataShort4Symbols();
+            //ShortSymbolsAsString = TestDataShort4Symbols();
             //ShortSymbolsAsString = TestDataShortNotResolved();
+            ShortSymbolsAsString = TestDataShortHistoricalData();
         }
 
         public IIbHost IbHost => ibHost;
@@ -425,6 +427,13 @@ CS	3
 ";
         }
 
+        private string TestDataLongHistoricalData()
+        {
+            return @"NVDA	3
+AMZN	3
+";
+        }
+
         private string TestDataShort()
         {
             return @"MATIC	4
@@ -730,6 +739,14 @@ CAT	2
         {
             return @"TWTR	3
 LILM	3
+
+";
+        }
+
+        private string TestDataShortHistoricalData()
+        {
+            return @"META	3
+MSFT	3
 
 ";
         }

@@ -4,6 +4,7 @@ using IbClient.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -49,6 +50,9 @@ namespace IbClient.IbHost
             _ibClient.TickSnapshotEnd += _ibClient_TickSnapshotEnd;
             _ibClient.OpenOrder += _ibClient_OpenOrder;
             _ibClient.OrderStatus += _ibClient_OrderStatus;
+            _ibClient.HistoricalData += _ibClient_HistoricalData;
+            _ibClient.HistoricalDataUpdate += _ibClient_HistoricalDataUpdate;
+            _ibClient.HistoricalDataEnd += _ibClient_HistoricalDataEnd;
 
             _queueCommon = new IbHostQueue();
             _queueTickPriceMessage = new IbHostQueue();
@@ -205,8 +209,8 @@ namespace IbClient.IbHost
             return (tickPriceMessage?.Price, (TickType?)tickPriceMessage?.Field, errorText);
         }
 
-        public Task RequestHistoricalData(
-            Contract contractBuy,
+        public void RequestHistoricalData(
+            Contract contract,
             string endDateTime,
             string durationString,
             string barSizeSetting,
@@ -215,9 +219,23 @@ namespace IbClient.IbHost
             int formatDate,
             bool keepUpToDate,
             List<TagValue> tagValues,
-            int timeout)
+            int timeout,
+            Action<HistoricalDataMessage> historicalDataCallback,
+            Action<HistoricalDataMessage> historicalDataUpdateCallback,
+            Action<HistoricalDataEndMessage> historicalDataEndCallback)
         {
-            throw new NotImplementedException();
+            var reqId = ++_currentReqId;
+            _ibClient.ClientSocket.reqHistoricalData(
+                reqId,
+                contract,
+                endDateTime,
+                durationString,
+                barSizeSetting,
+                whatToShow,
+                useRTH,
+                formatDate,
+                keepUpToDate,
+                tagValues);
         }
 
         // TODO
@@ -567,6 +585,21 @@ namespace IbClient.IbHost
                 ? errorMessagesCopy.Single(errorFilterFunction)
                 : null;
             return result;
+        }
+
+        private void _ibClient_HistoricalDataEnd(HistoricalDataEndMessage obj)
+        {
+            var todo = 0;
+        }
+
+        private void _ibClient_HistoricalDataUpdate(HistoricalDataMessage obj)
+        {
+            var todo = 0;
+        }
+
+        private void _ibClient_HistoricalData(HistoricalDataMessage obj)
+        {
+            var todo = 0;
         }
     }
 }
