@@ -1,5 +1,4 @@
-﻿using System.Configuration;
-using System.Data;
+﻿using SignalAdvisor.Model;
 using System.Windows;
 
 namespace SignalAdvisor
@@ -13,6 +12,13 @@ namespace SignalAdvisor
         internal static readonly string SEC_TYPE_STK = "STK";
         internal static readonly string USD = "USD";
         internal static readonly string EXCHANGE = "SMART";
+
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            AdvisorWindow mainWindow = new();
+            mainWindow.DataContext = new AdvisorViewModel();
+            mainWindow.Show();
+        }
     }
 
 }

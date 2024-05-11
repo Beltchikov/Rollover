@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PortfolioTrader.Commands
+namespace SignalAdvisor.Commands
 {
     public interface IBuyModelVisitor : ITwsVisitor
     {

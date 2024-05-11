@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PortfolioTrader.Model
+namespace SignalAdvisor.Model
 {
     internal class TradePair
     {

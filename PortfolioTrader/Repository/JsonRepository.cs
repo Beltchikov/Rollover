@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace PortfolioTrader.Repository
+namespace SignalAdvisor.Repository
 {
     internal class JsonRepository : IRepository
     {

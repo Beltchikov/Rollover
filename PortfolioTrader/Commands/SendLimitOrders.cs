@@ -1,9 +1,9 @@
 ﻿using IBApi;
 using IbClient.Types;
-using PortfolioTrader.Model;
+using SignalAdvisor.Model;
 using System.Windows;
 
-namespace PortfolioTrader.Commands
+namespace SignalAdvisor.Commands
 {
     internal class SendLimitOrders
     {

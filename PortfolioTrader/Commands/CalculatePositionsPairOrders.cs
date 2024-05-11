@@ -1,11 +1,11 @@
 ﻿using IBApi;
 using IbClient.Types;
-using PortfolioTrader.Model;
+using SignalAdvisor.Model;
 using System.Windows;
 using System.Windows.Controls;
 using TickType = IbClient.Types.TickType;
 
-namespace PortfolioTrader.Commands
+namespace SignalAdvisor.Commands
 {
     internal class CalculatePositionsPairOrders
     {

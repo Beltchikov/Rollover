@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace PortfolioTrader
+namespace SignalAdvisor
 {
     /// <summary>
     /// Interaction logic for App.xaml

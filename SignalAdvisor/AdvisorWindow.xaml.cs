@@ -1,17 +1,17 @@
 ﻿using SignalAdvisor.Model;
 using System.Windows;
 
-namespace PortfolioTrader
+namespace SignalAdvisor
 {
     /// <summary>
-    /// Interaction logic for BuyWindow.xaml
+    /// Interaction logic for AdvisorWindow.xaml
     /// </summary>
-    public partial class BuyWindow : Window
+    public partial class AdvisorWindow : Window
     {
-        public BuyWindow()
+        public AdvisorWindow()
         {
             InitializeComponent();
-            DataContext = new BuyViewModel();
+            DataContext = new AdvisorViewModel();
         }
     }
 }

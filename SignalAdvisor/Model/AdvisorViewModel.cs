@@ -1,20 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using IbClient.IbHost;
-using IbClient.messages;
-using SignalAdvisor;
 using SignalAdvisor.Commands;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Runtime.InteropServices.JavaScript;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 
 namespace SignalAdvisor.Model
 {
-    public class BuyViewModel : ObservableObject, IIbConsumer, ITwsVisitor
+    public class AdvisorViewModel : ObservableObject, IIbConsumer, ITwsVisitor
     {
         IIbHostQueue ibHostQueue = null!;
         IIbHost ibHost = null!;
@@ -30,7 +23,7 @@ namespace SignalAdvisor.Model
         public ICommand ConnectToTwsCommand { get; }
 
 
-        public BuyViewModel()
+        public AdvisorViewModel()
         {
             IIbHostQueue ibHostQueue = new IbHostQueue();
             if (ibHostQueue != null) ibHost = new IbHost();
