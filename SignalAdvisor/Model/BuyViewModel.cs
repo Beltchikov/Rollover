@@ -24,6 +24,8 @@ namespace SignalAdvisor.Model
         private int _clientId = 1;
         private bool _connectedToTws;
         private ObservableCollection<string> _twsMessageColllection = new ObservableCollection<string>();
+        private int _openPositions;
+        private string _openPositionsDetails;
 
         public ICommand ConnectToTwsCommand { get; }
 
@@ -35,6 +37,9 @@ namespace SignalAdvisor.Model
             ibHost.Consumer = ibHost.Consumer ?? this;
 
             ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
+
+            OpenPositions = 21;
+            OpenPositionsDetails = "TODO";
 
         }
 
@@ -85,5 +90,25 @@ namespace SignalAdvisor.Model
                 SetProperty(ref _twsMessageColllection, value);
             }
         }
+
+        public int OpenPositions
+        {
+            get => _openPositions;
+            set
+            {
+                SetProperty(ref _openPositions, value);
+            }
+        }
+
+        public string OpenPositionsDetails
+        {
+            get => _openPositionsDetails;
+            set
+            {
+                SetProperty(ref _openPositionsDetails, value);
+            }
+        }
+
+        
     }
 }
