@@ -30,6 +30,7 @@ namespace SignalAdvisor.Model
             ibHost.Consumer = ibHost.Consumer ?? this;
 
             ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
+            ConnectToTwsCommand.Execute(this);
 
             OpenPositions = 21;
             OpenPositionsDetails = "TODO";
