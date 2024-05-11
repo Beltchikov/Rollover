@@ -1,11 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using IbClient.IbHost;
-using SignalAdvisor.Commands;
+using PortfolioTrader.Commands;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
-namespace SignalAdvisor.Model
+namespace PortfolioTrader.Model
 {
     public class PairOrdersConfirmationViewModel : ObservableObject, IIbConsumer, IPairOrdersConfirmationlVisitor
     {

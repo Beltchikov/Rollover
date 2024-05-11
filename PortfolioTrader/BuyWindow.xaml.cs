@@ -1,7 +1,7 @@
-﻿using SignalAdvisor.Model;
+﻿using PortfolioTrader.Model;
 using System.Windows;
 
-namespace SignalAdvisor
+namespace PortfolioTrader
 {
     /// <summary>
     /// Interaction logic for BuyWindow.xaml

@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using IBApi;
 using IbClient.IbHost;
 using IbClient.messages;
-using SignalAdvisor.Commands;
+using PortfolioTrader.Commands;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace SignalAdvisor.Model
+namespace PortfolioTrader.Model
 {
     public class BuyViewModel : ObservableObject, IIbConsumer, IBuyModelVisitor
     {

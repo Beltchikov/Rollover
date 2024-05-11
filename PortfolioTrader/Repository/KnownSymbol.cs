@@ -1,4 +1,4 @@
-﻿namespace SignalAdvisor.Repository
+﻿namespace PortfolioTrader.Repository
 {
     internal class KnownSymbol
     {

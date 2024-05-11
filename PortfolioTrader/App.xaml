@@ -1,7 +1,7 @@
-﻿<Application x:Class="SignalAdvisor.App"
+﻿<Application x:Class="PortfolioTrader.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:SignalAdvisor"
+             xmlns:local="clr-namespace:PortfolioTrader"
              StartupUri="BuyWindow.xaml"
              >
     <Application.Resources>

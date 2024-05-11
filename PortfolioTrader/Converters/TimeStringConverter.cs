@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Windows.Data;
 
-namespace SignalAdvisor.Converters
+namespace PortfolioTrader.Converters
 {
     public class TimeStringConverter : IValueConverter
     {

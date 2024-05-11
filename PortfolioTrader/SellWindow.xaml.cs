@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace SignalAdvisor
+namespace PortfolioTrader
 {
     /// <summary>
     /// Interaction logic for SellWindow.xaml

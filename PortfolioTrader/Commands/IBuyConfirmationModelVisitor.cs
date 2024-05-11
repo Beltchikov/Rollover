@@ -1,4 +1,4 @@
-﻿namespace SignalAdvisor.Commands
+﻿namespace PortfolioTrader.Commands
 {
     interface IBuyConfirmationModelVisitor : ITwsVisitor
     {

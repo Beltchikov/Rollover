@@ -1,8 +1,8 @@
 ﻿using IBApi;
 using IbClient.IbHost;
 using IbClient.messages;
-using SignalAdvisor.Model;
-using SignalAdvisor.Repository;
+using PortfolioTrader.Model;
+using PortfolioTrader.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace SignalAdvisor.Commands
+namespace PortfolioTrader.Commands
 {
     internal class SymbolCheck
     {
