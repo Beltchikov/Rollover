@@ -1,0 +1,132 @@
+﻿<Window x:Class="PortfolioTrader.BuyWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PortfolioTrader"
+        xmlns:tws_uc="clr-namespace:TwsUserControls;assembly=TwsUserControls"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Buy Window" Width="820" Height="900" Background="#FF5A74A9">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="470" />
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <tws_uc:TwsConnection 
+            Grid.Row="0"
+            Host="{Binding Host, Mode=OneWay}"
+            Port="{Binding Port, Mode=OneWay}"
+            ClientId="{Binding ClientId, Mode=OneWay}"
+            Connected="{Binding ConnectedToTws, Mode=OneWay}"
+            Command="{Binding ConnectToTwsCommand, Mode=OneWay}" Grid.ColumnSpan="2" />
+
+        <GroupBox Header="Processing" Grid.Row="1" Foreground="White" ></GroupBox>
+
+        <Grid x:Name="Processing" Grid.Row="1" Margin="16,16,16,16" 
+              Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="26"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="26" />
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="60"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="230"/>
+                <ColumnDefinition Width="140"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="180"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Foreground="White">Long Symbols and NET__BMS Score:</Label>
+            <TextBox x:Name="txtLongSymbols" Text="{Binding LongSymbolsAsString}"
+                    Grid.Row="1" Grid.RowSpan="4" HorizontalAlignment="Left" 
+                     TextWrapping="Wrap" VerticalAlignment="Stretch" 
+                     AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
+                      Width="220" />
+
+            <Label Grid.Row="6" Foreground="White">Short Symbols and NET__BMS Score:</Label>
+            <TextBox x:Name="txtShortSymbols" Text="{Binding ShortSymbolsAsString}"
+                 Grid.Row="7" Grid.RowSpan="4" HorizontalAlignment="Left" 
+                  TextWrapping="Wrap" VerticalAlignment="Stretch" 
+                  AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
+                  Width="220" />
+
+            <Button Grid.Column="1" Grid.Row="5" Height="30"  
+                    Command="{Binding SymbolCheckCommand}"
+                    HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                    Padding="15 0 15 0" Margin="0 5 5 5">
+                Check Symbols >>
+            </Button>
+
+            <Label Name="lblResolvedLong" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2"
+                   Foreground="White">Results: Resolved Long Symbols (N):</Label>
+            <TextBox x:Name="txtLongSymbolsResolved" Text="{Binding LongSymbolsResolved}"
+                 Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" 
+                  TextWrapping="Wrap" VerticalAlignment="Stretch" 
+                  AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
+                   Width="230" FontWeight="Bold" />
+
+            <Label Name="lblUnresolvedLong" Grid.Row="3" Grid.Column="2" Foreground="White">Unresolved (N):</Label>
+            <TextBox x:Name="txtLongSymbolsUnresolved" Text="{Binding LongSymbolsUnresolved}"
+              Grid.Row="4" Grid.Column="2"  HorizontalAlignment="Left" 
+               TextWrapping="Wrap" VerticalAlignment="Stretch" 
+               AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
+                Width="110" Background="#FFFFC7CE" />
+
+            <Label Name="lblMultipleLong" Grid.Row="3" Grid.Column="3" Foreground="White">Multiple (N):</Label>
+            <TextBox x:Name="txtLongSymbolsMultiple" Text="{Binding LongSymbolsMultiple}"
+               Grid.Row="4" Grid.Column="3"  HorizontalAlignment="Left" 
+                TextWrapping="Wrap" VerticalAlignment="Stretch" 
+                AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
+                Width="110" Background="#FFFEEB9C" />
+
+            <Label Name="lblResolvedShort" Grid.Row="6" Grid.Column="2"  Grid.ColumnSpan="2"
+                   Foreground="White">Results: Resolved Short Symbols (N):</Label>
+            <TextBox x:Name="txtShortSymbolsResolved" Text="{Binding ShortSymbolsResolved}"
+              Grid.Row="7" Grid.Column="2"  Grid.ColumnSpan="2" HorizontalAlignment="Left" 
+               TextWrapping="Wrap" VerticalAlignment="Stretch" 
+               AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
+               Width="230" FontWeight="Bold"/>
+
+            <Label Name="lblUnresolvedShort" Grid.Row="9" Grid.Column="2" 
+                   Foreground="White">Unresolved (N):</Label>
+            <TextBox x:Name="txtShortSymbolsUnresolved" Text="{Binding ShortSymbolsUnresolved}"
+                Grid.Row="10" Grid.Column="2"  HorizontalAlignment="Left" 
+                 TextWrapping="Wrap" VerticalAlignment="Stretch" 
+                 AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
+                  Width="110" Background="#FFFFC7CE" />
+
+            <Label Name="lblMultipleShort" Grid.Row="9" Grid.Column="3" Foreground="White">Multiple (N):</Label>
+            <TextBox x:Name="txtShortSymbolsMultiple" Text="{Binding ShortSymbolsMultiple}"
+                Grid.Row="10" Grid.Column="3"  HorizontalAlignment="Left" 
+                 TextWrapping="Wrap" VerticalAlignment="Stretch" 
+                 AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
+                  Width="110" Background="#FFFEEB9C" />
+
+            <Button Grid.Column="4" Grid.Row="5" Height="30"  
+                  Command="{Binding OrderConfirmationCommand}"
+                  IsEnabled="{Binding SymbolsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                  Padding="15 0 15 0" Margin="0 5 5 5">
+                Order Confirmation >>
+            </Button>
+
+        </Grid>
+
+        <tws_uc:TwsInformation Grid.Row="2" MessageCollection="{Binding TwsMessageCollection}" Grid.ColumnSpan="2" Margin="0,0,0,0" Grid.RowSpan="2">
+        </tws_uc:TwsInformation>
+
+    </Grid>
+</Window>
