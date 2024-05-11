@@ -39,7 +39,7 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="110"/>
                 <ColumnDefinition Width="35"/>
                 <ColumnDefinition Width="50"/>
                 <ColumnDefinition Width="120"/>
@@ -51,6 +51,7 @@
             <Label Foreground="#FF17DC17" FontSize="14">Open Postions:</Label>
             <Label Name="lblOpenPositions" Grid.Column="1" 
                    Content="{Binding OpenPositions}"
+                   HorizontalAlignment="Left"
                    Foreground="#FF17DC17" FontSize="14"></Label>
             <Label Name="lblOpenPositionsDetails" Grid.Column="2" 
                    Content="{Binding OpenPositionsDetails}"
