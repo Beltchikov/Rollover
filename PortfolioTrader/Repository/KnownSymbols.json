@@ -424,7 +424,49 @@
   {
     "Name": "ZION",
     "ContractId": 276329
+  },
+  {
+    "Name": "ADBE",
+    "ContractId": 265768
+  },
+  {
+    "Name": "ADP",
+    "ContractId": 4661
+  },
+  {
+    "Name": "AMT",
+    "ContractId": 99831145
+  },
+  {
+    "Name": "CTAS",
+    "ContractId": 268149
+  },
+  {
+    "Name": "KO",
+    "ContractId": 8894
+  },
+  {
+    "Name": "SYY",
+    "ContractId": 12581
+  },
+  {
+    "Name": "BKR",
+    "ContractId": 281316445
+  },
+  {
+    "Name": "CPRI",
+    "ContractId": 347409760
+  },
+  {
+    "Name": "RCL",
+    "ContractId": 11520
+  },
+  {
+    "Name": "UAA",
+    "ContractId": 36786278
+  },
+  {
+    "Name": "X",
+    "ContractId": 13960
   }
-
-
 ]
