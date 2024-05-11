@@ -11,7 +11,6 @@ namespace SignalAdvisor
         public AdvisorWindow()
         {
             InitializeComponent();
-            DataContext = new AdvisorViewModel();
         }
     }
 }

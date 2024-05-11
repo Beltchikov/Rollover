@@ -15,9 +15,11 @@ namespace SignalAdvisor
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            AdvisorWindow mainWindow = new();
-            mainWindow.DataContext = new AdvisorViewModel();
-            mainWindow.Show();
+            AdvisorWindow advisorWindow = new();
+            AdvisorViewModel viewModel = new();
+
+            advisorWindow.DataContext = viewModel;
+            advisorWindow.Show();
         }
     }
 
