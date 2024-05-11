@@ -7,7 +7,7 @@
         xmlns:tws_uc="clr-namespace:TwsUserControls;assembly=TwsUserControls"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Buy Window" Width="820" Height="900" Background="#FF5A74A9">
+        Title="Signal Advisor" Width="820" Height="900" Background="#FF5A74A9">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
