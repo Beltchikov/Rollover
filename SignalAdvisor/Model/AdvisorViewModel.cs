@@ -19,7 +19,8 @@ namespace SignalAdvisor.Model
         private ObservableCollection<string> _twsMessageColllection = new ObservableCollection<string>();
         private int _openPositions;
         private int _openOrders;
-        
+        private int _lastCheck;
+
         public ICommand ConnectToTwsCommand { get; }
 
 
@@ -33,8 +34,8 @@ namespace SignalAdvisor.Model
             ConnectToTwsCommand.Execute(this);
 
             OpenPositions = 21;
-            OpenOrders= 7;
-
+            OpenOrders = 7;
+            LastCheck = 0;
         }
 
         public IIbHost IbHost => ibHost;
@@ -94,13 +95,21 @@ namespace SignalAdvisor.Model
             }
         }
 
-
         public int OpenOrders
         {
             get => _openOrders;
             set
             {
                 SetProperty(ref _openOrders, value);
+            }
+        }
+
+        public int LastCheck
+        {
+            get => _lastCheck;
+            set
+            {
+                SetProperty(ref _lastCheck, value);
             }
         }
     }
