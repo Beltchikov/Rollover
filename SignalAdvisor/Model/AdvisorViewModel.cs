@@ -18,24 +18,14 @@ namespace SignalAdvisor.Model
         private int _openOrders;
         private int _lastCheck;
 
-        //public ICommand ConnectToTwsCommand { get; }
         public ICommand RequestPositionsCommand { get; }
 
 
         public AdvisorViewModel()
         {
-            IIbHostQueue ibHostQueue = new IbHostQueue();
-           
-            //ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
+            //IIbHostQueue ibHostQueue = new IbHostQueue();
+
             RequestPositionsCommand = new RelayCommand(() => RequestPositions.Run(this));
-
-            //await Task.Run(() => { while(ibHost.IsConnected) { } });
-            
-            //ConnectToTwsCommand.Execute(this);
-            //while (!isConnected) { }
-            //if (!isConnected) throw new Exception("Unexpected. No connection.");
-
-            //RequestPositionsCommand.Execute(this);
 
             OpenPositions = 21;
             OpenOrders = 7;
@@ -54,7 +44,7 @@ namespace SignalAdvisor.Model
             IbHost = ibHost;
             IbHost.Consumer = this;
         }
-       
+
         public int Timeout => App.TIMEOUT;
 
         public string Host
