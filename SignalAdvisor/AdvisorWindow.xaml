@@ -36,6 +36,7 @@
               Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
+                <RowDefinition Height="30"/>
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -64,8 +65,17 @@
             <Label Foreground="#FF17DC17" FontSize="14" Grid.Column="4">Last Check (Server Time):</Label>
             <Label Name="lblLastCheck" Grid.Column="5" 
                Content="{Binding LastCheck}"
-               Foreground="#FF17DC17" FontSize="14"></Label>    
+               Foreground="#FF17DC17" FontSize="14"></Label>
 
+            <Button Grid.Column="6" Grid.ColumnSpan="3">Confirm Signal Reception</Button>
+
+            <Label Foreground="White" FontSize="14" Grid.Row="1" Grid.Column="6">Sound Enabled:</Label>
+            <CheckBox Grid.Row="1" Grid.Column="7" VerticalAlignment="Center"></CheckBox>
+
+            <TextBox Grid.Row="1" Grid.ColumnSpan="6" Grid.RowSpan="2"
+                     TextWrapping="Wrap" VerticalAlignment="Stretch" 
+                    AcceptsReturn="True" >
+            </TextBox>
 
         </Grid>
 
