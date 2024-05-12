@@ -9,9 +9,6 @@ namespace SignalAdvisor.Model
 {
     public class AdvisorViewModel : ObservableObject, IIbConsumer, ITwsVisitor
     {
-        IIbHostQueue ibHostQueue = null!;
-        IIbHost ibHost = null!;
-
         private string _host = "localhost";
         private int _port = 4001;
         private int _clientId = 1;
@@ -21,24 +18,43 @@ namespace SignalAdvisor.Model
         private int _openOrders;
         private int _lastCheck;
 
-        public ICommand ConnectToTwsCommand { get; }
+        //public ICommand ConnectToTwsCommand { get; }
+        public ICommand RequestPositionsCommand { get; }
 
 
         public AdvisorViewModel()
         {
             IIbHostQueue ibHostQueue = new IbHostQueue();
-            if (ibHostQueue != null) ibHost = new IbHost();
-            ibHost.Consumer = ibHost.Consumer ?? this;
+           
+            //ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
+            RequestPositionsCommand = new RelayCommand(() => RequestPositions.Run(this));
 
-            ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
-            ConnectToTwsCommand.Execute(this);
+            //await Task.Run(() => { while(ibHost.IsConnected) { } });
+            
+            //ConnectToTwsCommand.Execute(this);
+            //while (!isConnected) { }
+            //if (!isConnected) throw new Exception("Unexpected. No connection.");
+
+            //RequestPositionsCommand.Execute(this);
 
             OpenPositions = 21;
             OpenOrders = 7;
             LastCheck = 0;
         }
 
-        public IIbHost IbHost => ibHost;
+        public void StartUp()
+        {
+            RequestPositionsCommand.Execute(this);
+        }
+
+        public IIbHost IbHost { get; private set; }
+
+        public void SetIbHost(IIbHost ibHost)
+        {
+            IbHost = ibHost;
+            IbHost.Consumer = this;
+        }
+       
         public int Timeout => App.TIMEOUT;
 
         public string Host

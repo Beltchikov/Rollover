@@ -3,6 +3,7 @@ using IbClient.messages;
 using IbClient.Types;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using TickType = IbClient.Types.TickType;
 
@@ -12,7 +13,20 @@ namespace IbClient.IbHost
     {
         IIbConsumer Consumer { get; set; }
         Task<bool> ConnectAndStartReaderThread(string host, int port, int clientId, int timeout);
+        Task ConnectAndStartReaderThread(
+           string host,
+           int port,
+           int clientId,
+           Action<ConnectionStatusMessage> connectionStatusCallback,
+           Action<ManagedAccountsMessage> managedAccountsCallback,
+           Action<ErrorMessage> errorMessageCallback);
+        bool IsConnected { get; }
         void Disconnect();
+        Task RequestAccountSummaryAsync(
+            string group,
+            string tags,
+             Action<AccountSummaryMessage> accountSummaryCallback,
+           Action<AccountSummaryEndMessage> accountSummaryEndCallback);
         Task<int> ReqIdsAsync(int idParam);
         Task<double?> RateOfExchange(string currency, int timeout);
         Task<ContractDetails> RequestContractDetailsAsync(
@@ -48,7 +62,6 @@ namespace IbClient.IbHost
         Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout);
         Task<OrderStateOrError> PlaceOrderAsync(Contract contract, Order order, int timeout);
         void ClearQueueOrderOpenMessage();
-        
 
         //public void ReqHistoricalData();
         //void ApplyDefaultHistoricalData();

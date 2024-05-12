@@ -16,6 +16,11 @@ namespace IbClient.IbHost
     {
         IIBClient _ibClient;
         private IIbHostQueue _queueCommon;
+        private IIbHostQueue _queueConnectionStatus;
+        private IIbHostQueue _queueManagedAccounts;
+        private IIbHostQueue _queueError;
+        private IIbHostQueue _queueAccountSummary;
+        private IIbHostQueue _queueAccountSummaryEnd;
         private IIbHostQueue _queueTickPriceMessage;
         private IIbHostQueue _queueMktDataErrors;
         private IIbHostQueue _queuePlaceOrderErrors;
@@ -46,6 +51,8 @@ namespace IbClient.IbHost
             _ibClient.NextValidId += _ibClient_NextValidId;
             _ibClient.ManagedAccounts += _ibClient_ManagedAccounts;
             _ibClient.ConnectionClosed += _ibClient_ConnectionClosed;
+            _ibClient.AccountSummary += _ibClient_AccountSummary;
+            _ibClient.AccountSummaryEnd += _ibClient_AccountSummaryEnd;
             _ibClient.ContractDetails += _ibClient_ContractDetails;
             _ibClient.SymbolSamples += _ibClient_SymbolSamples;
             _ibClient.FundamentalData += _ibClient_FundamentalData;
@@ -58,6 +65,12 @@ namespace IbClient.IbHost
             _ibClient.HistoricalDataEnd += _ibClient_HistoricalDataEnd;
 
             _queueCommon = new IbHostQueue();
+            _queueConnectionStatus = new IbHostQueue();
+            _queueManagedAccounts = new IbHostQueue();
+            _queueError = new IbHostQueue();
+            _queueAccountSummary = new IbHostQueue();
+            _queueAccountSummaryEnd = new IbHostQueue();
+            _queueTickPriceMessage = new IbHostQueue();
             _queueTickPriceMessage = new IbHostQueue();
             _queueMktDataErrors = new IbHostQueue();
             _queuePlaceOrderErrors = new IbHostQueue();
@@ -96,16 +109,88 @@ namespace IbClient.IbHost
                 }
 
                 _ibClient.ConnectAndStartReaderThread(host, port, clientId);
-
+                
                 var startTime = DateTime.Now;
                 while ((DateTime.Now - startTime).TotalMilliseconds < timeout && !Consumer.ConnectedToTws) { }
                 return Consumer.ConnectedToTws;
             });
         }
 
+       public async Task ConnectAndStartReaderThread(
+            string host,
+            int port,
+            int clientId,
+            Action<ConnectionStatusMessage> connectionStatusCallback,
+            Action<ManagedAccountsMessage> managedAccountsCallback,
+            Action<ErrorMessage> errorMessageCallback)
+        {
+            await Task.Run(async () =>
+            {
+                if (Consumer == null)
+                {
+                    throw new ApplicationException("Unexpected! Consumer is null");
+                }
+
+                _ibClient.ConnectAndStartReaderThread(host, port, clientId);
+
+                object endMessage = null;
+                await Task.Run(() =>
+                {
+                    while (!_queueConnectionStatus.TryDequeue(out endMessage)) { }
+
+                });
+
+                object dataMessage = null;
+                while (_queueManagedAccounts.TryDequeue(out dataMessage))
+                {
+                    managedAccountsCallback((ManagedAccountsMessage)dataMessage);
+                }
+
+                object errorMessage = null;
+                while (_queueError.TryDequeue(out errorMessage))
+                {
+                    errorMessageCallback((ErrorMessage)errorMessage);
+                }
+
+                var endMessageTyped = endMessage as ConnectionStatusMessage;
+                connectionStatusCallback(endMessageTyped);
+
+                return endMessageTyped.IsConnected;
+            });
+        }
+
+        public bool IsConnected => _ibClient.ClientSocket.IsConnected();
+
         public void Disconnect()
         {
             _ibClient.Disconnect();
+        }
+
+        public async Task RequestAccountSummaryAsync(
+            string group,
+            string tags,
+            Action<AccountSummaryMessage> accountSummaryCallback,
+            Action<AccountSummaryEndMessage> accountSummaryEndCallback)
+        {
+            var reqId = ++_currentReqId;
+            _ibClient.ClientSocket.reqAccountSummary(reqId, group, tags);
+
+            object endMessage = null;
+            await Task.Run(() =>
+            {
+                var startTime = DateTime.Now;
+                while (!_queueAccountSummaryEnd.TryDequeue(out endMessage)) { }
+
+            });
+
+            object dataMessage = null;
+            while (_queueAccountSummary.TryDequeue(out dataMessage))
+            {
+                accountSummaryCallback(dataMessage as AccountSummaryMessage);
+            }
+
+            var endMessageTyped = endMessage as AccountSummaryEndMessage;
+            accountSummaryEndCallback(endMessageTyped);
         }
 
         public async Task<ContractDetails> RequestContractDetailsAsync(Contract contract, int timeout)
@@ -147,7 +232,6 @@ namespace IbClient.IbHost
 
             return symbolSamplesMessage;
         }
-
 
         public async Task<int> ReqIdsAsync(int idParam)
         {
@@ -248,12 +332,13 @@ namespace IbClient.IbHost
             await Task.Run(() =>
             {
                 var startTime = DateTime.Now;
-                while (!_queueHistoricalDataEnd.TryDequeue(out endMessage)){}
+                while (!_queueHistoricalDataEnd.TryDequeue(out endMessage)) { }
 
             });
 
             object dataMessage = null;
-            while (_queueHistoricalData.TryDequeue(out dataMessage)) {
+            while (_queueHistoricalData.TryDequeue(out dataMessage))
+            {
                 historicalDataCallback((HistoricalDataMessage)dataMessage);
             }
 
@@ -479,6 +564,8 @@ namespace IbClient.IbHost
                 throw new ApplicationException("Unexpected! Consumer is null");
             }
             Consumer.TwsMessageCollection?.Add($"ReqId:0 managed accounts: {message.ManagedAccounts.Aggregate((r, n) => r + "," + n)}");
+
+            _queueManagedAccounts.Enqueue(message);
         }
 
         private void _ibClient_NextValidId(ConnectionStatusMessage message)
@@ -489,6 +576,8 @@ namespace IbClient.IbHost
             }
             Consumer.TwsMessageCollection?.Add(message.IsConnected ? "CONNECTED!" : "NOT CONNECTED!");
             Consumer.ConnectedToTws = message.IsConnected;
+
+            _queueConnectionStatus.Enqueue(message);    
         }
 
         private void _ibClient_ConnectionClosed()
@@ -499,6 +588,16 @@ namespace IbClient.IbHost
             }
             Consumer.TwsMessageCollection?.Add("DISCONNECTED!");
             Consumer.ConnectedToTws = false;
+        }
+
+        private void _ibClient_AccountSummary(AccountSummaryMessage obj)
+        {
+            _queueAccountSummary.Enqueue(obj);
+        }
+
+        private void _ibClient_AccountSummaryEnd(AccountSummaryEndMessage obj)
+        {
+            _queueAccountSummaryEnd.Enqueue(obj);
         }
 
         private void _ibClient_ContractDetails(ContractDetailsMessage contractDetailsMessage)
@@ -540,9 +639,9 @@ namespace IbClient.IbHost
             if (_placeOrderOrderIds.Contains(reqId))
                 _queuePlaceOrderErrors.Enqueue(new ErrorMessage(reqId, code, message));
 
-
-
             Consumer.TwsMessageCollection?.Add($"ReqId:{reqId} code:{code} message:{message} exception:{exception}");
+
+            _queueError.Enqueue(new ErrorMessage(reqId, code, message));
         }
 
         private void _ibClient_TickPrice(TickPriceMessage tickPriceMessage)
@@ -604,7 +703,6 @@ namespace IbClient.IbHost
             bool searchFunction(ErrorMessage c) => c.RequestId == reqId && c.ErrorCode == errorCode;
             return HasErrorMessage(reqId, searchFunction, out errorMessage);
         }
-
 
         private bool HasErrorMessage(int reqId, Func<ErrorMessage, bool> errorFilterFunction, out ErrorMessage errorMessage)
         {

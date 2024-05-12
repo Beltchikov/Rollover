@@ -1,4 +1,5 @@
-﻿using SignalAdvisor.Model;
+﻿using IbClient.IbHost;
+using SignalAdvisor.Model;
 using System.Windows;
 
 namespace SignalAdvisor
@@ -12,12 +13,34 @@ namespace SignalAdvisor
         internal static readonly string SEC_TYPE_STK = "STK";
         internal static readonly string USD = "USD";
         internal static readonly string EXCHANGE = "SMART";
+        internal static readonly string ACCOUNT_SUMMARY_TAGS = "AccountType,NetLiquidation,TotalCashValue,SettledCash,AccruedCash,BuyingPower,EquityWithLoanValue,PreviousEquityWithLoanValue,"
+            + "GrossPositionValue,ReqTEquity,ReqTMargin,SMA,InitMarginReq,MaintMarginReq,AvailableFunds,ExcessLiquidity,Cushion,FullInitMarginReq,FullMaintMarginReq,FullAvailableFunds,"
+            + "FullExcessLiquidity,LookAheadNextChange,LookAheadInitMarginReq ,LookAheadMaintMarginReq,LookAheadAvailableFunds,LookAheadExcessLiquidity,HighestSeverity,DayTradesRemaining,Leverage";
 
-        private void Application_Startup(object sender, StartupEventArgs e)
+        private async void Application_Startup(object sender, StartupEventArgs e)
         {
-            AdvisorWindow advisorWindow = new();
+            // Create instances of view model and IbHost
             AdvisorViewModel viewModel = new();
+            IIbHost ibHost = new IbHost();
+            viewModel.SetIbHost(ibHost);
 
+            // Connect to TWS
+            bool connected = false;
+            await ibHost.ConnectAndStartReaderThread(
+                viewModel.Host,
+                viewModel.Port,
+                viewModel.ClientId,
+                (c) => { connected = c.IsConnected; },
+                (ma) => { },
+                (e) => { });
+
+            while (!connected) { }
+
+            // Do start up actions
+            viewModel.StartUp();
+
+            // asign data context
+            AdvisorWindow advisorWindow = new();
             advisorWindow.DataContext = viewModel;
             advisorWindow.Show();
         }
