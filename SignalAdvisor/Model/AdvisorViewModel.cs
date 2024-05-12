@@ -23,8 +23,6 @@ namespace SignalAdvisor.Model
 
         public AdvisorViewModel()
         {
-            //IIbHostQueue ibHostQueue = new IbHostQueue();
-
             RequestPositionsCommand = new RelayCommand(() => RequestPositions.Run(this));
 
             OpenPositions = 21;
