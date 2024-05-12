@@ -13,7 +13,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IbClient", "IbClient\IbClie
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwsUserControls", "TwsUserControls\TwsUserControls.csproj", "{C75BFB3E-F42A-464C-A5DC-E990940C3E03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalAdvisor", "SignalAdvisor\SignalAdvisor.csproj", "{CA0B5328-E173-49FB-8576-2B870A5C60DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignalAdvisor", "SignalAdvisor\SignalAdvisor.csproj", "{CA0B5328-E173-49FB-8576-2B870A5C60DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Signals", "Signals\Signals.csproj", "{5FCAC714-8348-41F3-9B47-8CB2A3973446}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{CA0B5328-E173-49FB-8576-2B870A5C60DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA0B5328-E173-49FB-8576-2B870A5C60DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA0B5328-E173-49FB-8576-2B870A5C60DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FCAC714-8348-41F3-9B47-8CB2A3973446}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FCAC714-8348-41F3-9B47-8CB2A3973446}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FCAC714-8348-41F3-9B47-8CB2A3973446}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FCAC714-8348-41F3-9B47-8CB2A3973446}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
