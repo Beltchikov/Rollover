@@ -18,20 +18,34 @@ namespace SignalAdvisor.Model
         private int _lastCheck;
         private ObservableCollection<string> _positions = [];
 
-        public ICommand RequestPositionsCommand { get; }
+        //public ICommand RequestPositionsCommand { get; }
 
 
         public AdvisorViewModel()
         {
-            RequestPositionsCommand = new RelayCommand(() => RequestPositions.Run(this));
+            //RequestPositionsCommand = new RelayCommand(() => RequestPositions.Run(this));
 
             OpenOrders = 7;
             LastCheck = 0;
         }
 
-        public void StartUp()
+        public async Task StartUpAsync()
         {
-            RequestPositionsCommand.Execute(this);
+            //RequestPositionsCommand.Execute(this);
+
+            bool positionsRequested = false;
+            await IbHost.RequestPositions(
+               (p) =>
+               {
+                   Positions.Add(p.Contract.Symbol);
+               },
+               () =>
+               {
+                   positionsRequested = true;
+               });
+
+            await Task.Run(() => { while (!positionsRequested) { }; });
+            OnPropertyChanged(nameof(Positions));
         }
 
         public IIbHost IbHost { get; private set; }
