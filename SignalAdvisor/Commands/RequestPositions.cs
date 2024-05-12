@@ -1,6 +1,4 @@
-﻿using IbClient.IbHost;
-
-namespace SignalAdvisor.Commands
+﻿namespace SignalAdvisor.Commands
 {
     class RequestPositions
     {

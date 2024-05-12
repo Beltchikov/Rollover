@@ -31,20 +31,6 @@ namespace SignalAdvisor.Model
         public async Task StartUpAsync()
         {
             RequestPositionsCommand.Execute(this);
-
-            //bool positionsRequested = false;
-            //await IbHost.RequestPositions(
-            //   (p) =>
-            //   {
-            //       Positions.Add(p.Contract.Symbol);
-            //   },
-            //   () =>
-            //   {
-            //       positionsRequested = true;
-            //   });
-
-            //await Task.Run(() => { while (!positionsRequested) { }; });
-            OnPropertyChanged(nameof(Positions));
         }
 
         public IIbHost IbHost { get; private set; }
