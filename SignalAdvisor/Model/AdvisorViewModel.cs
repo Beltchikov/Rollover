@@ -19,10 +19,12 @@ namespace SignalAdvisor.Model
         private ObservableCollection<string> _positions = [];
 
         ICommand RequestPositionsCommand;
+        ICommand RequestHistoricalDataCommand;
 
         public AdvisorViewModel()
         {
             RequestPositionsCommand = new RelayCommand(async () => await RequestPositions.RunAsync(this));
+            RequestHistoricalDataCommand = new RelayCommand(async () => await RequestHistoricalData.RunAsync(this));
 
             OpenOrders = 7;
             LastCheck = 0;
@@ -30,7 +32,11 @@ namespace SignalAdvisor.Model
 
         public async Task StartUpAsync()
         {
-            RequestPositionsCommand.Execute(this);
+            await Task.Run(() => { RequestPositionsCommand.Execute(this); });
+
+            // TODO Task.Run(() => { while(!visitor.RequestPositionsCommandExecuted) });
+
+            RequestHistoricalDataCommand.Execute(this); 
         }
 
         public IIbHost IbHost { get; private set; }
