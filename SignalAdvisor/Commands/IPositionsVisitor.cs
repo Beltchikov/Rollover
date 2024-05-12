@@ -5,5 +5,8 @@ namespace SignalAdvisor.Commands
     public interface IPositionsVisitor : ITwsVisitor
     {
         ObservableCollection<string> Positions { get; }
+
+        void OnPropertyChanged(string propertyName);
+
     }
 }

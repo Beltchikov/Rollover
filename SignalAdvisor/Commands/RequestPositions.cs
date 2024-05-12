@@ -1,18 +1,24 @@
-﻿namespace SignalAdvisor.Commands
+﻿using IbClient.IbHost;
+
+namespace SignalAdvisor.Commands
 {
     class RequestPositions
     {
-        public static void Run(IPositionsVisitor visitor)
+        public static async Task RunAsync(IPositionsVisitor visitor)
         {
-            visitor.IbHost.RequestPositions(
-                (p) =>
-                {
-                    visitor.Positions.Add(p.Contract.Symbol);
-                },
-                () =>
-                {
-                    var t = 0;
-                });
+            bool positionsRequested = false;
+            await visitor.IbHost.RequestPositions(
+               (p) =>
+               {
+                   visitor.Positions.Add(p.Contract.Symbol);
+               },
+               () =>
+               {
+                   positionsRequested = true;
+                   visitor.OnPropertyChanged(nameof(visitor.Positions));
+               });
+
+            await Task.Run(() => { while (!positionsRequested) { }; });
         }
     }
 }

@@ -18,9 +18,11 @@ namespace SignalAdvisor.Model
         private int _lastCheck;
         private ObservableCollection<string> _positions = [];
 
+        ICommand RequestPositionsCommand;
+
         public AdvisorViewModel()
         {
-            //RequestPositionsCommand = new RelayCommand(() => RequestPositions.Run(this));
+            RequestPositionsCommand = new RelayCommand(async () => await RequestPositions.RunAsync(this));
 
             OpenOrders = 7;
             LastCheck = 0;
@@ -28,20 +30,20 @@ namespace SignalAdvisor.Model
 
         public async Task StartUpAsync()
         {
-            //RequestPositionsCommand.Execute(this);
+            RequestPositionsCommand.Execute(this);
 
-            bool positionsRequested = false;
-            await IbHost.RequestPositions(
-               (p) =>
-               {
-                   Positions.Add(p.Contract.Symbol);
-               },
-               () =>
-               {
-                   positionsRequested = true;
-               });
+            //bool positionsRequested = false;
+            //await IbHost.RequestPositions(
+            //   (p) =>
+            //   {
+            //       Positions.Add(p.Contract.Symbol);
+            //   },
+            //   () =>
+            //   {
+            //       positionsRequested = true;
+            //   });
 
-            await Task.Run(() => { while (!positionsRequested) { }; });
+            //await Task.Run(() => { while (!positionsRequested) { }; });
             OnPropertyChanged(nameof(Positions));
         }
 
@@ -51,6 +53,11 @@ namespace SignalAdvisor.Model
         {
             IbHost = ibHost;
             IbHost.Consumer = this;
+        }
+
+        void IPositionsVisitor.OnPropertyChanged(string propertyName)
+        {
+            OnPropertyChanged(propertyName);
         }
 
         public int Timeout => App.TIMEOUT;
