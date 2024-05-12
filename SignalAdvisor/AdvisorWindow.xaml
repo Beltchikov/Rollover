@@ -46,7 +46,7 @@
                 <ColumnDefinition Width="35"/>
                 <ColumnDefinition Width="170"/>
                 <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="110"/>
+                <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="30"/>
                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
@@ -67,9 +67,13 @@
                Content="{Binding LastCheck}"
                Foreground="#FF17DC17" FontSize="14"></Label>
 
-            <Button Grid.Column="6" Grid.ColumnSpan="3">Confirm Signal Reception</Button>
+            <Button Grid.Column="6" Grid.ColumnSpan="3"
+                    Margin="10 0 0 0">Confirm Signal Reception
+            </Button>
 
-            <Label Foreground="White" FontSize="14" Grid.Row="1" Grid.Column="6">Sound Enabled:</Label>
+            <Label Foreground="White" FontSize="14" Grid.Row="1" Grid.Column="6"
+                   Margin="10 0 0 0">Sound Enabled:
+            </Label>
             <CheckBox Grid.Row="1" Grid.Column="7" VerticalAlignment="Center"></CheckBox>
 
             <TextBox Grid.Row="1" Grid.ColumnSpan="6" Grid.RowSpan="2"
