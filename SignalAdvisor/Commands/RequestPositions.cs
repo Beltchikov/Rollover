@@ -2,12 +2,12 @@
 {
     class RequestPositions
     {
-        public static void Run(ITwsVisitor visitor)
+        public static void Run(IPositionsVisitor visitor)
         {
             visitor.IbHost.RequestPositions(
                 (p) =>
                 {
-                    var t = 0;
+                    visitor.Positions.Add(p.Contract.Symbol);
                 },
                 () =>
                 {

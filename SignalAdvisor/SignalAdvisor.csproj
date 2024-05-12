@@ -17,4 +17,10 @@
     <ProjectReference Include="..\TwsUserControls\TwsUserControls.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="CSharpAPI">
+      <HintPath>..\..\TWSAPI\source\CSharpClient\client\bin\Debug\CSharpAPI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

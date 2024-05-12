@@ -7,16 +7,17 @@ using System.Windows.Input;
 
 namespace SignalAdvisor.Model
 {
-    public class AdvisorViewModel : ObservableObject, IIbConsumer, ITwsVisitor
+    public class AdvisorViewModel : ObservableObject, IIbConsumer, ITwsVisitor, IPositionsVisitor
     {
         private string _host = "localhost";
         private int _port = 4001;
         private int _clientId = 1;
         private bool _connectedToTws;
-        private ObservableCollection<string> _twsMessageColllection = new ObservableCollection<string>();
+        private ObservableCollection<string> _twsMessageColllection = [];
         private int _openPositions;
         private int _openOrders;
         private int _lastCheck;
+        private ObservableCollection<string> _positions = [];
 
         public ICommand RequestPositionsCommand { get; }
 
@@ -89,7 +90,6 @@ namespace SignalAdvisor.Model
                 SetProperty(ref _twsMessageColllection, value);
             }
         }
-
         public int OpenPositions
         {
             get => _openPositions;
@@ -114,6 +114,15 @@ namespace SignalAdvisor.Model
             set
             {
                 SetProperty(ref _lastCheck, value);
+            }
+        }
+
+        public ObservableCollection<string> Positions
+        {
+            get => _positions;
+            set
+            {
+                SetProperty(ref _positions, value);
             }
         }
     }
