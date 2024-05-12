@@ -4,7 +4,7 @@
     {
         public static int InsideUpDown(List<Bar> bars)
         {
-            return 0; // TODO
+            return -2; // TODO
         }
     }
 }
