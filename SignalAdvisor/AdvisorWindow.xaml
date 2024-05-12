@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SignalAdvisor"
         xmlns:tws_uc="clr-namespace:TwsUserControls;assembly=TwsUserControls"
+        xmlns:converters="clr-namespace:SignalAdvisor.Converters"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="Signal Advisor" Width="820" Height="900" >
@@ -15,6 +16,9 @@
             <GradientStop Color="Black" Offset="1"/>
         </LinearGradientBrush>
     </Window.Background>
+    <Window.Resources>
+        <converters:PositionsToCountConverter x:Key="PositionsToCountConverter"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
@@ -53,7 +57,7 @@
 
             <Label Foreground="#FF17DC17" FontSize="14">Open Postions:</Label>
             <Label Name="lblOpenPositions" Grid.Column="1" 
-                   Content="{Binding OpenPositions}"
+                   Content="{Binding Positions, Converter={StaticResource PositionsToCountConverter}, Mode=OneWay}"
                    HorizontalAlignment="Left"
                    Foreground="#FF17DC17" FontSize="14"></Label>
 

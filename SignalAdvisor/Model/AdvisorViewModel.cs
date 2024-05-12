@@ -14,7 +14,6 @@ namespace SignalAdvisor.Model
         private int _clientId = 1;
         private bool _connectedToTws;
         private ObservableCollection<string> _twsMessageColllection = [];
-        private int _openPositions;
         private int _openOrders;
         private int _lastCheck;
         private ObservableCollection<string> _positions = [];
@@ -26,7 +25,6 @@ namespace SignalAdvisor.Model
         {
             RequestPositionsCommand = new RelayCommand(() => RequestPositions.Run(this));
 
-            OpenPositions = 21;
             OpenOrders = 7;
             LastCheck = 0;
         }
@@ -90,15 +88,6 @@ namespace SignalAdvisor.Model
                 SetProperty(ref _twsMessageColllection, value);
             }
         }
-        public int OpenPositions
-        {
-            get => _openPositions;
-            set
-            {
-                SetProperty(ref _openPositions, value);
-            }
-        }
-
         public int OpenOrders
         {
             get => _openOrders;
