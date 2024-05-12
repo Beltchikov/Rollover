@@ -35,17 +35,19 @@
         <Grid x:Name="Processing" Grid.Row="1" Margin="16,16,16,16" 
               Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="35"/>
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="110"/>
                 <ColumnDefinition Width="35"/>
-                <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="105"/>
                 <ColumnDefinition Width="35"/>
+                <ColumnDefinition Width="170"/>
                 <ColumnDefinition Width="50"/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="110"/>
+                <ColumnDefinition Width="30"/>
+               <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
             <Label Foreground="#FF17DC17" FontSize="14">Open Postions:</Label>
@@ -53,11 +55,18 @@
                    Content="{Binding OpenPositions}"
                    HorizontalAlignment="Left"
                    Foreground="#FF17DC17" FontSize="14"></Label>
-            <Label Name="lblOpenPositionsDetails" Grid.Column="2" 
-                   Content="{Binding OpenPositionsDetails}"
+
+            <Label Foreground="#FF17DC17" FontSize="14" Grid.Column="2">Open Orders:</Label>
+            <Label Name="lblOpenOrders" Grid.Column="3" 
+                   Content="{Binding OpenOrders}"
                    Foreground="#FF17DC17" FontSize="14"></Label>
-            
-            
+
+            <Label Foreground="#FF17DC17" FontSize="14" Grid.Column="4">Last Check (Server Time):</Label>
+            <Label Name="lblLastCheck" Grid.Column="5" 
+               Content="{Binding LastCheck}"
+               Foreground="#FF17DC17" FontSize="14"></Label>    
+
+
         </Grid>
 
         <tws_uc:TwsInformation Grid.Row="2" MessageCollection="{Binding TwsMessageCollection}" Grid.ColumnSpan="2" Margin="0,0,0,0" Grid.RowSpan="2">

@@ -18,8 +18,8 @@ namespace SignalAdvisor.Model
         private bool _connectedToTws;
         private ObservableCollection<string> _twsMessageColllection = new ObservableCollection<string>();
         private int _openPositions;
-        private string _openPositionsDetails;
-
+        private int _openOrders;
+        
         public ICommand ConnectToTwsCommand { get; }
 
 
@@ -33,7 +33,7 @@ namespace SignalAdvisor.Model
             ConnectToTwsCommand.Execute(this);
 
             OpenPositions = 21;
-            OpenPositionsDetails = "TODO";
+            OpenOrders= 7;
 
         }
 
@@ -94,15 +94,14 @@ namespace SignalAdvisor.Model
             }
         }
 
-        public string OpenPositionsDetails
+
+        public int OpenOrders
         {
-            get => _openPositionsDetails;
+            get => _openOrders;
             set
             {
-                SetProperty(ref _openPositionsDetails, value);
+                SetProperty(ref _openOrders, value);
             }
         }
-
-        
     }
 }
