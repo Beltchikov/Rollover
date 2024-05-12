@@ -2,18 +2,16 @@
 {
     class RequestPositions
     {
-        public static void Run(ITwsVisitor RequestPositions)
+        public static void Run(ITwsVisitor visitor)
         {
-            RequestPositions.IbHost.RequestAccountSummaryAsync(
-                "All", 
-                App.ACCOUNT_SUMMARY_TAGS, 
-                (a) =>
+            visitor.IbHost.RequestPositions(
+                (p) =>
                 {
-                    var todo = 0;
+                    var t = 0;
                 },
-                (e) =>
+                () =>
                 {
-                    var todo = 0;
+                    var t = 0;
                 });
         }
     }
