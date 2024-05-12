@@ -18,9 +18,6 @@ namespace SignalAdvisor.Model
         private int _lastCheck;
         private ObservableCollection<string> _positions = [];
 
-        //public ICommand RequestPositionsCommand { get; }
-
-
         public AdvisorViewModel()
         {
             //RequestPositionsCommand = new RelayCommand(() => RequestPositions.Run(this));
