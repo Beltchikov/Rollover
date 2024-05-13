@@ -19,6 +19,7 @@ namespace SignalAdvisor.Model
         private ObservableCollection<string> _twsMessageColllection = [];
         private int _openOrders;
         private string _lastCheck;
+        private string _signals;
         private ObservableCollection<PositionMessage> _positions = [];
         private ObservableCollection<KeyValuePair<string, List<Bar>>> _bars = [];
         private static System.Timers.Timer _timer;
@@ -38,6 +39,7 @@ namespace SignalAdvisor.Model
 
             OpenOrders = 7;
             LastCheck = "";
+            Signals = "TODOOOOO";
         }
 
         private void _timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
@@ -76,6 +78,21 @@ namespace SignalAdvisor.Model
         private void NewBar(DateTime newBarTime)
         {
             LastCheck = newBarTime.ToString("HH:mm:ss");
+
+            string symbol = "";
+            if(EngulfingBar(out symbol))
+            {
+                Signals = $"{LastCheck} POSITION {symbol} EngulfingBar {Environment.NewLine}{Signals}";
+            }
+        }
+
+        private bool EngulfingBar(out string symbol)
+        {
+            symbol = "TEST";
+            return true;
+            
+            //var lastBar = Bars.First(kvp => kvp.Key == liveDataMessage.Contract.ToString()).Value.Last();
+            //var barBefore = Bars.First(kvp => kvp.Key == liveDataMessage.Contract.ToString()).Value.SkipLast(1).Last();
         }
 
         public IIbHost IbHost { get; private set; }
@@ -162,6 +179,15 @@ namespace SignalAdvisor.Model
             set
             {
                 SetProperty(ref _lastCheck, value);
+            }
+        }
+        
+        public string Signals
+        {
+            get => _signals;
+            set
+            {
+                SetProperty(ref _signals, value);
             }
         }
 

@@ -81,8 +81,9 @@
             <CheckBox Grid.Row="1" Grid.Column="7" VerticalAlignment="Center"></CheckBox>
 
             <TextBox Grid.Row="1" Grid.ColumnSpan="6" Grid.RowSpan="2"
+                     Text="{Binding Signals}"
                      TextWrapping="Wrap" VerticalAlignment="Stretch" 
-                    AcceptsReturn="True" >
+                    AcceptsReturn="True" FontSize="20" FontWeight="Bold" >
             </TextBox>
 
         </Grid>
