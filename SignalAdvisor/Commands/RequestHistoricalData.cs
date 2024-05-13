@@ -1,4 +1,5 @@
-﻿using Ta;
+﻿using System.Globalization;
+using Ta;
 
 namespace SignalAdvisor.Commands
 {
@@ -41,7 +42,13 @@ namespace SignalAdvisor.Commands
                     (d) =>
                     {
                         var contractString = positionMessage.Contract.ToString();
-                        var time = DateTime.Parse(d.Date);
+                        var timeString = d.Date
+                            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                            .Select(s => s.Trim())
+                            .ToArray()
+                            .Aggregate((r, n) => r + " " + n);
+                       
+                        var time = DateTime.ParseExact(timeString, "yyyyMMdd HH:mm:ss", CultureInfo.InvariantCulture);
                         var bar = new Bar(d.Open, d.High, d.Low, d.Close, time);
 
                         if (!visitor.Bars.Any(kvp => kvp.Key == contractString))
