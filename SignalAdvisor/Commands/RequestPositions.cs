@@ -14,6 +14,7 @@
                {
                    positionsRequested = true;
                    visitor.OnPropertyChanged(nameof(visitor.Positions));
+                   visitor.RequestPositionsExecuted = true;
                });
 
             await Task.Run(() => { while (!positionsRequested) { }; });

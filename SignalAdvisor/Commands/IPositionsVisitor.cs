@@ -8,5 +8,7 @@ namespace SignalAdvisor.Commands
 
         void OnPropertyChanged(string propertyName);
 
+        bool RequestPositionsExecuted { get; set; }
+
     }
 }

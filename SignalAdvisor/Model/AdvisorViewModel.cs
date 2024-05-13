@@ -33,10 +33,9 @@ namespace SignalAdvisor.Model
         public async Task StartUpAsync()
         {
             await Task.Run(() => { RequestPositionsCommand.Execute(this); });
+            await Task.Run(() => { while (!RequestPositionsExecuted) { } });
 
-            // TODO Task.Run(() => { while(!visitor.RequestPositionsCommandExecuted) });
-
-            RequestHistoricalDataCommand.Execute(this); 
+            RequestHistoricalDataCommand.Execute(this);
         }
 
         public IIbHost IbHost { get; private set; }
@@ -124,5 +123,7 @@ namespace SignalAdvisor.Model
                 SetProperty(ref _positions, value);
             }
         }
+
+        public bool RequestPositionsExecuted { get; set; }
     }
 }
