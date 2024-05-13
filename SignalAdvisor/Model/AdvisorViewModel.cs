@@ -6,7 +6,6 @@ using SignalAdvisor.Commands;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows.Input;
-using System.Windows.Threading;
 using Ta;
 
 namespace SignalAdvisor.Model
@@ -22,6 +21,7 @@ namespace SignalAdvisor.Model
         private string _lastCheck;
         private ObservableCollection<PositionMessage> _positions = [];
         private ObservableCollection<KeyValuePair<string, List<Bar>>> _bars = [];
+        private static System.Timers.Timer _timer;
 
         ICommand RequestPositionsCommand;
         ICommand RequestHistoricalDataCommand;
@@ -31,8 +31,37 @@ namespace SignalAdvisor.Model
             RequestPositionsCommand = new RelayCommand(async () => await RequestPositions.RunAsync(this));
             RequestHistoricalDataCommand = new RelayCommand(async () => await RequestHistoricalData.RunAsync(this));
 
+            _timer = new System.Timers.Timer(2000);
+            _timer.Elapsed += _timer_Elapsed;
+            _timer.AutoReset = true;
+            _timer.Enabled = true;
+
             OpenOrders = 7;
             LastCheck = "";
+        }
+
+        private void _timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        {
+            while (IbHost.QueueHistoricalDataUpdate.TryDequeue(out object message))
+            {
+                var liveDataMessage = message as LiveDataMessage;
+                if (liveDataMessage == null) throw new Exception("Unexpected. liveDataMessage == null");
+
+                AddBar(liveDataMessage.Contract, liveDataMessage.HistoricalDataMessage);
+                var lastBar = Bars.First(kvp => kvp.Key == liveDataMessage.Contract.ToString()).Value.Last();
+                var barBefore = Bars.First(kvp => kvp.Key == liveDataMessage.Contract.ToString()).Value.SkipLast(1).Last();
+
+                var dispatcher = App.Current?.Dispatcher;
+                if (dispatcher != null)
+                {
+                    dispatcher.Invoke(() =>
+                    {
+                        TwsMessageCollection?.Add($"Heartbeat {lastBar.Time}  {barBefore.Time}");
+                    });
+                }
+
+                if (lastBar.Time != barBefore.Time) NewBar(lastBar.Time);
+            }
         }
 
         public async Task StartUpAsync()
@@ -42,27 +71,6 @@ namespace SignalAdvisor.Model
 
             await Task.Run(() => { RequestHistoricalDataCommand.Execute(this); });
             await Task.Run(() => { while (!RequestHistoricalDataExecuted) { } });
-
-            new Thread(() =>
-            {
-                while (IbHost.QueueHistoricalDataUpdate.TryDequeue(out object message))
-                {
-                    var liveDataMessage = message as LiveDataMessage;
-                    if (liveDataMessage == null) throw new Exception("Unexpected. liveDataMessage == null");
-                        
-                    AddBar(liveDataMessage.Contract, liveDataMessage.HistoricalDataMessage);
-                    var lastBar = Bars.First(kvp => kvp.Key == liveDataMessage.Contract.ToString()).Value.Last();
-                    var barBefore = Bars.First(kvp => kvp.Key == liveDataMessage.Contract.ToString()).Value.SkipLast(1).Last();
-
-                    App.Current.Dispatcher.Invoke(() => {
-                        TwsMessageCollection?.Add($"Heartbeat {lastBar.Time}  {barBefore.Time}");
-                        }); 
-                    if (lastBar.Time != barBefore.Time) NewBar(lastBar.Time);
-
-                }
-            })
-            { IsBackground = true }
-            .Start();
         }
 
         private void NewBar(DateTime newBarTime)
