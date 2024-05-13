@@ -23,6 +23,7 @@ namespace SignalAdvisor.Model
         private ObservableCollection<PositionMessage> _positions = [];
         private ObservableCollection<KeyValuePair<string, List<Bar>>> _bars = [];
         private static System.Timers.Timer _timer;
+        private static readonly string SESSION_START = "15:30";
 
         ICommand RequestPositionsCommand;
         ICommand RequestHistoricalDataCommand;
@@ -39,7 +40,6 @@ namespace SignalAdvisor.Model
 
             OpenOrders = 7;
             LastCheck = "";
-            Signals = "TODOOOOO";
         }
 
         private void _timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
@@ -79,21 +79,52 @@ namespace SignalAdvisor.Model
         {
             LastCheck = newBarTime.ToString("HH:mm:ss");
 
-            string symbol = "";
-            if(EngulfingBar(out symbol))
+            string[] symbols;
+            if (InsideUpDown(out symbols))
             {
-                Signals = $"{LastCheck} POSITION {symbol} EngulfingBar {Environment.NewLine}{Signals}";
+                foreach (var symbol in symbols)
+                {
+                    Signals = $"{LastCheck} POSITION {symbol} InsideUpDown {Environment.NewLine}{Signals}";
+                }
             }
         }
 
-        private bool EngulfingBar(out string symbol)
+        private bool InsideUpDown(out string[] symbols)
         {
-            symbol = "TEST";
+            symbols = ["TEST", "RRR"];
             return true;
-            
-            //var lastBar = Bars.First(kvp => kvp.Key == liveDataMessage.Contract.ToString()).Value.Last();
-            //var barBefore = Bars.First(kvp => kvp.Key == liveDataMessage.Contract.ToString()).Value.SkipLast(1).Last();
+
+            //foreach (var kvp in Bars)
+            //{
+            //    var barData = kvp.Value;
+            //    if (InsideUpDown(barData))
+            //    {
+
+            //    }
+            //}
         }
+
+        //private bool InsideUpDown(List<Bar> bars)
+        //{
+        //    var sessionStart = DateTime.Now;
+        //    sessionStart = sessionStart.Date;
+        //    sessionStart = sessionStart.AddHours(15);
+        //    sessionStart = sessionStart.AddMinutes(30);
+
+        //    for (int i = bars.Count - 1; i >= 0; i--)
+        //    {
+        //        var bar = bars[i];
+
+        //        for (int ii = i - 1; ii >= 0; ii--)
+        //        {
+        //            var barBefore = bars[ii];
+        //            if (barBefore.Time < sessionStart)
+        //                return false;
+
+        //            if(bar.High <= barBefore)
+        //        }
+        //    }
+        //}
 
         public IIbHost IbHost { get; private set; }
 
@@ -181,7 +212,7 @@ namespace SignalAdvisor.Model
                 SetProperty(ref _lastCheck, value);
             }
         }
-        
+
         public string Signals
         {
             get => _signals;
