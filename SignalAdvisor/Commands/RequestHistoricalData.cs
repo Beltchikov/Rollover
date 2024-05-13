@@ -26,8 +26,7 @@ namespace SignalAdvisor.Commands
                     Currency = positionMessage.Contract.Currency,
                     Exchange = App.EXCHANGE
                 };
-                var contractOriginalString = positionMessage.Contract.ToString();
-
+                
                 bool historicalDataReceived = false;
                 await visitor.IbHost.RequestHistoricalDataAsync(
                     contractSmartExchange,
@@ -42,12 +41,11 @@ namespace SignalAdvisor.Commands
                     App.TIMEOUT,
                     (d) =>
                     {
-                        var bar = new Bar(d.Open, d.High, d.Low, d.Close, TimeFromString(d.Date));
-                        if (!visitor.Bars.Any(kvp => kvp.Key == contractOriginalString))
-                            visitor.Bars.Add(new KeyValuePair<string, List<Bar>>(contractOriginalString, []));
-                        visitor.Bars.First(kvp => kvp.Key == contractOriginalString).Value.Add(bar);
+                        visitor.AddBar(positionMessage.Contract, d);
                     },
-                    (u) => {
+                    (u) =>
+                    {
+                        visitor.AddBar(positionMessage.Contract, u);
                         //var time = TimeFromString(u.Date);
                         //if(time.Minute/ BAR_SIZE)
                     },
@@ -55,17 +53,6 @@ namespace SignalAdvisor.Commands
 
                 await Task.Run(() => { while (!historicalDataReceived) { }; });
             }
-        }
-
-        private static DateTime TimeFromString(string dateTimeString)
-        {
-            var timeString = dateTimeString
-                         .Split(' ', StringSplitOptions.RemoveEmptyEntries)
-                         .Select(s => s.Trim())
-                         .ToArray()
-                         .Aggregate((r, n) => r + " " + n);
-
-            return DateTime.ParseExact(timeString, "yyyyMMdd HH:mm:ss", CultureInfo.InvariantCulture);
         }
     }
 }

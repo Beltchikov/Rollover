@@ -4,6 +4,7 @@ using IbClient.IbHost;
 using IbClient.messages;
 using SignalAdvisor.Commands;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Windows.Input;
 using Ta;
 
@@ -52,6 +53,16 @@ namespace SignalAdvisor.Model
         void IPositionsVisitor.OnPropertyChanged(string propertyName)
         {
             OnPropertyChanged(propertyName);
+        }
+
+        public void AddBar(IBApi.Contract contract, HistoricalDataMessage message)
+        {
+            var bar = new Bar(message.Open, message.High, message.Low, message.Close, TimeFromString(message.Date));
+            var contractOriginalString = contract.ToString();
+
+            if (!Bars.Any(kvp => kvp.Key == contractOriginalString))
+                Bars.Add(new KeyValuePair<string, List<Bar>>(contractOriginalString, []));
+            Bars.First(kvp => kvp.Key == contractOriginalString).Value.Add(bar);
         }
 
         public int Timeout => App.TIMEOUT;
@@ -137,5 +148,16 @@ namespace SignalAdvisor.Model
         }
 
         public bool RequestPositionsExecuted { get; set; }
+
+        private static DateTime TimeFromString(string dateTimeString)
+        {
+            var timeString = dateTimeString
+                         .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                         .Select(s => s.Trim())
+                         .ToArray()
+                         .Aggregate((r, n) => r + " " + n);
+
+            return DateTime.ParseExact(timeString, "yyyyMMdd HH:mm:ss", CultureInfo.InvariantCulture);
+        }
     }
 }

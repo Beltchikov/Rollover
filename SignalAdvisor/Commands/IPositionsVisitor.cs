@@ -10,7 +10,7 @@ namespace SignalAdvisor.Commands
         ObservableCollection<KeyValuePair<string, List<Bar>>> Bars { get; }
 
         void OnPropertyChanged(string propertyName);
-
+        void AddBar(IBApi.Contract contract, HistoricalDataMessage historicalDataMessage);
         bool RequestPositionsExecuted { get; set; }
 
     }
