@@ -7,7 +7,8 @@
             Open = open;
             High = high; 
             Low = low; 
-            Close = close;  
+            Close = close; 
+            Time = time;
         }
 
         double Open {  get; set; }
