@@ -5,6 +5,7 @@ using IbClient.messages;
 using SignalAdvisor.Commands;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Ta;
 
 namespace SignalAdvisor.Model
 {
@@ -18,6 +19,7 @@ namespace SignalAdvisor.Model
         private int _openOrders;
         private int _lastCheck;
         private ObservableCollection<PositionMessage> _positions = [];
+        private ObservableCollection<KeyValuePair<string, List<Bar>>> _bars = [];
 
         ICommand RequestPositionsCommand;
         ICommand RequestHistoricalDataCommand;
@@ -122,6 +124,15 @@ namespace SignalAdvisor.Model
             set
             {
                 SetProperty(ref _positions, value);
+            }
+        }
+
+        public ObservableCollection<KeyValuePair<string, List<Bar>>> Bars
+        {
+            get => _bars;
+            set
+            {
+                SetProperty(ref _bars, value);
             }
         }
 

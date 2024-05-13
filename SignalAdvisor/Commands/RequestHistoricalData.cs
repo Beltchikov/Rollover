@@ -1,35 +1,35 @@
-﻿using IBApi;
+﻿using Ta;
 
 namespace SignalAdvisor.Commands
 {
     class RequestHistoricalData
     {
+        static readonly int BAR_SIZE = 5;
+        
         public static async Task RunAsync(IPositionsVisitor visitor)
         {
             var now = DateTime.Now;
             var historicalDataStart = now.AddHours(-1 * App.HISTORICAL_DATA_PERIOD_IN_HOURS);
-            string endDateTime = now.ToString("yyyyMMdd HH:mm:ss");
-            //string durationString = "300 S";
-            string durationString = $"{(now-historicalDataStart).TotalSeconds} S";
-            string barSizeSetting = "5 mins";
+            string durationString = $"{(now - historicalDataStart).Days} D";
+            string barSizeSetting = $"{BAR_SIZE} mins";
             string whatToShow = "TRADES";
-            int useRTH = 0;
+            int useRTH = 1;
             bool keepUpToDate = true;
 
-            // TODO
-
-            foreach (var position in visitor.Positions)
+            foreach (var positionMessage in visitor.Positions)
             {
+                var contract = new IBApi.Contract()
+                {
+                    SecType = positionMessage.Contract.SecType,
+                    Symbol = positionMessage.Contract.Symbol,
+                    Currency = positionMessage.Contract.Currency,
+                    Exchange = App.EXCHANGE
+                };
+
                 bool historicalDataReceived = false;
-
-                var conId = 0; // TODO
-
-                Contract contractBuy = new() { ConId = conId, Exchange = App.EXCHANGE };
-                double auxPriceBuy = 0;
-
                 await visitor.IbHost.RequestHistoricalDataAsync(
-                    contractBuy,
-                    endDateTime,
+                    contract,
+                    "",
                     durationString,
                     barSizeSetting,
                     whatToShow,
@@ -38,9 +38,18 @@ namespace SignalAdvisor.Commands
                     keepUpToDate,
                     [],
                     App.TIMEOUT,
-                    (d) => auxPriceBuy = d.High + 0.01,
-                    (u) => { },
-                    (e) => { });
+                    (d) =>
+                    {
+                        var contractString = positionMessage.Contract.ToString();
+                        var time = DateTime.Parse(d.Date);
+                        var bar = new Bar(d.Open, d.High, d.Low, d.Close, time);
+
+                        if (!visitor.Bars.Any(kvp => kvp.Key == contractString))
+                            visitor.Bars.Add(new KeyValuePair<string, List<Bar>>(contractString, []));
+                        visitor.Bars.First(kvp => kvp.Key == contractString).Value.Add(bar);
+                    },
+                    (u) => { var todo = 0; },
+                    (e) => { historicalDataReceived = true; });
 
                 await Task.Run(() => { while (!historicalDataReceived) { }; });
             }
