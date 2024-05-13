@@ -6,6 +6,7 @@ using SignalAdvisor.Commands;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Ta;
 
 namespace SignalAdvisor.Model
@@ -52,7 +53,10 @@ namespace SignalAdvisor.Model
                     AddBar(liveDataMessage.Contract, liveDataMessage.HistoricalDataMessage);
                     var lastBar = Bars.First(kvp => kvp.Key == liveDataMessage.Contract.ToString()).Value.Last();
                     var barBefore = Bars.First(kvp => kvp.Key == liveDataMessage.Contract.ToString()).Value.SkipLast(1).Last();
-                    
+
+                    App.Current.Dispatcher.Invoke(() => {
+                        TwsMessageCollection?.Add($"Heartbeat {lastBar.Time}  {barBefore.Time}");
+                        }); 
                     if (lastBar.Time != barBefore.Time) NewBar(lastBar.Time);
 
                 }
@@ -63,7 +67,7 @@ namespace SignalAdvisor.Model
 
         private void NewBar(DateTime newBarTime)
         {
-            LastCheck = newBarTime.ToString();
+            LastCheck = newBarTime.ToString("HH:mm:ss");
         }
 
         public IIbHost IbHost { get; private set; }
