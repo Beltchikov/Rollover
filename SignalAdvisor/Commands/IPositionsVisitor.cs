@@ -12,6 +12,6 @@ namespace SignalAdvisor.Commands
         void OnPropertyChanged(string propertyName);
         void AddBar(IBApi.Contract contract, HistoricalDataMessage historicalDataMessage);
         bool RequestPositionsExecuted { get; set; }
-
+        bool RequestHistoricalDataExecuted { get; set; }
     }
 }

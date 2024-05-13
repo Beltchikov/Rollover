@@ -49,10 +49,11 @@ namespace SignalAdvisor.Commands
                         //var time = TimeFromString(u.Date);
                         //if(time.Minute/ BAR_SIZE)
                     },
-                    (e) => { historicalDataReceived = true; });
+                    (e) => { historicalDataReceived = true;});
 
                 await Task.Run(() => { while (!historicalDataReceived) { }; });
             }
+            visitor.RequestHistoricalDataExecuted = true;
         }
     }
 }
