@@ -8,7 +8,7 @@
             await visitor.IbHost.RequestPositions(
                (p) =>
                {
-                   visitor.Positions.Add(p.Contract.Symbol);
+                   visitor.Positions.Add(p);
                },
                () =>
                {

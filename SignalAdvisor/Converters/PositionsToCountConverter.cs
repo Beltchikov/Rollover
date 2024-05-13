@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using IbClient.messages;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows.Data;
 
@@ -13,7 +14,7 @@ namespace SignalAdvisor.Converters
                 return "";
             }
 
-            var valueTyped = value as ObservableCollection<string>;
+            var valueTyped = value as ObservableCollection<PositionMessage>;
             if (valueTyped == null) return 0;
             return valueTyped.Count;
         }

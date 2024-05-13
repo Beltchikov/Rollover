@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using IbClient.IbHost;
+using IbClient.messages;
 using SignalAdvisor.Commands;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -16,7 +17,7 @@ namespace SignalAdvisor.Model
         private ObservableCollection<string> _twsMessageColllection = [];
         private int _openOrders;
         private int _lastCheck;
-        private ObservableCollection<string> _positions = [];
+        private ObservableCollection<PositionMessage> _positions = [];
 
         ICommand RequestPositionsCommand;
         ICommand RequestHistoricalDataCommand;
@@ -115,7 +116,7 @@ namespace SignalAdvisor.Model
             }
         }
 
-        public ObservableCollection<string> Positions
+        public ObservableCollection<PositionMessage> Positions
         {
             get => _positions;
             set
