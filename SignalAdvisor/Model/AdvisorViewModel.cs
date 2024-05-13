@@ -46,15 +46,12 @@ namespace SignalAdvisor.Model
             {
                 while (IbHost.QueueHistoricalDataUpdate.TryDequeue(out object message))
                 {
-                    var historicalDataMessage = message as HistoricalDataMessage;
-                    //AddBar(positionMessage.Contract, d);
+                    var liveDataMessage = message as LiveDataMessage;
+                    if (liveDataMessage != null) AddBar(liveDataMessage.Contract, liveDataMessage.HistoricalDataMessage);
                 }
             })
             { IsBackground = true }
             .Start();
-
-           
-
         }
 
         public IIbHost IbHost { get; private set; }

@@ -19,17 +19,9 @@ namespace SignalAdvisor.Commands
 
             foreach (var positionMessage in visitor.Positions)
             {
-                var contractSmartExchange = new IBApi.Contract()
-                {
-                    SecType = positionMessage.Contract.SecType,
-                    Symbol = positionMessage.Contract.Symbol,
-                    Currency = positionMessage.Contract.Currency,
-                    Exchange = App.EXCHANGE
-                };
-                
                 bool historicalDataReceived = false;
                 await visitor.IbHost.RequestHistoricalDataAsync(
-                    contractSmartExchange,
+                    positionMessage.Contract,
                     "",
                     durationString,
                     barSizeSetting,

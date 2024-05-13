@@ -49,6 +49,7 @@
     <Compile Include="IbHost\IIbConsumer.cs" />
     <Compile Include="IbHost\IIbHost.cs" />
     <Compile Include="IbHost\IIBClient.cs" />
+    <Compile Include="messages\LiveDataMessage.cs" />
     <Compile Include="messages\AccountDownloadEndMessage.cs" />
     <Compile Include="messages\AccountSummaryEndMessage.cs" />
     <Compile Include="messages\AccountSummaryMessage.cs" />

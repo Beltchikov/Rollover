@@ -36,6 +36,9 @@ namespace IbClient.IbHost
         private List<ErrorMessage> _errorMessages;
         private int _nextOrderId;
         private int _lastOrderId;
+        private Dictionary<int, Contract> _requestIdContract;
+
+
         public static readonly string DEFAULT_SEC_TYPE = "STK";
         public static readonly string DEFAULT_CURRENCY = "USD";
         public static readonly string DEFAULT_EXCHANGE = "SMART";
@@ -44,6 +47,7 @@ namespace IbClient.IbHost
         private readonly int ERROR_CODE_201 = 201;
         private readonly string SUBMITTED = "Submitted";
         private readonly string PRESUBMITTED = "PreSubmitted";
+        private readonly string EXCHANGE_SMART = "SMART";
 
         public IbHost()
         {
@@ -88,6 +92,7 @@ namespace IbClient.IbHost
             _errorMessages = new List<ErrorMessage>();
             _mktDataReqIds = new List<int> { };
             _placeOrderOrderIds = new List<int> { };
+            _requestIdContract = new Dictionary<int, Contract>();
 
             //_ibClient.HistoricalData += _ibClient_HistoricalData;
             //_ibClient.HistoricalDataUpdate += _ibClient_HistoricalDataUpdate;
@@ -344,11 +349,19 @@ namespace IbClient.IbHost
             Action<HistoricalDataMessage> historicalDataUpdateCallback,
             Action<HistoricalDataEndMessage> historicalDataEndCallback)
         {
+            var contractSmartExchange = new IBApi.Contract()
+            {
+                SecType = contract.SecType,
+                Symbol = contract.Symbol,
+                Currency = contract.Currency,
+                Exchange = EXCHANGE_SMART
+            };
 
             var reqId = ++_currentReqId;
+            _requestIdContract[reqId] = contract;
             _ibClient.ClientSocket.reqHistoricalData(
                 reqId,
-                contract,
+                contractSmartExchange,
                 endDateTime,
                 durationString,
                 barSizeSetting,
@@ -375,7 +388,8 @@ namespace IbClient.IbHost
             object updateMessage = null;
             while (_queueHistoricalDataUpdate.TryDequeue(out updateMessage))
             {
-                historicalDataUpdateCallback((HistoricalDataMessage)dataMessage);
+                // TODO remove the whole block
+                //historicalDataUpdateCallback((HistoricalDataMessage)dataMessage);
             }
 
             historicalDataEndCallback((HistoricalDataEndMessage)endMessage);
@@ -759,9 +773,10 @@ namespace IbClient.IbHost
             _queueHistoricalData.Enqueue(obj);
         }
 
-        private void _ibClient_HistoricalDataUpdate(HistoricalDataMessage obj)
+        private void _ibClient_HistoricalDataUpdate(HistoricalDataMessage message)
         {
-            _queueHistoricalDataUpdate.Enqueue(obj);
+            LiveDataMessage liveDataMessage = new LiveDataMessage(_requestIdContract[message.RequestId],  message);    
+            _queueHistoricalDataUpdate.Enqueue(liveDataMessage);
         }
 
         private void _ibClient_HistoricalDataEnd(HistoricalDataEndMessage obj)
