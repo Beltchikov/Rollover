@@ -13,7 +13,7 @@ namespace SignalAdvisor.Commands
             string durationString = $"{(now - historicalDataStart).Days} D";
             string barSizeSetting = $"{BAR_SIZE} mins";
             string whatToShow = "TRADES";
-            int useRTH = 1;
+            int useRTH = 0;
             bool keepUpToDate = true;
 
             foreach (var positionMessage in visitor.Positions)
