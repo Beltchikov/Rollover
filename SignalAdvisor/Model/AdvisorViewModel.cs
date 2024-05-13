@@ -69,8 +69,6 @@ namespace SignalAdvisor.Model
 
         public void AddBar(IBApi.Contract contract, HistoricalDataMessage message)
         {
-            if (message == null) return;
-
             var bar = new Bar(message.Open, message.High, message.Low, message.Close, TimeFromString(message.Date));
             var contractOriginalString = contract.ToString();
 
