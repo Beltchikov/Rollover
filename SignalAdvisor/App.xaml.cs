@@ -17,6 +17,7 @@ namespace SignalAdvisor
             + "GrossPositionValue,ReqTEquity,ReqTMargin,SMA,InitMarginReq,MaintMarginReq,AvailableFunds,ExcessLiquidity,Cushion,FullInitMarginReq,FullMaintMarginReq,FullAvailableFunds,"
             + "FullExcessLiquidity,LookAheadNextChange,LookAheadInitMarginReq ,LookAheadMaintMarginReq,LookAheadAvailableFunds,LookAheadExcessLiquidity,HighestSeverity,DayTradesRemaining,Leverage";
         internal static readonly int HISTORICAL_DATA_PERIOD_IN_HOURS = 72;
+        internal static readonly int BAR_SIZE = 5;
 
         private async void Application_Startup(object sender, StartupEventArgs e)
         {

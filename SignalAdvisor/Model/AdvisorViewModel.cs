@@ -18,7 +18,7 @@ namespace SignalAdvisor.Model
         private bool _connectedToTws;
         private ObservableCollection<string> _twsMessageColllection = [];
         private int _openOrders;
-        private int _lastCheck;
+        private string _lastCheck;
         private ObservableCollection<PositionMessage> _positions = [];
         private ObservableCollection<KeyValuePair<string, List<Bar>>> _bars = [];
 
@@ -31,7 +31,7 @@ namespace SignalAdvisor.Model
             RequestHistoricalDataCommand = new RelayCommand(async () => await RequestHistoricalData.RunAsync(this));
 
             OpenOrders = 7;
-            LastCheck = 0;
+            LastCheck = "";
         }
 
         public async Task StartUpAsync()
@@ -47,11 +47,23 @@ namespace SignalAdvisor.Model
                 while (IbHost.QueueHistoricalDataUpdate.TryDequeue(out object message))
                 {
                     var liveDataMessage = message as LiveDataMessage;
-                    if (liveDataMessage != null) AddBar(liveDataMessage.Contract, liveDataMessage.HistoricalDataMessage);
+                    if (liveDataMessage == null) throw new Exception("Unexpected. liveDataMessage == null");
+                        
+                    AddBar(liveDataMessage.Contract, liveDataMessage.HistoricalDataMessage);
+                    var lastBar = Bars.First(kvp => kvp.Key == liveDataMessage.Contract.ToString()).Value.Last();
+                    var barBefore = Bars.First(kvp => kvp.Key == liveDataMessage.Contract.ToString()).Value.SkipLast(1).Last();
+                    
+                    if (lastBar.Time != barBefore.Time) NewBar(lastBar.Time);
+
                 }
             })
             { IsBackground = true }
             .Start();
+        }
+
+        private void NewBar(DateTime newBarTime)
+        {
+            LastCheck = newBarTime.ToString();
         }
 
         public IIbHost IbHost { get; private set; }
@@ -132,7 +144,7 @@ namespace SignalAdvisor.Model
             }
         }
 
-        public int LastCheck
+        public string LastCheck
         {
             get => _lastCheck;
             set
