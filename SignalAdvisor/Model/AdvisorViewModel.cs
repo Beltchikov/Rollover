@@ -41,6 +41,20 @@ namespace SignalAdvisor.Model
 
             await Task.Run(() => { RequestHistoricalDataCommand.Execute(this); });
             await Task.Run(() => { while (!RequestHistoricalDataExecuted) { } });
+
+            new Thread(() =>
+            {
+                while (IbHost.QueueHistoricalDataUpdate.TryDequeue(out object message))
+                {
+                    var historicalDataMessage = message as HistoricalDataMessage;
+                    //AddBar(positionMessage.Contract, d);
+                }
+            })
+            { IsBackground = true }
+            .Start();
+
+           
+
         }
 
         public IIbHost IbHost { get; private set; }
@@ -59,7 +73,7 @@ namespace SignalAdvisor.Model
         public void AddBar(IBApi.Contract contract, HistoricalDataMessage message)
         {
             if (message == null) return;
-            
+
             var bar = new Bar(message.Open, message.High, message.Low, message.Close, TimeFromString(message.Date));
             var contractOriginalString = contract.ToString();
 

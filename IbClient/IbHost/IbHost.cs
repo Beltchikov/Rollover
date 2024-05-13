@@ -105,6 +105,8 @@ namespace IbClient.IbHost
 
         public IIbConsumer Consumer { get; set; }
 
+        public IIbHostQueue QueueHistoricalDataUpdate => _queueHistoricalDataUpdate;
+
         public async Task<bool> ConnectAndStartReaderThread(string host, int port, int clientId, int timeout)
         {
             return await Task.Run(() =>

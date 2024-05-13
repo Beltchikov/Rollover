@@ -21,6 +21,8 @@ namespace IbClient.IbHost
            Action<ManagedAccountsMessage> managedAccountsCallback,
            Action<ErrorMessage> errorMessageCallback);
         bool IsConnected { get; }
+        IIbHostQueue QueueHistoricalDataUpdate { get; }
+
         void Disconnect();
         Task RequestAccountSummaryAsync(
             string group,
