@@ -6,7 +6,7 @@ namespace SignalAdvisor.Commands
     class RequestHistoricalData
     {
         static readonly int BAR_SIZE = 5;
-        
+
         public static async Task RunAsync(IPositionsVisitor visitor)
         {
             var now = DateTime.Now;
@@ -19,17 +19,18 @@ namespace SignalAdvisor.Commands
 
             foreach (var positionMessage in visitor.Positions)
             {
-                var contract = new IBApi.Contract()
+                var contractSmartExchange = new IBApi.Contract()
                 {
                     SecType = positionMessage.Contract.SecType,
                     Symbol = positionMessage.Contract.Symbol,
                     Currency = positionMessage.Contract.Currency,
                     Exchange = App.EXCHANGE
                 };
+                var contractOriginalString = positionMessage.Contract.ToString();
 
                 bool historicalDataReceived = false;
                 await visitor.IbHost.RequestHistoricalDataAsync(
-                    contract,
+                    contractSmartExchange,
                     "",
                     durationString,
                     barSizeSetting,
@@ -41,25 +42,30 @@ namespace SignalAdvisor.Commands
                     App.TIMEOUT,
                     (d) =>
                     {
-                        var contractString = positionMessage.Contract.ToString();
-                        var timeString = d.Date
-                            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
-                            .Select(s => s.Trim())
-                            .ToArray()
-                            .Aggregate((r, n) => r + " " + n);
-                       
-                        var time = DateTime.ParseExact(timeString, "yyyyMMdd HH:mm:ss", CultureInfo.InvariantCulture);
-                        var bar = new Bar(d.Open, d.High, d.Low, d.Close, time);
-
-                        if (!visitor.Bars.Any(kvp => kvp.Key == contractString))
-                            visitor.Bars.Add(new KeyValuePair<string, List<Bar>>(contractString, []));
-                        visitor.Bars.First(kvp => kvp.Key == contractString).Value.Add(bar);
+                        var bar = new Bar(d.Open, d.High, d.Low, d.Close, TimeFromString(d.Date));
+                        if (!visitor.Bars.Any(kvp => kvp.Key == contractOriginalString))
+                            visitor.Bars.Add(new KeyValuePair<string, List<Bar>>(contractOriginalString, []));
+                        visitor.Bars.First(kvp => kvp.Key == contractOriginalString).Value.Add(bar);
                     },
-                    (u) => { var todo = 0; },
+                    (u) => {
+                        //var time = TimeFromString(u.Date);
+                        //if(time.Minute/ BAR_SIZE)
+                    },
                     (e) => { historicalDataReceived = true; });
 
                 await Task.Run(() => { while (!historicalDataReceived) { }; });
             }
+        }
+
+        private static DateTime TimeFromString(string dateTimeString)
+        {
+            var timeString = dateTimeString
+                         .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                         .Select(s => s.Trim())
+                         .ToArray()
+                         .Aggregate((r, n) => r + " " + n);
+
+            return DateTime.ParseExact(timeString, "yyyyMMdd HH:mm:ss", CultureInfo.InvariantCulture);
         }
     }
 }
