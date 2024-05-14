@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using IbClient.IbHost;
 using IbClient.messages;
+using IBSampleApp.messages;
 using SignalAdvisor.Commands;
 using System.Collections.ObjectModel;
 using System.Globalization;

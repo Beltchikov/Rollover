@@ -1,4 +1,5 @@
 ﻿using IBApi;
+using IBSampleApp.messages;
 
 namespace IbClient.messages
 {

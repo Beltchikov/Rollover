@@ -1,4 +1,5 @@
 ﻿using IBApi;
+using IbClient.messages;
 using IbClient.Types;
 using IBSampleApp.messages;
 using System;
@@ -692,7 +693,7 @@ namespace IbClient.IbHost
 
             Consumer.TwsMessageCollection?.Add($"ReqId:{reqId} code:{code} message:{message} exception:{exception}");
 
-            _queueError.Enqueue(new ErrorMessage(reqId, code, message));
+            _queueError.Enqueue(new ErrorMessage(reqId, code, message, ""));
         }
 
         private void _ibClient_TickPrice(TickPriceMessage tickPriceMessage)
