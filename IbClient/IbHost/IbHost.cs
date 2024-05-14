@@ -1,12 +1,9 @@
 ﻿using IBApi;
-using IbClient.messages;
 using IbClient.Types;
+using IBSampleApp.messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using TickType = IbClient.Types.TickType;
 
@@ -465,7 +462,7 @@ namespace IbClient.IbHost
             {
                 if ((DateTime.Now - startTime).TotalMilliseconds >= timeout)
                 {
-                    errorMessage = new ErrorMessage(reqId, 0, $"Timeout {timeout} ms.");
+                    errorMessage = new ErrorMessage(reqId, 0, $"Timeout {timeout} ms.", "");
                     return true;
                 }
                 else return false;
@@ -527,7 +524,7 @@ namespace IbClient.IbHost
             _queueCommon.Enqueue(fundamentalsMessage);
         }
 
-        private void _ibClient_Error(int reqId, int code, string message, Exception exception)
+        private void _ibClient_Error(int reqId, int code, string message, string todo, Exception exception)
         {
             if (Consumer == null)
             {
@@ -535,10 +532,10 @@ namespace IbClient.IbHost
             }
 
             if (_mktDataReqIds.Contains(reqId))
-                _queueMktDataErrors.Enqueue(new ErrorMessage(reqId, code, message));
+                _queueMktDataErrors.Enqueue(new ErrorMessage(reqId, code, message, ""));
 
             if (_placeOrderOrderIds.Contains(reqId))
-                _queuePlaceOrderErrors.Enqueue(new ErrorMessage(reqId, code, message));
+                _queuePlaceOrderErrors.Enqueue(new ErrorMessage(reqId, code, message, "" ));
 
 
 

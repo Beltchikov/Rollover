@@ -1,7 +1,6 @@
 ﻿using IBApi;
 using IbClient.Types;
 using PortfolioTrader.Model;
-using System.Windows.Controls;
 using TickType = IbClient.Types.TickType;
 
 namespace PortfolioTrader.Commands

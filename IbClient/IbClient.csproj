@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CSharpAPI">
+      <HintPath>..\..\TWSAPI\source\CSharpClient\client\bin\Debug\netstandard2.0\CSharpAPI.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -62,8 +65,6 @@
     <Compile Include="messages\ConnectionStatusMessage.cs" />
     <Compile Include="messages\ContractDetailsEndMessage.cs" />
     <Compile Include="messages\ContractDetailsMessage.cs" />
-    <Compile Include="messages\DailyPnLMessage.cs" />
-    <Compile Include="messages\DailyPnLSingleMessage.cs" />
     <Compile Include="messages\DeepBookMessage.cs" />
     <Compile Include="messages\ErrorMessage.cs" />
     <Compile Include="messages\ExecutionMessage.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="messages\HistoricalDataMessage.cs" />
     <Compile Include="messages\HistoricalNewsEndMessage.cs" />
     <Compile Include="messages\HistoricalNewsMessage.cs" />
+    <Compile Include="messages\HistoricalScheduleMessage.cs" />
     <Compile Include="messages\HistoricalTickBidAskEndMessage.cs" />
     <Compile Include="messages\HistoricalTickBidAskMessage.cs" />
     <Compile Include="messages\HistoricalTickEndMessage.cs" />
@@ -92,6 +94,8 @@
     <Compile Include="messages\OrderBoundMessage.cs" />
     <Compile Include="messages\OrderMessage.cs" />
     <Compile Include="messages\OrderStatusMessage.cs" />
+    <Compile Include="messages\PnLMessage.cs" />
+    <Compile Include="messages\PnLSingleMessage.cs" />
     <Compile Include="messages\PositionMessage.cs" />
     <Compile Include="messages\PositionMultiEndMessage.cs" />
     <Compile Include="messages\PositionMultiMessage.cs" />
@@ -106,6 +110,7 @@
     <Compile Include="messages\TickByTickAllLastMessage.cs" />
     <Compile Include="messages\TickByTickBidAskMessage.cs" />
     <Compile Include="messages\TickByTickMidPointMessage.cs" />
+    <Compile Include="messages\TickGenericMessage.cs" />
     <Compile Include="messages\TickNewsMessage.cs" />
     <Compile Include="messages\TickOptionMessage.cs" />
     <Compile Include="messages\TickPriceMessage.cs" />
@@ -120,12 +125,6 @@
     <Compile Include="Types\PriceOrError.cs" />
     <Compile Include="Types\TickSnapshotEndMessage.cs" />
     <Compile Include="Types\TickType.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\TWSAPI\source\CSharpClient\client\CSharpAPI.csproj">
-      <Project>{8ede0744-96c2-40b0-a8dc-37df79370203}</Project>
-      <Name>CSharpAPI</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig">
