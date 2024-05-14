@@ -58,7 +58,7 @@ namespace PortfolioTrader.Commands
                     Action = "BUY",
                     OrderType = "STP LMT",
                     AuxPrice = auxPriceBuy,
-                    LmtPrice = auxPriceBuy,
+                    LmtPrice = CalculateLimitPrice(isLong: true, auxPriceBuy),
                     TotalQuantity = tradePair.QuantityBuy
                 };
 
@@ -104,7 +104,7 @@ namespace PortfolioTrader.Commands
                     Action = "SELL",
                     OrderType = "STP LMT",
                     AuxPrice = auxPriceSell,
-                    LmtPrice = auxPriceSell,
+                    LmtPrice = CalculateLimitPrice(isLong: false, auxPriceSell),
                     TotalQuantity = tradePair.QuantitySell
                 };
 
@@ -127,6 +127,19 @@ namespace PortfolioTrader.Commands
 
             _visitor.TwsMessageCollection.Add($"DONE! Send Orders command executed.");
 
+        }
+
+        private static double CalculateLimitPrice(bool isLong, double price)
+        {
+            double priceOffsetInPersent = 0.1;
+            double minOfset = .01;
+
+            var offset = Math.Round(price * priceOffsetInPersent / 100, 2);
+            if (offset < minOfset) offset = minOfset;
+
+            return isLong 
+                ? price + offset 
+                : price - offset; 
         }
 
         private static async Task SendPairOrderAndProcessResultsAsync(
