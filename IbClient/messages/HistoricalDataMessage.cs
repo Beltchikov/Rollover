@@ -1,11 +1,7 @@
 ﻿/* Copyright (C) 2019 Interactive Brokers LLC. All rights reserved. This code is subject to the terms
  * and conditions of the IB API Non-Commercial License or the IB API Commercial License, as applicable. */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace IbClient.messages
+namespace IBSampleApp.messages
 {
     public class HistoricalDataMessage
     {
@@ -15,9 +11,9 @@ namespace IbClient.messages
         protected double high;
         protected double low;
         protected double close;
-        protected long volume;
+        protected decimal volume;
         protected int count;
-        protected double wap;
+        protected decimal wap;
         protected bool hasGaps;
 
         public int RequestId
@@ -57,7 +53,7 @@ namespace IbClient.messages
             set { close = value; }
         }
         
-        public long Volume
+        public decimal Volume
         {
             get { return volume; }
             set { volume = value; }
@@ -69,7 +65,7 @@ namespace IbClient.messages
             set { count = value; }
         }
 
-        public double Wap
+        public decimal Wap
         {
             get { return wap; }
             set { wap = value; }

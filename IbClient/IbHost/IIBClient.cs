@@ -1,5 +1,5 @@
 ﻿using IBApi;
-using IbClient.messages;
+using IBSampleApp.messages;
 using System;
 using System.Collections.Generic;
 
@@ -12,8 +12,7 @@ namespace IbClient.IbHost
         EClientSocket ClientSocket { get; }
         void ConnectAndStartReaderThread(string host, int port, int clientId);
         void Disconnect();
-        bool IsValidStrike(string underlying, string lastTradeDate, double strike);
-
+        
         event Action<AccountDownloadEndMessage> AccountDownloadEnd;
         event Action<AccountSummaryMessage> AccountSummary;
         event Action<AccountSummaryEndMessage> AccountSummaryEnd;
@@ -30,7 +29,7 @@ namespace IbClient.IbHost
         event Action<int, DeltaNeutralContract> DeltaNeutralValidation;
         event Action<int, string> DisplayGroupList;
         event Action<int, string> DisplayGroupUpdated;
-        event Action<int, int, string, Exception> Error;
+        event Action<int, int, string, string, Exception> Error;
         event Action<ExecutionMessage> ExecDetails;
         event Action<int> ExecDetailsEnd;
         event Action<FamilyCode[]> FamilyCodes;
