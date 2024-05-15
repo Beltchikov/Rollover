@@ -9,6 +9,13 @@ namespace PortfolioTrader.Commands
     {
         public static async Task RunAsync(IBuyConfirmationModelVisitor visitor)
         {
+            (int hoursUtcOffset, int minutesUtcOffset) = HoursAndMinutesFromUtcOffset(visitor.UtcOffset);
+            var localTime = visitor.EntryBarTime
+                .AddHours(hoursUtcOffset)
+                .AddMinutes(minutesUtcOffset);
+
+
+
             if (visitor.EntryBarTime > DateTime.Now) visitor.EntryBarTime = visitor.EntryBarTime.AddDays(-1);
             string timeEntryBarString = visitor.EntryBarTime.ToString("yyyyMMdd HH:mm:ss");
 
@@ -124,6 +131,21 @@ namespace PortfolioTrader.Commands
 
             visitor.TwsMessageCollection.Add($"DONE! Send Orders command executed.");
 
+        }
+
+        private static (int hoursUtcOffset, int minutesUtcOffset) HoursAndMinutesFromUtcOffset(string utcOffset)
+        {
+            int sign = 1;
+            if(utcOffset.StartsWith('-'))
+            {
+                sign = -1;
+            }
+
+            var splitted = utcOffset.Split(':', StringSplitOptions.RemoveEmptyEntries);    
+            var hours = int.Parse(splitted[0]);
+            var minutes = int.Parse(splitted[1]);
+
+            return(hours * sign, minutes * sign); 
         }
 
         private static double CalculateLimitPrice(bool isLong, double price)

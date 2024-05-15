@@ -52,7 +52,6 @@ namespace PortfolioTrader.Model
             BusinessLogicInformation = BuildBusinessLogicInformation();
             UtcOffset = GetUtcOffset();
             EntryBarTime = DateTime.ParseExact("14:35", "HH:mm", CultureInfo.InvariantCulture);
-
         }
 
         public IIbHost IbHost => ibHost;

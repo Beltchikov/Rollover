@@ -13,6 +13,8 @@
         
         DateTime EntryBarTime { get; set; }
 
+        string UtcOffset { get; set; }  
+
         public void CalculateWeights();
         void ClearQueueOrderOpenMessage();
     }
