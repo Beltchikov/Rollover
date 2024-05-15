@@ -106,6 +106,9 @@
               Margin="10 0 0 0" FontSize="10">
             </TextBox>
 
+            <Label Grid.Row="1" Grid.Column="5" Foreground="White"  >UTC Offset: -01:00</Label>
+            <Label Grid.Row="1" Grid.Column="6" Foreground="White" Content="{Binding UtcOffset}"  ></Label>
+
             <Label Grid.Column="4" Content="SELL:  Symb | NetBms | ConId | PriceCt | PriceType | Weight | Qty | Margin " Foreground="White" 
             Margin="10 0 0 0" VerticalAlignment="Bottom"/>
             <TextBox Name="txtSell" Grid.Row="1" Grid.Column="4" Grid.RowSpan="6" 

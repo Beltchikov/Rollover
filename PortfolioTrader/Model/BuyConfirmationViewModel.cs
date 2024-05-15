@@ -4,13 +4,13 @@ using IbClient.IbHost;
 using PortfolioTrader.Commands;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
 
 namespace PortfolioTrader.Model
 {
     public class BuyConfirmationViewModel : ObservableObject, IIbConsumer, IBuyConfirmationModelVisitor
     {
-        IIbHostQueue ibHostQueue = null!;
         IIbHost ibHost = null!;
 
         private string _host = "localhost";
@@ -29,6 +29,7 @@ namespace PortfolioTrader.Model
         private string _ordersShortWithError;
         private bool _positionsCalculated;
         private DateTime _entryBarTime;
+        private string _utcOffset;
 
         public ICommand ConnectToTwsCommand { get; }
         public ICommand CalculatePositionsCommand { get; }
@@ -46,22 +47,12 @@ namespace PortfolioTrader.Model
             CalculatePositionsCommand = new RelayCommand(async () => await CalculatePositions.RunAsync(this));
             SendLimitOrdersCommand = new RelayCommand(async () => await SendLimitOrders.RunAsync(this));
             SendStopLimitOrdersCommand = new RelayCommand(async () => await SendStopLimitOrders.RunAsync(this));
-            
+
             InvestmentAmount = 400000;
             BusinessLogicInformation = BuildBusinessLogicInformation();
+            UtcOffset = GetUtcOffset();
             EntryBarTime = DateTime.ParseExact("15:35", "HH:mm", CultureInfo.InvariantCulture);
-        }
 
-        private string BuildBusinessLogicInformation()
-        {
-            return @$"1. The number of stocks 
-in the sell and buy list 
-is reduced to {App.MAX_BUY_SELL}.
-
-2. The number of stocks 
-in the sell and buy list 
-is kept equal.
-";
         }
 
         public IIbHost IbHost => ibHost;
@@ -194,13 +185,23 @@ is kept equal.
             }
         }
 
-        
+
         public DateTime EntryBarTime
         {
             get => _entryBarTime;
             set
             {
                 SetProperty(ref _entryBarTime, value);
+            }
+        }
+
+
+        public string UtcOffset
+        {
+            get => _utcOffset;
+            set
+            {
+                SetProperty(ref _utcOffset, value);
             }
         }
 
@@ -259,6 +260,28 @@ is kept equal.
                 throw new Exception($"Unexpected. Weights do not sum up to {hundert}");
 
             return SymbolsAndScore.PositionDictionaryToString(stocksDictionaryWithWeights);
+        }
+
+        private string BuildBusinessLogicInformation()
+        {
+            return @$"1. The number of stocks 
+in the sell and buy list 
+is reduced to {App.MAX_BUY_SELL}.
+
+2. The number of stocks 
+in the sell and buy list 
+is kept equal.
+";
+        }
+
+        private string GetUtcOffset()
+        {
+            var regex = new Regex("(?:(\\(UTC)).+(?:(\\)))");
+            var match = regex.Match(TimeZoneInfo.Local.DisplayName);
+            var result = match.Value
+                .Replace("(UTC", "")
+                .Replace(")", "");
+            return result;
         }
     }
 }
