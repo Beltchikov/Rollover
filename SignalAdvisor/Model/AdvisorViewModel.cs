@@ -65,10 +65,8 @@ namespace SignalAdvisor.Model
 
                 AddBar(liveDataMessage.Contract, liveDataMessage.HistoricalDataMessage);
 
-                var lastBar = Bars.First(kvp => kvp.Key == liveDataMessage.Contract.ToString()).Value.Last();
-                //var lastBar = Bars.For()First(kvp => kvp.Key == liveDataMessage.Contract.ToString()).Value.Last();
-                
-                var barBefore = Bars.First(kvp => kvp.Key == liveDataMessage.Contract.ToString()).Value.SkipLast(1).Last();
+                var lastBar = Bars.For(liveDataMessage.Contract.ToString()).Last();
+                var barBefore = Bars.For(liveDataMessage.Contract.ToString()).SkipLast(1).Last();
 
                 if (lastBar.Time != barBefore.Time) NewBar(liveDataMessage.Contract.Symbol, lastBar.Time);
             }
