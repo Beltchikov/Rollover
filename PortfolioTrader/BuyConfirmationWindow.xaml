@@ -106,8 +106,10 @@
               Margin="10 0 0 0" FontSize="10">
             </TextBox>
 
-            <Label Grid.Row="1" Grid.Column="5" Foreground="White"  >UTC Offset: -01:00</Label>
-            <Label Grid.Row="1" Grid.Column="6" Foreground="White" Content="{Binding UtcOffset}"  ></Label>
+            <Label Grid.Row="1" Grid.Column="5" Foreground="White" 
+                   FontWeight="Bold" HorizontalAlignment="Right"  >UTC Offset: </Label>
+            <Label Grid.Row="1" Grid.Column="6" Foreground="White" 
+                   FontWeight="Bold" HorizontalAlignment="Left" Content="{Binding UtcOffset}"  ></Label>
 
             <Label Grid.Column="4" Content="SELL:  Symb | NetBms | ConId | PriceCt | PriceType | Weight | Qty | Margin " Foreground="White" 
             Margin="10 0 0 0" VerticalAlignment="Bottom"/>
@@ -125,7 +127,7 @@
 
             <Label Grid.Column="5" Grid.Row="5" Foreground="White" 
                    HorizontalAlignment="Right" >Entry Bar Time (UTC):</Label>
-            <TextBox Name="txtTimeEntryBar" Grid.Column="6" Grid.Row="5" Height="25" Margin="5 0 5 0" VerticalAlignment="Center" 
+            <TextBox Name="txtTimeEntryBar" Grid.Column="6" Grid.Row="5" Height="25" Margin="5 0 5 0" VerticalAlignment="Bottom" 
                      Text="{Binding EntryBarTime, Converter={StaticResource TimeStringConverter}}" ></TextBox>
 
             <Button Grid.Column="5" Grid.Row="6" Grid.ColumnSpan="2"  Height="25"
