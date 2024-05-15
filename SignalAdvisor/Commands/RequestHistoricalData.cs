@@ -33,6 +33,7 @@ namespace SignalAdvisor.Commands
                     App.TIMEOUT,
                     (d) =>
                     {
+                        // Add bar logic
                         visitor.AddBar(positionMessage.Contract, d);
                     },
                     (u) =>
