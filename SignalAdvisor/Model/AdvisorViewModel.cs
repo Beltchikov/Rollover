@@ -88,56 +88,9 @@ namespace SignalAdvisor.Model
 
             if (Ta.Signals.InsideUpDown(Bars.For(symbol), Signals.For(symbol)) != 0)
             {
-                // TODO
-            }
-
-
-            string[] symbols;
-            if (InsideUpDown(out symbols))
-            {
-                foreach (var s in symbols)
-                {
-                    SignalsAsText = $"{LastCheck} POSITION {s} InsideUpDown {Environment.NewLine}{SignalsAsText}";
-                }
+                SignalsAsText = $"{LastCheck} POSITION {symbol} InsideUpDown {Environment.NewLine}{SignalsAsText}";
             }
         }
-
-        private bool InsideUpDown(out string[] symbols)
-        {
-            symbols = ["TEST", "RRR"];
-            return true;
-
-            //foreach (var kvp in Bars)
-            //{
-            //    var barData = kvp.Value;
-            //    if (InsideUpDown(barData))
-            //    {
-
-            //    }
-            //}
-        }
-
-        //private bool InsideUpDown(List<Bar> bars)
-        //{
-        //    var sessionStart = DateTime.Now;
-        //    sessionStart = sessionStart.Date;
-        //    sessionStart = sessionStart.AddHours(15);
-        //    sessionStart = sessionStart.AddMinutes(30);
-
-        //    for (int i = bars.Count - 1; i >= 0; i--)
-        //    {
-        //        var bar = bars[i];
-
-        //        for (int ii = i - 1; ii >= 0; ii--)
-        //        {
-        //            var barBefore = bars[ii];
-        //            if (barBefore.Time < sessionStart)
-        //                return false;
-
-        //            if(bar.High <= barBefore)
-        //        }
-        //    }
-        //}
 
         public IIbHost IbHost { get; private set; }
 
