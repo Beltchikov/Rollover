@@ -63,9 +63,10 @@ namespace SignalAdvisor.Model
                 AddBar(liveDataMessage.Contract, liveDataMessage.HistoricalDataMessage);
 
                 var lastBar = Bars.First(kvp => kvp.Key == liveDataMessage.Contract.ToString()).Value.Last();
+                // TODO Indexe als extension method: Bars[0]
                 var barBefore = Bars.First(kvp => kvp.Key == liveDataMessage.Contract.ToString()).Value.SkipLast(1).Last();
 
-                if (lastBar.Time != barBefore.Time) NewBar(lastBar.Time);
+                if (lastBar.Time != barBefore.Time) NewBar(liveDataMessage.Contract.Symbol, lastBar.Time);
             }
         }
 
@@ -78,19 +79,22 @@ namespace SignalAdvisor.Model
             await Task.Run(() => { while (!RequestHistoricalDataExecuted) { } });
         }
 
-        private void NewBar(DateTimeOffset newBarTime)
+        private void NewBar(string symbol, DateTimeOffset newBarTime)
         {
             LastCheck = newBarTime.ToString("HH:mm:ss");
 
-
+            if(Ta.Signals.InsideUpDown(Bars.First(kvp => kvp.Key == symbol).Value, Signals.First(kvp => kvp.Key == symbol).Value) != 0)
+            {
+                // TODO
+            }
 
 
             string[] symbols;
             if (InsideUpDown(out symbols))
             {
-                foreach (var symbol in symbols)
+                foreach (var s in symbols)
                 {
-                    SignalsAsText = $"{LastCheck} POSITION {symbol} InsideUpDown {Environment.NewLine}{SignalsAsText}";
+                    SignalsAsText = $"{LastCheck} POSITION {s} InsideUpDown {Environment.NewLine}{SignalsAsText}";
                 }
             }
         }
