@@ -4,6 +4,7 @@ using IbClient.IbHost;
 using IbClient.messages;
 using IBSampleApp.messages;
 using SignalAdvisor.Commands;
+using SignalAdvisor.Extensions;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows.Input;
@@ -85,7 +86,7 @@ namespace SignalAdvisor.Model
         {
             LastCheck = newBarTime.ToString("HH:mm:ss");
 
-            if (Ta.Signals.InsideUpDown(Bars.First(kvp => kvp.Key == symbol).Value, Signals.First(kvp => kvp.Key == symbol).Value) != 0)
+            if (Ta.Signals.InsideUpDown(Bars.For(symbol), Signals.For(symbol)) != 0)
             {
                 // TODO
             }
