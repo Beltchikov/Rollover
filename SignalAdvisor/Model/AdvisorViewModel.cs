@@ -66,7 +66,8 @@ namespace SignalAdvisor.Model
                 AddBar(liveDataMessage.Contract, liveDataMessage.HistoricalDataMessage);
 
                 var lastBar = Bars.First(kvp => kvp.Key == liveDataMessage.Contract.ToString()).Value.Last();
-                // TODO Indexe als extension method: Bars[0]
+                //var lastBar = Bars.For()First(kvp => kvp.Key == liveDataMessage.Contract.ToString()).Value.Last();
+                
                 var barBefore = Bars.First(kvp => kvp.Key == liveDataMessage.Contract.ToString()).Value.SkipLast(1).Last();
 
                 if (lastBar.Time != barBefore.Time) NewBar(liveDataMessage.Contract.Symbol, lastBar.Time);

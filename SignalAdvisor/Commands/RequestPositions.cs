@@ -9,8 +9,8 @@
                (p) =>
                {
                    visitor.Positions.Add(p);
-                   visitor.Bars.Add(new KeyValuePair<string, List<Ta.Bar>>(p.Contract.Symbol, new List<Ta.Bar>()));
-                   visitor.Signals.Add(new KeyValuePair<string, List<int>>(p.Contract.Symbol, new List<int>()));
+                   visitor.Bars.Add(new KeyValuePair<string, List<Ta.Bar>>(p.Contract.ToString(), new List<Ta.Bar>()));
+                   visitor.Signals.Add(new KeyValuePair<string, List<int>>(p.Contract.ToString(), new List<int>()));
                },
                () =>
                {
