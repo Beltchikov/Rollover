@@ -76,7 +76,7 @@ namespace SignalAdvisor.Model
             await Task.Run(() => { while (!RequestHistoricalDataExecuted) { } });
         }
 
-        private void NewBar(DateTime newBarTime)
+        private void NewBar(DateTimeOffset newBarTime)
         {
             LastCheck = newBarTime.ToString("HH:mm:ss");
 
@@ -142,7 +142,7 @@ namespace SignalAdvisor.Model
 
         public void AddBar(IBApi.Contract contract, HistoricalDataMessage message)
         {
-            var bar = new Bar(message.Open, message.High, message.Low, message.Close, TimeFromString(message.Date));
+            var bar = new Bar(message.Open, message.High, message.Low, message.Close, DateTimeOffsetFromString(message.Date));
             var contractOriginalString = contract.ToString();
 
             if (!Bars.Any(kvp => kvp.Key == contractOriginalString))
@@ -244,15 +244,22 @@ namespace SignalAdvisor.Model
         public bool RequestPositionsExecuted { get; set; }
         public bool RequestHistoricalDataExecuted { get; set; }
 
-        private static DateTime TimeFromString(string dateTimeString)
+        private static DateTimeOffset DateTimeOffsetFromString(string dateTimeOffsetString)
         {
-            var timeString = dateTimeString
+           var dtoStringSplitted = dateTimeOffsetString
                          .Split(' ', StringSplitOptions.RemoveEmptyEntries)
                          .Select(s => s.Trim())
-                         .ToArray()
-                         .Aggregate((r, n) => r + " " + n);
+                         .ToArray();
+            var timeZoneString = dtoStringSplitted[2];
+            var dateTimeString = dtoStringSplitted
+                .Take(2)
+                .Aggregate((r, n) => r + " " + n);
 
-            return DateTime.ParseExact(timeString, "yyyyMMdd HH:mm:ss", CultureInfo.InvariantCulture);
+            var dateTime = DateTime.ParseExact(dateTimeString, "yyyyMMdd HH:mm:ss", CultureInfo.InvariantCulture);
+            var timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(timeZoneString);
+            var result = new DateTimeOffset(dateTime, timeZoneInfo.BaseUtcOffset);
+
+            return result;
         }
     }
 }

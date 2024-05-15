@@ -2,7 +2,7 @@
 {
     public class Bar
     {
-        public Bar(double open, double high, double low, double close, DateTime time)
+        public Bar(double open, double high, double low, double close, DateTimeOffset time)
         {
             Open = open;
             High = high; 
@@ -15,6 +15,6 @@
         public double High {  get; set; }
         public double Low {  get; set; }
         public double Close {  get; set; }
-        public DateTime Time {  get; set; }
+        public DateTimeOffset Time {  get; set; }
     }
 }
