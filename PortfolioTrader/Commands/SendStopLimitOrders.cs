@@ -7,13 +7,10 @@ namespace PortfolioTrader.Commands
 {
     internal class SendStopLimitOrders
     {
-        private static IBuyConfirmationModelVisitor _visitor = null!;
-
         public static async Task RunAsync(IBuyConfirmationModelVisitor visitor)
         {
-            _visitor = visitor;
-            if (_visitor.EntryBarTime > DateTime.Now) _visitor.EntryBarTime = _visitor.EntryBarTime.AddDays(-1);
-            string timeEntryBarString = _visitor.EntryBarTime.ToString("yyyyMMdd HH:mm:ss");
+            if (visitor.EntryBarTime > DateTime.Now) visitor.EntryBarTime = visitor.EntryBarTime.AddDays(-1);
+            string timeEntryBarString = visitor.EntryBarTime.ToString("yyyyMMdd HH:mm:ss");
 
             if (MessageBox.Show(
                 $"STOP LIMIT orders will be sent now to the broker. Time of entry bar: {timeEntryBarString} Proceed?",
@@ -22,7 +19,7 @@ namespace PortfolioTrader.Commands
                 MessageBoxImage.Question) == MessageBoxResult.No)
                 return;
 
-            List<TradePair> tradePairs = BuildTradePairs();
+            List<TradePair> tradePairs = BuildTradePairs(visitor);
             
             string endDateTime = timeEntryBarString;
             string durationString = "300 S";
@@ -38,7 +35,7 @@ namespace PortfolioTrader.Commands
                 Contract contractBuy = new() { ConId = tradePair.ConIdBuy, Exchange = App.EXCHANGE };
                 double auxPriceBuy = 0;
                 
-                await _visitor.IbHost.RequestHistoricalDataAsync(
+                await visitor.IbHost.RequestHistoricalDataAsync(
                     contractBuy,
                     endDateTime,
                     durationString,
@@ -62,7 +59,7 @@ namespace PortfolioTrader.Commands
                     TotalQuantity = tradePair.QuantityBuy
                 };
 
-                var resultBuy = await _visitor.IbHost.PlaceOrderAsync(contractBuy, orderBuy, App.TIMEOUT);
+                var resultBuy = await visitor.IbHost.PlaceOrderAsync(contractBuy, orderBuy, App.TIMEOUT);
                 if (resultBuy.ErrorMessage != "")
                 {
                     visitor.TwsMessageCollection.Add($"ConId={tradePair.ConIdBuy} error:{resultBuy.ErrorMessage}");
@@ -84,7 +81,7 @@ namespace PortfolioTrader.Commands
 
                 double auxPriceSell = 0;
 
-                await _visitor.IbHost.RequestHistoricalDataAsync(
+                await visitor.IbHost.RequestHistoricalDataAsync(
                     contractSell,
                     endDateTime,
                     durationString,
@@ -108,7 +105,7 @@ namespace PortfolioTrader.Commands
                     TotalQuantity = tradePair.QuantitySell
                 };
 
-                var resultSell = await _visitor.IbHost.PlaceOrderAsync(contractSell, orderSell, App.TIMEOUT);
+                var resultSell = await visitor.IbHost.PlaceOrderAsync(contractSell, orderSell, App.TIMEOUT);
                 if (resultSell.ErrorMessage != "")
                 {
                     visitor.TwsMessageCollection.Add($"ConId={tradePair.ConIdSell} error:{resultSell.ErrorMessage}");
@@ -125,7 +122,7 @@ namespace PortfolioTrader.Commands
                 await Task.Run(() => Thread.Sleep(App.TIMEOUT));
             }
 
-            _visitor.TwsMessageCollection.Add($"DONE! Send Orders command executed.");
+            visitor.TwsMessageCollection.Add($"DONE! Send Orders command executed.");
 
         }
 
@@ -168,11 +165,11 @@ namespace PortfolioTrader.Commands
                 TotalQuantity = quantitySell
             };
 
-            var resultParent = await _visitor.IbHost.PlaceOrderAsync(contractBuy, parentOrder, App.TIMEOUT);
+            var resultParent = await visitor.IbHost.PlaceOrderAsync(contractBuy, parentOrder, App.TIMEOUT);
             LogResults(result: resultParent, contract: contractBuy, visitor);
             await Task.Run(() => Thread.Sleep(App.TIMEOUT));
 
-            var resultHedge = await _visitor.IbHost.PlaceOrderAsync(contractSell, hedgeOrder, App.TIMEOUT);
+            var resultHedge = await visitor.IbHost.PlaceOrderAsync(contractSell, hedgeOrder, App.TIMEOUT);
             LogResults(result: resultHedge, contract: contractSell, visitor);
             await Task.Run(() => Thread.Sleep(App.TIMEOUT));
         }
@@ -204,7 +201,7 @@ namespace PortfolioTrader.Commands
                 TotalQuantity = quantity
             };
 
-            var result = await _visitor.IbHost.PlaceOrderAsync(contract, order, App.TIMEOUT);
+            var result = await visitor.IbHost.PlaceOrderAsync(contract, order, App.TIMEOUT);
             if (result.ErrorMessage != "")
             {
                 var log = $"Error sending order for {contract.Symbol} vonId={contract.ConId} error:{result.ErrorMessage}";
@@ -225,10 +222,10 @@ namespace PortfolioTrader.Commands
             await Task.Run(() => Thread.Sleep(App.TIMEOUT));
         }
 
-        private static List<TradePair> BuildTradePairs()
+        private static List<TradePair> BuildTradePairs(IBuyConfirmationModelVisitor visitor)
         {
-            var buyDictionary = SymbolsAndScore.StringToPositionDictionary(_visitor.StocksToBuyAsString);
-            var sellDictionary = SymbolsAndScore.StringToPositionDictionary(_visitor.StocksToSellAsString);
+            var buyDictionary = SymbolsAndScore.StringToPositionDictionary(visitor.StocksToBuyAsString);
+            var sellDictionary = SymbolsAndScore.StringToPositionDictionary(visitor.StocksToSellAsString);
 
             List<TradePair> tradePairs = buyDictionary
                 .Zip(sellDictionary, (b, s) =>
