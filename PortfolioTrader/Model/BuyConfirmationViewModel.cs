@@ -28,7 +28,7 @@ namespace PortfolioTrader.Model
         private string _ordersLongWithError;
         private string _ordersShortWithError;
         private bool _positionsCalculated;
-        private DateTime _timeEntryBar;
+        private DateTime _entryBarTime;
 
         public ICommand ConnectToTwsCommand { get; }
         public ICommand CalculatePositionsCommand { get; }
@@ -49,7 +49,7 @@ namespace PortfolioTrader.Model
             
             InvestmentAmount = 400000;
             BusinessLogicInformation = BuildBusinessLogicInformation();
-            TimeEntryBar = DateTime.ParseExact("15:35", "HH:mm", CultureInfo.InvariantCulture);
+            EntryBarTime = DateTime.ParseExact("15:35", "HH:mm", CultureInfo.InvariantCulture);
         }
 
         private string BuildBusinessLogicInformation()
@@ -195,12 +195,12 @@ is kept equal.
         }
 
         
-        public DateTime TimeEntryBar
+        public DateTime EntryBarTime
         {
-            get => _timeEntryBar;
+            get => _entryBarTime;
             set
             {
-                SetProperty(ref _timeEntryBar, value);
+                SetProperty(ref _entryBarTime, value);
             }
         }
 

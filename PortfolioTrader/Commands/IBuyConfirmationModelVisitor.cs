@@ -11,7 +11,7 @@
         string OrdersLongWithError { get; set; }
         string OrdersShortWithError { get; set; }
         
-        DateTime TimeEntryBar { get; set; }
+        DateTime EntryBarTime { get; set; }
 
         public void CalculateWeights();
         void ClearQueueOrderOpenMessage();

@@ -47,7 +47,7 @@
                 <ColumnDefinition Width="40"/>
                 <ColumnDefinition Width="500"/>
                 <ColumnDefinition Width="500"/>
-                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="120"/>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
@@ -121,9 +121,9 @@
             </Button>
 
             <Label Grid.Column="5" Grid.Row="5" Foreground="White" 
-                   HorizontalAlignment="Right" >Entry Bar Time:</Label>
+                   HorizontalAlignment="Right" >Entry Bar Time (UTC):</Label>
             <TextBox Name="txtTimeEntryBar" Grid.Column="6" Grid.Row="5" Height="25" Margin="5 0 5 0" VerticalAlignment="Center" 
-                     Text="{Binding TimeEntryBar, Converter={StaticResource TimeStringConverter}}" ></TextBox>
+                     Text="{Binding EntryBarTime, Converter={StaticResource TimeStringConverter}}" ></TextBox>
 
             <Button Grid.Column="5" Grid.Row="6" Grid.ColumnSpan="2"  Height="25"
          Command="{Binding SendStopLimitOrdersCommand}"
