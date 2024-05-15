@@ -30,7 +30,7 @@ namespace PortfolioTrader.Converters
                 valueTyped,
                 formatString,
                 CultureInfo.InvariantCulture,
-                DateTimeStyles.AssumeUniversal,
+                DateTimeStyles.None,
                 out DateTime dateTime))
                 throw new Exception("Unexpected. Hours are in wrong format.");
             return dateTime;

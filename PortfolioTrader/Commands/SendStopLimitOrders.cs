@@ -7,20 +7,18 @@ namespace PortfolioTrader.Commands
 {
     internal class SendStopLimitOrders
     {
+        private static readonly string  FORMAT_STRING_UI = "yyyyMMdd HH:mm:ss";
+        private static readonly string  FORMAT_STRING_API = "yyyyMMdd-HH:mm:ss";
+        
         public static async Task RunAsync(IBuyConfirmationModelVisitor visitor)
         {
             (int hoursUtcOffset, int minutesUtcOffset) = HoursAndMinutesFromUtcOffset(visitor.UtcOffset);
             var localTime = visitor.EntryBarTime
                 .AddHours(hoursUtcOffset)
                 .AddMinutes(minutesUtcOffset);
-
-
-
-            if (visitor.EntryBarTime > DateTime.Now) visitor.EntryBarTime = visitor.EntryBarTime.AddDays(-1);
-            string timeEntryBarString = visitor.EntryBarTime.ToString("yyyyMMdd HH:mm:ss");
-
+            
             if (MessageBox.Show(
-                $"STOP LIMIT orders will be sent now to the broker. Time of entry bar: {timeEntryBarString} Proceed?",
+                $"STOP LIMIT orders will be sent now to the broker. Time of entry bar: {localTime.ToString(FORMAT_STRING_UI)} Proceed?",
                 "Confirm",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question) == MessageBoxResult.No)
@@ -28,7 +26,7 @@ namespace PortfolioTrader.Commands
 
             List<TradePair> tradePairs = BuildTradePairs(visitor);
             
-            string endDateTime = timeEntryBarString;
+            string endDateTime = visitor.EntryBarTime.ToString(FORMAT_STRING_API);
             string durationString = "300 S";
             string barSizeSetting = "5 mins";
             string whatToShow = "TRADES";
