@@ -2,9 +2,10 @@
 {
     public class Signals
     {
-        public static int InsideUpDown(List<Bar> bars)
+        public static void InsideUpDown(List<Bar> bars, out List<int> signals)
         {
-            return -2; // TODO
+            // TODO
+            signals = new List<int>();
         }
     }
 }

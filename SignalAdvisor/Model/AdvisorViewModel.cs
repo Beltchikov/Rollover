@@ -20,9 +20,10 @@ namespace SignalAdvisor.Model
         private ObservableCollection<string> _twsMessageColllection = [];
         private int _openOrders;
         private string _lastCheck;
-        private string _signals;
+        private string _signalsAsText;
         private ObservableCollection<PositionMessage> _positions = [];
         private ObservableCollection<KeyValuePair<string, List<Bar>>> _bars = [];
+        private ObservableCollection<KeyValuePair<string, List<int>>> _signals = [];
         private static System.Timers.Timer _timer;
         private static readonly string SESSION_START = "15:30";
 
@@ -45,23 +46,24 @@ namespace SignalAdvisor.Model
 
         private void _timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
+            // TODO athe slower timer. 
+            var dispatcher = App.Current?.Dispatcher;
+            if (dispatcher != null)
+            {
+                dispatcher.Invoke(() =>
+                {
+                    TwsMessageCollection?.Add($"Heartbeat");
+                });
+            }
+
             while (IbHost.QueueHistoricalDataUpdate.TryDequeue(out object message))
             {
-                var liveDataMessage = message as LiveDataMessage;
-                if (liveDataMessage == null) throw new Exception("Unexpected. liveDataMessage == null");
+                var liveDataMessage = message as LiveDataMessage ?? throw new Exception("Unexpected. liveDataMessage == null");
 
                 AddBar(liveDataMessage.Contract, liveDataMessage.HistoricalDataMessage);
+
                 var lastBar = Bars.First(kvp => kvp.Key == liveDataMessage.Contract.ToString()).Value.Last();
                 var barBefore = Bars.First(kvp => kvp.Key == liveDataMessage.Contract.ToString()).Value.SkipLast(1).Last();
-
-                var dispatcher = App.Current?.Dispatcher;
-                if (dispatcher != null)
-                {
-                    dispatcher.Invoke(() =>
-                    {
-                        TwsMessageCollection?.Add($"Heartbeat {lastBar.Time}  {barBefore.Time}");
-                    });
-                }
 
                 if (lastBar.Time != barBefore.Time) NewBar(lastBar.Time);
             }
@@ -80,12 +82,15 @@ namespace SignalAdvisor.Model
         {
             LastCheck = newBarTime.ToString("HH:mm:ss");
 
+
+
+
             string[] symbols;
             if (InsideUpDown(out symbols))
             {
                 foreach (var symbol in symbols)
                 {
-                    Signals = $"{LastCheck} POSITION {symbol} InsideUpDown {Environment.NewLine}{Signals}";
+                    SignalsAsText = $"{LastCheck} POSITION {symbol} InsideUpDown {Environment.NewLine}{SignalsAsText}";
                 }
             }
         }
@@ -214,12 +219,12 @@ namespace SignalAdvisor.Model
             }
         }
 
-        public string Signals
+        public string SignalsAsText
         {
-            get => _signals;
+            get => _signalsAsText;
             set
             {
-                SetProperty(ref _signals, value);
+                SetProperty(ref _signalsAsText, value);
             }
         }
 
@@ -241,15 +246,25 @@ namespace SignalAdvisor.Model
             }
         }
 
+        public ObservableCollection<KeyValuePair<string, List<int>>> Signals
+        {
+            get => _signals;
+            set
+            {
+                SetProperty(ref _signals, value);
+            }
+        }
+
+
         public bool RequestPositionsExecuted { get; set; }
         public bool RequestHistoricalDataExecuted { get; set; }
 
         private static DateTimeOffset DateTimeOffsetFromString(string dateTimeOffsetString)
         {
-           var dtoStringSplitted = dateTimeOffsetString
-                         .Split(' ', StringSplitOptions.RemoveEmptyEntries)
-                         .Select(s => s.Trim())
-                         .ToArray();
+            var dtoStringSplitted = dateTimeOffsetString
+                          .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                          .Select(s => s.Trim())
+                          .ToArray();
             var timeZoneString = dtoStringSplitted[2];
             var dateTimeString = dtoStringSplitted
                 .Take(2)
