@@ -53,7 +53,7 @@ namespace PortfolioTrader.Model
             InvestmentAmount = 400000;
             BusinessLogicInformation = BuildBusinessLogicInformation();
             UtcOffset = GetUtcOffset();
-            EntryBarTime = DateTime.ParseExact("14:35", "HH:mm", CultureInfo.InvariantCulture);
+            EntryBarTime = DateTime.ParseExact("13:35", "HH:mm", CultureInfo.InvariantCulture);
         }
 
         public IIbHost IbHost => ibHost;

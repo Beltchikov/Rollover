@@ -7,7 +7,7 @@ namespace PortfolioTrader.Commands
 {
     internal class SendStopLimitOrders
     {
-        private static readonly string  FORMAT_STRING_UI = "yyyyMMdd HH:mm:ss";
+        private static readonly string  FORMAT_STRING_UI = "dd.MM.yyyy HH:mm:ss";
         private static readonly string  FORMAT_STRING_API = "yyyyMMdd-HH:mm:ss";
         
         public static async Task RunAsync(IBuyConfirmationModelVisitor visitor)
@@ -37,7 +37,11 @@ namespace PortfolioTrader.Commands
             foreach (TradePair tradePair in tradePairs)
             {
                 // Buy
-                Contract contractBuy = new() { ConId = tradePair.ConIdBuy, Exchange = App.EXCHANGE };
+                Contract contractBuy = new() { 
+                    ConId = tradePair.ConIdBuy, 
+                    Symbol = tradePair.SymbolBuy,   
+                    Exchange = App.EXCHANGE 
+                };
                 double auxPriceBuy = 0;
                 
                 await visitor.IbHost.RequestHistoricalDataAsync(
@@ -82,7 +86,11 @@ namespace PortfolioTrader.Commands
 
                 // sell
                 var nextOrderIdSell = await visitor.IbHost.ReqIdsAsync(-1);  // Is line needed?
-                Contract contractSell = new Contract() { ConId = tradePair.ConIdSell, Exchange = App.EXCHANGE };
+                Contract contractSell = new Contract() { 
+                    ConId = tradePair.ConIdSell, 
+                    Symbol = tradePair.SymbolSell,
+                    Exchange = App.EXCHANGE 
+                };
 
                 double auxPriceSell = 0;
 
