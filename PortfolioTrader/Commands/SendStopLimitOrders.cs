@@ -40,6 +40,8 @@ namespace PortfolioTrader.Commands
                 Contract contractBuy = new() { 
                     ConId = tradePair.ConIdBuy, 
                     Symbol = tradePair.SymbolBuy,   
+                    SecType = App.SEC_TYPE_STK,
+                    Currency = App.USD,
                     Exchange = App.EXCHANGE 
                 };
                 double auxPriceBuy = 0;
@@ -89,6 +91,8 @@ namespace PortfolioTrader.Commands
                 Contract contractSell = new Contract() { 
                     ConId = tradePair.ConIdSell, 
                     Symbol = tradePair.SymbolSell,
+                    SecType = App.SEC_TYPE_STK,
+                    Currency = App.USD,
                     Exchange = App.EXCHANGE 
                 };
 
