@@ -5,6 +5,8 @@ namespace PortfolioTrader.Converters
 {
     public class TimeStringConverter : IValueConverter
     {
+        private readonly string formatString = "dd.MM.yyyy HH:mm";
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null)
@@ -13,8 +15,7 @@ namespace PortfolioTrader.Converters
             }
 
             DateTime valueTyped = (DateTime)value;
-            return $" {EnsureTwoDigits(valueTyped.Hour)}:" +
-                $"{EnsureTwoDigits(valueTyped.Minute)}";
+            return valueTyped.ToString(formatString);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -25,15 +26,14 @@ namespace PortfolioTrader.Converters
             }
 
             var valueTyped = (string)value;
-            var splitted = valueTyped.Split(':');
-            if (splitted.Length != 2) throw new Exception("Unexpected. Time string is in wrong format.");
-
-            int hours, minutes;
-            if (!int.TryParse(splitted[0], out hours)) throw new Exception("Unexpected. Hours are in wrong format.");
-            if (!int.TryParse(splitted[1], out minutes)) throw new Exception("Unexpected. Minutes are in wrong format.");
-
-            var result = DateTime.Now.Date.AddHours(hours).AddMinutes(minutes);
-            return result;
+            if (!DateTime.TryParseExact(
+                valueTyped,
+                formatString,
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.AssumeUniversal,
+                out DateTime dateTime))
+                throw new Exception("Unexpected. Hours are in wrong format.");
+            return dateTime;
         }
 
         private string EnsureTwoDigits(int month)
