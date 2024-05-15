@@ -7,7 +7,7 @@
         xmlns:tws_uc="clr-namespace:TwsUserControls;assembly=TwsUserControls"
         xmlns:converters="clr-namespace:PortfolioTrader.Converters"
         mc:Ignorable="d"
-        Title="Buy Confirmation Window" Width="1450" Height="900"
+        Title="Buy Confirmation Window" Width="1505" Height="900"
         Background="#FF5A74A9">
     <Window.Resources>
         <converters:TimeStringConverter x:Key="TimeStringConverter"/>
@@ -106,9 +106,9 @@
               Margin="10 0 0 0" FontSize="10">
             </TextBox>
 
-            <Label Grid.Row="1" Grid.Column="5" Foreground="White" 
+            <Label Grid.Row="1" Grid.Column="5" Foreground="#FFFEEB9C" 
                    FontWeight="Bold" HorizontalAlignment="Right"  >UTC Offset: </Label>
-            <Label Grid.Row="1" Grid.Column="6" Foreground="White" 
+            <Label Grid.Row="1" Grid.Column="6" Foreground="#FFFEEB9C" 
                    FontWeight="Bold" HorizontalAlignment="Left" Content="{Binding UtcOffset}"  ></Label>
 
             <Label Grid.Column="4" Content="SELL:  Symb | NetBms | ConId | PriceCt | PriceType | Weight | Qty | Margin " Foreground="White" 
