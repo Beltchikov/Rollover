@@ -7,6 +7,7 @@ using SignalAdvisor.Commands;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Ta;
 
 namespace SignalAdvisor.Model
@@ -26,6 +27,7 @@ namespace SignalAdvisor.Model
         private ObservableCollection<KeyValuePair<string, List<int>>> _signals = [];
         private static System.Timers.Timer _timer;
         private static readonly string SESSION_START = "15:30";
+        private Dispatcher _dispatcher = App.Current?.Dispatcher ?? throw new Exception("Unexpected. App.Current?.Dispatcher is null");
 
         ICommand RequestPositionsCommand;
         ICommand RequestHistoricalDataCommand;
@@ -46,15 +48,15 @@ namespace SignalAdvisor.Model
 
         private void _timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
-            // TODO athe slower timer. 
-            var dispatcher = App.Current?.Dispatcher;
-            if (dispatcher != null)
+            // TODO the slower timer
+
+            if (!Positions.Any())
             {
-                dispatcher.Invoke(() =>
-                {
-                    TwsMessageCollection?.Add($"Heartbeat");
-                });
+                _dispatcher.Invoke(() => TwsMessageCollection?.Add($"No positions."));
+                return;
             }
+            _dispatcher.Invoke(() => { TwsMessageCollection?.Add($"Heartbeat"); });
+
 
             while (IbHost.QueueHistoricalDataUpdate.TryDequeue(out object message))
             {
@@ -83,7 +85,7 @@ namespace SignalAdvisor.Model
         {
             LastCheck = newBarTime.ToString("HH:mm:ss");
 
-            if(Ta.Signals.InsideUpDown(Bars.First(kvp => kvp.Key == symbol).Value, Signals.First(kvp => kvp.Key == symbol).Value) != 0)
+            if (Ta.Signals.InsideUpDown(Bars.First(kvp => kvp.Key == symbol).Value, Signals.First(kvp => kvp.Key == symbol).Value) != 0)
             {
                 // TODO
             }
