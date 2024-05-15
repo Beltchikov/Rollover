@@ -2,10 +2,12 @@
 using CommunityToolkit.Mvvm.Input;
 using IbClient.IbHost;
 using PortfolioTrader.Commands;
+using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PortfolioTrader.Model
 {
@@ -275,12 +277,15 @@ is kept equal.
 
         private string GetUtcOffset()
         {
-            var regex = new Regex("(?:(\\(UTC)).+(?:(\\)))");
-            var match = regex.Match(TimeZoneInfo.Local.DisplayName);
-            var result = match.Value
-                .Replace("(UTC", "")
-                .Replace(")", "");
-            return result;
+            DateTime utc = DateTime.UtcNow;
+            DateTime localDateTime = TimeZoneInfo.ConvertTimeFromUtc(utc, TimeZoneInfo.Local);
+            var utcOffset = localDateTime - utc;
+            var utcOffsetString = $"{utcOffset.ToString("hh")}:{utcOffset.ToString("mm")}";
+            utcOffsetString = utcOffset.Ticks > 0
+                ? "+" + utcOffsetString
+                : "-" + utcOffsetString;
+
+            return utcOffsetString;
         }
     }
 }
