@@ -1,5 +1,6 @@
 ﻿using IBApi;
 using IbClient.Types;
+using PortfolioTrader.Algos;
 using PortfolioTrader.Model;
 using System.Windows;
 
@@ -12,6 +13,12 @@ namespace PortfolioTrader.Commands
         
         public static async Task RunAsync(IBuyConfirmationModelVisitor visitor)
         {
+            if(visitor.EntryBarTime > DateTime.Now)
+            {
+                MessageBox.Show("The time of entry bar is in the future. Please correct the time. The execution stops.");
+                return;
+            }
+            
             (int hoursUtcOffset, int minutesUtcOffset) = HoursAndMinutesFromUtcOffset(visitor.UtcOffset);
             var localTime = visitor.EntryBarTime
                 .AddHours(hoursUtcOffset)
@@ -66,7 +73,7 @@ namespace PortfolioTrader.Commands
                     Action = "BUY",
                     OrderType = "STP LMT",
                     AuxPrice = auxPriceBuy,
-                    LmtPrice = CalculateLimitPrice(isLong: true, auxPriceBuy),
+                    LmtPrice = LimitPrice.PercentageOfPriceOrFixed(isLong: true, auxPriceBuy),
                     TotalQuantity = tradePair.QuantityBuy
                 };
 
@@ -118,7 +125,7 @@ namespace PortfolioTrader.Commands
                     Action = "SELL",
                     OrderType = "STP LMT",
                     AuxPrice = auxPriceSell,
-                    LmtPrice = CalculateLimitPrice(isLong: false, auxPriceSell),
+                    LmtPrice = LimitPrice.PercentageOfPriceOrFixed(isLong: false, auxPriceSell),
                     TotalQuantity = tradePair.QuantitySell
                 };
 
@@ -156,102 +163,6 @@ namespace PortfolioTrader.Commands
             var minutes = int.Parse(splitted[1]);
 
             return(hours * sign, minutes * sign); 
-        }
-
-        private static double CalculateLimitPrice(bool isLong, double price)
-        {
-            double priceOffsetInPersent = 0.1;
-            double minOfset = .01;
-
-            var offset = Math.Round(price * priceOffsetInPersent / 100, 2);
-            if (offset < minOfset) offset = minOfset;
-
-            return isLong 
-                ? price + offset 
-                : price - offset; 
-        }
-
-        private static async Task SendPairOrderAndProcessResultsAsync(
-            Contract contractBuy,
-            double lmtPriceBuy,
-            int quantityBuy,
-            Contract contractSell,
-            double lmtPriceSell,
-            int quantitySell,
-            IBuyConfirmationModelVisitor visitor)
-        {
-            Order parentOrder = new()
-            {
-                Action = "BUY",
-                OrderType = "LIMIT",
-                LmtPrice = lmtPriceBuy,
-                TotalQuantity = quantityBuy,
-                Transmit = false
-            };
-
-            Order hedgeOrder = new()
-            {
-                Action = "SELL",
-                OrderType = "LIMIT",
-                LmtPrice = lmtPriceSell,
-                TotalQuantity = quantitySell
-            };
-
-            var resultParent = await visitor.IbHost.PlaceOrderAsync(contractBuy, parentOrder, App.TIMEOUT);
-            LogResults(result: resultParent, contract: contractBuy, visitor);
-            await Task.Run(() => Thread.Sleep(App.TIMEOUT));
-
-            var resultHedge = await visitor.IbHost.PlaceOrderAsync(contractSell, hedgeOrder, App.TIMEOUT);
-            LogResults(result: resultHedge, contract: contractSell, visitor);
-            await Task.Run(() => Thread.Sleep(App.TIMEOUT));
-        }
-
-        private static void LogResults(OrderStateOrError result, Contract contract, IBuyConfirmationModelVisitor visitor)
-        {
-            if (result.ErrorMessage != "")
-            {
-                var log = $"Error sending order for parent {contract.Symbol} vonId={contract.ConId} error:{result.ErrorMessage}";
-                visitor.TwsMessageCollection.Add(log);
-                visitor.OrdersLongWithError = SymbolsAndScore.ConcatStringsWithNewLine(
-                    visitor.OrdersLongWithError,
-                    contract.Symbol + " " + result.ErrorMessage);
-            }
-            else if (result.OrderState != null)
-            {
-                visitor.TwsMessageCollection.Add($"{contract.Symbol} conId={contract.ConId} order submitted.");
-            }
-            else throw new Exception("Unexpected. Both ErrorMessage nad OrderState are not set.");
-        }
-
-        private static async Task SendOrderAndProcessResultsAsync(bool isLong, Contract contract, double lmtPrice, int quantity, IBuyConfirmationModelVisitor visitor)
-        {
-            Order order = new()
-            {
-                Action = isLong ? "BUY" : "SELL",
-                OrderType = "LIMIT",
-                LmtPrice = lmtPrice,
-                TotalQuantity = quantity
-            };
-
-            var result = await visitor.IbHost.PlaceOrderAsync(contract, order, App.TIMEOUT);
-            if (result.ErrorMessage != "")
-            {
-                var log = $"Error sending order for {contract.Symbol} vonId={contract.ConId} error:{result.ErrorMessage}";
-                visitor.TwsMessageCollection.Add(log);
-                if (isLong) visitor.OrdersLongWithError = SymbolsAndScore.ConcatStringsWithNewLine(
-                    visitor.OrdersLongWithError,
-                    contract.Symbol + " " + result.ErrorMessage);
-                else visitor.OrdersShortWithError = SymbolsAndScore.ConcatStringsWithNewLine(
-                    visitor.OrdersShortWithError,
-                    contract.Symbol + " " + result.ErrorMessage);
-            }
-            else if (result.OrderState != null)
-            {
-                visitor.TwsMessageCollection.Add($"{contract.Symbol} conId={contract.ConId} order submitted.");
-            }
-            else throw new Exception("Unexpected. Both ErrorMessage nad OrderState are not set.");
-
-            await Task.Run(() => Thread.Sleep(App.TIMEOUT));
         }
 
         private static List<TradePair> BuildTradePairs(IBuyConfirmationModelVisitor visitor)
