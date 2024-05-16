@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using SignalAdvisor.Extensions;
+using System.Globalization;
 using Ta;
 
 namespace SignalAdvisor.Commands
@@ -34,7 +35,22 @@ namespace SignalAdvisor.Commands
                     (d) =>
                     {
                         // Add bar logic
-                        visitor.AddBar(positionMessage.Contract, d);
+                        var barTime = d.Date.DateTimeOffsetFromString();
+
+                        var bars = visitor.Bars.For(positionMessage.Contract.ToString());
+                        if (!bars.Any())
+                        {
+                            bars.Add(new Bar(d.Open, d.High, d.Low, d.Close, d.Date.DateTimeOffsetFromString()));
+                            return;
+                        }
+
+                        var lastBar = bars.Last();
+                        var lastBarTime = lastBar.Time;
+
+                        if (barTime.Minute / 5 != lastBarTime.Minute / 5) 
+                            visitor.AddBar(positionMessage.Contract, d);
+                        else 
+                            lastBar.Update(d.High, d.Low, d.Close);
                     },
                     (u) =>
                     {

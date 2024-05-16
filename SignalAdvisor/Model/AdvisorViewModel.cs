@@ -56,6 +56,11 @@ namespace SignalAdvisor.Model
                 _dispatcher.Invoke(() => TwsMessageCollection?.Add($"No positions."));
                 return;
             }
+            if (!RequestHistoricalDataExecuted)
+            {
+                _dispatcher.Invoke(() => TwsMessageCollection?.Add($"Retrieving historical data."));
+                return;
+            }
             _dispatcher.Invoke(() => { TwsMessageCollection?.Add($"Heartbeat"); });
 
 
@@ -106,7 +111,7 @@ namespace SignalAdvisor.Model
 
         public void AddBar(IBApi.Contract contract, HistoricalDataMessage message)
         {
-            var bar = new Bar(message.Open, message.High, message.Low, message.Close, DateTimeOffsetFromString(message.Date));
+            var bar = new Bar(message.Open, message.High, message.Low, message.Close, message.Date.DateTimeOffsetFromString());
             var contractOriginalString = contract.ToString();
 
             if (!Bars.Any(kvp => kvp.Key == contractOriginalString))
@@ -217,23 +222,5 @@ namespace SignalAdvisor.Model
 
         public bool RequestPositionsExecuted { get; set; }
         public bool RequestHistoricalDataExecuted { get; set; }
-
-        private static DateTimeOffset DateTimeOffsetFromString(string dateTimeOffsetString)
-        {
-            var dtoStringSplitted = dateTimeOffsetString
-                          .Split(' ', StringSplitOptions.RemoveEmptyEntries)
-                          .Select(s => s.Trim())
-                          .ToArray();
-            var timeZoneString = dtoStringSplitted[2];
-            var dateTimeString = dtoStringSplitted
-                .Take(2)
-                .Aggregate((r, n) => r + " " + n);
-
-            var dateTime = DateTime.ParseExact(dateTimeString, "yyyyMMdd HH:mm:ss", CultureInfo.InvariantCulture);
-            var timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(timeZoneString);
-            var result = new DateTimeOffset(dateTime, timeZoneInfo.BaseUtcOffset);
-
-            return result;
-        }
     }
 }

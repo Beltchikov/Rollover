@@ -16,5 +16,12 @@
         public double Low {  get; set; }
         public double Close {  get; set; }
         public DateTimeOffset Time {  get; set; }
+
+        public void Update(double high, double low, double close)
+        {
+            High = High == high ? High : high;
+            Low = Low == low ? Low : low;
+            Close = close;
+        }
     }
 }
