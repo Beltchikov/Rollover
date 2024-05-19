@@ -171,6 +171,7 @@ namespace IbClient.IbHost
         }
 
         public bool IsConnected => _ibClient.ClientSocket.IsConnected();
+        public int NextOrderId => _ibClient.NextOrderId;
 
         public void Disconnect()
         {
