@@ -1,5 +1,4 @@
 ﻿using IBApi;
-using IbClient.Types;
 using PortfolioTrader.Algos;
 using PortfolioTrader.Model;
 using System.Windows;
@@ -8,28 +7,22 @@ namespace PortfolioTrader.Commands
 {
     internal class SendBracketOrders
     {
-        private static readonly string  FORMAT_STRING_UI = "dd.MM.yyyy HH:mm:ss";
-        private static readonly string  FORMAT_STRING_API = "yyyyMMdd-HH:mm:ss";
-        
+        private static readonly string FORMAT_STRING_UI = "dd.MM.yyyy HH:mm:ss";
+        private static readonly string FORMAT_STRING_API = "yyyyMMdd-HH:mm:ss";
+
         public static async Task RunAsync(IBuyConfirmationModelVisitor visitor)
         {
-            // TODO
-            MessageBox.Show("SendBracketOrders");
-            return;
-            
-            
-            ///////////////////////////
-            if(visitor.EntryBarTime > DateTime.Now)
+            if (visitor.EntryBarTime > DateTime.Now)
             {
                 MessageBox.Show("The time of entry bar is in the future. Please correct the time. The execution stops.");
                 return;
             }
-            
+
             (int hoursUtcOffset, int minutesUtcOffset) = HoursAndMinutesFromUtcOffset(visitor.UtcOffset);
             var localTime = visitor.EntryBarTime
                 .AddHours(hoursUtcOffset)
                 .AddMinutes(minutesUtcOffset);
-            
+
             if (MessageBox.Show(
                 $"STOP LIMIT orders will be sent now to the broker. Time of entry bar: {localTime.ToString(FORMAT_STRING_UI)} Proceed?",
                 "Confirm",
@@ -38,7 +31,7 @@ namespace PortfolioTrader.Commands
                 return;
 
             List<TradePair> tradePairs = BuildTradePairs(visitor);
-            
+
             string endDateTime = visitor.EntryBarTime.ToString(FORMAT_STRING_API);
             string durationString = "300 S";
             string barSizeSetting = "5 mins";
@@ -50,15 +43,16 @@ namespace PortfolioTrader.Commands
             foreach (TradePair tradePair in tradePairs)
             {
                 // Buy
-                Contract contractBuy = new() { 
-                    ConId = tradePair.ConIdBuy, 
-                    Symbol = tradePair.SymbolBuy,   
+                Contract contractBuy = new()
+                {
+                    ConId = tradePair.ConIdBuy,
+                    Symbol = tradePair.SymbolBuy,
                     SecType = App.SEC_TYPE_STK,
                     Currency = App.USD,
-                    Exchange = App.EXCHANGE 
+                    Exchange = App.EXCHANGE
                 };
                 double auxPriceBuy = 0;
-                
+
                 await visitor.IbHost.RequestHistoricalDataAsync(
                     contractBuy,
                     endDateTime,
@@ -72,17 +66,11 @@ namespace PortfolioTrader.Commands
                     App.TIMEOUT,
                     (d) => auxPriceBuy = d.High + 0.01,
                     (u) => { },
-                    (e) => { });
+                (e) => { });
 
-                Order orderBuy = new Order()
-                {
-                    Action = "BUY",
-                    OrderType = "STP LMT",
-                    AuxPrice = auxPriceBuy,
-                    LmtPrice = LimitPrice.PercentageOfPriceOrFixed(isLong: true, auxPriceBuy),
-                    TotalQuantity = tradePair.QuantityBuy
-                };
-
+                double lmtPriceBuy = LimitPrice.PercentageOfPriceOrFixed(isLong: true, auxPriceBuy);
+                Order orderBuy = CreateOrders(isLong: true, tradePair: tradePair, auxPrice: auxPriceBuy, lmtPriceBuy);
+                
                 var resultBuy = await visitor.IbHost.PlaceOrderAsync(contractBuy, orderBuy, App.TIMEOUT);
                 if (resultBuy.ErrorMessage != "")
                 {
@@ -101,12 +89,13 @@ namespace PortfolioTrader.Commands
 
                 // sell
                 var nextOrderIdSell = await visitor.IbHost.ReqIdsAsync(-1);  // Is line needed?
-                Contract contractSell = new Contract() { 
-                    ConId = tradePair.ConIdSell, 
+                Contract contractSell = new Contract()
+                {
+                    ConId = tradePair.ConIdSell,
                     Symbol = tradePair.SymbolSell,
                     SecType = App.SEC_TYPE_STK,
                     Currency = App.USD,
-                    Exchange = App.EXCHANGE 
+                    Exchange = App.EXCHANGE
                 };
 
                 double auxPriceSell = 0;
@@ -156,19 +145,31 @@ namespace PortfolioTrader.Commands
 
         }
 
+        private static Order CreateOrders(bool isLong, TradePair tradePair, double auxPrice, double lmtPrice)
+        {
+            return new Order()
+            {
+                Action = isLong ? "BUY" : "SELL",
+                OrderType = "STP LMT",
+                AuxPrice = auxPrice,
+                LmtPrice = lmtPrice,
+                TotalQuantity = tradePair.QuantityBuy
+            };
+        }
+
         private static (int hoursUtcOffset, int minutesUtcOffset) HoursAndMinutesFromUtcOffset(string utcOffset)
         {
             int sign = 1;
-            if(utcOffset.StartsWith('-'))
+            if (utcOffset.StartsWith('-'))
             {
                 sign = -1;
             }
 
-            var splitted = utcOffset.Split(':', StringSplitOptions.RemoveEmptyEntries);    
+            var splitted = utcOffset.Split(':', StringSplitOptions.RemoveEmptyEntries);
             var hours = int.Parse(splitted[0]);
             var minutes = int.Parse(splitted[1]);
 
-            return(hours * sign, minutes * sign); 
+            return (hours * sign, minutes * sign);
         }
 
         private static List<TradePair> BuildTradePairs(IBuyConfirmationModelVisitor visitor)
