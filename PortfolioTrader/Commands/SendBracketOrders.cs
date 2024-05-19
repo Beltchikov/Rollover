@@ -185,7 +185,8 @@ namespace PortfolioTrader.Commands
                 OrderId = orderParent.OrderId + 1,
                 Action = isLong ? "SELL" : "BUY",
                 OrderType = "MIDPRICE",
-                AuxPrice = slLmtPrice,
+                AuxPrice = slStpPrice,
+                LmtPrice = slLmtPrice,
                 TotalQuantity = isLong ? tradePair.QuantityBuy : tradePair.QuantitySell,
                 ParentId = orderParent.OrderId,
                 Transmit = true
