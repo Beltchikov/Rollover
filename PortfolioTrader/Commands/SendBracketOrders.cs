@@ -81,21 +81,8 @@ namespace PortfolioTrader.Commands
                     entryLmtPrice: entryLmtPriceBuy,
                     slStpPrice: slStpPriceBuy,
                     slLmtPrice: slLmtPriceBuy);
-                
-                var resultBuy = await visitor.IbHost.PlaceOrderAsync(contractBuy, orderBuyParent, App.TIMEOUT);
-                if (resultBuy.ErrorMessage != "")
-                {
-                    visitor.TwsMessageCollection.Add($"ConId={tradePair.ConIdBuy} error:{resultBuy.ErrorMessage}");
-                    visitor.OrdersLongWithError = SymbolsAndScore.ConcatStringsWithNewLine(
-                        visitor.OrdersLongWithError,
-                        tradePair.SymbolBuy + " " + resultBuy.ErrorMessage);
-                }
-                else if (resultBuy.OrderState != null)
-                {
-                    visitor.TwsMessageCollection.Add($"ConId={tradePair.ConIdBuy} {tradePair.SymbolBuy} order submitted.");
-                }
-                else throw new Exception("Unexpected. Both ErrorMessage nad OrderState are not set.");
 
+                await SendOrders(isLong: true, visitor, tradePair, contractBuy, orderBuyParent);
                 await Task.Run(() => Thread.Sleep(App.TIMEOUT));
 
                 // sell
@@ -126,7 +113,7 @@ namespace PortfolioTrader.Commands
                     (u) => { },
                     (e) => { });
 
-                double entryLmtPriceSell= LimitPrice.PercentageOfPriceOrFixed(isLong: false, entryStpPriceSell);
+                double entryLmtPriceSell = LimitPrice.PercentageOfPriceOrFixed(isLong: false, entryStpPriceSell);
                 double slLmtPriceSell = LimitPrice.PercentageOfPriceOrFixed(isLong: true, slStpPriceSell);
                 (Order orderSellParent, Order orderSellStop) = CreateOrders(
                     isLong: false,
@@ -136,25 +123,41 @@ namespace PortfolioTrader.Commands
                     slStpPrice: slStpPriceSell,
                     slLmtPrice: slLmtPriceSell);
 
-                var resultSell = await visitor.IbHost.PlaceOrderAsync(contractSell, orderSellParent, App.TIMEOUT);
-                if (resultSell.ErrorMessage != "")
-                {
-                    visitor.TwsMessageCollection.Add($"ConId={tradePair.ConIdSell} error:{resultSell.ErrorMessage}");
-                    visitor.OrdersShortWithError = SymbolsAndScore.ConcatStringsWithNewLine(
-                        visitor.OrdersShortWithError,
-                        tradePair.SymbolSell + " " + resultSell.ErrorMessage);
-                }
-                else if (resultSell.OrderState != null)
-                {
-                    visitor.TwsMessageCollection.Add($"ConId={tradePair.ConIdSell} {tradePair.SymbolSell} order submitted.");
-                }
-                else throw new Exception("Unexpected. Both ErrorMessage nad OrderState are not set.");
-
+                await SendOrders(isLong: false, visitor, tradePair, contractSell, orderSellParent);
                 await Task.Run(() => Thread.Sleep(App.TIMEOUT));
             }
 
             visitor.TwsMessageCollection.Add($"DONE! Send Orders command executed.");
 
+        }
+
+        private static async Task SendOrders(bool isLong, IBuyConfirmationModelVisitor visitor, TradePair tradePair, Contract contract, Order orderParent)
+        {
+            var result = await visitor.IbHost.PlaceOrderAsync(contract, orderParent, App.TIMEOUT);
+
+            var conId = isLong ? tradePair.ConIdBuy : tradePair.ConIdSell;
+            var symbol = isLong ? tradePair.SymbolBuy : tradePair.SymbolSell;
+            if (result.ErrorMessage != "")
+            {
+                visitor.TwsMessageCollection.Add($"ConId={conId} error:{result.ErrorMessage}");
+                if(isLong)
+                {
+                    visitor.OrdersLongWithError = SymbolsAndScore.ConcatStringsWithNewLine(
+                    visitor.OrdersLongWithError,
+                    symbol + " " + result.ErrorMessage);
+                }
+                else
+                {
+                    visitor.OrdersShortWithError = SymbolsAndScore.ConcatStringsWithNewLine(
+                    visitor.OrdersShortWithError,
+                    symbol + " " + result.ErrorMessage);
+                }
+            }
+            else if (result.OrderState != null)
+            {
+                visitor.TwsMessageCollection.Add($"ConId={conId} {symbol} order submitted.");
+            }
+            else throw new Exception("Unexpected. Both ErrorMessage nad OrderState are not set.");
         }
 
         private static (Order, Order) CreateOrders(
@@ -198,7 +201,7 @@ namespace PortfolioTrader.Commands
             ////AND | OR next condition (will be ignored if no more conditions are added)
             //priceCondition.IsConjunctionConnection = isConjunction;
 
-          
+
 
             return (orderParent, orderStop);
         }

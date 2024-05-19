@@ -130,7 +130,7 @@ namespace PortfolioTrader.Model
 
         public static string ConcatStringsWithNewLine(string string1, string string2)
         {
-            return string1 == ""
+            return string.IsNullOrWhiteSpace(string1) 
                 ? string2
                 : string1 + Environment.NewLine + string2;
         }
