@@ -10,7 +10,9 @@ namespace PortfolioTrader.Commands
     {
         private static readonly string  FORMAT_STRING_UI = "dd.MM.yyyy HH:mm:ss";
         private static readonly string  FORMAT_STRING_API = "yyyyMMdd-HH:mm:ss";
-        
+        private static int _lastOrderId;
+        private static int _nextOrderId;
+
         public static async Task RunAsync(IBuyConfirmationModelVisitor visitor)
         {
             if(visitor.EntryBarTime > DateTime.Now)
@@ -77,6 +79,14 @@ namespace PortfolioTrader.Commands
                     TotalQuantity = tradePair.QuantityBuy
                 };
 
+                visitor.IbHost.ReqIds(-1);
+                _lastOrderId = _nextOrderId;
+                await Task.Run(() =>
+                {
+                    while (_lastOrderId == _nextOrderId) { _nextOrderId = visitor.IbHost.NextOrderId; }
+                });
+                orderBuy.OrderId = _nextOrderId;
+
                 var resultBuy = await visitor.IbHost.PlaceOrderAsync(contractBuy, orderBuy, App.TIMEOUT);
                 if (resultBuy.ErrorMessage != "")
                 {
@@ -127,6 +137,14 @@ namespace PortfolioTrader.Commands
                     LmtPrice = LimitPrice.PercentageOfPriceOrFixed(isLong: false, auxPriceSell),
                     TotalQuantity = tradePair.QuantitySell
                 };
+
+                _lastOrderId = visitor.IbHost.NextOrderId;
+                visitor.IbHost.ReqIds(-1);
+                await Task.Run(() =>
+                {
+                    while (_lastOrderId == _nextOrderId) { _nextOrderId = visitor.IbHost.NextOrderId; }
+                });
+                orderSell.OrderId = _nextOrderId;
 
                 var resultSell = await visitor.IbHost.PlaceOrderAsync(contractSell, orderSell, App.TIMEOUT);
                 if (resultSell.ErrorMessage != "")
