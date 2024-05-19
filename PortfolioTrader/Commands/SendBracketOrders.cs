@@ -1,6 +1,7 @@
 ﻿using IBApi;
 using PortfolioTrader.Algos;
 using PortfolioTrader.Model;
+using System;
 using System.Windows;
 
 namespace PortfolioTrader.Commands
@@ -69,9 +70,9 @@ namespace PortfolioTrader.Commands
                 (e) => { });
 
                 double lmtPriceBuy = LimitPrice.PercentageOfPriceOrFixed(isLong: true, auxPriceBuy);
-                Order orderBuy = CreateOrders(isLong: true, tradePair: tradePair, auxPrice: auxPriceBuy, lmtPriceBuy);
+                (Order orderBuyParent, Order orderBuyStop) = CreateOrders(isLong: true, tradePair: tradePair, auxPrice: auxPriceBuy, lmtPriceBuy);
                 
-                var resultBuy = await visitor.IbHost.PlaceOrderAsync(contractBuy, orderBuy, App.TIMEOUT);
+                var resultBuy = await visitor.IbHost.PlaceOrderAsync(contractBuy, orderBuyParent, App.TIMEOUT);
                 if (resultBuy.ErrorMessage != "")
                 {
                     visitor.TwsMessageCollection.Add($"ConId={tradePair.ConIdBuy} error:{resultBuy.ErrorMessage}");
@@ -88,7 +89,7 @@ namespace PortfolioTrader.Commands
                 await Task.Run(() => Thread.Sleep(App.TIMEOUT));
 
                 // sell
-                var nextOrderIdSell = await visitor.IbHost.ReqIdsAsync(-1);  // Is line needed?
+                //var nextOrderIdSell = await visitor.IbHost.ReqIdsAsync(-1);  // Is line needed?
                 Contract contractSell = new Contract()
                 {
                     ConId = tradePair.ConIdSell,
@@ -116,9 +117,9 @@ namespace PortfolioTrader.Commands
                     (e) => { });
 
                 double lmtPriceSell= LimitPrice.PercentageOfPriceOrFixed(isLong: false, auxPriceSell);
-                Order orderSell = CreateOrders(isLong: false, tradePair: tradePair, auxPrice: auxPriceSell, lmtPriceSell);
+                (Order orderSellParent, Order orderSellStop) = CreateOrders(isLong: false, tradePair: tradePair, auxPrice: auxPriceSell, lmtPriceSell);
 
-                var resultSell = await visitor.IbHost.PlaceOrderAsync(contractSell, orderSell, App.TIMEOUT);
+                var resultSell = await visitor.IbHost.PlaceOrderAsync(contractSell, orderSellParent, App.TIMEOUT);
                 if (resultSell.ErrorMessage != "")
                 {
                     visitor.TwsMessageCollection.Add($"ConId={tradePair.ConIdSell} error:{resultSell.ErrorMessage}");
@@ -139,16 +140,31 @@ namespace PortfolioTrader.Commands
 
         }
 
-        private static Order CreateOrders(bool isLong, TradePair tradePair, double auxPrice, double lmtPrice)
+        private static (Order, Order) CreateOrders(bool isLong, TradePair tradePair, double auxPrice, double lmtPrice)
         {
-            return new Order()
+            var orderParent = new Order()
             {
                 Action = isLong ? "BUY" : "SELL",
                 OrderType = "STP LMT",
                 AuxPrice = auxPrice,
                 LmtPrice = lmtPrice,
-                TotalQuantity = tradePair.QuantityBuy
+                TotalQuantity = tradePair.QuantityBuy,
+                //Transmit = false
             };
+
+            Order orderStop = new Order();
+            //orderStop.OrderId = parent.OrderId + 2;
+            //orderStop.Action = action.Equals("BUY") ? "SELL" : "BUY";
+            //orderStop.OrderType = "STP";
+            ////Stop trigger price
+            //orderStop.AuxPrice = stopLossPrice;
+            //orderStop.TotalQuantity = quantity;
+            //orderStop.ParentId = parentOrderId;
+            ////In this case, the low side order will be the last child being sent. Therefore, it needs to set this attribute to true 
+            ////to activate all its predecessors
+            //orderStop.Transmit = true;
+
+            return (orderParent, orderStop);
         }
 
         private static (int hoursUtcOffset, int minutesUtcOffset) HoursAndMinutesFromUtcOffset(string utcOffset)
