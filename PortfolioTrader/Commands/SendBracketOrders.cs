@@ -171,7 +171,6 @@ namespace PortfolioTrader.Commands
             double slLmtPrice)
         {
 
-            var _nextOrderId = await visitor.IbHost.ReqIdsAsync(-1);
             var orderParent = new Order()
             {
                 //OrderId = _nextOrderId,  

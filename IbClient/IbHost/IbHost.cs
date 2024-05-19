@@ -267,10 +267,9 @@ namespace IbClient.IbHost
             return symbolSamplesMessage;
         }
 
-        public async Task<int> ReqIdsAsync(int idParam)
+        public void ReqIds(int idParam)
         {
-            await Task.Run(() => _ibClient.ClientSocket.reqIds(idParam));
-            return _ibClient.NextOrderId;
+            _ibClient.ClientSocket.reqIds(idParam);
         }
 
         public async Task<string> RequestFundamentalDataAsync(Contract contract, string reportType, int timeout)
@@ -690,7 +689,7 @@ namespace IbClient.IbHost
                 _queueMktDataErrors.Enqueue(new ErrorMessage(reqId, code, message, ""));
 
             if (_placeOrderOrderIds.Contains(reqId))
-                _queuePlaceOrderErrors.Enqueue(new ErrorMessage(reqId, code, message, "" ));
+                _queuePlaceOrderErrors.Enqueue(new ErrorMessage(reqId, code, message, ""));
 
             Consumer.TwsMessageCollection?.Add($"ReqId:{reqId} code:{code} message:{message} exception:{exception}");
 
@@ -774,7 +773,7 @@ namespace IbClient.IbHost
 
         private void _ibClient_HistoricalDataUpdate(HistoricalDataMessage message)
         {
-            LiveDataMessage liveDataMessage = new LiveDataMessage(_requestIdContract[message.RequestId],  message);    
+            LiveDataMessage liveDataMessage = new LiveDataMessage(_requestIdContract[message.RequestId], message);
             _queueHistoricalDataUpdate.Enqueue(liveDataMessage);
         }
 

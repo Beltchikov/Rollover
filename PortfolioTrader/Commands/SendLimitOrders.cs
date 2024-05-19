@@ -52,8 +52,6 @@ namespace PortfolioTrader.Commands
 
                 await Task.Run(() => Thread.Sleep(App.TIMEOUT));
 
-                // sell
-                var nextOrderIdSell = await visitor.IbHost.ReqIdsAsync(-1);
                 Contract contractSell = new Contract() { ConId = tradePair.ConIdSell, Exchange = App.EXCHANGE };
                 var lmtPriceSell = Math.Round((double)tradePair.PriceInCentsSell / 100d, 2);
 
