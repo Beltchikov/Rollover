@@ -115,14 +115,8 @@ namespace PortfolioTrader.Commands
                     (u) => { },
                     (e) => { });
 
-                Order orderSell = new()
-                {
-                    Action = "SELL",
-                    OrderType = "STP LMT",
-                    AuxPrice = auxPriceSell,
-                    LmtPrice = LimitPrice.PercentageOfPriceOrFixed(isLong: false, auxPriceSell),
-                    TotalQuantity = tradePair.QuantitySell
-                };
+                double lmtPriceSell= LimitPrice.PercentageOfPriceOrFixed(isLong: false, auxPriceSell);
+                Order orderSell = CreateOrders(isLong: false, tradePair: tradePair, auxPrice: auxPriceSell, lmtPriceSell);
 
                 var resultSell = await visitor.IbHost.PlaceOrderAsync(contractSell, orderSell, App.TIMEOUT);
                 if (resultSell.ErrorMessage != "")
