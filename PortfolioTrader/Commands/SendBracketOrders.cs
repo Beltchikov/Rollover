@@ -1,10 +1,7 @@
 ﻿using IBApi;
 using PortfolioTrader.Algos;
 using PortfolioTrader.Model;
-using System;
-using System.Diagnostics;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace PortfolioTrader.Commands
 {
@@ -74,8 +71,9 @@ namespace PortfolioTrader.Commands
 
                 double entryLmtPriceBuy = LimitPrice.PercentageOfPriceOrFixed(isLong: true, entryStpPriceBuy);
                 double slLmtPriceBuy = LimitPrice.PercentageOfPriceOrFixed(isLong: false, slStpPriceBuy);
-                (Order orderBuyParent, Order orderBuyStop) = CreateOrders(
+                (Order orderBuyParent, Order orderBuyStop) = await CreateOrdersAsync(
                     isLong: true,
+                    visitor,
                     tradePair,
                     entryStpPrice: entryStpPriceBuy,
                     entryLmtPrice: entryLmtPriceBuy,
@@ -116,8 +114,9 @@ namespace PortfolioTrader.Commands
 
                 double entryLmtPriceSell = LimitPrice.PercentageOfPriceOrFixed(isLong: false, entryStpPriceSell);
                 double slLmtPriceSell = LimitPrice.PercentageOfPriceOrFixed(isLong: true, slStpPriceSell);
-                (Order orderSellParent, Order orderSellStop) = CreateOrders(
+                (Order orderSellParent, Order orderSellStop) = await CreateOrdersAsync(
                     isLong: false,
+                    visitor,
                     tradePair,
                     entryStpPrice: entryStpPriceSell,
                     entryLmtPrice: entryLmtPriceSell,
@@ -162,16 +161,20 @@ namespace PortfolioTrader.Commands
             else throw new Exception("Unexpected. Both ErrorMessage nad OrderState are not set.");
         }
 
-        private static (Order, Order) CreateOrders(
+        private static async Task<(Order, Order)> CreateOrdersAsync(
             bool isLong,
+            IBuyConfirmationModelVisitor visitor,
             TradePair tradePair,
             double entryStpPrice,
             double entryLmtPrice,
             double slStpPrice,
             double slLmtPrice)
         {
+
+            var _nextOrderId = await visitor.IbHost.ReqIdsAsync(-1);
             var orderParent = new Order()
             {
+                OrderId = _nextOrderId,  
                 Action = isLong ? "BUY" : "SELL",
                 OrderType = "STP LMT",
                 AuxPrice = entryStpPrice,
@@ -203,7 +206,6 @@ namespace PortfolioTrader.Commands
             //priceCondition.Price = price;
             ////AND | OR next condition (will be ignored if no more conditions are added)
             //priceCondition.IsConjunctionConnection = isConjunction;
-
 
 
             return (orderParent, orderStop);
