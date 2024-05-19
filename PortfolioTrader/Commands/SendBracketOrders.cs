@@ -9,6 +9,8 @@ namespace PortfolioTrader.Commands
     {
         private static readonly string FORMAT_STRING_UI = "dd.MM.yyyy HH:mm:ss";
         private static readonly string FORMAT_STRING_API = "yyyyMMdd-HH:mm:ss";
+        private static int _lastOrderId;
+        private static int _nextOrderId;
 
         public static async Task RunAsync(IBuyConfirmationModelVisitor visitor)
         {
@@ -171,9 +173,16 @@ namespace PortfolioTrader.Commands
             double slLmtPrice)
         {
 
+            visitor.IbHost.ReqIdsAsync(-1);
+            _lastOrderId = _nextOrderId;
+            await Task.Run(() =>
+            {
+                while (_lastOrderId == _nextOrderId) { _nextOrderId = visitor.IbHost.NextOrderId; }
+            });
+            
             var orderParent = new Order()
             {
-                //OrderId = _nextOrderId,  
+                OrderId = _nextOrderId,  
                 Action = isLong ? "BUY" : "SELL",
                 OrderType = "STP LMT",
                 AuxPrice = entryStpPrice,

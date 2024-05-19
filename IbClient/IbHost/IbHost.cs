@@ -267,9 +267,19 @@ namespace IbClient.IbHost
             return symbolSamplesMessage;
         }
 
-        public void ReqIds(int idParam)
+        public async Task<int> ReqIdsAsync(int idParam)
         {
+            _lastOrderId = _ibClient.NextOrderId;
+            _nextOrderId = _ibClient.NextOrderId;
+
             _ibClient.ClientSocket.reqIds(idParam);
+
+            await Task.Run(() =>
+            {
+                while (_lastOrderId == _nextOrderId) { _nextOrderId = _ibClient.NextOrderId; }
+            });
+
+            return _nextOrderId; ;
         }
 
         public async Task<string> RequestFundamentalDataAsync(Contract contract, string reportType, int timeout)
@@ -453,16 +463,8 @@ namespace IbClient.IbHost
 
         public async Task<OrderStateOrError> PlaceOrderAsync(Contract contract, Order order, int timeout)
         {
-            _ibClient.ClientSocket.reqIds(-1);
-            _lastOrderId = _nextOrderId;
-            await Task.Run(() =>
-            {
-                while (_lastOrderId == _nextOrderId) { _nextOrderId = _ibClient.NextOrderId; }
-            });
-            order.OrderId = _nextOrderId;
-
-            _placeOrderOrderIds.Add(_nextOrderId);
-            _ibClient.ClientSocket.placeOrder(_nextOrderId, contract, order);
+            _placeOrderOrderIds.Add(order.OrderId);
+            _ibClient.ClientSocket.placeOrder(order.OrderId, contract, order);
             OpenOrderMessage openOrderMessage = null;
             ErrorMessage errorMessage = null;
 
@@ -483,7 +485,7 @@ namespace IbClient.IbHost
                     out errorMessage)) { }
             });
 
-            _placeOrderOrderIds.Remove(_nextOrderId);
+            _placeOrderOrderIds.Remove(order.OrderId);
             if (openOrderMessage == null)
             {
                 if (errorMessage != null)

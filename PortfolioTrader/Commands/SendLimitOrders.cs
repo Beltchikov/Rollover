@@ -2,12 +2,15 @@
 using IbClient.Types;
 using PortfolioTrader.Model;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace PortfolioTrader.Commands
 {
     internal class SendLimitOrders
     {
         private static IBuyConfirmationModelVisitor _visitor = null!;
+        private static int _lastOrderId;
+        private static int _nextOrderId;
 
         public static async Task RunAsync(IBuyConfirmationModelVisitor visitor)
         {
@@ -36,6 +39,14 @@ namespace PortfolioTrader.Commands
                     TotalQuantity = tradePair.QuantityBuy
                 };
 
+                _visitor.IbHost.ReqIdsAsync(-1);
+                _lastOrderId = _nextOrderId;
+                await Task.Run(() =>
+                {
+                    while (_lastOrderId == _nextOrderId) { _nextOrderId = _visitor.IbHost.NextOrderId; }
+                });
+                orderBuy.OrderId = _nextOrderId;
+
                 var resultBuy = await _visitor.IbHost.PlaceOrderAsync(contractBuy, orderBuy, App.TIMEOUT);
                 if (resultBuy.ErrorMessage != "")
                 {
@@ -63,6 +74,14 @@ namespace PortfolioTrader.Commands
                     TotalQuantity = tradePair.QuantitySell
                 };
 
+                _visitor.IbHost.ReqIdsAsync(-1);
+                _lastOrderId = _nextOrderId;
+                await Task.Run(() =>
+                {
+                    while (_lastOrderId == _nextOrderId) { _nextOrderId = _visitor.IbHost.NextOrderId; }
+                });
+                orderSell.OrderId = _nextOrderId;
+
                 var resultSell = await _visitor.IbHost.PlaceOrderAsync(contractSell, orderSell, App.TIMEOUT);
                 if (resultSell.ErrorMessage != "")
                 {
@@ -81,65 +100,6 @@ namespace PortfolioTrader.Commands
             }
 
             _visitor.TwsMessageCollection.Add($"DONE! Send Orders command executed.");
-
-            // Version with Pair Orders
-
-            //_visitor = visitor;
-            //List<TradePair> tradePairs = BuildTradePairs();
-
-            //foreach (TradePair tradePair in tradePairs)
-            //{
-            //    Contract contractBuy = new() { ConId = tradePair.ConIdBuy, Exchange = App.EXCHANGE, Symbol = tradePair.SymbolBuy };
-            //    var lmtPriceBuy = Math.Round((double)tradePair.PriceInCentsBuy / 100d, 2);
-            //    Contract contractSell = new() { ConId = tradePair.ConIdSell, Exchange = App.EXCHANGE, Symbol = tradePair.SymbolSell };
-            //    var lmtPriceSell = Math.Round((double)tradePair.PriceInCentsSell / 100d, 2);
-
-            //    await SendPairOrderAndProcessResultsAsync(
-            //        contractBuy: contractBuy,
-            //        lmtPriceBuy: lmtPriceBuy,
-            //        quantityBuy: tradePair.QuantityBuy,
-            //        contractSell: contractSell,
-            //        lmtPriceSell: lmtPriceSell,
-            //        quantitySell: tradePair.QuantitySell,
-            //        visitor);
-            //}
-
-            //_visitor.TwsMessageCollection.Add($"DONE! Send Orders command executed.");
-        }
-
-        private static async Task SendPairOrderAndProcessResultsAsync(
-            Contract contractBuy,
-            double lmtPriceBuy,
-            int quantityBuy,
-            Contract contractSell,
-            double lmtPriceSell,
-            int quantitySell,
-            IBuyConfirmationModelVisitor visitor)
-        {
-            Order parentOrder = new()
-            {
-                Action = "BUY",
-                OrderType = "LIMIT",
-                LmtPrice = lmtPriceBuy,
-                TotalQuantity = quantityBuy,
-                Transmit = false
-            };
-
-            Order hedgeOrder = new()
-            {
-                Action = "SELL",
-                OrderType = "LIMIT",
-                LmtPrice = lmtPriceSell,
-                TotalQuantity = quantitySell
-            };
-
-            var resultParent = await _visitor.IbHost.PlaceOrderAsync(contractBuy, parentOrder, App.TIMEOUT);
-            LogResults(result: resultParent, contract: contractBuy, visitor);
-            await Task.Run(() => Thread.Sleep(App.TIMEOUT));
-
-            var resultHedge = await _visitor.IbHost.PlaceOrderAsync(contractSell, hedgeOrder, App.TIMEOUT);
-            LogResults(result: resultHedge, contract: contractSell, visitor);
-            await Task.Run(() => Thread.Sleep(App.TIMEOUT));
         }
 
         private static void LogResults(OrderStateOrError result, Contract contract, IBuyConfirmationModelVisitor visitor)
@@ -157,37 +117,6 @@ namespace PortfolioTrader.Commands
                 visitor.TwsMessageCollection.Add($"{contract.Symbol} conId={contract.ConId} order submitted.");
             }
             else throw new Exception("Unexpected. Both ErrorMessage nad OrderState are not set.");
-        }
-
-        private static async Task SendOrderAndProcessResultsAsync(bool isLong, Contract contract, double lmtPrice, int quantity, IBuyConfirmationModelVisitor visitor)
-        {
-            Order order = new()
-            {
-                Action = isLong ? "BUY" : "SELL",
-                OrderType = "LIMIT",
-                LmtPrice = lmtPrice,
-                TotalQuantity = quantity
-            };
-
-            var result = await _visitor.IbHost.PlaceOrderAsync(contract, order, App.TIMEOUT);
-            if (result.ErrorMessage != "")
-            {
-                var log = $"Error sending order for {contract.Symbol} vonId={contract.ConId} error:{result.ErrorMessage}";
-                visitor.TwsMessageCollection.Add(log);
-                if (isLong) visitor.OrdersLongWithError = SymbolsAndScore.ConcatStringsWithNewLine(
-                    visitor.OrdersLongWithError,
-                    contract.Symbol + " " + result.ErrorMessage);
-                else visitor.OrdersShortWithError = SymbolsAndScore.ConcatStringsWithNewLine(
-                    visitor.OrdersShortWithError,
-                    contract.Symbol + " " + result.ErrorMessage);
-            }
-            else if (result.OrderState != null)
-            {
-                visitor.TwsMessageCollection.Add($"{contract.Symbol} conId={contract.ConId} order submitted.");
-            }
-            else throw new Exception("Unexpected. Both ErrorMessage nad OrderState are not set.");
-
-            await Task.Run(() => Thread.Sleep(App.TIMEOUT));
         }
 
         private static List<TradePair> BuildTradePairs()

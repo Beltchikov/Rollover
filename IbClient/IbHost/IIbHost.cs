@@ -32,7 +32,7 @@ namespace IbClient.IbHost
            Action<AccountSummaryEndMessage> accountSummaryEndCallback);
 
         Task RequestPositions(Action<PositionMessage> positionCallback, Action positionEndCallback);
-        void ReqIds(int idParam);
+        Task<int> ReqIdsAsync(int idParam);
         Task<double?> RateOfExchange(string currency, int timeout);
         Task<ContractDetails> RequestContractDetailsAsync(
             Contract contract,
