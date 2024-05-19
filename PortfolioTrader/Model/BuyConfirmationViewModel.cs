@@ -37,8 +37,8 @@ namespace PortfolioTrader.Model
         public ICommand CalculatePositionsCommand { get; }
         public ICommand SendLimitOrdersCommand { get; }
         public ICommand SendStopLimitOrdersCommand { get; }
-
-
+        public ICommand SendBracketOrdersCommand { get; }
+        
         public BuyConfirmationViewModel()
         {
             IIbHostQueue ibHostQueue = new IbHostQueue();
@@ -49,6 +49,7 @@ namespace PortfolioTrader.Model
             CalculatePositionsCommand = new RelayCommand(async () => await CalculatePositions.RunAsync(this));
             SendLimitOrdersCommand = new RelayCommand(async () => await SendLimitOrders.RunAsync(this));
             SendStopLimitOrdersCommand = new RelayCommand(async () => await SendStopLimitOrders.RunAsync(this));
+            SendBracketOrdersCommand = new RelayCommand(async () => await SendBracketOrders.RunAsync(this));
 
             InvestmentAmount = 400000;
             BusinessLogicInformation = BuildBusinessLogicInformation();

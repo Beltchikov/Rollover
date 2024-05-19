@@ -7,7 +7,7 @@
         xmlns:tws_uc="clr-namespace:TwsUserControls;assembly=TwsUserControls"
         xmlns:converters="clr-namespace:PortfolioTrader.Converters"
         mc:Ignorable="d"
-        Title="Buy Confirmation Window" Width="1505" Height="900"
+        Title="Buy Confirmation Window" Width="1505" Height="930"
         Background="#FF5A74A9">
     <Window.Resources>
         <converters:TimeStringConverter x:Key="TimeStringConverter"/>
@@ -36,6 +36,7 @@
                 <RowDefinition Height="150"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="100"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="100"/>
@@ -62,34 +63,34 @@
             <Label Grid.Row="3" Grid.ColumnSpan="3" Content="{Binding BusinessLogicInformation}" Background="#FFFEEB9C" VerticalAlignment="Stretch" Height="148"/>
 
             <Label Grid.Row="5" Grid.ColumnSpan="3" Content="Stocks, the price cannot be obtained for:" Foreground="White" VerticalAlignment="Bottom"/>
-            <TextBox Name="txtStocksWithoutPrice" Grid.Row="6" Grid.ColumnSpan="3"
+            <TextBox Name="txtStocksWithoutPrice" Grid.Row="6" Grid.ColumnSpan="3" Grid.RowSpan="2"
                 TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
                 Text="{Binding StocksWithoutPrice}" VerticalAlignment="Stretch"
                 Background="#FFFFC7CE">
             </TextBox>
 
-            <Label Grid.Row="7" Grid.ColumnSpan="3" 
+            <Label Grid.Row="8" Grid.ColumnSpan="3" 
                    Content="Stocks, the margin cannot be obtained for:" Foreground="White" VerticalAlignment="Bottom"/>
-            <TextBox Name="txtStocksWithoutMargin" Grid.Row="8" Grid.ColumnSpan="3"
+            <TextBox Name="txtStocksWithoutMargin" Grid.Row="9" Grid.ColumnSpan="3"
                 TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
                 Text="{Binding StocksWithoutMargin}" VerticalAlignment="Stretch"
                 Background="#FFFFC7CE">
             </TextBox>
 
-            <Label Grid.Row="7" Grid.ColumnSpan="3" 
+            <Label Grid.Row="8" Grid.ColumnSpan="3" 
                 Content="Erroneous Long Orders:" Foreground="White" 
                 Grid.Column="3" VerticalAlignment="Bottom"  Margin="10 0 0 0"/>
-            <TextBox Name="txtOrdersLongWithError" Grid.Row="8" Grid.Column="3" 
+            <TextBox Name="txtOrdersLongWithError" Grid.Row="9" Grid.Column="3" 
                 TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
                 Text="{Binding OrdersLongWithError}" VerticalAlignment="Stretch"
                      Margin="10 0 0 0"
                 Background="#FFFFC7CE">
             </TextBox>
 
-            <Label Grid.Row="7" Grid.ColumnSpan="3" 
+            <Label Grid.Row="8" Grid.ColumnSpan="3" 
                  Content="Erroneous Short Orders:" Foreground="White" 
                  Grid.Column="4" VerticalAlignment="Bottom"  Margin="10 0 0 0"/>
-            <TextBox Name="txtOrdersShortWithError" Grid.Row="8" Grid.Column="4" 
+            <TextBox Name="txtOrdersShortWithError" Grid.Row="9" Grid.Column="4" 
                  TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
                  Text="{Binding OrdersShortWithError}" VerticalAlignment="Stretch"
                       Margin="10 0 0 0"
@@ -100,7 +101,7 @@
                    Content="BUY: Symb | NetBms | ConId | PriceCt | PriceType |  Weight | Qty | Margin" 
                    Foreground="White" VerticalAlignment="Bottom"
                    Margin="5 0 0 0"/>
-            <TextBox Name="txtBuy" Grid.Row="1" Grid.Column="3" Grid.RowSpan="6" 
+            <TextBox Name="txtBuy" Grid.Row="1" Grid.Column="3" Grid.RowSpan="7" 
               TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
               Text="{Binding StocksToBuyAsString}" VerticalAlignment="Stretch"
               Margin="10 0 0 0" FontSize="10">
@@ -113,7 +114,7 @@
 
             <Label Grid.Column="4" Content="SELL:  Symb | NetBms | ConId | PriceCt | PriceType | Weight | Qty | Margin " Foreground="White" 
             Margin="10 0 0 0" VerticalAlignment="Bottom"/>
-            <TextBox Name="txtSell" Grid.Row="1" Grid.Column="4" Grid.RowSpan="6" 
+            <TextBox Name="txtSell" Grid.Row="1" Grid.Column="4" Grid.RowSpan="7" 
                TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" 
                Text="{Binding StocksToSellAsString}" VerticalAlignment="Stretch"
               Margin="10 0 0 0" FontSize="10">
@@ -134,6 +135,12 @@
          Command="{Binding SendStopLimitOrdersCommand}"
          IsEnabled="{Binding PositionsCalculated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
      VerticalAlignment="Top" Margin="5 0 5 0">Send Stop Limit Orders >>
+            </Button>
+
+            <Button Grid.Column="5" Grid.Row="7" Grid.ColumnSpan="2"  Height="25"
+    Command="{Binding SendBracketOrdersCommand}"
+    IsEnabled="{Binding PositionsCalculated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+VerticalAlignment="Top" Margin="5 0 5 0">Send Bracket Orders >>
             </Button>
 
         </Grid>
