@@ -173,16 +173,10 @@ namespace PortfolioTrader.Commands
             double slLmtPrice)
         {
 
-            visitor.IbHost.ReqIdsAsync(-1);
-            _lastOrderId = _nextOrderId;
-            await Task.Run(() =>
-            {
-                while (_lastOrderId == _nextOrderId) { _nextOrderId = visitor.IbHost.NextOrderId; }
-            });
-            
+            var orderBuyId = await visitor.IbHost.ReqIdsAsync(-1);
             var orderParent = new Order()
             {
-                OrderId = _nextOrderId,  
+                OrderId = orderBuyId,  
                 Action = isLong ? "BUY" : "SELL",
                 OrderType = "STP LMT",
                 AuxPrice = entryStpPrice,

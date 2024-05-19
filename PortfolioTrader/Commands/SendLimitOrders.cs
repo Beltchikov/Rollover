@@ -39,13 +39,7 @@ namespace PortfolioTrader.Commands
                     TotalQuantity = tradePair.QuantityBuy
                 };
 
-                _visitor.IbHost.ReqIdsAsync(-1);
-                _lastOrderId = _nextOrderId;
-                await Task.Run(() =>
-                {
-                    while (_lastOrderId == _nextOrderId) { _nextOrderId = _visitor.IbHost.NextOrderId; }
-                });
-                orderBuy.OrderId = _nextOrderId;
+                orderBuy.OrderId = await visitor.IbHost.ReqIdsAsync(-1);
 
                 var resultBuy = await _visitor.IbHost.PlaceOrderAsync(contractBuy, orderBuy, App.TIMEOUT);
                 if (resultBuy.ErrorMessage != "")
@@ -74,13 +68,7 @@ namespace PortfolioTrader.Commands
                     TotalQuantity = tradePair.QuantitySell
                 };
 
-                _visitor.IbHost.ReqIdsAsync(-1);
-                _lastOrderId = _nextOrderId;
-                await Task.Run(() =>
-                {
-                    while (_lastOrderId == _nextOrderId) { _nextOrderId = _visitor.IbHost.NextOrderId; }
-                });
-                orderSell.OrderId = _nextOrderId;
+                orderSell.OrderId = await visitor.IbHost.ReqIdsAsync(-1);
 
                 var resultSell = await _visitor.IbHost.PlaceOrderAsync(contractSell, orderSell, App.TIMEOUT);
                 if (resultSell.ErrorMessage != "")
