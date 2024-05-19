@@ -174,7 +174,7 @@ namespace PortfolioTrader.Commands
             var _nextOrderId = await visitor.IbHost.ReqIdsAsync(-1);
             var orderParent = new Order()
             {
-                OrderId = _nextOrderId,  
+                //OrderId = _nextOrderId,  
                 Action = isLong ? "BUY" : "SELL",
                 OrderType = "STP LMT",
                 AuxPrice = entryStpPrice,
