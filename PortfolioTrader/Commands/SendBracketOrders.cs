@@ -190,24 +190,26 @@ namespace PortfolioTrader.Commands
                 OrderId = orderParent.OrderId + 1,
                 Action = isLong ? "SELL" : "BUY",
                 OrderType = "MIDPRICE",
-                AuxPrice = slStpPrice,
+                //AuxPrice = slStpPrice,
                 LmtPrice = slLmtPrice,
                 TotalQuantity = isLong ? tradePair.QuantityBuy : tradePair.QuantitySell,
                 ParentId = orderParent.OrderId,
                 Transmit = true
             };
 
-            //PriceCondition priceCondition = (PriceCondition)OrderCondition.Create(OrderConditionType.Price);
+            PriceCondition priceCondition = (PriceCondition)OrderCondition.Create(OrderConditionType.Price);
             ////When this contract...
-            //priceCondition.ConId = conId;
+            priceCondition.ConId = isLong ? tradePair.ConIdBuy : tradePair.ConIdSell;
             ////traded on this exchange
-            //priceCondition.Exchange = exchange;
+            priceCondition.Exchange = App.EXCHANGE;
             ////has a price above/below
-            //priceCondition.IsMore = isMore;
+            priceCondition.IsMore = !isLong;
             ////this quantity
-            //priceCondition.Price = price;
+            priceCondition.Price = slStpPrice;
             ////AND | OR next condition (will be ignored if no more conditions are added)
             //priceCondition.IsConjunctionConnection = isConjunction;
+
+            orderStop.Conditions.Add(priceCondition);
 
 
             return (orderParent, orderStop);
