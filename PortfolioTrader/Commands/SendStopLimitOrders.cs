@@ -79,8 +79,9 @@ namespace PortfolioTrader.Commands
                     TotalQuantity = tradePair.QuantityBuy
                 };
 
+                _lastOrderId = visitor.IbHost.NextOrderId;
+                _nextOrderId  = visitor.IbHost.NextOrderId;
                 visitor.IbHost.ReqIds(-1);
-                _lastOrderId = _nextOrderId;
                 await Task.Run(() =>
                 {
                     while (_lastOrderId == _nextOrderId) { _nextOrderId = visitor.IbHost.NextOrderId; }
