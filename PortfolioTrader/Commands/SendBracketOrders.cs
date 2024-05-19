@@ -2,7 +2,9 @@
 using PortfolioTrader.Algos;
 using PortfolioTrader.Model;
 using System;
+using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace PortfolioTrader.Commands
 {
@@ -52,7 +54,8 @@ namespace PortfolioTrader.Commands
                     Currency = App.USD,
                     Exchange = App.EXCHANGE
                 };
-                double auxPriceBuy = 0;
+                double entryStpPriceBuy = 0;
+                double slStpPriceBuy = 0;
 
                 await visitor.IbHost.RequestHistoricalDataAsync(
                     contractBuy,
@@ -65,12 +68,19 @@ namespace PortfolioTrader.Commands
                     keepUpToDate,
                     [],
                     App.TIMEOUT,
-                    (d) => auxPriceBuy = d.High + 0.01,
+                    (d) => { entryStpPriceBuy = d.High + 0.01; slStpPriceBuy = d.Low - 0.01; },
                     (u) => { },
                 (e) => { });
 
-                double lmtPriceBuy = LimitPrice.PercentageOfPriceOrFixed(isLong: true, auxPriceBuy);
-                (Order orderBuyParent, Order orderBuyStop) = CreateOrders(isLong: true, tradePair: tradePair, auxPrice: auxPriceBuy, lmtPriceBuy);
+                double entryLmtPriceBuy = LimitPrice.PercentageOfPriceOrFixed(isLong: true, entryStpPriceBuy);
+                double slLmtPriceBuy = LimitPrice.PercentageOfPriceOrFixed(isLong: false, slStpPriceBuy);
+                (Order orderBuyParent, Order orderBuyStop) = CreateOrders(
+                    isLong: true,
+                    tradePair,
+                    entryStpPrice: entryStpPriceBuy,
+                    entryLmtPrice: entryLmtPriceBuy,
+                    slStpPrice: slStpPriceBuy,
+                    slLmtPrice: slLmtPriceBuy);
                 
                 var resultBuy = await visitor.IbHost.PlaceOrderAsync(contractBuy, orderBuyParent, App.TIMEOUT);
                 if (resultBuy.ErrorMessage != "")
@@ -89,7 +99,6 @@ namespace PortfolioTrader.Commands
                 await Task.Run(() => Thread.Sleep(App.TIMEOUT));
 
                 // sell
-                //var nextOrderIdSell = await visitor.IbHost.ReqIdsAsync(-1);  // Is line needed?
                 Contract contractSell = new Contract()
                 {
                     ConId = tradePair.ConIdSell,
@@ -99,7 +108,8 @@ namespace PortfolioTrader.Commands
                     Exchange = App.EXCHANGE
                 };
 
-                double auxPriceSell = 0;
+                double entryStpPriceSell = 0;
+                double slStpPriceSell = 0;
 
                 await visitor.IbHost.RequestHistoricalDataAsync(
                     contractSell,
@@ -112,12 +122,19 @@ namespace PortfolioTrader.Commands
                     keepUpToDate,
                     [],
                     App.TIMEOUT,
-                    (d) => auxPriceSell = d.Low - 0.01,
+                    (d) => { entryStpPriceSell = d.Low - 0.01; slStpPriceSell = d.High + 0.01; },
                     (u) => { },
                     (e) => { });
 
-                double lmtPriceSell= LimitPrice.PercentageOfPriceOrFixed(isLong: false, auxPriceSell);
-                (Order orderSellParent, Order orderSellStop) = CreateOrders(isLong: false, tradePair: tradePair, auxPrice: auxPriceSell, lmtPriceSell);
+                double entryLmtPriceSell= LimitPrice.PercentageOfPriceOrFixed(isLong: false, entryStpPriceSell);
+                double slLmtPriceSell = LimitPrice.PercentageOfPriceOrFixed(isLong: true, slStpPriceSell);
+                (Order orderSellParent, Order orderSellStop) = CreateOrders(
+                    isLong: false,
+                    tradePair,
+                    entryStpPrice: entryStpPriceSell,
+                    entryLmtPrice: entryLmtPriceSell,
+                    slStpPrice: slStpPriceSell,
+                    slLmtPrice: slLmtPriceSell);
 
                 var resultSell = await visitor.IbHost.PlaceOrderAsync(contractSell, orderSellParent, App.TIMEOUT);
                 if (resultSell.ErrorMessage != "")
@@ -140,29 +157,48 @@ namespace PortfolioTrader.Commands
 
         }
 
-        private static (Order, Order) CreateOrders(bool isLong, TradePair tradePair, double auxPrice, double lmtPrice)
+        private static (Order, Order) CreateOrders(
+            bool isLong,
+            TradePair tradePair,
+            double entryStpPrice,
+            double entryLmtPrice,
+            double slStpPrice,
+            double slLmtPrice)
         {
             var orderParent = new Order()
             {
                 Action = isLong ? "BUY" : "SELL",
                 OrderType = "STP LMT",
-                AuxPrice = auxPrice,
-                LmtPrice = lmtPrice,
-                TotalQuantity = tradePair.QuantityBuy,
-                //Transmit = false
+                AuxPrice = entryStpPrice,
+                LmtPrice = entryLmtPrice,
+                TotalQuantity = isLong ? tradePair.QuantityBuy : tradePair.QuantitySell,
+                Transmit = false
             };
 
-            Order orderStop = new Order();
-            //orderStop.OrderId = parent.OrderId + 2;
-            //orderStop.Action = action.Equals("BUY") ? "SELL" : "BUY";
-            //orderStop.OrderType = "STP";
-            ////Stop trigger price
-            //orderStop.AuxPrice = stopLossPrice;
-            //orderStop.TotalQuantity = quantity;
-            //orderStop.ParentId = parentOrderId;
-            ////In this case, the low side order will be the last child being sent. Therefore, it needs to set this attribute to true 
-            ////to activate all its predecessors
-            //orderStop.Transmit = true;
+            Order orderStop = new()
+            {
+                OrderId = orderParent.OrderId + 1,
+                Action = isLong ? "SELL" : "BUY",
+                OrderType = "MIDPRICE",
+                AuxPrice = slLmtPrice,
+                TotalQuantity = isLong ? tradePair.QuantityBuy : tradePair.QuantitySell,
+                ParentId = orderParent.OrderId,
+                Transmit = true
+            };
+
+            //PriceCondition priceCondition = (PriceCondition)OrderCondition.Create(OrderConditionType.Price);
+            ////When this contract...
+            //priceCondition.ConId = conId;
+            ////traded on this exchange
+            //priceCondition.Exchange = exchange;
+            ////has a price above/below
+            //priceCondition.IsMore = isMore;
+            ////this quantity
+            //priceCondition.Price = price;
+            ////AND | OR next condition (will be ignored if no more conditions are added)
+            //priceCondition.IsConjunctionConnection = isConjunction;
+
+          
 
             return (orderParent, orderStop);
         }
