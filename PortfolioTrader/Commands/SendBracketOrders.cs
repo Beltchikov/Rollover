@@ -143,7 +143,7 @@ namespace PortfolioTrader.Commands
             if (result.ErrorMessage != "")
             {
                 visitor.TwsMessageCollection.Add($"ConId={conId} error:{result.ErrorMessage}");
-                if(isLong)
+                if (isLong)
                 {
                     visitor.OrdersLongWithError = SymbolsAndScore.ConcatStringsWithNewLine(
                     visitor.OrdersLongWithError,
@@ -176,7 +176,7 @@ namespace PortfolioTrader.Commands
             var orderBuyId = await visitor.IbHost.ReqIdsAsync(-1);
             var orderParent = new Order()
             {
-                OrderId = orderBuyId,  
+                OrderId = orderBuyId,
                 Action = isLong ? "BUY" : "SELL",
                 OrderType = "STP LMT",
                 AuxPrice = entryStpPrice,
@@ -190,7 +190,6 @@ namespace PortfolioTrader.Commands
                 OrderId = orderParent.OrderId + 1,
                 Action = isLong ? "SELL" : "BUY",
                 OrderType = "MIDPRICE",
-                //AuxPrice = slStpPrice,
                 LmtPrice = slLmtPrice,
                 TotalQuantity = isLong ? tradePair.QuantityBuy : tradePair.QuantitySell,
                 ParentId = orderParent.OrderId,
@@ -198,19 +197,12 @@ namespace PortfolioTrader.Commands
             };
 
             PriceCondition priceCondition = (PriceCondition)OrderCondition.Create(OrderConditionType.Price);
-            ////When this contract...
             priceCondition.ConId = isLong ? tradePair.ConIdBuy : tradePair.ConIdSell;
-            ////traded on this exchange
             priceCondition.Exchange = App.EXCHANGE;
-            ////has a price above/below
             priceCondition.IsMore = !isLong;
-            ////this quantity
             priceCondition.Price = slStpPrice;
-            ////AND | OR next condition (will be ignored if no more conditions are added)
-            //priceCondition.IsConjunctionConnection = isConjunction;
 
             orderStop.Conditions.Add(priceCondition);
-
 
             return (orderParent, orderStop);
         }
