@@ -83,6 +83,7 @@ namespace PortfolioTrader.Commands
                     slLmtPrice: slLmtPriceBuy);
 
                 await SendOrders(isLong: true, visitor, tradePair, contractBuy, orderBuyParent);
+                await SendOrders(isLong: false, visitor, tradePair, contractBuy, orderBuyStop);
                 await Task.Run(() => Thread.Sleep(App.TIMEOUT));
 
                 // sell
@@ -124,6 +125,7 @@ namespace PortfolioTrader.Commands
                     slLmtPrice: slLmtPriceSell);
 
                 await SendOrders(isLong: false, visitor, tradePair, contractSell, orderSellParent);
+                await SendOrders(isLong: true, visitor, tradePair, contractSell, orderSellStop);
                 await Task.Run(() => Thread.Sleep(App.TIMEOUT));
             }
 
