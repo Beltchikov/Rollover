@@ -15,6 +15,23 @@ namespace PortfolioTrader.Commands
         public static async Task RunAsync(IBuyConfirmationModelVisitor visitor)
         {
             // TODO
+            if (visitor.EntryBarTime > DateTime.Now)
+            {
+                MessageBox.Show("The time of entry bar is in the future. Please correct the time. The execution stops.");
+                return;
+            }
+
+            var buyDictionary = SymbolsAndScore.StringToPositionDictionary(visitor.StocksToBuyAsString);
+            var sellDictionary = SymbolsAndScore.StringToPositionDictionary(visitor.StocksToSellAsString);
+
+            buyDictionary = await AddBarColumnAsync(visitor, buyDictionary);
+            sellDictionary = await AddBarColumnAsync(visitor, sellDictionary);
+
+            visitor.StocksToBuyAsString = SymbolsAndScore.PositionDictionaryToString(buyDictionary);    
+            visitor.StocksToSellAsString = SymbolsAndScore.PositionDictionaryToString(sellDictionary);
+
+            visitor.TwsMessageCollection.Add($"DONE! Recalculate weights command executed.");
+
             MessageBox.Show("RecalculateWeights");
             return;
 
@@ -140,6 +157,57 @@ namespace PortfolioTrader.Commands
 
             visitor.TwsMessageCollection.Add($"DONE! Send Orders command executed.");
 
+        }
+
+        private static async Task<Dictionary<string, Position>> AddBarColumnAsync(
+            IBuyConfirmationModelVisitor visitor,
+            Dictionary<string, Position> dictionary)
+        {
+            Dictionary<string, Position> resultDictionary = [];
+
+            string endDateTime = visitor.EntryBarTime.ToString(FORMAT_STRING_API);
+            string durationString = "300 S";
+            string barSizeSetting = "5 mins";
+            string whatToShow = "TRADES";
+            int useRTH = 0;
+            bool keepUpToDate = false;
+
+            foreach (var kvp in dictionary)
+            {
+                var conIdNotNullable = kvp.Value.ConId ?? throw new Exception("Unexpected. kvp.Value.ConId is null.");   
+                Contract contract = new()
+                {
+                    ConId = conIdNotNullable,
+                    Symbol = kvp.Key,
+                    SecType = App.SEC_TYPE_STK,
+                    Currency = App.USD,
+                    Exchange = App.EXCHANGE
+                };
+
+                double barLow = 0;
+                double barHigh = 0;
+
+                await visitor.IbHost.RequestHistoricalDataAsync(
+                    contract,
+                    endDateTime,
+                    durationString,
+                    barSizeSetting,
+                    whatToShow,
+                    useRTH,
+                    1,
+                    keepUpToDate,
+                    [],
+                    App.TIMEOUT,
+                    (d) => { barLow = d.Low; barHigh = d.High; },
+                    (u) => { },
+                    (e) => { });
+
+                var barInCents = (int)Math.Round((barHigh - barLow) * 100, 0);
+                kvp.Value.BarInCents = barInCents;
+                resultDictionary.Add(kvp.Key, kvp.Value);
+            }
+
+            return resultDictionary;
         }
 
         private static async Task SendOrders(bool isLong, IBuyConfirmationModelVisitor visitor, TradePair tradePair, Contract contract, Order orderParent)

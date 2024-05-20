@@ -66,6 +66,7 @@ namespace PortfolioTrader.Model
                        line += r.Value.Weight == null ? "" : "\t" + r.Value.Weight.ToString();
                        line += r.Value.Quantity == null ? "" : "\t" + r.Value.Quantity.ToString();
                        line += r.Value.Margin == null ? "" : "\t" + r.Value.Margin.ToString();
+                       line += r.Value.BarInCents == null ? "" : "\t" + r.Value.BarInCents.ToString();
                        return line;
                    })
                    .Aggregate((r, n) => r + Environment.NewLine + n)

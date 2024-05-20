@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PortfolioTrader.Model
+﻿namespace PortfolioTrader.Model
 {
     internal class Position
     {
@@ -23,6 +17,7 @@ namespace PortfolioTrader.Model
             Weight = splitted.Count > 5 ? Convert.ToInt32(splitted[5]) : null;
             Quantity = splitted.Count > 6 ? Convert.ToInt32(splitted[6]) : null;
             Margin = splitted.Count > 7 ? Convert.ToInt32(splitted[7]) : null;
+            BarInCents = splitted.Count > 8 ? Convert.ToInt32(splitted[8]) : null;
         }
 
         public int NetBms { get; set; }
@@ -32,5 +27,6 @@ namespace PortfolioTrader.Model
         public string? PriceType{ get; set; }
         public int? Quantity { get; set; }
         public int? Margin { get; set; }
+        public int? BarInCents { get; internal set; }
     }
 }
