@@ -25,8 +25,8 @@ namespace PortfolioTrader.Commands
             visitor.CalculateWeights();
             visitor.TwsMessageCollection.Add("Calculate Positions command: weights are calculated after zero price removal.");
 
-            visitor.StocksToBuyAsString = CalculateQuantity(visitor.StocksToBuyAsString, visitor.InvestmentAmount);
-            visitor.StocksToSellAsString = CalculateQuantity(visitor.StocksToSellAsString, visitor.InvestmentAmount);
+            visitor.StocksToBuyAsString = Position.CalculateQuantity(visitor.StocksToBuyAsString, visitor.InvestmentAmount);
+            visitor.StocksToSellAsString = Position.CalculateQuantity(visitor.StocksToSellAsString, visitor.InvestmentAmount);
             visitor.TwsMessageCollection.Add("Calculate Positions command: position sizes calculted.");
 
             (visitor.StocksToBuyAsString, string stocksWithoutMarginLong) = await AddMarginColumnsAsync(isLong: true, visitor);
@@ -42,8 +42,8 @@ namespace PortfolioTrader.Commands
             visitor.CalculateWeights();
             visitor.TwsMessageCollection.Add("Calculate Positions command: weights are recalculated after adding the margin column.");
 
-            visitor.StocksToBuyAsString = CalculateQuantity(visitor.StocksToBuyAsString, visitor.InvestmentAmount);
-            visitor.StocksToSellAsString = CalculateQuantity(visitor.StocksToSellAsString, visitor.InvestmentAmount);
+            visitor.StocksToBuyAsString = Position.CalculateQuantity(visitor.StocksToBuyAsString, visitor.InvestmentAmount);
+            visitor.StocksToSellAsString = Position.CalculateQuantity(visitor.StocksToSellAsString, visitor.InvestmentAmount);
             visitor.TwsMessageCollection.Add("Calculate Positions command: position sizes recalculted after adding the margin column.");
 
             visitor.ClearQueueOrderOpenMessage();
@@ -86,9 +86,9 @@ namespace PortfolioTrader.Commands
                 if (kvp.Value.ConId == null) throw new Exception("Unexpected. Contract ID is null");
                 var contract = new Contract() { ConId = kvp.Value.ConId.Value, Exchange = App.EXCHANGE };
 
-                (double? price, TickType? tickType, string error) 
+                (double? price, TickType? tickType, string error)
                     = await visitor.IbHost.RequestMktData(contract, "", true, false, null, App.TIMEOUT * 12);
-                if(error!= "") visitor.TwsMessageCollection.Add(error);
+                if (error != "") visitor.TwsMessageCollection.Add(error);
                 resultDictionary[kvp.Key] = kvp.Value;
 
                 int priceInCentsNotNullable = (int)((price == null ? 0d : price.Value) * 100d);
@@ -96,29 +96,6 @@ namespace PortfolioTrader.Commands
                 resultDictionary[kvp.Key].PriceType = tickType.ToString();
 
                 await Task.Run(() => Thread.Sleep(App.TIMEOUT));
-            }
-
-            return SymbolsAndScore.PositionDictionaryToString(resultDictionary);
-        }
-
-        private static string CalculateQuantity(string stocksAsString, int investmentAmount)
-        {
-            var stocksDictionary = SymbolsAndScore.StringToPositionDictionary(stocksAsString);
-            var resultDictionary = new Dictionary<string, Position>();
-
-            foreach (var kvp in stocksDictionary)
-            {
-                if (kvp.Value.ConId == null) throw new Exception("Unexpected. Contract ID is null");
-                int weightNotNullable = kvp.Value.Weight ?? throw new Exception("Unexpected. Weight is null");
-                int priceInCentsNotNullable = kvp.Value.PriceInCents ?? throw new Exception("Unexpected. PriceInCents is null");
-
-                int quantity = 0;
-                if (priceInCentsNotNullable > 0)
-                {
-                    quantity = CalculateQuantity(investmentAmount, priceInCentsNotNullable, weightNotNullable);
-                }
-                resultDictionary[kvp.Key] = kvp.Value;
-                resultDictionary[kvp.Key].Quantity = quantity;
             }
 
             return SymbolsAndScore.PositionDictionaryToString(resultDictionary);
@@ -172,12 +149,6 @@ namespace PortfolioTrader.Commands
                 return margin;
             else
                 return 0;
-        }
-
-        private static int CalculateQuantity(int investmentAmount, int priceInCents, int weight)
-        {
-            var priceInDollars = (double)priceInCents / 100d;
-            return (int)Math.Floor((double)(investmentAmount * weight / 100) / priceInDollars);
         }
     }
 }

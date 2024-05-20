@@ -28,5 +28,34 @@
         public int? Quantity { get; set; }
         public int? Margin { get; set; }
         public int? BarInCents { get; internal set; }
+
+        public static string CalculateQuantity(string stocksAsString, int investmentAmount)
+        {
+            var stocksDictionary = SymbolsAndScore.StringToPositionDictionary(stocksAsString);
+            var resultDictionary = new Dictionary<string, Position>();
+
+            foreach (var kvp in stocksDictionary)
+            {
+                if (kvp.Value.ConId == null) throw new Exception("Unexpected. Contract ID is null");
+                int weightNotNullable = kvp.Value.Weight ?? throw new Exception("Unexpected. Weight is null");
+                int priceInCentsNotNullable = kvp.Value.PriceInCents ?? throw new Exception("Unexpected. PriceInCents is null");
+
+                int quantity = 0;
+                if (priceInCentsNotNullable > 0)
+                {
+                    quantity = CalculateQuantity(investmentAmount, priceInCentsNotNullable, weightNotNullable);
+                }
+                resultDictionary[kvp.Key] = kvp.Value;
+                resultDictionary[kvp.Key].Quantity = quantity;
+            }
+
+            return SymbolsAndScore.PositionDictionaryToString(resultDictionary);
+        }
+
+        private static int CalculateQuantity(int investmentAmount, int priceInCents, int weight)
+        {
+            var priceInDollars = (double)priceInCents / 100d;
+            return (int)Math.Floor((double)(investmentAmount * weight / 100) / priceInDollars);
+        }
     }
 }
