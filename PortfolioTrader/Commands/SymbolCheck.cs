@@ -1,6 +1,7 @@
 ﻿using IBSampleApp.messages;
 using PortfolioTrader.Model;
 using PortfolioTrader.Repository;
+using System.Windows;
 
 namespace PortfolioTrader.Commands
 {
@@ -20,7 +21,10 @@ namespace PortfolioTrader.Commands
             await ResolveSymbolsAndLog(visitor, isLong: false);
 
             visitor.SymbolsChecked = true;
-            visitor.TwsMessageCollection?.Add("DONE! Check Symbols command executed.");
+           
+            var msg = $"DONE! Check Symbols command executed.";
+            visitor.TwsMessageCollection?.Add(msg);
+            MessageBox.Show(msg);
         }
 
         private static void RemoveNotTradeableSymbols(IBuyModelVisitor visitor, bool isLong)

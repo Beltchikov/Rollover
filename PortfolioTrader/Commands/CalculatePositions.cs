@@ -1,6 +1,7 @@
 ﻿using IBApi;
 using IbClient.Types;
 using PortfolioTrader.Model;
+using System.Windows;
 using TickType = IbClient.Types.TickType;
 
 namespace PortfolioTrader.Commands
@@ -49,8 +50,11 @@ namespace PortfolioTrader.Commands
             visitor.ClearQueueOrderOpenMessage();
             visitor.TwsMessageCollection.Add("Calculate Positions command: open order queue cleared.");
 
-            visitor.TwsMessageCollection.Add($"DONE! Calculated Position command executed.");
             visitor.PositionsCalculated = visitor.StocksToBuyAsString != "" && visitor.StocksToSellAsString != "";
+
+            var msg = $"DONE! Calculated Position command executed.";
+            visitor.TwsMessageCollection.Add(msg);
+            MessageBox.Show(msg);
         }
 
         private static (string, string) RemoveZeroPriceLines(string stocksAsString)

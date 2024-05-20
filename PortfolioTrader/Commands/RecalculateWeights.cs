@@ -25,12 +25,15 @@ namespace PortfolioTrader.Commands
             buyDictionary = DoRecalculateWeights(visitor, buyDictionary);
             sellDictionary = DoRecalculateWeights(visitor, sellDictionary);
 
+            buyDictionary = Position.CalculateQuantity(buyDictionary, visitor.InvestmentAmount);
+            sellDictionary = Position.CalculateQuantity(sellDictionary, visitor.InvestmentAmount);
+            
             visitor.StocksToBuyAsString = SymbolsAndScore.PositionDictionaryToString(buyDictionary);
             visitor.StocksToSellAsString = SymbolsAndScore.PositionDictionaryToString(sellDictionary);
 
-            visitor.TwsMessageCollection.Add($"DONE! Recalculate weights command executed.");
-
-            MessageBox.Show("DONE! Recalculate weights command executed.");
+            var msg = $"DONE! Recalculate weights command executed.";
+            visitor.TwsMessageCollection.Add(msg);
+            MessageBox.Show(msg);
         }
 
         private static Dictionary<string, Position> DoRecalculateWeights(IBuyConfirmationModelVisitor visitor, Dictionary<string, Position> dictionary)

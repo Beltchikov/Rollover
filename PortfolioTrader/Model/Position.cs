@@ -32,6 +32,12 @@
         public static string CalculateQuantity(string stocksAsString, int investmentAmount)
         {
             var stocksDictionary = SymbolsAndScore.StringToPositionDictionary(stocksAsString);
+            var resultDictionary = CalculateQuantity(stocksDictionary, investmentAmount);   
+            return SymbolsAndScore.PositionDictionaryToString(resultDictionary);
+        }
+
+        public static Dictionary<string, Position> CalculateQuantity(Dictionary<string, Position> stocksDictionary, int investmentAmount)
+        {
             var resultDictionary = new Dictionary<string, Position>();
 
             foreach (var kvp in stocksDictionary)
@@ -49,7 +55,7 @@
                 resultDictionary[kvp.Key].Quantity = quantity;
             }
 
-            return SymbolsAndScore.PositionDictionaryToString(resultDictionary);
+            return resultDictionary;
         }
 
         private static int CalculateQuantity(int investmentAmount, int priceInCents, int weight)
