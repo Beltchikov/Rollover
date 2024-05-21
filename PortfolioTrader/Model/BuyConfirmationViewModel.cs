@@ -235,7 +235,7 @@ namespace PortfolioTrader.Model
                 {
                     NetBms = kvp.Value.NetBms,
                     ConId = kvp.Value.ConId,
-                    Weight = (int)Math.Round(kvp.Value.NetBms * hundert / scaler, 2),
+                    Weight = (int)Math.Round(kvp.Value.NetBms * hundert / scaler, 0),
                     PriceInCents = kvp.Value.PriceInCents,
                     PriceType = kvp.Value.PriceType,
                     Quantity = kvp.Value.Quantity,
@@ -243,26 +243,27 @@ namespace PortfolioTrader.Model
                 });
             }
 
-            var sumOfWeights = stocksDictionaryWithWeights.Values.Select(p => p.Weight).Sum();
-            if (sumOfWeights < hundert)
-            {
-                var correction = hundert - sumOfWeights;
+            // TODO Algorithm is wrong. 
+            //var sumOfWeights = stocksDictionaryWithWeights.Values.Select(p => p.Weight).Sum();
+            //if (sumOfWeights < hundert)
+            //{
+            //    var correction = hundert - sumOfWeights;
 
-                var groupsDictionary = stocksDictionaryWithWeights
-                    .Select(kvp => new KeyValuePair<string, int>(kvp.Key, kvp.Value.Weight == null ? 0 : kvp.Value.Weight.Value))
-                    .GroupBy(a => a.Value)
-                    .ToDictionary(grp => grp.Key, grp => grp.Count());
+            //    var groupsDictionary = stocksDictionaryWithWeights
+            //        .Select(kvp => new KeyValuePair<string, int>(kvp.Key, kvp.Value.Weight == null ? 0 : kvp.Value.Weight.Value))
+            //        .GroupBy(a => a.Value)
+            //        .ToDictionary(grp => grp.Key, grp => grp.Count());
 
-                var keyOfLargestGroup = groupsDictionary.MaxBy(entry => entry.Value).Key;
-                var keyToApplyCorrection = stocksDictionaryWithWeights.Where(kvp => kvp.Value.Weight == keyOfLargestGroup)
-                    .First()
-                    .Key;
+            //    var keyOfLargestGroup = groupsDictionary.MaxBy(entry => entry.Value).Key;
+            //    var keyToApplyCorrection = stocksDictionaryWithWeights.Where(kvp => kvp.Value.Weight == keyOfLargestGroup)
+            //        .First()
+            //        .Key;
 
-                stocksDictionaryWithWeights[keyToApplyCorrection].Weight += correction;
-            }
+            //    stocksDictionaryWithWeights[keyToApplyCorrection].Weight += correction;
+            //}
 
-            if (stocksDictionaryWithWeights.Values.Select(p => p.Weight).Sum() != hundert)
-                throw new Exception($"Unexpected. Weights do not sum up to {hundert}");
+            //if (stocksDictionaryWithWeights.Values.Select(p => p.Weight).Sum() != hundert)
+            //    throw new Exception($"Unexpected. Weights do not sum up to {hundert}");
 
             return SymbolsAndScore.PositionDictionaryToString(stocksDictionaryWithWeights);
         }
