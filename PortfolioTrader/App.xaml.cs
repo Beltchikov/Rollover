@@ -1,6 +1,4 @@
-﻿using System.Configuration;
-using System.Data;
-using System.Windows;
+﻿using System.Windows;
 
 namespace PortfolioTrader
 {
@@ -14,5 +12,6 @@ namespace PortfolioTrader
         internal static readonly string SEC_TYPE_STK = "STK";
         internal static readonly string USD = "USD";
         internal static readonly string EXCHANGE = "SMART";
+        internal static readonly int MIN_ENTRY_BAR_IN_CENTS = 5;
     }
 }

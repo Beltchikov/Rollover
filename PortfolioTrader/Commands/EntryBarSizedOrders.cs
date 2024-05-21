@@ -252,6 +252,13 @@ namespace PortfolioTrader.Commands
                     (e) => { });
 
                 var barInCents = (int)Math.Round((barHigh - barLow) * 100, 0);
+
+                if (barInCents <= App.MIN_ENTRY_BAR_IN_CENTS)
+                {
+                    visitor.TwsMessageCollection.Add($"{kvp.Key} is excluded from the stocks list because the entry bar is smaller than {App.MIN_ENTRY_BAR_IN_CENTS}.");
+                    continue; 
+                }
+
                 kvp.Value.BarInCents = barInCents;
                 resultDictionary.Add(kvp.Key, kvp.Value);
             }
