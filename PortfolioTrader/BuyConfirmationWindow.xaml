@@ -138,16 +138,16 @@
      VerticalAlignment="Top" Margin="5 0 5 0">Send Stop Limit Orders >>
             </Button>
 
-            <Button Grid.Column="5" Grid.Row="7" Grid.ColumnSpan="2"  Height="25"
-    Command="{Binding RecalculateWeightsCommand}"
-    IsEnabled="{Binding PositionsCalculated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-VerticalAlignment="Top" Margin="5 0 5 0">Recalculate Weights >>
-            </Button>
-
-            <Button Grid.Column="5" Grid.Row="8" Grid.ColumnSpan="2"  Height="25"
+           <Button Grid.Column="5" Grid.Row="7" Grid.ColumnSpan="2"  Height="25"
     Command="{Binding SendBracketOrdersCommand}"
     IsEnabled="{Binding PositionsCalculated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 VerticalAlignment="Top" Margin="5 0 5 0">Send Bracket Orders >>
+            </Button>
+
+            <Button Grid.Column="5" Grid.Row="8" Grid.ColumnSpan="2"  Height="25"
+    Command="{Binding EntryBarSizedOrdersCommand}"
+    IsEnabled="{Binding PositionsCalculated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+VerticalAlignment="Top" Margin="5 0 5 0">Entry Bar Sized Orders >>
             </Button>
 
         </Grid>

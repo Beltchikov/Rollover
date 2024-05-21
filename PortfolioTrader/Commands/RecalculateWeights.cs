@@ -4,6 +4,7 @@ using System.Windows;
 
 namespace PortfolioTrader.Commands
 {
+    [Obsolete]
     internal class RecalculateWeights
     {
         private static readonly string FORMAT_STRING_API = "yyyyMMdd-HH:mm:ss";

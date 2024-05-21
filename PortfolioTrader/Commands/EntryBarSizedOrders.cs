@@ -5,7 +5,7 @@ using System.Windows;
 
 namespace PortfolioTrader.Commands
 {
-    internal class SendBracketOrders
+    internal class EntryBarSizedOrders
     {
         private static readonly string FORMAT_STRING_UI = "dd.MM.yyyy HH:mm:ss";
         private static readonly string FORMAT_STRING_API = "yyyyMMdd-HH:mm:ss";
@@ -14,6 +14,11 @@ namespace PortfolioTrader.Commands
 
         public static async Task RunAsync(IBuyConfirmationModelVisitor visitor)
         {
+            // TODO
+            MessageBox.Show("EntryBarSizedOrders");
+            return;
+
+            //////////////////
             if (visitor.EntryBarTime > DateTime.Now)
             {
                 MessageBox.Show("The time of entry bar is in the future. Please correct the time. The execution stops.");
@@ -67,9 +72,7 @@ namespace PortfolioTrader.Commands
                     keepUpToDate,
                     [],
                     App.TIMEOUT,
-                    (d) => { 
-                        entryStpPriceBuy = RoundPrice(isHighPrice: true, d.High + 0.01); 
-                        slStpPriceBuy = RoundPrice(isHighPrice: false, d.Low - 0.01);  },
+                    (d) => { entryStpPriceBuy = d.High + 0.01; slStpPriceBuy = d.Low - 0.01; },
                     (u) => { },
                 (e) => { });
 
@@ -112,11 +115,7 @@ namespace PortfolioTrader.Commands
                     keepUpToDate,
                     [],
                     App.TIMEOUT,
-                    (d) =>
-                    {
-                        entryStpPriceSell = RoundPrice(isHighPrice: false, d.Low - 0.01);
-                        slStpPriceSell = RoundPrice(isHighPrice: true, d.High + 0.01);
-                    },
+                    (d) => { entryStpPriceSell = d.Low - 0.01; slStpPriceSell = d.High + 0.01; },
                     (u) => { },
                     (e) => { });
 
@@ -140,9 +139,9 @@ namespace PortfolioTrader.Commands
 
         }
 
-        private static async Task SendOrders(bool isLong, IBuyConfirmationModelVisitor visitor, TradePair tradePair, Contract contract, Order order)
+        private static async Task SendOrders(bool isLong, IBuyConfirmationModelVisitor visitor, TradePair tradePair, Contract contract, Order orderParent)
         {
-            var result = await visitor.IbHost.PlaceOrderAsync(contract, order, App.TIMEOUT);
+            var result = await visitor.IbHost.PlaceOrderAsync(contract, orderParent, App.TIMEOUT);
 
             var conId = isLong ? tradePair.ConIdBuy : tradePair.ConIdSell;
             var symbol = isLong ? tradePair.SymbolBuy : tradePair.SymbolSell;
@@ -211,14 +210,6 @@ namespace PortfolioTrader.Commands
             orderStop.Conditions.Add(priceCondition);
 
             return (orderParent, orderStop);
-        }
-
-        private static double RoundPrice(bool isHighPrice, double price)
-        {
-            var hundert = 100;
-            return isHighPrice
-                ? Math.Round(Math.Floor(price * hundert) / hundert, 2)
-                : Math.Round(Math.Ceiling(price * hundert) / hundert, 2);
         }
 
         private static (int hoursUtcOffset, int minutesUtcOffset) HoursAndMinutesFromUtcOffset(string utcOffset)
