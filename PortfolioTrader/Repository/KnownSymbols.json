@@ -480,5 +480,13 @@
   {
     "Name": "NFLX",
     "ContractId": 15124833
+  },
+  {
+    "Name": "LLY",
+    "ContractId": 9160
+  },
+  {
+    "Name": "NVO",
+    "ContractId": 10611
   }
 ]
