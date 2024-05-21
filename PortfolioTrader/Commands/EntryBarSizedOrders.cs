@@ -14,11 +14,6 @@ namespace PortfolioTrader.Commands
 
         public static async Task RunAsync(IBuyConfirmationModelVisitor visitor)
         {
-            //// TODO
-            //MessageBox.Show("EntryBarSizedOrders");
-            //return;
-
-            //////////////////
             if (visitor.EntryBarTime > DateTime.Now)
             {
                 MessageBox.Show("The time of entry bar is in the future. Please correct the time. The execution stops.");
@@ -37,7 +32,7 @@ namespace PortfolioTrader.Commands
                 MessageBoxImage.Question) == MessageBoxResult.No)
                 return;
 
-            //
+            // Recalculating the weights
             var buyDictionary = SymbolsAndScore.StringToPositionDictionary(visitor.StocksToBuyAsString);
             var sellDictionary = SymbolsAndScore.StringToPositionDictionary(visitor.StocksToSellAsString);
 
@@ -91,8 +86,8 @@ namespace PortfolioTrader.Commands
                     [],
                     App.TIMEOUT,
                      (d) => {
-                         entryStpPriceBuy = Position.RoundPrice(isHighPrice: true, d.High + 0.01);
-                         slStpPriceBuy = Position.RoundPrice(isHighPrice: false, d.Low - 0.01);
+                         entryStpPriceBuy = Position.RoundPrice(isHighPrice: true, d.High);
+                         slStpPriceBuy = Position.RoundPrice(isHighPrice: false, d.Low);
                      },
                     (u) => { },
                 (e) => { });
@@ -146,8 +141,8 @@ namespace PortfolioTrader.Commands
                     [],
                     App.TIMEOUT,
                      (d) => {
-                         slStpPriceSell = Position.RoundPrice(isHighPrice: true, d.High + 0.01);
-                         entryStpPriceSell = Position.RoundPrice(isHighPrice: false, d.Low - 0.01);
+                         slStpPriceSell = Position.RoundPrice(isHighPrice: true, d.High);
+                         entryStpPriceSell = Position.RoundPrice(isHighPrice: false, d.Low);
                      },
                     (u) => { },
                     (e) => { });
@@ -250,8 +245,8 @@ namespace PortfolioTrader.Commands
                     [],
                     App.TIMEOUT,
                      (d) => {
-                         barHigh = Position.RoundPrice(isHighPrice: true, d.High + 0.01);
-                         barLow = Position.RoundPrice(isHighPrice: false, d.Low - 0.01);
+                         barHigh = Position.RoundPrice(isHighPrice: true, d.High);
+                         barLow = Position.RoundPrice(isHighPrice: false, d.Low);
                      },
                     (u) => { },
                     (e) => { });
