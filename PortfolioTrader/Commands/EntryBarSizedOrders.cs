@@ -48,6 +48,9 @@ namespace PortfolioTrader.Commands
             visitor.StocksToBuyAsString = SymbolsAndScore.PositionDictionaryToString(buyDictionary);
             visitor.StocksToSellAsString = SymbolsAndScore.PositionDictionaryToString(sellDictionary);
 
+            (visitor.StocksToBuyAsString, visitor.StocksToSellAsString, _)
+               = SymbolsAndScore.EqualizeBuysAndSells(visitor.StocksToBuyAsString, visitor.StocksToSellAsString);
+            visitor.TwsMessageCollection.Add("Entry Bar Sized Order command: buy and sell positions equalized after adding the margin column.");
 
             //
             List<TradePair> tradePairs = BuildTradePairs(visitor);
