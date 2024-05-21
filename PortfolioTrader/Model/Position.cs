@@ -58,6 +58,14 @@
             return resultDictionary;
         }
 
+        public static double RoundPrice(bool isHighPrice, double price)
+        {
+            var hundert = 100;
+            return isHighPrice
+                ? Math.Round(Math.Floor(price * hundert) / hundert, 2)
+                : Math.Round(Math.Ceiling(price * hundert) / hundert, 2);
+        }
+
         private static int CalculateQuantity(int investmentAmount, int priceInCents, int weight)
         {
             var priceInDollars = (double)priceInCents / 100d;

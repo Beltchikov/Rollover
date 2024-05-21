@@ -68,8 +68,8 @@ namespace PortfolioTrader.Commands
                     [],
                     App.TIMEOUT,
                     (d) => { 
-                        entryStpPriceBuy = RoundPrice(isHighPrice: true, d.High + 0.01); 
-                        slStpPriceBuy = RoundPrice(isHighPrice: false, d.Low - 0.01);  },
+                        entryStpPriceBuy = Position.RoundPrice(isHighPrice: true, d.High + 0.01); 
+                        slStpPriceBuy = Position.RoundPrice(isHighPrice: false, d.Low - 0.01);  },
                     (u) => { },
                 (e) => { });
 
@@ -114,8 +114,8 @@ namespace PortfolioTrader.Commands
                     App.TIMEOUT,
                     (d) =>
                     {
-                        entryStpPriceSell = RoundPrice(isHighPrice: false, d.Low - 0.01);
-                        slStpPriceSell = RoundPrice(isHighPrice: true, d.High + 0.01);
+                        entryStpPriceSell = Position.RoundPrice(isHighPrice: false, d.Low - 0.01);
+                        slStpPriceSell = Position.RoundPrice(isHighPrice: true, d.High + 0.01);
                     },
                     (u) => { },
                     (e) => { });
@@ -213,14 +213,6 @@ namespace PortfolioTrader.Commands
             return (orderParent, orderStop);
         }
 
-        private static double RoundPrice(bool isHighPrice, double price)
-        {
-            var hundert = 100;
-            return isHighPrice
-                ? Math.Round(Math.Floor(price * hundert) / hundert, 2)
-                : Math.Round(Math.Ceiling(price * hundert) / hundert, 2);
-        }
-
         private static (int hoursUtcOffset, int minutesUtcOffset) HoursAndMinutesFromUtcOffset(string utcOffset)
         {
             int sign = 1;
@@ -251,7 +243,9 @@ namespace PortfolioTrader.Commands
                         b.Value.PriceInCents.HasValue ? b.Value.PriceInCents.Value : throw new Exception("Unexpected. Value is null"),
                         s.Value.PriceInCents.HasValue ? s.Value.PriceInCents.Value : throw new Exception("Unexpected. Value is null"),
                         b.Value.Quantity.HasValue ? b.Value.Quantity.Value : throw new Exception("Unexpected. Value is null"),
-                        s.Value.Quantity.HasValue ? s.Value.Quantity.Value : throw new Exception("Unexpected. Value is null")))
+                        s.Value.Quantity.HasValue ? s.Value.Quantity.Value : throw new Exception("Unexpected. Value is null"),
+                        0,
+                        0))
                 .ToList();
 
             return tradePairs;

@@ -14,9 +14,9 @@ namespace PortfolioTrader.Commands
 
         public static async Task RunAsync(IBuyConfirmationModelVisitor visitor)
         {
-            // TODO
-            MessageBox.Show("EntryBarSizedOrders");
-            return;
+            //// TODO
+            //MessageBox.Show("EntryBarSizedOrders");
+            //return;
 
             //////////////////
             if (visitor.EntryBarTime > DateTime.Now)
@@ -37,6 +37,24 @@ namespace PortfolioTrader.Commands
                 MessageBoxImage.Question) == MessageBoxResult.No)
                 return;
 
+            //
+            var buyDictionary = SymbolsAndScore.StringToPositionDictionary(visitor.StocksToBuyAsString);
+            var sellDictionary = SymbolsAndScore.StringToPositionDictionary(visitor.StocksToSellAsString);
+
+            buyDictionary = await AddBarColumnAsync(visitor, buyDictionary);
+            sellDictionary = await AddBarColumnAsync(visitor, sellDictionary);
+
+            buyDictionary = DoRecalculateWeights(visitor, buyDictionary);
+            sellDictionary = DoRecalculateWeights(visitor, sellDictionary);
+
+            buyDictionary = Position.CalculateQuantity(buyDictionary, visitor.InvestmentAmount);
+            sellDictionary = Position.CalculateQuantity(sellDictionary, visitor.InvestmentAmount);
+
+            visitor.StocksToBuyAsString = SymbolsAndScore.PositionDictionaryToString(buyDictionary);
+            visitor.StocksToSellAsString = SymbolsAndScore.PositionDictionaryToString(sellDictionary);
+
+
+            //
             List<TradePair> tradePairs = BuildTradePairs(visitor);
 
             string endDateTime = visitor.EntryBarTime.ToString(FORMAT_STRING_API);
@@ -72,23 +90,35 @@ namespace PortfolioTrader.Commands
                     keepUpToDate,
                     [],
                     App.TIMEOUT,
-                    (d) => { entryStpPriceBuy = d.High + 0.01; slStpPriceBuy = d.Low - 0.01; },
+                     (d) => {
+                         entryStpPriceBuy = Position.RoundPrice(isHighPrice: true, d.High + 0.01);
+                         slStpPriceBuy = Position.RoundPrice(isHighPrice: false, d.Low - 0.01);
+                     },
                     (u) => { },
                 (e) => { });
 
-                double entryLmtPriceBuy = LimitPrice.PercentageOfPriceOrFixed(isLong: true, entryStpPriceBuy);
-                double slLmtPriceBuy = LimitPrice.PercentageOfPriceOrFixed(isLong: false, slStpPriceBuy);
-                (Order orderBuyParent, Order orderBuyStop) = await CreateOrdersAsync(
-                    isLong: true,
-                    visitor,
-                    tradePair,
-                    entryStpPrice: entryStpPriceBuy,
-                    entryLmtPrice: entryLmtPriceBuy,
-                    slStpPrice: slStpPriceBuy,
-                    slLmtPrice: slLmtPriceBuy);
+                // Check
+                var barInCentsBuy = Math.Round((entryStpPriceBuy - slStpPriceBuy) * 100, 0);
+                if (tradePair.BarInCentsBuy != barInCentsBuy)
+                {
+                    MessageBox.Show($"Entry bar check for {tradePair.SymbolBuy} is not passed.");
+                }
+                else
+                {
+                    double entryLmtPriceBuy = LimitPrice.PercentageOfPriceOrFixed(isLong: true, entryStpPriceBuy);
+                    double slLmtPriceBuy = LimitPrice.PercentageOfPriceOrFixed(isLong: false, slStpPriceBuy);
+                    (Order orderBuyParent, Order orderBuyStop) = await CreateOrdersAsync(
+                        isLong: true,
+                        visitor,
+                        tradePair,
+                        entryStpPrice: entryStpPriceBuy,
+                        entryLmtPrice: entryLmtPriceBuy,
+                        slStpPrice: slStpPriceBuy,
+                        slLmtPrice: slLmtPriceBuy);
 
-                await SendOrders(isLong: true, visitor, tradePair, contractBuy, orderBuyParent);
-                await SendOrders(isLong: false, visitor, tradePair, contractBuy, orderBuyStop);
+                    await SendOrders(isLong: true, visitor, tradePair, contractBuy, orderBuyParent);
+                    await SendOrders(isLong: false, visitor, tradePair, contractBuy, orderBuyStop);
+                }
                 await Task.Run(() => Thread.Sleep(App.TIMEOUT));
 
                 // sell
@@ -115,28 +145,123 @@ namespace PortfolioTrader.Commands
                     keepUpToDate,
                     [],
                     App.TIMEOUT,
-                    (d) => { entryStpPriceSell = d.Low - 0.01; slStpPriceSell = d.High + 0.01; },
+                     (d) => {
+                         slStpPriceSell = Position.RoundPrice(isHighPrice: true, d.High + 0.01);
+                         entryStpPriceSell = Position.RoundPrice(isHighPrice: false, d.Low - 0.01);
+                     },
                     (u) => { },
                     (e) => { });
 
-                double entryLmtPriceSell = LimitPrice.PercentageOfPriceOrFixed(isLong: false, entryStpPriceSell);
-                double slLmtPriceSell = LimitPrice.PercentageOfPriceOrFixed(isLong: true, slStpPriceSell);
-                (Order orderSellParent, Order orderSellStop) = await CreateOrdersAsync(
-                    isLong: false,
-                    visitor,
-                    tradePair,
-                    entryStpPrice: entryStpPriceSell,
-                    entryLmtPrice: entryLmtPriceSell,
-                    slStpPrice: slStpPriceSell,
-                    slLmtPrice: slLmtPriceSell);
+                // Check
+                var barInCentsSell = Math.Round((slStpPriceSell - entryStpPriceSell) * 100, 0);
+                if (tradePair.BarInCentsSell != barInCentsSell)
+                {
+                    MessageBox.Show($"Entry bar check for {tradePair.SymbolSell} is not passed.");
+                }
+                else
+                {
+                    double entryLmtPriceSell = LimitPrice.PercentageOfPriceOrFixed(isLong: false, entryStpPriceSell);
+                    double slLmtPriceSell = LimitPrice.PercentageOfPriceOrFixed(isLong: true, slStpPriceSell);
+                    (Order orderSellParent, Order orderSellStop) = await CreateOrdersAsync(
+                        isLong: false,
+                        visitor,
+                        tradePair,
+                        entryStpPrice: entryStpPriceSell,
+                        entryLmtPrice: entryLmtPriceSell,
+                        slStpPrice: slStpPriceSell,
+                        slLmtPrice: slLmtPriceSell);
 
-                await SendOrders(isLong: false, visitor, tradePair, contractSell, orderSellParent);
-                await SendOrders(isLong: true, visitor, tradePair, contractSell, orderSellStop);
+                    await SendOrders(isLong: false, visitor, tradePair, contractSell, orderSellParent);
+                    await SendOrders(isLong: true, visitor, tradePair, contractSell, orderSellStop);
+                }
                 await Task.Run(() => Thread.Sleep(App.TIMEOUT));
             }
 
             visitor.TwsMessageCollection.Add($"DONE! Send Orders command executed.");
 
+        }
+
+        private static Dictionary<string, Position> DoRecalculateWeights(IBuyConfirmationModelVisitor visitor, Dictionary<string, Position> dictionary)
+        {
+            Dictionary<string, Position> resultDictionary = [];
+
+            var scaler = dictionary.Values.Sum(v => v.BarInCents);
+            var scalerNotNullable = scaler ?? throw new Exception("Unexpected. scaler is null.");
+
+            List<double> barsReciprocal = dictionary.Values.Select(v =>
+                (double)scaler / (v.BarInCents
+                    ?? throw new Exception("Unexpected. BarInCents is null."))).ToList();
+            var scalerReciprocal = barsReciprocal.Sum();
+
+            List<double> weightBarList = barsReciprocal.Select(b => b / scalerReciprocal).ToList();
+            List<int> weightList = dictionary.Values.Select(v => v.Weight ?? throw new Exception("BarInCents is null.")).ToList();
+            List<double> weightBmsAndBarNotScaledList = weightBarList.Zip(weightList, (r, n) => r * n).ToList();
+            var scalerBmsAndBar = weightBmsAndBarNotScaledList.Sum();
+            List<int> weightBarScaledList = weightBmsAndBarNotScaledList.Select(x => (int)Math.Round((x / scalerBmsAndBar) * 100, 0)).ToList();
+
+            int i = 0;
+            foreach (var kvp in dictionary)
+            {
+                kvp.Value.Weight = weightBarScaledList[i];
+                resultDictionary.Add(kvp.Key, kvp.Value);
+                i++;
+            }
+
+            return resultDictionary;
+        }
+
+        private static async Task<Dictionary<string, Position>> AddBarColumnAsync(
+            IBuyConfirmationModelVisitor visitor,
+            Dictionary<string, Position> dictionary)
+        {
+            Dictionary<string, Position> resultDictionary = [];
+
+            string endDateTime = visitor.EntryBarTime.ToString(FORMAT_STRING_API);
+            string durationString = "300 S";
+            string barSizeSetting = "5 mins";
+            string whatToShow = "TRADES";
+            int useRTH = 0;
+            bool keepUpToDate = false;
+
+            foreach (var kvp in dictionary)
+            {
+                var conIdNotNullable = kvp.Value.ConId ?? throw new Exception("Unexpected. kvp.Value.ConId is null.");
+                Contract contract = new()
+                {
+                    ConId = conIdNotNullable,
+                    Symbol = kvp.Key,
+                    SecType = App.SEC_TYPE_STK,
+                    Currency = App.USD,
+                    Exchange = App.EXCHANGE
+                };
+
+                double barLow = 0;
+                double barHigh = 0;
+
+                await visitor.IbHost.RequestHistoricalDataAsync(
+                    contract,
+                    endDateTime,
+                    durationString,
+                    barSizeSetting,
+                    whatToShow,
+                    useRTH,
+                    1,
+                    keepUpToDate,
+                    [],
+                    App.TIMEOUT,
+                     (d) => {
+                         barHigh = Position.RoundPrice(isHighPrice: true, d.High + 0.01);
+                         barLow = Position.RoundPrice(isHighPrice: false, d.Low - 0.01);
+                     },
+                    (u) => { },
+                    (e) => { });
+
+                var barInCents = (int)Math.Round((barHigh - barLow) * 100, 0);
+                kvp.Value.BarInCents = barInCents;
+                resultDictionary.Add(kvp.Key, kvp.Value);
+            }
+
+            return resultDictionary;
         }
 
         private static async Task SendOrders(bool isLong, IBuyConfirmationModelVisitor visitor, TradePair tradePair, Contract contract, Order orderParent)
@@ -242,7 +367,9 @@ namespace PortfolioTrader.Commands
                         b.Value.PriceInCents.HasValue ? b.Value.PriceInCents.Value : throw new Exception("Unexpected. Value is null"),
                         s.Value.PriceInCents.HasValue ? s.Value.PriceInCents.Value : throw new Exception("Unexpected. Value is null"),
                         b.Value.Quantity.HasValue ? b.Value.Quantity.Value : throw new Exception("Unexpected. Value is null"),
-                        s.Value.Quantity.HasValue ? s.Value.Quantity.Value : throw new Exception("Unexpected. Value is null")))
+                        s.Value.Quantity.HasValue ? s.Value.Quantity.Value : throw new Exception("Unexpected. Value is null"),
+                        b.Value.BarInCents.HasValue ? b.Value.BarInCents.Value : throw new Exception("Unexpected. Value is null"),
+                        s.Value.BarInCents.HasValue ? s.Value.BarInCents.Value : throw new Exception("Unexpected. Value is null")))
                 .ToList();
 
             return tradePairs;

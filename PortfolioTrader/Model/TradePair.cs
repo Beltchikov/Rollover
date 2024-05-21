@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PortfolioTrader.Model
+﻿namespace PortfolioTrader.Model
 {
     internal class TradePair
     {
@@ -16,7 +10,9 @@ namespace PortfolioTrader.Model
             int priceInCentsBuy,
             int priceInCentsSell,
             int quantityBuy,
-            int quantitySell)
+            int quantitySell,
+            int barInCentsBuy,
+            int barInCentsSell)
         {
             SymbolBuy = symbolBuy;
             SymbolSell = symbolSell;
@@ -26,6 +22,8 @@ namespace PortfolioTrader.Model
             PriceInCentsSell = priceInCentsSell;
             QuantityBuy = quantityBuy;
             QuantitySell = quantitySell;
+            BarInCentsBuy = barInCentsBuy;
+            BarInCentsSell = barInCentsSell;
         }
 
         public string SymbolBuy { get; set; }
@@ -36,7 +34,9 @@ namespace PortfolioTrader.Model
         public int PriceInCentsSell { get; set; }
         public int QuantityBuy { get; set; }
         public int QuantitySell { get; set; }
+        public int BarInCentsBuy { get; set; }
+        public int BarInCentsSell { get; set; }
 
-       
+
     }
 }
