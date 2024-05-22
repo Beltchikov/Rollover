@@ -348,6 +348,7 @@ namespace IbClient.IbHost
             return (tickPriceMessage?.Price, (TickType?)tickPriceMessage?.Field, errorText);
         }
 
+        // TODO rename to Subscribe
         public async Task RequestHistoricalDataAsync(
             Contract contract,
             string endDateTime,
@@ -383,6 +384,68 @@ namespace IbClient.IbHost
                 useRTH,
                 formatDate,
                 keepUpToDate,
+                tagValues);
+
+
+            object endMessage = null;
+            await Task.Run(() =>
+            {
+                var startTime = DateTime.Now;
+                while (!_queueHistoricalDataEnd.TryDequeue(out endMessage)) { }
+
+            });
+
+            object dataMessage = null;
+            while (_queueHistoricalData.TryDequeue(out dataMessage))
+            {
+                historicalDataCallback((HistoricalDataMessage)dataMessage);
+            }
+
+            object updateMessage = null;
+            while (_queueHistoricalDataUpdate.TryDequeue(out updateMessage))
+            {
+                // TODO remove the whole block
+                //historicalDataUpdateCallback((HistoricalDataMessage)dataMessage);
+            }
+
+            historicalDataEndCallback((HistoricalDataEndMessage)endMessage);
+
+        }
+
+        public async Task RequestHistoricalDataAsync(
+            Contract contract,
+            string endDateTime,
+            string durationString,
+            string barSizeSetting,
+            string whatToShow,
+            int useRTH,
+            int formatDate,
+            List<TagValue> tagValues,
+            int timeout,
+            Action<HistoricalDataMessage> historicalDataCallback,
+            Action<HistoricalDataMessage> historicalDataUpdateCallback,
+            Action<HistoricalDataEndMessage> historicalDataEndCallback)
+        {
+            var contractSmartExchange = new IBApi.Contract()
+            {
+                SecType = contract.SecType,
+                Symbol = contract.Symbol,
+                Currency = contract.Currency,
+                Exchange = EXCHANGE_SMART
+            };
+
+            var reqId = ++_currentReqId;
+            _requestIdContract[reqId] = contract;
+            _ibClient.ClientSocket.reqHistoricalData(
+                reqId,
+                contractSmartExchange,
+                endDateTime,
+                durationString,
+                barSizeSetting,
+                whatToShow,
+                useRTH,
+                formatDate,
+                false,
                 tagValues);
 
 

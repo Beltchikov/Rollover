@@ -49,6 +49,7 @@ namespace IbClient.IbHost
             List<TagValue> mktDataOptions,
             int timeout);
 
+        // TODO rename to Subscribe
         Task RequestHistoricalDataAsync(
             Contract contractBuy,
             string endDateTime,
@@ -63,6 +64,21 @@ namespace IbClient.IbHost
             Action<HistoricalDataMessage> historicalDataCallback,
             Action<HistoricalDataMessage> historicalDataUpdateCallback,
             Action<HistoricalDataEndMessage> historicalDataEndCallback);
+
+        Task RequestHistoricalDataAsync(
+            Contract contractBuy,
+            string endDateTime,
+            string durationString,
+            string barSizeSetting,
+            string whatToShow,
+            int useRTH,
+            int formatDate,
+            List<TagValue> tagValues,
+            int timeout,
+            Action<HistoricalDataMessage> historicalDataCallback,
+            Action<HistoricalDataMessage> historicalDataUpdateCallback,
+            Action<HistoricalDataEndMessage> historicalDataEndCallback);
+
         Task<SymbolSamplesMessage> RequestMatchingSymbolsAsync(string symbol, int timeout);
         Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout);
         Task<OrderStateOrError> PlaceOrderAsync(Contract contract, Order order, int timeout);
