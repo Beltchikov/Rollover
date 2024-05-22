@@ -30,7 +30,7 @@ namespace IbClient.IbHost
         private IIbHostQueue _queueHistoricalDataUpdate;
         private IIbHostQueue _queueHistoricalDataEnd;
 
-        private ConcurrentDictionary<int, List<object>> _requestDictionary;
+        private ConcurrentDictionary<int, ConcurrentBag<object>> _requestDictionary;
 
         private int _currentReqId = 0;
         List<int> _mktDataReqIds;
@@ -91,7 +91,7 @@ namespace IbClient.IbHost
             _queueHistoricalDataUpdate = new IbHostQueue();
             _queueHistoricalDataEnd = new IbHostQueue();
 
-            _requestDictionary = new ConcurrentDictionary<int, List<object>>();
+            _requestDictionary = new ConcurrentDictionary<int, ConcurrentBag<object>>();
 
             _errorMessages = new List<ErrorMessage>();
             _mktDataReqIds = new List<int> { };
@@ -437,7 +437,7 @@ namespace IbClient.IbHost
 
             var reqId = ++_currentReqId;
             _requestIdContract[reqId] = contract;
-            _requestDictionary[reqId] = new List<object>();
+            _requestDictionary[reqId] = new ConcurrentBag<object>();
 
             // TODO use for tests
             //AddTestNoiseData(_requestDictionary);
@@ -469,19 +469,22 @@ namespace IbClient.IbHost
             }
         }
 
-        private bool HasHistoricalDataEndMessage(int reqId, ConcurrentDictionary<int, List<object>> requestDictionary)
+        private bool HasHistoricalDataEndMessage(int reqId, ConcurrentDictionary<int, ConcurrentBag<object>> requestDictionary)
         {
             object lockObject = new object();
 
             lock (lockObject)
             {
-                var historicalDataEndMessageList = new List<object>(requestDictionary[reqId].ToArray());  
+                var historicalDataEndMessageList = new ConcurrentBag<object>(requestDictionary[reqId].ToArray());  
                 var historicalDataEndMessage = historicalDataEndMessageList.FirstOrDefault(m => m is HistoricalDataEndMessage);
                 if (historicalDataEndMessage != null)
                 {
-                    List<object> listCopy = new List<object>(requestDictionary[reqId]);
+                    ConcurrentBag<object> bagCopy = new ConcurrentBag<object>(requestDictionary[reqId]);
+                    var listCopy = bagCopy.ToList();   
                     if (!listCopy.Remove(historicalDataEndMessage)) throw new Exception("Can not remove historicalDataEndMessage");
-                    requestDictionary[reqId] = listCopy;
+                    bagCopy = new ConcurrentBag<object>(listCopy);
+
+                    requestDictionary[reqId] = bagCopy;
                     return true;
                 }
 
@@ -864,7 +867,7 @@ namespace IbClient.IbHost
                 //AddTestNoiseData(_requestDictionary);
                 
                 if (!_requestDictionary.ContainsKey(message.RequestId))
-                    _requestDictionary[message.RequestId] = new List<object> { message };
+                    _requestDictionary[message.RequestId] = new ConcurrentBag<object> { message };
                 else
                     _requestDictionary[message.RequestId].Add(message);
             }
@@ -882,7 +885,7 @@ namespace IbClient.IbHost
                 //AddTestNoiseData(_requestDictionary);
 
                 if (!_requestDictionary.ContainsKey(message.RequestId))
-                    _requestDictionary[message.RequestId] = new List<object> { message };
+                    _requestDictionary[message.RequestId] = new ConcurrentBag<object> { message };
                 else
                     _requestDictionary[message.RequestId].Add(message);
             }
@@ -899,7 +902,7 @@ namespace IbClient.IbHost
                 //AddTestNoiseData(_requestDictionary);
 
                 if (!_requestDictionary.ContainsKey(message.RequestId))
-                    _requestDictionary[message.RequestId] = new List<object> { message };
+                    _requestDictionary[message.RequestId] = new ConcurrentBag<object> { message };
                 else
                     _requestDictionary[message.RequestId].Add(message);
             }
