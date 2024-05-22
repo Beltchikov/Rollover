@@ -344,8 +344,7 @@ namespace IbClient.IbHost
             return (tickPriceMessage?.Price, (TickType?)tickPriceMessage?.Field, errorText);
         }
 
-        // TODO rename to Subscribe
-        public async Task RequestHistoricalDataAsync(
+        public async Task RequestHistoricalAndSubscribeAsync(
             Contract contract,
             string endDateTime,
             string durationString,
@@ -353,7 +352,6 @@ namespace IbClient.IbHost
             string whatToShow,
             int useRTH,
             int formatDate,
-            bool keepUpToDate,
             List<TagValue> tagValues,
             int timeout,
             Action<HistoricalDataMessage> historicalDataCallback,
@@ -379,7 +377,7 @@ namespace IbClient.IbHost
                 whatToShow,
                 useRTH,
                 formatDate,
-                keepUpToDate,
+                true,
                 tagValues);
 
 

@@ -1,5 +1,4 @@
 ﻿using SignalAdvisor.Extensions;
-using System.Globalization;
 using Ta;
 
 namespace SignalAdvisor.Commands
@@ -16,12 +15,11 @@ namespace SignalAdvisor.Commands
             string barSizeSetting = $"{BAR_SIZE} mins";
             string whatToShow = "TRADES";
             int useRTH = 0;
-            bool keepUpToDate = true;
-
+            
             foreach (var positionMessage in visitor.Positions)
             {
                 bool historicalDataReceived = false;
-                await visitor.IbHost.RequestHistoricalDataAsync(
+                await visitor.IbHost.RequestHistoricalAndSubscribeAsync(
                     positionMessage.Contract,
                     "",
                     durationString,
@@ -29,7 +27,6 @@ namespace SignalAdvisor.Commands
                     whatToShow,
                     useRTH,
                     1,
-                    keepUpToDate,
                     [],
                     App.TIMEOUT,
                     (d) =>

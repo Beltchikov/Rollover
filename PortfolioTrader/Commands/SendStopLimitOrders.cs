@@ -55,7 +55,7 @@ namespace PortfolioTrader.Commands
                 };
                 double auxPriceBuy = 0;
                 
-                await visitor.IbHost.RequestHistoricalDataAsync(
+                await visitor.IbHost.RequestHistoricalAndSubscribeAsync(
                     contractBuy,
                     endDateTime,
                     durationString,
@@ -108,7 +108,7 @@ namespace PortfolioTrader.Commands
 
                 double auxPriceSell = 0;
 
-                await visitor.IbHost.RequestHistoricalDataAsync(
+                await visitor.IbHost.RequestHistoricalAndSubscribeAsync(
                     contractSell,
                     endDateTime,
                     durationString,

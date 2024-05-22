@@ -94,7 +94,7 @@ namespace PortfolioTrader.Commands
                 double barLow = 0;
                 double barHigh = 0;
 
-                await visitor.IbHost.RequestHistoricalDataAsync(
+                await visitor.IbHost.RequestHistoricalAndSubscribeAsync(
                     contract,
                     endDateTime,
                     durationString,

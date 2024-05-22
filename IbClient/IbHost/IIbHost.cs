@@ -49,8 +49,7 @@ namespace IbClient.IbHost
             List<TagValue> mktDataOptions,
             int timeout);
 
-        // TODO rename to Subscribe
-        Task RequestHistoricalDataAsync(
+        Task RequestHistoricalAndSubscribeAsync(
             Contract contractBuy,
             string endDateTime,
             string durationString,
@@ -58,7 +57,6 @@ namespace IbClient.IbHost
             string whatToShow,
             int useRTH,
             int formatDate,
-            bool keepUpToDate,
             List<TagValue> tagValues,
             int timeout,
             Action<HistoricalDataMessage> historicalDataCallback,
