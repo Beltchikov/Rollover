@@ -3,6 +3,7 @@ using IbClient.messages;
 using IbClient.Types;
 using IBSampleApp.messages;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,6 +29,9 @@ namespace IbClient.IbHost
         private IIbHostQueue _queueHistoricalData;
         private IIbHostQueue _queueHistoricalDataUpdate;
         private IIbHostQueue _queueHistoricalDataEnd;
+
+        private ConcurrentDictionary<int, List<object>> _requestDictionary;
+
         private int _currentReqId = 0;
         List<int> _mktDataReqIds;
         List<int> _placeOrderOrderIds;
@@ -86,6 +90,8 @@ namespace IbClient.IbHost
             _queueHistoricalData = new IbHostQueue();
             _queueHistoricalDataUpdate = new IbHostQueue();
             _queueHistoricalDataEnd = new IbHostQueue();
+
+            _requestDictionary = new ConcurrentDictionary<int, List<object>>();
 
             _errorMessages = new List<ErrorMessage>();
             _mktDataReqIds = new List<int> { };
@@ -378,6 +384,7 @@ namespace IbClient.IbHost
                 formatDate,
                 keepUpToDate,
                 tagValues);
+
 
             object endMessage = null;
             await Task.Run(() =>
@@ -768,20 +775,23 @@ namespace IbClient.IbHost
             return result;
         }
 
-        private void _ibClient_HistoricalData(HistoricalDataMessage obj)
+        private void _ibClient_HistoricalData(HistoricalDataMessage message)
         {
-            _queueHistoricalData.Enqueue(obj);
+            _queueHistoricalData.Enqueue(message);
+            _requestDictionary[message.RequestId].Add(message);
         }
 
         private void _ibClient_HistoricalDataUpdate(HistoricalDataMessage message)
         {
             LiveDataMessage liveDataMessage = new LiveDataMessage(_requestIdContract[message.RequestId], message);
             _queueHistoricalDataUpdate.Enqueue(liveDataMessage);
+            _requestDictionary[message.RequestId].Add(message);
         }
 
-        private void _ibClient_HistoricalDataEnd(HistoricalDataEndMessage obj)
+        private void _ibClient_HistoricalDataEnd(HistoricalDataEndMessage message)
         {
-            _queueHistoricalDataEnd.Enqueue(obj);
+            _queueHistoricalDataEnd.Enqueue(message);
+            _requestDictionary[message.RequestId].Add(message);
         }
     }
 }
