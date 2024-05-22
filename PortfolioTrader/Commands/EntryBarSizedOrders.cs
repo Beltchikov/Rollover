@@ -1,6 +1,7 @@
 ﻿using IBApi;
 using PortfolioTrader.Algos;
 using PortfolioTrader.Model;
+using System.Data;
 using System.Windows;
 
 namespace PortfolioTrader.Commands
@@ -102,7 +103,7 @@ namespace PortfolioTrader.Commands
                 {
                     double entryLmtPriceBuy = LimitPrice.PercentageOfPriceOrFixed(isLong: true, entryStpPriceBuy);
                     double slLmtPriceBuy = LimitPrice.PercentageOfPriceOrFixed(isLong: false, slStpPriceBuy);
-                    (Order orderBuyParent, Order orderBuyStop) = await CreateOrdersAsync(
+                    (Order? orderBuyParent, Order? orderBuyStop) = await CreateOrdersAsync(
                         isLong: true,
                         visitor,
                         tradePair,
@@ -111,8 +112,11 @@ namespace PortfolioTrader.Commands
                         slStpPrice: slStpPriceBuy,
                         slLmtPrice: slLmtPriceBuy);
 
-                    await SendOrders(isLong: true, visitor, tradePair, contractBuy, orderBuyParent);
-                    await SendOrders(isLong: false, visitor, tradePair, contractBuy, orderBuyStop);
+                    if (orderBuyParent != null && orderBuyStop != null)
+                    {
+                        await SendOrders(isLong: true, visitor, tradePair, contractBuy, orderBuyParent);
+                        await SendOrders(isLong: false, visitor, tradePair, contractBuy, orderBuyStop);
+                    }
                 }
                 await Task.Run(() => Thread.Sleep(App.TIMEOUT));
 
@@ -157,7 +161,7 @@ namespace PortfolioTrader.Commands
                 {
                     double entryLmtPriceSell = LimitPrice.PercentageOfPriceOrFixed(isLong: false, entryStpPriceSell);
                     double slLmtPriceSell = LimitPrice.PercentageOfPriceOrFixed(isLong: true, slStpPriceSell);
-                    (Order orderSellParent, Order orderSellStop) = await CreateOrdersAsync(
+                    (Order? orderSellParent, Order? orderSellStop) = await CreateOrdersAsync(
                         isLong: false,
                         visitor,
                         tradePair,
@@ -166,8 +170,11 @@ namespace PortfolioTrader.Commands
                         slStpPrice: slStpPriceSell,
                         slLmtPrice: slLmtPriceSell);
 
-                    await SendOrders(isLong: false, visitor, tradePair, contractSell, orderSellParent);
-                    await SendOrders(isLong: true, visitor, tradePair, contractSell, orderSellStop);
+                    if (orderSellParent != null && orderSellStop != null)
+                    {
+                        await SendOrders(isLong: false, visitor, tradePair, contractSell, orderSellParent);
+                        await SendOrders(isLong: true, visitor, tradePair, contractSell, orderSellStop);
+                    }
                 }
                 await Task.Run(() => Thread.Sleep(App.TIMEOUT));
             }
@@ -234,6 +241,7 @@ namespace PortfolioTrader.Commands
                 double barHigh = 0;
                 bool timeout = false;
 
+                visitor.TwsMessageCollection.Add($"Requesting historical data for {kvp.Key}.");
                 await visitor.IbHost.RequestHistoricalDataAsync(
                     contract,
                     endDateTime,
@@ -298,7 +306,7 @@ namespace PortfolioTrader.Commands
             else throw new Exception("Unexpected. Both ErrorMessage nad OrderState are not set.");
         }
 
-        private static async Task<(Order, Order)> CreateOrdersAsync(
+        private static async Task<(Order?, Order?)> CreateOrdersAsync(
             bool isLong,
             IBuyConfirmationModelVisitor visitor,
             TradePair tradePair,
@@ -307,6 +315,14 @@ namespace PortfolioTrader.Commands
             double slStpPrice,
             double slLmtPrice)
         {
+            var totalQuantity = isLong ? tradePair.QuantityBuy : tradePair.QuantitySell;
+            if(totalQuantity <1)
+            {
+                var symbol = isLong ? tradePair.SymbolBuy : tradePair.SymbolSell;
+                visitor.TwsMessageCollection.Add($" No order will be send for {symbol} because calculated qty is {totalQuantity}");
+                return (null, null);
+            }
+
             var orderBuyId = await visitor.IbHost.ReqIdsAsync(-1);
 
             //
@@ -317,7 +333,7 @@ namespace PortfolioTrader.Commands
                 OrderType = "MIDPRICE",
                 AuxPrice = entryStpPrice,
                 LmtPrice = entryStpPrice, // TODO remove later. Only for visual feedback during tests
-                TotalQuantity = isLong ? tradePair.QuantityBuy : tradePair.QuantitySell,
+                TotalQuantity = totalQuantity,
                 Transmit = false
             };
 
@@ -335,7 +351,7 @@ namespace PortfolioTrader.Commands
                 Action = isLong ? "SELL" : "BUY",
                 OrderType = "MIDPRICE",
                 LmtPrice = slLmtPrice,  // Only for the visual feedback on a chart. Should be removed after positioning.
-                TotalQuantity = isLong ? tradePair.QuantityBuy : tradePair.QuantitySell,
+                TotalQuantity = totalQuantity,
                 ParentId = orderParent.OrderId,
                 Transmit = true
             };
