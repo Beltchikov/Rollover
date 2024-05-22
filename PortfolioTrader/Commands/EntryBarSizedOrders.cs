@@ -85,15 +85,15 @@ namespace PortfolioTrader.Commands
                     whatToShow,
                     useRTH,
                     1,
-                    keepUpToDate,
                     [],
                     App.TIMEOUT,
-                     (d) => {
+                     (d) =>
+                     {
                          entryStpPriceBuy = Position.RoundPrice(isHighPrice: true, d.High);
                          slStpPriceBuy = Position.RoundPrice(isHighPrice: false, d.Low);
                      },
                     (u) => { },
-                (e) => { });
+                    (e) => { });
 
                 // Check
                 var barInCentsBuy = Math.Round((entryStpPriceBuy - slStpPriceBuy) * 100, 0);
@@ -140,10 +140,10 @@ namespace PortfolioTrader.Commands
                     whatToShow,
                     useRTH,
                     1,
-                    keepUpToDate,
                     [],
                     App.TIMEOUT,
-                     (d) => {
+                     (d) =>
+                     {
                          slStpPriceSell = Position.RoundPrice(isHighPrice: true, d.High);
                          entryStpPriceSell = Position.RoundPrice(isHighPrice: false, d.Low);
                      },
@@ -244,10 +244,10 @@ namespace PortfolioTrader.Commands
                     whatToShow,
                     useRTH,
                     1,
-                    keepUpToDate,
                     [],
                     App.TIMEOUT,
-                     (d) => {
+                     (d) =>
+                     {
                          barHigh = Position.RoundPrice(isHighPrice: true, d.High);
                          barLow = Position.RoundPrice(isHighPrice: false, d.Low);
                      },
@@ -259,7 +259,7 @@ namespace PortfolioTrader.Commands
                 if (barInCents <= App.MIN_ENTRY_BAR_IN_CENTS)
                 {
                     visitor.TwsMessageCollection.Add($"{kvp.Key} is excluded from the stocks list because the entry bar is smaller than {App.MIN_ENTRY_BAR_IN_CENTS}.");
-                    continue; 
+                    continue;
                 }
 
                 kvp.Value.BarInCents = barInCents;

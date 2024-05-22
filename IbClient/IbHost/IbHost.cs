@@ -412,6 +412,7 @@ namespace IbClient.IbHost
 
         }
 
+        // NO SUBSRIBE - hist data only
         public async Task RequestHistoricalDataAsync(
             Contract contract,
             string endDateTime,
@@ -436,6 +437,8 @@ namespace IbClient.IbHost
 
             var reqId = ++_currentReqId;
             _requestIdContract[reqId] = contract;
+            _requestDictionary[reqId] = new List<object>();
+
             _ibClient.ClientSocket.reqHistoricalData(
                 reqId,
                 contractSmartExchange,
@@ -448,30 +451,38 @@ namespace IbClient.IbHost
                 false,
                 tagValues);
 
-
-            object endMessage = null;
+            List<HistoricalDataMessage> historicalDataMessages = null;
             await Task.Run(() =>
             {
-                var startTime = DateTime.Now;
-                while (!_queueHistoricalDataEnd.TryDequeue(out endMessage)) { }
-
+                while (!HasHistoricalDataEndMessage(reqId, _requestDictionary)) { }
+                historicalDataMessages = _requestDictionary[reqId]
+                    .Select(m => m as HistoricalDataMessage)
+                    .ToList();
             });
 
-            object dataMessage = null;
-            while (_queueHistoricalData.TryDequeue(out dataMessage))
+            foreach (var m in historicalDataMessages)
             {
-                historicalDataCallback((HistoricalDataMessage)dataMessage);
+                historicalDataCallback(m);
             }
+        }
 
-            object updateMessage = null;
-            while (_queueHistoricalDataUpdate.TryDequeue(out updateMessage))
+        private bool HasHistoricalDataEndMessage(int reqId, ConcurrentDictionary<int, List<object>> requestDictionary)
+        {
+            object lockObject = new object();
+
+            lock (lockObject)
             {
-                // TODO remove the whole block
-                //historicalDataUpdateCallback((HistoricalDataMessage)dataMessage);
+                var historicalDataEndMessage = requestDictionary[reqId].FirstOrDefault(m => m is HistoricalDataEndMessage);
+                if (historicalDataEndMessage != null)
+                {
+                    List<object> listCopy = new List<object>(requestDictionary[reqId]);
+                    if (!listCopy.Remove(historicalDataEndMessage)) throw new Exception("Can not remove historicalDataEndMessage");
+                    requestDictionary[reqId] = listCopy;
+                    return true;
+                }
+
+                return false;
             }
-
-            historicalDataEndCallback((HistoricalDataEndMessage)endMessage);
-
         }
 
         // TODO
@@ -841,20 +852,33 @@ namespace IbClient.IbHost
         private void _ibClient_HistoricalData(HistoricalDataMessage message)
         {
             _queueHistoricalData.Enqueue(message);
-            _requestDictionary[message.RequestId].Add(message);
+
+            if(!_requestDictionary.ContainsKey(message.RequestId))
+                _requestDictionary[message.RequestId] = new List<object> { message };
+            else
+                _requestDictionary[message.RequestId].Add(message);
         }
 
         private void _ibClient_HistoricalDataUpdate(HistoricalDataMessage message)
         {
             LiveDataMessage liveDataMessage = new LiveDataMessage(_requestIdContract[message.RequestId], message);
             _queueHistoricalDataUpdate.Enqueue(liveDataMessage);
-            _requestDictionary[message.RequestId].Add(message);
+
+
+            if (!_requestDictionary.ContainsKey(message.RequestId))
+                _requestDictionary[message.RequestId] = new List<object> { message };
+            else
+                _requestDictionary[message.RequestId].Add(message);
         }
 
         private void _ibClient_HistoricalDataEnd(HistoricalDataEndMessage message)
         {
             _queueHistoricalDataEnd.Enqueue(message);
-            _requestDictionary[message.RequestId].Add(message);
+
+            if (!_requestDictionary.ContainsKey(message.RequestId))
+                _requestDictionary[message.RequestId] = new List<object> { message };
+            else
+                _requestDictionary[message.RequestId].Add(message);
         }
     }
 }
