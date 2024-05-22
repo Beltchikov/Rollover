@@ -472,7 +472,8 @@ namespace IbClient.IbHost
 
             lock (lockObject)
             {
-                var historicalDataEndMessage = requestDictionary[reqId].FirstOrDefault(m => m is HistoricalDataEndMessage);
+                var historicalDataEndMessageList = new List<object>(requestDictionary[reqId]);  
+                var historicalDataEndMessage = historicalDataEndMessageList.FirstOrDefault(m => m is HistoricalDataEndMessage);
                 if (historicalDataEndMessage != null)
                 {
                     List<object> listCopy = new List<object>(requestDictionary[reqId]);
@@ -853,10 +854,14 @@ namespace IbClient.IbHost
         {
             _queueHistoricalData.Enqueue(message);
 
-            if(!_requestDictionary.ContainsKey(message.RequestId))
-                _requestDictionary[message.RequestId] = new List<object> { message };
-            else
-                _requestDictionary[message.RequestId].Add(message);
+            object lockObject = new object();
+            lock (lockObject)
+            {
+                if (!_requestDictionary.ContainsKey(message.RequestId))
+                    _requestDictionary[message.RequestId] = new List<object> { message };
+                else
+                    _requestDictionary[message.RequestId].Add(message);
+            }
         }
 
         private void _ibClient_HistoricalDataUpdate(HistoricalDataMessage message)
@@ -864,21 +869,28 @@ namespace IbClient.IbHost
             LiveDataMessage liveDataMessage = new LiveDataMessage(_requestIdContract[message.RequestId], message);
             _queueHistoricalDataUpdate.Enqueue(liveDataMessage);
 
-
-            if (!_requestDictionary.ContainsKey(message.RequestId))
-                _requestDictionary[message.RequestId] = new List<object> { message };
-            else
-                _requestDictionary[message.RequestId].Add(message);
+            object lockObject = new object();
+            lock (lockObject)
+            {
+                if (!_requestDictionary.ContainsKey(message.RequestId))
+                    _requestDictionary[message.RequestId] = new List<object> { message };
+                else
+                    _requestDictionary[message.RequestId].Add(message);
+            }
         }
 
         private void _ibClient_HistoricalDataEnd(HistoricalDataEndMessage message)
         {
             _queueHistoricalDataEnd.Enqueue(message);
 
-            if (!_requestDictionary.ContainsKey(message.RequestId))
-                _requestDictionary[message.RequestId] = new List<object> { message };
-            else
-                _requestDictionary[message.RequestId].Add(message);
+            object lockObject = new object();
+            lock (lockObject)
+            {
+                if (!_requestDictionary.ContainsKey(message.RequestId))
+                    _requestDictionary[message.RequestId] = new List<object> { message };
+                else
+                    _requestDictionary[message.RequestId].Add(message);
+            }
         }
     }
 }
