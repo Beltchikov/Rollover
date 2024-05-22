@@ -453,15 +453,30 @@ namespace IbClient.IbHost
             List<HistoricalDataMessage> historicalDataMessages = null;
             await Task.Run(() =>
             {
-                while (!HasHistoricalDataEndMessage(reqId, _requestDictionary)) { }
-                historicalDataMessages = _requestDictionary[reqId]
-                    .Select(m => m as HistoricalDataMessage)
-                    .ToList();
+                var startTime = DateTime.Now;   
+                //if ((DateTime.Now - startTime).TotalMilliseconds >= timeout)
+                while (!HasHistoricalDataEndMessage(reqId, _requestDictionary)
+                    && (DateTime.Now - startTime).TotalMilliseconds < timeout) { }
+
+                try
+                {
+                    historicalDataMessages = _requestDictionary[reqId]
+                                .Select(m => m as HistoricalDataMessage)
+                                .ToList();
+                }
+                catch (Exception e)
+                {
+
+                    historicalDataEndCallback(new HistoricalDataEndMessage(reqId, "TIMEOUT", $"{e}"));
+                }
             });
 
-            foreach (var m in historicalDataMessages)
+            if (historicalDataMessages != null)
             {
-                historicalDataCallback(m);
+                foreach (var m in historicalDataMessages)
+                {
+                    historicalDataCallback(m);
+                }
             }
         }
 

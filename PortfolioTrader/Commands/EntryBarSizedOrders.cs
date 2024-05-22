@@ -232,6 +232,7 @@ namespace PortfolioTrader.Commands
 
                 double barLow = 0;
                 double barHigh = 0;
+                bool timeout = false;
 
                 await visitor.IbHost.RequestHistoricalDataAsync(
                     contract,
@@ -249,7 +250,9 @@ namespace PortfolioTrader.Commands
                          barLow = Position.RoundPrice(isHighPrice: false, d.Low);
                      },
                     (u) => { },
-                    (e) => { });
+                    (e) => { timeout = true; }); // TODO exception details
+
+                if (timeout) return resultDictionary;
 
                 var barInCents = (int)Math.Round((barHigh - barLow) * 100, 0);
 
