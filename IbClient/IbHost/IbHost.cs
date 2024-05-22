@@ -44,11 +44,7 @@ namespace IbClient.IbHost
         public static readonly string DEFAULT_SEC_TYPE = "STK";
         public static readonly string DEFAULT_CURRENCY = "USD";
         public static readonly string DEFAULT_EXCHANGE = "SMART";
-        private readonly int ERROR_CODE_10168 = 10168;
-        private readonly int ERROR_CODE_354 = 354;
-        private readonly int ERROR_CODE_201 = 201;
-        private readonly string SUBMITTED = "Submitted";
-        private readonly string PRESUBMITTED = "PreSubmitted";
+         private readonly string PRESUBMITTED = "PreSubmitted";
         private readonly string EXCHANGE_SMART = "SMART";
 
         public IbHost()
@@ -440,7 +436,7 @@ namespace IbClient.IbHost
             _requestDictionary[reqId] = new ConcurrentBag<object>();
 
             // TODO use for tests
-            //AddTestNoiseData(_requestDictionary);
+            AddTestNoiseData(_requestDictionary);
 
             _ibClient.ClientSocket.reqHistoricalData(
                 reqId,
@@ -864,7 +860,7 @@ namespace IbClient.IbHost
             lock (lockObject)
             {
                 // TODO use for tests
-                //AddTestNoiseData(_requestDictionary);
+                AddTestNoiseData(_requestDictionary);
                 
                 if (!_requestDictionary.ContainsKey(message.RequestId))
                     _requestDictionary[message.RequestId] = new ConcurrentBag<object> { message };
@@ -882,7 +878,7 @@ namespace IbClient.IbHost
             lock (lockObject)
             {
                 // TODO use for tests
-                //AddTestNoiseData(_requestDictionary);
+                AddTestNoiseData(_requestDictionary);
 
                 if (!_requestDictionary.ContainsKey(message.RequestId))
                     _requestDictionary[message.RequestId] = new ConcurrentBag<object> { message };
@@ -899,7 +895,7 @@ namespace IbClient.IbHost
             lock (lockObject)
             {
                 // TODO use for tests
-                //AddTestNoiseData(_requestDictionary);
+                AddTestNoiseData(_requestDictionary);
 
                 if (!_requestDictionary.ContainsKey(message.RequestId))
                     _requestDictionary[message.RequestId] = new ConcurrentBag<object> { message };
@@ -908,22 +904,22 @@ namespace IbClient.IbHost
             }
         }
 
-        //private void AddTestNoiseData(ConcurrentDictionary<int, List<object>> requestDictionary)
-        //{
-        //    for (int i = 0; i < 50; i++)
-        //    {
-        //        Random random = new Random();
-        //        int reqId = random.Next(1000, 2000);
+        private void AddTestNoiseData(ConcurrentDictionary<int, ConcurrentBag<object>> requestDictionary)
+        {
+            for (int i = 0; i < 50; i++)
+            {
+                Random random = new Random();
+                int reqId = random.Next(1000, 2000);
 
-        //        requestDictionary[reqId] = new List<object>
-        //        {
-        //            new HistoricalDataMessage(reqId, new Bar("", 10.0, 13.9, 9.7, 9.8, 10000, 2, 34)),
-        //            new HistoricalDataMessage(reqId, new Bar("", 10.0, 13.9, 9.7, 9.8, 10000, 2, 34)),
-        //            new ErrorMessage(reqId, 23, "", ""),
-        //            new HistoricalDataEndMessage(reqId, "", "")
-        //        };
+                requestDictionary[reqId] = new ConcurrentBag<object>
+                {
+                    new HistoricalDataMessage(reqId, new Bar("", 10.0, 13.9, 9.7, 9.8, 10000, 2, 34)),
+                    new HistoricalDataMessage(reqId, new Bar("", 10.0, 13.9, 9.7, 9.8, 10000, 2, 34)),
+                    new ErrorMessage(reqId, 23, "", ""),
+                    new HistoricalDataEndMessage(reqId, "", "")
+                };
 
-        //    }
-        //}
+            }
+        }
     }
 }

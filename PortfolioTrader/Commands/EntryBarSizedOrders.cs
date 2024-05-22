@@ -9,8 +9,6 @@ namespace PortfolioTrader.Commands
     {
         private static readonly string FORMAT_STRING_UI = "dd.MM.yyyy HH:mm:ss";
         private static readonly string FORMAT_STRING_API = "yyyyMMdd-HH:mm:ss";
-        private static int _lastOrderId;
-        private static int _nextOrderId;
 
         public static async Task RunAsync(IBuyConfirmationModelVisitor visitor)
         {
@@ -60,8 +58,7 @@ namespace PortfolioTrader.Commands
             string barSizeSetting = "5 mins";
             string whatToShow = "TRADES";
             int useRTH = 0;
-            bool keepUpToDate = false;
-
+            
             // buy
             foreach (TradePair tradePair in tradePairs)
             {
@@ -178,7 +175,6 @@ namespace PortfolioTrader.Commands
             var msg = $"DONE! Entry Bar Sized Orders command executed.";
             visitor.TwsMessageCollection.Add(msg);
             MessageBox.Show(msg);
-
         }
 
         private static Dictionary<string, Position> DoRecalculateWeights(IBuyConfirmationModelVisitor visitor, Dictionary<string, Position> dictionary)
@@ -221,8 +217,7 @@ namespace PortfolioTrader.Commands
             string barSizeSetting = "5 mins";
             string whatToShow = "TRADES";
             int useRTH = 0;
-            bool keepUpToDate = false;
-
+            
             foreach (var kvp in dictionary)
             {
                 var conIdNotNullable = kvp.Value.ConId ?? throw new Exception("Unexpected. kvp.Value.ConId is null.");
