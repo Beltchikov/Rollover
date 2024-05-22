@@ -175,7 +175,9 @@ namespace PortfolioTrader.Commands
                 await Task.Run(() => Thread.Sleep(App.TIMEOUT));
             }
 
-            visitor.TwsMessageCollection.Add($"DONE! Send Orders command executed.");
+            var msg = $"DONE! Entry Bar Sized Orders command executed.";
+            visitor.TwsMessageCollection.Add(msg);
+            MessageBox.Show(msg);
 
         }
 
