@@ -102,7 +102,7 @@ namespace PortfolioTrader.Commands
                 else
                 {
                     double entryLmtPriceBuy = LimitPrice.PercentageOfPriceOrFixed(isLong: true, entryStpPriceBuy);
-                    double slLmtPriceBuy = LimitPrice.PercentageOfPriceOrFixed(isLong: false, slStpPriceBuy);
+                    double slLmtPriceBuy = LimitPrice.Always5Cents(isLong: false, slStpPriceBuy);
                     (Order? orderBuyParent, Order? orderBuyStop) = await CreateOrdersAsync(
                         isLong: true,
                         visitor,
@@ -160,7 +160,7 @@ namespace PortfolioTrader.Commands
                 else
                 {
                     double entryLmtPriceSell = LimitPrice.PercentageOfPriceOrFixed(isLong: false, entryStpPriceSell);
-                    double slLmtPriceSell = LimitPrice.PercentageOfPriceOrFixed(isLong: true, slStpPriceSell);
+                    double slLmtPriceSell = LimitPrice.Always5Cents(isLong: true, slStpPriceSell);
                     (Order? orderSellParent, Order? orderSellStop) = await CreateOrdersAsync(
                         isLong: false,
                         visitor,
@@ -332,7 +332,7 @@ namespace PortfolioTrader.Commands
                 Action = isLong ? "BUY" : "SELL",
                 OrderType = "MIDPRICE",
                 AuxPrice = entryStpPrice,
-                LmtPrice = entryStpPrice, // TODO remove later. Only for visual feedback during tests
+                LmtPrice = entryLmtPrice, 
                 TotalQuantity = totalQuantity,
                 Transmit = false
             };

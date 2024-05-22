@@ -1,4 +1,6 @@
-﻿namespace PortfolioTrader.Algos
+﻿using System.Diagnostics;
+
+namespace PortfolioTrader.Algos
 {
     public static class LimitPrice
     {
@@ -23,6 +25,14 @@
             return isLong
                     ? Math.Round(price + buffer,2)
                     : Math.Round(price - buffer,2);
+        }
+
+        internal static double Always5Cents(bool isLong, double price)
+        {
+            double buffer = 0.05;
+            return isLong
+                    ? Math.Round(price + buffer, 2)
+                    : Math.Round(price - buffer, 2);
         }
     }
 }
