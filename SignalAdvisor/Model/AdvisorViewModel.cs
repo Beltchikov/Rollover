@@ -1,12 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using IBApi;
 using IbClient.IbHost;
 using IbClient.messages;
 using IBSampleApp.messages;
 using SignalAdvisor.Commands;
 using SignalAdvisor.Extensions;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Ta;
@@ -24,7 +24,7 @@ namespace SignalAdvisor.Model
         private string _lastCheck;
         private string _signalsAsText;
         private ObservableCollection<PositionMessage> _positions = [];
-        private ObservableCollection<KeyValuePair<string, List<Bar>>> _bars = [];
+        private ObservableCollection<KeyValuePair<string, List<Ta.Bar>>> _bars = [];
         private ObservableCollection<KeyValuePair<string, List<int>>> _signals = [];
         private static System.Timers.Timer _timer;
         private static readonly string SESSION_START = "15:30";
@@ -73,7 +73,8 @@ namespace SignalAdvisor.Model
                 var lastBar = Bars.For(liveDataMessage.Contract.ToString()).Last();
                 var barBefore = Bars.For(liveDataMessage.Contract.ToString()).SkipLast(1).Last();
 
-                if (lastBar.Time != barBefore.Time) NewBar(liveDataMessage.Contract.Symbol, lastBar.Time);
+                if (lastBar.Time != barBefore.Time) 
+                    NewBar(liveDataMessage.Contract, lastBar.Time);
             }
         }
 
@@ -86,18 +87,19 @@ namespace SignalAdvisor.Model
             await Task.Run(() => { while (!RequestHistoricalDataExecuted) { } });
         }
 
-        private void NewBar(string symbol, DateTimeOffset newBarTime)
+        private void NewBar(Contract  contract, DateTimeOffset newBarTime)
         {
             LastCheck = newBarTime.ToString("HH:mm:ss");
+            var contractString = contract.ToString();
 
-            if (Ta.Signals.OppositeColor(forLongTrade: true, Bars.For(symbol), Signals.For(symbol)) != 0)
+            if (Ta.Signals.OppositeColor(forLongTrade: true, Bars.For(contractString), Signals.For(contractString)) != 0)
             {
-                SignalsAsText = $"{LastCheck} POSITION {symbol} OppositeColor {Environment.NewLine}{SignalsAsText}";
+                SignalsAsText = $"{LastCheck} POSITION {contractString} OppositeColor {Environment.NewLine}{SignalsAsText}";
             }
 
-            if (Ta.Signals.InsideUpDown(Bars.For(symbol), Signals.For(symbol)) != 0)
+            if (Ta.Signals.InsideUpDown(Bars.For(contractString), Signals.For(contractString)) != 0)
             {
-                SignalsAsText = $"{LastCheck} POSITION {symbol} InsideUpDown {Environment.NewLine}{SignalsAsText}";
+                SignalsAsText = $"{LastCheck} POSITION {contractString} InsideUpDown {Environment.NewLine}{SignalsAsText}";
             }
         }
 
@@ -116,11 +118,11 @@ namespace SignalAdvisor.Model
 
         public void AddBar(IBApi.Contract contract, HistoricalDataMessage message)
         {
-            var bar = new Bar(message.Open, message.High, message.Low, message.Close, message.Date.DateTimeOffsetFromString());
+            var bar = new Ta.Bar(message.Open, message.High, message.Low, message.Close, message.Date.DateTimeOffsetFromString());
             var contractOriginalString = contract.ToString();
 
             if (!Bars.Any(kvp => kvp.Key == contractOriginalString))
-                Bars.Add(new KeyValuePair<string, List<Bar>>(contractOriginalString, []));
+                Bars.Add(new KeyValuePair<string, List<Ta.Bar>>(contractOriginalString, []));
             Bars.First(kvp => kvp.Key == contractOriginalString).Value.Add(bar);
         }
 
@@ -206,7 +208,7 @@ namespace SignalAdvisor.Model
             }
         }
 
-        public ObservableCollection<KeyValuePair<string, List<Bar>>> Bars
+        public ObservableCollection<KeyValuePair<string, List<Ta.Bar>>> Bars
         {
             get => _bars;
             set
