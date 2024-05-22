@@ -90,6 +90,11 @@ namespace SignalAdvisor.Model
         {
             LastCheck = newBarTime.ToString("HH:mm:ss");
 
+            if (Ta.Signals.OppositeColor(forLongTrade: true, Bars.For(symbol), Signals.For(symbol)) != 0)
+            {
+                SignalsAsText = $"{LastCheck} POSITION {symbol} OppositeColor {Environment.NewLine}{SignalsAsText}";
+            }
+
             if (Ta.Signals.InsideUpDown(Bars.For(symbol), Signals.For(symbol)) != 0)
             {
                 SignalsAsText = $"{LastCheck} POSITION {symbol} InsideUpDown {Environment.NewLine}{SignalsAsText}";

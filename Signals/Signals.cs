@@ -2,6 +2,14 @@
 {
     public class Signals
     {
+        public static int OppositeColor(bool forLongTrade, List<Bar> bars, List<int> signals)
+        {
+            // TODO
+            signals = new List<int>();
+
+            return -2;
+        }
+
         public static int InsideUpDown(List<Bar> bars, List<int> signals)
         {
             // TODO
