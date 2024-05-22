@@ -309,37 +309,45 @@ namespace PortfolioTrader.Commands
             double slStpPrice,
             double slLmtPrice)
         {
-
             var orderBuyId = await visitor.IbHost.ReqIdsAsync(-1);
+
+            //
             var orderParent = new Order()
             {
                 OrderId = orderBuyId,
                 Action = isLong ? "BUY" : "SELL",
-                OrderType = "STP LMT",
+                OrderType = "MIDPRICE",
                 AuxPrice = entryStpPrice,
-                LmtPrice = entryLmtPrice,
+                LmtPrice = entryStpPrice, // TODO remove later. Only for visual feedback during tests
                 TotalQuantity = isLong ? tradePair.QuantityBuy : tradePair.QuantitySell,
                 Transmit = false
             };
 
+            PriceCondition priceConditionParent = (PriceCondition)OrderCondition.Create(OrderConditionType.Price);
+            priceConditionParent.ConId = isLong ? tradePair.ConIdBuy : tradePair.ConIdSell;
+            priceConditionParent.Exchange = App.EXCHANGE;
+            priceConditionParent.IsMore = isLong;
+            priceConditionParent.Price = entryStpPrice;
+            orderParent.Conditions.Add(priceConditionParent);
+
+            //
             Order orderStop = new()
             {
                 OrderId = orderParent.OrderId + 1,
                 Action = isLong ? "SELL" : "BUY",
                 OrderType = "MIDPRICE",
-                LmtPrice = slLmtPrice,
+                LmtPrice = slLmtPrice,  // Only for the visual feedback on a chart. Should be removed after positioning.
                 TotalQuantity = isLong ? tradePair.QuantityBuy : tradePair.QuantitySell,
                 ParentId = orderParent.OrderId,
                 Transmit = true
             };
 
-            PriceCondition priceCondition = (PriceCondition)OrderCondition.Create(OrderConditionType.Price);
-            priceCondition.ConId = isLong ? tradePair.ConIdBuy : tradePair.ConIdSell;
-            priceCondition.Exchange = App.EXCHANGE;
-            priceCondition.IsMore = !isLong;
-            priceCondition.Price = slStpPrice;
-
-            orderStop.Conditions.Add(priceCondition);
+            PriceCondition priceConditionStop = (PriceCondition)OrderCondition.Create(OrderConditionType.Price);
+            priceConditionStop.ConId = isLong ? tradePair.ConIdBuy : tradePair.ConIdSell;
+            priceConditionStop.Exchange = App.EXCHANGE;
+            priceConditionStop.IsMore = !isLong;
+            priceConditionStop.Price = slStpPrice;
+            orderStop.Conditions.Add(priceConditionStop);
 
             return (orderParent, orderStop);
         }
