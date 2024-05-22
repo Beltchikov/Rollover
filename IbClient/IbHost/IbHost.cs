@@ -439,8 +439,8 @@ namespace IbClient.IbHost
             _requestIdContract[reqId] = contract;
             _requestDictionary[reqId] = new List<object>();
 
-            // TODO remove later
-            AddTestNoiseData(_requestDictionary);
+            // TODO use for tests
+            //AddTestNoiseData(_requestDictionary);
 
             _ibClient.ClientSocket.reqHistoricalData(
                 reqId,
@@ -860,8 +860,8 @@ namespace IbClient.IbHost
             object lockObject = new object();
             lock (lockObject)
             {
-                // TODO remove later
-                AddTestNoiseData(_requestDictionary);
+                // TODO use for tests
+                //AddTestNoiseData(_requestDictionary);
                 
                 if (!_requestDictionary.ContainsKey(message.RequestId))
                     _requestDictionary[message.RequestId] = new List<object> { message };
@@ -878,8 +878,8 @@ namespace IbClient.IbHost
             object lockObject = new object();
             lock (lockObject)
             {
-                // TODO remove later
-                AddTestNoiseData(_requestDictionary);
+                // TODO use for tests
+                //AddTestNoiseData(_requestDictionary);
 
                 if (!_requestDictionary.ContainsKey(message.RequestId))
                     _requestDictionary[message.RequestId] = new List<object> { message };
@@ -895,8 +895,8 @@ namespace IbClient.IbHost
             object lockObject = new object();
             lock (lockObject)
             {
-                // TODO remove later
-                AddTestNoiseData(_requestDictionary);
+                // TODO use for tests
+                //AddTestNoiseData(_requestDictionary);
 
                 if (!_requestDictionary.ContainsKey(message.RequestId))
                     _requestDictionary[message.RequestId] = new List<object> { message };
@@ -905,22 +905,22 @@ namespace IbClient.IbHost
             }
         }
 
-        private void AddTestNoiseData(ConcurrentDictionary<int, List<object>> requestDictionary)
-        {
-            for (int i = 0; i < 50; i++)
-            {
-                Random random = new Random();
-                int reqId = random.Next(1000, 2000);
+        //private void AddTestNoiseData(ConcurrentDictionary<int, List<object>> requestDictionary)
+        //{
+        //    for (int i = 0; i < 50; i++)
+        //    {
+        //        Random random = new Random();
+        //        int reqId = random.Next(1000, 2000);
 
-                requestDictionary[reqId] = new List<object>
-                {
-                    new HistoricalDataMessage(reqId, new Bar("", 10.0, 13.9, 9.7, 9.8, 10000, 2, 34)),
-                    new HistoricalDataMessage(reqId, new Bar("", 10.0, 13.9, 9.7, 9.8, 10000, 2, 34)),
-                    new ErrorMessage(reqId, 23, "", ""),
-                    new HistoricalDataEndMessage(reqId, "", "")
-                };
+        //        requestDictionary[reqId] = new List<object>
+        //        {
+        //            new HistoricalDataMessage(reqId, new Bar("", 10.0, 13.9, 9.7, 9.8, 10000, 2, 34)),
+        //            new HistoricalDataMessage(reqId, new Bar("", 10.0, 13.9, 9.7, 9.8, 10000, 2, 34)),
+        //            new ErrorMessage(reqId, 23, "", ""),
+        //            new HistoricalDataEndMessage(reqId, "", "")
+        //        };
 
-            }
-        }
+        //    }
+        //}
     }
 }
