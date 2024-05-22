@@ -436,7 +436,7 @@ namespace IbClient.IbHost
             _requestDictionary[reqId] = new ConcurrentBag<object>();
 
             // TODO use for tests
-            AddTestNoiseData(_requestDictionary);
+            //AddTestNoiseData(_requestDictionary);
 
             _ibClient.ClientSocket.reqHistoricalData(
                 reqId,
@@ -875,7 +875,7 @@ namespace IbClient.IbHost
             lock (lockObject)
             {
                 // TODO use for tests
-                AddTestNoiseData(_requestDictionary);
+                //AddTestNoiseData(_requestDictionary);
                 
                 if (!_requestDictionary.ContainsKey(message.RequestId))
                     _requestDictionary[message.RequestId] = new ConcurrentBag<object> { message };
@@ -893,7 +893,7 @@ namespace IbClient.IbHost
             lock (lockObject)
             {
                 // TODO use for tests
-                AddTestNoiseData(_requestDictionary);
+                //AddTestNoiseData(_requestDictionary);
 
                 if (!_requestDictionary.ContainsKey(message.RequestId))
                     _requestDictionary[message.RequestId] = new ConcurrentBag<object> { message };
@@ -910,7 +910,7 @@ namespace IbClient.IbHost
             lock (lockObject)
             {
                 // TODO use for tests
-                AddTestNoiseData(_requestDictionary);
+                //AddTestNoiseData(_requestDictionary);
 
                 if (!_requestDictionary.ContainsKey(message.RequestId))
                     _requestDictionary[message.RequestId] = new ConcurrentBag<object> { message };
@@ -919,22 +919,22 @@ namespace IbClient.IbHost
             }
         }
 
-        private void AddTestNoiseData(ConcurrentDictionary<int, ConcurrentBag<object>> requestDictionary)
-        {
-            for (int i = 0; i < 50; i++)
-            {
-                Random random = new Random();
-                int reqId = random.Next(1000, 2000);
+        //private void AddTestNoiseData(ConcurrentDictionary<int, ConcurrentBag<object>> requestDictionary)
+        //{
+        //    for (int i = 0; i < 50; i++)
+        //    {
+        //        Random random = new Random();
+        //        int reqId = random.Next(1000, 2000);
 
-                requestDictionary[reqId] = new ConcurrentBag<object>
-                {
-                    new HistoricalDataMessage(reqId, new Bar("", 10.0, 13.9, 9.7, 9.8, 10000, 2, 34)),
-                    new HistoricalDataMessage(reqId, new Bar("", 10.0, 13.9, 9.7, 9.8, 10000, 2, 34)),
-                    new ErrorMessage(reqId, 23, "", ""),
-                    new HistoricalDataEndMessage(reqId, "", "")
-                };
+        //        requestDictionary[reqId] = new ConcurrentBag<object>
+        //        {
+        //            new HistoricalDataMessage(reqId, new Bar("", 10.0, 13.9, 9.7, 9.8, 10000, 2, 34)),
+        //            new HistoricalDataMessage(reqId, new Bar("", 10.0, 13.9, 9.7, 9.8, 10000, 2, 34)),
+        //            new ErrorMessage(reqId, 23, "", ""),
+        //            new HistoricalDataEndMessage(reqId, "", "")
+        //        };
 
-            }
-        }
+        //    }
+        //}
     }
 }
