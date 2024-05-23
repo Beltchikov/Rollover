@@ -102,7 +102,6 @@ namespace PortfolioTrader.Commands
                     whatToShow,
                     useRTH,
                     1,
-                    keepUpToDate,
                     [],
                     App.TIMEOUT,
                     (d) => { barLow = d.Low; barHigh = d.High; },

@@ -64,7 +64,6 @@ namespace PortfolioTrader.Commands
                     whatToShow,
                     useRTH,
                     1,
-                    keepUpToDate,
                     [],
                     App.TIMEOUT,
                     (d) => { 
@@ -109,7 +108,6 @@ namespace PortfolioTrader.Commands
                     whatToShow,
                     useRTH,
                     1,
-                    keepUpToDate,
                     [],
                     App.TIMEOUT,
                     (d) =>
