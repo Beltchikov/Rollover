@@ -17,7 +17,7 @@
                             <ColumnDefinition></ColumnDefinition>
                         </Grid.ColumnDefinitions>
 
-                        <Button>...</Button>
+                        <Button Width="25">...</Button>
                         <TextBlock Grid.Column="1" Text="{Binding Symbol}"></TextBlock>
                     </Grid>
                 </DataTemplate>
