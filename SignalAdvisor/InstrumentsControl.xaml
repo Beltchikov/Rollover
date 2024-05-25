@@ -22,8 +22,8 @@
                             <ColumnDefinition></ColumnDefinition>
                         </Grid.ColumnDefinitions>
 
-                        <Button Width="25">...</Button>
-                        <TextBlock Grid.Column="1" Text="{Binding Symbol}"></TextBlock>
+                        <Button Width="25" FontWeight="Bold">...</Button>
+                        <TextBlock Grid.Column="1" FontSize="14" Padding="5 0 0 5" Text="{Binding Symbol}"></TextBlock>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -35,8 +35,8 @@
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
-                    <Button Width="25">...</Button>
-                    <TextBlock Grid.Column="1" Text="NVDA"></TextBlock>
+                    <Button Width="25" FontWeight="Bold">...</Button>
+                    <TextBlock Grid.Column="1" FontSize="14" Padding="5 0 0 5" Text="NVDA"></TextBlock>
                 </Grid>
             </ListBoxItem>
 
@@ -47,8 +47,8 @@
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
-                    <Button Width="25">...</Button>
-                    <TextBlock Grid.Column="1" Text="MSFT"></TextBlock>
+                    <Button Width="25" FontWeight="Bold">...</Button>
+                    <TextBlock Grid.Column="1" FontSize="14" Padding="5 0 0 5" Text="MSFT"></TextBlock>
                 </Grid>
             </ListBoxItem>-->
 
