@@ -19,7 +19,6 @@ namespace SignalAdvisor
             Instruments.Add(new Instrument() { Symbol = "MSFT" });
 
             DataContext = this;
-            //DataContext = new InstrumentsViewModel();
         }
 
 
