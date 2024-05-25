@@ -14,5 +14,6 @@ namespace SignalAdvisor.Commands
         void AddBar(IBApi.Contract contract, HistoricalDataMessage historicalDataMessage);
         bool RequestPositionsExecuted { get; set; }
         bool RequestHistoricalDataExecuted { get; set; }
+        string Symbols { get; set; }
     }
 }
