@@ -52,7 +52,7 @@
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="30"/>
-               <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
             <Label Foreground="#FF17DC17" FontSize="14">Open Postions:</Label>
@@ -80,8 +80,15 @@
             </Label>
             <CheckBox Grid.Row="1" Grid.Column="7" VerticalAlignment="Center"></CheckBox>
 
-            <TextBox Grid.Row="1" Grid.ColumnSpan="6" Grid.RowSpan="2"
+            <TextBox Grid.Row="2" Grid.RowSpan="2"
+                 Text="{Binding Symbols}"
+                 TextWrapping="Wrap" VerticalAlignment="Stretch" 
+                 AcceptsReturn="True" FontSize="20" FontWeight="Bold" >
+            </TextBox>
+
+            <TextBox Grid.Row="1" Grid.Column="5" Grid.RowSpan="2"
                      Text="{Binding SignalsAsText}"
+                     Background="Red"
                      TextWrapping="Wrap" VerticalAlignment="Stretch" 
                     AcceptsReturn="True" FontSize="20" FontWeight="Bold" >
             </TextBox>

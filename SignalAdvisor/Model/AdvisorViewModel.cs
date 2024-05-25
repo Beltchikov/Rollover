@@ -22,6 +22,7 @@ namespace SignalAdvisor.Model
         private ObservableCollection<string> _twsMessageColllection = [];
         private int _openOrders;
         private string _lastCheck;
+        private string _symbols;
         private string _signalsAsText;
         private ObservableCollection<PositionMessage> _positions = [];
         private ObservableCollection<KeyValuePair<string, List<Ta.Bar>>> _bars = [];
@@ -73,7 +74,7 @@ namespace SignalAdvisor.Model
                 var lastBar = Bars.For(liveDataMessage.Contract.ToString()).Last();
                 var barBefore = Bars.For(liveDataMessage.Contract.ToString()).SkipLast(1).Last();
 
-                if (lastBar.Time != barBefore.Time) 
+                if (lastBar.Time != barBefore.Time)
                     NewBar(liveDataMessage.Contract, lastBar.Time);
             }
         }
@@ -87,7 +88,7 @@ namespace SignalAdvisor.Model
             await Task.Run(() => { while (!RequestHistoricalDataExecuted) { } });
         }
 
-        private void NewBar(Contract  contract, DateTimeOffset newBarTime)
+        private void NewBar(Contract contract, DateTimeOffset newBarTime)
         {
             LastCheck = newBarTime.ToString("HH:mm:ss");
             var contractString = contract.ToString();
@@ -187,6 +188,16 @@ namespace SignalAdvisor.Model
             set
             {
                 SetProperty(ref _lastCheck, value);
+            }
+        }
+
+
+        public string Symbols
+        {
+            get => _symbols;
+            set
+            {
+                SetProperty(ref _symbols, value);
             }
         }
 
