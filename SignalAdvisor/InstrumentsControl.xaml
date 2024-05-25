@@ -12,6 +12,8 @@
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="Padding" Value="0"/>
+                    <Setter Property="BorderThickness" Value="1" />
+                    <Setter Property="BorderBrush" Value="Black" />
                 </Style>
             </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
