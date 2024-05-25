@@ -27,6 +27,7 @@ namespace SignalAdvisor.Model
         private ObservableCollection<PositionMessage> _positions = [];
         private ObservableCollection<KeyValuePair<string, List<Ta.Bar>>> _bars = [];
         private ObservableCollection<KeyValuePair<string, List<int>>> _signals = [];
+        private ObservableCollection<Instrument> _instruments = [];
         private static System.Timers.Timer _timer;
         private static readonly string SESSION_START = "15:30";
         private Dispatcher _dispatcher = App.Current?.Dispatcher ?? throw new Exception("Unexpected. App.Current?.Dispatcher is null");
@@ -239,6 +240,15 @@ namespace SignalAdvisor.Model
             set
             {
                 SetProperty(ref _signals, value);
+            }
+        }
+
+        public ObservableCollection<Instrument> Instruments
+        {
+            get => _instruments;
+            set
+            {
+                SetProperty(ref _instruments, value);
             }
         }
 

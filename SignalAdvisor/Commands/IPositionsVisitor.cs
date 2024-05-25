@@ -1,4 +1,5 @@
 ﻿using IBSampleApp.messages;
+using SignalAdvisor.Model;
 using System.Collections.ObjectModel;
 using Ta;
 
@@ -9,6 +10,7 @@ namespace SignalAdvisor.Commands
         ObservableCollection<PositionMessage> Positions { get; }
         ObservableCollection<KeyValuePair<string, List<Bar>>> Bars { get; }
         ObservableCollection<KeyValuePair<string, List<int>>> Signals { get; }
+        ObservableCollection<Instrument> Instruments { get;}
 
         void OnPropertyChanged(string propertyName);
         void AddBar(IBApi.Contract contract, HistoricalDataMessage historicalDataMessage);

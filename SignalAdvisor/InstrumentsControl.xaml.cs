@@ -1,7 +1,9 @@
 ﻿using SignalAdvisor.Model;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace SignalAdvisor
 {
@@ -10,7 +12,7 @@ namespace SignalAdvisor
     /// </summary>
     public partial class InstrumentsControl : UserControl
     {
-        
+
         public InstrumentsControl()
         {
             InitializeComponent();
@@ -20,8 +22,6 @@ namespace SignalAdvisor
 
             DataContext = this;
         }
-
-
 
         public ObservableCollection<Instrument> Instruments
         {
@@ -36,11 +36,5 @@ namespace SignalAdvisor
                 typeof(ObservableCollection<Instrument>),
                 typeof(InstrumentsControl),
                 new PropertyMetadata(new ObservableCollection<Instrument>()));
-
-
-
-       
-
-
     }
 }
