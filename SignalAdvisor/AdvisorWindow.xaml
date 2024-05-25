@@ -80,7 +80,7 @@
             </Label>
             <CheckBox Grid.Row="1" Grid.Column="7" VerticalAlignment="Center"></CheckBox>
 
-            <Button Command="{Binding UpdateSymbolsCommand}"
+            <Button Command="{Binding UpdateSymbolsCommand}" Margin="0 0 0 5"
                     Grid.Row="1">Update Symbols</Button>
             <TextBox Grid.Row="2" Grid.RowSpan="2"
                  Text="{Binding Symbols}"
