@@ -22,6 +22,31 @@
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
+
+            <!--<ListBoxItem>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Width="25">...</Button>
+                    <TextBlock Grid.Column="1" Text="NVDA"></TextBlock>
+                </Grid>
+            </ListBoxItem>
+
+            <ListBoxItem>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Width="25">...</Button>
+                    <TextBlock Grid.Column="1" Text="MSFT"></TextBlock>
+                </Grid>
+            </ListBoxItem>-->
+
         </ListBox>
     </Grid>
 </UserControl>
