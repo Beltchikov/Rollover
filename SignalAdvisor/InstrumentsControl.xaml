@@ -11,7 +11,15 @@
              ItemsSource="{Binding Instruments, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Symbol}"></TextBlock>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Button>...</Button>
+                        <TextBlock Grid.Column="1" Text="{Binding Symbol}"></TextBlock>
+                    </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
