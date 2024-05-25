@@ -7,6 +7,12 @@ namespace SignalAdvisor.Model
     {
         private ObservableCollection<Instrument> _instruments = [];
 
+        public InstrumentsViewModel()
+        {
+            Instruments.Add(new Instrument() { Symbol = "NVDA" });
+            Instruments.Add(new Instrument() { Symbol = "MSFT" });
+        }
+
         public ObservableCollection<Instrument> Instruments
         {
             get => _instruments;
