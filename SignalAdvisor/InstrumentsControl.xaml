@@ -9,6 +9,11 @@
     <Grid>
         <ListBox Name="listBoxInstruments" Grid.Row="1" Grid.Column="1" 
              ItemsSource="{Binding Instruments, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Padding" Value="0"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -23,7 +28,7 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
 
-            <!--<ListBoxItem>
+            <!--<ListBoxItem Padding="0">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
@@ -35,7 +40,7 @@
                 </Grid>
             </ListBoxItem>
 
-            <ListBoxItem>
+            <ListBoxItem Padding="0">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
