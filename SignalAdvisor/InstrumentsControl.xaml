@@ -22,10 +22,17 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition></ColumnDefinition>
                             <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
                         </Grid.ColumnDefinitions>
 
                         <Button Width="25" FontWeight="Bold">...</Button>
-                        <TextBlock Grid.Column="1" FontSize="14" Padding="5 0 0 5" Text="{Binding Symbol}"></TextBlock>
+                        <TextBlock Grid.Column="1" FontSize="14" Padding="5 0 0 5" 
+                                    Width="80" Text="{Binding Symbol}"></TextBlock>
+                        <TextBlock Grid.Column="2" Padding="5 0 5 0" Text="LONG" 
+                            Background="LightGreen" Foreground="Green">
+                        </TextBlock>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -35,10 +42,16 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
                     <Button Width="25" FontWeight="Bold">...</Button>
-                    <TextBlock Grid.Column="1" FontSize="14" Padding="5 0 0 5" Text="NVDA"></TextBlock>
+                    <TextBlock Grid.Column="1" FontSize="14" Padding="5 0 5 0" 
+                               Width="80" Text="NVDA"></TextBlock>
+                    <TextBlock Grid.Column="2" Padding="5 0 5 0" Text="LONG" 
+                               Background="LightGreen" Foreground="Green"></TextBlock>
                 </Grid>
             </ListBoxItem>
 
@@ -47,10 +60,17 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
                     <Button Width="25" FontWeight="Bold">...</Button>
-                    <TextBlock Grid.Column="1" FontSize="14" Padding="5 0 0 5" Text="MSFT"></TextBlock>
+                    <TextBlock Grid.Column="1" FontSize="14" Padding="5 0 5 0" 
+                               Width="80" Text="MSFT"></TextBlock>
+                    <TextBlock Grid.Column="2" Padding="5 0 5 0" Text="LONG" 
+           Background="LightGreen" Foreground="Green"></TextBlock>
+                    
                 </Grid>
             </ListBoxItem>-->
 
