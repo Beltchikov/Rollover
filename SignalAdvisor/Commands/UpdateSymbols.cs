@@ -15,6 +15,7 @@ namespace SignalAdvisor.Commands
             var symbolsSplitted = visitor.Symbols.Split(Environment.NewLine) ?? throw new Exception("symbolsSplitted is null");
             var instrumentsToAdd = symbolsSplitted.Select(s => new Instrument() { Symbol = s }).ToList() ?? throw new Exception("instrumentsToAdd is null");
 
+            visitor.Instruments.Clear();    
             foreach (var instruments in instrumentsToAdd)
             {
                 visitor.Instruments.Add(instruments);
