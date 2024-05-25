@@ -1,9 +1,7 @@
 ﻿using SignalAdvisor.Model;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace SignalAdvisor
 {
@@ -16,11 +14,6 @@ namespace SignalAdvisor
         public InstrumentsControl()
         {
             InitializeComponent();
-
-            Instruments.Add(new Instrument() { Symbol = "NVDA" });
-            Instruments.Add(new Instrument() { Symbol = "MSFT" });
-
-            DataContext = this;
         }
 
         public ObservableCollection<Instrument> Instruments

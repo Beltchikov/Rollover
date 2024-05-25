@@ -35,7 +35,6 @@ namespace SignalAdvisor.Model
         ICommand RequestPositionsCommand;
         ICommand RequestHistoricalDataCommand;
         public ICommand UpdateSymbolsCommand { get; }
-
         public ICommand ConnectToTwsCommand { get; }
 
         public AdvisorViewModel()
@@ -52,6 +51,7 @@ namespace SignalAdvisor.Model
 
             OpenOrders = 7;
             LastCheck = "";
+            Symbols = "NVDA\r\nMSFT";
         }
 
         private void _timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
