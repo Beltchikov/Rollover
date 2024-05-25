@@ -43,7 +43,7 @@ namespace SignalAdvisor.Model
             RequestPositionsCommand = new RelayCommand(async () => await RequestPositions.RunAsync(this));
             RequestHistoricalDataCommand = new RelayCommand(async () => await RequestHistoricalData.RunAsync(this));
             ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
-            UpdateSymbolsCommand = new RelayCommand(async () => await UpdateSymbols.RunAsync(this));
+            UpdateSymbolsCommand = new RelayCommand(() => UpdateSymbols.Run(this));
 
             _timer = new System.Timers.Timer(2000);
             _timer.Elapsed += _timer_Elapsed;

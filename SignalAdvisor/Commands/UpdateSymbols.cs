@@ -5,11 +5,8 @@ namespace SignalAdvisor.Commands
 {
     class UpdateSymbols
     {
-        public static async Task RunAsync(IPositionsVisitor visitor)
+        public static void Run(IPositionsVisitor visitor)
         {
-            await Task.Run(() => { });
-
-
             if (string.IsNullOrEmpty(visitor.Symbols))
             {
                 MessageBox.Show("Please input the symbols.");
