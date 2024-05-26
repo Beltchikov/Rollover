@@ -9,7 +9,6 @@ using SignalAdvisor.Extensions;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Ta;
 
 namespace SignalAdvisor.Model
 {
@@ -50,7 +49,11 @@ namespace SignalAdvisor.Model
 
             OpenOrders = 7;
             LastCheck = "";
-            Symbols = "NVDA\r\nMSFT";
+
+
+            // Test Data
+            //Symbols = "NVDA\r\nMSFT";
+            Symbols = TestData();
         }
 
         private void _timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
@@ -245,5 +248,12 @@ namespace SignalAdvisor.Model
 
         public bool RequestPositionsExecuted { get; set; }
         public bool RequestHistoricalDataExecuted { get; set; }
+
+        private string TestData()
+        {
+            return @"229612256	AIR
+29612111	BN
+";
+        }
     }
 }

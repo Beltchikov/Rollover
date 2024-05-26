@@ -12,10 +12,17 @@ namespace SignalAdvisor.Commands
                 MessageBox.Show("Please input the symbols.");
                 return;
             }
-            var symbolsSplitted = visitor.Symbols.Split(Environment.NewLine) ?? throw new Exception("symbolsSplitted is null");
-            var instrumentsToAdd = symbolsSplitted.Select(s => new Instrument() { Symbol = s }).ToList() ?? throw new Exception("instrumentsToAdd is null");
+            
+            var instrumentsTextSplitted = visitor.Symbols.Split(Environment.NewLine) ?? throw new Exception("instrumentsTextSplitted is null");
+            List<Instrument> instrumentsToAdd = new List<Instrument>();
+            foreach(var instrumentText in instrumentsTextSplitted)
+            { 
+                if(string.IsNullOrEmpty(instrumentText)) continue;
+                var instrument = Instrument.FromTabbedLine(instrumentText);
+                instrumentsToAdd.Add(instrument);   
+            }
 
-            visitor.Instruments.Clear();    
+            visitor.Instruments.Clear();
             foreach (var instruments in instrumentsToAdd)
             {
                 visitor.Instruments.Add(instruments);
