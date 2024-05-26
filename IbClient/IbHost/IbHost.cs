@@ -483,8 +483,7 @@ namespace IbClient.IbHost
             await Task.Run(() =>
             {
                 var startTime = DateTime.Now;   
-                //if ((DateTime.Now - startTime).TotalMilliseconds >= timeout)
-                while (!HasHistoricalDataEndMessage(reqId, _requestDictionary)
+                while (!HasMessageForRequest<HistoricalDataEndMessage>(reqId, _requestDictionary)
                     && (DateTime.Now - startTime).TotalMilliseconds < timeout) { }
 
                 try
@@ -510,14 +509,14 @@ namespace IbClient.IbHost
         }
 
         // TODO make generic
-        private bool HasHistoricalDataEndMessage(int reqId, ConcurrentDictionary<int, ConcurrentBag<object>> requestDictionary)
+        private bool HasMessageForRequest<T>(int reqId, ConcurrentDictionary<int, ConcurrentBag<object>> requestDictionary)
         {
             object lockObject = new object();
 
             lock (lockObject)
             {
                 var historicalDataEndMessageList = new ConcurrentBag<object>(requestDictionary[reqId].ToArray());  
-                var historicalDataEndMessage = historicalDataEndMessageList.FirstOrDefault(m => m is HistoricalDataEndMessage);
+                var historicalDataEndMessage = historicalDataEndMessageList.FirstOrDefault(m => m is T);
                 if (historicalDataEndMessage != null)
                 {
                     ConcurrentBag<object> bagCopy = new ConcurrentBag<object>(requestDictionary[reqId]);
