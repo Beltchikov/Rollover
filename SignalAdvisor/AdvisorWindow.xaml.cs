@@ -1,4 +1,5 @@
-﻿using SignalAdvisor.Model;
+﻿using SignalAdvisor.Controls;
+using SignalAdvisor.Model;
 using System.Windows;
 
 namespace SignalAdvisor
@@ -13,9 +14,9 @@ namespace SignalAdvisor
             InitializeComponent();
         }
 
-        private void InstrumentsControl_TradeAction(object sender, EventArgs e)
+        private void InstrumentsControl_TradeAction(object sender, TradeActionEventArgs e)
         {
-
+            var i = e.Instrument;
         }
     }
 }

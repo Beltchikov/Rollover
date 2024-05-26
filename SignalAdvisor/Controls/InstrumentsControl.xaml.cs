@@ -14,30 +14,30 @@ namespace SignalAdvisor.Controls
         public InstrumentsControl()
         {
             InitializeComponent();
+
+            TradeAction = null!;
         }
 
+        public static readonly DependencyProperty InstrumentsProperty =
+           DependencyProperty.Register(
+               "Instruments",
+               typeof(ObservableCollection<Instrument>),
+               typeof(InstrumentsControl),
+               new PropertyMetadata(new ObservableCollection<Instrument>()));
         public ObservableCollection<Instrument> Instruments
         {
             get { return (ObservableCollection<Instrument>)GetValue(InstrumentsProperty); }
             set { SetValue(InstrumentsProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for Instruments.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty InstrumentsProperty =
-            DependencyProperty.Register(
-                "Instruments",
-                typeof(ObservableCollection<Instrument>),
-                typeof(InstrumentsControl),
-                new PropertyMetadata(new ObservableCollection<Instrument>()));
-
-        public event EventHandler TradeAction;
+        public event EventHandler<TradeActionEventArgs> TradeAction;
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var instrument = ((Button)sender).Tag as Instrument;
+            var instrument = ((Button)sender).Tag as Instrument ?? throw new Exception();
 
             if (TradeAction != null)
-                TradeAction(this, new EventArgs());
+                TradeAction(this, new TradeActionEventArgs(instrument));
         }
     }
 }
