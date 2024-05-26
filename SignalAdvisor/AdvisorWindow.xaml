@@ -89,8 +89,8 @@
                  AcceptsReturn="True">
             </TextBox>
 
-            <controls:InstrumentsControl Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="7"
-                                      Instruments="{Binding Instruments}"></controls:InstrumentsControl>
+            <controls:InstrumentsControl  Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="7"
+                                      Instruments="{Binding Instruments}" TradeAction="InstrumentsControl_TradeAction"></controls:InstrumentsControl>
 
         </Grid>
 

@@ -30,9 +30,14 @@ namespace SignalAdvisor.Controls
                 typeof(InstrumentsControl),
                 new PropertyMetadata(new ObservableCollection<Instrument>()));
 
+        public event EventHandler TradeAction;
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var instrument = ((Button)sender).Tag as Instrument;   
+            var instrument = ((Button)sender).Tag as Instrument;
+
+            if (TradeAction != null)
+                TradeAction(this, new EventArgs());
         }
     }
 }

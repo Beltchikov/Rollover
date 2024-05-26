@@ -12,5 +12,10 @@ namespace SignalAdvisor
         {
             InitializeComponent();
         }
+
+        private void InstrumentsControl_TradeAction(object sender, EventArgs e)
+        {
+
+        }
     }
 }
