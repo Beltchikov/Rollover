@@ -16,8 +16,8 @@
             {
                 ConId = Int32.Parse(instrumentTextSplitted[0]),
                 Symbol = instrumentTextSplitted[1],
-                StopLoss = Int32.Parse(instrumentTextSplitted[2]),
-                TakeProfit = Int32.Parse(instrumentTextSplitted[3]),
+                StopLossInCents = Int32.Parse(instrumentTextSplitted[2]),
+                TakeProfitInCents = Int32.Parse(instrumentTextSplitted[3]),
                 Quantity = Int32.Parse(instrumentTextSplitted[4])
             };
         }
@@ -28,8 +28,8 @@
         public DateTime LastSignalTime { get; set; }    
         public string LastSignal { get; set; }    
         public string Algo { get; set; }    
-        public double StopLoss { get; set; }    
-        public double TakeProfit { get; set; }    
+        public double StopLossInCents { get; set; }    
+        public double TakeProfitInCents { get; set; }    
         public int Quantity { get; set; }
 
        
