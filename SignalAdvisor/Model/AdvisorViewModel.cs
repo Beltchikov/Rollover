@@ -23,7 +23,6 @@ namespace SignalAdvisor.Model
         private int _openOrders;
         private string _lastCheck;
         private string _symbols;
-        private string _signalsAsText;
         private ObservableCollection<PositionMessage> _positions = [];
         private ObservableCollection<KeyValuePair<string, List<Ta.Bar>>> _bars = [];
         private ObservableCollection<KeyValuePair<string, List<int>>> _signals = [];
@@ -101,12 +100,12 @@ namespace SignalAdvisor.Model
 
             if (Ta.Signals.OppositeColor(forLongTrade: true, Bars.For(contractString), Signals.For(contractString)) != 0)
             {
-                SignalsAsText = $"{LastCheck} POSITION {contractString} OppositeColor {Environment.NewLine}{SignalsAsText}";
+                //SignalsAsText = $"{LastCheck} POSITION {contractString} OppositeColor {Environment.NewLine}{SignalsAsText}";
             }
 
             if (Ta.Signals.InsideUpDown(Bars.For(contractString), Signals.For(contractString)) != 0)
             {
-                SignalsAsText = $"{LastCheck} POSITION {contractString} InsideUpDown {Environment.NewLine}{SignalsAsText}";
+                //SignalsAsText = $"{LastCheck} POSITION {contractString} InsideUpDown {Environment.NewLine}{SignalsAsText}";
             }
         }
 
@@ -204,15 +203,6 @@ namespace SignalAdvisor.Model
             set
             {
                 SetProperty(ref _symbols, value);
-            }
-        }
-
-        public string SignalsAsText
-        {
-            get => _signalsAsText;
-            set
-            {
-                SetProperty(ref _signalsAsText, value);
             }
         }
 

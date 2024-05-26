@@ -51,10 +51,10 @@
                         <TextBlock Grid.Column="6" Padding="5 0 0 5" 
                             Width="80" Text="{Binding StopLoss}">
                         </TextBlock>
-                        <TextBlock Grid.Column="6" Padding="5 0 0 5" 
+                        <TextBlock Grid.Column="7" Padding="5 0 0 5" 
                             Width="80" Text="{Binding TakeProfit}">
                         </TextBlock>
-                        <TextBlock Grid.Column="6" Padding="5 0 0 5" 
+                        <TextBlock Grid.Column="8" Padding="5 0 0 5" 
                             Width="80" Text="{Binding Quantity}">
                         </TextBlock>
                     </Grid>     

@@ -88,15 +88,8 @@
                  AcceptsReturn="True">
             </TextBox>
 
-            <local:InstrumentsControl Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="3"
+            <local:InstrumentsControl Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="7"
                                       Instruments="{Binding Instruments}"></local:InstrumentsControl>
-
-            <TextBox Grid.Row="1" Grid.Column="5" Grid.RowSpan="2"
-                     Text="{Binding SignalsAsText}"
-                     Background="Red"
-                     TextWrapping="Wrap" VerticalAlignment="Stretch" 
-                    AcceptsReturn="True" FontSize="20" FontWeight="Bold" >
-            </TextBox>
 
         </Grid>
 
