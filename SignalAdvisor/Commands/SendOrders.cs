@@ -25,6 +25,8 @@ namespace SignalAdvisor.Commands
             //(double? price, TickType? tickType, string error)
             //       = await visitor.IbHost.RequestMktData(contract, "", true, false, null, App.TIMEOUT * 12);
 
+            // cancelMarketData
+
 
             return;
         }

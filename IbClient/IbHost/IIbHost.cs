@@ -50,7 +50,7 @@ namespace IbClient.IbHost
             List<TagValue> mktDataOptions,
             int timeout);
 
-        Task RequestMktData(
+        Task<int> RequestMktData(
          Contract contract,
          string genericTickList,
          bool snapshot,

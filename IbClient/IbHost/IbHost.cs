@@ -346,7 +346,7 @@ namespace IbClient.IbHost
             return (tickPriceMessage?.Price, (TickType?)tickPriceMessage?.Field, errorText);
         }
 
-        public async Task RequestMktData(
+        public async Task<int> RequestMktData(
            Contract contract,
            string genericTickList,
            bool snapshot,
@@ -364,12 +364,13 @@ namespace IbClient.IbHost
 
             throw new NotImplementedException();
 
-            //var reqId = ++_currentReqId;
+            var reqId = ++_currentReqId;
             //_ibClient.ClientSocket.reqMktData(
             //    reqId, contract, genericTickList, snapshot, regulatorySnapshot, mktDataOptions);
 
 
-            //client.cancelMktData(1019);
+            
+            return reqId;
 
 
         }
