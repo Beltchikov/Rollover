@@ -363,12 +363,15 @@ namespace IbClient.IbHost
             });
 
             throw new NotImplementedException();
-            
+
             //var reqId = ++_currentReqId;
             //_ibClient.ClientSocket.reqMktData(
             //    reqId, contract, genericTickList, snapshot, regulatorySnapshot, mktDataOptions);
 
-           
+
+            //client.cancelMktData(1019);
+
+
         }
 
         public async Task RequestHistoricalAndSubscribeAsync(
@@ -505,6 +508,7 @@ namespace IbClient.IbHost
             }
         }
 
+        // TODO make generic
         private bool HasHistoricalDataEndMessage(int reqId, ConcurrentDictionary<int, ConcurrentBag<object>> requestDictionary)
         {
             object lockObject = new object();
