@@ -251,8 +251,9 @@ namespace SignalAdvisor.Model
 
         private string TestData()
         {
-            return @"229612256	AIR
-29612111	BN
+            return @"229612256	AIR	 1400 	 14 	0
+29612111	BN	 420 	 5 	0
+
 ";
         }
     }

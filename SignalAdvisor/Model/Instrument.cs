@@ -15,7 +15,10 @@
             return new Instrument()
             {
                 ConId = Int32.Parse(instrumentTextSplitted[0]),
-                Symbol = instrumentTextSplitted[1]
+                Symbol = instrumentTextSplitted[1],
+                StopLoss = Int32.Parse(instrumentTextSplitted[2]),
+                TakeProfit = Int32.Parse(instrumentTextSplitted[3]),
+                Quantity = Int32.Parse(instrumentTextSplitted[4])
             };
         }
 
