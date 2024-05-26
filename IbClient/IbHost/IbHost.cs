@@ -6,6 +6,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using TickType = IbClient.Types.TickType;
 
@@ -483,7 +484,7 @@ namespace IbClient.IbHost
             await Task.Run(() =>
             {
                 var startTime = DateTime.Now;   
-                while (!HasMessageForRequest<HistoricalDataEndMessage>(reqId, _requestDictionary)
+                while (RemoveResponseForRequest<HistoricalDataEndMessage>(reqId, _requestDictionary) == null
                     && (DateTime.Now - startTime).TotalMilliseconds < timeout) { }
 
                 try
@@ -509,7 +510,7 @@ namespace IbClient.IbHost
         }
 
         // TODO make generic
-        private bool HasMessageForRequest<T>(int reqId, ConcurrentDictionary<int, ConcurrentBag<object>> requestDictionary)
+        private T RemoveResponseForRequest<T>(int reqId, ConcurrentDictionary<int, ConcurrentBag<object>> requestDictionary) where T: class
         {
             object lockObject = new object();
 
@@ -517,6 +518,8 @@ namespace IbClient.IbHost
             {
                 var historicalDataEndMessageList = new ConcurrentBag<object>(requestDictionary[reqId].ToArray());  
                 var historicalDataEndMessage = historicalDataEndMessageList.FirstOrDefault(m => m is T);
+                var historicalDataEndMessageCopy = JsonSerializer.Deserialize<T>(JsonSerializer.Serialize(historicalDataEndMessage));
+                
                 if (historicalDataEndMessage != null)
                 {
                     ConcurrentBag<object> bagCopy = new ConcurrentBag<object>(requestDictionary[reqId]);
@@ -525,10 +528,10 @@ namespace IbClient.IbHost
                     bagCopy = new ConcurrentBag<object>(listCopy);
 
                     requestDictionary[reqId] = bagCopy;
-                    return true;
+                    return historicalDataEndMessageCopy as T;
                 }
 
-                return false;
+                return null;
             }
         }
 
