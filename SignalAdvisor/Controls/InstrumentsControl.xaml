@@ -32,7 +32,9 @@
                             <ColumnDefinition></ColumnDefinition>
                         </Grid.ColumnDefinitions>
 
-                        <Button Width="25" FontWeight="Bold">...</Button>
+                        <TextBlock Grid.Column="0" FontSize="14" Padding="5 0 0 5" 
+                                    Width="80" Text="{Binding ConId}">
+                        </TextBlock>
                         <TextBlock Grid.Column="1" FontSize="14" Padding="5 0 0 5" 
                                     Width="80" Text="{Binding Symbol}"></TextBlock>
                         <TextBlock Grid.Column="2" Padding="5 2 5 0" Text="LONG" 

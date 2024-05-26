@@ -9,6 +9,7 @@
             Algo = null!;
         }
 
+        public int ConId { get; set; }    
         public string Symbol { get; set; }    
         public bool IsLong { get; set; }    
         public DateTime LastSignalTime { get; set; }    
