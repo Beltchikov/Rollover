@@ -63,6 +63,7 @@ namespace IbClient.IbHost
             _ibClient.SymbolSamples += _ibClient_SymbolSamples;
             _ibClient.FundamentalData += _ibClient_FundamentalData;
             _ibClient.TickPrice += _ibClient_TickPrice;
+            _ibClient.TickSize += _ibClient_TickSize; 
             _ibClient.TickSnapshotEnd += _ibClient_TickSnapshotEnd;
             _ibClient.OpenOrder += _ibClient_OpenOrder;
             _ibClient.OrderStatus += _ibClient_OrderStatus;
@@ -311,6 +312,7 @@ namespace IbClient.IbHost
             return fundamentalsMessageString;
         }
 
+        [Obsolete]
         public async Task<(double?, TickType?, string)> RequestMktData(
             Contract contract,
             string genericTickList,
@@ -342,6 +344,31 @@ namespace IbClient.IbHost
             var errorText = errorMessage == null
                 ? "" : $"Error: reqId:{errorMessage.RequestId} code:{errorMessage.ErrorCode} message:{errorMessage.Message}";
             return (tickPriceMessage?.Price, (TickType?)tickPriceMessage?.Field, errorText);
+        }
+
+        public async Task RequestMktData(
+           Contract contract,
+           string genericTickList,
+           bool snapshot,
+           bool regulatorySnapshot,
+           List<TagValue> mktDataOptions,
+           int timeout,
+           Action<TickPriceMessage> tickPriceCallback,
+           Action<TickSizeMessage> tickSizeCallback,
+           Action<int, int, string, string, Exception> errorCallback)
+        {
+            await Task.Run(() =>
+            {
+               
+            });
+
+            throw new NotImplementedException();
+            
+            //var reqId = ++_currentReqId;
+            //_ibClient.ClientSocket.reqMktData(
+            //    reqId, contract, genericTickList, snapshot, regulatorySnapshot, mktDataOptions);
+
+           
         }
 
         public async Task RequestHistoricalAndSubscribeAsync(
@@ -805,6 +832,11 @@ namespace IbClient.IbHost
                 $"field:{tickPriceMessage.Field} price:{tickPriceMessage.Price}");
 
             _queueTickPriceMessage.Enqueue(tickPriceMessage);
+        }
+
+        private void _ibClient_TickSize(TickSizeMessage tickSizeMessage)
+        {
+            // TODO
         }
 
         private void _ibClient_TickSnapshotEnd(int reqId)

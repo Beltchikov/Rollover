@@ -41,6 +41,7 @@ namespace IbClient.IbHost
                     Contract contract,
                     string reportType,
                     int timeout);
+        [Obsolete]
         Task<(double?, TickType?, string)> RequestMktData(
             Contract contract,
             string genericTickList,
@@ -48,6 +49,17 @@ namespace IbClient.IbHost
             bool regulatorySnapshot,
             List<TagValue> mktDataOptions,
             int timeout);
+
+        Task RequestMktData(
+         Contract contract,
+         string genericTickList,
+         bool snapshot,
+         bool regulatorySnapshot,
+         List<TagValue> mktDataOptions,
+         int timeout,
+         Action<TickPriceMessage> tickPriceCallback,
+         Action<TickSizeMessage> tickSizeCallback,
+         Action<int, int, string, string, Exception> errorCallback);
 
         Task RequestHistoricalAndSubscribeAsync(
             Contract contractBuy,
