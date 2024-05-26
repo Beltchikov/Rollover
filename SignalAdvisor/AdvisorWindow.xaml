@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SignalAdvisor"
+        xmlns:controls="clr-namespace:SignalAdvisor.Controls"
         xmlns:tws_uc="clr-namespace:TwsUserControls;assembly=TwsUserControls"
         xmlns:converters="clr-namespace:SignalAdvisor.Converters"
         mc:Ignorable="d"
@@ -88,8 +89,8 @@
                  AcceptsReturn="True">
             </TextBox>
 
-            <local:InstrumentsControl Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="7"
-                                      Instruments="{Binding Instruments}"></local:InstrumentsControl>
+            <controls:InstrumentsControl Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="7"
+                                      Instruments="{Binding Instruments}"></controls:InstrumentsControl>
 
         </Grid>
 

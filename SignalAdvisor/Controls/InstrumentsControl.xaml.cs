@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace SignalAdvisor
+namespace SignalAdvisor.Controls
 {
     /// <summary>
     /// Interaction logic for InstrumentsControl.xaml
