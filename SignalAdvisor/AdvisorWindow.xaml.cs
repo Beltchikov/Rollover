@@ -16,7 +16,10 @@ namespace SignalAdvisor
 
         private void InstrumentsControl_TradeAction(object sender, TradeActionEventArgs e)
         {
-            var i = e.Instrument;
+            var instrument = e.Instrument;
+
+            MessageBox.Show($"TODO: call PlaceOrder for {instrument.Symbol}");
+
         }
     }
 }
