@@ -29,5 +29,10 @@ namespace SignalAdvisor
                 typeof(ObservableCollection<Instrument>),
                 typeof(InstrumentsControl),
                 new PropertyMetadata(new ObservableCollection<Instrument>()));
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var instrument = ((Button)sender).Tag as Instrument;   
+        }
     }
 }
