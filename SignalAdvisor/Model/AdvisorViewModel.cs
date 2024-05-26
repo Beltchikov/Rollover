@@ -32,8 +32,9 @@ namespace SignalAdvisor.Model
 
         ICommand RequestPositionsCommand;
         ICommand RequestHistoricalDataCommand;
-        public ICommand UpdateSymbolsCommand { get; }
         public ICommand ConnectToTwsCommand { get; }
+        public ICommand UpdateSymbolsCommand { get; }
+        public ICommand SendOrdersCommand { get; }
 
         public AdvisorViewModel()
         {
@@ -41,6 +42,7 @@ namespace SignalAdvisor.Model
             RequestHistoricalDataCommand = new RelayCommand(async () => await RequestHistoricalData.RunAsync(this));
             ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
             UpdateSymbolsCommand = new RelayCommand(() => UpdateSymbols.Run(this));
+            SendOrdersCommand = new RelayCommand(() => SendOrders.Run(this)); 
 
             _timer = new System.Timers.Timer(2000);
             _timer.Elapsed += _timer_Elapsed;
@@ -248,6 +250,7 @@ namespace SignalAdvisor.Model
 
         public bool RequestPositionsExecuted { get; set; }
         public bool RequestHistoricalDataExecuted { get; set; }
+        public Instrument InstrumentToTrade { get; set; }
 
         private string TestData()
         {

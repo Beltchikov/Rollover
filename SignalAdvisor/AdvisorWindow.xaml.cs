@@ -16,10 +16,9 @@ namespace SignalAdvisor
 
         private void InstrumentsControl_TradeAction(object sender, TradeActionEventArgs e)
         {
-            var instrument = e.Instrument;
-
-            MessageBox.Show($"TODO: call PlaceOrder for {instrument.Symbol}");
-
+            var model = (DataContext as AdvisorViewModel) ?? throw new Exception();
+            model.InstrumentToTrade = e.Instrument;
+            model.SendOrdersCommand.Execute(model);
         }
     }
 }
