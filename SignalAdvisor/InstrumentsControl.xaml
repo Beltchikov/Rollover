@@ -25,6 +25,11 @@
                             <ColumnDefinition></ColumnDefinition>
                             <ColumnDefinition></ColumnDefinition>
                             <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
                         </Grid.ColumnDefinitions>
 
                         <Button Width="25" FontWeight="Bold">...</Button>
@@ -33,7 +38,26 @@
                         <TextBlock Grid.Column="2" Padding="5 2 5 0" Text="LONG" 
                             Background="LightGreen" Foreground="Green">
                         </TextBlock>
-                    </Grid>
+                        <TextBlock Grid.Column="3" Padding="5 0 0 5" 
+                            Width="80" Text="{Binding LastSignalTime}">
+                        </TextBlock>
+                        <TextBlock Grid.Column="4" Padding="5 0 0 5" 
+                            Width="80" Text="{Binding LastSignal}">
+                        </TextBlock>
+                        <Button Grid.Column="5" Width="125" FontWeight="Bold">Trade</Button>
+                        <TextBlock Grid.Column="6" Padding="5 0 0 5" 
+                            Width="80" Text="{Binding Algo}">
+                        </TextBlock>
+                        <TextBlock Grid.Column="6" Padding="5 0 0 5" 
+                            Width="80" Text="{Binding StopLoss}">
+                        </TextBlock>
+                        <TextBlock Grid.Column="6" Padding="5 0 0 5" 
+                            Width="80" Text="{Binding TakeProfit}">
+                        </TextBlock>
+                        <TextBlock Grid.Column="6" Padding="5 0 0 5" 
+                            Width="80" Text="{Binding Quantity}">
+                        </TextBlock>
+                    </Grid>     
                 </DataTemplate>
             </ListBox.ItemTemplate>
 
