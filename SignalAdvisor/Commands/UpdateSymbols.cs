@@ -22,10 +22,37 @@ namespace SignalAdvisor.Commands
                 instrumentsToAdd.Add(instrument);   
             }
 
-            visitor.Instruments.Clear();
-            foreach (var instruments in instrumentsToAdd)
+            if (visitor.Instruments.Any())
             {
-                visitor.Instruments.Add(instruments);
+                foreach (var instrument in instrumentsToAdd)
+                {
+                    // TODO
+                    //visitor.IbHost.CancelMktData(instrument.RequestIdMktData);
+                }
+            }
+
+            visitor.Instruments.Clear();
+            foreach (var instrument in instrumentsToAdd)
+            {
+                // TODO
+                //instrument.RequestIdMktData = requestId;
+
+                //var requestId = visitor.IbHost.RequestMktData(
+                //      contract,
+                //      "",
+                //      false,
+                //      false,
+                //      null,
+                //      visitor.TickPriceCallback,
+                //      s => { },
+                //      (r, c, m1, m2, ex) => { });
+
+                
+
+                visitor.Instruments.Add(instrument);
+
+                
+
             }
         }
     }
