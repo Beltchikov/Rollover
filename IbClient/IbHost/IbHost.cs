@@ -345,7 +345,7 @@ namespace IbClient.IbHost
             return (tickPriceMessage?.Price, (TickType?)tickPriceMessage?.Field, errorText);
         }
 
-        public async Task<int> RequestMktData(
+        public int RequestMktData(
            Contract contract,
            string genericTickList,
            bool snapshot,
@@ -361,7 +361,7 @@ namespace IbClient.IbHost
             _ibClient.ClientSocket.reqMktData(
                 reqId, contract, genericTickList, snapshot, regulatorySnapshot, mktDataOptions);
 
-            await Task.Run(() =>
+            Task.Run(() =>
             {
                 while (!_mktDataCancelled)
                 {

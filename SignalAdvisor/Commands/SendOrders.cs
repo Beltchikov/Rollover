@@ -24,7 +24,7 @@ namespace SignalAdvisor.Commands
             //var timeout = 60000;
             var startTime = DateTime.Now;
 
-            var requestId = await visitor.IbHost.RequestMktData(
+            var requestId = visitor.IbHost.RequestMktData(
                 contract,
                 "",
                 false,
