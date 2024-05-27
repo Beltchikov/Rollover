@@ -1,7 +1,11 @@
-﻿namespace SignalAdvisor.Model
+﻿using System.ComponentModel;
+
+namespace SignalAdvisor.Model
 {
-    public class Instrument
+    public class Instrument : INotifyPropertyChanged
     {
+        private double askPrice;
+
         public Instrument()
         {
             Symbol = null!;
@@ -10,6 +14,8 @@
             LastSignal = null!;
             Algo = null!;
         }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public static Instrument FromTabbedLine(string instrumentText)
         {
@@ -26,18 +32,34 @@
             };
         }
 
-        public int ConId { get; set; }    
-        public string Symbol { get; set; }    
-        public string Currency { get; set; }    
-        public string Exchange { get; set; }    
-        public bool IsLong { get; set; }    
-        public DateTime LastSignalTime { get; set; }    
-        public string LastSignal { get; set; }    
-        public string Algo { get; set; }    
-        public double StopLossInCents { get; set; }    
-        public double TakeProfitInCents { get; set; }    
+        public int ConId { get; set; }
+        public string Symbol { get; set; }
+        public string Currency { get; set; }
+        public string Exchange { get; set; }
+        public bool IsLong { get; set; }
+        public DateTime LastSignalTime { get; set; }
+        public string LastSignal { get; set; }
+        public string Algo { get; set; }
+        public double StopLossInCents { get; set; }
+        public double TakeProfitInCents { get; set; }
         public int Quantity { get; set; }
         public int RequestIdMktData { get; set; }
-        public double AskPrice { get; set; }
+        public double AskPrice
+        {
+            get { return askPrice; }
+            set {
+                if (askPrice != value)
+                {
+                    askPrice = value;
+                    NotifyPropertyChanged("AskPrice");
+                }
+            }
+        }
+
+        public void NotifyPropertyChanged(string propName)
+        {
+            if (this.PropertyChanged != null)
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
+        }
     }
 }
