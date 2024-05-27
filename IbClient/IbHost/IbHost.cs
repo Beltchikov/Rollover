@@ -3,6 +3,7 @@ using IbClient.messages;
 using IbClient.Types;
 using IBSampleApp.messages;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -38,7 +39,7 @@ namespace IbClient.IbHost
         private int _nextOrderId;
         private int _lastOrderId;
         private Dictionary<int, Contract> _requestIdContract;
-
+        private bool _mktDataCancelled;
         public static readonly string DEFAULT_SEC_TYPE = "STK";
         public static readonly string DEFAULT_CURRENCY = "USD";
         public static readonly string DEFAULT_EXCHANGE = "SMART";
@@ -350,27 +351,39 @@ namespace IbClient.IbHost
            bool snapshot,
            bool regulatorySnapshot,
            List<TagValue> mktDataOptions,
-           int timeout,
            Action<TickPriceMessage> tickPriceCallback,
            Action<TickSizeMessage> tickSizeCallback,
            Action<int, int, string, string, Exception> errorCallback)
         {
+            var reqId = ++_currentReqId;
+            _requestResponseMapper.AddRequestId(reqId);
+
+            _ibClient.ClientSocket.reqMktData(
+                reqId, contract, genericTickList, snapshot, regulatorySnapshot, mktDataOptions);
+
             await Task.Run(() =>
             {
+                while (!_mktDataCancelled)
+                {
+                    var responses = _requestResponseMapper.GetResponses(reqId);
+                    if (responses == null) continue;
 
+                    foreach (var response in responses)
+                    {
+                        if (!(response is TickPriceMessage)) continue;
+                        var tickPriceMessage = response as TickPriceMessage;
+                        tickPriceCallback(tickPriceMessage);
+                    }
+                }
             });
 
-            throw new NotImplementedException();
-
-            var reqId = ++_currentReqId;
-            //_ibClient.ClientSocket.reqMktData(
-            //    reqId, contract, genericTickList, snapshot, regulatorySnapshot, mktDataOptions);
-
-
-
             return reqId;
+        }
 
-
+        public void CancelMktData(int requestId)
+        {
+            _mktDataCancelled = true;
+            _ibClient.ClientSocket.cancelMktData(requestId);
         }
 
         public async Task RequestHistoricalAndSubscribeAsync(
@@ -809,6 +822,7 @@ namespace IbClient.IbHost
                 $"field:{tickPriceMessage.Field} price:{tickPriceMessage.Price}");
 
             _queueTickPriceMessage.Enqueue(tickPriceMessage);
+            _requestResponseMapper.AddResponse(tickPriceMessage.RequestId, tickPriceMessage);
         }
 
         private void _ibClient_TickSize(TickSizeMessage tickSizeMessage)

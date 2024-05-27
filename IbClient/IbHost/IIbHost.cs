@@ -56,10 +56,11 @@ namespace IbClient.IbHost
          bool snapshot,
          bool regulatorySnapshot,
          List<TagValue> mktDataOptions,
-         int timeout,
          Action<TickPriceMessage> tickPriceCallback,
          Action<TickSizeMessage> tickSizeCallback,
          Action<int, int, string, string, Exception> errorCallback);
+
+        void CancelMktData(int requestId);
 
         Task RequestHistoricalAndSubscribeAsync(
             Contract contractBuy,
@@ -93,6 +94,7 @@ namespace IbClient.IbHost
         Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout);
         Task<OrderStateOrError> PlaceOrderAsync(Contract contract, Order order, int timeout);
         void ClearQueueOrderOpenMessage();
+        
 
         //public void ReqHistoricalData();
         //void ApplyDefaultHistoricalData();

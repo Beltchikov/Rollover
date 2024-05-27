@@ -9,26 +9,45 @@ namespace SignalAdvisor.Commands
         {
             MessageBox.Show($"SendOrders. TODO: call PlaceOrder for {visitor.InstrumentToTrade.Symbol}");
 
-            Contract contract = new Contract();
-            
-            await visitor.IbHost.RequestMktData(
+            Contract contract = new Contract()
+            {
+                ConId = visitor.InstrumentToTrade.ConId,
+                Symbol = visitor.InstrumentToTrade.Symbol,
+                SecType = App.SEC_TYPE_STK,
+                Currency = visitor.InstrumentToTrade.Currency,
+                Exchange = visitor.InstrumentToTrade.Exchange
+            };
+
+            double askPrice = 0;
+            var askPriceTickType = 2;
+            var timeout = App.TIMEOUT;
+            //var timeout = 60000;
+            var startTime = DateTime.Now;
+
+            var requestId = await visitor.IbHost.RequestMktData(
                 contract,
                 "",
-                true,
+                false,
                 false,
                 null,
-                App.TIMEOUT * 12,
-                p => { },
+                p =>
+                {
+                    if (p.Field == askPriceTickType)
+                        askPrice = p.Price;
+                },
                 s => { },
                 (r, c, m1, m2, ex) => { });
 
-            //(double? price, TickType? tickType, string error)
-            //       = await visitor.IbHost.RequestMktData(contract, "", true, false, null, App.TIMEOUT * 12);
+            await Task.Run(() =>
+            {
+                while (askPrice == 0 && (DateTime.Now - startTime).TotalMilliseconds < timeout) { };
+                //while (askPrice == 0) { };
+                var todo = 0;
+            });
 
-            // cancelMarketData
-
-
-            return;
+            visitor.IbHost.CancelMktData(requestId);
+            if (askPrice == 0) MessageBox.Show($"Ask price can not be obtained in {timeout} milliseconds.");
+            else MessageBox.Show($"Ask price {askPrice}");
         }
     }
 }
