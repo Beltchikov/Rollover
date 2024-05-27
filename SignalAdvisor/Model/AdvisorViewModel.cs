@@ -266,8 +266,8 @@ namespace SignalAdvisor.Model
 
         private string TestData()
         {
-            return @"29612256	AIR	EUR	SBF	1400	14	0
-29612111	BN	EUR	SBF	420	5	0
+            return @"29612256	AIR	EUR	SBF	1400	14	190
+29612111	BN	EUR	SBF	420	5	500
 
 ";
         }

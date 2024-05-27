@@ -28,7 +28,8 @@ namespace SignalAdvisor.Commands
 
         private static async Task<(Order, Order, Order)> CreateOrdersAsync(IPositionsVisitor visitor)
         {
-            var orderBuyId = await visitor.IbHost.ReqIdsAsync(-1);
+            //var orderBuyId = await visitor.IbHost.ReqIdsAsync(-1);
+            var orderBuyId = visitor.IbHost.NextOrderId;
 
             //
             var orderParent = new Order()
