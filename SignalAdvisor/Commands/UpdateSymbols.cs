@@ -1,4 +1,5 @@
-﻿using SignalAdvisor.Model;
+﻿using IBApi;
+using SignalAdvisor.Model;
 using System.Windows;
 
 namespace SignalAdvisor.Commands
@@ -34,24 +35,27 @@ namespace SignalAdvisor.Commands
             visitor.Instruments.Clear();
             foreach (var instrument in instrumentsToAdd)
             {
-                // TODO
-                //instrument.RequestIdMktData = requestId;
+                Contract contract = new Contract()
+                {
+                    ConId = instrument.ConId,
+                    Symbol = instrument.Symbol,
+                    SecType = App.SEC_TYPE_STK,
+                    Currency = instrument.Currency,
+                    Exchange = instrument.Exchange
+                };
 
-                //var requestId = visitor.IbHost.RequestMktData(
-                //      contract,
-                //      "",
-                //      false,
-                //      false,
-                //      null,
-                //      visitor.TickPriceCallback,
-                //      s => { },
-                //      (r, c, m1, m2, ex) => { });
+                var requestId = visitor.IbHost.RequestMktData(
+                    contract,
+                    "",
+                    false,
+                    false,
+                    null,
+                    visitor.TickPriceCallback,
+                    s => { },
+                    (r, c, m1, m2, ex) => { });
 
-                
-
+                instrument.RequestIdMktData = requestId;
                 visitor.Instruments.Add(instrument);
-
-                
 
             }
         }

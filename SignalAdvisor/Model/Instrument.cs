@@ -37,7 +37,6 @@
         public double StopLossInCents { get; set; }    
         public double TakeProfitInCents { get; set; }    
         public int Quantity { get; set; }
-
-       
+        public int RequestIdMktData { get; set; }
     }
 }

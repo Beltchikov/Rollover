@@ -252,6 +252,11 @@ namespace SignalAdvisor.Model
         public bool RequestHistoricalDataExecuted { get; set; }
         public Instrument InstrumentToTrade { get; set; }
 
+        public void TickPriceCallback(TickPriceMessage message)
+        {
+            var todo = 0;
+        }
+
         private string TestData()
         {
             return @"29612256	AIR	EUR	SBF	1400	14	0
@@ -259,5 +264,7 @@ namespace SignalAdvisor.Model
 
 ";
         }
+
+       
     }
 }
