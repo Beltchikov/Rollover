@@ -3,10 +3,8 @@ using IbClient.messages;
 using IbClient.Types;
 using IBSampleApp.messages;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 using TickType = IbClient.Types.TickType;
 
@@ -31,7 +29,7 @@ namespace IbClient.IbHost
         private IIbHostQueue _queueHistoricalDataUpdate;
         private IIbHostQueue _queueHistoricalDataEnd;
 
-        private ConcurrentDictionary<int, ConcurrentBag<object>> _requestDictionary;
+        private IRequestResponseMapper _requestResponseMapper;
 
         private int _currentReqId = 0;
         List<int> _mktDataReqIds;
@@ -41,11 +39,10 @@ namespace IbClient.IbHost
         private int _lastOrderId;
         private Dictionary<int, Contract> _requestIdContract;
 
-
         public static readonly string DEFAULT_SEC_TYPE = "STK";
         public static readonly string DEFAULT_CURRENCY = "USD";
         public static readonly string DEFAULT_EXCHANGE = "SMART";
-         private readonly string PRESUBMITTED = "PreSubmitted";
+        private readonly string PRESUBMITTED = "PreSubmitted";
         private readonly string EXCHANGE_SMART = "SMART";
 
         public IbHost()
@@ -64,7 +61,7 @@ namespace IbClient.IbHost
             _ibClient.SymbolSamples += _ibClient_SymbolSamples;
             _ibClient.FundamentalData += _ibClient_FundamentalData;
             _ibClient.TickPrice += _ibClient_TickPrice;
-            _ibClient.TickSize += _ibClient_TickSize; 
+            _ibClient.TickSize += _ibClient_TickSize;
             _ibClient.TickSnapshotEnd += _ibClient_TickSnapshotEnd;
             _ibClient.OpenOrder += _ibClient_OpenOrder;
             _ibClient.OrderStatus += _ibClient_OrderStatus;
@@ -89,7 +86,7 @@ namespace IbClient.IbHost
             _queueHistoricalDataUpdate = new IbHostQueue();
             _queueHistoricalDataEnd = new IbHostQueue();
 
-            _requestDictionary = new ConcurrentDictionary<int, ConcurrentBag<object>>();
+            _requestResponseMapper = new RequestResponseMapper();
 
             _errorMessages = new List<ErrorMessage>();
             _mktDataReqIds = new List<int> { };
@@ -360,7 +357,7 @@ namespace IbClient.IbHost
         {
             await Task.Run(() =>
             {
-               
+
             });
 
             throw new NotImplementedException();
@@ -370,7 +367,7 @@ namespace IbClient.IbHost
             //    reqId, contract, genericTickList, snapshot, regulatorySnapshot, mktDataOptions);
 
 
-            
+
             return reqId;
 
 
@@ -463,7 +460,7 @@ namespace IbClient.IbHost
 
             var reqId = ++_currentReqId;
             _requestIdContract[reqId] = contract;
-            _requestDictionary[reqId] = new ConcurrentBag<object>();
+            _requestResponseMapper.AddRequestId(reqId);
 
             // TODO use for tests
             //AddTestNoiseData(_requestDictionary);
@@ -483,13 +480,13 @@ namespace IbClient.IbHost
             List<HistoricalDataMessage> historicalDataMessages = null;
             await Task.Run(() =>
             {
-                var startTime = DateTime.Now;   
-                while (RemoveResponseForRequest<HistoricalDataEndMessage>(reqId, _requestDictionary) == null
-                    && (DateTime.Now - startTime).TotalMilliseconds < timeout) { }
+                var startTime = DateTime.Now;
+                while (_requestResponseMapper.RemoveResponse<HistoricalDataEndMessage>(reqId) == null
+                   && (DateTime.Now - startTime).TotalMilliseconds < timeout) { }
 
                 try
                 {
-                    historicalDataMessages = _requestDictionary[reqId]
+                    historicalDataMessages = _requestResponseMapper.GetResponses(reqId)
                                 .Select(m => m as HistoricalDataMessage)
                                 .ToList();
                 }
@@ -506,32 +503,6 @@ namespace IbClient.IbHost
                 {
                     historicalDataCallback(m);
                 }
-            }
-        }
-
-        // TODO make generic
-        private T RemoveResponseForRequest<T>(int reqId, ConcurrentDictionary<int, ConcurrentBag<object>> requestDictionary) where T: class
-        {
-            object lockObject = new object();
-
-            lock (lockObject)
-            {
-                var historicalDataEndMessageList = new ConcurrentBag<object>(requestDictionary[reqId].ToArray());  
-                var historicalDataEndMessage = historicalDataEndMessageList.FirstOrDefault(m => m is T);
-                var historicalDataEndMessageCopy = JsonSerializer.Deserialize<T>(JsonSerializer.Serialize(historicalDataEndMessage));
-                
-                if (historicalDataEndMessage != null)
-                {
-                    ConcurrentBag<object> bagCopy = new ConcurrentBag<object>(requestDictionary[reqId]);
-                    var listCopy = bagCopy.ToList();   
-                    if (!listCopy.Remove(historicalDataEndMessage)) throw new Exception("Can not remove historicalDataEndMessage");
-                    bagCopy = new ConcurrentBag<object>(listCopy);
-
-                    requestDictionary[reqId] = bagCopy;
-                    return historicalDataEndMessageCopy as T;
-                }
-
-                return null;
             }
         }
 
@@ -629,7 +600,6 @@ namespace IbClient.IbHost
                 return new OrderStateOrError(openOrderMessage.OrderState, "");
             }
         }
-
 
         public void ClearQueueOrderOpenMessage()
         {
@@ -888,12 +858,6 @@ namespace IbClient.IbHost
             return fundamentalsMessageString.Contains(ticker) || fundamentalsMessageString.Contains(ticker.ToUpper());
         }
 
-        private bool HasErrorMessage(int reqId, int errorCode, out ErrorMessage errorMessage)
-        {
-            bool searchFunction(ErrorMessage c) => c.RequestId == reqId && c.ErrorCode == errorCode;
-            return HasErrorMessage(reqId, searchFunction, out errorMessage);
-        }
-
         private bool HasErrorMessage(int reqId, Func<ErrorMessage, bool> errorFilterFunction, out ErrorMessage errorMessage)
         {
             var errorMessagesCopy = _errorMessages.ToArray();
@@ -913,11 +877,8 @@ namespace IbClient.IbHost
             {
                 // TODO use for tests
                 //AddTestNoiseData(_requestDictionary);
-                
-                if (!_requestDictionary.ContainsKey(message.RequestId))
-                    _requestDictionary[message.RequestId] = new ConcurrentBag<object> { message };
-                else
-                    _requestDictionary[message.RequestId].Add(message);
+
+                _requestResponseMapper.AddResponse(message.RequestId, message);
             }
         }
 
@@ -932,10 +893,7 @@ namespace IbClient.IbHost
                 // TODO use for tests
                 //AddTestNoiseData(_requestDictionary);
 
-                if (!_requestDictionary.ContainsKey(message.RequestId))
-                    _requestDictionary[message.RequestId] = new ConcurrentBag<object> { message };
-                else
-                    _requestDictionary[message.RequestId].Add(message);
+                _requestResponseMapper.AddResponse(message.RequestId, message);
             }
         }
 
@@ -949,10 +907,7 @@ namespace IbClient.IbHost
                 // TODO use for tests
                 //AddTestNoiseData(_requestDictionary);
 
-                if (!_requestDictionary.ContainsKey(message.RequestId))
-                    _requestDictionary[message.RequestId] = new ConcurrentBag<object> { message };
-                else
-                    _requestDictionary[message.RequestId].Add(message);
+                _requestResponseMapper.AddResponse(message.RequestId, message);
             }
         }
 
