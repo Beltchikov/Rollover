@@ -281,7 +281,7 @@ namespace IbClient.IbHost
                 while (_lastOrderId == _nextOrderId) { _nextOrderId = _ibClient.NextOrderId; }
             });
 
-            return _nextOrderId; ;
+            return _nextOrderId;
         }
 
         public async Task<string> RequestFundamentalDataAsync(Contract contract, string reportType, int timeout)

@@ -58,8 +58,22 @@ namespace SignalAdvisor.Model
 
         public void NotifyPropertyChanged(string propName)
         {
-            if (this.PropertyChanged != null)
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propName));
+        }
+
+        public double StopLossPrice()
+        {
+            var stopLoss = StopLossInCents / 100;
+            var stopLossPrice = Math.Round(AskPrice - stopLoss, 2);
+            return stopLossPrice;
+        }
+
+        public double TakeProfitPrice()
+        {
+            var takeProfit = TakeProfitInCents / 100;
+            var takeProfitPrice = Math.Round(AskPrice + takeProfit, 2);
+            return takeProfitPrice;
         }
     }
 }
