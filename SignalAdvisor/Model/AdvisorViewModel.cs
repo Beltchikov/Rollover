@@ -254,7 +254,14 @@ namespace SignalAdvisor.Model
 
         public void TickPriceCallback(TickPriceMessage message)
         {
-            var todo = 0;
+            var askPriceTickType = 2;
+            if (message.Field != askPriceTickType) return;
+
+            var instrument = Instruments.FirstOrDefault(i => i.RequestIdMktData == message.RequestId);  
+            if(instrument != null)
+            {
+                instrument.AskPrice = message.Price;
+            }
         }
 
         private string TestData()

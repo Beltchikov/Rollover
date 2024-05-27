@@ -13,22 +13,21 @@ namespace SignalAdvisor.Commands
                 MessageBox.Show("Please input the symbols.");
                 return;
             }
-            
+
             var instrumentsTextSplitted = visitor.Symbols.Split(Environment.NewLine) ?? throw new Exception("instrumentsTextSplitted is null");
             List<Instrument> instrumentsToAdd = new List<Instrument>();
-            foreach(var instrumentText in instrumentsTextSplitted)
-            { 
-                if(string.IsNullOrEmpty(instrumentText)) continue;
+            foreach (var instrumentText in instrumentsTextSplitted)
+            {
+                if (string.IsNullOrEmpty(instrumentText)) continue;
                 var instrument = Instrument.FromTabbedLine(instrumentText);
-                instrumentsToAdd.Add(instrument);   
+                instrumentsToAdd.Add(instrument);
             }
 
             if (visitor.Instruments.Any())
             {
                 foreach (var instrument in instrumentsToAdd)
                 {
-                    // TODO
-                    //visitor.IbHost.CancelMktData(instrument.RequestIdMktData);
+                    visitor.IbHost.CancelMktData(instrument.RequestIdMktData);
                 }
             }
 
@@ -56,7 +55,6 @@ namespace SignalAdvisor.Commands
 
                 instrument.RequestIdMktData = requestId;
                 visitor.Instruments.Add(instrument);
-
             }
         }
     }

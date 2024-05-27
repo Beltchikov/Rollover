@@ -32,6 +32,7 @@
                             <ColumnDefinition></ColumnDefinition>
                             <ColumnDefinition></ColumnDefinition>
                             <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="0" FontSize="14" Padding="5 0 0 5" 
@@ -41,30 +42,32 @@
                                     Width="80" Text="{Binding Symbol}"></TextBlock>
                         <TextBlock Grid.Column="2" FontSize="14" Padding="5 0 0 5" 
                                     Width="40" Text="{Binding Currency}"></TextBlock>
-
                         <TextBlock Grid.Column="3" FontSize="14" Padding="5 0 0 5" 
                                     Width="40" Text="{Binding Exchange}"></TextBlock>
-                        <TextBlock Grid.Column="4" Padding="5 2 5 0" Text="LONG" 
+
+                        <TextBlock Grid.Column="4" FontSize="14" Padding="5 0 0 5" 
+                                    Width="40" Text="{Binding AskPrice}"></TextBlock>
+                        <TextBlock Grid.Column="5" Padding="5 2 5 0" Text="LONG" 
                             Background="LightGreen" Foreground="Green">
                         </TextBlock>
-                        <TextBlock Grid.Column="5" Padding="5 0 0 5" 
+                        <TextBlock Grid.Column="6" Padding="5 0 0 5" 
                             Width="80" Text="{Binding LastSignalTime}">
                         </TextBlock>
-                        <TextBlock Grid.Column="6" Padding="5 0 0 5" 
+                        <TextBlock Grid.Column="7" Padding="5 0 0 5" 
                             Width="80" Text="{Binding LastSignal}">
                         </TextBlock>
-                        <Button Grid.Column="7" Width="125" FontWeight="Bold" 
+                        <Button Grid.Column="8" Width="125" FontWeight="Bold" 
                                 Click="Button_Click" Tag="{Binding Path=.}">Trade</Button>
-                        <TextBlock Grid.Column="8" Padding="5 0 0 5" 
+                        <TextBlock Grid.Column="9" Padding="5 0 0 5" 
                             Width="80" Text="{Binding Algo}">
                         </TextBlock>
-                        <TextBlock Grid.Column="9" Padding="5 0 0 5" 
+                        <TextBlock Grid.Column="10" Padding="5 0 0 5" 
                             Width="80" Text="{Binding StopLossInCents}">
                         </TextBlock>
-                        <TextBlock Grid.Column="10" Padding="5 0 0 5" 
+                        <TextBlock Grid.Column="11" Padding="5 0 0 5" 
                             Width="80" Text="{Binding TakeProfitInCents}">
                         </TextBlock>
-                        <TextBlock Grid.Column="11" Padding="5 0 0 5" 
+                        <TextBlock Grid.Column="12" Padding="5 0 0 5" 
                             Width="80" Text="{Binding Quantity}">
                         </TextBlock>
                     </Grid>

@@ -38,5 +38,6 @@
         public double TakeProfitInCents { get; set; }    
         public int Quantity { get; set; }
         public int RequestIdMktData { get; set; }
+        public double AskPrice { get; set; }
     }
 }
