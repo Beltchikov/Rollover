@@ -54,10 +54,10 @@
                             Background="LightGreen" Foreground="Green">
                         </TextBlock>
                         <TextBlock Grid.Column="6" Padding="5 0 0 5" 
-                            Width="120" Text="{Binding LastSignalTime}">
+                            Width="140" Text="{Binding LastSignalTime}">
                         </TextBlock>
                         <TextBlock Grid.Column="7" Padding="5 0 0 5" 
-                            Width="100" Text="{Binding LastSignal}">
+                            Width="80" Text="{Binding LastSignal}">
                         </TextBlock>
                         <Button Grid.Column="8" Width="125" FontWeight="Bold" 
                                 Click="Button_Click" Tag="{Binding Path=.}">Trade</Button>
@@ -65,13 +65,13 @@
                             Width="80" Text="{Binding Algo}">
                         </TextBlock>
                         <TextBlock Grid.Column="10" Padding="5 0 0 5" 
-                            Width="80" Text="{Binding StopLossInCents}">
+                            Width="50" Text="{Binding StopLossInCents}">
                         </TextBlock>
                         <TextBlock Grid.Column="11" Padding="5 0 0 5" 
-                            Width="80" Text="{Binding TakeProfitInCents}">
+                            Width="50" Text="{Binding TakeProfitInCents}">
                         </TextBlock>
                         <TextBlock Grid.Column="12" Padding="5 0 0 5" 
-                            Width="80" Text="{Binding Quantity}">
+                            Width="50" Text="{Binding Quantity}">
                         </TextBlock>
                     </Grid>
                 </DataTemplate>
