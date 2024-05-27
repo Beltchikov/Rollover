@@ -7,8 +7,6 @@ namespace SignalAdvisor.Commands
     {
         public static async Task RunAsync(IPositionsVisitor visitor)
         {
-            MessageBox.Show($"SendOrders. TODO: call PlaceOrder for {visitor.InstrumentToTrade.Symbol}");
-
             Contract contract = new Contract()
             {
                 ConId = visitor.InstrumentToTrade.ConId,
@@ -45,7 +43,7 @@ namespace SignalAdvisor.Commands
                 var todo = 0;
             });
 
-            visitor.IbHost.CancelMktData(requestId);
+            //visitor.IbHost.CancelMktData(requestId);
             if (askPrice == 0) MessageBox.Show($"Ask price can not be obtained in {timeout} milliseconds.");
             else MessageBox.Show($"Ask price {askPrice}");
         }
