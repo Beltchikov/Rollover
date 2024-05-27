@@ -5,6 +5,7 @@
         public Instrument()
         {
             Symbol = null!;
+            Currency = null!;
             LastSignal = null!;
             Algo = null!;
         }
@@ -16,14 +17,16 @@
             {
                 ConId = Int32.Parse(instrumentTextSplitted[0]),
                 Symbol = instrumentTextSplitted[1],
-                StopLossInCents = Int32.Parse(instrumentTextSplitted[2]),
-                TakeProfitInCents = Int32.Parse(instrumentTextSplitted[3]),
-                Quantity = Int32.Parse(instrumentTextSplitted[4])
+                Currency = instrumentTextSplitted[2],
+                StopLossInCents = Int32.Parse(instrumentTextSplitted[3]),
+                TakeProfitInCents = Int32.Parse(instrumentTextSplitted[4]),
+                Quantity = Int32.Parse(instrumentTextSplitted[5])
             };
         }
 
         public int ConId { get; set; }    
         public string Symbol { get; set; }    
+        public string Currency { get; set; }    
         public bool IsLong { get; set; }    
         public DateTime LastSignalTime { get; set; }    
         public string LastSignal { get; set; }    
