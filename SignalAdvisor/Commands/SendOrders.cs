@@ -8,7 +8,7 @@ namespace SignalAdvisor.Commands
         public static async Task RunAsync(IPositionsVisitor visitor)
         {
 
-            MessageBox.Show($"TODO SendOrders");
+            MessageBox.Show($"TODO SendOrders {visitor.InstrumentToTrade.Symbol} {visitor.InstrumentToTrade.AskPrice}");
 
             //Contract contract = new Contract()
             //{
