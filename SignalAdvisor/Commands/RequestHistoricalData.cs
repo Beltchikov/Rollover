@@ -37,7 +37,8 @@ namespace SignalAdvisor.Commands
                         var bars = visitor.Bars.For(positionMessage.Contract.ToString());
                         if (!bars.Any())
                         {
-                            bars.Add(new Bar(d.Open, d.High, d.Low, d.Close, d.Date.DateTimeOffsetFromString()));
+                            var bar0 = new Bar(d.Open, d.High, d.Low, d.Close, d.Date.DateTimeOffsetFromString());
+                            bars.Add(bar0);
                             return;
                         }
 
