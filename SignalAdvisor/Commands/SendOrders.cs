@@ -1,5 +1,4 @@
 ﻿using IBApi;
-using System.Windows;
 
 namespace SignalAdvisor.Commands
 {
@@ -7,8 +6,6 @@ namespace SignalAdvisor.Commands
     {
         public static async Task RunAsync(IPositionsVisitor visitor)
         {
-
-            MessageBox.Show($"TODO SendOrders {visitor.InstrumentToTrade.Symbol} {visitor.InstrumentToTrade.AskPrice}");
 
             (Order orderBuyParent, Order orderBuyStop, Order orderBuyProfit) = await CreateOrdersAsync(visitor);
 
