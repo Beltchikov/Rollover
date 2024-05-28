@@ -47,7 +47,7 @@
                         <TextBlock Grid.Column="2" FontSize="14" Padding="5 0 0 5" 
                                     Width="40" Text="{Binding Currency}"></TextBlock>
                         <TextBlock Grid.Column="3" FontSize="14" Padding="5 0 0 5" 
-                                    Width="40" Text="{Binding Exchange}"></TextBlock>
+                                    Width="70" Text="{Binding Exchange}"></TextBlock>
                         <TextBlock Grid.Column="4" Padding="5 2 0 5" FontWeight="Bold"
                                     Width="90" Text="{Binding AskPrice, Converter={StaticResource AskPriceConverter}, Mode=OneWay}"></TextBlock>
                         <TextBlock Grid.Column="5" Padding="5 2 5 0" Text="LONG" 
