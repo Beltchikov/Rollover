@@ -20,13 +20,13 @@ namespace SignalAdvisor.Model
         private bool _connectedToTws;
         private ObservableCollection<string> _twsMessageColllection = [];
         private int _openOrders;
-        private string _lastCheck;
-        private string _symbols;
+        private string _lastCheck = "";
+        private string _symbols = "";
         private ObservableCollection<PositionMessage> _positions = [];
         private ObservableCollection<KeyValuePair<string, List<Ta.Bar>>> _bars = [];
         private ObservableCollection<KeyValuePair<string, List<int>>> _signals = [];
         private ObservableCollection<Instrument> _instruments = [];
-        private static System.Timers.Timer _timer;
+        private static System.Timers.Timer _timer = null!;
         private Dispatcher _dispatcher = App.Current?.Dispatcher ?? throw new Exception("Unexpected. App.Current?.Dispatcher is null");
 
         ICommand RequestPositionsCommand;
@@ -43,50 +43,27 @@ namespace SignalAdvisor.Model
             UpdateSymbolsCommand = new RelayCommand(() => UpdateSymbols.Run(this));
             SendOrdersCommand = new RelayCommand(async () => await SendOrders.RunAsync(this));
 
-            _timer = new System.Timers.Timer(2000);
+            _timer = new System.Timers.Timer(60000);
             _timer.Elapsed += _timer_Elapsed;
             _timer.AutoReset = true;
             _timer.Enabled = true;
 
             OpenOrders = 7;
             LastCheck = "";
+            IbHost = null!;
+            InstrumentToTrade = null!;
 
             // Test Data
             Symbols = TestDataEu();
             Symbols = TestDataUs();
         }
 
-        private void _timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        public IIbHost IbHost { get; private set; }
+        public void SetIbHost(IIbHost ibHost)
         {
-            // TODO the slower timer
-
-            if (!Positions.Any())
-            {
-                _dispatcher.Invoke(() => TwsMessageCollection?.Add($"No positions."));
-                return;
-            }
-            if (!RequestHistoricalDataExecuted)
-            {
-                _dispatcher.Invoke(() => TwsMessageCollection?.Add($"Retrieving historical data."));
-                return;
-            }
-            _dispatcher.Invoke(() => { TwsMessageCollection?.Add($"Heartbeat"); });
-
-
-            while (IbHost.QueueHistoricalDataUpdate.TryDequeue(out object message))
-            {
-                var liveDataMessage = message as LiveDataMessage ?? throw new Exception("Unexpected. liveDataMessage == null");
-
-                AddBar(liveDataMessage.Contract, liveDataMessage.HistoricalDataMessage);
-
-                var lastBar = Bars.For(liveDataMessage.Contract.ToString()).Last();
-                var barBefore = Bars.For(liveDataMessage.Contract.ToString()).SkipLast(1).Last();
-
-                if (lastBar.Time != barBefore.Time)
-                    NewBar(liveDataMessage.Contract, lastBar.Time);
-            }
+            IbHost = ibHost;
+            IbHost.Consumer = this;
         }
-
         public async Task StartUpAsync()
         {
             await Task.Run(() => { RequestPositionsCommand.Execute(this); });
@@ -94,35 +71,6 @@ namespace SignalAdvisor.Model
 
             await Task.Run(() => { RequestHistoricalDataCommand.Execute(this); });
             await Task.Run(() => { while (!RequestHistoricalDataExecuted) { } });
-        }
-
-        private void NewBar(Contract contract, DateTimeOffset newBarTime)
-        {
-            LastCheck = newBarTime.ToString("HH:mm:ss");
-            var contractString = contract.ToString();
-
-            if (Ta.Signals.OppositeColor(forLongTrade: true, Bars.For(contractString), Signals.For(contractString)) != 0)
-            {
-                //SignalsAsText = $"{LastCheck} POSITION {contractString} OppositeColor {Environment.NewLine}{SignalsAsText}";
-            }
-
-            if (Ta.Signals.InsideUpDown(Bars.For(contractString), Signals.For(contractString)) != 0)
-            {
-                //SignalsAsText = $"{LastCheck} POSITION {contractString} InsideUpDown {Environment.NewLine}{SignalsAsText}";
-            }
-        }
-
-        public IIbHost IbHost { get; private set; }
-
-        public void SetIbHost(IIbHost ibHost)
-        {
-            IbHost = ibHost;
-            IbHost.Consumer = this;
-        }
-
-        void IPositionsVisitor.OnPropertyChanged(string propertyName)
-        {
-            OnPropertyChanged(propertyName);
         }
 
         public void AddBar(IBApi.Contract contract, HistoricalDataMessage message)
@@ -260,6 +208,58 @@ namespace SignalAdvisor.Model
             if (instrument != null)
             {
                 instrument.AskPrice = message.Price;
+            }
+        }
+
+        private void NewBar(Contract contract, DateTimeOffset newBarTime)
+        {
+            LastCheck = newBarTime.ToString("HH:mm:ss");
+            var contractString = contract.ToString();
+
+            if (Ta.Signals.OppositeColor(forLongTrade: true, Bars.For(contractString), Signals.For(contractString)) != 0)
+            {
+                //SignalsAsText = $"{LastCheck} POSITION {contractString} OppositeColor {Environment.NewLine}{SignalsAsText}";
+            }
+
+            if (Ta.Signals.InsideUpDown(Bars.For(contractString), Signals.For(contractString)) != 0)
+            {
+                //SignalsAsText = $"{LastCheck} POSITION {contractString} InsideUpDown {Environment.NewLine}{SignalsAsText}";
+            }
+        }
+
+        void IPositionsVisitor.OnPropertyChanged(string propertyName)
+        {
+            OnPropertyChanged(propertyName);
+        }
+
+        private void _timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        {
+            // TODO the slower timer
+
+            if (!Positions.Any())
+            {
+                _dispatcher.Invoke(() => TwsMessageCollection?.Add($"No positions."));
+                return;
+            }
+            if (!RequestHistoricalDataExecuted)
+            {
+                _dispatcher.Invoke(() => TwsMessageCollection?.Add($"Retrieving historical data."));
+                return;
+            }
+            //_dispatcher.Invoke(() => { TwsMessageCollection?.Add($"Heartbeat"); });
+
+
+            while (IbHost.QueueHistoricalDataUpdate.TryDequeue(out object message))
+            {
+                var liveDataMessage = message as LiveDataMessage ?? throw new Exception("Unexpected. liveDataMessage == null");
+
+                AddBar(liveDataMessage.Contract, liveDataMessage.HistoricalDataMessage);
+
+                var lastBar = Bars.For(liveDataMessage.Contract.ToString()).Last();
+                var barBefore = Bars.For(liveDataMessage.Contract.ToString()).SkipLast(1).Last();
+
+                if (lastBar.Time != barBefore.Time)
+                    NewBar(liveDataMessage.Contract, lastBar.Time);
             }
         }
 
