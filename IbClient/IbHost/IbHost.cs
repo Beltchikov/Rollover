@@ -3,7 +3,6 @@ using IbClient.messages;
 using IbClient.Types;
 using IBSampleApp.messages;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -282,6 +281,11 @@ namespace IbClient.IbHost
             });
 
             return _nextOrderId;
+        }
+
+        public void ReqIds(int idParam)
+        {
+            _ibClient.ClientSocket.reqIds(idParam);
         }
 
         public async Task<string> RequestFundamentalDataAsync(Contract contract, string reportType, int timeout)

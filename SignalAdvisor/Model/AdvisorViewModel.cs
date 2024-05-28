@@ -27,7 +27,6 @@ namespace SignalAdvisor.Model
         private ObservableCollection<KeyValuePair<string, List<int>>> _signals = [];
         private ObservableCollection<Instrument> _instruments = [];
         private static System.Timers.Timer _timer;
-        private static readonly string SESSION_START = "15:30";
         private Dispatcher _dispatcher = App.Current?.Dispatcher ?? throw new Exception("Unexpected. App.Current?.Dispatcher is null");
 
         ICommand RequestPositionsCommand;
@@ -41,7 +40,7 @@ namespace SignalAdvisor.Model
             RequestPositionsCommand = new RelayCommand(async () => await RequestPositions.RunAsync(this));
             RequestHistoricalDataCommand = new RelayCommand(async () => await RequestHistoricalData.RunAsync(this));
             ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
-            UpdateSymbolsCommand = new RelayCommand(() =>UpdateSymbols.Run(this));
+            UpdateSymbolsCommand = new RelayCommand(() => UpdateSymbols.Run(this));
             SendOrdersCommand = new RelayCommand(async () => await SendOrders.RunAsync(this));
 
             _timer = new System.Timers.Timer(2000);
@@ -52,10 +51,9 @@ namespace SignalAdvisor.Model
             OpenOrders = 7;
             LastCheck = "";
 
-
             // Test Data
-            //Symbols = "NVDA\r\nMSFT";
-            Symbols = TestData();
+            Symbols = TestDataEu();
+            Symbols = TestDataUs();
         }
 
         private void _timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
@@ -251,20 +249,21 @@ namespace SignalAdvisor.Model
         public bool RequestPositionsExecuted { get; set; }
         public bool RequestHistoricalDataExecuted { get; set; }
         public Instrument InstrumentToTrade { get; set; }
+        public int OrdersSent { get; set; }
 
         public void TickPriceCallback(TickPriceMessage message)
         {
             var askPriceTickType = 2;
             if (message.Field != askPriceTickType) return;
 
-            var instrument = Instruments.FirstOrDefault(i => i.RequestIdMktData == message.RequestId);  
-            if(instrument != null)
+            var instrument = Instruments.FirstOrDefault(i => i.RequestIdMktData == message.RequestId);
+            if (instrument != null)
             {
                 instrument.AskPrice = message.Price;
             }
         }
 
-        private string TestData()
+        private string TestDataEu()
         {
             return @"29612256	AIR	EUR	SBF	1400	14	190
 29612111	BN	EUR	SBF	420	5	500
@@ -272,6 +271,17 @@ namespace SignalAdvisor.Model
 ";
         }
 
-       
+        private string TestDataUs()
+        {
+            return @"4815747	NVDA	USD	NASDAQ	10652	107	88
+265598	AAPL	USD	NASDAQ	1264	13	744
+107113386	META	USD	NASDAQ	4539	46	207
+272093	MSFT	USD	NASDAQ	2512	26	374
+15124833	NFLX	USD	NASDAQ	6408	65	147
+265768	ADBE	USD	NASDAQ	3797	38	248
+208813720	GOOG	USD	NASDAQ	1225	13	767
+";
+        }
+
     }
 }

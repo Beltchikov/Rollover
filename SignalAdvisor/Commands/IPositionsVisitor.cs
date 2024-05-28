@@ -20,5 +20,6 @@ namespace SignalAdvisor.Commands
         bool RequestHistoricalDataExecuted { get; set; }
         string Symbols { get; set; }
         public Instrument InstrumentToTrade { get; set; }
+        int OrdersSent { get; set; }
     }
 }
