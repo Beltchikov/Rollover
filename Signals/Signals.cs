@@ -1,4 +1,5 @@
-﻿namespace Ta
+﻿
+namespace Ta
 {
     public class Signals
     {
@@ -16,6 +17,16 @@
             signals = new List<int>();
 
             return -2;
+        }
+
+        public static int OppositeColor(Bar bar0, Bar bar1)
+        {
+            //var range0 = bar0.Close - bar0.Open;
+            //var range1 = bar1.Close - bar1.Open;
+
+            //if(range0*range1 < 0) return 1
+
+            throw new NotImplementedException();
         }
 
         //private double _InsideUpDownHigh, _InsideUpDownHighBefore;
@@ -102,6 +113,6 @@
 
         //    _InsideUpDownHighBefore = _InsideUpDownHigh;
         //    _InsideUpDownLowBefore = _InsideUpDownLow;
-    //}
+        //}
     }
 }

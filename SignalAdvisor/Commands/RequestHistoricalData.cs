@@ -15,7 +15,7 @@ namespace SignalAdvisor.Commands
             string barSizeSetting = $"{BAR_SIZE} mins";
             string whatToShow = "TRADES";
             int useRTH = 0;
-            
+
             foreach (var positionMessage in visitor.Positions)
             {
                 bool historicalDataReceived = false;
@@ -35,19 +35,27 @@ namespace SignalAdvisor.Commands
                         var barTime = d.Date.DateTimeOffsetFromString();
 
                         var bars = visitor.Bars.For(positionMessage.Contract.ToString());
+                        var signals = visitor.Signals.For(positionMessage.Contract.ToString());
                         if (!bars.Any())
                         {
                             var bar0 = new Bar(d.Open, d.High, d.Low, d.Close, d.Date.DateTimeOffsetFromString());
                             bars.Add(bar0);
+
+                            var bar1 = bars.SkipLast(1).LastOrDefault();
+                            //if (bar1 != null)
+                            //{
+                            //    signals.Add(Signals.OppositeColor(bar0, bar1));
+                            //}
+
                             return;
                         }
 
                         var lastBar = bars.Last();
                         var lastBarTime = lastBar.Time;
 
-                        if (barTime.Minute / 5 != lastBarTime.Minute / 5) 
+                        if (barTime.Minute / 5 != lastBarTime.Minute / 5)
                             visitor.AddBar(positionMessage.Contract, d);
-                        else 
+                        else
                             lastBar.Update(d.High, d.Low, d.Close);
                     },
                     (u) =>
@@ -56,7 +64,7 @@ namespace SignalAdvisor.Commands
                         //var time = TimeFromString(u.Date);
                         //if(time.Minute/ BAR_SIZE)
                     },
-                    (e) => { historicalDataReceived = true;});
+                    (e) => { historicalDataReceived = true; });
 
                 await Task.Run(() => { while (!historicalDataReceived) { }; });
             }
