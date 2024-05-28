@@ -19,7 +19,7 @@ namespace SignalAdvisor.Model
 
         public static Instrument FromTabbedLine(string instrumentText)
         {
-            var instrumentTextSplitted = instrumentText.Trim().Split(['\t']).Select(s => s.Trim()).ToList();
+            var instrumentTextSplitted = instrumentText.Trim().Split([' ','\t']).Select(s => s.Trim()).ToList();
             return new Instrument()
             {
                 ConId = Int32.Parse(instrumentTextSplitted[0]),
