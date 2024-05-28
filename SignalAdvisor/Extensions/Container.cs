@@ -13,11 +13,11 @@ namespace SignalAdvisor.Extensions
                 : new List<Bar>();
         }
 
-        public static List<int> For(this ObservableCollection<KeyValuePair<string, List<int>>> signals, string symbol)
+        public static List<Dictionary<string, int>> For(this ObservableCollection<KeyValuePair<string, List<Dictionary<string, int>>>> signals, string symbol)
         {
             return signals.Any(kvp => kvp.Key == symbol)
                 ? signals.First(kvp => kvp.Key == symbol).Value
-                : new List<int>();
+                : new List<Dictionary<string, int>>();
         }
 
         public static DateTimeOffset DateTimeOffsetFromString(this string dateTimeOffsetString)

@@ -9,7 +9,7 @@ namespace SignalAdvisor.Commands
     {
         ObservableCollection<PositionMessage> Positions { get; }
         ObservableCollection<KeyValuePair<string, List<Bar>>> Bars { get; }
-        ObservableCollection<KeyValuePair<string, List<int>>> Signals { get; }
+        ObservableCollection<KeyValuePair<string, List<Dictionary<string, int>>>> Signals { get; }
         ObservableCollection<Instrument> Instruments { get;}
 
         void OnPropertyChanged(string propertyName);

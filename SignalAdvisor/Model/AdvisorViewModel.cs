@@ -24,7 +24,7 @@ namespace SignalAdvisor.Model
         private string _symbols = "";
         private ObservableCollection<PositionMessage> _positions = [];
         private ObservableCollection<KeyValuePair<string, List<Ta.Bar>>> _bars = [];
-        private ObservableCollection<KeyValuePair<string, List<int>>> _signals = [];
+        private ObservableCollection<KeyValuePair<string, List<Dictionary<string,int>>>> _signals = [];
         private ObservableCollection<Instrument> _instruments = [];
         private static System.Timers.Timer _timer = null!;
         private Dispatcher _dispatcher = App.Current?.Dispatcher ?? throw new Exception("Unexpected. App.Current?.Dispatcher is null");
@@ -175,7 +175,7 @@ namespace SignalAdvisor.Model
             }
         }
 
-        public ObservableCollection<KeyValuePair<string, List<int>>> Signals
+        public ObservableCollection<KeyValuePair<string, List<Dictionary<string, int>>>> Signals
         {
             get => _signals;
             set
@@ -216,15 +216,15 @@ namespace SignalAdvisor.Model
             LastCheck = newBarTime.ToString("HH:mm:ss");
             var contractString = contract.ToString();
 
-            if (Ta.Signals.OppositeColor(forLongTrade: true, Bars.For(contractString), Signals.For(contractString)) != 0)
-            {
-                //SignalsAsText = $"{LastCheck} POSITION {contractString} OppositeColor {Environment.NewLine}{SignalsAsText}";
-            }
+            //if (Ta.Signals.OppositeColor(forLongTrade: true, Bars.For(contractString), Signals.For(contractString)) != 0)
+            //{
+            //    //SignalsAsText = $"{LastCheck} POSITION {contractString} OppositeColor {Environment.NewLine}{SignalsAsText}";
+            //}
 
-            if (Ta.Signals.InsideUpDown(Bars.For(contractString), Signals.For(contractString)) != 0)
-            {
-                //SignalsAsText = $"{LastCheck} POSITION {contractString} InsideUpDown {Environment.NewLine}{SignalsAsText}";
-            }
+            //if (Ta.Signals.InsideUpDown(Bars.For(contractString), Signals.For(contractString)) != 0)
+            //{
+            //    //SignalsAsText = $"{LastCheck} POSITION {contractString} InsideUpDown {Environment.NewLine}{SignalsAsText}";
+            //}
         }
 
         void IPositionsVisitor.OnPropertyChanged(string propertyName)
