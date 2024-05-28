@@ -62,17 +62,17 @@ namespace SignalAdvisor.Model
                 PropertyChanged(this, new PropertyChangedEventArgs(propName));
         }
 
-        public double StopLossPrice()
+        public double CalculateStopLossPrice(double askPrice)
         {
             var stopLoss = StopLossInCents / 100;
-            var stopLossPrice = Math.Round(AskPrice - stopLoss, 2);
+            var stopLossPrice = Math.Round(askPrice - stopLoss, 2);
             return stopLossPrice;
         }
 
-        public double TakeProfitPrice()
+        public double CalculateTakeProfitPrice(double askPrice)
         {
             var takeProfit = TakeProfitInCents / 100;
-            var takeProfitPrice = Math.Round(AskPrice + takeProfit, 2);
+            var takeProfitPrice = Math.Round(askPrice + takeProfit, 2);
             return takeProfitPrice;
         }
     }

@@ -27,6 +27,7 @@ namespace SignalAdvisor.Commands
         {
             //var orderBuyId = await visitor.IbHost.ReqIdsAsync(-1);
             var orderBuyId = visitor.IbHost.NextOrderId;
+            var askPrice = visitor.InstrumentToTrade.AskPrice;
 
             //
             var orderParent = new Order()
@@ -34,7 +35,7 @@ namespace SignalAdvisor.Commands
                 OrderId = orderBuyId,
                 Action = "BUY",
                 OrderType = "LMT",
-                LmtPrice = visitor.InstrumentToTrade.AskPrice,
+                LmtPrice = askPrice,
                 TotalQuantity = visitor.InstrumentToTrade.Quantity,
                 Transmit = false
             };
@@ -45,7 +46,7 @@ namespace SignalAdvisor.Commands
                 OrderId = orderParent.OrderId + 1,
                 Action = "SELL",
                 OrderType = "MIDPRICE",
-                LmtPrice = visitor.InstrumentToTrade.StopLossPrice(),  // Only for the visual feedback on a chart. Should be removed after positioning.
+                LmtPrice = visitor.InstrumentToTrade.CalculateStopLossPrice(askPrice),  // Only for the visual feedback on a chart. Should be removed after positioning.
                 TotalQuantity = visitor.InstrumentToTrade.Quantity,
                 ParentId = orderParent.OrderId,
                 Transmit = false
@@ -55,7 +56,7 @@ namespace SignalAdvisor.Commands
             priceConditionStop.ConId = visitor.InstrumentToTrade.ConId;
             priceConditionStop.Exchange = visitor.InstrumentToTrade.Exchange;
             priceConditionStop.IsMore = false;
-            priceConditionStop.Price = visitor.InstrumentToTrade.StopLossPrice();
+            priceConditionStop.Price = visitor.InstrumentToTrade.CalculateStopLossPrice(askPrice);
             orderStop.Conditions.Add(priceConditionStop);
 
             // 
@@ -64,7 +65,7 @@ namespace SignalAdvisor.Commands
                 OrderId = orderParent.OrderId + 2,
                 Action = "SELL",
                 OrderType = "LMT",
-                LmtPrice = visitor.InstrumentToTrade.TakeProfitPrice(),  
+                LmtPrice = visitor.InstrumentToTrade.CalculateTakeProfitPrice(askPrice),  
                 TotalQuantity = visitor.InstrumentToTrade.Quantity,
                 ParentId = orderParent.OrderId,
                 Transmit = true
