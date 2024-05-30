@@ -54,8 +54,9 @@ namespace SignalAdvisor.Model
             InstrumentToTrade = null!;
 
             // Test Data
-            Symbols = TestDataEu();
-            Symbols = TestDataUs();
+            //Symbols = TestDataEu();
+            //Symbols = TestDataUs();
+            Symbols = TestDataUs2();
         }
 
         public IIbHost IbHost { get; private set; }
@@ -280,6 +281,21 @@ namespace SignalAdvisor.Model
 15124833	NFLX	USD	NASDAQ	6408	65	147
 265768	ADBE	USD	NASDAQ	3797	38	248
 208813720	GOOG	USD	NASDAQ	1225	13	767
+";
+        }
+
+        private string TestDataUs2()
+        {
+            return @"459530964	ABNB	USD	SMART	1443	15	452
+37655664	CMG	USD	SMART	25014	251	26
+272997	COST	USD	SMART	4120	42	158
+107113386	META	USD	SMART	4502	46	145
+272093	MSFT	USD	SMART	2506	26	260
+15124833	NFLX	USD	SMART	6486	65	101
+4815747	NVDA	USD	SMART	11488	115	57
+272800	ORCL	USD	SMART	767	8	850
+49462172	V	USD	SMART	1677	17	389
+
 ";
         }
 
