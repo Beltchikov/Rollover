@@ -34,15 +34,18 @@ namespace SignalAdvisor.Commands
         private static async Task<(Order?, Order?, Order?)> CreateOrdersAsync(IPositionsVisitor visitor)
         {
             var askPrice = visitor.InstrumentToTrade.AskPrice;
-            if(askPrice <= 0) {
+            if (askPrice <= 0)
+            {
                 MessageBox.Show($"The ask price is {askPrice}. The market is probably closed. The execution of the command stops.");
                 return (null, null, null);
             }
 
+            //if (visitor.OrdersSent > 0)
+            //    visitor.IbHost.ReqIds(-1);
             if (visitor.OrdersSent > 0)
-                visitor.IbHost.ReqIds(-1);
+                await visitor.IbHost.ReqIdsAsync(-1);
             var orderBuyId = visitor.IbHost.NextOrderId;
-            
+
             //
             var orderParent = new Order()
             {
