@@ -81,7 +81,8 @@ namespace SignalAdvisor.Commands
                 OrderType = "LMT",
                 LmtPrice = askPrice,
                 TotalQuantity = visitor.InstrumentToTrade.Quantity,
-                Transmit = true
+                Transmit = true,
+                OutsideRth = true,
             };
 
             return (order);
