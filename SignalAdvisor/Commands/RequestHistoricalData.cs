@@ -1,4 +1,5 @@
 ﻿using SignalAdvisor.Extensions;
+using System.IO;
 using Ta;
 
 namespace SignalAdvisor.Commands
@@ -6,6 +7,7 @@ namespace SignalAdvisor.Commands
     class RequestHistoricalData
     {
         static readonly int BAR_SIZE = 5;
+        static private readonly string HISTORICAL_DATA_PATH = "HistoricalData\\";
 
         public static async Task RunAsync(IPositionsVisitor visitor)
         {
@@ -19,6 +21,9 @@ namespace SignalAdvisor.Commands
             foreach (var positionMessage in visitor.Positions)
             {
                 bool historicalDataReceived = false;
+                List<Bar> bars = null!;
+                var contractString = positionMessage.Contract.ToString();
+
                 await visitor.IbHost.RequestHistoricalAndSubscribeAsync(
                     positionMessage.Contract,
                     "",
@@ -34,8 +39,8 @@ namespace SignalAdvisor.Commands
                         // Add bar logic
                         var barTime = d.Date.DateTimeOffsetFromString();
 
-                        var bars = visitor.Bars.For(positionMessage.Contract.ToString());
-                        var signals = visitor.Signals.For(positionMessage.Contract.ToString());
+                        bars = visitor.Bars.For(contractString);
+                        var signals = visitor.Signals.For(contractString);
                         if (!bars.Any())
                         {
                             var bar0 = new Bar(d.Open, d.High, d.Low, d.Close, d.Date.DateTimeOffsetFromString());
@@ -67,7 +72,14 @@ namespace SignalAdvisor.Commands
                     (e) => { historicalDataReceived = true; });
 
                 await Task.Run(() => { while (!historicalDataReceived) { }; });
+
+                // Save historical data
+                var fileName = contractString.Replace(" ", "-")+ ".csv";
+                var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
+                string barsAsString = bars.Select(b=>b.ToCsvString()).Aggregate((r,n)=> r+ Environment.NewLine + n);
+                File.WriteAllText(filePath, barsAsString);
             }
+            
             visitor.RequestHistoricalDataExecuted = true;
         }
     }

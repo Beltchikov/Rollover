@@ -55,6 +55,8 @@ namespace SignalAdvisor.Commands
 
                 instrument.RequestIdMktData = requestId;
                 visitor.Instruments.Add(instrument);
+
+                // Historical data
             }
         }
     }
