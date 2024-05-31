@@ -34,6 +34,7 @@ namespace SignalAdvisor.Model
         public ICommand ConnectToTwsCommand { get; }
         public ICommand UpdateSymbolsCommand { get; }
         public ICommand SendOrdersCommand { get; }
+        public ICommand SendNonBracketOrdersCommand { get; }
 
         public AdvisorViewModel()
         {
@@ -42,6 +43,7 @@ namespace SignalAdvisor.Model
             ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
             UpdateSymbolsCommand = new RelayCommand(() => UpdateSymbols.Run(this));
             SendOrdersCommand = new RelayCommand(async () => await SendOrders.RunAsync(this));
+            SendNonBracketOrdersCommand = new RelayCommand(async () => await SendNonBracketOrders.RunAsync(this));
 
             _timer = new System.Timers.Timer(60000);
             _timer.Elapsed += _timer_Elapsed;

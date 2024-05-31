@@ -31,6 +31,7 @@ namespace SignalAdvisor.Controls
         }
 
         public event EventHandler<TradeActionEventArgs> TradeAction;
+        public event EventHandler<TradeActionEventArgs> TradeNonBracketAction;
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -42,7 +43,10 @@ namespace SignalAdvisor.Controls
 
         private void ButtonNonBracket_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Non Bracket");
+            var instrument = ((Button)sender).Tag as Instrument ?? throw new Exception();
+
+            if (TradeNonBracketAction != null)
+                TradeNonBracketAction(this, new TradeActionEventArgs(instrument));
         }
     }
 }
