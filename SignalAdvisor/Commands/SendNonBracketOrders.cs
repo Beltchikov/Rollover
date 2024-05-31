@@ -13,12 +13,7 @@ namespace SignalAdvisor.Commands
         public static async Task RunAsync(IPositionsVisitor visitor)
         {
 
-            Order? order = await CreateOrderAsync(visitor);
-            if (order == null)
-            {
-                return;
-            }
-
+            Order order = await CreateOrderAsync(visitor) ?? throw new Exception();
             Contract contract = new Contract()
             {
                 ConId = visitor.InstrumentToTrade.ConId,
@@ -33,15 +28,16 @@ namespace SignalAdvisor.Commands
             await DoSendOrder(visitor, contract, order);
             visitor.OrdersSent++;
 
-            // 
             await Task.Run(() =>
             {
                 while (!_orderIsFilled) { };
             });
 
+            // TP order
             var tpPriceInCents = Math.Ceiling(_avrFillPrice * 100 + visitor.InstrumentToTrade.TakeProfitInCents);
             var tpPrice = Math.Round(tpPriceInCents / 100, 2);
-
+            Order tpOrder = await CreateTpOrderAsync(visitor, tpPrice) ?? throw new Exception();
+            await DoSendOrder(visitor, contract, tpOrder);
 
         }
 
@@ -80,6 +76,27 @@ namespace SignalAdvisor.Commands
                 Action = "BUY",
                 OrderType = "LMT",
                 LmtPrice = askPrice,
+                TotalQuantity = visitor.InstrumentToTrade.Quantity,
+                Transmit = true,
+                OutsideRth = true,
+            };
+
+            return (order);
+        }
+
+        private static async Task<Order?> CreateTpOrderAsync(IPositionsVisitor visitor, double price)
+        {
+            if (visitor.OrdersSent > 0)
+                await visitor.IbHost.ReqIdsAsync(-1);
+            var orderId = visitor.IbHost.NextOrderId;
+
+            //
+            var order = new Order()
+            {
+                OrderId = orderId,
+                Action = "SELL",
+                OrderType = "LMT",
+                LmtPrice = price,
                 TotalQuantity = visitor.InstrumentToTrade.Quantity,
                 Transmit = true,
                 OutsideRth = true,
