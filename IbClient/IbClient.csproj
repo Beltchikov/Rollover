@@ -81,6 +81,7 @@
     <Compile Include="IbHost\IIbHost.cs" />
     <Compile Include="IbHost\IIBClient.cs" />
     <Compile Include="IbHost\IRequestResponseMapper.cs" />
+    <Compile Include="Events\OrderStatusEventArgs.cs" />
     <Compile Include="IbHost\RequestResponseMapper.cs" />
     <Compile Include="messages\LiveDataMessage.cs" />
     <Compile Include="messages\AccountDownloadEndMessage.cs" />

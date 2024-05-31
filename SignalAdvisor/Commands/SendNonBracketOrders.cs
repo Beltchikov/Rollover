@@ -7,7 +7,9 @@ namespace SignalAdvisor.Commands
     {
         static bool _orderIsFilled;
         static double _avrFillPrice = 0;
-        
+        static readonly string FILLED = "FILLED";
+
+
         public static async Task RunAsync(IPositionsVisitor visitor)
         {
 
@@ -26,18 +28,36 @@ namespace SignalAdvisor.Commands
                 Exchange = visitor.InstrumentToTrade.Exchange
             };
 
-            // subscribe to OrderStatusEvent
+            visitor.IbHost.OrderStatus += IbHost_OrderStatus;
 
             await DoSendOrder(visitor, contract, order);
             visitor.OrdersSent++;
 
             // 
-            await Task.Run(() => { while (!_orderIsFilled) { }; });
+            await Task.Run(() =>
+            {
+                while (!_orderIsFilled) { };
+            });
 
             var tpPriceInCents = Math.Ceiling(_avrFillPrice * 100 + visitor.InstrumentToTrade.TakeProfitInCents);
-            var tpPrice = Math.Round(tpPriceInCents/100, 2);    
+            var tpPrice = Math.Round(tpPriceInCents / 100, 2);
 
 
+        }
+
+        private static void IbHost_OrderStatus(object? sender, IbClient.Events.OrderStatusEventArgs e)
+        {
+            object lockObjekt = new object();
+
+            lock (lockObjekt)
+            {
+                var orderStatusMessage = e.Message;
+                if (orderStatusMessage.Status.ToUpper() == FILLED)
+                {
+                    _orderIsFilled = true;
+                    _avrFillPrice = orderStatusMessage.AvgFillPrice;
+                }
+            }
         }
 
         private static async Task<Order?> CreateOrderAsync(IPositionsVisitor visitor)

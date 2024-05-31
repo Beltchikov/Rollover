@@ -1,4 +1,5 @@
 ﻿using IBApi;
+using IbClient.Events;
 using IbClient.Types;
 using IBSampleApp.messages;
 using System;
@@ -22,6 +23,8 @@ namespace IbClient.IbHost
            Action<ErrorMessage> errorMessageCallback);
         bool IsConnected { get; }
         int NextOrderId { get; }
+
+        event EventHandler<OrderStatusEventArgs> OrderStatus;
         IIbHostQueue QueueHistoricalDataUpdate { get; }
 
         void Disconnect();

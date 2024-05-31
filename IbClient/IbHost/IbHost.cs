@@ -1,4 +1,5 @@
 ﻿using IBApi;
+using IbClient.Events;
 using IbClient.messages;
 using IbClient.Types;
 using IBSampleApp.messages;
@@ -106,6 +107,8 @@ namespace IbClient.IbHost
             //_ibClient.TickString += _ibClient_TickString;
             //_ibClient.TickOptionCommunication += _ibClient_TickOptionCommunication;
         }
+
+        public event EventHandler<OrderStatusEventArgs> OrderStatus;
 
         public IIbConsumer Consumer { get; set; }
 
@@ -864,6 +867,8 @@ namespace IbClient.IbHost
             }
             Consumer.TwsMessageCollection?.Add($"OrderStatusMessage for oredr id:{orderStatusMessage.OrderId} " +
                   $"why held:{orderStatusMessage.WhyHeld}");
+
+            if(OrderStatus != null) OrderStatus(this, new OrderStatusEventArgs(orderStatusMessage));    
         }
 
         private bool MessageForRightTickerContains(string fundamentalsMessageString, string ticker)
