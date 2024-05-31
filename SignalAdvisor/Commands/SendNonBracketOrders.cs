@@ -5,6 +5,9 @@ namespace SignalAdvisor.Commands
 {
     public class SendNonBracketOrders
     {
+        static bool _orderIsFilled;
+        static double _avrFillPrice = 0;
+        
         public static async Task RunAsync(IPositionsVisitor visitor)
         {
 
@@ -23,8 +26,18 @@ namespace SignalAdvisor.Commands
                 Exchange = visitor.InstrumentToTrade.Exchange
             };
 
+            // subscribe to OrderStatusEvent
+
             await DoSendOrder(visitor, contract, order);
             visitor.OrdersSent++;
+
+            // 
+            await Task.Run(() => { while (!_orderIsFilled) { }; });
+
+            var tpPriceInCents = Math.Ceiling(_avrFillPrice * 100 + visitor.InstrumentToTrade.TakeProfitInCents);
+            var tpPrice = Math.Round(tpPriceInCents/100, 2);    
+
+
         }
 
         private static async Task<Order?> CreateOrderAsync(IPositionsVisitor visitor)
