@@ -44,13 +44,13 @@
                                     Width="80" Text="{Binding ConId}">
                         </TextBlock>
                         <TextBlock Grid.Column="1" FontSize="14" Padding="5 0 0 5" 
-                                    Width="80" Text="{Binding Symbol}"></TextBlock>
+                                    Width="70" Text="{Binding Symbol}"></TextBlock>
                         <TextBlock Grid.Column="2" FontSize="14" Padding="5 0 0 5" 
                                     Width="40" Text="{Binding Currency}"></TextBlock>
                         <TextBlock Grid.Column="3" FontSize="14" Padding="5 0 0 5" 
-                                    Width="70" Text="{Binding Exchange}"></TextBlock>
+                                    Width="60" Text="{Binding Exchange}"></TextBlock>
                         <TextBlock Grid.Column="4" Padding="5 2 0 5" FontWeight="Bold"
-                                    Width="90" Text="{Binding AskPrice, Converter={StaticResource AskPriceConverter}, Mode=OneWay}"></TextBlock>
+                                    Width="80" Text="{Binding AskPrice, Converter={StaticResource AskPriceConverter}, Mode=OneWay}"></TextBlock>
                         <TextBlock Grid.Column="5" Padding="5 2 5 0" Text="LONG" 
                             Background="LightGreen" Foreground="Green">
                         </TextBlock>
@@ -60,14 +60,12 @@
                         <TextBlock Grid.Column="7" Padding="5 0 0 5" 
                             Width="80" Text="{Binding LastSignal}">
                         </TextBlock>
-                        <Button Grid.Column="8" Width="100" 
+                        <Button Grid.Column="8" Width="70" 
                                 Click="Button_Click" Tag="{Binding Path=.}">Trade</Button>
-                        
-                        <Button Grid.Column="9" Width="145" FontWeight="Bold" 
+                        <Button Grid.Column="9" Width="130" FontWeight="Bold" 
                              Tag="{Binding Path=.}" Click="ButtonNonBracket_Click">Trade Non Bracket</Button>
-                        
                         <TextBlock Grid.Column="10" Padding="5 0 0 5" 
-                            Width="80" Text="{Binding Algo}">
+                            Width="20" Text="{Binding Algo}">
                         </TextBlock>
                         <TextBlock Grid.Column="11" Padding="5 0 0 5" 
                             Width="50" Text="{Binding StopLossInCents}">
