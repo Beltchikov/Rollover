@@ -39,5 +39,10 @@ namespace SignalAdvisor.Controls
             if (TradeAction != null)
                 TradeAction(this, new TradeActionEventArgs(instrument));
         }
+
+        private void ButtonNonBracket_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Non Bracket");
+        }
     }
 }
