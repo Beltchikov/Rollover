@@ -34,8 +34,11 @@ namespace SignalAdvisor.Commands
             });
 
             // TP order
-            var tpPriceInCents = Math.Ceiling(_avrFillPrice * 100 + visitor.InstrumentToTrade.TakeProfitInCents);
-            var tpPrice = Math.Round(tpPriceInCents / 100, 2);
+            var commission = visitor.InstrumentToTrade.CalculateCommision();
+            var tpPriceInTenthOfCent = Math.Ceiling(_avrFillPrice * 1000
+                + visitor.InstrumentToTrade.TakeProfitInCents * 10 
+                + commission * 2 * 1000);
+            var tpPrice = Math.Round(tpPriceInTenthOfCent / 1000 + 0.01, 2);
             Order tpOrder = await CreateTpOrderAsync(visitor, tpPrice) ?? throw new Exception();
             await DoSendOrder(visitor, contract, tpOrder);
 

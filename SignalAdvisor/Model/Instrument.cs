@@ -4,6 +4,8 @@ namespace SignalAdvisor.Model
 {
     public class Instrument : INotifyPropertyChanged
     {
+        private readonly double COMMISSION_PER_STOCK = 0.005;
+        private readonly double MIN_COMMISSION= 1;
         private double askPrice;
 
         public Instrument()
@@ -74,6 +76,16 @@ namespace SignalAdvisor.Model
             var takeProfit = TakeProfitInCents / 100;
             var takeProfitPrice = Math.Round(askPrice + takeProfit, 2);
             return takeProfitPrice;
+        }
+
+        public double CalculateCommision()
+        {
+            var commissionInCents = Math.Ceiling((double)Quantity * COMMISSION_PER_STOCK * 100);
+            var commission = Math.Round(commissionInCents / 100, 2);
+
+            if(commission < MIN_COMMISSION) commission = MIN_COMMISSION;
+
+            return commission;
         }
     }
 }
