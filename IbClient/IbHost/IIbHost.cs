@@ -24,7 +24,6 @@ namespace IbClient.IbHost
         bool IsConnected { get; }
         int NextOrderId { get; }
 
-        event EventHandler<OrderStatusEventArgs> OrderStatus;
         IIbHostQueue QueueHistoricalDataUpdate { get; }
 
         void Disconnect();

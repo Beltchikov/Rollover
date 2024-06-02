@@ -110,8 +110,6 @@ namespace IbClient.IbHost
             //_ibClient.TickOptionCommunication += _ibClient_TickOptionCommunication;
         }
 
-        public event EventHandler<OrderStatusEventArgs> OrderStatus;
-
         public IIbConsumer Consumer { get; set; }
 
         public IIbHostQueue QueueHistoricalDataUpdate => _queueHistoricalDataUpdate;
@@ -904,8 +902,6 @@ namespace IbClient.IbHost
                   $"why held:{orderStatusMessage.WhyHeld}");
 
             _orderResponseMapper.AddResponse(orderStatusMessage.OrderId, orderStatusMessage);
-
-            if (OrderStatus != null) OrderStatus(this, new OrderStatusEventArgs(orderStatusMessage));
         }
 
         private bool MessageForRightTickerContains(string fundamentalsMessageString, string ticker)

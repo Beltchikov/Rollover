@@ -5,11 +5,6 @@ namespace SignalAdvisor.Commands
 {
     public class SendNonBracketOrders
     {
-        static bool _orderIsFilled;
-        static double _avrFillPrice = 0;
-        static readonly string FILLED = "FILLED";
-
-
         public static async Task RunAsync(IPositionsVisitor visitor)
         {
 
@@ -23,44 +18,16 @@ namespace SignalAdvisor.Commands
                 Exchange = visitor.InstrumentToTrade.Exchange
             };
 
-            //visitor.IbHost.OrderStatus += IbHost_OrderStatus;
-
-            //await DoSendOrder(visitor, contract, order);
-            //visitor.OrdersSent++;
-
-            //await Task.Run(() =>
-            //{
-            //    while (!_orderIsFilled) { };
-            //});
-
             double avrFillPrice = await visitor.IbHost.PlaceOrderAndWaitExecution(contract, order);
-
-
 
             // TP order
             var commission = visitor.InstrumentToTrade.CalculateCommision();
-            var tpPriceInTenthOfCent = Math.Ceiling(_avrFillPrice * 1000
-                + visitor.InstrumentToTrade.TakeProfitInCents * 10 
+            var tpPriceInTenthOfCent = Math.Ceiling(avrFillPrice * 1000
+                + visitor.InstrumentToTrade.TakeProfitInCents * 10
                 + commission * 2 * 1000);
             var tpPrice = Math.Round(tpPriceInTenthOfCent / 1000 + 0.01, 2);
             Order tpOrder = await CreateTpOrderAsync(visitor, tpPrice) ?? throw new Exception();
             await DoSendOrder(visitor, contract, tpOrder);
-
-        }
-
-        private static void IbHost_OrderStatus(object? sender, IbClient.Events.OrderStatusEventArgs e)
-        {
-            object lockObjekt = new object();
-
-            lock (lockObjekt)
-            {
-                var orderStatusMessage = e.Message;
-                if (orderStatusMessage.Status.ToUpper() == FILLED)
-                {
-                    _orderIsFilled = true;
-                    _avrFillPrice = orderStatusMessage.AvgFillPrice;
-                }
-            }
         }
 
         private static async Task<Order?> CreateOrderAsync(IPositionsVisitor visitor)
