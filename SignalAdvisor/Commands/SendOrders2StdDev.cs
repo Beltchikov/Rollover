@@ -16,7 +16,24 @@ namespace SignalAdvisor.Commands
                 return;
             }
 
-           
+            var contract = visitor.InstrumentToTrade.ToContract();
+            string endDateTime = DateTime.Now.ToString(App.FORMAT_STRING_API);
+            string durationString = $"{App.BAR_SIZE_IN_MINUTES * App.STD_DEV_PERIOD * 60} S";
+            //string barSizeSetting = "5 mins";
+            string barSizeSetting = $"{App.BAR_SIZE_IN_MINUTES} mins";
+            string whatToShow = "TRADES";
+            int useRTH = 0;
+
+            var lastHistoricalDataMessages = await visitor.IbHost.RequestHistoricalDataAsync(
+                contract,
+                endDateTime,
+                durationString,
+                barSizeSetting,
+                whatToShow,
+                useRTH,
+                1,
+                [],
+                App.TIMEOUT);
 
             int orderId = await GetNextOrderIdAsync(visitor);
             

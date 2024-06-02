@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using IBApi;
+using System.ComponentModel;
 
 namespace SignalAdvisor.Model
 {
@@ -86,6 +87,20 @@ namespace SignalAdvisor.Model
             if(commission < MIN_COMMISSION) commission = MIN_COMMISSION;
 
             return commission;
+        }
+
+        public Contract ToContract()
+        {
+            Contract contract = new Contract()
+            {
+                ConId = ConId,
+                Symbol = Symbol,
+                SecType = App.SEC_TYPE_STK,
+                Currency = Currency,
+                Exchange = Exchange
+            };
+
+            return contract;
         }
     }
 }

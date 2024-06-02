@@ -458,6 +458,7 @@ namespace IbClient.IbHost
         }
 
         // NO SUBSRIBE - hist data only
+        [Obsolete]
         public async Task RequestHistoricalDataAsync(
             Contract contract,
             string endDateTime,
@@ -526,6 +527,78 @@ namespace IbClient.IbHost
                     historicalDataCallback(m);
                 }
             }
+        }
+
+        // NO SUBSRIBE - hist data only
+        public async Task<List<HistoricalDataMessage>> RequestHistoricalDataAsync(
+            Contract contract,
+            string endDateTime,
+            string durationString,
+            string barSizeSetting,
+            string whatToShow,
+            int useRTH,
+            int formatDate,
+            List<TagValue> tagValues,
+            int timeout)
+        {
+            var reqId = ++_currentReqId;
+            //_requestIdContract[reqId] = contract;
+            _requestResponseMapper.AddRequestId(reqId);
+
+            // TODO use for tests
+            //AddTestNoiseData(_requestDictionary);
+
+            _ibClient.ClientSocket.reqHistoricalData(
+                reqId,
+                contract,
+                endDateTime,
+                durationString,
+                barSizeSetting,
+                whatToShow,
+                useRTH,
+                formatDate,
+                false,
+                tagValues);
+
+            List<HistoricalDataMessage> historicalDataMessages = null;
+
+            // Starts async operation and waits for HistoricalDataEndMessage or timeout
+            await Task.Run(() =>
+            {
+                var startTime = DateTime.Now;
+                while (_requestResponseMapper.RemoveResponse<HistoricalDataEndMessage>(reqId) == null
+                   && (DateTime.Now - startTime).TotalMilliseconds < timeout) { }
+
+                try
+                {
+                    // TODO remove after reading
+                    historicalDataMessages = _requestResponseMapper.GetResponses(reqId)
+                                .Select(m => m as HistoricalDataMessage)
+                                .ToList();
+                }
+                catch (Exception e)
+                {
+                    historicalDataMessages = CreateInvalidMessagesWithErrorDetals(reqId, e.ToString());
+                }
+            });
+
+            // Continues the main execution path.
+            if (historicalDataMessages != null)
+            {
+                CreateInvalidMessagesWithErrorDetals(reqId, "TIMEOUT");
+            }
+
+            return historicalDataMessages;
+        }
+
+        private List<HistoricalDataMessage> CreateInvalidMessagesWithErrorDetals(int reqId, string error)
+        {
+            var invalidBarWithExceptionDetails = new Bar(error, 0, 0, 0, 0, 0, 0, 0);
+            var historicalDataMessages = new List<HistoricalDataMessage>
+            {
+                new HistoricalDataMessage(reqId, invalidBarWithExceptionDetails)
+            };
+            return historicalDataMessages;
         }
 
         // TODO

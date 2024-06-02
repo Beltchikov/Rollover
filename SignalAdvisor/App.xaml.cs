@@ -18,6 +18,9 @@ namespace SignalAdvisor
             + "FullExcessLiquidity,LookAheadNextChange,LookAheadInitMarginReq ,LookAheadMaintMarginReq,LookAheadAvailableFunds,LookAheadExcessLiquidity,HighestSeverity,DayTradesRemaining,Leverage";
         internal static readonly int HISTORICAL_DATA_PERIOD_IN_HOURS = 72;
         internal static readonly int BAR_SIZE = 5;
+        internal static readonly string FORMAT_STRING_API = "yyyyMMdd-HH:mm:ss";
+        internal static readonly int BAR_SIZE_IN_MINUTES = 5;
+        internal static readonly int STD_DEV_PERIOD = 10;
 
         private async void Application_Startup(object sender, StartupEventArgs e)
         {

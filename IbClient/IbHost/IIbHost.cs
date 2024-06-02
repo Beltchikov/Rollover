@@ -94,6 +94,17 @@ namespace IbClient.IbHost
             Action<HistoricalDataMessage> historicalDataUpdateCallback,
             Action<HistoricalDataEndMessage> historicalDataEndCallback);
 
+        Task<List<HistoricalDataMessage>> RequestHistoricalDataAsync(
+           Contract contract,
+           string endDateTime,
+           string durationString,
+           string barSizeSetting,
+           string whatToShow,
+           int useRTH,
+           int formatDate,
+           List<TagValue> tagValues,
+           int timeout);
+
         Task<SymbolSamplesMessage> RequestMatchingSymbolsAsync(string symbol, int timeout);
         Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout);
         Task<OrderStateOrError> PlaceOrderAsync(Contract contract, Order order, int timeout);
