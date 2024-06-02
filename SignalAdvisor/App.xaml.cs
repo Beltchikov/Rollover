@@ -22,6 +22,7 @@ namespace SignalAdvisor
         internal static readonly int BAR_SIZE_IN_MINUTES = 5;
         internal static readonly int STD_DEV_PERIOD = 10;
         internal static readonly TimeOnly SESSION_START = TimeOnly.Parse("15:30");
+        internal static readonly double RISK_IN_USD = 750;
 
         private async void Application_Startup(object sender, StartupEventArgs e)
         {

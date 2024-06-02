@@ -34,38 +34,50 @@ namespace SignalAdvisor.Commands
                 App.TIMEOUT);
 
             var midPrices = lastHistoricalDataMessages.Select(m => Math.Round((m.Close + m.Open) / 2, 2));
-            var stdDev = midPrices.StandardDeviation();
+            var twoStdDev = midPrices.StandardDeviation() * 2;
+            var qty = (int)Math.Round(App.RISK_IN_USD / twoStdDev, 0);
+            if (qty <= 0)
+            {
+                MessageBox.Show($"The calculated quantity is {qty}. The execution of the command stops.");
+                return;
+            }
 
             int orderId = await GetNextOrderIdAsync(visitor);
-            
+            Order order = CreateOrder(orderId, "BUY", visitor.InstrumentToTrade.AskPrice, qty);
+            double avrFillPrice = await visitor.IbHost.PlaceOrderAndWaitForExecution(contract, order);
 
-            //Order order = await CreateOrderAsync(visitor) ?? throw new Exception();
-            //Contract contract = new Contract()
-            //{
-            //    ConId = visitor.InstrumentToTrade.ConId,
-            //    Symbol = visitor.InstrumentToTrade.Symbol,
-            //    SecType = App.SEC_TYPE_STK,
-            //    Currency = visitor.InstrumentToTrade.Currency,
-            //    Exchange = visitor.InstrumentToTrade.Exchange
-            //};
+            // Wait for order execution
 
-            //double avrFillPrice = await visitor.IbHost.PlaceOrderAndWaitForExecution(contract, order);
+            int orderIdTakeProfit = await GetNextOrderIdAsync(visitor);
+            // 2 std. dev correspond to probability of 2,35%. Given RRR of 2 and some amount for commission, we use 5% for TP
+            var tpDistance = App.RISK_IN_USD / qty * 0.05; 
+            var tpPrice = Math.Round(avrFillPrice + tpDistance, 2);
+            Order orderTakeProfit = CreateOrder(orderIdTakeProfit, "SELL", tpPrice, qty);
 
-            //// TP order
-            //var commission = visitor.InstrumentToTrade.CalculateCommision();
-            //var tpPriceInTenthOfCent = Math.Ceiling(avrFillPrice * 1000
-            //    + visitor.InstrumentToTrade.TakeProfitInCents * 10
-            //    + commission * 2 * 1000);
-            //var tpPrice = Math.Round(tpPriceInTenthOfCent / 1000 + 0.01, 2);
-            //Order tpOrder = await CreateTpOrderAsync(visitor, tpPrice) ?? throw new Exception();
-            //await DoSendOrder(visitor, contract, tpOrder);
+            var result = await visitor.IbHost.PlaceOrderAsync(contract, orderTakeProfit, App.TIMEOUT);
+
+            if (result.ErrorMessage != "")
+            {
+                var msg = $"ConId={contract.ConId} {contract.Symbol} error:{result.ErrorMessage}";
+                visitor.TwsMessageCollection.Add(msg);
+                MessageBox.Show(msg);
+
+            }
+            else if (result.OrderState != null)
+            {
+                var msg = $"ConId={contract.ConId} {contract.Symbol} take profit order submitted.";
+                visitor.TwsMessageCollection.Add(msg);
+                MessageBox.Show(msg);
+            }
+            else throw new Exception("Unexpected. Both ErrorMessage nad OrderState are not set.");
         }
 
         private static DateTime GetLast10BarsEndTime()
         {
             DateOnly nowDateOnly = DateOnly.FromDateTime(DateTime.Now);
-            if (nowDateOnly.DayOfWeek == DayOfWeek.Sunday) {
-                nowDateOnly = nowDateOnly.AddDays(-2);   
+            if (nowDateOnly.DayOfWeek == DayOfWeek.Sunday)
+            {
+                nowDateOnly = nowDateOnly.AddDays(-2);
             }
             else if (nowDateOnly.DayOfWeek == DayOfWeek.Saturday)
             {
@@ -74,9 +86,8 @@ namespace SignalAdvisor.Commands
 
             var sessionStart = nowDateOnly.ToDateTime(App.SESSION_START);
             var utcOffset = GetUtcOffset();
-            //var sessionStartWithOffset = new DateTimeOffset(sessionStart - utcOffset, utcOffset);
             sessionStart = sessionStart - utcOffset;
-            var result = sessionStart.AddMinutes(App.BAR_SIZE_IN_MINUTES * App.STD_DEV_PERIOD);    
+            var result = sessionStart.AddMinutes(App.BAR_SIZE_IN_MINUTES * App.STD_DEV_PERIOD);
             return result;
         }
 
@@ -93,7 +104,7 @@ namespace SignalAdvisor.Commands
             if (visitor.OrdersSent > 0)
                 await visitor.IbHost.ReqIdsAsync(-1);
             var orderId = visitor.IbHost.NextOrderId;
-            return orderId; 
+            return orderId;
         }
 
         private static Order CreateOrder(int orderId, string action, double lmtPrice, int totalQuantity)
@@ -110,43 +121,6 @@ namespace SignalAdvisor.Commands
             };
 
             return order;
-        }
-
-        private static async Task<Order?> CreateTpOrderAsync(IPositionsVisitor visitor, double price)
-        {
-            if (visitor.OrdersSent > 0)
-                await visitor.IbHost.ReqIdsAsync(-1);
-            var orderId = visitor.IbHost.NextOrderId;
-
-            //
-            var order = new Order()
-            {
-                OrderId = orderId,
-                Action = "SELL",
-                OrderType = "LMT",
-                LmtPrice = price,
-                TotalQuantity = visitor.InstrumentToTrade.Quantity,
-                Transmit = true,
-                OutsideRth = true,
-            };
-
-            return (order);
-        }
-
-        private static async Task DoSendOrder(IPositionsVisitor visitor, Contract contract, Order order)
-        {
-            var result = await visitor.IbHost.PlaceOrderAsync(contract, order, App.TIMEOUT);
-
-            if (result.ErrorMessage != "")
-            {
-                visitor.TwsMessageCollection.Add($"ConId={contract.ConId} {contract.Symbol} error:{result.ErrorMessage}");
-
-            }
-            else if (result.OrderState != null)
-            {
-                visitor.TwsMessageCollection.Add($"ConId={contract.ConId} {contract.Symbol} order submitted.");
-            }
-            else throw new Exception("Unexpected. Both ErrorMessage nad OrderState are not set.");
         }
     }
 }
