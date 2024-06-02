@@ -18,7 +18,7 @@ namespace SignalAdvisor.Commands
                 Exchange = visitor.InstrumentToTrade.Exchange
             };
 
-            double avrFillPrice = await visitor.IbHost.PlaceOrderAndWaitExecution(contract, order);
+            double avrFillPrice = await visitor.IbHost.PlaceOrderAndWaitForExecution(contract, order);
 
             // TP order
             var commission = visitor.InstrumentToTrade.CalculateCommision();

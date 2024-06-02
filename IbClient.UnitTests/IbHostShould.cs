@@ -1,5 +1,6 @@
 using IBApi;
 using IbClient.IbHost;
+using IBSampleApp.messages;
 using System.Collections.ObjectModel;
 
 namespace IbClient.UnitTests
@@ -9,12 +10,42 @@ namespace IbClient.UnitTests
         [Fact]
         public async Task PlaceOrderAndWaitExecutionAsync()
         {
+            const int DELAY = 10000;
+            const string FILLED = "FILLED";
+            int orderId = 111;
+            double avrFillPriceExpected = 85.56;
+            
             IIbHost sut = new IbHost.IbHost();
             sut.Consumer = CreateIbConsumer();
+            sut.OrderResponseMapper = new RequestResponseMapper();
 
+            OrderStatusMessage filledOrderStatusMessage = CreateOrderStatusMessage(orderId, FILLED, avrFillPriceExpected);
+
+            // Starts new async operation.
+            // Main execution does not wait for it.
+            // The operation writes messages in the RequestResponseMapper after a delay.
+
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            Task.Run(() => {
+                Thread.Sleep(DELAY);
+                sut.OrderResponseMapper.AddResponse(orderId, filledOrderStatusMessage);
+
+            });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+
+            // Continues the main execution path.
             Contract contract = CreateTestContract();
-            Order order = CreateTestOrder();
-            double avrFillPrice = await sut.PlaceOrderAndWaitExecution(contract, order);
+            Order order = CreateTestOrder(orderId);
+            double avrFillPrice = await sut.PlaceOrderAndWaitForExecution(contract, order);
+
+            // 
+            Assert.Equal(avrFillPriceExpected, avrFillPrice);   
+        }
+
+        private OrderStatusMessage CreateOrderStatusMessage(int orderId, string status, double avrFillPrice)
+        {
+            var orderStatusMessage = new OrderStatusMessage(orderId, status, 0, 0, avrFillPrice, 0, 0, 0, 0, "", 0);
+           return orderStatusMessage;
         }
 
         class IbConsumerFake : IIbConsumer
@@ -30,11 +61,11 @@ namespace IbClient.UnitTests
             return new IbConsumerFake();
         }
 
-        private Order CreateTestOrder()
+        private Order CreateTestOrder(int id)
         {
             var order = new Order()
             {
-                OrderId = 111,
+                OrderId = id,
                 Action = "BUY",
                 OrderType = "LMT",
                 LmtPrice = 100,

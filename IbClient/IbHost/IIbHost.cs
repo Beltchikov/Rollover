@@ -25,6 +25,7 @@ namespace IbClient.IbHost
         int NextOrderId { get; }
 
         IIbHostQueue QueueHistoricalDataUpdate { get; }
+        IRequestResponseMapper OrderResponseMapper { get; set; }
 
         void Disconnect();
         Task RequestAccountSummaryAsync(
@@ -97,7 +98,7 @@ namespace IbClient.IbHost
         Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout);
         Task<OrderStateOrError> PlaceOrderAsync(Contract contract, Order order, int timeout);
         void ClearQueueOrderOpenMessage();
-        Task<double> PlaceOrderAndWaitExecution(Contract contract, Order order);
+        Task<double> PlaceOrderAndWaitForExecution(Contract contract, Order order);
 
 
         //public void ReqHistoricalData();

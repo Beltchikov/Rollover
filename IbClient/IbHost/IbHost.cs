@@ -1,5 +1,4 @@
 ﻿using IBApi;
-using IbClient.Events;
 using IbClient.messages;
 using IbClient.Types;
 using IBSampleApp.messages;
@@ -177,6 +176,8 @@ namespace IbClient.IbHost
 
         public bool IsConnected => _ibClient.ClientSocket.IsConnected();
         public int NextOrderId => _ibClient.NextOrderId;
+
+        public IRequestResponseMapper OrderResponseMapper { get => _orderResponseMapper; set => _orderResponseMapper = value; }
 
         public void Disconnect()
         {
@@ -622,8 +623,10 @@ namespace IbClient.IbHost
             }
         }
 
-        public async Task<double> PlaceOrderAndWaitExecution(Contract contract, Order order)
+        public async Task<double> PlaceOrderAndWaitForExecution(Contract contract, Order order)
         {
+            const string FILLED = "FILLED";
+
             _orderResponseMapper.AddRequestId(order.OrderId);
             _ibClient.ClientSocket.placeOrder(order.OrderId, contract, order);
 
@@ -635,7 +638,7 @@ namespace IbClient.IbHost
                 {
                     var responses = _orderResponseMapper.GetResponses(order.OrderId);
                     var filledOrderStatusMessage = responses
-                        .Where(r => r is OrderStatusMessage && (r as OrderStatusMessage).Status.ToUpper() == "FILLED")
+                        .Where(r => r is OrderStatusMessage && (r as OrderStatusMessage).Status.ToUpper() == FILLED)
                         .Select(m => m as OrderStatusMessage)
                         .FirstOrDefault();
 
