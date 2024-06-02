@@ -98,7 +98,8 @@ namespace IbClient.IbHost
         Task<OrderStateOrError> WhatIfOrderStateFromContract(Contract contract, int qty, int timeout);
         Task<OrderStateOrError> PlaceOrderAsync(Contract contract, Order order, int timeout);
         void ClearQueueOrderOpenMessage();
-        
+        Task<double> PlaceOrderAndWaitExecution(Contract contract, Order order);
+
 
         //public void ReqHistoricalData();
         //void ApplyDefaultHistoricalData();

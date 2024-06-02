@@ -23,15 +23,19 @@ namespace SignalAdvisor.Commands
                 Exchange = visitor.InstrumentToTrade.Exchange
             };
 
-            visitor.IbHost.OrderStatus += IbHost_OrderStatus;
+            //visitor.IbHost.OrderStatus += IbHost_OrderStatus;
 
-            await DoSendOrder(visitor, contract, order);
-            visitor.OrdersSent++;
+            //await DoSendOrder(visitor, contract, order);
+            //visitor.OrdersSent++;
 
-            await Task.Run(() =>
-            {
-                while (!_orderIsFilled) { };
-            });
+            //await Task.Run(() =>
+            //{
+            //    while (!_orderIsFilled) { };
+            //});
+
+            double avrFillPrice = await visitor.IbHost.PlaceOrderAndWaitExecution(contract, order);
+
+
 
             // TP order
             var commission = visitor.InstrumentToTrade.CalculateCommision();
@@ -61,6 +65,7 @@ namespace SignalAdvisor.Commands
 
         private static async Task<Order?> CreateOrderAsync(IPositionsVisitor visitor)
         {
+            // TODO refactor in separate method GetAskPrice
             var askPrice = visitor.InstrumentToTrade.AskPrice;
             if (askPrice <= 0)
             {

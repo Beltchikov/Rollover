@@ -31,6 +31,7 @@ namespace IbClient.IbHost
         private IIbHostQueue _queueHistoricalDataEnd;
 
         private IRequestResponseMapper _requestResponseMapper;
+        private IRequestResponseMapper _orderResponseMapper;
 
         private int _currentReqId = 0;
         List<int> _mktDataReqIds;
@@ -88,6 +89,7 @@ namespace IbClient.IbHost
             _queueHistoricalDataEnd = new IbHostQueue();
 
             _requestResponseMapper = new RequestResponseMapper();
+            _orderResponseMapper = new RequestResponseMapper();
 
             _errorMessages = new List<ErrorMessage>();
             _mktDataReqIds = new List<int> { };
@@ -621,6 +623,38 @@ namespace IbClient.IbHost
             }
         }
 
+        public async Task<double> PlaceOrderAndWaitExecution(Contract contract, Order order)
+        {
+            _orderResponseMapper.AddRequestId(order.OrderId);
+            _ibClient.ClientSocket.placeOrder(order.OrderId, contract, order);
+
+            bool orderExecuted = false;
+            double avrFillPrice = 0;
+            await Task.Run(() =>
+            {
+                while (!orderExecuted)
+                {
+                    var responses = _orderResponseMapper.GetResponses(order.OrderId);
+                    var filledOrderStatusMessage = responses
+                        .Where(r => r is OrderStatusMessage && (r as OrderStatusMessage).Status.ToUpper() == "FILLED")
+                        .Select(m => m as OrderStatusMessage)
+                        .FirstOrDefault();
+
+                    if (filledOrderStatusMessage != null)
+                    {
+                        object lockObject = new object();
+                        lock (lockObject)
+                        {
+                            avrFillPrice = filledOrderStatusMessage.AvgFillPrice;
+                            orderExecuted = true;
+                        }
+                    }
+                }
+            });
+
+            return avrFillPrice;
+        }
+
         public void ClearQueueOrderOpenMessage()
         {
             _queueOrderOpenMessage.Clear();
@@ -857,6 +891,7 @@ namespace IbClient.IbHost
                 $"conId:{openOrderMessage.Contract.ConId}");
             _queueOrderOpenMessage.DequeueAllOpenOrderMessagesExcept(openOrderMessage.OrderId);
             _queueOrderOpenMessage.Enqueue(openOrderMessage);
+            _orderResponseMapper.AddResponse(openOrderMessage.OrderId, openOrderMessage);
         }
 
         private void _ibClient_OrderStatus(OrderStatusMessage orderStatusMessage)
@@ -868,7 +903,9 @@ namespace IbClient.IbHost
             Consumer.TwsMessageCollection?.Add($"OrderStatusMessage for oredr id:{orderStatusMessage.OrderId} " +
                   $"why held:{orderStatusMessage.WhyHeld}");
 
-            if(OrderStatus != null) OrderStatus(this, new OrderStatusEventArgs(orderStatusMessage));    
+            _orderResponseMapper.AddResponse(orderStatusMessage.OrderId, orderStatusMessage);
+
+            if (OrderStatus != null) OrderStatus(this, new OrderStatusEventArgs(orderStatusMessage));
         }
 
         private bool MessageForRightTickerContains(string fundamentalsMessageString, string ticker)
@@ -933,6 +970,7 @@ namespace IbClient.IbHost
                 _requestResponseMapper.AddResponse(message.RequestId, message);
             }
         }
+
 
         //private void AddTestNoiseData(ConcurrentDictionary<int, ConcurrentBag<object>> requestDictionary)
         //{
