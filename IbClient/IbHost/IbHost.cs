@@ -49,6 +49,7 @@ namespace IbClient.IbHost
 
         public IbHost()
         {
+            // TODO inject
             _ibClient = IBClient.CreateClient();
 
             _ibClient.Error += _ibClient_Error;
