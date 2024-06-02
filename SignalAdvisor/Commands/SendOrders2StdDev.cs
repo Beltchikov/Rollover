@@ -1,4 +1,5 @@
 ﻿using IBApi;
+using MathNet.Numerics.Statistics;
 using System.Windows;
 
 namespace SignalAdvisor.Commands
@@ -7,13 +8,15 @@ namespace SignalAdvisor.Commands
     {
         public static async Task RunAsync(IPositionsVisitor visitor)
         {
-            MessageBox.Show("SendOrders2StdDev");
+            var stdDev = (new List<double>() { 2d, 3d, 4d }).StandardDeviation();
 
             if (visitor.InstrumentToTrade.AskPrice <= 0)
             {
                 MessageBox.Show($"The ask price is {visitor.InstrumentToTrade.AskPrice}. The market is probably closed. The execution of the command stops.");
                 return;
             }
+
+           
 
             int orderId = await GetNextOrderIdAsync(visitor);
             
