@@ -8,8 +8,16 @@ namespace SignalAdvisor.Commands
         public static async Task RunAsync(IPositionsVisitor visitor)
         {
             MessageBox.Show("SendOrders2StdDev");
+
+            if (visitor.InstrumentToTrade.AskPrice <= 0)
+            {
+                MessageBox.Show($"The ask price is {visitor.InstrumentToTrade.AskPrice}. The market is probably closed. The execution of the command stops.");
+                return;
+            }
+
+            int orderId = await GetNextOrderIdAsync(visitor);
             
-            
+
             //Order order = await CreateOrderAsync(visitor) ?? throw new Exception();
             //Contract contract = new Contract()
             //{
@@ -32,33 +40,28 @@ namespace SignalAdvisor.Commands
             //await DoSendOrder(visitor, contract, tpOrder);
         }
 
-        private static async Task<Order?> CreateOrderAsync(IPositionsVisitor visitor)
+        private static async Task<int> GetNextOrderIdAsync(IPositionsVisitor visitor)
         {
-            // TODO refactor in separate method GetAskPrice
-            var askPrice = visitor.InstrumentToTrade.AskPrice;
-            if (askPrice <= 0)
-            {
-                MessageBox.Show($"The ask price is {askPrice}. The market is probably closed. The execution of the command stops.");
-                return (null);
-            }
-
             if (visitor.OrdersSent > 0)
                 await visitor.IbHost.ReqIdsAsync(-1);
             var orderId = visitor.IbHost.NextOrderId;
+            return orderId; 
+        }
 
-            //
+        private static Order CreateOrder(int orderId, string action, double lmtPrice, int totalQuantity)
+        {
             var order = new Order()
             {
                 OrderId = orderId,
-                Action = "BUY",
+                Action = action,
                 OrderType = "LMT",
-                LmtPrice = askPrice,
-                TotalQuantity = visitor.InstrumentToTrade.Quantity,
+                LmtPrice = lmtPrice,
+                TotalQuantity = totalQuantity,
                 Transmit = true,
                 OutsideRth = true,
             };
 
-            return (order);
+            return order;
         }
 
         private static async Task<Order?> CreateTpOrderAsync(IPositionsVisitor visitor, double price)
