@@ -18,7 +18,6 @@ namespace SignalAdvisor.Commands
             DateTime last10BarsEndTime = GetLast10BarsEndTime();
             string endDateTime = last10BarsEndTime.ToString(App.FORMAT_STRING_API);
             string durationString = $"{App.BAR_SIZE_IN_MINUTES * App.STD_DEV_PERIOD * 60} S";
-            //string barSizeSetting = "5 mins";
             string barSizeSetting = $"{App.BAR_SIZE_IN_MINUTES} mins";
             string whatToShow = "TRADES";
             int useRTH = 0;
@@ -34,7 +33,7 @@ namespace SignalAdvisor.Commands
                 [],
                 App.TIMEOUT);
 
-            var midPrices = lastHistoricalDataMessages.Select(m => Math.Round((m.Close - m.Open) / 2, 2));
+            var midPrices = lastHistoricalDataMessages.Select(m => Math.Round((m.Close + m.Open) / 2, 2));
             var stdDev = midPrices.StandardDeviation();
 
             int orderId = await GetNextOrderIdAsync(visitor);
