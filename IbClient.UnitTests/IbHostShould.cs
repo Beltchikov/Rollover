@@ -2,10 +2,10 @@ using System.Runtime.Serialization;
 
 namespace IbClient.UnitTests
 {
-    public class IbClientShould
+    public class IbHostShould
     {
         [Fact]
-        public void CallClientSocketEConnect()
+        public void PlaceOrderAndWaitExecution()
         {
             var sut = FormatterServices.GetUninitializedObject(typeof(IBClient));
             //throw new NotImplementedException();
