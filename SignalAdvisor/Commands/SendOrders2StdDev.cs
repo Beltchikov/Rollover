@@ -8,8 +8,6 @@ namespace SignalAdvisor.Commands
     {
         public static async Task RunAsync(IPositionsVisitor visitor)
         {
-            var stdDev = (new List<double>() { 2d, 3d, 4d }).StandardDeviation();
-
             if (visitor.InstrumentToTrade.AskPrice <= 0)
             {
                 MessageBox.Show($"The ask price is {visitor.InstrumentToTrade.AskPrice}. The market is probably closed. The execution of the command stops.");
@@ -34,6 +32,9 @@ namespace SignalAdvisor.Commands
                 1,
                 [],
                 App.TIMEOUT);
+
+            var midPrices = lastHistoricalDataMessages.Select(m => Math.Round((m.Close - m.Open) / 2, 2));
+            var stdDev = midPrices.StandardDeviation();
 
             int orderId = await GetNextOrderIdAsync(visitor);
             
