@@ -60,9 +60,9 @@
                         <TextBlock Grid.Column="7" Padding="5 0 0 5" 
                             Width="80" Text="{Binding LastSignal}">
                         </TextBlock>
-                        <Button Grid.Column="8" Width="70" 
-                                Click="Button_Click" Tag="{Binding Path=.}">Trade</Button>
-                        <Button Grid.Column="9" Width="130" FontWeight="Bold" 
+                        <Button Grid.Column="8" Width="100" FontWeight="Bold" 
+                                Click="Button_Click" Tag="{Binding Path=.}">Trade 2 StdDev</Button>
+                        <Button Grid.Column="9" Width="120" 
                              Tag="{Binding Path=.}" Click="ButtonNonBracket_Click">Trade Non Bracket</Button>
                         <TextBlock Grid.Column="10" Padding="5 0 0 5" 
                             Width="20" Text="{Binding Algo}">

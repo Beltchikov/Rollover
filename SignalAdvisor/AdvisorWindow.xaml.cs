@@ -18,7 +18,7 @@ namespace SignalAdvisor
         {
             var model = (DataContext as AdvisorViewModel) ?? throw new Exception();
             model.InstrumentToTrade = e.Instrument;
-            model.SendOrdersCommand.Execute(model);
+            model.SendOrders2StdDevCommand.Execute(model);
         }
 
         private void InstrumentsControl_TradeNonBracketAction(object sender, TradeActionEventArgs e)
