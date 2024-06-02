@@ -15,7 +15,8 @@ namespace SignalAdvisor.Commands
             }
 
             var contract = visitor.InstrumentToTrade.ToContract();
-            string endDateTime = DateTime.Now.ToString(App.FORMAT_STRING_API);
+            DateTime last10BarsEndTime = GetLast10BarsEndTime();
+            string endDateTime = last10BarsEndTime.ToString(App.FORMAT_STRING_API);
             string durationString = $"{App.BAR_SIZE_IN_MINUTES * App.STD_DEV_PERIOD * 60} S";
             //string barSizeSetting = "5 mins";
             string barSizeSetting = $"{App.BAR_SIZE_IN_MINUTES} mins";
@@ -59,6 +60,33 @@ namespace SignalAdvisor.Commands
             //var tpPrice = Math.Round(tpPriceInTenthOfCent / 1000 + 0.01, 2);
             //Order tpOrder = await CreateTpOrderAsync(visitor, tpPrice) ?? throw new Exception();
             //await DoSendOrder(visitor, contract, tpOrder);
+        }
+
+        private static DateTime GetLast10BarsEndTime()
+        {
+            DateOnly nowDateOnly = DateOnly.FromDateTime(DateTime.Now);
+            if (nowDateOnly.DayOfWeek == DayOfWeek.Sunday) {
+                nowDateOnly = nowDateOnly.AddDays(-2);   
+            }
+            else if (nowDateOnly.DayOfWeek == DayOfWeek.Saturday)
+            {
+                nowDateOnly = nowDateOnly.AddDays(-1);
+            }
+
+            var sessionStart = nowDateOnly.ToDateTime(App.SESSION_START);
+            var utcOffset = GetUtcOffset();
+            //var sessionStartWithOffset = new DateTimeOffset(sessionStart - utcOffset, utcOffset);
+            sessionStart = sessionStart - utcOffset;
+            var result = sessionStart.AddMinutes(App.BAR_SIZE_IN_MINUTES * App.STD_DEV_PERIOD);    
+            return result;
+        }
+
+        private static TimeSpan GetUtcOffset()
+        {
+            DateTime utc = DateTime.UtcNow;
+            DateTime localDateTime = TimeZoneInfo.ConvertTimeFromUtc(utc, TimeZoneInfo.Local);
+            var utcOffset = localDateTime - utc;
+            return utcOffset;
         }
 
         private static async Task<int> GetNextOrderIdAsync(IPositionsVisitor visitor)
