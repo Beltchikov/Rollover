@@ -26,6 +26,7 @@
                     <GridViewColumn  DisplayMemberBinding="{Binding Symbol}" Header="Symbol"/>
                     <GridViewColumn  DisplayMemberBinding="{Binding Currency}" Header="Currency"/>
                     <GridViewColumn  DisplayMemberBinding="{Binding Exchange}" Header="Exchange"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding BidPrice, Converter={StaticResource AskPriceConverter}, Mode=OneWay}" Header="BidPrice"/>
                     <GridViewColumn DisplayMemberBinding="{Binding AskPrice, Converter={StaticResource AskPriceConverter}, Mode=OneWay}" Header="AskPrice"/>
 
                     <GridViewColumn  Header="Direction">

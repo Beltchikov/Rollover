@@ -235,21 +235,52 @@ namespace SignalAdvisor.Model
         public void TickPriceCallback(TickPriceMessage message)
         {
             var askPriceTickType = 2;
-            if (message.Field != askPriceTickType) return;
+            var bidPriceTickType = 1;
 
-            object lockObject = new();
-            lock (lockObject)
+            //if (message.Field != askPriceTickType) return;
+
+            //object lockObject = new();
+            //lock (lockObject)
+            //{
+            //    var instrumentsList = new ConcurrentBag<Instrument>(Instruments.ToArray());
+            //    var instrumentsListShort = new ConcurrentBag<Instrument>(InstrumentsShort.ToArray());
+            //    var allInstruments = instrumentsList.Concat(instrumentsListShort);
+
+            //    var instrument = allInstruments.FirstOrDefault(i => i.RequestIdMktData == message.RequestId);
+            //    if (instrument != null)
+            //    {
+            //        instrument.AskPrice = message.Price;
+            //    }
+            //}
+
+            if (message.Field == askPriceTickType)
             {
-                var instrumentsList = new ConcurrentBag<Instrument>(Instruments.ToArray());
-                var instrumentsListShort = new ConcurrentBag<Instrument>(InstrumentsShort.ToArray());
-                var allInstruments = instrumentsList.Concat(instrumentsListShort);
-
-                var instrument = allInstruments.FirstOrDefault(i => i.RequestIdMktData == message.RequestId);
-                if (instrument != null)
+                object lockObject = new();
+                lock (lockObject)
                 {
-                    instrument.AskPrice = message.Price;
+                    var instrumentsList = new ConcurrentBag<Instrument>(Instruments.ToArray());
+                    var instrument = instrumentsList.FirstOrDefault(i => i.RequestIdMktData == message.RequestId);
+                    if (instrument != null)
+                    {
+                        instrument.AskPrice = message.Price;
+                    }
                 }
             }
+            else if (message.Field == bidPriceTickType)
+            {
+                object lockObject = new();
+                lock (lockObject)
+                {
+                    var instrumentsListShort = new ConcurrentBag<Instrument>(InstrumentsShort.ToArray());
+                    var instrument = instrumentsListShort.FirstOrDefault(i => i.RequestIdMktData == message.RequestId);
+                    if (instrument != null)
+                    {
+                        instrument.BidPrice = message.Price;
+                    }
+                }
+            }
+
+
         }
 
         private void NewBar(Contract contract, DateTimeOffset newBarTime)

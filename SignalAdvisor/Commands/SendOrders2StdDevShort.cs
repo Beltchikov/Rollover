@@ -8,45 +8,39 @@ namespace SignalAdvisor.Commands
     {
         public static async Task RunAsync(IPositionsVisitor visitor)
         {
-            MessageBox.Show("SendOrders2StdDevShort");
-            
-            
-            //if (visitor.InstrumentToTrade.AskPrice <= 0)
-            //{
-            //    MessageBox.Show($"The ask price is {visitor.InstrumentToTrade.AskPrice}. The market is probably closed. The execution of the command stops.");
-            //    return;
-            //}
+            //MessageBox.Show("SendOrders2StdDevShort");
 
-            //var contract = visitor.InstrumentToTrade.ToContract();
-            //DateTime last10BarsEndTime = GetLast10BarsEndTime();
-            //string endDateTime = last10BarsEndTime.ToString(App.FORMAT_STRING_API);
-            //string durationString = $"{App.BAR_SIZE_IN_MINUTES * App.STD_DEV_PERIOD * 60} S";
-            //string barSizeSetting = $"{App.BAR_SIZE_IN_MINUTES} mins";
-            //string whatToShow = "TRADES";
-            //int useRTH = 0;
 
-            //var lastHistoricalDataMessages = await visitor.IbHost.RequestHistoricalDataAsync(
-            //    contract,
-            //    endDateTime,
-            //    durationString,
-            //    barSizeSetting,
-            //    whatToShow,
-            //    useRTH,
-            //    1,
-            //    [],
-            //    App.TIMEOUT);
+            if (visitor.InstrumentToTrade.BidPrice <= 0)
+            {
+                MessageBox.Show($"The bid price is {visitor.InstrumentToTrade.BidPrice}. The market is probably closed. The execution of the command stops.");
+                return;
+            }
 
-            //var midPrices = lastHistoricalDataMessages.Select(m => Math.Round((m.Close + m.Open) / 2, 2));
-            //var twoStdDev = midPrices.StandardDeviation() * 2;
-            //var qty = (int)Math.Round(App.RISK_IN_USD / twoStdDev, 0);
-            //if (qty <= 0)
-            //{
-            //    MessageBox.Show($"The calculated quantity is {qty}. The execution of the command stops.");
-            //    return;
-            //}
+            var contract = visitor.InstrumentToTrade.ToContract();
+            DateTime last10BarsEndTime = GetLast10BarsEndTime();
+            var lastHistoricalDataMessages = await visitor.IbHost.RequestHistoricalDataAsync(
+                contract,
+                last10BarsEndTime.ToString(App.FORMAT_STRING_API),
+                 $"{App.BAR_SIZE_IN_MINUTES * App.STD_DEV_PERIOD * 60} S",
+                $"{App.BAR_SIZE_IN_MINUTES} mins",
+                "TRADES",
+                0,
+                1,
+                [],
+                App.TIMEOUT);
 
-            //int orderId = await GetNextOrderIdAsync(visitor);
-            //Order order = CreateOrder(orderId, "BUY", "LMT", visitor.InstrumentToTrade.AskPrice, qty, true);
+            var midPrices = lastHistoricalDataMessages.Select(m => Math.Round((m.Close + m.Open) / 2, 2));
+            var twoStdDev = midPrices.StandardDeviation() * 2;
+            var qty = (int)Math.Round(App.RISK_IN_USD / twoStdDev, 0);
+            if (qty <= 0)
+            {
+                MessageBox.Show($"The calculated quantity is {qty}. The execution of the command stops.");
+                return;
+            }
+
+            int orderId = await GetNextOrderIdAsync(visitor);
+            Order order = CreateOrder(orderId, "SELL", "LMT", visitor.InstrumentToTrade.BidPrice, qty, true);
             //double avrFillPrice = await visitor.IbHost.PlaceOrderAndWaitForExecution(contract, order);
 
             //// Wait for order execution
@@ -71,7 +65,7 @@ namespace SignalAdvisor.Commands
             //// Place Orders
             //await PlaceOrderAndHandleResultAsync(visitor, contract, orderTakeProfit, App.TIMEOUT);
             //await PlaceOrderAndHandleResultAsync(visitor, contract, orderStopLoss, App.TIMEOUT);
-          
+
         }
 
         private static async Task PlaceOrderAndHandleResultAsync(IPositionsVisitor visitor, Contract contract, Order orderTakeProfit, int tIMEOUT)

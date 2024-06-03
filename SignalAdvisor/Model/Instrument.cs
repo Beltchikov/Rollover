@@ -8,6 +8,7 @@ namespace SignalAdvisor.Model
         private readonly double COMMISSION_PER_STOCK = 0.005;
         private readonly double MIN_COMMISSION= 1;
         private double askPrice;
+        private double bidPrice;
 
         public Instrument()
         {
@@ -55,6 +56,18 @@ namespace SignalAdvisor.Model
                 {
                     askPrice = value;
                     NotifyPropertyChanged("AskPrice");
+                }
+            }
+        }
+        public double BidPrice
+        {
+            get { return bidPrice; }
+            set
+            {
+                if (bidPrice != value)
+                {
+                    bidPrice = value;
+                    NotifyPropertyChanged("BidPrice");
                 }
             }
         }
