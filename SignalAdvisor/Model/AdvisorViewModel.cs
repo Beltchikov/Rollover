@@ -70,9 +70,11 @@ namespace SignalAdvisor.Model
             // Test Data
             //Symbols = TestDataEu();
             //Symbols = TestDataUs();
-            Symbols = TestDataUs2();
+            //Symbols = TestDataUs2();
+            Symbols = LiveData();
 
-            SymbolsShort = TestDataUsShort();
+            //SymbolsShort = TestDataUsShort();
+            SymbolsShort = LiveDataShort();
         }
 
         public IIbHost IbHost { get; private set; }
@@ -256,7 +258,7 @@ namespace SignalAdvisor.Model
         public bool RequestPositionsExecuted { get; set; }
         public bool RequestHistoricalDataExecuted { get; set; }
         public Instrument InstrumentToTrade { get; set; }
-       
+
         public void TickPriceCallback(TickPriceMessage message)
         {
             var askPriceTickType = 2;
@@ -379,6 +381,35 @@ namespace SignalAdvisor.Model
             return @"266093	AMAT	USD	SMART	1697	17	240
 271308	LRCX	USD	SMART	7711	78	52
 272093	MSFT	USD	SMART	2506	26	160
+";
+        }
+
+
+        private string LiveDataShort()
+        {
+            return @"166090175	BABA	USD	SMART	1272	13	315
+79498203	GME	USD	SMART	1697	17	240
+4725951	AEO	USD	SMART	4502	46	90
+131217639	BB	USD	SMART	6486	65	62
+575890378	SNDL	USD	SMART	11488	115	35
+326196509	TLRY	USD	SMART	529	6	670
+385552436	OCGN	USD	SMART	529	6	670
+305576762	PRPL	USD	SMART	529	6	670
+425175609	NKLA	USD	SMART	529	6	670
+215119556	WKHS	USD	SMART	529	6	670
+
+
+";
+        }
+
+        private string LiveData()
+        {
+            return @"265598	AAPL	USD	SMART	1272	13	315
+107113386	META	USD	SMART	4502	46	90
+15124833	NFLX	USD	SMART	6486	65	62
+4815747	NVDA	USD	SMART	11488	115	35
+76792991	TSLA	USD	SMART	529	6	670
+
 ";
         }
     }
