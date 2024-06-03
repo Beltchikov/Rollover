@@ -49,8 +49,7 @@ namespace SignalAdvisor.Commands
             // Wait for order execution
 
             int orderIdTakeProfit = await GetNextOrderIdAsync(visitor);
-            // 2 std. dev correspond to probability of 2,35%. Given RRR of 2 and some amount for commission, we use 5% for TP
-            var tpDistance = App.RISK_IN_USD / qty * 0.05; 
+            var tpDistance = (App.LIVE_COST_PROFIT / App.RISK_IN_USD) * twoStdDev; 
             var tpPrice = Math.Round(avrFillPrice + tpDistance, 2);
             Order orderTakeProfit = CreateOrder(orderIdTakeProfit, "SELL", tpPrice, qty);
 
