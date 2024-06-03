@@ -11,112 +11,62 @@
         <converters:AskPriceConverter x:Key="AskPriceConverter"/>
     </UserControl.Resources>
     <Grid>
-        <ListBox Name="listBoxInstruments" Grid.Row="1" Grid.Column="1" 
+        <ListView Name="listBoxInstruments" Grid.Row="1" Grid.Column="1" 
              ItemsSource="{Binding Instruments, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
-            <ListBox.ItemContainerStyle>
+            <ListView.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="Padding" Value="0"/>
                     <Setter Property="BorderThickness" Value="1" />
                     <Setter Property="BorderBrush" Value="Black" />
                 </Style>
-            </ListBox.ItemContainerStyle>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
+            </ListView.ItemContainerStyle>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding ConId}" Header="ConId"/>
+                    <GridViewColumn  DisplayMemberBinding="{Binding Symbol}" Header="Symbol"/>
+                    <GridViewColumn  DisplayMemberBinding="{Binding Currency}" Header="Currency"/>
+                    <GridViewColumn  DisplayMemberBinding="{Binding Exchange}" Header="Exchange"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding AskPrice, Converter={StaticResource AskPriceConverter}, Mode=OneWay}" Header="AskPrice"/>
 
-                        <TextBlock Grid.Column="0" FontSize="14" Padding="5 0 0 5" 
-                                    Width="80" Text="{Binding ConId}">
-                        </TextBlock>
-                        <TextBlock Grid.Column="1" FontSize="14" Padding="5 0 0 5" 
-                                    Width="70" Text="{Binding Symbol}"></TextBlock>
-                        <TextBlock Grid.Column="2" FontSize="14" Padding="5 0 0 5" 
-                                    Width="40" Text="{Binding Currency}"></TextBlock>
-                        <TextBlock Grid.Column="3" FontSize="14" Padding="5 0 0 5" 
-                                    Width="60" Text="{Binding Exchange}"></TextBlock>
-                        <TextBlock Grid.Column="4" Padding="5 2 0 5" FontWeight="Bold"
-                                    Width="80" Text="{Binding AskPrice, Converter={StaticResource AskPriceConverter}, Mode=OneWay}"></TextBlock>
-                        <TextBlock Grid.Column="5" Padding="5 2 5 0" Text="LONG" 
-                            Background="LightGreen" Foreground="Green">
-                        </TextBlock>
-                        <TextBlock Grid.Column="6" Padding="5 0 0 5" 
-                            Width="140" Text="{Binding LastSignalTime}">
-                        </TextBlock>
-                        <TextBlock Grid.Column="7" Padding="5 0 0 5" 
-                            Width="80" Text="{Binding LastSignal}">
-                        </TextBlock>
-                        <Button Grid.Column="8" Width="100" FontWeight="Bold" 
-                                Click="Button_Click" Tag="{Binding Path=.}">Trade 2 StdDev</Button>
-                        <Button Grid.Column="9" Width="120" 
-                             Tag="{Binding Path=.}" Click="ButtonNonBracket_Click">Trade Non Bracket</Button>
-                        <TextBlock Grid.Column="10" Padding="5 0 0 5" 
-                            Width="20" Text="{Binding Algo}">
-                        </TextBlock>
-                        <TextBlock Grid.Column="11" Padding="5 0 0 5" 
-                            Width="50" Text="{Binding StopLossInCents}">
-                        </TextBlock>
-                        <TextBlock Grid.Column="12" Padding="5 0 0 5" 
-                            Width="50" Text="{Binding TakeProfitInCents}">
-                        </TextBlock>
-                        <TextBlock Grid.Column="13" Padding="5 0 0 5" 
-                            Width="50" Text="{Binding Quantity}">
-                        </TextBlock>
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
+                    <GridViewColumn  Header="Direction">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Grid.Column="5" Padding="5 2 5 0" Text="LONG" 
+Background="LightGreen" Foreground="Green">
+                                </TextBlock>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
 
-            <!--<ListBoxItem Padding="0">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
+                    <GridViewColumn DisplayMemberBinding="{Binding LastSignalTime}"  Header="LastSignalTime"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding LastSignal}"  Header="LastSignal"/>
 
-                    <Button Width="25" FontWeight="Bold">...</Button>
-                    <TextBlock Grid.Column="1" FontSize="14" Padding="5 0 5 0" 
-                               Width="80" Text="NVDA"></TextBlock>
-                    <TextBlock Grid.Column="2" Padding="5 2 5 0" Text="LONG" 
-                               Background="LightGreen" Foreground="Green" ></TextBlock>
-                </Grid>
-            </ListBoxItem>
+                    <GridViewColumn  Header="Action1">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Grid.Column="8" Width="100" FontWeight="Bold" 
+                                    Click="Button_Click" Tag="{Binding Path=.}">Trade 2 StdDev
+                                </Button>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
 
-            <ListBoxItem Padding="0">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
+                    <GridViewColumn  Header="Action2">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Grid.Column="9" Width="120" 
+                                    Tag="{Binding Path=.}" Click="ButtonNonBracket_Click">Trade Non Bracket
+                                </Button>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
 
-                    <Button Width="25" FontWeight="Bold">...</Button>
-                    <TextBlock Grid.Column="1" FontSize="14" Padding="5 0 5 0" 
-                               Width="80" Text="MSFT"></TextBlock>
-                    <TextBlock Grid.Column="2" Padding="5 2 5 0" Text="LONG" 
-           Background="LightGreen" Foreground="Green"></TextBlock>
-                    
-                </Grid>
-            </ListBoxItem>-->
-
-        </ListBox>
+                    <GridViewColumn DisplayMemberBinding="{Binding Algo}" Header="Algo"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding StopLossInCents}" Header="SL in Ct"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding TakeProfitInCents}" Header="TP in Ct"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Quantity}" Header="Qty"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </UserControl>
