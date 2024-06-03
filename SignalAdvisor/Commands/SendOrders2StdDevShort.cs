@@ -70,6 +70,7 @@ namespace SignalAdvisor.Commands
             await PlaceOrderAndHandleResultAsync(visitor, contract, orderTakeProfit, App.TIMEOUT);
             await PlaceOrderAndHandleResultAsync(visitor, contract, orderStopLoss, App.TIMEOUT);
 
+            await GetNextOrderIdAsync(visitor);
         }
 
         private static async Task PlaceOrderAndHandleResultAsync(IPositionsVisitor visitor, Contract contract, Order orderTakeProfit, int tIMEOUT)
