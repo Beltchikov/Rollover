@@ -8,7 +8,6 @@ using SignalAdvisor.Commands;
 using SignalAdvisor.Extensions;
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
-using System.Text.Json;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -36,6 +35,8 @@ namespace SignalAdvisor.Model
 
         ICommand RequestPositionsCommand;
         ICommand RequestHistoricalDataCommand;
+        private int _nextOrderId;
+
         public ICommand ConnectToTwsCommand { get; }
         public ICommand UpdateSymbolsCommand { get; }
         public ICommand UpdateSymbolsShortCommand { get; }
@@ -71,7 +72,7 @@ namespace SignalAdvisor.Model
             //Symbols = TestDataUs();
             Symbols = TestDataUs2();
 
-            SymbolsShort = TestDataUsShort();   
+            SymbolsShort = TestDataUsShort();
         }
 
         public IIbHost IbHost { get; private set; }
@@ -136,6 +137,21 @@ namespace SignalAdvisor.Model
                 SetProperty(ref _connectedToTws, value);
             }
         }
+        public int NextOrderId()
+        {
+            if (_nextOrderId == 0)
+            {
+                IbHost.ReqIds(-1);
+                _nextOrderId = IbHost.NextOrderId;
+            }
+            else
+            {
+                _nextOrderId++;
+            }
+
+            return _nextOrderId;
+
+        }
 
         public ObservableCollection<string> TwsMessageCollection
         {
@@ -190,7 +206,7 @@ namespace SignalAdvisor.Model
                 SetProperty(ref _orderLog, value);
             }
         }
-        
+
         public ObservableCollection<PositionMessage> Positions
         {
             get => _positions;
@@ -240,28 +256,11 @@ namespace SignalAdvisor.Model
         public bool RequestPositionsExecuted { get; set; }
         public bool RequestHistoricalDataExecuted { get; set; }
         public Instrument InstrumentToTrade { get; set; }
-        public int OrdersSent { get; set; }
-
+       
         public void TickPriceCallback(TickPriceMessage message)
         {
             var askPriceTickType = 2;
             var bidPriceTickType = 1;
-
-            //if (message.Field != askPriceTickType) return;
-
-            //object lockObject = new();
-            //lock (lockObject)
-            //{
-            //    var instrumentsList = new ConcurrentBag<Instrument>(Instruments.ToArray());
-            //    var instrumentsListShort = new ConcurrentBag<Instrument>(InstrumentsShort.ToArray());
-            //    var allInstruments = instrumentsList.Concat(instrumentsListShort);
-
-            //    var instrument = allInstruments.FirstOrDefault(i => i.RequestIdMktData == message.RequestId);
-            //    if (instrument != null)
-            //    {
-            //        instrument.AskPrice = message.Price;
-            //    }
-            //}
 
             if (message.Field == askPriceTickType)
             {
@@ -289,8 +288,6 @@ namespace SignalAdvisor.Model
                     }
                 }
             }
-
-
         }
 
         private void NewBar(Contract contract, DateTimeOffset newBarTime)
@@ -384,6 +381,5 @@ namespace SignalAdvisor.Model
 272093	MSFT	USD	SMART	2506	26	160
 ";
         }
-
     }
 }

@@ -1,7 +1,6 @@
 ﻿using IBApi;
 using MathNet.Numerics.Statistics;
 using System.Windows;
-using System.Windows.Interop;
 
 namespace SignalAdvisor.Commands
 {
@@ -43,9 +42,9 @@ namespace SignalAdvisor.Commands
                 return;
             }
 
-            int orderId = await GetNextOrderIdAsync(visitor);
+            int orderId = visitor.NextOrderId();
             Order order = CreateOrder(orderId, "BUY", "LMT", visitor.InstrumentToTrade.AskPrice, qty, true);
-            LogOrder(visitor, contract, order);
+            LogOrder(visitor, contract, order, twoStdDev);
             double avrFillPrice = await visitor.IbHost.PlaceOrderAndWaitForExecution(contract, order);
 
             // Wait for order execution
@@ -57,13 +56,13 @@ namespace SignalAdvisor.Commands
 
             // TP order
             string ocaGroup = $"ocaGroup-{orderId}";
-            int orderIdTakeProfit = orderId + 1;
+            int orderIdTakeProfit = visitor.NextOrderId();
             var tpDistance = (App.LIVE_COST_PROFIT / App.RISK_IN_USD) * twoStdDev;
             var tpPrice = Math.Round(avrFillPrice + tpDistance, 2);
             Order orderTakeProfit = CreateOrder(orderIdTakeProfit, "SELL", "LMT", tpPrice, qty, true, ocaGroup);
 
             // SL order
-            int orderIdStopLoss = orderIdTakeProfit + 2;
+            int orderIdStopLoss = visitor.NextOrderId();
             var slPrice = Math.Round(avrFillPrice - twoStdDev, 2);
             Order orderStopLoss = CreateOrder(orderIdStopLoss, "SELL", "MIDPRICE", slPrice, qty, false, ocaGroup);
 
@@ -77,8 +76,6 @@ namespace SignalAdvisor.Commands
             // Place Orders
             await PlaceOrderAndHandleResultAsync(visitor, contract, orderTakeProfit, App.TIMEOUT);
             await PlaceOrderAndHandleResultAsync(visitor, contract, orderStopLoss, App.TIMEOUT);
-
-            await GetNextOrderIdAsync(visitor);
         }
 
         private static async Task PlaceOrderAndHandleResultAsync(IPositionsVisitor visitor, Contract contract, Order order, int timeout)
@@ -101,9 +98,9 @@ namespace SignalAdvisor.Commands
             else throw new Exception("Unexpected. Both ErrorMessage nad OrderState are not set.");
         }
 
-        private static void LogOrder(IPositionsVisitor visitor, Contract contract, Order order)
+        private static void LogOrder(IPositionsVisitor visitor, Contract contract, Order order, double twoStdDev)
         {
-            var msg = $"Sending order {order.OrderId} {contract.Symbol} {order.Action} {order.OrderType} at {order.LmtPrice} qty:{order.TotalQuantity}";
+            var msg = $"Sending order {order.OrderId} {contract.Symbol} {order.Action} {order.OrderType} at {order.LmtPrice} qty:{order.TotalQuantity} 2StdDev:{Math.Round(twoStdDev, 2)}";
             visitor.OrderLog = string.IsNullOrWhiteSpace(visitor.OrderLog)
                 ? msg
                 : visitor.OrderLog + Environment.NewLine + msg;
@@ -139,23 +136,14 @@ namespace SignalAdvisor.Commands
             var utcOffset = localDateTime - utc;
             return utcOffset;
         }
-
-        private static async Task<int> GetNextOrderIdAsync(IPositionsVisitor visitor)
-        {
-            if (visitor.OrdersSent > 0)
-                await visitor.IbHost.ReqIdsAsync(-1);
-            var orderId = visitor.IbHost.NextOrderId;
-            return orderId;
-        }
-
         private static Order CreateOrder(
-            int orderId,
-            string action,
-            string orderType,
-            double lmtPrice,
-            int totalQuantity,
-            bool outsideRth = false,
-            string ocaGroup = "")
+                    int orderId,
+                    string action,
+                    string orderType,
+                    double lmtPrice,
+                    int totalQuantity,
+                    bool outsideRth = false,
+                    string ocaGroup = "")
         {
             var order = new Order()
             {

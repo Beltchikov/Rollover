@@ -40,11 +40,7 @@ namespace SignalAdvisor.Commands
                 return (null);
             }
 
-            if (visitor.OrdersSent > 0)
-                await visitor.IbHost.ReqIdsAsync(-1);
             var orderId = visitor.IbHost.NextOrderId;
-
-            //
             var order = new Order()
             {
                 OrderId = orderId,
@@ -61,11 +57,8 @@ namespace SignalAdvisor.Commands
 
         private static async Task<Order?> CreateTpOrderAsync(IPositionsVisitor visitor, double price)
         {
-            if (visitor.OrdersSent > 0)
-                await visitor.IbHost.ReqIdsAsync(-1);
             var orderId = visitor.IbHost.NextOrderId;
 
-            //
             var order = new Order()
             {
                 OrderId = orderId,

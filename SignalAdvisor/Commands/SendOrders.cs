@@ -9,7 +9,7 @@ namespace SignalAdvisor.Commands
         {
 
             (Order? orderBuyParent, Order? orderBuyStop, Order? orderBuyProfit) = await CreateOrdersAsync(visitor);
-            if (orderBuyParent == null || orderBuyStop == null || orderBuyProfit==null)
+            if (orderBuyParent == null || orderBuyStop == null || orderBuyProfit == null)
             {
                 return;
             }
@@ -24,11 +24,8 @@ namespace SignalAdvisor.Commands
             };
 
             await DoSendOrder(visitor, contract, orderBuyParent);
-            visitor.OrdersSent++;
             await DoSendOrder(visitor, contract, orderBuyStop);
-            visitor.OrdersSent++;
             await DoSendOrder(visitor, contract, orderBuyProfit);
-            visitor.OrdersSent++;
         }
 
         private static async Task<(Order?, Order?, Order?)> CreateOrdersAsync(IPositionsVisitor visitor)
@@ -40,13 +37,7 @@ namespace SignalAdvisor.Commands
                 return (null, null, null);
             }
 
-            //if (visitor.OrdersSent > 0)
-            //    visitor.IbHost.ReqIds(-1);
-            if (visitor.OrdersSent > 0)
-                await visitor.IbHost.ReqIdsAsync(-1);
             var orderBuyId = visitor.IbHost.NextOrderId;
-
-            //
             var orderParent = new Order()
             {
                 OrderId = orderBuyId,
@@ -57,7 +48,6 @@ namespace SignalAdvisor.Commands
                 Transmit = false
             };
 
-            //
             Order orderStop = new()
             {
                 OrderId = orderParent.OrderId + 1,

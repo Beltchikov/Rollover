@@ -15,13 +15,12 @@ namespace SignalAdvisor.Commands
         void OnPropertyChanged(string propertyName);
         void AddBar(IBApi.Contract contract, HistoricalDataMessage historicalDataMessage);
         void TickPriceCallback(TickPriceMessage message);
-
+        int NextOrderId();
         bool RequestPositionsExecuted { get; set; }
         bool RequestHistoricalDataExecuted { get; set; }
         string Symbols { get; set; }
         string SymbolsShort { get; set; }
         public Instrument InstrumentToTrade { get; set; }
-        int OrdersSent { get; set; }
         string OrderLog { get; set; }
     }
 }
