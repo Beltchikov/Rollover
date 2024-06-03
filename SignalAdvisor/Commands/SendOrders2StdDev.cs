@@ -74,7 +74,11 @@ namespace SignalAdvisor.Commands
 
         private static DateTime GetLast10BarsEndTime()
         {
-            DateOnly nowDateOnly = DateOnly.FromDateTime(DateTime.Now);
+            TimeOnly nowTimeOnly = TimeOnly.FromDateTime(DateTime.Now);
+            DateOnly nowDateOnly = nowTimeOnly < App.SESSION_START
+                ? DateOnly.FromDateTime(DateTime.Now.AddDays(-1))
+                : DateOnly.FromDateTime(DateTime.Now);
+            
             if (nowDateOnly.DayOfWeek == DayOfWeek.Sunday)
             {
                 nowDateOnly = nowDateOnly.AddDays(-2);
