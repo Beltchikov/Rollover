@@ -9,6 +9,7 @@
         xmlns:converters="clr-namespace:SignalAdvisor.Converters"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
         Title="Signal Advisor" Width="1420" Height="900" >
     <Window.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
