@@ -1,6 +1,7 @@
 ﻿using IBApi;
 using MathNet.Numerics.Statistics;
 using System.Windows;
+using System.Windows.Interop;
 
 namespace SignalAdvisor.Commands
 {
@@ -79,17 +80,18 @@ namespace SignalAdvisor.Commands
             await GetNextOrderIdAsync(visitor);
         }
 
-        private static async Task PlaceOrderAndHandleResultAsync(IPositionsVisitor visitor, Contract contract, Order orderTakeProfit, int tIMEOUT)
+        private static async Task PlaceOrderAndHandleResultAsync(IPositionsVisitor visitor, Contract contract, Order order, int timeout)
         {
-            var result = await visitor.IbHost.PlaceOrderAsync(contract, orderTakeProfit, App.TIMEOUT);
+            LogOrder(visitor, contract, order);
+var result = await visitor.IbHost.PlaceOrderAsync(contract, order, App.TIMEOUT);
 
             if (result.ErrorMessage != "")
             {
                 var msg = $"ConId={contract.ConId} {contract.Symbol} error:{result.ErrorMessage}";
                 visitor.TwsMessageCollection.Add(msg);
-                visitor.OrderErrors = string.IsNullOrWhiteSpace(visitor.OrderErrors)
+                visitor.OrderLog = string.IsNullOrWhiteSpace(visitor.OrderLog)
                     ? msg
-                    : visitor.OrderErrors + Environment.NewLine + msg;
+                    : visitor.OrderLog + Environment.NewLine + msg;
             }
             else if (result.OrderState != null)
             {
@@ -97,6 +99,14 @@ namespace SignalAdvisor.Commands
                 visitor.TwsMessageCollection.Add(msg);
             }
             else throw new Exception("Unexpected. Both ErrorMessage nad OrderState are not set.");
+        }
+
+        private static void LogOrder(IPositionsVisitor visitor, Contract contract, Order order)
+        {
+            var msg = $"Sending order {order.OrderId} {contract.Symbol} {order.Action} {order.OrderType} at {order.LmtPrice} qty:{order.TotalQuantity}";
+            visitor.OrderLog = string.IsNullOrWhiteSpace(visitor.OrderLog)
+                ? msg
+                : visitor.OrderLog + Environment.NewLine + msg;
         }
 
         private static DateTime GetLast10BarsEndTime()

@@ -25,7 +25,7 @@ namespace SignalAdvisor.Model
         private string _lastCheck = "";
         private string _symbols = "";
         private string _symbolsShort = "";
-        private string _orderErrors = "";
+        private string _orderLog = "";
         private ObservableCollection<PositionMessage> _positions = [];
         private ObservableCollection<KeyValuePair<string, List<Ta.Bar>>> _bars = [];
         private ObservableCollection<KeyValuePair<string, List<Dictionary<string, int>>>> _signals = [];
@@ -182,12 +182,12 @@ namespace SignalAdvisor.Model
             }
         }
 
-        public string OrderErrors
+        public string OrderLog
         {
-            get => _orderErrors;
+            get => _orderLog;
             set
             {
-                SetProperty(ref _orderErrors, value);
+                SetProperty(ref _orderLog, value);
             }
         }
         
