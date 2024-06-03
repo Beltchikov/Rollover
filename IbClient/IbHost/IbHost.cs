@@ -991,16 +991,6 @@ namespace IbClient.IbHost
             return fundamentalsMessageString.Contains(ticker) || fundamentalsMessageString.Contains(ticker.ToUpper());
         }
 
-        private bool HasErrorMessage(int reqId, Func<ErrorMessage, bool> errorFilterFunction, out ErrorMessage errorMessage)
-        {
-            var errorMessagesCopy = _errorMessages.ToArray();
-            bool result = errorMessagesCopy.Any(errorFilterFunction);
-            errorMessage = result
-                ? errorMessagesCopy.Single(errorFilterFunction)
-                : null;
-            return result;
-        }
-
         private void _ibClient_HistoricalData(HistoricalDataMessage message)
         {
             _queueHistoricalData.Enqueue(message);

@@ -27,5 +27,21 @@ namespace SignalAdvisor
             model.InstrumentToTrade = e.Instrument;
             model.SendNonBracketOrdersCommand.Execute(model);
         }
+
+        private void InstrumentsControl_TradeActionShort1(object sender, TradeActionEventArgs e)
+        {
+            var model = (DataContext as AdvisorViewModel) ?? throw new Exception();
+            model.InstrumentToTrade = e.Instrument;
+            model.SendOrders2StdDevShortCommand.Execute(model);
+        }
+
+        private void InstrumentsControl_TradeActionShort2(object sender, TradeActionEventArgs e)
+        {
+            MessageBox.Show("Not implemented yet");
+            
+            //var model = (DataContext as AdvisorViewModel) ?? throw new Exception();
+            //model.InstrumentToTrade = e.Instrument;
+            //model.SendNonBracketOrdersCommand.Execute(model);
+        }
     }
 }

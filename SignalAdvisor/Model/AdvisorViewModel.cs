@@ -6,7 +6,9 @@ using IbClient.messages;
 using IBSampleApp.messages;
 using SignalAdvisor.Commands;
 using SignalAdvisor.Extensions;
+using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
+using System.Text.Json;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -27,6 +29,7 @@ namespace SignalAdvisor.Model
         private ObservableCollection<KeyValuePair<string, List<Ta.Bar>>> _bars = [];
         private ObservableCollection<KeyValuePair<string, List<Dictionary<string, int>>>> _signals = [];
         private ObservableCollection<Instrument> _instruments = [];
+        private ObservableCollection<Instrument> _instrumentsShort = [];
         private static System.Timers.Timer _timer = null!;
         private Dispatcher _dispatcher = App.Current?.Dispatcher ?? throw new Exception("Unexpected. App.Current?.Dispatcher is null");
 
@@ -34,9 +37,11 @@ namespace SignalAdvisor.Model
         ICommand RequestHistoricalDataCommand;
         public ICommand ConnectToTwsCommand { get; }
         public ICommand UpdateSymbolsCommand { get; }
+        public ICommand UpdateSymbolsShortCommand { get; }
         public ICommand SendOrdersCommand { get; }
         public ICommand SendNonBracketOrdersCommand { get; }
         public ICommand SendOrders2StdDevCommand { get; }
+        public ICommand SendOrders2StdDevShortCommand { get; }
 
         public AdvisorViewModel()
         {
@@ -44,9 +49,11 @@ namespace SignalAdvisor.Model
             RequestHistoricalDataCommand = new RelayCommand(async () => await RequestHistoricalData.RunAsync(this));
             ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
             UpdateSymbolsCommand = new RelayCommand(() => UpdateSymbols.Run(this));
+            UpdateSymbolsShortCommand = new RelayCommand(() => UpdateSymbolsShort.Run(this));
             SendOrdersCommand = new RelayCommand(async () => await SendOrders.RunAsync(this));
             SendNonBracketOrdersCommand = new RelayCommand(async () => await SendNonBracketOrders.RunAsync(this));
             SendOrders2StdDevCommand = new RelayCommand(async () => await SendOrders2StdDev.RunAsync(this));
+            SendOrders2StdDevShortCommand = new RelayCommand(async () => await SendOrders2StdDevShort.RunAsync(this));
 
             _timer = new System.Timers.Timer(60000);
             _timer.Elapsed += _timer_Elapsed;
@@ -62,6 +69,8 @@ namespace SignalAdvisor.Model
             //Symbols = TestDataEu();
             //Symbols = TestDataUs();
             Symbols = TestDataUs2();
+
+            SymbolsShort = TestDataUsShort();   
         }
 
         public IIbHost IbHost { get; private set; }
@@ -208,6 +217,15 @@ namespace SignalAdvisor.Model
             }
         }
 
+        public ObservableCollection<Instrument> InstrumentsShort
+        {
+            get => _instrumentsShort;
+            set
+            {
+                SetProperty(ref _instrumentsShort, value);
+            }
+        }
+
 
         public bool RequestPositionsExecuted { get; set; }
         public bool RequestHistoricalDataExecuted { get; set; }
@@ -219,10 +237,16 @@ namespace SignalAdvisor.Model
             var askPriceTickType = 2;
             if (message.Field != askPriceTickType) return;
 
-            var instrument = Instruments.FirstOrDefault(i => i.RequestIdMktData == message.RequestId);
-            if (instrument != null)
+            object lockObject = new();
+            lock (lockObject)
             {
-                instrument.AskPrice = message.Price;
+                var instrumentsList = new ConcurrentBag<Instrument>(Instruments.ToArray());
+                var instrument = instrumentsList.FirstOrDefault(i => i.RequestIdMktData == message.RequestId);
+                
+                if (instrument != null)
+                {
+                    instrument.AskPrice = message.Price;
+                }
             }
         }
 
@@ -301,15 +325,22 @@ namespace SignalAdvisor.Model
         private string TestDataUs2()
         {
             return @"265598	AAPL	USD	SMART	1272	13	315
-266093	AMAT	USD	SMART	1697	17	240
 313130367	AVGO	USD	SMART	7677	77	52
-271308	LRCX	USD	SMART	7711	78	52
 107113386	META	USD	SMART	4502	46	90
 272093	MSFT	USD	SMART	2506	26	160
 15124833	NFLX	USD	SMART	6486	65	62
 4815747	NVDA	USD	SMART	11488	115	35
 199169591	PYPL	USD	SMART	529	6	670
 
+
+
+";
+        }
+
+        private string TestDataUsShort()
+        {
+            return @"266093	AMAT	USD	SMART	1697	17	240
+271308	LRCX	USD	SMART	7711	78	52
 
 ";
         }
