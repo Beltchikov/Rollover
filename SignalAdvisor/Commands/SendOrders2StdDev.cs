@@ -43,17 +43,36 @@ namespace SignalAdvisor.Commands
             }
 
             int orderId = await GetNextOrderIdAsync(visitor);
-            Order order = CreateOrder(orderId, "BUY", visitor.InstrumentToTrade.AskPrice, qty);
+            Order order = CreateOrder(orderId, "BUY", "LMT", visitor.InstrumentToTrade.AskPrice, qty, true);
             double avrFillPrice = await visitor.IbHost.PlaceOrderAndWaitForExecution(contract, order);
 
             // Wait for order execution
+            if( avrFillPrice <= 0 ) 
+            {
+                MessageBox.Show($"The avrFillPrice is invalid: {avrFillPrice}. TSomething went wrong. The execution of the command stops.");
+                return;
+            }
 
             // TP order
-            int orderIdTakeProfit = await GetNextOrderIdAsync(visitor);
+            string ocaGroup = $"ocaGroup-{orderId}";
+            int orderIdTakeProfit = orderId + 1;
             var tpDistance = (App.LIVE_COST_PROFIT / App.RISK_IN_USD) * twoStdDev; 
             var tpPrice = Math.Round(avrFillPrice + tpDistance, 2);
-            Order orderTakeProfit = CreateOrder(orderIdTakeProfit, "SELL", tpPrice, qty);
+            Order orderTakeProfit = CreateOrder(orderIdTakeProfit, "SELL", "LMT", tpPrice, qty, true, ocaGroup);
 
+            // SL order
+            int orderIdStopLoss = orderIdTakeProfit + 2;
+            var slPrice = Math.Round(avrFillPrice - twoStdDev, 2);
+            Order orderStopLoss= CreateOrder(orderIdStopLoss, "SELL", "MIDPRICE", slPrice, qty, false, ocaGroup);
+
+            // Place Orders
+            await PlaceOrderAndHandleResultAsync(visitor, contract, orderTakeProfit, App.TIMEOUT);
+            await PlaceOrderAndHandleResultAsync(visitor, contract, orderStopLoss, App.TIMEOUT);
+          
+        }
+
+        private static async Task PlaceOrderAndHandleResultAsync(IPositionsVisitor visitor, Contract contract, Order orderTakeProfit, int tIMEOUT)
+        {
             var result = await visitor.IbHost.PlaceOrderAsync(contract, orderTakeProfit, App.TIMEOUT);
 
             if (result.ErrorMessage != "")
@@ -111,17 +130,24 @@ namespace SignalAdvisor.Commands
             return orderId;
         }
 
-        private static Order CreateOrder(int orderId, string action, double lmtPrice, int totalQuantity, string ocaGroup = "")
+        private static Order CreateOrder(
+            int orderId,
+            string action,
+            string orderType,
+            double lmtPrice,
+            int totalQuantity,
+            bool outsideRth = false,
+            string ocaGroup = "")
         {
             var order = new Order()
             {
                 OrderId = orderId,
                 Action = action,
-                OrderType = "LMT",
+                OrderType = orderType,
                 LmtPrice = lmtPrice,
                 TotalQuantity = totalQuantity,
                 Transmit = true,
-                OutsideRth = true,
+                OutsideRth = outsideRth,
             };
 
             if(!string.IsNullOrEmpty(ocaGroup))
