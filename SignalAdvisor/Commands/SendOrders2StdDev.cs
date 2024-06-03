@@ -48,6 +48,7 @@ namespace SignalAdvisor.Commands
 
             // Wait for order execution
 
+            // TP order
             int orderIdTakeProfit = await GetNextOrderIdAsync(visitor);
             var tpDistance = (App.LIVE_COST_PROFIT / App.RISK_IN_USD) * twoStdDev; 
             var tpPrice = Math.Round(avrFillPrice + tpDistance, 2);
@@ -110,7 +111,7 @@ namespace SignalAdvisor.Commands
             return orderId;
         }
 
-        private static Order CreateOrder(int orderId, string action, double lmtPrice, int totalQuantity)
+        private static Order CreateOrder(int orderId, string action, double lmtPrice, int totalQuantity, string ocaGroup = "")
         {
             var order = new Order()
             {
@@ -122,6 +123,12 @@ namespace SignalAdvisor.Commands
                 Transmit = true,
                 OutsideRth = true,
             };
+
+            if(!string.IsNullOrEmpty(ocaGroup))
+            {
+                order.OcaGroup = ocaGroup;
+                order.OcaType = 1;
+            }
 
             return order;
         }
