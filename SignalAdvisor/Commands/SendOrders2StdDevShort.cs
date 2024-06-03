@@ -39,6 +39,7 @@ namespace SignalAdvisor.Commands
 
             int orderId = await GetNextOrderIdAsync(visitor);
             Order order = CreateOrder(orderId, "SELL", "LMT", visitor.InstrumentToTrade.BidPrice, qty, true);
+            LogOrder(visitor, contract, order);
             double avrFillPrice = await visitor.IbHost.PlaceOrderAndWaitForExecution(contract, order);
 
             // Wait for order execution
@@ -76,7 +77,6 @@ namespace SignalAdvisor.Commands
 
         private static async Task PlaceOrderAndHandleResultAsync(IPositionsVisitor visitor, Contract contract, Order order, int timeout)
         {
-            LogOrder(visitor, contract, order);
             var result = await visitor.IbHost.PlaceOrderAsync(contract, order, App.TIMEOUT);
 
             if (result.ErrorMessage != "")
