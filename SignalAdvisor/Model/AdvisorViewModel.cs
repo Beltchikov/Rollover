@@ -241,8 +241,10 @@ namespace SignalAdvisor.Model
             lock (lockObject)
             {
                 var instrumentsList = new ConcurrentBag<Instrument>(Instruments.ToArray());
-                var instrument = instrumentsList.FirstOrDefault(i => i.RequestIdMktData == message.RequestId);
-                
+                var instrumentsListShort = new ConcurrentBag<Instrument>(InstrumentsShort.ToArray());
+                var allInstruments = instrumentsList.Concat(instrumentsListShort);
+
+                var instrument = allInstruments.FirstOrDefault(i => i.RequestIdMktData == message.RequestId);
                 if (instrument != null)
                 {
                     instrument.AskPrice = message.Price;
