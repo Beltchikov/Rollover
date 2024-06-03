@@ -29,13 +29,13 @@
                     <GridViewColumn DisplayMemberBinding="{Binding AskPrice, Converter={StaticResource AskPriceConverter}, Mode=OneWay}" Header="AskPrice"/>
 
                     <GridViewColumn  Header="Direction">
-                        <GridViewColumn.CellTemplate>
+                        <!--<GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Grid.Column="5" Padding="5 2 5 0" Text="LONG" 
 Background="LightGreen" Foreground="Green">
                                 </TextBlock>
                             </DataTemplate>
-                        </GridViewColumn.CellTemplate>
+                        </GridViewColumn.CellTemplate>-->
                     </GridViewColumn>
 
                     <GridViewColumn DisplayMemberBinding="{Binding LastSignalTime}"  Header="LastSignalTime"/>
