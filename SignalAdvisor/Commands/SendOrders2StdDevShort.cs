@@ -8,9 +8,6 @@ namespace SignalAdvisor.Commands
     {
         public static async Task RunAsync(IPositionsVisitor visitor)
         {
-            //MessageBox.Show("SendOrders2StdDevShort");
-
-
             if (visitor.InstrumentToTrade.BidPrice <= 0)
             {
                 MessageBox.Show($"The bid price is {visitor.InstrumentToTrade.BidPrice}. The market is probably closed. The execution of the command stops.");
@@ -46,7 +43,7 @@ namespace SignalAdvisor.Commands
             // Wait for order execution
             if (avrFillPrice <= 0)
             {
-                MessageBox.Show($"The avrFillPrice is invalid: {avrFillPrice}. TSomething went wrong. The execution of the command stops.");
+                MessageBox.Show($"The avrFillPrice is invalid: {avrFillPrice}. Something went wrong. The execution of the command stops.");
                 return;
             }
 
@@ -62,6 +59,13 @@ namespace SignalAdvisor.Commands
             var slPrice = Math.Round(avrFillPrice + twoStdDev, 2);
             Order orderStopLoss= CreateOrder(orderIdStopLoss, "BUY", "MIDPRICE", slPrice, qty, false, ocaGroup);
 
+            PriceCondition priceConditionStop = (PriceCondition)OrderCondition.Create(OrderConditionType.Price);
+            priceConditionStop.ConId = visitor.InstrumentToTrade.ConId;
+            priceConditionStop.Exchange = visitor.InstrumentToTrade.Exchange;
+            priceConditionStop.IsMore = true;
+            priceConditionStop.Price = slPrice;
+            orderStopLoss.Conditions.Add(priceConditionStop);
+
             // Place Orders
             await PlaceOrderAndHandleResultAsync(visitor, contract, orderTakeProfit, App.TIMEOUT);
             await PlaceOrderAndHandleResultAsync(visitor, contract, orderStopLoss, App.TIMEOUT);
@@ -76,14 +80,15 @@ namespace SignalAdvisor.Commands
             {
                 var msg = $"ConId={contract.ConId} {contract.Symbol} error:{result.ErrorMessage}";
                 visitor.TwsMessageCollection.Add(msg);
-                MessageBox.Show(msg);
+                visitor.OrderErrors = string.IsNullOrWhiteSpace(visitor.OrderErrors)
+                    ? msg
+                    : visitor.OrderErrors + Environment.NewLine + msg;
 
             }
             else if (result.OrderState != null)
             {
                 var msg = $"ConId={contract.ConId} {contract.Symbol} take profit order submitted.";
                 visitor.TwsMessageCollection.Add(msg);
-                MessageBox.Show(msg);
             }
             else throw new Exception("Unexpected. Both ErrorMessage nad OrderState are not set.");
         }

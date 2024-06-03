@@ -25,6 +25,7 @@ namespace SignalAdvisor.Model
         private string _lastCheck = "";
         private string _symbols = "";
         private string _symbolsShort = "";
+        private string _orderErrors = "";
         private ObservableCollection<PositionMessage> _positions = [];
         private ObservableCollection<KeyValuePair<string, List<Ta.Bar>>> _bars = [];
         private ObservableCollection<KeyValuePair<string, List<Dictionary<string, int>>>> _signals = [];
@@ -181,6 +182,15 @@ namespace SignalAdvisor.Model
             }
         }
 
+        public string OrderErrors
+        {
+            get => _orderErrors;
+            set
+            {
+                SetProperty(ref _orderErrors, value);
+            }
+        }
+        
         public ObservableCollection<PositionMessage> Positions
         {
             get => _positions;
@@ -360,12 +370,9 @@ namespace SignalAdvisor.Model
             return @"265598	AAPL	USD	SMART	1272	13	315
 313130367	AVGO	USD	SMART	7677	77	52
 107113386	META	USD	SMART	4502	46	90
-272093	MSFT	USD	SMART	2506	26	160
 15124833	NFLX	USD	SMART	6486	65	62
 4815747	NVDA	USD	SMART	11488	115	35
 199169591	PYPL	USD	SMART	529	6	670
-
-
 
 ";
         }
@@ -374,7 +381,7 @@ namespace SignalAdvisor.Model
         {
             return @"266093	AMAT	USD	SMART	1697	17	240
 271308	LRCX	USD	SMART	7711	78	52
-
+272093	MSFT	USD	SMART	2506	26	160
 ";
         }
 

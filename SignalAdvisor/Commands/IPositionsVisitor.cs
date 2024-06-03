@@ -22,5 +22,6 @@ namespace SignalAdvisor.Commands
         string SymbolsShort { get; set; }
         public Instrument InstrumentToTrade { get; set; }
         int OrdersSent { get; set; }
+        string OrderErrors { get; set; }
     }
 }

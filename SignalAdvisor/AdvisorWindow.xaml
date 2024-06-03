@@ -27,8 +27,12 @@
             <RowDefinition Height="710" />
             <RowDefinition/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
 
-        <tws_uc:TwsConnection 
+            <tws_uc:TwsConnection 
             Grid.Row="0"
             Host="{Binding Host, Mode=OneWay}"
             Port="{Binding Port, Mode=OneWay}"
@@ -36,7 +40,7 @@
             Connected="{Binding ConnectedToTws, Mode=OneWay}"
             Command="{Binding ConnectToTwsCommand, Mode=OneWay}" Grid.ColumnSpan="2" />
 
-        <GroupBox Header="Processing" Grid.Row="1" Foreground="White" ></GroupBox>
+        <GroupBox Header="Processing" Grid.Row="1" Grid.ColumnSpan="2" Foreground="White" ></GroupBox>
 
         <Grid x:Name="Processing" Grid.Row="1" Margin="16,16,16,16" 
               Grid.ColumnSpan="2">
@@ -107,8 +111,15 @@
 
         </Grid>
 
-        <tws_uc:TwsInformation Grid.Row="2" MessageCollection="{Binding TwsMessageCollection}" Grid.ColumnSpan="2" Margin="0,0,0,0" Grid.RowSpan="2">
+        <GroupBox Header="Order Errors" Grid.Row="2" Grid.Column="1" Foreground="White" ></GroupBox>
+        
+        <tws_uc:TwsInformation Grid.Row="2" MessageCollection="{Binding TwsMessageCollection}"  Margin="0,0,0,0" Grid.RowSpan="2">
         </tws_uc:TwsInformation>
+        <TextBox Grid.Row="2"  Grid.Column="1" Margin="15 20 15 15"
+          Text="{Binding OrderErrors}"
+          TextWrapping="Wrap" VerticalAlignment="Stretch" 
+          AcceptsReturn="True"> 
+        </TextBox>
 
     </Grid>
 </Window>

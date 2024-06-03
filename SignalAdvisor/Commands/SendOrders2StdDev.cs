@@ -47,7 +47,7 @@ namespace SignalAdvisor.Commands
             double avrFillPrice = await visitor.IbHost.PlaceOrderAndWaitForExecution(contract, order);
 
             // Wait for order execution
-            if( avrFillPrice <= 0 ) 
+            if (avrFillPrice <= 0)
             {
                 MessageBox.Show($"The avrFillPrice is invalid: {avrFillPrice}. TSomething went wrong. The execution of the command stops.");
                 return;
@@ -56,19 +56,26 @@ namespace SignalAdvisor.Commands
             // TP order
             string ocaGroup = $"ocaGroup-{orderId}";
             int orderIdTakeProfit = orderId + 1;
-            var tpDistance = (App.LIVE_COST_PROFIT / App.RISK_IN_USD) * twoStdDev; 
+            var tpDistance = (App.LIVE_COST_PROFIT / App.RISK_IN_USD) * twoStdDev;
             var tpPrice = Math.Round(avrFillPrice + tpDistance, 2);
             Order orderTakeProfit = CreateOrder(orderIdTakeProfit, "SELL", "LMT", tpPrice, qty, true, ocaGroup);
 
             // SL order
             int orderIdStopLoss = orderIdTakeProfit + 2;
             var slPrice = Math.Round(avrFillPrice - twoStdDev, 2);
-            Order orderStopLoss= CreateOrder(orderIdStopLoss, "SELL", "MIDPRICE", slPrice, qty, false, ocaGroup);
+            Order orderStopLoss = CreateOrder(orderIdStopLoss, "SELL", "MIDPRICE", slPrice, qty, false, ocaGroup);
+
+            PriceCondition priceConditionStop = (PriceCondition)OrderCondition.Create(OrderConditionType.Price);
+            priceConditionStop.ConId = visitor.InstrumentToTrade.ConId;
+            priceConditionStop.Exchange = visitor.InstrumentToTrade.Exchange;
+            priceConditionStop.IsMore = false;
+            priceConditionStop.Price = slPrice;
+            orderStopLoss.Conditions.Add(priceConditionStop);
 
             // Place Orders
             await PlaceOrderAndHandleResultAsync(visitor, contract, orderTakeProfit, App.TIMEOUT);
             await PlaceOrderAndHandleResultAsync(visitor, contract, orderStopLoss, App.TIMEOUT);
-          
+
         }
 
         private static async Task PlaceOrderAndHandleResultAsync(IPositionsVisitor visitor, Contract contract, Order orderTakeProfit, int tIMEOUT)
@@ -79,14 +86,14 @@ namespace SignalAdvisor.Commands
             {
                 var msg = $"ConId={contract.ConId} {contract.Symbol} error:{result.ErrorMessage}";
                 visitor.TwsMessageCollection.Add(msg);
-                MessageBox.Show(msg);
-
+                visitor.OrderErrors = string.IsNullOrWhiteSpace(visitor.OrderErrors)
+                    ? msg
+                    : visitor.OrderErrors + Environment.NewLine + msg;
             }
             else if (result.OrderState != null)
             {
                 var msg = $"ConId={contract.ConId} {contract.Symbol} take profit order submitted.";
                 visitor.TwsMessageCollection.Add(msg);
-                MessageBox.Show(msg);
             }
             else throw new Exception("Unexpected. Both ErrorMessage nad OrderState are not set.");
         }
@@ -97,7 +104,7 @@ namespace SignalAdvisor.Commands
             DateOnly nowDateOnly = nowTimeOnly < App.SESSION_START
                 ? DateOnly.FromDateTime(DateTime.Now.AddDays(-1))
                 : DateOnly.FromDateTime(DateTime.Now);
-            
+
             if (nowDateOnly.DayOfWeek == DayOfWeek.Sunday)
             {
                 nowDateOnly = nowDateOnly.AddDays(-2);
@@ -150,7 +157,7 @@ namespace SignalAdvisor.Commands
                 OutsideRth = outsideRth,
             };
 
-            if(!string.IsNullOrEmpty(ocaGroup))
+            if (!string.IsNullOrEmpty(ocaGroup))
             {
                 order.OcaGroup = ocaGroup;
                 order.OcaType = 1;
