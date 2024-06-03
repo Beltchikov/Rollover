@@ -41,30 +41,30 @@ namespace SignalAdvisor.Commands
 
             int orderId = await GetNextOrderIdAsync(visitor);
             Order order = CreateOrder(orderId, "SELL", "LMT", visitor.InstrumentToTrade.BidPrice, qty, true);
-            //double avrFillPrice = await visitor.IbHost.PlaceOrderAndWaitForExecution(contract, order);
+            double avrFillPrice = await visitor.IbHost.PlaceOrderAndWaitForExecution(contract, order);
 
-            //// Wait for order execution
-            //if( avrFillPrice <= 0 ) 
-            //{
-            //    MessageBox.Show($"The avrFillPrice is invalid: {avrFillPrice}. TSomething went wrong. The execution of the command stops.");
-            //    return;
-            //}
+            // Wait for order execution
+            if (avrFillPrice <= 0)
+            {
+                MessageBox.Show($"The avrFillPrice is invalid: {avrFillPrice}. TSomething went wrong. The execution of the command stops.");
+                return;
+            }
 
-            //// TP order
-            //string ocaGroup = $"ocaGroup-{orderId}";
-            //int orderIdTakeProfit = orderId + 1;
-            //var tpDistance = (App.LIVE_COST_PROFIT / App.RISK_IN_USD) * twoStdDev; 
-            //var tpPrice = Math.Round(avrFillPrice + tpDistance, 2);
-            //Order orderTakeProfit = CreateOrder(orderIdTakeProfit, "SELL", "LMT", tpPrice, qty, true, ocaGroup);
+            // TP order
+            string ocaGroup = $"ocaGroup-{orderId}";
+            int orderIdTakeProfit = orderId + 1;
+            var tpDistance = (App.LIVE_COST_PROFIT / App.RISK_IN_USD) * twoStdDev; 
+            var tpPrice = Math.Round(avrFillPrice - tpDistance, 2);
+            Order orderTakeProfit = CreateOrder(orderIdTakeProfit, "BUY", "LMT", tpPrice, qty, true, ocaGroup);
 
-            //// SL order
-            //int orderIdStopLoss = orderIdTakeProfit + 2;
-            //var slPrice = Math.Round(avrFillPrice - twoStdDev, 2);
-            //Order orderStopLoss= CreateOrder(orderIdStopLoss, "SELL", "MIDPRICE", slPrice, qty, false, ocaGroup);
+            // SL order
+            int orderIdStopLoss = orderIdTakeProfit + 2;
+            var slPrice = Math.Round(avrFillPrice + twoStdDev, 2);
+            Order orderStopLoss= CreateOrder(orderIdStopLoss, "BUY", "MIDPRICE", slPrice, qty, false, ocaGroup);
 
-            //// Place Orders
-            //await PlaceOrderAndHandleResultAsync(visitor, contract, orderTakeProfit, App.TIMEOUT);
-            //await PlaceOrderAndHandleResultAsync(visitor, contract, orderStopLoss, App.TIMEOUT);
+            // Place Orders
+            await PlaceOrderAndHandleResultAsync(visitor, contract, orderTakeProfit, App.TIMEOUT);
+            await PlaceOrderAndHandleResultAsync(visitor, contract, orderStopLoss, App.TIMEOUT);
 
         }
 
