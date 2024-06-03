@@ -22,9 +22,10 @@ namespace SignalAdvisor.Model
         private int _openOrders;
         private string _lastCheck = "";
         private string _symbols = "";
+        private string _symbolsShort = "";
         private ObservableCollection<PositionMessage> _positions = [];
         private ObservableCollection<KeyValuePair<string, List<Ta.Bar>>> _bars = [];
-        private ObservableCollection<KeyValuePair<string, List<Dictionary<string,int>>>> _signals = [];
+        private ObservableCollection<KeyValuePair<string, List<Dictionary<string, int>>>> _signals = [];
         private ObservableCollection<Instrument> _instruments = [];
         private static System.Timers.Timer _timer = null!;
         private Dispatcher _dispatcher = App.Current?.Dispatcher ?? throw new Exception("Unexpected. App.Current?.Dispatcher is null");
@@ -159,6 +160,15 @@ namespace SignalAdvisor.Model
             set
             {
                 SetProperty(ref _symbols, value);
+            }
+        }
+
+        public string SymbolsShort
+        {
+            get => _symbolsShort;
+            set
+            {
+                SetProperty(ref _symbolsShort, value);
             }
         }
 
