@@ -4,10 +4,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.32002.185
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Prototype", "Prototype\Prototype.csproj", "{35ADA4FC-7459-4303-8C64-01DFCE2B2362}"
+	ProjectSection(ProjectDependencies) = postProject
+		{142E18AC-0D5B-4B58-B9B3-58F523B91911} = {142E18AC-0D5B-4B58-B9B3-58F523B91911}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpAPI", "..\TWSAPI\source\CSharpClient\client\CSharpAPI.csproj", "{8EDE0744-96C2-40B0-A8DC-37DF79370203}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharpAPI", "..\TWSAPI\source\CSharpClient\client\CSharpAPI.csproj", "{8EDE0744-96C2-40B0-A8DC-37DF79370203}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rollover", "Rollover\Rollover.csproj", "{40600E7F-C2F4-4952-8DDE-F4817B7B2D69}"
+	ProjectSection(ProjectDependencies) = postProject
+		{142E18AC-0D5B-4B58-B9B3-58F523B91911} = {142E18AC-0D5B-4B58-B9B3-58F523B91911}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rollover.UnitTests", "Rollover.UnitTests\Rollover.UnitTests.csproj", "{69283F0A-8883-4A1B-8128-28FC1F29E06D}"
 EndProject
@@ -16,10 +22,19 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rollover.Tests.Shared", "Rollover.Tests.Shared\Rollover.Tests.Shared.csproj", "{557B49F3-7E33-4051-83E8-076BEDB639A3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrototypeWpf", "PrototypeWpf\PrototypeWpf.csproj", "{6158B877-961D-449C-827D-2F33DEF241A9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8EDE0744-96C2-40B0-A8DC-37DF79370203} = {8EDE0744-96C2-40B0-A8DC-37DF79370203}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IbClient", "IbClient\IbClient.csproj", "{142E18AC-0D5B-4B58-B9B3-58F523B91911}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8EDE0744-96C2-40B0-A8DC-37DF79370203} = {8EDE0744-96C2-40B0-A8DC-37DF79370203}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptionHelper", "OptionHelper\OptionHelper.csproj", "{D24D3910-FBDF-437F-8CC0-88781E74518E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8EDE0744-96C2-40B0-A8DC-37DF79370203} = {8EDE0744-96C2-40B0-A8DC-37DF79370203}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OptionHelper.Tests", "OptionHelper.Tests\OptionHelper.Tests.csproj", "{BF4E1821-7578-4C05-A227-ED8A1ED1E1B9}"
 EndProject
@@ -41,14 +56,23 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwsUserControls", "TwsUserControls\TwsUserControls.csproj", "{9BB21372-0982-4E90-BC61-C336719EE61E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockAnalyzer", "StockAnalyzer\StockAnalyzer.csproj", "{456D1CF0-2A07-4FD4-ADCB-8922E2768264}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8EDE0744-96C2-40B0-A8DC-37DF79370203} = {8EDE0744-96C2-40B0-A8DC-37DF79370203}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SsbHelper", "SsbHelper\SsbHelper.csproj", "{F2D25F47-2816-4F11-8DD9-12CD0338BE01}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8EDE0744-96C2-40B0-A8DC-37DF79370203} = {8EDE0744-96C2-40B0-A8DC-37DF79370203}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetBms", "NetBms\NetBms.csproj", "{BEF4DA63-854B-4692-BF3B-019862BFB4A0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortalOpener", "PortalOpener\PortalOpener.csproj", "{BDC5D923-6583-4C49-A2AD-456EF02D9219}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioTrader", "PortfolioTrader\PortfolioTrader.csproj", "{C821CD23-9A79-4A9C-BEDD-ED3A2C0B4269}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8EDE0744-96C2-40B0-A8DC-37DF79370203} = {8EDE0744-96C2-40B0-A8DC-37DF79370203}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
