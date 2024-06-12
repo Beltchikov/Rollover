@@ -19,11 +19,18 @@
     <PackageReference Include="Selenium.WebDriver" Version="4.18.1" />
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="121.0.6167.18400" />
     <PackageReference Include="SimpleBrowser" Version="0.6.0" />
+    <PackageReference Include="System.Text.Json" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\IbClient\IbClient.csproj" />
     <ProjectReference Include="..\TwsUserControls\TwsUserControls.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="CSharpAPI">
+      <HintPath>..\..\TWSAPI\source\CSharpClient\client\bin\Debug\netstandard2.0\CSharpAPI.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
