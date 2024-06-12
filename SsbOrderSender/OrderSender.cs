@@ -1,5 +1,6 @@
 ﻿using IbClient;
 using IbClient.IbHost;
+using IBSampleApp.messages;
 
 namespace SsbOrderSender
 {
@@ -20,19 +21,20 @@ namespace SsbOrderSender
             _ibClient.NextValidId -= _ibClient_NextValidId;
             _ibClient.NextValidId += _ibClient_NextValidId;
 
-            _ibClient.ConnectAndStartReaderThread(HOST, PORT, CLIENT_ID);
+            // See Rollover project for how to connect from a concole app
+            //_ibClient.ConnectAndStartReaderThread(HOST, PORT, CLIENT_ID);
 
             Console.WriteLine("SsbOrderSender: press Q to quit");
             while (Console.ReadKey().KeyChar.ToString().ToUpper() != "Q") { };
         }
 
-        void _ibClient_Error(int id, int errorCode, string msg, Exception ex)
+        void _ibClient_Error(int id, int errorCode, string msg, string orderRejectionReason,Exception ex)
         {
             string msgError = $"OnError: id={id} errorCode={errorCode} msg={msg} exception={ex}";
             Console.WriteLine(msgError);
         }
 
-        void _ibClient_NextValidId(IbClient.messages.ConnectionStatusMessage statusMessage)
+        void _ibClient_NextValidId(ConnectionStatusMessage statusMessage)
         {
             string msgNextValidId = statusMessage.IsConnected
                 ? $"Connected to TWS! HOST: {HOST} PORT: {PORT} CLIENT_ID: {CLIENT_ID} Next Order ID: {_ibClient.NextOrderId}"

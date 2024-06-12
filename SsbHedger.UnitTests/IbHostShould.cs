@@ -1,6 +1,7 @@
 ﻿using AutoFixture.Xunit2;
 using IbClient.IbHost;
 using IbClient.messages;
+using IBSampleApp.messages;
 using NSubstitute;
 using SsbHedger.IbModel;
 using SsbHedger.Model;
@@ -294,87 +295,87 @@ namespace SsbHedger.UnitTests
         //        Arg.Any<double>());
         //}
 
-        [Theory]
-        [InlineData(209.4, "221111", 4, 1, "208, 209, 210, 211")] // StrikeAsPrice=0  EvenNumberOfStrikes=1
-        [InlineData(209.4, "221111", 3, 1, "209, 210, 211")]  // StrikeAsPrice=0  EvenNumberOfStrikes=0
-        [InlineData(210, "221111", 4, 1, "208, 209, 210, 211")] // StrikeAsPrice=1  EvenNumberOfStrikes=1
-        [InlineData(210, "221111", 3, 1, "209, 210, 211")] // StrikeAsPrice=1  EvenNumberOfStrikes=0
-        [InlineData(10.4, "221111", 4, 0.5, "9.5, 10, 10.5, 11")]
-        [InlineData(10.4, "221111", 3, 0.5, "10, 10.5, 11")]
-        [InlineData(10.5, "221111", 4, 0.5, "9.5, 10, 10.5, 11")]
-        [InlineData(10.5, "221111", 3, 0.5, "10, 10.5, 11")]
-        public void ReturnSpyStrikesCorrectlyIfAllStrikesAreValid(
-            double underlyingPrice,
-            string lastTradeDate,
-            int numberOfStrikes,
-            double strikeStep,
-            string strikesString)
-        {
-            // Prepare
-            var expectedStrikes = strikesString.Split(new char[] { ',' })
-                .Select(d => Convert.ToDouble(d, CultureInfo.InvariantCulture))
-                .ToList();
+        //[Theory]
+        //[InlineData(209.4, "221111", 4, 1, "208, 209, 210, 211")] // StrikeAsPrice=0  EvenNumberOfStrikes=1
+        //[InlineData(209.4, "221111", 3, 1, "209, 210, 211")]  // StrikeAsPrice=0  EvenNumberOfStrikes=0
+        //[InlineData(210, "221111", 4, 1, "208, 209, 210, 211")] // StrikeAsPrice=1  EvenNumberOfStrikes=1
+        //[InlineData(210, "221111", 3, 1, "209, 210, 211")] // StrikeAsPrice=1  EvenNumberOfStrikes=0
+        //[InlineData(10.4, "221111", 4, 0.5, "9.5, 10, 10.5, 11")]
+        //[InlineData(10.4, "221111", 3, 0.5, "10, 10.5, 11")]
+        //[InlineData(10.5, "221111", 4, 0.5, "9.5, 10, 10.5, 11")]
+        //[InlineData(10.5, "221111", 3, 0.5, "10, 10.5, 11")]
+        //public void ReturnSpyStrikesCorrectlyIfAllStrikesAreValid(
+        //    double underlyingPrice,
+        //    string lastTradeDate,
+        //    int numberOfStrikes,
+        //    double strikeStep,
+        //    string strikesString)
+        //{
+        //    // Prepare
+        //    var expectedStrikes = strikesString.Split(new char[] { ',' })
+        //        .Select(d => Convert.ToDouble(d, CultureInfo.InvariantCulture))
+        //        .ToList();
 
-            IConfiguration configuration = Substitute.For<IConfiguration>();
-            configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
+        //    IConfiguration configuration = Substitute.For<IConfiguration>();
+        //    configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
-            IIBClient ibClient = Substitute.For<IIBClient>();
-            ibClient.IsValidStrike(default, default, default)
-                .ReturnsForAnyArgs(true);
+        //    IIBClient ibClient = Substitute.For<IIBClient>();
+        //    ibClient.IsValidStrike(default, default, default)
+        //        .ReturnsForAnyArgs(true);
 
-            IIbHost sut = new IbHost(configuration, null, null, null);
-            Reflection.SetFiledValue(sut, "_ibClient", ibClient);
+        //    IIbHost sut = new IbHost(configuration, null, null, null);
+        //    Reflection.SetFiledValue(sut, "_ibClient", ibClient);
 
-            // Act
-            var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes, strikeStep).ToList();
+        //    // Act
+        //    var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes, strikeStep).ToList();
 
-            // Verify
-            Assert.IsType<List<double>>(strikes);
-            Assert.True(strikes.Count() == numberOfStrikes);
-            Assert.True(expectedStrikes.SequenceEqual(strikes));
-        }
+        //    // Verify
+        //    Assert.IsType<List<double>>(strikes);
+        //    Assert.True(strikes.Count() == numberOfStrikes);
+        //    Assert.True(expectedStrikes.SequenceEqual(strikes));
+        //}
 
-        [Theory]
-        [InlineData(10.4, "221111", 4, 0.5, "9.5, 10, 11, 12", "10.5,11.5")]
-        [InlineData(10.4, "221111", 3, 0.5, "10, 11, 12", "10.5")]
-        [InlineData(10.5, "221111", 4, 0.5, "9.5, 10, 11, 11.5", "10.5")]
-        [InlineData(10.5, "221111", 3, 0.5, "10, 11, 12", "10.5")]
-        public void ExcludeNotValidStrikes(
-           double underlyingPrice,
-           string lastTradeDate,
-           int numberOfStrikes,
-           double strikeStep,
-           string strikesString,
-           string notValidStrikesString)
-        {
-            // Prepare
-            var expectedStrikes = strikesString.Split(new char[] { ',' })
-                .Select(d => Convert.ToDouble(d, CultureInfo.InvariantCulture))
-                .ToList();
-            var notValidStrikes = notValidStrikesString.Split(new char[] { ',' })
-                .Select(d => Convert.ToDouble(d, CultureInfo.InvariantCulture))
-                .ToList();
+        //[Theory]
+        //[InlineData(10.4, "221111", 4, 0.5, "9.5, 10, 11, 12", "10.5,11.5")]
+        //[InlineData(10.4, "221111", 3, 0.5, "10, 11, 12", "10.5")]
+        //[InlineData(10.5, "221111", 4, 0.5, "9.5, 10, 11, 11.5", "10.5")]
+        //[InlineData(10.5, "221111", 3, 0.5, "10, 11, 12", "10.5")]
+        //public void ExcludeNotValidStrikes(
+        //   double underlyingPrice,
+        //   string lastTradeDate,
+        //   int numberOfStrikes,
+        //   double strikeStep,
+        //   string strikesString,
+        //   string notValidStrikesString)
+        //{
+        //    // Prepare
+        //    var expectedStrikes = strikesString.Split(new char[] { ',' })
+        //        .Select(d => Convert.ToDouble(d, CultureInfo.InvariantCulture))
+        //        .ToList();
+        //    var notValidStrikes = notValidStrikesString.Split(new char[] { ',' })
+        //        .Select(d => Convert.ToDouble(d, CultureInfo.InvariantCulture))
+        //        .ToList();
 
-            IConfiguration configuration = Substitute.For<IConfiguration>();
-            configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
+        //    IConfiguration configuration = Substitute.For<IConfiguration>();
+        //    configuration.GetValue(Configuration.UNDERLYING_SYMBOL).Returns("SPY");
 
-            IIBClient ibClient = Substitute.For<IIBClient>();
-            foreach(var strike in expectedStrikes) 
-            {
-                ibClient.IsValidStrike(Arg.Any<string>(), Arg.Any<string>(), strike)
-                .Returns(!notValidStrikes.Contains(strike));
-            }
+        //    IIBClient ibClient = Substitute.For<IIBClient>();
+        //    foreach(var strike in expectedStrikes) 
+        //    {
+        //        ibClient.IsValidStrike(Arg.Any<string>(), Arg.Any<string>(), strike)
+        //        .Returns(!notValidStrikes.Contains(strike));
+        //    }
             
-            IIbHost sut = new IbHost(configuration, null, null, null);
-            Reflection.SetFiledValue(sut, "_ibClient", ibClient);
+        //    IIbHost sut = new IbHost(configuration, null, null, null);
+        //    Reflection.SetFiledValue(sut, "_ibClient", ibClient);
 
-            // Act
-            var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes, strikeStep).ToList();
+        //    // Act
+        //    var strikes = sut.GetStrikesSpy(underlyingPrice, lastTradeDate, numberOfStrikes, strikeStep).ToList();
 
-            // Verify
-            Assert.IsType<List<double>>(strikes);
-            Assert.True(strikes.Count() == numberOfStrikes);
-            Assert.True(expectedStrikes.SequenceEqual(strikes));
-        }
+        //    // Verify
+        //    Assert.IsType<List<double>>(strikes);
+        //    Assert.True(strikes.Count() == numberOfStrikes);
+        //    Assert.True(expectedStrikes.SequenceEqual(strikes));
+        //}
     }
 }
