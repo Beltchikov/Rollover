@@ -2,6 +2,7 @@
 using IbClient;
 using IbClient.IbHost;
 using IbClient.messages;
+using IBSampleApp.messages;
 using SsbHedger.IbModel;
 using SsbHedger.Model;
 using SsbHedger.SsbConfiguration;
@@ -313,7 +314,7 @@ namespace SsbHedger
             return "20230111 22:15:00";
         }
 
-        private void _ibClient_Error(int reqId, int code, string message, Exception exception)
+        private void _ibClient_Error(int reqId, int code, string message, string orderRejectionReason, Exception exception)
         {
             if (ViewModel == null)
             {
@@ -867,49 +868,49 @@ namespace SsbHedger
                     loopUpExitFuncion = (rc, n) => rc < (int)Math.Ceiling((double)numberOfStrikes / 2);
                 }
             }
-            FillStrikeList(
-                resultList,
-                underlyingPrice,
-                lastTradeDate,
-                numberOfStrikes,
-                strikeStep,
-                loopUpExitFuncion);
+            //FillStrikeList(
+            //    resultList,
+            //    underlyingPrice,
+            //    lastTradeDate,
+            //    numberOfStrikes,
+            //    strikeStep,
+            //    loopUpExitFuncion);
 
             return resultList;
         }
 
-        private void FillStrikeList(
-            List<double> resultList,
-            double underlyingPrice,
-            string lastTradeDate,
-            int numberOfStrikes,
-            double strikeStep,
-            Func<int, int, bool> loopUpExitFunc)
-        {
-            // Loop up
-            var firstStrikeUp = RoundUpToStep(underlyingPrice, strikeStep);
-            var strike = firstStrikeUp;
-            while (loopUpExitFunc(resultList.Count(), numberOfStrikes)) 
-            {
-                if (_ibClient.IsValidStrike(SPY, lastTradeDate, strike))
-                {
-                    resultList.Add(strike);
-                }
-                strike += strikeStep;
-            }
-            // Loop down
-            var firstStrikeDown = firstStrikeUp - strikeStep;
-            strike = firstStrikeDown;
-            while (resultList.Count() < numberOfStrikes)
-            {
-                if (_ibClient.IsValidStrike(SPY, lastTradeDate, strike))
-                {
-                    resultList.Add(strike);
-                }
-                strike -= strikeStep;
-            }
-            resultList.Sort();
-        }
+        //private void FillStrikeList(
+        //    List<double> resultList,
+        //    double underlyingPrice,
+        //    string lastTradeDate,
+        //    int numberOfStrikes,
+        //    double strikeStep,
+        //    Func<int, int, bool> loopUpExitFunc)
+        //{
+        //    // Loop up
+        //    var firstStrikeUp = RoundUpToStep(underlyingPrice, strikeStep);
+        //    var strike = firstStrikeUp;
+        //    while (loopUpExitFunc(resultList.Count(), numberOfStrikes)) 
+        //    {
+        //        if (_ibClient.IsValidStrike(SPY, lastTradeDate, strike))
+        //        {
+        //            resultList.Add(strike);
+        //        }
+        //        strike += strikeStep;
+        //    }
+        //    // Loop down
+        //    var firstStrikeDown = firstStrikeUp - strikeStep;
+        //    strike = firstStrikeDown;
+        //    while (resultList.Count() < numberOfStrikes)
+        //    {
+        //        if (_ibClient.IsValidStrike(SPY, lastTradeDate, strike))
+        //        {
+        //            resultList.Add(strike);
+        //        }
+        //        strike -= strikeStep;
+        //    }
+        //    resultList.Sort();
+        //}
 
         private double RoundDownToStep(double underlyingPrice, double strikeStep)
         {

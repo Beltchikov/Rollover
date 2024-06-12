@@ -49,6 +49,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="CSharpAPI">
+      <HintPath>..\..\TWSAPI\source\CSharpClient\client\bin\Debug\netstandard2.0\CSharpAPI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

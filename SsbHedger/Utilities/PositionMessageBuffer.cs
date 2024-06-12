@@ -1,4 +1,5 @@
 ﻿using IbClient.messages;
+using IBSampleApp.messages;
 using System.Collections.Generic;
 using System.Linq;
 
