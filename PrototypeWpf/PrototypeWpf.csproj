@@ -8,8 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\TWSAPI\source\CSharpClient\client\CSharpAPI.csproj" />
     <ProjectReference Include="..\IbClient\IbClient.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="CSharpAPI">
+      <HintPath>..\..\TWSAPI\source\CSharpClient\client\bin\Debug\netstandard2.0\CSharpAPI.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

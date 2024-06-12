@@ -92,7 +92,7 @@ namespace PrototypeWpf
             AddLineToTextbox(tbMessages, "DISCONNECTED!");
         }
 
-        private void _ibClient_Error(int id, int errorCode, string msg, Exception ex)
+        private void _ibClient_Error(int id, int errorCode, string msg, string orderRejectionReason, Exception ex)
         {
             AddLineToTextbox(tbMessages, $"OnError: id={id} errorCode={errorCode} msg={msg} exception={ex}");
         }
