@@ -106,7 +106,7 @@ namespace Rollover.Input
                 contractDetails?.ContractDetails?.Contract?.LocalSymbol,
                 positionMessage.Contract.ConId,
                 contractDetails?.ContractDetails?.Contract?.Exchange,
-                positionMessage.Position);
+                (double)positionMessage.Position);
 
             if (!_trackedSymbols.Add(trackedSymbol))
             {

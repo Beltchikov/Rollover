@@ -1,6 +1,7 @@
 ﻿using IBApi;
 using IbClient;
 using IbClient.IbHost;
+using IBSampleApp.messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,7 +77,7 @@ namespace PrototypeWpf
             _ibClient.ClientSocket.reqMktData(_requestId, contract, genericTickList, snapshot, false, new List<TagValue>());
         }
 
-        private void _ibClient_NextValidId(IbClient.messages.ConnectionStatusMessage statusMessage)
+        private void _ibClient_NextValidId(ConnectionStatusMessage statusMessage)
         {
             _nextOrderId = _ibClient.NextOrderId;
             string msg = statusMessage.IsConnected
@@ -96,7 +97,7 @@ namespace PrototypeWpf
             AddLineToTextbox(tbMessages, $"OnError: id={id} errorCode={errorCode} msg={msg} exception={ex}");
         }
 
-        private void _ibClient_ManagedAccounts(IbClient.messages.ManagedAccountsMessage message)
+        private void _ibClient_ManagedAccounts(ManagedAccountsMessage message)
         {
             if (!message.ManagedAccounts.Any())
             {
@@ -107,7 +108,7 @@ namespace PrototypeWpf
             AddLineToTextbox(tbMessages, msg);
         }
 
-        private void _ibClient_ContractDetails(IbClient.messages.ContractDetailsMessage obj)
+        private void _ibClient_ContractDetails(ContractDetailsMessage obj)
         {
             string msg = $"OnContractDetails :ConId:{obj.ContractDetails.Contract.ConId} " +
                 $"LocalSymbol:{obj.ContractDetails.Contract.LocalSymbol} " +
@@ -132,19 +133,19 @@ namespace PrototypeWpf
             AddLineToTextbox(tbMessages, msg.ToString());
         }
 
-        private void _ibClient_TickSize(IbClient.messages.TickSizeMessage obj)
+        private void _ibClient_TickSize(TickSizeMessage obj)
         {
             var msg = $"OnTickSize: obj.RequestId:{obj.RequestId} obj.Field:{obj.Field} obj.Size:{obj.Size}";
             AddLineToTextbox(tbMessages, msg.ToString());
         }
 
-        private void _ibClient_TickPrice(IbClient.messages.TickPriceMessage obj)
+        private void _ibClient_TickPrice(TickPriceMessage obj)
         {
-            var msg = $"OnTickPrice: obj.RequestId:{obj.RequestId} obj.Field:{obj.Field} obj.Price:{obj.Price} obj.Attribs:{obj.Attribs.toString()}";
+            var msg = $"OnTickPrice: obj.RequestId:{obj.RequestId} obj.Field:{obj.Field} obj.Price:{obj.Price} obj.Attribs:{obj.Attribs.ToString()}";
             AddLineToTextbox(tbMessages, msg.ToString());
         }
 
-        private void _ibClient_TickOptionCommunication(IbClient.messages.TickOptionMessage obj)
+        private void _ibClient_TickOptionCommunication(TickOptionMessage obj)
         {
             var msg = $"OnTickOptionCommunication: obj.RequestId:{obj.RequestId} " +
                 $"obj.Field:{obj.Field} " +
