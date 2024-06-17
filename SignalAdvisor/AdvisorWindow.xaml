@@ -42,7 +42,19 @@
 
         <TabControl Grid.Row="1" Grid.RowSpan="1" Grid.ColumnSpan="2" Margin="16,16,16,16">
             <TabItem Header="Order Management">
-                <Grid Background="#FFA5983B"></Grid>
+                <Grid Background="#FFA5983B">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Text="{Binding Orders}" TextWrapping="Wrap" VerticalAlignment="Stretch" 
+                     AcceptsReturn="True">
+                    </TextBox>
+                </Grid>
             </TabItem>
             <TabItem Header="Signals">
                 <Grid x:Name="Processing" Grid.Row="1"  Background="Green"
@@ -55,7 +67,9 @@
                         <RowDefinition />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="350"/>
+                        <ColumnDefinition Width="59"/>
+                        <ColumnDefinition Width="0"/>
+                        <ColumnDefinition Width="291"/>
                         <ColumnDefinition Width="35"/>
                         <ColumnDefinition Width="105"/>
                         <ColumnDefinition Width="35"/>
@@ -66,47 +80,46 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
-                    <Label Foreground="#FF17DC17" FontSize="14">Open Postions:</Label>
-                    <Label Name="lblOpenPositions" Grid.Column="1" 
+                    <Label Foreground="#FF17DC17" FontSize="14" Grid.ColumnSpan="3">Open Postions:</Label>
+                    <Label Name="lblOpenPositions" Grid.Column="3" 
                    Content="{Binding Positions, Converter={StaticResource PositionsToCountConverter}, Mode=OneWay}"
                    HorizontalAlignment="Left"
                    Foreground="#FF17DC17" FontSize="14"></Label>
 
-                    <Label Foreground="#FF17DC17" FontSize="14" Grid.Column="2">Open Orders:</Label>
-                    <Label Name="lblOpenOrders" Grid.Column="3" 
+                    <Label Foreground="#FF17DC17" FontSize="14" Grid.Column="4">Open Orders:</Label>
+                    <Label Name="lblOpenOrders" Grid.Column="5" 
                    Content="{Binding OpenOrders}"
                    Foreground="#FF17DC17" FontSize="14"></Label>
 
-                    <Label Foreground="#FF17DC17" FontSize="14" Grid.Column="4">Last Check (Server Time):</Label>
-                    <Label Name="lblLastCheck" Grid.Column="5" 
+                    <Label Foreground="#FF17DC17" FontSize="14" Grid.Column="6">Last Check (Server Time):</Label>
+                    <Label Name="lblLastCheck" Grid.Column="7" 
                    Content="{Binding LastCheck}"
                    Foreground="#FF17DC17" FontSize="14"></Label>
 
-                    <Button Grid.Column="6" Grid.ColumnSpan="3"
-                    Margin="10 0 0 0">Confirm Signal Reception
+                    <Button Grid.Column="8" Grid.ColumnSpan="3"
+                    Margin="10,0,0,0">Confirm Signal Reception
                     </Button>
 
-                    <Label Foreground="White" FontSize="14" Grid.Row="1" Grid.Column="6"
-                   Margin="10 0 0 0">Sound Enabled:
+                    <Label Foreground="White" FontSize="14" Grid.Row="1" Grid.Column="8"
+                   Margin="10,0,0,0">Sound Enabled:
                     </Label>
-                    <CheckBox Grid.Row="1" Grid.Column="7" VerticalAlignment="Center"></CheckBox>
+                    <CheckBox Grid.Row="1" Grid.Column="9" VerticalAlignment="Center"></CheckBox>
 
-                    <Button Command="{Binding UpdateSymbolsCommand}" Margin="0 0 0 5"
-                    Grid.Row="1">Update Symbols (ConId | Symb | SlInCt | TpInCt | Qty)</Button>
+                    <Button Command="{Binding UpdateSymbolsCommand}" Margin="0,0,0,5"
+                    Grid.Row="1" Grid.ColumnSpan="3">Update Symbols (ConId | Symb | SlInCt | TpInCt | Qty)</Button>
                     <TextBox Grid.Row="2" 
                      Text="{Binding Symbols}"
-                     TextWrapping="Wrap" VerticalAlignment="Stretch" 
-                     AcceptsReturn="True">
-                    </TextBox>
+                     TextWrapping="Wrap" 
+                     AcceptsReturn="True" Grid.ColumnSpan="3"/>
 
-                    <controls:InstrumentsControl  Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="7"
+                    <controls:InstrumentsControl  Grid.Row="2" Grid.Column="4" Grid.ColumnSpan="7"
                           Instruments="{Binding Instruments}" TradeAction="InstrumentsControl_TradeAction1" TradeNonBracketAction="InstrumentsControl_TradeAction2"></controls:InstrumentsControl>
 
-                    <Button Command="{Binding UpdateSymbolsShortCommand}" Margin="0 10 0 5"
-                        Grid.Row="3">Update Short Symbols (ConId | Symb | SlInCt | TpInCt | Qty)</Button>
-                    <TextBox Grid.Row="4" Text="{Binding SymbolsShort}" TextWrapping="Wrap" VerticalAlignment="Stretch" 
-                        AcceptsReturn="True"></TextBox>
-                    <controls:InstrumentsControl  Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="7"
+                    <Button Command="{Binding UpdateSymbolsShortCommand}" Margin="0,10,0,5"
+                        Grid.Row="3" Grid.ColumnSpan="3">Update Short Symbols (ConId | Symb | SlInCt | TpInCt | Qty)</Button>
+                    <TextBox Grid.Row="4" Text="{Binding SymbolsShort}" TextWrapping="Wrap" 
+                        AcceptsReturn="True" Grid.ColumnSpan="3"/>
+                    <controls:InstrumentsControl  Grid.Row="4" Grid.Column="4" Grid.ColumnSpan="7"
               Instruments="{Binding InstrumentsShort}" TradeAction="InstrumentsControl_TradeActionShort1" TradeNonBracketAction="InstrumentsControl_TradeActionShort2"></controls:InstrumentsControl>
 
                 </Grid>

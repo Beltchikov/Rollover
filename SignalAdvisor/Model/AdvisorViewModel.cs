@@ -8,6 +8,7 @@ using SignalAdvisor.Commands;
 using SignalAdvisor.Extensions;
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -24,6 +25,7 @@ namespace SignalAdvisor.Model
         private string _lastCheck = "";
         private string _symbols = "";
         private string _symbolsShort = "";
+        private string _orders = "";
         private string _orderLog = "";
         private ObservableCollection<PositionMessage> _positions = [];
         private ObservableCollection<KeyValuePair<string, List<Ta.Bar>>> _bars = [];
@@ -197,6 +199,15 @@ namespace SignalAdvisor.Model
             set
             {
                 SetProperty(ref _symbolsShort, value);
+            }
+        }
+
+        public string Orders
+        {
+            get => _orders;
+            set
+            {
+                SetProperty(ref _orders, value);
             }
         }
 
