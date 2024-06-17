@@ -24,7 +24,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
-            <RowDefinition Height="710" />
+            <RowDefinition Height="710"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -32,7 +32,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-            <tws_uc:TwsConnection 
+        <tws_uc:TwsConnection 
             Grid.Row="0"
             Host="{Binding Host, Mode=OneWay}"
             Port="{Binding Port, Mode=OneWay}"
@@ -40,85 +40,88 @@
             Connected="{Binding ConnectedToTws, Mode=OneWay}"
             Command="{Binding ConnectToTwsCommand, Mode=OneWay}" Grid.ColumnSpan="2" />
 
-        <GroupBox Header="Processing" Grid.Row="1" Grid.ColumnSpan="2" Foreground="White" ></GroupBox>
+        <TabControl Grid.Row="1" Grid.RowSpan="1" Grid.ColumnSpan="2" Margin="16,16,16,16">
+            <TabItem Header="Order Management">
+                <Grid Background="#FFA5983B"></Grid>
+            </TabItem>
+            <TabItem Header="Signals">
+                <Grid x:Name="Processing" Grid.Row="1"  Background="Green"
+                Grid.ColumnSpan="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="300" />
+                        <RowDefinition Height="40"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="350"/>
+                        <ColumnDefinition Width="35"/>
+                        <ColumnDefinition Width="105"/>
+                        <ColumnDefinition Width="35"/>
+                        <ColumnDefinition Width="170"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
 
-        <Grid x:Name="Processing" Grid.Row="1" Margin="16,16,16,16" 
-              Grid.ColumnSpan="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="35"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="300" />
-                <RowDefinition Height="40"/>
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="350"/>
-                <ColumnDefinition Width="35"/>
-                <ColumnDefinition Width="105"/>
-                <ColumnDefinition Width="35"/>
-                <ColumnDefinition Width="170"/>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="30"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-
-            <Label Foreground="#FF17DC17" FontSize="14">Open Postions:</Label>
-            <Label Name="lblOpenPositions" Grid.Column="1" 
+                    <Label Foreground="#FF17DC17" FontSize="14">Open Postions:</Label>
+                    <Label Name="lblOpenPositions" Grid.Column="1" 
                    Content="{Binding Positions, Converter={StaticResource PositionsToCountConverter}, Mode=OneWay}"
                    HorizontalAlignment="Left"
                    Foreground="#FF17DC17" FontSize="14"></Label>
 
-            <Label Foreground="#FF17DC17" FontSize="14" Grid.Column="2">Open Orders:</Label>
-            <Label Name="lblOpenOrders" Grid.Column="3" 
+                    <Label Foreground="#FF17DC17" FontSize="14" Grid.Column="2">Open Orders:</Label>
+                    <Label Name="lblOpenOrders" Grid.Column="3" 
                    Content="{Binding OpenOrders}"
                    Foreground="#FF17DC17" FontSize="14"></Label>
 
-            <Label Foreground="#FF17DC17" FontSize="14" Grid.Column="4">Last Check (Server Time):</Label>
-            <Label Name="lblLastCheck" Grid.Column="5" 
-               Content="{Binding LastCheck}"
-               Foreground="#FF17DC17" FontSize="14"></Label>
+                    <Label Foreground="#FF17DC17" FontSize="14" Grid.Column="4">Last Check (Server Time):</Label>
+                    <Label Name="lblLastCheck" Grid.Column="5" 
+                   Content="{Binding LastCheck}"
+                   Foreground="#FF17DC17" FontSize="14"></Label>
 
-            <Button Grid.Column="6" Grid.ColumnSpan="3"
+                    <Button Grid.Column="6" Grid.ColumnSpan="3"
                     Margin="10 0 0 0">Confirm Signal Reception
-            </Button>
+                    </Button>
 
-            <Label Foreground="White" FontSize="14" Grid.Row="1" Grid.Column="6"
+                    <Label Foreground="White" FontSize="14" Grid.Row="1" Grid.Column="6"
                    Margin="10 0 0 0">Sound Enabled:
-            </Label>
-            <CheckBox Grid.Row="1" Grid.Column="7" VerticalAlignment="Center"></CheckBox>
+                    </Label>
+                    <CheckBox Grid.Row="1" Grid.Column="7" VerticalAlignment="Center"></CheckBox>
 
-            <Button Command="{Binding UpdateSymbolsCommand}" Margin="0 0 0 5"
+                    <Button Command="{Binding UpdateSymbolsCommand}" Margin="0 0 0 5"
                     Grid.Row="1">Update Symbols (ConId | Symb | SlInCt | TpInCt | Qty)</Button>
-            <TextBox Grid.Row="2" 
-                 Text="{Binding Symbols}"
-                 TextWrapping="Wrap" VerticalAlignment="Stretch" 
-                 AcceptsReturn="True">
-            </TextBox>
+                    <TextBox Grid.Row="2" 
+                     Text="{Binding Symbols}"
+                     TextWrapping="Wrap" VerticalAlignment="Stretch" 
+                     AcceptsReturn="True">
+                    </TextBox>
 
-            <controls:InstrumentsControl  Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="7"
-                                      Instruments="{Binding Instruments}" TradeAction="InstrumentsControl_TradeAction1" TradeNonBracketAction="InstrumentsControl_TradeAction2"></controls:InstrumentsControl>
+                    <controls:InstrumentsControl  Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="7"
+                          Instruments="{Binding Instruments}" TradeAction="InstrumentsControl_TradeAction1" TradeNonBracketAction="InstrumentsControl_TradeAction2"></controls:InstrumentsControl>
 
-            <Button Command="{Binding UpdateSymbolsShortCommand}" Margin="0 10 0 5"
-                Grid.Row="3">Update Short Symbols (ConId | Symb | SlInCt | TpInCt | Qty)</Button>
-            <TextBox Grid.Row="4" 
-              Text="{Binding SymbolsShort}"
-              TextWrapping="Wrap" VerticalAlignment="Stretch" 
-              AcceptsReturn="True">
-            </TextBox>
-            <controls:InstrumentsControl  Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="7"
-                          Instruments="{Binding InstrumentsShort}" TradeAction="InstrumentsControl_TradeActionShort1" TradeNonBracketAction="InstrumentsControl_TradeActionShort2"></controls:InstrumentsControl>
+                    <Button Command="{Binding UpdateSymbolsShortCommand}" Margin="0 10 0 5"
+                        Grid.Row="3">Update Short Symbols (ConId | Symb | SlInCt | TpInCt | Qty)</Button>
+                    <TextBox Grid.Row="4" Text="{Binding SymbolsShort}" TextWrapping="Wrap" VerticalAlignment="Stretch" 
+                        AcceptsReturn="True"></TextBox>
+                    <controls:InstrumentsControl  Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="7"
+              Instruments="{Binding InstrumentsShort}" TradeAction="InstrumentsControl_TradeActionShort1" TradeNonBracketAction="InstrumentsControl_TradeActionShort2"></controls:InstrumentsControl>
 
-        </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
 
         <GroupBox Header="Order Log" Grid.Row="2" Grid.Column="1" Foreground="White" ></GroupBox>
-        
+
         <tws_uc:TwsInformation Grid.Row="2" MessageCollection="{Binding TwsMessageCollection}"  Margin="0,0,0,0" Grid.RowSpan="2">
         </tws_uc:TwsInformation>
         <TextBox Grid.Row="2"  Grid.Column="1" Margin="15 20 15 15"
           Text="{Binding OrderLog}"
           TextWrapping="Wrap" VerticalAlignment="Stretch" 
-          AcceptsReturn="True"> 
+          AcceptsReturn="True">
         </TextBox>
 
     </Grid>
