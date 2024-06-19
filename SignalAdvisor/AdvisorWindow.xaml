@@ -44,14 +44,16 @@
             <TabItem Header="Order Management">
                 <Grid Background="#FFA5983B">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="15" />
                         <RowDefinition />
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="15"/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <TextBox Text="{Binding Orders}" TextWrapping="Wrap" VerticalAlignment="Stretch" 
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Orders}" TextWrapping="Wrap" VerticalAlignment="Stretch" 
                      AcceptsReturn="True">
                     </TextBox>
                 </Grid>
