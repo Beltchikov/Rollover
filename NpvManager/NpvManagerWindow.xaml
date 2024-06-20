@@ -6,12 +6,12 @@
         xmlns:tws_uc="clr-namespace:TwsUserControls;assembly=TwsUserControls"
         xmlns:local="clr-namespace:NpvManager"
         mc:Ignorable="d"
-        Title="NPV Manager" Width="1420" Height="1060" Background="#FF496AEF">
+        Title="NPV Manager" Width="1420" Height="860" Background="#FF496AEF">
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
-            <RowDefinition Height="710"/>
+            <RowDefinition Height="510"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
