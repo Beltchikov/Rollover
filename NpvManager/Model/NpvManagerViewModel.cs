@@ -28,8 +28,16 @@ namespace NpvManager.Model
             SetIbHost(new IbHost());
 
             ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
-            LoadOrdersCommand = new RelayCommand(() => LoadOrders.Run(this));
-            LoadPositionsCommand = new RelayCommand(async () => await LoadPositions.RunAsync(this));
+            LoadOrdersCommand = new RelayCommand(() =>
+            {
+                //if (!ConnectedToTws) ConnectToTws.Run(this);
+                LoadOrders.Run(this);
+            });
+            LoadPositionsCommand = new RelayCommand(async () =>
+            {
+                //if (!ConnectedToTws) ConnectToTws.Run(this);
+                await LoadPositions.RunAsync(this);
+            });
         }
 
         public IIbHost IbHost { get; private set; }
