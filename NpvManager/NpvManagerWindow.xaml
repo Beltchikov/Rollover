@@ -16,7 +16,6 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
         <tws_uc:TwsConnection 
@@ -27,8 +26,10 @@
         Connected="{Binding ConnectedToTws, Mode=OneWay}"
         Command="{Binding ConnectToTwsCommand, Mode=OneWay}" Grid.ColumnSpan="2" />
 
-        <Grid x:Name="Processing">
+        <Grid x:Name="Processing" Grid.Row="1">
             <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="35"/>
                 <RowDefinition Height="35"/>
                 <RowDefinition Height="35"/>
                 <RowDefinition Height="35"/>
@@ -39,6 +40,20 @@
                 <ColumnDefinition  Width="200"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
+
+            <Button Margin="15 0 0 0">Load Orders</Button>
+            <Button Margin="15 0 0 0" Grid.Row="1">Load Positions</Button>
+            <Label Grid.Row="2" Foreground="White">Input:</Label>
+            <TextBox Grid.Row="3" Grid.RowSpan="3" Text="TODO}" TextWrapping="Wrap" VerticalAlignment="Stretch" AcceptsReturn="True" Margin="15 0 0 0">
+            </TextBox>
+
+            <Button Grid.Row="3" Grid.Column="1">Analysts Prices >></Button>
+            <Button Grid.Row="4" Grid.Column="1">SD Limit Prices >></Button>
+
+            <Label Grid.Row="2" Grid.Column="2" Foreground="White">Ouput:</Label>
+            <TextBox Grid.Row="3" Grid.RowSpan="3"  Grid.Column="2" Text="TODO}" TextWrapping="Wrap" VerticalAlignment="Stretch" AcceptsReturn="True" Margin="0 0 15 0">
+            </TextBox>
+
         </Grid>
 
         <tws_uc:TwsInformation Grid.Row="2" MessageCollection="{Binding TwsMessageCollection}"  Margin="0,0,0,0" 
