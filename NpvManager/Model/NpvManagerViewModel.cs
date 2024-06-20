@@ -22,6 +22,7 @@ namespace NpvManager.Model
         public ICommand ConnectToTwsCommand { get; }
         public ICommand LoadOrdersCommand { get; }
         public ICommand LoadPositionsCommand { get; }
+        public ICommand AnalystsPricesCommand { get; }
 
         public NpvManagerViewModel()
         {
@@ -38,6 +39,11 @@ namespace NpvManager.Model
             {
                 await ConnectToTwsIfNecessary();
                 await LoadPositions.RunAsync(this);
+            });
+            AnalystsPricesCommand = new RelayCommand(async () =>
+            {
+                await ConnectToTwsIfNecessary();
+                await AnalystsPrices.RunAsync(this);
             });
         }
 

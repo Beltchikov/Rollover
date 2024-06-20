@@ -47,7 +47,7 @@
             <TextBox Grid.Row="3" Grid.RowSpan="3" Text="{Binding Input}" TextWrapping="Wrap" VerticalAlignment="Stretch" AcceptsReturn="True" Margin="15 0 0 0">
             </TextBox>
 
-            <Button Grid.Row="3" Grid.Column="1" Margin="10 5 10 0">Analysts Prices >></Button>
+            <Button Grid.Row="3" Grid.Column="1" Margin="10 5 10 0" Command="{Binding AnalystsPricesCommand}">Analysts Prices >></Button>
             <Button Grid.Row="4" Grid.Column="1" Margin="10 5 10 0">SD Limit Prices >></Button>
 
             <Label Grid.Row="2" Grid.Column="2" Foreground="White">Ouput:</Label>
