@@ -1,13 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using IbClient.IbHost;
+using IBSampleApp.messages;
 using NpvManager.Commands;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace NpvManager.Model
 {
-    public class NpvManagerViewModel : ObservableObject, IIbConsumer, ITwsVisitor
+    public class NpvManagerViewModel : ObservableObject, IIbConsumer, IPositionsVisitor
     {
 
         private string _host = "localhost";
@@ -15,6 +16,7 @@ namespace NpvManager.Model
         private int _clientId = 1;
         private bool _connectedToTws;
         private ObservableCollection<string> _twsMessageColllection = [];
+        private ObservableCollection<PositionMessage> _positions = [];
 
         public ICommand ConnectToTwsCommand { get; }
         public ICommand LoadOrdersCommand { get; }
@@ -27,7 +29,7 @@ namespace NpvManager.Model
 
             ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
             LoadOrdersCommand = new RelayCommand(() => LoadOrders.Run(this));
-            LoadPositionsCommand = new RelayCommand(() => LoadOrders.Run(this));
+            LoadPositionsCommand = new RelayCommand(async () => await LoadPositions.RunAsync(this));
         }
 
         public IIbHost IbHost { get; private set; }
@@ -81,5 +83,14 @@ namespace NpvManager.Model
         }
 
         public int Timeout => App.TIMEOUT;
+
+        public ObservableCollection<PositionMessage> Positions
+        {
+            get => _positions;
+            set
+            {
+                SetProperty(ref _positions, value);
+            }
+        }
     }
 }

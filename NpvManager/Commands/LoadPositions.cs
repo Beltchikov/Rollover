@@ -4,9 +4,22 @@ namespace NpvManager.Commands
 {
     class LoadPositions
     { 
-        public static void Run(ITwsVisitor visitor)
+        public static async Task RunAsync(IPositionsVisitor visitor)
         {
-        MessageBox.Show("LoadPositions");
+            bool positionsRequested = false;
+            await visitor.IbHost.RequestPositions(
+               (p) =>
+               {
+                   visitor.Positions.Add(p);
+               },
+               () =>
+               {
+                   positionsRequested = true;
+
+               });
+
+            await Task.Run(() => { while (!positionsRequested) { }; });
+            MessageBox.Show("Positions loaded!");
         }
     }
 }
