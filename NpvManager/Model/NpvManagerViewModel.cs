@@ -36,7 +36,8 @@ namespace NpvManager.Model
             });
             LoadPositionsCommand = new RelayCommand(async () =>
             {
-                //if (!ConnectedToTws) ConnectToTws.Run(this);
+                if (!ConnectedToTws) ConnectToTws.Run(this);
+                await Task.Run(()=> { while (!ConnectedToTws) { } });
                 await LoadPositions.RunAsync(this);
             });
         }
