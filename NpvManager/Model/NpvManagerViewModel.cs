@@ -17,6 +17,7 @@ namespace NpvManager.Model
         private bool _connectedToTws;
         private ObservableCollection<string> _twsMessageColllection = [];
         private ObservableCollection<PositionMessage> _positions = [];
+        private string _input = "";
 
         public ICommand ConnectToTwsCommand { get; }
         public ICommand LoadOrdersCommand { get; }
@@ -54,7 +55,6 @@ namespace NpvManager.Model
                 SetProperty(ref _host, value);
             }
         }
-
         public int Port
         {
             get => _port;
@@ -100,5 +100,15 @@ namespace NpvManager.Model
                 SetProperty(ref _positions, value);
             }
         }
+
+        public string Input
+        {
+            get => _input;
+            set
+            {
+                SetProperty(ref _input, value);
+            }
+        }
+
     }
 }

@@ -13,5 +13,7 @@ namespace NpvManager.Commands
         
         bool ConnectedToTws { get; }
         ObservableCollection<string> TwsMessageCollection { get; }
+
+        string Input { get; set; }
     }
 }

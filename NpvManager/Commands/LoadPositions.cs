@@ -19,6 +19,11 @@ namespace NpvManager.Commands
                });
 
             await Task.Run(() => { while (!positionsRequested) { }; });
+            
+            visitor.Input = "";
+            visitor.Input = visitor.Positions
+                .Select(p => p.Contract.ToString())
+                .Aggregate((r,n)=>r + Environment.NewLine +n);    
             MessageBox.Show("Positions loaded!");
         }
     }
