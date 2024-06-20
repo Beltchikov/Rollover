@@ -3,11 +3,33 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:tws_uc="clr-namespace:TwsUserControls;assembly=TwsUserControls"
         xmlns:local="clr-namespace:NpvManager"
         mc:Ignorable="d"
-        Title="NPV Manager" Height="450" Width="800" Background="#FF496AEF">
-   
+        Title="NPV Manager" Width="1420" Height="1060" Background="#FF496AEF">
+
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="710"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <tws_uc:TwsConnection 
+        Grid.Row="0"
+        Host="{Binding Host, Mode=OneWay}"
+        Port="{Binding Port, Mode=OneWay}"
+        ClientId="{Binding ClientId, Mode=OneWay}"
+        Connected="{Binding ConnectedToTws, Mode=OneWay}"
+        Command="{Binding ConnectToTwsCommand, Mode=OneWay}" Grid.ColumnSpan="2" />
+
+        <tws_uc:TwsInformation Grid.Row="2" MessageCollection="{Binding TwsMessageCollection}"  Margin="0,0,0,0" 
+                               Grid.RowSpan="2" Grid.ColumnSpan="2">
+        </tws_uc:TwsInformation>
 
     </Grid>
 </Window>

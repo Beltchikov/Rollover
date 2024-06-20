@@ -1,6 +1,4 @@
-﻿using System.Configuration;
-using System.Data;
-using System.Windows;
+﻿using System.Windows;
 
 namespace NpvManager
 {
@@ -9,6 +7,7 @@ namespace NpvManager
     /// </summary>
     public partial class App : Application
     {
+        internal static readonly int TIMEOUT = 1000;
     }
 
 }
