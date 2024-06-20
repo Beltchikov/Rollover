@@ -27,6 +27,20 @@
         Connected="{Binding ConnectedToTws, Mode=OneWay}"
         Command="{Binding ConnectToTwsCommand, Mode=OneWay}" Grid.ColumnSpan="2" />
 
+        <Grid x:Name="Processing">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="35"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition  Width="200"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+        </Grid>
+
         <tws_uc:TwsInformation Grid.Row="2" MessageCollection="{Binding TwsMessageCollection}"  Margin="0,0,0,0" 
                                Grid.RowSpan="2" Grid.ColumnSpan="2">
         </tws_uc:TwsInformation>
