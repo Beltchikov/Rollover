@@ -17,6 +17,7 @@ namespace NpvManager.Model
         private ObservableCollection<string> _twsMessageColllection = [];
 
         public ICommand ConnectToTwsCommand { get; }
+        public ICommand LoadOrdersCommand { get; }
 
         public NpvManagerViewModel()
         {
@@ -24,6 +25,7 @@ namespace NpvManager.Model
             SetIbHost(new IbHost());
 
             ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
+            LoadOrdersCommand = new RelayCommand(() => LoadOrders.Run(this));
         }
 
         public IIbHost IbHost { get; private set; }

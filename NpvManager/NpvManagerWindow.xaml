@@ -41,7 +41,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Button Margin="15 10 0 0">Load Orders</Button>
+            <Button Margin="15 10 0 0" Command="{Binding LoadOrdersCommand}">Load Orders</Button>
             <Button Margin="15 5 0 0" Grid.Row="1">Load Positions</Button>
             <Label Grid.Row="2" Foreground="White">Input:</Label>
             <TextBox Grid.Row="3" Grid.RowSpan="3" Text="TODO}" TextWrapping="Wrap" VerticalAlignment="Stretch" AcceptsReturn="True" Margin="15 0 0 0">
