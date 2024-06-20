@@ -7,6 +7,7 @@ namespace NpvManager.Commands
         public static async Task RunAsync(IPositionsVisitor visitor)
         {
             bool positionsRequested = false;
+            visitor.Positions.Clear();
             await visitor.IbHost.RequestPositions(
                (p) =>
                {
