@@ -29,15 +29,14 @@ namespace NpvManager.Model
             SetIbHost(new IbHost());
 
             ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
-            LoadOrdersCommand = new RelayCommand(() =>
+            LoadOrdersCommand = new RelayCommand(async () =>
             {
-                //if (!ConnectedToTws) ConnectToTws.Run(this);
+                await ConnectToTwsIfNecessary();
                 LoadOrders.Run(this);
             });
             LoadPositionsCommand = new RelayCommand(async () =>
             {
-                if (!ConnectedToTws) ConnectToTws.Run(this);
-                await Task.Run(()=> { while (!ConnectedToTws) { } });
+                await ConnectToTwsIfNecessary();
                 await LoadPositions.RunAsync(this);
             });
         }
@@ -109,6 +108,12 @@ namespace NpvManager.Model
             {
                 SetProperty(ref _input, value);
             }
+        }
+
+        async Task ConnectToTwsIfNecessary()
+        {
+            if (!ConnectedToTws) ConnectToTws.Run(this);
+            await Task.Run(() => { while (!ConnectedToTws) { } });
         }
 
     }
