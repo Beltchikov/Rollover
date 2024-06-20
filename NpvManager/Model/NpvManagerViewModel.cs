@@ -18,6 +18,7 @@ namespace NpvManager.Model
 
         public ICommand ConnectToTwsCommand { get; }
         public ICommand LoadOrdersCommand { get; }
+        public ICommand LoadPositionsCommand { get; }
 
         public NpvManagerViewModel()
         {
@@ -26,6 +27,7 @@ namespace NpvManager.Model
 
             ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
             LoadOrdersCommand = new RelayCommand(() => LoadOrders.Run(this));
+            LoadPositionsCommand = new RelayCommand(() => LoadOrders.Run(this));
         }
 
         public IIbHost IbHost { get; private set; }
