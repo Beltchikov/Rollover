@@ -20,9 +20,7 @@ namespace NpvManager.Model
         private string _input = "";
 
         public ICommand ConnectToTwsCommand { get; }
-        public ICommand LoadOrdersCommand { get; }
         public ICommand LoadPositionsCommand { get; }
-        public ICommand AnalystsPricesCommand { get; }
 
         public NpvManagerViewModel()
         {
@@ -30,20 +28,10 @@ namespace NpvManager.Model
             SetIbHost(new IbHost());
 
             ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
-            LoadOrdersCommand = new RelayCommand(async () =>
-            {
-                await ConnectToTwsIfNecessary();
-                LoadOrders.Run(this);
-            });
             LoadPositionsCommand = new RelayCommand(async () =>
             {
                 await ConnectToTwsIfNecessary();
                 await LoadPositions.RunAsync(this);
-            });
-            AnalystsPricesCommand = new RelayCommand(async () =>
-            {
-                await ConnectToTwsIfNecessary();
-                await AnalystsPrices.RunAsync(this);
             });
         }
 
