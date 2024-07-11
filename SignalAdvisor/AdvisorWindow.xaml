@@ -42,30 +42,19 @@
 
         <TabControl Grid.Row="1" Grid.RowSpan="1" Grid.ColumnSpan="2" Margin="16,16,16,16">
             <TabItem Header="Signals">
-                <Grid x:Name="SignalsGrid" Grid.Row="1"  Background="MediumVioletRed"
+                <Grid x:Name="SignalsGrid" Grid.Row="1"  Background="#FF3A2C35"
      Grid.ColumnSpan="2">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="10"/>
                         <RowDefinition Height="35"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="300" />
-                        <RowDefinition Height="40"/>
                         <RowDefinition />
+                        <RowDefinition Height="10"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="59"/>
-                        <ColumnDefinition Width="0"/>
-                        <ColumnDefinition Width="291"/>
-                        <ColumnDefinition Width="35"/>
-                        <ColumnDefinition Width="105"/>
-                        <ColumnDefinition Width="35"/>
-                        <ColumnDefinition Width="170"/>
-                        <ColumnDefinition Width="100"/>
-                        <ColumnDefinition Width="120"/>
-                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="10"/>
                         <ColumnDefinition/>
+                        <ColumnDefinition Width="10"/>
                     </Grid.ColumnDefinitions>
-
-                   
 
                 </Grid>
             </TabItem>
