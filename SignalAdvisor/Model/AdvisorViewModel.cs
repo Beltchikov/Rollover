@@ -90,8 +90,8 @@ namespace SignalAdvisor.Model
             await Task.Run(() => { RequestPositionsCommand.Execute(this); });
             await Task.Run(() => { while (!RequestPositionsExecuted) { } });
 
-            //await Task.Run(() => { RequestHistoricalDataCommand.Execute(this); });
-            //await Task.Run(() => { while (!RequestHistoricalDataExecuted) { } });
+            await Task.Run(() => { RequestHistoricalDataCommand.Execute(this); });
+            await Task.Run(() => { while (!RequestHistoricalDataExecuted) { } });
         }
 
         public void AddBar(IBApi.Contract contract, HistoricalDataMessage message)

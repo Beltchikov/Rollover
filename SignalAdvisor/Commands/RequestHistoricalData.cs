@@ -20,6 +20,11 @@ namespace SignalAdvisor.Commands
 
             foreach (var positionMessage in visitor.Positions)
             {
+                if(positionMessage.Contract.SecType == "OPT")
+                {
+                    continue; // Not implemented yet for options.
+                }
+                
                 bool historicalDataReceived = false;
                 List<Bar> bars = null!;
                 var contractString = positionMessage.Contract.ToString();
