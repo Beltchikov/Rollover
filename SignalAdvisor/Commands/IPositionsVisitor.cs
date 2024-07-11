@@ -18,9 +18,11 @@ namespace SignalAdvisor.Commands
         int NextOrderId();
         bool RequestPositionsExecuted { get; set; }
         bool RequestHistoricalDataExecuted { get; set; }
+        public bool AlertDeactivated { get; set; }
         string Symbols { get; set; }
         string SymbolsShort { get; set; }
         public Instrument InstrumentToTrade { get; set; }
         string OrderLog { get; set; }
+
     }
 }
