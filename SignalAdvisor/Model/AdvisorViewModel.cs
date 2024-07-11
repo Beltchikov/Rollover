@@ -96,8 +96,14 @@ namespace SignalAdvisor.Model
 
             _ = Task.Run(() =>
             {
-                SoundPlayer my_wave_file = new SoundPlayer(@"C:\Windows\Media\chimes.wav");
-                while (!AlertDeactivated) { my_wave_file.PlaySync(); }
+                SoundPlayer player = new SoundPlayer(@"C:\Windows\Media\Alarm01.wav");
+                while (!AlertDeactivated) { player.PlaySync(); }
+
+
+                //System.Reflection.Assembly a = System.Reflection.Assembly.GetExecutingAssembly();
+                //System.IO.Stream s = a.GetManifestResourceStream("SignalAdvisor.dll.Alarm01.wav");
+                //SoundPlayer player = new SoundPlayer(s);
+                //while (!AlertDeactivated) { player.PlaySync(); }
             });
         }
 
