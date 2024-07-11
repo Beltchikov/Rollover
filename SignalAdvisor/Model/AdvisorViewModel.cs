@@ -8,6 +8,7 @@ using SignalAdvisor.Commands;
 using SignalAdvisor.Extensions;
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
+using System.Media;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -92,6 +93,12 @@ namespace SignalAdvisor.Model
 
             await Task.Run(() => { RequestHistoricalDataCommand.Execute(this); });
             await Task.Run(() => { while (!RequestHistoricalDataExecuted) { } });
+
+            _ = Task.Run(() =>
+            {
+                SoundPlayer my_wave_file = new SoundPlayer(@"C:\Windows\Media\chimes.wav");
+                while (!AlertDeactivated) { my_wave_file.PlaySync(); }
+            });
         }
 
         public void AddBar(IBApi.Contract contract, HistoricalDataMessage message)
@@ -268,6 +275,8 @@ namespace SignalAdvisor.Model
 
         public bool RequestPositionsExecuted { get; set; }
         public bool RequestHistoricalDataExecuted { get; set; }
+        public bool AlertDeactivated { get; set; }
+       
         public Instrument InstrumentToTrade { get; set; }
 
         public void TickPriceCallback(TickPriceMessage message)
