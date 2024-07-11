@@ -41,23 +41,6 @@
             Command="{Binding ConnectToTwsCommand, Mode=OneWay}" Grid.ColumnSpan="2" />
 
         <TabControl Grid.Row="1" Grid.RowSpan="1" Grid.ColumnSpan="2" Margin="16,16,16,16">
-            <TabItem Header="Order Management">
-                <Grid Background="#FFA5983B">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="15" />
-                        <RowDefinition />
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="15"/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Orders}" TextWrapping="Wrap" VerticalAlignment="Stretch" 
-                     AcceptsReturn="True">
-                    </TextBox>
-                </Grid>
-            </TabItem>
             <TabItem Header="Signals">
                 <Grid x:Name="Processing" Grid.Row="1"  Background="Green"
                 Grid.ColumnSpan="2">
@@ -124,6 +107,23 @@
                     <controls:InstrumentsControl  Grid.Row="4" Grid.Column="4" Grid.ColumnSpan="7"
               Instruments="{Binding InstrumentsShort}" TradeAction="InstrumentsControl_TradeActionShort1" TradeNonBracketAction="InstrumentsControl_TradeActionShort2"></controls:InstrumentsControl>
 
+                </Grid>
+            </TabItem>
+            <TabItem Header="Order Management">
+                <Grid Background="#FFA5983B">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="15" />
+                        <RowDefinition />
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="15"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Orders}" TextWrapping="Wrap" VerticalAlignment="Stretch" 
+         AcceptsReturn="True">
+                    </TextBox>
                 </Grid>
             </TabItem>
         </TabControl>
