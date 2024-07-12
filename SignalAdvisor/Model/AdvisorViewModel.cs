@@ -101,6 +101,9 @@ namespace SignalAdvisor.Model
 
             _ = Task.Run(() =>
             {
+                // TODO
+                //if (AlertTriggered(contract, "MacdCrossUp")) { }
+                
                 SoundPlayer player = new(Properties.Resources.Alarm01_wav);
                 while (!AlertDeactivated) { player.PlaySync(); }
             });
