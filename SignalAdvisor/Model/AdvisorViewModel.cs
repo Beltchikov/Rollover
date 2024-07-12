@@ -101,25 +101,8 @@ namespace SignalAdvisor.Model
 
             _ = Task.Run(() =>
             {
-                //    var resources1 = Assembly.GetExecutingAssembly().GetManifestResourceNames();
-
-                //    var resourceManager = new ResourceManager("SignalAdvisor.g", Assembly.GetExecutingAssembly());
-                //    var resources = resourceManager.GetResourceSet(CultureInfo.CurrentUICulture, true,
-                //true);
-
-                System.IO.Stream str = Properties.Resources.Alarm01_wav;
-                System.Media.SoundPlayer snd = new System.Media.SoundPlayer(str);
-                //snd.Play();
-                while (!AlertDeactivated) { snd.PlaySync(); }
-
-                //SoundPlayer player = new SoundPlayer(@"C:\Windows\Media\Alarm01.wav");
-                //while (!AlertDeactivated) { player.PlaySync(); }
-
-                
-                //System.Reflection.Assembly a = System.Reflection.Assembly.GetExecutingAssembly();
-                //System.IO.Stream s = a.GetManifestResourceStream("SignalAdvisor.dll.Alarm01.wav");
-                //SoundPlayer player = new SoundPlayer(s);
-                //while (!AlertDeactivated) { player.PlaySync(); }
+                SoundPlayer player = new SoundPlayer(Properties.Resources.Alarm01_wav);
+                while (!AlertDeactivated) { player.PlaySync(); }
             });
         }
 
