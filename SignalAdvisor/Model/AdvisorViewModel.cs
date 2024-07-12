@@ -101,7 +101,7 @@ namespace SignalAdvisor.Model
 
             _ = Task.Run(() =>
             {
-                SoundPlayer player = new SoundPlayer(Properties.Resources.Alarm01_wav);
+                SoundPlayer player = new(Properties.Resources.Alarm01_wav);
                 while (!AlertDeactivated) { player.PlaySync(); }
             });
         }
