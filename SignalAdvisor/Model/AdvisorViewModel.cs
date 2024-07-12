@@ -93,8 +93,8 @@ namespace SignalAdvisor.Model
         }
         public async Task StartUpAsync()
         {
-            await Task.Run(() => { RequestPositionsCommand.Execute(this); });
-            await Task.Run(() => { while (!RequestPositionsExecuted) { } });
+            //await Task.Run(() => { RequestPositionsCommand.Execute(this); });
+            //await Task.Run(() => { while (!RequestPositionsExecuted) { } });
 
             await Task.Run(() => { RequestHistoricalDataCommand.Execute(this); });
             await Task.Run(() => { while (!RequestHistoricalDataExecuted) { } });
