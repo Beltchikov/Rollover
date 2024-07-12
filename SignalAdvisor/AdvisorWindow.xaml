@@ -60,6 +60,11 @@
 
                     <Button Grid.Column="1" Grid.Row="1" Command="{Binding DeactivateAlertCommand}">Start Monitoring</Button>
 
+                    <TextBox Grid.Row="2" Text="{Binding Symbols}"
+                     TextWrapping="Wrap" 
+                     AcceptsReturn="True" Grid.Column="1">
+                    </TextBox>
+
                     <Button Grid.Column="3" Grid.Row="1" Command="{Binding DeactivateAlertCommand}">Deactivate Alert</Button>
 
                 </Grid>
