@@ -8,7 +8,10 @@ using SignalAdvisor.Commands;
 using SignalAdvisor.Extensions;
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Media;
+using System.Reflection;
+using System.Resources;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -98,10 +101,21 @@ namespace SignalAdvisor.Model
 
             _ = Task.Run(() =>
             {
-                SoundPlayer player = new SoundPlayer(@"C:\Windows\Media\Alarm01.wav");
-                while (!AlertDeactivated) { player.PlaySync(); }
+                //    var resources1 = Assembly.GetExecutingAssembly().GetManifestResourceNames();
 
+                //    var resourceManager = new ResourceManager("SignalAdvisor.g", Assembly.GetExecutingAssembly());
+                //    var resources = resourceManager.GetResourceSet(CultureInfo.CurrentUICulture, true,
+                //true);
 
+                System.IO.Stream str = Properties.Resources.Alarm01_wav;
+                System.Media.SoundPlayer snd = new System.Media.SoundPlayer(str);
+                //snd.Play();
+                while (!AlertDeactivated) { snd.PlaySync(); }
+
+                //SoundPlayer player = new SoundPlayer(@"C:\Windows\Media\Alarm01.wav");
+                //while (!AlertDeactivated) { player.PlaySync(); }
+
+                
                 //System.Reflection.Assembly a = System.Reflection.Assembly.GetExecutingAssembly();
                 //System.IO.Stream s = a.GetManifestResourceStream("SignalAdvisor.dll.Alarm01.wav");
                 //SoundPlayer player = new SoundPlayer(s);
