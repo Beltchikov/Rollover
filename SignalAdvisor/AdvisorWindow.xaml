@@ -58,7 +58,7 @@
                         <ColumnDefinition Width="10"/>
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="1" Grid.Row="1" Command="{Binding DeactivateAlertCommand}">Start Monitoring</Button>
+                    <Button Grid.Column="1" Grid.Row="1" Command="{Binding UpdateSymbolsCommand}">Start Monitoring</Button>
 
                     <TextBox Grid.Row="2" Text="{Binding Symbols}"
                      TextWrapping="Wrap" 
