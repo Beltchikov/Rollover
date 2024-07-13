@@ -42,26 +42,6 @@ Background="LightGreen" Foreground="Green">
                     <GridViewColumn DisplayMemberBinding="{Binding LastSignalTime}"  Header="LastSignalTime"/>
                     <GridViewColumn DisplayMemberBinding="{Binding LastSignal}"  Header="LastSignal"/>
 
-                    <GridViewColumn  Header="Action1">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Grid.Column="8" Width="100" FontWeight="Bold" 
-                                    Click="Button_Click" Tag="{Binding Path=.}">Trade 2 StdDev
-                                </Button>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-
-                    <GridViewColumn  Header="Action2">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Grid.Column="9" Width="120" 
-                                    Tag="{Binding Path=.}" Click="ButtonNonBracket_Click">Trade Non Bracket
-                                </Button>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-
                     <GridViewColumn DisplayMemberBinding="{Binding Algo}" Header="Algo"/>
                     <GridViewColumn DisplayMemberBinding="{Binding StopLossInCents}" Header="SL in Ct"/>
                     <GridViewColumn DisplayMemberBinding="{Binding TakeProfitInCents}" Header="TP in Ct"/>

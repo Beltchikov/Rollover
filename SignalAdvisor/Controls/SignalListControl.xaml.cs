@@ -14,8 +14,6 @@ namespace SignalAdvisor.Controls
         public SignalListControl()
         {
             InitializeComponent();
-
-            TradeAction = null!;
         }
 
         public static readonly DependencyProperty InstrumentsProperty =
@@ -28,25 +26,6 @@ namespace SignalAdvisor.Controls
         {
             get { return (ObservableCollection<Instrument>)GetValue(InstrumentsProperty); }
             set { SetValue(InstrumentsProperty, value); }
-        }
-
-        public event EventHandler<TradeActionEventArgs> TradeAction;
-        public event EventHandler<TradeActionEventArgs> TradeNonBracketAction;
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            var instrument = ((Button)sender).Tag as Instrument ?? throw new Exception();
-
-            if (TradeAction != null)
-                TradeAction(this, new TradeActionEventArgs(instrument));
-        }
-
-        private void ButtonNonBracket_Click(object sender, RoutedEventArgs e)
-        {
-            var instrument = ((Button)sender).Tag as Instrument ?? throw new Exception();
-
-            if (TradeNonBracketAction != null)
-                TradeNonBracketAction(this, new TradeActionEventArgs(instrument));
         }
     }
 }
