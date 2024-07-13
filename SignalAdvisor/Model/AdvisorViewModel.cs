@@ -35,7 +35,6 @@ namespace SignalAdvisor.Model
         private static System.Timers.Timer _timer = null!;
         private Dispatcher _dispatcher = App.Current?.Dispatcher ?? throw new Exception("Unexpected. App.Current?.Dispatcher is null");
 
-        ICommand RequestPositionsCommand;
         ICommand RequestHistoricalDataCommand;
         private int _nextOrderId;
 
@@ -47,7 +46,6 @@ namespace SignalAdvisor.Model
 
         public AdvisorViewModel()
         {
-            RequestPositionsCommand = new RelayCommand(async () => await RequestPositions.RunAsync(this));
             RequestHistoricalDataCommand = new RelayCommand(async () => await RequestHistoricalData.RunAsync(this));
             ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
             UpdateSymbolsCommand = new RelayCommand(() => UpdateSymbols.Run(this));
