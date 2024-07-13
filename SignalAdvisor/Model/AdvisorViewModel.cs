@@ -50,6 +50,7 @@ namespace SignalAdvisor.Model
         public ICommand SendNonBracketOrdersCommand { get; }
         public ICommand SendOrders2StdDevCommand { get; }
         public ICommand SendOrders2StdDevShortCommand { get; }
+        public ICommand StartMonitoringCommand { get; }
         public ICommand DeactivateAlertCommand { get; }
 
         public AdvisorViewModel()
@@ -63,6 +64,7 @@ namespace SignalAdvisor.Model
             SendNonBracketOrdersCommand = new RelayCommand(async () => await SendNonBracketOrders.RunAsync(this));
             SendOrders2StdDevCommand = new RelayCommand(async () => await SendOrders2StdDev.RunAsync(this));
             SendOrders2StdDevShortCommand = new RelayCommand(async () => await SendOrders2StdDevShort.RunAsync(this));
+            StartMonitoringCommand = new RelayCommand(async () => await StartMonitoring.RunAsync(this));
             DeactivateAlertCommand = new RelayCommand(() => DeactivateAlert.Run(this));
 
             _timer = new System.Timers.Timer(60000);
