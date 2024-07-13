@@ -37,7 +37,6 @@ namespace SignalAdvisor.Model
         private int _nextOrderId;
 
         public ICommand ConnectToTwsCommand { get; }
-        public ICommand UpdateSymbolsCommand { get; }
         public ICommand StartMonitoringCommand { get; }
         public ICommand DeactivateAlertCommand { get; }
 
@@ -45,7 +44,6 @@ namespace SignalAdvisor.Model
         {
             RequestHistoricalDataCommand = new RelayCommand(async () => await RequestHistoricalData.RunAsync(this));
             ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
-            UpdateSymbolsCommand = new RelayCommand(() => UpdateSymbols.Run(this));
             StartMonitoringCommand = new RelayCommand(async () => await StartMonitoring.RunAsync(this));
             DeactivateAlertCommand = new RelayCommand(() => DeactivateAlert.Run(this));
 
