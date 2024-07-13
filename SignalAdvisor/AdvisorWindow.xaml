@@ -65,10 +65,10 @@
                      AcceptsReturn="True" Grid.Column="1">
                     </TextBox>
 
-                    <controls:InstrumentsControl  Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2"
+                    <controls:SignalListControl  Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2"
                        Instruments="{Binding Instruments}" TradeAction="InstrumentsControl_TradeAction1" TradeNonBracketAction="InstrumentsControl_TradeAction2">
-                    </controls:InstrumentsControl>
-
+                    </controls:SignalListControl>
+                    
                     <Button Grid.Column="3" Grid.Row="1" Command="{Binding DeactivateAlertCommand}">Deactivate Alert</Button>
 
                 </Grid>

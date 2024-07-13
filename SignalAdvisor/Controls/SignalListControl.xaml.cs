@@ -22,7 +22,7 @@ namespace SignalAdvisor.Controls
            DependencyProperty.Register(
                "Instruments",
                typeof(ObservableCollection<Instrument>),
-               typeof(InstrumentsControl),
+               typeof(SignalListControl),
                new PropertyMetadata(new ObservableCollection<Instrument>()));
         public ObservableCollection<Instrument> Instruments
         {
