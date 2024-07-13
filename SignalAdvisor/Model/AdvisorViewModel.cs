@@ -8,11 +8,7 @@ using SignalAdvisor.Commands;
 using SignalAdvisor.Extensions;
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Media;
-using System.Reflection;
-using System.Resources;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -46,10 +42,6 @@ namespace SignalAdvisor.Model
         public ICommand ConnectToTwsCommand { get; }
         public ICommand UpdateSymbolsCommand { get; }
         public ICommand UpdateSymbolsShortCommand { get; }
-        public ICommand SendOrdersCommand { get; }
-        public ICommand SendNonBracketOrdersCommand { get; }
-        public ICommand SendOrders2StdDevCommand { get; }
-        public ICommand SendOrders2StdDevShortCommand { get; }
         public ICommand StartMonitoringCommand { get; }
         public ICommand DeactivateAlertCommand { get; }
 
@@ -60,10 +52,6 @@ namespace SignalAdvisor.Model
             ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
             UpdateSymbolsCommand = new RelayCommand(() => UpdateSymbols.Run(this));
             UpdateSymbolsShortCommand = new RelayCommand(() => UpdateSymbolsShort.Run(this));
-            SendOrdersCommand = new RelayCommand(async () => await SendOrders.RunAsync(this));
-            SendNonBracketOrdersCommand = new RelayCommand(async () => await SendNonBracketOrders.RunAsync(this));
-            SendOrders2StdDevCommand = new RelayCommand(async () => await SendOrders2StdDev.RunAsync(this));
-            SendOrders2StdDevShortCommand = new RelayCommand(async () => await SendOrders2StdDevShort.RunAsync(this));
             StartMonitoringCommand = new RelayCommand(async () => await StartMonitoring.RunAsync(this));
             DeactivateAlertCommand = new RelayCommand(() => DeactivateAlert.Run(this));
 
