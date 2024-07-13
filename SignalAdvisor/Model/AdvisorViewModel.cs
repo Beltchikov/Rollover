@@ -21,7 +21,6 @@ namespace SignalAdvisor.Model
         private int _clientId = 1;
         private bool _connectedToTws;
         private ObservableCollection<string> _twsMessageColllection = [];
-        private int _openOrders;
         private string _lastCheck = "";
         private string _symbols = "";
         private string _symbolsShort = "";
@@ -39,7 +38,6 @@ namespace SignalAdvisor.Model
 
         public ICommand ConnectToTwsCommand { get; }
         public ICommand UpdateSymbolsCommand { get; }
-        public ICommand UpdateSymbolsShortCommand { get; }
         public ICommand StartMonitoringCommand { get; }
         public ICommand DeactivateAlertCommand { get; }
 
@@ -48,11 +46,9 @@ namespace SignalAdvisor.Model
             RequestHistoricalDataCommand = new RelayCommand(async () => await RequestHistoricalData.RunAsync(this));
             ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
             UpdateSymbolsCommand = new RelayCommand(() => UpdateSymbols.Run(this));
-            UpdateSymbolsShortCommand = new RelayCommand(() => UpdateSymbolsShort.Run(this));
             StartMonitoringCommand = new RelayCommand(async () => await StartMonitoring.RunAsync(this));
             DeactivateAlertCommand = new RelayCommand(() => DeactivateAlert.Run(this));
 
-            OpenOrders = 7;
             LastCheck = "";
             IbHost = null!;
             InstrumentToTrade = null!;
@@ -162,15 +158,7 @@ namespace SignalAdvisor.Model
                 SetProperty(ref _twsMessageColllection, value);
             }
         }
-        public int OpenOrders
-        {
-            get => _openOrders;
-            set
-            {
-                SetProperty(ref _openOrders, value);
-            }
-        }
-
+       
         public string LastCheck
         {
             get => _lastCheck;
