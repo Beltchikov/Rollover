@@ -1,4 +1,4 @@
-﻿using System.Windows;
+﻿using System.Media;
 
 namespace SignalAdvisor.Commands
 {
@@ -6,8 +6,16 @@ namespace SignalAdvisor.Commands
     {
         public static async Task RunAsync(IPositionsVisitor visitor)
         {
+            await RequestHistoricalData.RunAsync(visitor); 
+            await Task.Run(() => { while (!visitor.RequestHistoricalDataExecuted) { } });
 
-            await Task.Run(()=> { MessageBox.Show("StartMonitoring"); });
+            UpdateItems.Run(visitor);
+
+            _ = Task.Run(() =>
+            {
+                SoundPlayer player = new(Properties.Resources.Alarm01_wav);
+                while (!visitor.AlertDeactivated) { player.PlaySync(); }
+            });
         }
 
     }

@@ -45,9 +45,6 @@ namespace SignalAdvisor
 
             while (!connected) { }
 
-            // Do start up actions
-            await viewModel.StartUpAsync();
-
             // asign data context
             AdvisorWindow advisorWindow = new();
             advisorWindow.DataContext = viewModel;
