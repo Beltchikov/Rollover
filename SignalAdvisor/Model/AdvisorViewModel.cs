@@ -32,7 +32,6 @@ namespace SignalAdvisor.Model
         private ObservableCollection<KeyValuePair<string, List<Dictionary<string, int>>>> _signals = [];
         private ObservableCollection<Instrument> _instruments = [];
         private ObservableCollection<Instrument> _instrumentsShort = [];
-        private static System.Timers.Timer _timer = null!;
         private Dispatcher _dispatcher = App.Current?.Dispatcher ?? throw new Exception("Unexpected. App.Current?.Dispatcher is null");
 
         ICommand RequestHistoricalDataCommand;
@@ -52,11 +51,6 @@ namespace SignalAdvisor.Model
             UpdateSymbolsShortCommand = new RelayCommand(() => UpdateSymbolsShort.Run(this));
             StartMonitoringCommand = new RelayCommand(async () => await StartMonitoring.RunAsync(this));
             DeactivateAlertCommand = new RelayCommand(() => DeactivateAlert.Run(this));
-
-            _timer = new System.Timers.Timer(60000);
-            _timer.Elapsed += _timer_Elapsed;
-            _timer.AutoReset = true;
-            _timer.Enabled = true;
 
             OpenOrders = 7;
             LastCheck = "";
