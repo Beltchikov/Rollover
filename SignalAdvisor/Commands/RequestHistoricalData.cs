@@ -32,7 +32,7 @@ namespace SignalAdvisor.Commands
                     1,
                     [],
                     App.TIMEOUT,
-                    (historicalDataMessage) =>
+                    (historicalDataMessage) => // Historical Data Callback
                     {
                         // Add bar logic
                         var barTime = historicalDataMessage.Date.DateTimeOffsetFromString();
@@ -50,11 +50,11 @@ namespace SignalAdvisor.Commands
                         else
                             lastBar.Update(historicalDataMessage.High, historicalDataMessage.Low, historicalDataMessage.Close);
                     },
-                    (u) =>
+                    (historicalDataMessage) => // Historical Data UPDATE Callback
                     {
-                        visitor.AddBar(contract, u);
+                        visitor.AddBar(contract, historicalDataMessage);
                     },
-                    (e) => { historicalDataReceived = true; });
+                    (e) => { historicalDataReceived = true; }); // Historical Data END Calllback
 
                 await Task.Run(() => { while (!historicalDataReceived) { }; });
 
