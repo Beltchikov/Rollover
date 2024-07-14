@@ -6,10 +6,10 @@ namespace SignalAdvisor.Commands
     {
         public static async Task RunAsync(IPositionsVisitor visitor)
         {
+            UpdateItems.Run(visitor);
+
             await RequestHistoricalData.RunAsync(visitor); 
             await Task.Run(() => { while (!visitor.RequestHistoricalDataExecuted) { } });
-
-            UpdateItems.Run(visitor);
 
             _ = Task.Run(() =>
             {

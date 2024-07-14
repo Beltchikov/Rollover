@@ -1,14 +1,12 @@
 ﻿using SignalAdvisor.Extensions;
 using System.IO;
-using Ta;
 
 namespace SignalAdvisor.Commands
 {
     class RequestHistoricalData
     {
         static readonly int BAR_SIZE = 5;
-        static private readonly string HISTORICAL_DATA_PATH = "HistoricalData\\";
-
+        
         public static async Task RunAsync(IPositionsVisitor visitor)
         {
             var now = DateTime.Now;
@@ -18,19 +16,14 @@ namespace SignalAdvisor.Commands
             string whatToShow = "TRADES";
             int useRTH = 0;
 
-            foreach (var positionMessage in visitor.Positions)
+            foreach (var instrument in visitor.Instruments)
             {
-                if(positionMessage.Contract.SecType == "OPT")
-                {
-                    continue; // Not implemented yet for options.
-                }
-                
                 bool historicalDataReceived = false;
-                List<Bar> bars = null!;
-                var contractString = positionMessage.Contract.ToString();
+                var contract = instrument.ToContract();
+                var contractString = contract.ToString();
 
                 await visitor.IbHost.RequestHistoricalAndSubscribeAsync(
-                    positionMessage.Contract,
+                    contract,
                     "",
                     durationString,
                     barSizeSetting,
@@ -39,40 +32,27 @@ namespace SignalAdvisor.Commands
                     1,
                     [],
                     App.TIMEOUT,
-                    (d) =>
+                    (historicalDataMessage) =>
                     {
                         // Add bar logic
-                        var barTime = d.Date.DateTimeOffsetFromString();
-
-                        bars = visitor.Bars.For(contractString);
+                        var barTime = historicalDataMessage.Date.DateTimeOffsetFromString();
                         var signals = visitor.Signals.For(contractString);
-                        if (!bars.Any())
+                        if (!visitor.Bars.For(contractString).Any())
                         {
-                            var bar0 = new Bar(d.Open, d.High, d.Low, d.Close, d.Date.DateTimeOffsetFromString());
-                            bars.Add(bar0);
-
-                            var bar1 = bars.SkipLast(1).LastOrDefault();
-                            //if (bar1 != null)
-                            //{
-                            //    signals.Add(Signals.OppositeColor(bar0, bar1));
-                            //}
-
-                            return;
+                            visitor.AddBar(contract, historicalDataMessage);
                         }
 
-                        var lastBar = bars.Last();
+                        var lastBar = visitor.Bars.For(contractString).Last();
                         var lastBarTime = lastBar.Time;
 
                         if (barTime.Minute / 5 != lastBarTime.Minute / 5)
-                            visitor.AddBar(positionMessage.Contract, d);
+                            visitor.AddBar(contract, historicalDataMessage);
                         else
-                            lastBar.Update(d.High, d.Low, d.Close);
+                            lastBar.Update(historicalDataMessage.High, historicalDataMessage.Low, historicalDataMessage.Close);
                     },
                     (u) =>
                     {
-                        visitor.AddBar(positionMessage.Contract, u);
-                        //var time = TimeFromString(u.Date);
-                        //if(time.Minute/ BAR_SIZE)
+                        visitor.AddBar(contract, u);
                     },
                     (e) => { historicalDataReceived = true; });
 
@@ -81,7 +61,7 @@ namespace SignalAdvisor.Commands
                 // Save historical data
                 var fileName = contractString.Replace(" ", "-")+ ".csv";
                 var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
-                string barsAsString = bars.Select(b=>b.ToCsvString()).Aggregate((r,n)=> r+ Environment.NewLine + n);
+                string barsAsString = visitor.Bars.For(contractString).Select(b=>b.ToCsvString()).Aggregate((r,n)=> r+ Environment.NewLine + n);
                 File.WriteAllText(filePath, barsAsString);
             }
             
