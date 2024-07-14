@@ -26,9 +26,9 @@ namespace Ta
             Close = close;
         }
 
-        public string ToCsvString()
+        public string ToCsvString(string separator)
         {
-            return $"{Time.ToString(new CultureInfo("de-DE"))}\t{Open}\t{High}\t{Low}\t{Close}";
+            return $"{Time.ToString(new CultureInfo("de-DE"))}{separator}{Open}{separator}{High}{separator}{Low}{separator}{Close}";
         }
     }
 }

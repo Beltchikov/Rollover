@@ -61,7 +61,7 @@ namespace SignalAdvisor.Commands
                 // Save historical data
                 var fileName = contractString.Replace(" ", "-")+ ".csv";
                 var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
-                string barsAsString = visitor.Bars.For(contractString).Select(b=>b.ToCsvString()).Aggregate((r,n)=> r+ Environment.NewLine + n);
+                string barsAsString = visitor.Bars.For(contractString).Select(b=>b.ToCsvString(";")).Aggregate((r,n)=> r+ Environment.NewLine + n);
                 File.WriteAllText(filePath, barsAsString);
             }
             
