@@ -12,11 +12,7 @@ namespace SignalAdvisor.Commands
             await RequestHistoricalData.RunAsync(visitor);
             await Task.Run(() => { while (!visitor.RequestHistoricalDataExecuted) { } });
 
-            _ = Task.Run(() =>
-            {
-                SoundPlayer player = new(Properties.Resources.Alarm01_wav);
-                while (!visitor.AlertDeactivated) { player.PlaySync(); }
-            });
+            TriggerAlert(visitor);
 
             //foreach (var instrument in visitor.Instruments)
             //{
@@ -27,7 +23,10 @@ namespace SignalAdvisor.Commands
             //  instrument,
             //  historicalDataMessage => { macd.AddDataPoint(historicalDataMessage.Time, historicalDataMessage.Close) },
             //  historicalDataEndMessage => { visitor.RequestHistoricalDataExecuted = true;}
-            //  historicalDataMessage => { macd.AddDataPoint(historicalDataMessage.Time, historicalDataMessage.Close});
+            //  historicalDataMessage => {
+            //      macd.AddDataPoint(historicalDataMessage.Time, historicalDataMessage.Close);
+            //      if(macd.NewBar() && macdCrossUp())  TriggerAlert(visitor);
+            //  });
 
             // await Task.Run(() => { while (!visitor.RequestHistoricalDataExecuted) { } });
 
@@ -38,5 +37,13 @@ namespace SignalAdvisor.Commands
 
         }
 
+        private static void TriggerAlert(IPositionsVisitor visitor)
+        {
+            _ = Task.Run(() =>
+            {
+                SoundPlayer player = new(Properties.Resources.Alarm01_wav);
+                while (!visitor.AlertDeactivated) { player.PlaySync(); }
+            });
+        }
     }
 }
