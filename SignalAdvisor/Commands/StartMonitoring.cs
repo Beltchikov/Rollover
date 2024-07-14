@@ -18,16 +18,23 @@ namespace SignalAdvisor.Commands
                 while (!visitor.AlertDeactivated) { player.PlaySync(); }
             });
 
-            //Macd macd = new Macd();
+            //foreach (var instrument in visitor.Instruments)
+            //{
+
+            //Macd macd = new Macd(12,26,9);
 
             //await RequestHistoricalDataAndSubscribe.RunAsync(
-            //  visitor,
-            //  historicalDataMessage => { macd.AddDataPoint(historicalDataMessage.Close) },
+            //  instrument,
+            //  historicalDataMessage => { macd.AddDataPoint(historicalDataMessage.Time, historicalDataMessage.Close) },
             //  historicalDataEndMessage => { visitor.RequestHistoricalDataExecuted = true;}
-            //  historicalDataMessage => { macd.AddDataPoint(historicalDataMessage.Close});
+            //  historicalDataMessage => { macd.AddDataPoint(historicalDataMessage.Time, historicalDataMessage.Close});
 
             // await Task.Run(() => { while (!visitor.RequestHistoricalDataExecuted) { } });
 
+            // DataPoint lastMacdCrossUp = macd.LastCrossUp();
+            // instrument.LastSignalTime = lastMacdCrossUp.Time;
+
+            //}
 
         }
 
