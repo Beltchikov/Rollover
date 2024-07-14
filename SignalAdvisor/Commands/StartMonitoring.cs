@@ -9,9 +9,7 @@ namespace SignalAdvisor.Commands
         {
             UpdateItems.Run(visitor);
 
-            //await RequestHistoricalData.RunAsync(visitor, historicalDataMessageArray => { }, lastHistoricalDataMessage => { });
-
-            await RequestHistoricalData.RunAsync(visitor); 
+            await RequestHistoricalData.RunAsync(visitor);
             await Task.Run(() => { while (!visitor.RequestHistoricalDataExecuted) { } });
 
             _ = Task.Run(() =>
@@ -19,6 +17,18 @@ namespace SignalAdvisor.Commands
                 SoundPlayer player = new(Properties.Resources.Alarm01_wav);
                 while (!visitor.AlertDeactivated) { player.PlaySync(); }
             });
+
+            //Macd macd = new Macd();
+
+            //await RequestHistoricalDataAndSubscribe.RunAsync(
+            //  visitor,
+            //  historicalDataMessage => { macd.AddDataPoint(historicalDataMessage.Close) },
+            //  historicalDataEndMessage => { visitor.RequestHistoricalDataExecuted = true;}
+            //  historicalDataMessage => { macd.AddDataPoint(historicalDataMessage.Close});
+
+            // await Task.Run(() => { while (!visitor.RequestHistoricalDataExecuted) { } });
+
+
         }
 
     }
