@@ -16,8 +16,9 @@ namespace SignalAdvisor
         internal static readonly string ACCOUNT_SUMMARY_TAGS = "AccountType,NetLiquidation,TotalCashValue,SettledCash,AccruedCash,BuyingPower,EquityWithLoanValue,PreviousEquityWithLoanValue,"
             + "GrossPositionValue,ReqTEquity,ReqTMargin,SMA,InitMarginReq,MaintMarginReq,AvailableFunds,ExcessLiquidity,Cushion,FullInitMarginReq,FullMaintMarginReq,FullAvailableFunds,"
             + "FullExcessLiquidity,LookAheadNextChange,LookAheadInitMarginReq ,LookAheadMaintMarginReq,LookAheadAvailableFunds,LookAheadExcessLiquidity,HighestSeverity,DayTradesRemaining,Leverage";
+        
+        internal static readonly string BAR_SIZE = "5 mins"; //https://interactivebrokers.github.io/tws-api/historical_bars.html#hd_duration
         internal static readonly int HISTORICAL_DATA_PERIOD_IN_HOURS = 72;
-        internal static readonly string BAR_SIZE_STRING = "5 mins"; //https://interactivebrokers.github.io/tws-api/historical_bars.html#hd_duration
 
         internal static readonly string FORMAT_STRING_API = "yyyyMMdd-HH:mm:ss";
         internal static readonly int STD_DEV_PERIOD = 10;

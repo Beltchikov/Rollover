@@ -23,7 +23,7 @@ namespace SignalAdvisor.Commands
                     contract,
                     "",
                     durationString,
-                    App.BAR_SIZE_STRING,
+                    App.BAR_SIZE,
                     whatToShow,
                     useRTH,
                     1,
