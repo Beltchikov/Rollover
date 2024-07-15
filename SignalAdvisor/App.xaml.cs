@@ -19,7 +19,6 @@ namespace SignalAdvisor
         internal static readonly int HISTORICAL_DATA_PERIOD_IN_HOURS = 72;
         internal static readonly int BAR_SIZE = 5;
         internal static readonly string FORMAT_STRING_API = "yyyyMMdd-HH:mm:ss";
-        internal static readonly int BAR_SIZE_IN_MINUTES = 5;
         internal static readonly int STD_DEV_PERIOD = 10;
         internal static readonly TimeOnly SESSION_START = TimeOnly.Parse("15:30");
         internal static readonly double RISK_IN_USD = 750;
