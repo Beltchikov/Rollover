@@ -21,8 +21,8 @@ namespace Ta
 
         public void Update(double high, double low, double close)
         {
-            High = High == high ? High : high;
-            Low = Low == low ? Low : low;
+            High = High >= high ? High : high;
+            Low = Low <= low ? Low : low;
             Close = close;
         }
 
