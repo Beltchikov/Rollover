@@ -5,14 +5,11 @@ namespace SignalAdvisor.Commands
 {
     class RequestHistoricalData
     {
-        static readonly int BAR_SIZE = 5;
-        
         public static async Task RunAsync(IPositionsVisitor visitor)
         {
             var now = DateTime.Now;
             var historicalDataStart = now.AddHours(-1 * App.HISTORICAL_DATA_PERIOD_IN_HOURS);
             string durationString = $"{(now - historicalDataStart).Days} D";
-            string barSizeSetting = $"{BAR_SIZE} mins";
             string whatToShow = "TRADES";
             int useRTH = 0;
 
@@ -26,7 +23,7 @@ namespace SignalAdvisor.Commands
                     contract,
                     "",
                     durationString,
-                    barSizeSetting,
+                    App.BAR_SIZE_STRING,
                     whatToShow,
                     useRTH,
                     1,
