@@ -7,12 +7,6 @@ namespace SignalAdvisor.Commands
     {
         public static async Task RunAsync(IPositionsVisitor visitor)
         {
-            var now = DateTime.Now;
-            var historicalDataStart = now.AddHours(-1 * App.HISTORICAL_DATA_PERIOD_IN_HOURS);
-            string durationString = $"{(now - historicalDataStart).Days} D";
-            string whatToShow = "TRADES";
-            int useRTH = 0;
-
             foreach (var instrument in visitor.Instruments)
             {
                 bool historicalDataReceived = false;
@@ -22,10 +16,10 @@ namespace SignalAdvisor.Commands
                 await visitor.IbHost.RequestHistoricalAndSubscribeAsync(
                     contract,
                     "",
-                    durationString,
+                    App.DURATION_STRING,
                     App.BAR_SIZE,
-                    whatToShow,
-                    useRTH,
+                    "TRADES",
+                    0,
                     1,
                     [],
                     App.TIMEOUT,
