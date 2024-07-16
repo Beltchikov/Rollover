@@ -18,7 +18,7 @@ namespace SignalAdvisor
             + "FullExcessLiquidity,LookAheadNextChange,LookAheadInitMarginReq ,LookAheadMaintMarginReq,LookAheadAvailableFunds,LookAheadExcessLiquidity,HighestSeverity,DayTradesRemaining,Leverage";
         
         internal static readonly string BAR_SIZE = "5 mins"; //https://interactivebrokers.github.io/tws-api/historical_bars.html#hd_duration
-        internal static readonly string DURATION_STRING = "2 D"; // https://interactivebrokers.github.io/tws-api/historical_bars.html#hd_duration
+        internal static readonly string DURATION_STRING = "1 D"; // https://interactivebrokers.github.io/tws-api/historical_bars.html#hd_duration
 
         internal static readonly string FORMAT_STRING_API = "yyyyMMdd-HH:mm:ss";
         internal static readonly int STD_DEV_PERIOD = 10;
