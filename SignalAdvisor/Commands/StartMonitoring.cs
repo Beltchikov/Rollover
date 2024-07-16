@@ -17,7 +17,7 @@ namespace SignalAdvisor.Commands
             //foreach (var instrument in visitor.Instruments)
             //{
 
-            //Macd macd = new Macd(12,26,9);
+            //Macd macd = new Macd(12,26,9, 235.318, 235.233, 0.125);
 
             //await RequestHistoricalDataAndSubscribe.RunAsync(
             //  instrument,
