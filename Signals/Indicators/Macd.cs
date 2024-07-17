@@ -28,7 +28,7 @@
 
         public double MacdValue()
         {
-            throw new NotImplementedException();    
+            return FirstFastEma - FirstSlowEma;   
         }
     }
 }

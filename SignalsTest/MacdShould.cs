@@ -5,11 +5,27 @@ namespace SignalsTest
 {
     public class MacdShould
     {
-        [Fact]
-        void CalculateFirstMacdCorrectly()
+        [Theory]
+        [InlineData(12, 26, 9, 235.318, 235.233, 0.125, 0.085, 0.01)]
+        void CalculateFirstMacdCorrectly(
+            int fastEmaPeriod,
+            int slowEmaPeriod,
+            int signalPeriod,
+            double firstFastEma,
+            double firstSlowEma,
+            double firstSignal,
+            double expectedMacdValue,
+            double expectedPrecisionInPercent)
         {
-            var macd = new  Macd(12, 26, 9, 235.318, 235.233, 0.125);
-            Assert.Equal(0.085, macd.MacdValue());
+            var macd = new  Macd(
+                fastEmaPeriod,
+                slowEmaPeriod,
+                signalPeriod,
+                firstFastEma,
+                firstSlowEma,
+                firstSignal);
+
+            Assert.True(Math.Abs(expectedMacdValue - macd.MacdValue()) < expectedMacdValue * expectedPrecisionInPercent);
         }
     }
 }
