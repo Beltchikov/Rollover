@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ta.Indicators;
 
 
 namespace SignalsTest
@@ -12,7 +13,7 @@ namespace SignalsTest
         [Fact]
         void CalculateMacdCorrectly()
         {
-            //var macd = new  Macd(12, 26, 9, 235.318, 235.233, 0.125);
+            var macd = new  Macd(12, 26, 9, 235.318, 235.233, 0.125);
         }
     }
 }

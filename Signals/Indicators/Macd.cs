@@ -1,4 +1,4 @@
-﻿namespace SignalAdvisor.Indicators
+﻿namespace Ta.Indicators
 {
     public class Macd
     {
