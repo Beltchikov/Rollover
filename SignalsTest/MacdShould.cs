@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ta.Indicators;
+﻿using Ta.Indicators;
 
 
 namespace SignalsTest
@@ -11,7 +6,7 @@ namespace SignalsTest
     public class MacdShould
     {
         [Fact]
-        void CalculateMacdCorrectly()
+        void CalculateFirstMacdCorrectly()
         {
             var macd = new  Macd(12, 26, 9, 235.318, 235.233, 0.125);
         }
