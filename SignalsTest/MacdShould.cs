@@ -1,6 +1,5 @@
 ﻿using Ta.Indicators;
 
-
 namespace SignalsTest
 {
     public class MacdShould
@@ -25,7 +24,9 @@ namespace SignalsTest
                 firstSlowEma,
                 firstSignal);
 
-            Assert.True(Math.Abs(expectedMacdValue - macd.MacdValue()) < expectedMacdValue * expectedPrecisionInPercent);
+            var difference = Math.Abs(expectedMacdValue - macd.MacdValue());
+            var expetcedDifference = expectedMacdValue * expectedPrecisionInPercent;
+            Assert.True(difference < expetcedDifference);
         }
     }
 }
