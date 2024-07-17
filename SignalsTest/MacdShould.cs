@@ -24,8 +24,15 @@ namespace SignalsTest
                 firstSlowEma,
                 firstSignal);
 
-            var difference = Math.Abs(expectedMacdValue - macd.MacdValue());
+            // Without adding the first data point
+            var difference = Math.Abs(expectedMacdValue - macd.MacdValue(0));
             var expetcedDifference = expectedMacdValue * expectedPrecisionInPercent;
+            Assert.True(difference < expetcedDifference);
+
+            // With the first data point
+            macd.AddDataPoint(DateTimeOffset.Parse("16.07.2024 10:00:00 +01:00"), 234.8);
+            difference = Math.Abs(expectedMacdValue - macd.MacdValue(0));
+            expetcedDifference = expectedMacdValue * expectedPrecisionInPercent;
             Assert.True(difference < expetcedDifference);
         }
     }
