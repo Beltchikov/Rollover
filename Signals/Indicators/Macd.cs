@@ -25,5 +25,10 @@
             FirstSlowEma = firstSlowEma;
             FirstSignal = firstSignal;
         }
+
+        public double MacdValue()
+        {
+            throw new NotImplementedException();    
+        }
     }
 }
