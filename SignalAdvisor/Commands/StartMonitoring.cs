@@ -25,7 +25,7 @@ namespace SignalAdvisor.Commands
             //  historicalDataEndMessage => { visitor.RequestHistoricalDataExecuted = true;}
             //  historicalDataMessage => {
             //      macd.AddDataPoint(historicalDataMessage.Time, historicalDataMessage.Close);
-            //      if(macd.NewBar() && macdCrossUp())  TriggerAlert(visitor);
+            //      if(macd.NewBar(0) && macdCrossUp(1))  TriggerAlert(visitor);
             //  });
 
             // await Task.Run(() => { while (!visitor.RequestHistoricalDataExecuted) { } });
