@@ -5,24 +5,12 @@ namespace SignalsTest
     public class MacdShould
     {
         [Theory]
-        [InlineData(12, 26, 9, 235.318, 235.233, 0.125, 0.085, 0.01)]
+        [InlineData(0.085, 0.01)]
         void CalculateFirstMacdCorrectly(
-            int fastEmaPeriod,
-            int slowEmaPeriod,
-            int signalPeriod,
-            double firstFastEma,
-            double firstSlowEma,
-            double firstSignal,
             double expectedMacdValue,
             double expectedPrecisionInPercent)
         {
-            var macd = new  Macd(
-                fastEmaPeriod,
-                slowEmaPeriod,
-                signalPeriod,
-                firstFastEma,
-                firstSlowEma,
-                firstSignal);
+            var macd = Factory.Create("MACD");
 
             // Without adding the first data point
             var difference = Math.Abs(expectedMacdValue - macd.MacdValue(0));
@@ -34,6 +22,18 @@ namespace SignalsTest
             difference = Math.Abs(expectedMacdValue - macd.MacdValue(0));
             expetcedDifference = expectedMacdValue * expectedPrecisionInPercent;
             Assert.True(difference < expetcedDifference);
+        }
+    }
+
+    public class Factory
+    {
+        public static Macd Create(string name)
+        {
+            return name.ToUpper() switch
+            {
+                "MACD" => new Macd(12, 26, 9, 235.318, 235.233, 0.125),
+                _ => throw new NotImplementedException($"Not implemented for{name}"),
+            };
         }
     }
 }
