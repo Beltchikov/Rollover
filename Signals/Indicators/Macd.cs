@@ -35,7 +35,10 @@
 
         public double MacdValue(int barsAgo)
         {
-            return FirstFastEma - FirstSlowEma;   
+            if(DataPoints.Count <=1)
+                return FirstFastEma - FirstSlowEma;   
+            else
+                throw new NotImplementedException();
         }
 
         public void AddDataPoint(DateTimeOffset time, double value)
