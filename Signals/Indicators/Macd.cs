@@ -35,7 +35,18 @@
 
         public double FastEma(int barsAgo)
         {
-            throw new NotImplementedException();
+            if (DataPoints.Count <= 1)
+                return FirstFastEma;
+            else
+                {throw new NotImplementedException();}
+        }
+
+        public double SlowEma(int barsAgo)
+        {
+            if (DataPoints.Count <= 1)
+                return FirstSlowEma;
+            else
+            { throw new NotImplementedException(); }
         }
 
         public double MacdValue(int barsAgo)
@@ -44,6 +55,14 @@
                 return FirstFastEma - FirstSlowEma;   
             else
                 throw new NotImplementedException();
+        }
+
+        public double Signal(int barsAgo)
+        {
+            if (DataPoints.Count <= 1)
+                return FirstSignal;
+            else
+            { throw new NotImplementedException(); }
         }
 
         public void AddDataPoint(DateTimeOffset time, double value)
