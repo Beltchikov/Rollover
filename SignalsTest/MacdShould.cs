@@ -1,6 +1,4 @@
-﻿using Ta.Indicators;
-
-namespace SignalsTest
+﻿namespace SignalsTest
 {
     public class MacdShould
     {
@@ -22,18 +20,6 @@ namespace SignalsTest
             difference = Math.Abs(expectedMacdValue - macd.MacdValue(0));
             expetcedDifference = expectedMacdValue * expectedPrecisionInPercent;
             Assert.True(difference < expetcedDifference);
-        }
-    }
-
-    public class Factory
-    {
-        public static Macd Create(string name)
-        {
-            return name.ToUpper() switch
-            {
-                "MACD" => new Macd(12, 26, 9, 235.318, 235.233, 0.125),
-                _ => throw new NotImplementedException($"Not implemented for{name}"),
-            };
         }
     }
 }
