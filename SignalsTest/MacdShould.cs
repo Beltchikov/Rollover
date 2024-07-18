@@ -2,7 +2,8 @@
 {
     public class MacdShould
     {
-        double EXPECTED_PRECISION_IN_PERCENT = 0.01;
+        // Expected precision in percent
+        double EXPECTED_PRECISION = 0.01;
 
         [Theory]
         [InlineData(0.085)]
@@ -12,15 +13,12 @@
             var macd = Factory.Create("MACD");
 
             // Without adding the first data point
-            var difference = Math.Abs(expectedMacdValue - macd.MacdValue(0));
-            var expetcedDifference = expectedMacdValue * EXPECTED_PRECISION_IN_PERCENT;
-            Assert.True(difference < expetcedDifference);
+            Assert.True(EqualWithPrecision(expectedMacdValue, macd.MacdValue(0), EXPECTED_PRECISION));
 
             // With the first data point
             macd.AddDataPoint(DateTimeOffset.Parse("16.07.2024 10:00:00 +01:00"), 234.8);
-            difference = Math.Abs(expectedMacdValue - macd.MacdValue(0));
-            expetcedDifference = expectedMacdValue * EXPECTED_PRECISION_IN_PERCENT;
-            Assert.True(difference < expetcedDifference);
+            Assert.True(EqualWithPrecision(expectedMacdValue, macd.MacdValue(0), EXPECTED_PRECISION));
+
         }
 
         [Theory]
@@ -42,9 +40,11 @@
             macd.AddDataPoint(DateTimeOffset.Parse(timeString1), dataPointValue1);
 
             // Fast EMA
+            var fastEma1 = macd.FastEma(1);
+            
 
             // Slow EMA
-            
+
             // MACD
             //var macdValue1 = macd.MacdValue(1);
             //var difference = Math.Abs(expectedMacdValue1 - macdValue1);
@@ -52,6 +52,21 @@
             //Assert.True(difference < expectedDifference);
 
             // Signal
+        }
+
+        /// <summary>
+        /// EqualWithPrecision
+        /// </summary>
+        /// <param name="expected"></param>
+        /// <param name="actual"></param>
+        /// <param name="precision">Precision in percent</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        private bool EqualWithPrecision(double expected, double actual, double precision)
+        {
+            var difference = Math.Abs(expected - actual);
+            var expectedDifference = expected * precision;
+            return difference < expectedDifference;
         }
     }
 }

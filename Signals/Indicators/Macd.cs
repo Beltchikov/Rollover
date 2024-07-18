@@ -33,6 +33,11 @@
             FirstSignal = firstSignal;
         }
 
+        public double FastEma(int barsAgo)
+        {
+            throw new NotImplementedException();
+        }
+
         public double MacdValue(int barsAgo)
         {
             if(DataPoints.Count <=1)
@@ -45,5 +50,7 @@
         {
             DataPoints.Add(new DataPoint(time, value)); 
         }
+
+       
     }
 }
