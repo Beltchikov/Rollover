@@ -2,10 +2,9 @@
 {
     public class Macd
     {
-        private record DataPoint(DateTimeOffset Time, double Value);
+        //private List<DataPoint> DataPoints;
+        private DataPoints DataPoints;
 
-        private List<DataPoint> DataPoints; 
-        
         public int FastEmaPeriod { get; private set; }
         public int SlowEmaPeriod { get; private set; }
         public int SignalPeriod { get; private set; }
@@ -22,7 +21,7 @@
             double firstSlowEma,
             double firstSignal)
         {
-            DataPoints = new List<DataPoint>();
+            DataPoints = new DataPoints();
 
             FastEmaPeriod = fastEmaPeriod;
             SlowEmaPeriod = slowEmaPeriod;
@@ -38,7 +37,11 @@
             if (DataPoints.Count <= 1)
                 return FirstFastEma;
             else
-                {throw new NotImplementedException();}
+            {
+                //= B7 * (2 / ($B$1 + 1))+C6 * (1 - (2 / ($B$1 + 1)))
+                //= B7 * (2 / ($B$1 + 1))+C6 * (1 - (2 / ($B$1 + 1)))
+                throw new NotImplementedException();
+            }
         }
 
         public double SlowEma(int barsAgo)
@@ -51,8 +54,8 @@
 
         public double MacdValue(int barsAgo)
         {
-            if(DataPoints.Count <=1)
-                return FirstFastEma - FirstSlowEma;   
+            if (DataPoints.Count <= 1)
+                return FirstFastEma - FirstSlowEma;
             else
                 throw new NotImplementedException();
         }
@@ -67,9 +70,28 @@
 
         public void AddDataPoint(DateTimeOffset time, double value)
         {
-            DataPoints.Add(new DataPoint(time, value)); 
+            DataPoints.Add(new DataPoint(time, value));
         }
 
-       
+
+    }
+
+    public record DataPoint(DateTimeOffset Time, double Value);
+
+    public class DataPoints
+    {
+        private List<DataPoint> _dataPoints;
+
+        public DataPoints()
+        {
+                _dataPoints = new List<DataPoint>();    
+        }
+
+        public int Count => _dataPoints.Count;
+
+        public void Add(DataPoint dataPoint) {
+            _dataPoints.Add(dataPoint);
+        }
+
     }
 }
