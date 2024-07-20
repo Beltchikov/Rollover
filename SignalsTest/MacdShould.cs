@@ -2,7 +2,6 @@
 
 namespace SignalsTest
 {
-
     public class MacdShould
     {
         // Expected precision in percent
@@ -12,22 +11,6 @@ namespace SignalsTest
         [ClassData(typeof(HistoricalDataPoints))]
         void CalculateFirstValues(DataPoints dataPoints, HistoricalDataPoints.ExpectedValues expectedValues)
         {
-            //var macd = Factory.Create("MACD");
-
-            //// Without adding the first data point
-            //Assert.True(EqualWithPrecision(macd.FirstFastEma, macd.FastEma(0), EXPECTED_PRECISION));
-            //Assert.True(EqualWithPrecision(macd.FirstSlowEma, macd.SlowEma(0), EXPECTED_PRECISION));
-            //Assert.True(EqualWithPrecision(expectedMacdValue, macd.MacdValue(0), EXPECTED_PRECISION));
-            //Assert.True(EqualWithPrecision(macd.FirstSignal, macd.Signal(0), EXPECTED_PRECISION));
-
-            //// With the first data point
-            //macd.AddDataPoint(DateTimeOffset.Parse("16.07.2024 10:00:00 +01:00"), 234.8);
-
-            //Assert.True(EqualWithPrecision(macd.FirstFastEma, macd.FastEma(0), EXPECTED_PRECISION));
-            //Assert.True(EqualWithPrecision(macd.FirstSlowEma, macd.SlowEma(0), EXPECTED_PRECISION));
-            //Assert.True(EqualWithPrecision(expectedMacdValue, macd.MacdValue(0), EXPECTED_PRECISION));
-            //Assert.True(EqualWithPrecision(macd.FirstSignal, macd.Signal(0), EXPECTED_PRECISION));
-
             var macd = Factory.Create("MACD");
 
             // Without adding the historical data points
