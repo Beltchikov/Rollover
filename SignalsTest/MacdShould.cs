@@ -1,6 +1,5 @@
 ﻿using System.Collections;
-using Ta;
-using static SignalsTest.SignalsShould.InsideUpDown;
+using Ta.Indicators;
 
 namespace SignalsTest
 {
@@ -10,7 +9,18 @@ namespace SignalsTest
 
         public HistoricalDataPoints()
         {
-            _data.Add(new object[] { "16.07.2024 10:00:00 +01:00", 234.8 });
+            //_data.Add([]);
+            //_data.Add([]);
+            //_data.Add([]);
+
+            var dataPoints = new DataPoints();
+            dataPoints.Add(new DataPoint(DateTimeOffset.Parse("16.07.2024 10:00:00 +01:00"), 234.8));
+            dataPoints.Add(new DataPoint(DateTimeOffset.Parse("16.07.2024 10:05:00 +01:00"), 234.43));
+            dataPoints.Add(new DataPoint(DateTimeOffset.Parse("16.07.2024 10:10:00 +01:00"), 235));
+            
+            object[] testRow = [dataPoints];
+            _data.Add(testRow); 
+
         }
 
         public IEnumerator<object[]> GetEnumerator()
@@ -31,7 +41,7 @@ namespace SignalsTest
 
         [Theory]
         [ClassData(typeof(HistoricalDataPoints))]
-        void CalculateFirstValues(string timeString, double value)
+        void CalculateFirstValues(DataPoints dataPoints)
         {
             //var macd = Factory.Create("MACD");
 
