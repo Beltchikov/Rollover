@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System.Linq;
 
 namespace Ta.Indicators
 {
@@ -6,6 +6,7 @@ namespace Ta.Indicators
     {
         //private List<DataPoint> DataPoints;
         private DataPoints DataPoints;
+        private readonly List<double> _fastEmaValues;
 
         public int FastEmaPeriod { get; private set; }
         public int SlowEmaPeriod { get; private set; }
@@ -23,7 +24,8 @@ namespace Ta.Indicators
             double firstSlowEma,
             double firstSignal)
         {
-            DataPoints = new DataPoints();
+            DataPoints = [];
+            _fastEmaValues = [];
 
             FastEmaPeriod = fastEmaPeriod;
             SlowEmaPeriod = slowEmaPeriod;
@@ -81,46 +83,30 @@ namespace Ta.Indicators
             //      SlowEmaValues.Add(...)
             //      MacdValues.Add(...)
             //      SignalValues.Add(...)
+
+            for(int i = 0; i < DataPoints.Count; i++)
+            {
+                DataPoint dataPoint = DataPoints.BarsAgo(DataPoints.Count -1 - i);
+
+                double fastEma;
+                if (i == 0)
+                {
+                    fastEma = FirstFastEma;
+                }
+                else
+                {
+                    //= B7 * (2 / ($B$1 + 1))+C6 * (1 - (2 / ($B$1 + 1)))
+                    var b7 = dataPoint.Value;
+                    var b7Weighted = b7 * (2d / (FastEmaPeriod + 1d));
+                    var c6 = _fastEmaValues[i-1];
+                    var c6Weighted = c6 * (1 - (2d / (FastEmaPeriod + 1d)));
+                    fastEma = b7Weighted + c6Weighted;
+                }
+
+                _fastEmaValues.Add(fastEma);  
+            }
         }
 
 
-    }
-
-    public record DataPoint(DateTimeOffset Time, double Value);
-
-    public class DataPoints : IEnumerable<DataPoint>    
-    {
-        private List<DataPoint> _dataPoints;
-
-        public DataPoints()
-        {
-                _dataPoints = new List<DataPoint>();    
-        }
-
-        public int Count => _dataPoints.Count;
-
-        public void Add(DataPoint dataPoint) {
-            _dataPoints.Add(dataPoint);
-        }
-
-        public DataPoint BarsAgo(int barsAgo)
-        {
-            return _dataPoints[_dataPoints.Count - 1 - barsAgo];
-        }
-
-        public void AddRange(DataPoints dataPoints)
-        {
-            _dataPoints.AddRange(dataPoints);
-        }
-
-        public IEnumerator<DataPoint> GetEnumerator()
-        {
-            return ((IEnumerable<DataPoint>)_dataPoints).GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return ((IEnumerable)_dataPoints).GetEnumerator();
-        }
     }
 }
