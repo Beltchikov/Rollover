@@ -102,9 +102,9 @@ namespace Ta.Indicators
             return _dataPoints[_dataPoints.Count - 1 - barsAgo];
         }
 
-        public void Concat(DataPoints dataPoints)
+        public void AddRange(DataPoints dataPoints)
         {
-            _dataPoints.Concat(dataPoints);
+            _dataPoints.AddRange(dataPoints);
         }
 
         public IEnumerator<DataPoint> GetEnumerator()

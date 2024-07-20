@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Ta.Indicators;
+using static SignalsTest.HistoricalDataPoints;
 
 namespace SignalsTest
 {
@@ -20,6 +21,11 @@ namespace SignalsTest
             {
                 get { return _expectedValues[i]; }
                 set { _expectedValues[i] = value; }
+            }
+
+            internal ExpectedValue BarsAgo(int i)
+            {
+                return _expectedValues[_expectedValues.Count - 1 - i];
             }
         }
 
