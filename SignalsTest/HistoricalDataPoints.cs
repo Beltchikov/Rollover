@@ -15,6 +15,12 @@ namespace SignalsTest
             {
                 _expectedValues.Add(expectedValue);
             }
+
+            internal ExpectedValue this[int i]
+            {
+                get { return _expectedValues[i]; }
+                set { _expectedValues[i] = value; }
+            }
         }
 
         readonly List<object[]> _data = [];
