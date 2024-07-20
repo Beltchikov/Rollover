@@ -75,6 +75,12 @@ namespace Ta.Indicators
         public void AddDataPoints(DataPoints dataPoints)
         {
             DataPoints.AddRange(dataPoints);
+
+            // foreach(var dataPoint in DataPoints)
+            //      FastEmaValues.Add(...)
+            //      SlowEmaValues.Add(...)
+            //      MacdValues.Add(...)
+            //      SignalValues.Add(...)
         }
 
 
