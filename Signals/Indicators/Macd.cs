@@ -1,10 +1,7 @@
-﻿using System.Linq;
-
-namespace Ta.Indicators
+﻿namespace Ta.Indicators
 {
     public class Macd
     {
-        //private List<DataPoint> DataPoints;
         private DataPoints DataPoints;
         private readonly List<double> _fastEmaValues;
         private readonly List<double> _slowEmaValues;
@@ -17,7 +14,6 @@ namespace Ta.Indicators
         public double FirstFastEma { get; private set; }
         public double FirstSlowEma { get; private set; }
         public double FirstSignal { get; private set; }
-
 
         public Macd(
             int fastEmaPeriod,
@@ -87,11 +83,14 @@ namespace Ta.Indicators
                 else
                 {
                     //= B7 * (2 / ($B$1 + 1))+C6 * (1 - (2 / ($B$1 + 1)))
-                    var b7 = dataPoint.Value;
-                    var b7Weighted = b7 * (2d / (FastEmaPeriod + 1d));
-                    var c6 = _fastEmaValues[i - 1];
-                    var c6Weighted = c6 * (1 - (2d / (FastEmaPeriod + 1d)));
-                    fastEma = b7Weighted + c6Weighted;
+                    //var b7 = dataPoint.Value;
+                    //var b7Weighted = b7 * (2d / (FastEmaPeriod + 1d));
+                    //var c6 = _fastEmaValues[i - 1];
+                    //var c6Weighted = c6 * (1 - (2d / (FastEmaPeriod + 1d)));
+                    //fastEma = b7Weighted + c6Weighted;
+
+                    fastEma = dataPoint.Value * (2d / (FastEmaPeriod + 1d)) 
+                        + _fastEmaValues[i - 1] * (1 - (2d / (FastEmaPeriod + 1d)));
                 }
                 _fastEmaValues.Add(fastEma);
 
@@ -103,11 +102,14 @@ namespace Ta.Indicators
                 else
                 {
                     //=B7*(2/($E$1+1))+D6*(1-(2/($E$1+1)))
-                    var b7 = dataPoint.Value;
-                    var b7Weighted = b7 * (2d / (SlowEmaPeriod + 1d));
-                    var c6 = _slowEmaValues[i - 1];
-                    var c6Weighted = c6 * (1 - (2d / (SlowEmaPeriod + 1d)));
-                    slowEma = b7Weighted + c6Weighted;
+                    //var b7 = dataPoint.Value;
+                    //var b7Weighted = b7 * (2d / (SlowEmaPeriod + 1d));
+                    //var c6 = _slowEmaValues[i - 1];
+                    //var c6Weighted = c6 * (1 - (2d / (SlowEmaPeriod + 1d)));
+                    //slowEma = b7Weighted + c6Weighted;
+
+                    slowEma = dataPoint.Value * (2d / (SlowEmaPeriod + 1d)) 
+                        + _slowEmaValues[i - 1] * (1 - (2d / (SlowEmaPeriod + 1d)));
                 }
                 _slowEmaValues.Add(slowEma);
 
@@ -122,11 +124,14 @@ namespace Ta.Indicators
                 else
                 {
                     //=E7*(2/($H$1+1))+F6*(1-(2/($H$1+1)))
-                    var e7 = macdValue;
-                    var e7Weighted = e7 * (2d / (SignalPeriod + 1d));
-                    var f6 = _signalValues[i - 1];
-                    var f6Weighted = f6 * (1 - (2d / (SignalPeriod + 1d)));
-                    signal = e7Weighted + f6Weighted;
+                    //var e7 = macdValue;
+                    //var e7Weighted = e7 * (2d / (SignalPeriod + 1d));
+                    //var f6 = _signalValues[i - 1];
+                    //var f6Weighted = f6 * (1 - (2d / (SignalPeriod + 1d)));
+                    //signal = e7Weighted + f6Weighted;
+
+                    signal = macdValue * (2d / (SignalPeriod + 1d)) 
+                        + _signalValues[i - 1] * (1 - (2d / (SignalPeriod + 1d)));
                 }
                 _signalValues.Add(signal);
             }
