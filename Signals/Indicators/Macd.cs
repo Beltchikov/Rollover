@@ -8,6 +8,7 @@ namespace Ta.Indicators
         private DataPoints DataPoints;
         private readonly List<double> _fastEmaValues;
         private readonly List<double> _slowEmaValues;
+        private readonly List<double> _macdValues;
 
         public int FastEmaPeriod { get; private set; }
         public int SlowEmaPeriod { get; private set; }
@@ -28,6 +29,7 @@ namespace Ta.Indicators
             DataPoints = [];
             _fastEmaValues = [];
             _slowEmaValues = [];
+            _macdValues = [];
 
             FastEmaPeriod = fastEmaPeriod;
             SlowEmaPeriod = slowEmaPeriod;
@@ -54,10 +56,10 @@ namespace Ta.Indicators
 
         public double MacdValueBarsAgo(int barsAgo)
         {
-            if (DataPoints.Count <= 1)
+            if (DataPoints.Count == 0)
                 return FirstFastEma - FirstSlowEma;
             else
-                throw new NotImplementedException();
+                return _macdValues[DataPoints.Count - 1 - barsAgo];
         }
 
         public double SignalBarsAgo(int barsAgo)
@@ -108,11 +110,17 @@ namespace Ta.Indicators
                     //=B7*(2/($E$1+1))+D6*(1-(2/($E$1+1)))
                     var b7 = dataPoint.Value;
                     var b7Weighted = b7 * (2d / (SlowEmaPeriod + 1d));
-                    var c6 = _fastEmaValues[i - 1];
+                    var c6 = _slowEmaValues[i - 1];
                     var c6Weighted = c6 * (1 - (2d / (SlowEmaPeriod + 1d)));
                     slowEma = b7Weighted + c6Weighted;
                 }
                 _slowEmaValues.Add(slowEma);
+
+                double macdValue = fastEma - slowEma;
+                _macdValues.Add(macdValue);
+
+                double signal;
+
             }
         }
 

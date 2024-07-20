@@ -41,7 +41,7 @@ namespace SignalsTest
 
             Assert.True(EqualWithPrecision(expectedValues.BarsAgo(0).FastEma, macd.FastEmaBarsAgo(0), EXPECTED_PRECISION));
             Assert.True(EqualWithPrecision(expectedValues.BarsAgo(0).SlowEma, macd.SlowEmaBarsAgo(0), EXPECTED_PRECISION));
-
+            Assert.True(EqualWithPrecision(expectedValues.BarsAgo(0).MacdValue, macd.MacdValueBarsAgo(0), EXPECTED_PRECISION));
 
         }
 
@@ -56,7 +56,7 @@ namespace SignalsTest
         private bool EqualWithPrecision(double expected, double actual, double precision)
         {
             var difference = Math.Abs(expected - actual);
-            var expectedDifference = expected * precision;
+            var expectedDifference = Math.Abs(expected * precision);
             return difference < expectedDifference;
         }
     }
