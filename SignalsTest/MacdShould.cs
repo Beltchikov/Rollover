@@ -31,10 +31,10 @@ namespace SignalsTest
             var macd = Factory.Create("MACD");
 
             // Without adding the historical data points
-            Assert.True(EqualWithPrecision(macd.FirstFastEma, macd.FastEma(0), EXPECTED_PRECISION));
-            Assert.True(EqualWithPrecision(macd.FirstSlowEma, macd.SlowEma(0), EXPECTED_PRECISION));
-            Assert.True(EqualWithPrecision(expectedValues[0].MacdValue, macd.MacdValue(0), EXPECTED_PRECISION));
-            Assert.True(EqualWithPrecision(macd.FirstSignal, macd.Signal(0), EXPECTED_PRECISION));
+            Assert.True(EqualWithPrecision(macd.FirstFastEma, macd.FastEmaBarsAgo(0), EXPECTED_PRECISION));
+            Assert.True(EqualWithPrecision(macd.FirstSlowEma, macd.SlowEmaBarsAgo(0), EXPECTED_PRECISION));
+            Assert.True(EqualWithPrecision(expectedValues[0].MacdValue, macd.MacdValueBarsAgo(0), EXPECTED_PRECISION));
+            Assert.True(EqualWithPrecision(macd.FirstSignal, macd.SignalBarsAgo(0), EXPECTED_PRECISION));
 
             // With historical data points
             // macd.AddDataPoints(dataPoints);

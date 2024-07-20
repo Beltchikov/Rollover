@@ -34,7 +34,7 @@ namespace Ta.Indicators
             FirstSignal = firstSignal;
         }
 
-        public double FastEma(int barsAgo)
+        public double FastEmaBarsAgo(int barsAgo)
         {
             if (DataPoints.Count <= 1)
                 return FirstFastEma;
@@ -48,7 +48,7 @@ namespace Ta.Indicators
             }
         }
 
-        public double SlowEma(int barsAgo)
+        public double SlowEmaBarsAgo(int barsAgo)
         {
             if (DataPoints.Count <= 1)
                 return FirstSlowEma;
@@ -56,7 +56,7 @@ namespace Ta.Indicators
             { throw new NotImplementedException(); }
         }
 
-        public double MacdValue(int barsAgo)
+        public double MacdValueBarsAgo(int barsAgo)
         {
             if (DataPoints.Count <= 1)
                 return FirstFastEma - FirstSlowEma;
@@ -64,7 +64,7 @@ namespace Ta.Indicators
                 throw new NotImplementedException();
         }
 
-        public double Signal(int barsAgo)
+        public double SignalBarsAgo(int barsAgo)
         {
             if (DataPoints.Count <= 1)
                 return FirstSignal;
