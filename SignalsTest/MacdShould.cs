@@ -37,42 +37,12 @@ namespace SignalsTest
             Assert.True(EqualWithPrecision(macd.FirstSignal, macd.SignalBarsAgo(0), EXPECTED_PRECISION));
 
             // With historical data points
-            // macd.AddDataPoints(dataPoints);
-           
+            macd.AddDataPoints(dataPoints);
+
+            Assert.True(EqualWithPrecision(expectedValues.BarsAgo(0).FastEma, macd.FastEmaBarsAgo(0), EXPECTED_PRECISION));
+
 
         }
-
-        //[Theory]
-        //[InlineData(new string[] { "16.07.2024 10:00:00 +01:00", "16.07.2024 10:05:00 +01:00" },
-        //    new double[] { 234.8, 234.43 },
-        //    235.181384, 235.1735185, 0.007866097, 0.101573219)]
-        //void CalculateSubsequentValues(
-        //    string[] timeStrings,
-        //    double[] dataPointValues,
-        //    double expectedFastEma,
-        //    double expectedSlowEma,
-        //    double expectedMacdValue,
-        //    double expectedSignal)
-        //{
-        //    var macd = Factory.Create("MACD");
-
-        //    macd.AddDataPoint(DateTimeOffset.Parse(timeStrings[0]), dataPointValues[0]);
-        //    macd.AddDataPoint(DateTimeOffset.Parse(timeStrings[1]), dataPointValues[1]);
-
-        //    // Fast EMA
-        //    var fastEma = macd.FastEma(0);
-        //    Assert.True(EqualWithPrecision(expectedFastEma, fastEma, EXPECTED_PRECISION));
-
-        //    // Slow EMA
-
-        //    // MACD
-        //    //var macdValue1 = macd.MacdValue(1);
-        //    //var difference = Math.Abs(expectedMacdValue1 - macdValue1);
-        //    //var expectedDifference = expectedMacdValue1 * EXPECTED_PRECISION_IN_PERCENT;
-        //    //Assert.True(difference < expectedDifference);
-
-        //    // Signal
-        //}
 
         /// <summary>
         /// EqualWithPrecision

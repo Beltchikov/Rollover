@@ -74,7 +74,7 @@ namespace Ta.Indicators
 
         public void AddDataPoints(DataPoints dataPoints)
         {
-            DataPoints.Concat(dataPoints);
+            DataPoints.AddRange(dataPoints);
         }
 
 
