@@ -42,6 +42,7 @@ namespace SignalsTest
             Assert.True(EqualWithPrecision(expectedValues.BarsAgo(0).FastEma, macd.FastEmaBarsAgo(0), EXPECTED_PRECISION));
             Assert.True(EqualWithPrecision(expectedValues.BarsAgo(0).SlowEma, macd.SlowEmaBarsAgo(0), EXPECTED_PRECISION));
             Assert.True(EqualWithPrecision(expectedValues.BarsAgo(0).MacdValue, macd.MacdValueBarsAgo(0), EXPECTED_PRECISION));
+            Assert.True(EqualWithPrecision(expectedValues.BarsAgo(0).Signal, macd.SignalBarsAgo(0), EXPECTED_PRECISION));
 
         }
 
