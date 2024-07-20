@@ -54,10 +54,9 @@
 
         public double MacdValueBarsAgo(int barsAgo)
         {
-            if (DataPoints.Count == 0)
-                return FirstFastEma - FirstSlowEma;
-            else
-                return _macdValues[DataPoints.Count - 1 - barsAgo];
+            return DataPoints.Count == 0
+                ? FirstFastEma - FirstSlowEma
+                : _macdValues[DataPoints.Count - 1 - barsAgo];
         }
 
         public double SignalBarsAgo(int barsAgo)
