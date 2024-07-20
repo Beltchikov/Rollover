@@ -38,16 +38,9 @@ namespace Ta.Indicators
 
         public double FastEmaBarsAgo(int barsAgo)
         {
-            if (DataPoints.Count <= 1)
-                return FirstFastEma;
-            else
-            {
-                //= B7 * (2 / ($B$1 + 1))+C6 * (1 - (2 / ($B$1 + 1)))
-                var closeBarsAgo = DataPoints.BarsAgo(barsAgo).Value; // B7
-               
-
-                throw new NotImplementedException();
-            }
+            return DataPoints.Count == 0
+                ? FirstFastEma
+                : _fastEmaValues[DataPoints.Count - 1 - barsAgo];   
         }
 
         public double SlowEmaBarsAgo(int barsAgo)
