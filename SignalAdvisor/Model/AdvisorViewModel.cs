@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using IBApi;
 using IbClient.IbHost;
-using IbClient.messages;
 using IBSampleApp.messages;
 using SignalAdvisor.Commands;
 using SignalAdvisor.Extensions;
@@ -44,7 +43,10 @@ namespace SignalAdvisor.Model
         {
             RequestHistoricalDataCommand = new RelayCommand(async () => await RequestHistoricalData.RunAsync(this));
             ConnectToTwsCommand = new RelayCommand(() => ConnectToTws.Run(this));
-            StartMonitoringCommand = new RelayCommand(async () => await StartMonitoring.RunAsync(this));
+            StartMonitoringCommand = new RelayCommand(async () => {
+                await ConnectToTwsIfNecessary();
+                await StartMonitoring.RunAsync(this); 
+            });
             DeactivateAlertCommand = new RelayCommand(() => DeactivateAlert.Run(this));
 
             LastCheck = "";
@@ -309,35 +311,10 @@ namespace SignalAdvisor.Model
             OnPropertyChanged(propertyName);
         }
 
-        private void _timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+        async Task ConnectToTwsIfNecessary()
         {
-            // TODO the slower timer
-
-            if (!Positions.Any())
-            {
-                _dispatcher.Invoke(() => TwsMessageCollection?.Add($"No positions."));
-                return;
-            }
-            if (!RequestHistoricalDataExecuted)
-            {
-                _dispatcher.Invoke(() => TwsMessageCollection?.Add($"Retrieving historical data."));
-                return;
-            }
-            //_dispatcher.Invoke(() => { TwsMessageCollection?.Add($"Heartbeat"); });
-
-
-            while (IbHost.QueueHistoricalDataUpdate.TryDequeue(out object message))
-            {
-                var liveDataMessage = message as LiveDataMessage ?? throw new Exception("Unexpected. liveDataMessage == null");
-
-                AddBar(liveDataMessage.Contract, liveDataMessage.HistoricalDataMessage);
-
-                var lastBar = Bars.For(liveDataMessage.Contract.ToString()).Last();
-                var barBefore = Bars.For(liveDataMessage.Contract.ToString()).SkipLast(1).Last();
-
-                if (lastBar.Time != barBefore.Time)
-                    NewBar(liveDataMessage.Contract, lastBar.Time);
-            }
+            if (!ConnectedToTws) ConnectToTws.Run(this);
+            await Task.Run(() => { while (!ConnectedToTws) { } });
         }
 
         private string TestDataEu()

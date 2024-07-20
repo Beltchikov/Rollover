@@ -26,24 +26,12 @@ namespace SignalAdvisor
         internal static readonly double RISK_IN_USD = 750;
         internal static readonly double LIVE_COST_PROFIT = 250;
 
-        private async void Application_Startup(object sender, StartupEventArgs e)
+        private void Application_Startup(object sender, StartupEventArgs e)
         {
             // Create instances of view model and IbHost
             AdvisorViewModel viewModel = new();
             IIbHost ibHost = new IbHost();
             viewModel.SetIbHost(ibHost);
-
-            // Connect to TWS
-            bool connected = false;
-            await ibHost.ConnectAndStartReaderThread(
-                viewModel.Host,
-                viewModel.Port,
-                viewModel.ClientId,
-                (c) => { connected = c.IsConnected; },
-                (ma) => { },
-                (e) => { });
-
-            while (!connected) { }
 
             // asign data context
             AdvisorWindow advisorWindow = new();
