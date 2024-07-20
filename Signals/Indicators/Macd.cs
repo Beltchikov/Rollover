@@ -7,6 +7,7 @@ namespace Ta.Indicators
         //private List<DataPoint> DataPoints;
         private DataPoints DataPoints;
         private readonly List<double> _fastEmaValues;
+        private readonly List<double> _slowEmaValues;
 
         public int FastEmaPeriod { get; private set; }
         public int SlowEmaPeriod { get; private set; }
@@ -26,6 +27,7 @@ namespace Ta.Indicators
         {
             DataPoints = [];
             _fastEmaValues = [];
+            _slowEmaValues = [];
 
             FastEmaPeriod = fastEmaPeriod;
             SlowEmaPeriod = slowEmaPeriod;
@@ -45,10 +47,9 @@ namespace Ta.Indicators
 
         public double SlowEmaBarsAgo(int barsAgo)
         {
-            if (DataPoints.Count <= 1)
-                return FirstSlowEma;
-            else
-            { throw new NotImplementedException(); }
+            return DataPoints.Count == 0
+                ? FirstSlowEma
+                : _slowEmaValues[DataPoints.Count - 1 - barsAgo];
         }
 
         public double MacdValueBarsAgo(int barsAgo)
@@ -95,8 +96,23 @@ namespace Ta.Indicators
                     var c6Weighted = c6 * (1 - (2d / (FastEmaPeriod + 1d)));
                     fastEma = b7Weighted + c6Weighted;
                 }
+                _fastEmaValues.Add(fastEma);
 
-                _fastEmaValues.Add(fastEma);  
+                double slowEma;
+                if (i == 0)
+                {
+                    slowEma = FirstSlowEma;
+                }
+                else
+                {
+                    //=B7*(2/($E$1+1))+D6*(1-(2/($E$1+1)))
+                    var b7 = dataPoint.Value;
+                    var b7Weighted = b7 * (2d / (SlowEmaPeriod + 1d));
+                    var c6 = _fastEmaValues[i - 1];
+                    var c6Weighted = c6 * (1 - (2d / (SlowEmaPeriod + 1d)));
+                    slowEma = b7Weighted + c6Weighted;
+                }
+                _slowEmaValues.Add(slowEma);
             }
         }
 
