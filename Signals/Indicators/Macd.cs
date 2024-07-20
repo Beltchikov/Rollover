@@ -74,44 +74,26 @@
             {
                 DataPoint dataPoint = DataPoints.BarsAgo(DataPoints.Count - 1 - i);
 
-                double fastEma;
-                if (i == 0)
-                {
-                    fastEma = FirstFastEma;
-                }
-                else
-                {
-                    fastEma = dataPoint.Value * (2d / (FastEmaPeriod + 1d)) 
+                double fastEma  = i == 0 
+                    ? FirstFastEma
+                    : dataPoint.Value * (2d / (FastEmaPeriod + 1d)) 
                         + _fastEmaValues[i - 1] * (1 - (2d / (FastEmaPeriod + 1d)));
-                }
                 _fastEmaValues.Add(fastEma);
 
-                double slowEma;
-                if (i == 0)
-                {
-                    slowEma = FirstSlowEma;
-                }
-                else
-                {
-                    slowEma = dataPoint.Value * (2d / (SlowEmaPeriod + 1d)) 
+                double slowEma=i == 0
+                    ? FirstSlowEma
+                    :dataPoint.Value * (2d / (SlowEmaPeriod + 1d))
                         + _slowEmaValues[i - 1] * (1 - (2d / (SlowEmaPeriod + 1d)));
-                }
                 _slowEmaValues.Add(slowEma);
 
                 double macdValue = fastEma - slowEma;
                 _macdValues.Add(macdValue);
 
-                double signal;
-                if (i == 0)
-                {
-                    signal = FirstSignal;
-                }
-                else
-                {
-                    signal = macdValue * (2d / (SignalPeriod + 1d)) 
+                double signal = i == 0
+                    ? FirstSignal
+                    :macdValue * (2d / (SignalPeriod + 1d))
                         + _signalValues[i - 1] * (1 - (2d / (SignalPeriod + 1d)));
-                }
-                _signalValues.Add(signal);
+               _signalValues.Add(signal);
             }
         }
     }
