@@ -1,4 +1,6 @@
-﻿namespace Ta.Indicators
+﻿using System.Collections;
+
+namespace Ta.Indicators
 {
     public class Macd
     {
@@ -39,7 +41,9 @@
             else
             {
                 //= B7 * (2 / ($B$1 + 1))+C6 * (1 - (2 / ($B$1 + 1)))
-                //= B7 * (2 / ($B$1 + 1))+C6 * (1 - (2 / ($B$1 + 1)))
+                var closeBarsAgo = DataPoints.BarsAgo(barsAgo).Value; // B7
+               
+
                 throw new NotImplementedException();
             }
         }
@@ -68,9 +72,9 @@
             { throw new NotImplementedException(); }
         }
 
-        public void AddDataPoint(DateTimeOffset time, double value)
+        public void AddDataPoints(DataPoints dataPoints)
         {
-            DataPoints.Add(new DataPoint(time, value));
+            DataPoints.Concat(dataPoints);
         }
 
 
@@ -78,7 +82,7 @@
 
     public record DataPoint(DateTimeOffset Time, double Value);
 
-    public class DataPoints
+    public class DataPoints : IEnumerable<DataPoint>    
     {
         private List<DataPoint> _dataPoints;
 
@@ -93,5 +97,24 @@
             _dataPoints.Add(dataPoint);
         }
 
+        public DataPoint BarsAgo(int barsAgo)
+        {
+            return _dataPoints[_dataPoints.Count - 1 - barsAgo];
+        }
+
+        public void Concat(DataPoints dataPoints)
+        {
+            _dataPoints.Concat(dataPoints);
+        }
+
+        public IEnumerator<DataPoint> GetEnumerator()
+        {
+            return ((IEnumerable<DataPoint>)_dataPoints).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable)_dataPoints).GetEnumerator();
+        }
     }
 }

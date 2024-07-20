@@ -19,12 +19,15 @@ namespace SignalAdvisor.Commands
 
             //Macd macd = new Macd(12,26,9, 235.318, 235.233, 0.125);
 
+            // var historicalDatapoints = new DataPoints();
             //await RequestHistoricalDataAndSubscribe.RunAsync(
             //  instrument,
-            //  historicalDataMessage => { macd.AddDataPoint(historicalDataMessage.Time, historicalDataMessage.Close) },
-            //  historicalDataEndMessage => { visitor.RequestHistoricalDataExecuted = true;}
-            //  historicalDataMessage => {
-            //      macd.AddDataPoint(historicalDataMessage.Time, historicalDataMessage.Close);
+            //  historicalDataMessage => { historicalDatapoints.AddDataPoint(historicalDataMessage.Time, historicalDataMessage.Close) },
+            //  historicalDataEndMessage => {
+            //  macd.AddDataPoints(historicalDatapoints);
+            //  visitor.RequestHistoricalDataExecuted = true;}
+            //  updateMessage => {
+            //      macd.AddDataPoint(updateMessage.Time, updateMessage.Close);
             //      if(macd.NewBar(0) && macdCrossUp(1))  TriggerAlert(visitor);
             //  });
 

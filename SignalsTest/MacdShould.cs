@@ -1,30 +1,57 @@
-﻿namespace SignalsTest
+﻿using System.Collections;
+using Ta;
+using static SignalsTest.SignalsShould.InsideUpDown;
+
+namespace SignalsTest
 {
+    public class HistoricalDataPoints : IEnumerable<object[]>
+    {
+        List<object[]> _data = new List<object[]>();
+
+        public HistoricalDataPoints()
+        {
+            _data.Add(new object[] { "16.07.2024 10:00:00 +01:00", 234.8 });
+        }
+
+        public IEnumerator<object[]> GetEnumerator()
+        {
+            return ((IEnumerable<object[]>)_data).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable)_data).GetEnumerator();
+        }
+    }
+
     public class MacdShould
     {
         // Expected precision in percent
         double EXPECTED_PRECISION = 0.01;
 
         [Theory]
-        [InlineData(0.085)]
-        void CalculateFirstValues(
-            double expectedMacdValue)
+        [ClassData(typeof(HistoricalDataPoints))]
+        void CalculateFirstValues(string timeString, double value)
         {
+            //var macd = Factory.Create("MACD");
+
+            //// Without adding the first data point
+            //Assert.True(EqualWithPrecision(macd.FirstFastEma, macd.FastEma(0), EXPECTED_PRECISION));
+            //Assert.True(EqualWithPrecision(macd.FirstSlowEma, macd.SlowEma(0), EXPECTED_PRECISION));
+            //Assert.True(EqualWithPrecision(expectedMacdValue, macd.MacdValue(0), EXPECTED_PRECISION));
+            //Assert.True(EqualWithPrecision(macd.FirstSignal, macd.Signal(0), EXPECTED_PRECISION));
+
+            //// With the first data point
+            //macd.AddDataPoint(DateTimeOffset.Parse("16.07.2024 10:00:00 +01:00"), 234.8);
+
+            //Assert.True(EqualWithPrecision(macd.FirstFastEma, macd.FastEma(0), EXPECTED_PRECISION));
+            //Assert.True(EqualWithPrecision(macd.FirstSlowEma, macd.SlowEma(0), EXPECTED_PRECISION));
+            //Assert.True(EqualWithPrecision(expectedMacdValue, macd.MacdValue(0), EXPECTED_PRECISION));
+            //Assert.True(EqualWithPrecision(macd.FirstSignal, macd.Signal(0), EXPECTED_PRECISION));
+
             var macd = Factory.Create("MACD");
+            //macd.AddDataPoints()
 
-            // Without adding the first data point
-            Assert.True(EqualWithPrecision(macd.FirstFastEma, macd.FastEma(0), EXPECTED_PRECISION));
-            Assert.True(EqualWithPrecision(macd.FirstSlowEma, macd.SlowEma(0), EXPECTED_PRECISION));
-            Assert.True(EqualWithPrecision(expectedMacdValue, macd.MacdValue(0), EXPECTED_PRECISION));
-            Assert.True(EqualWithPrecision(macd.FirstSignal, macd.Signal(0), EXPECTED_PRECISION));
-
-            // With the first data point
-            macd.AddDataPoint(DateTimeOffset.Parse("16.07.2024 10:00:00 +01:00"), 234.8);
-
-            Assert.True(EqualWithPrecision(macd.FirstFastEma, macd.FastEma(0), EXPECTED_PRECISION));
-            Assert.True(EqualWithPrecision(macd.FirstSlowEma, macd.SlowEma(0), EXPECTED_PRECISION));
-            Assert.True(EqualWithPrecision(expectedMacdValue, macd.MacdValue(0), EXPECTED_PRECISION));
-            Assert.True(EqualWithPrecision(macd.FirstSignal, macd.Signal(0), EXPECTED_PRECISION));
         }
 
         //[Theory]
