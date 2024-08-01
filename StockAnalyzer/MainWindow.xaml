@@ -110,8 +110,7 @@
                         </Grid>
                     </GroupBox>
 
-                    <GroupBox Grid.Column="1" Grid.Row="2" Header="Information"
-Foreground="White" Grid.ColumnSpan="4">
+                    <GroupBox Grid.Column="1" Grid.Row="2" Header="Information" Grid.ColumnSpan="4">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="10"></ColumnDefinition>
