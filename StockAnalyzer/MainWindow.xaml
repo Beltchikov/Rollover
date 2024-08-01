@@ -105,11 +105,7 @@
                             <TextBox x:Name="txtResultsEdgar" 
        Text="{Binding ResultCollectionYahooEps, Converter={StaticResource ListToStringConverter}}" Grid.Column="3" Grid.Row="2" 
        AcceptsReturn="True"
-          VerticalScrollBarVisibility="Visible"></TextBox>
-
-                            <uc:DecimalSeparator Grid.Column="3" Grid.Row="4" Height="25" 
-                   SelectionChanged="DecimalSeparatorYahooEps_SelectionChanged">
-                            </uc:DecimalSeparator>
+          VerticalScrollBarVisibility="Visible"></TextBox>                           
 
                         </Grid>
                     </GroupBox>
