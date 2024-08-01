@@ -58,8 +58,8 @@
                         <RowDefinition Height="10"></RowDefinition>
                     </Grid.RowDefinitions>
 
-                    <GroupBox Grid.Column="1" Grid.Row="1" Header="Expected EPS"
-Foreground="White" Grid.ColumnSpan="4">
+                    <GroupBox Grid.Column="1" Grid.Row="1" Header="EDGAR"
+ Grid.ColumnSpan="4">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="10"></ColumnDefinition>
@@ -78,8 +78,7 @@ Foreground="White" Grid.ColumnSpan="4">
                             </Grid.RowDefinitions>
 
                             <Label Content="Tickers:" Grid.Column="1" Grid.Row="1" 
-     HorizontalAlignment="Left"
-      Foreground="White"></Label>
+     HorizontalAlignment="Left"></Label>
                             <TextBox Text="{Binding TickerCollectionYahoo, Converter={StaticResource ListToStringConverter}}" Grid.Column="1" Grid.Row="2" 
        Grid.RowSpan="3" AcceptsReturn="True"
           VerticalScrollBarVisibility="Visible"></TextBox>
@@ -102,8 +101,7 @@ Foreground="White" Grid.ColumnSpan="4">
                             </StackPanel>
 
                             <Label Content="Results:" Grid.Column="3" Grid.Row="1" 
-     HorizontalAlignment="Left"
-      Foreground="White"></Label>
+     HorizontalAlignment="Left" Height="25" VerticalAlignment="Top"></Label>
                             <TextBox x:Name="txtResultsEdgar" 
        Text="{Binding ResultCollectionYahooEps, Converter={StaticResource ListToStringConverter}}" Grid.Column="3" Grid.Row="2" 
        AcceptsReturn="True"
