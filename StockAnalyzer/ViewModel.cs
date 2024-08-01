@@ -45,6 +45,7 @@ namespace StockAnalyzer
         private ObservableCollection<string> _tickerCollectionTwsSummary = null!;
         private ObservableCollection<string> _resultCollectionTwsSummary = null!;
 
+        public ICommand EquityCommand { get; }
         public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
         public ICommand EarningsForWeekCommand { get; }
@@ -70,6 +71,15 @@ namespace StockAnalyzer
         {
             yahooProvider.Status += YahooProvider_Status;
             twsProvider.Status += TwsProvider_Status;
+
+            EquityCommand = new RelayCommand(async () =>
+            {
+                await Task.Run(() =>
+                {
+                    MessageBox.Show("EquityCommand");
+                });
+               
+            });
 
             LastEpsCommand = new RelayCommand(async () =>
             {
