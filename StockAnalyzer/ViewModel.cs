@@ -74,6 +74,7 @@ namespace StockAnalyzer
 
             EquityCommand = new RelayCommand(async () =>
             {
+                // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/LiabilitiesAndStockholdersEquity.json
                 await Task.Run(() =>
                 {
                     MessageBox.Show("EquityCommand");
