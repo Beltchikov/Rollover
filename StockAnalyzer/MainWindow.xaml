@@ -96,7 +96,7 @@
                             <Label Content="Results:" Grid.Column="3" Grid.Row="1" 
      HorizontalAlignment="Left" Height="25" VerticalAlignment="Top"></Label>
                             <TextBox x:Name="txtResultsEdgar" 
-       Text="{Binding ResultCollectionYahooEps, Converter={StaticResource ListToStringConverter}}" Grid.Column="3" Grid.Row="2" 
+       Text="{Binding ResultCollectionEdgar, Converter={StaticResource ListToStringConverter}}" Grid.Column="3" Grid.Row="2" 
        AcceptsReturn="True"
           VerticalScrollBarVisibility="Visible"></TextBox>                           
 

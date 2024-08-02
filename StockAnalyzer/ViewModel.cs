@@ -26,6 +26,7 @@ namespace StockAnalyzer
         private ObservableCollection<string> _tickerCollectionYahoo = null!;
         private ObservableCollection<string> _tickersAlphaList = null!;
 
+        private ObservableCollection<string> _resultCollectionEdgar = null!;
         private ObservableCollection<string> _resultCollectionYahooEps = null!;
         private ObservableCollection<string> _resultCollectionAlpha = null!;
         private string _messageYahoo = null!;
@@ -275,6 +276,11 @@ namespace StockAnalyzer
             TickersAlphaList = new ObservableCollection<string>("MSFT	ORCL	NOW	PANW	CRWD	FTNT".Split("\t").ToList()
                 .Select(t => t.Trim()));
             RiskFreeRate = 5.5;
+
+            ResultCollectionEdgar = new ObservableCollection<string>() { 
+                "JNJ\t171966000000\t181088000000",
+                "PG\t10\t18"
+            }; 
         }
 
         #region Yahoo
@@ -285,6 +291,16 @@ namespace StockAnalyzer
             set
             {
                 SetProperty(ref _tickerCollectionYahoo, value);
+            }
+        }
+
+        
+        public ObservableCollection<string> ResultCollectionEdgar
+        {
+            get => _resultCollectionEdgar;
+            set
+            {
+                SetProperty(ref _resultCollectionEdgar, value);
             }
         }
 
