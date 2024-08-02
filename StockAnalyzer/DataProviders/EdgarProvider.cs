@@ -10,6 +10,7 @@ namespace StockAnalyzer.DataProviders
             return await Task.Run(() =>
             {
                 return new List<string>() {
+                "Symbol\t2024-03-31\t2024-06-30",
                 "JNJ\t171966000000\t181088000000",
                 "PG\t10\t18"};
             });
