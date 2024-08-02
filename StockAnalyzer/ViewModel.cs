@@ -78,9 +78,14 @@ namespace StockAnalyzer
                 // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/LiabilitiesAndStockholdersEquity.json
                 await Task.Run(() =>
                 {
+                    ResultCollectionEdgar = new ObservableCollection<string>() {
+                "JNJ\t171966000000\t181088000000",
+                "PG\t10\t18"
+            };
+
                     MessageBox.Show("EquityCommand");
                 });
-               
+
             });
 
             LastEpsCommand = new RelayCommand(async () =>
@@ -276,11 +281,6 @@ namespace StockAnalyzer
             TickersAlphaList = new ObservableCollection<string>("MSFT	ORCL	NOW	PANW	CRWD	FTNT".Split("\t").ToList()
                 .Select(t => t.Trim()));
             RiskFreeRate = 5.5;
-
-            ResultCollectionEdgar = new ObservableCollection<string>() { 
-                "JNJ\t171966000000\t181088000000",
-                "PG\t10\t18"
-            }; 
         }
 
         #region Yahoo
@@ -294,7 +294,7 @@ namespace StockAnalyzer
             }
         }
 
-        
+
         public ObservableCollection<string> ResultCollectionEdgar
         {
             get => _resultCollectionEdgar;
