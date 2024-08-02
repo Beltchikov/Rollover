@@ -68,6 +68,7 @@ namespace StockAnalyzer
             IYahooProvider yahooProvider,
             ITwsProvider twsProvider,
             ISeekingAlphaProvider seekingAlphaProvider,
+            IEdgarProvider edgarProvider,
             IIbHost ibHost)
         {
             yahooProvider.Status += YahooProvider_Status;
@@ -76,16 +77,10 @@ namespace StockAnalyzer
             EquityCommand = new RelayCommand(async () =>
             {
                 // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/LiabilitiesAndStockholdersEquity.json
-                await Task.Run(() =>
+                await Task.Run(async () =>
                 {
-                    ResultCollectionEdgar = new ObservableCollection<string>() {
-                "JNJ\t171966000000\t181088000000",
-                "PG\t10\t18"
-            };
-
-                    MessageBox.Show("EquityCommand");
+                    ResultCollectionEdgar = new ObservableCollection<string>(await edgarProvider.StockholdersEquity("JNJ"));
                 });
-
             });
 
             LastEpsCommand = new RelayCommand(async () =>

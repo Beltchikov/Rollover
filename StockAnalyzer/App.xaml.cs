@@ -22,6 +22,7 @@ namespace StockAnalyzer
                 .AddSingleton<IIbHost, IbHost>()
                 .AddSingleton<IIbHostQueue, IbHostQueue>()
                 .AddSingleton<ISeekingAlphaProvider, SeekingAlphaProvider>()
+                .AddSingleton<IEdgarProvider, EdgarProvider>()
                 .BuildServiceProvider();
         }
 
@@ -35,6 +36,7 @@ namespace StockAnalyzer
                     Services.GetRequiredService<IYahooProvider>(),
                     Services.GetRequiredService<ITwsProvider>(),
                     Services.GetRequiredService<ISeekingAlphaProvider>(),
+                    Services.GetRequiredService<IEdgarProvider>(),
                     Services.GetRequiredService<IIbHost>())
             };
             mainWindow.Show();
