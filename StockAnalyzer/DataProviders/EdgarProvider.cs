@@ -1,5 +1,6 @@
 ﻿using StockAnalyzer.DataProviders.Types;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -23,13 +24,19 @@ namespace StockAnalyzer.DataProviders
             var response = await _httpClient.GetStringAsync(url);
 
             var liabilitiesAndStockholdersEquity = JsonSerializer.Deserialize<LiabilitiesAndStockholdersEquity>(response);
-
+            var headers = liabilitiesAndStockholdersEquity?.units.USD.Select(u=>u.end).ToList();
+            var header = "Symbol\t" + headers.Aggregate((r, n) => r + "\t" + n);
 
             // TODO
 
 
+            //return new List<string>() {
+            //    "Symbol\t2024-03-31\t2024-06-30",
+            //    "JNJ\t171966000000\t181088000000",
+            //    "PG\t10\t18"};
+
             return new List<string>() {
-                "Symbol\t2024-03-31\t2024-06-30",
+                header,
                 "JNJ\t171966000000\t181088000000",
                 "PG\t10\t18"};
 
