@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using System.Windows.Markup;
 
@@ -22,15 +23,18 @@ namespace StockAnalyzer.DataProviders
         {
             string url = $"https://www.sec.gov/files/company_tickers_exchange.json";
             var response = await _httpClient.GetStringAsync(url);
-            var companyTickersExchange = JsonSerializer.Deserialize<CompanyTickersExchange>(response) ?? throw new Exception();
+            CompanyTickersExchange companyTickersExchange = JsonSerializer.Deserialize<CompanyTickersExchange>(response) ?? throw new Exception();
 
-            List<object> symbolData = companyTickersExchange?.data.Where(d => (d[2]?.ToString() ?? "") == symbol).Single() ?? throw new Exception();
+            List<object> symbolData = companyTickersExchange?.data
+                .Where(d => (d[2]?.ToString() ?? "") == symbol.Trim().ToUpper())
+                .Single() ?? throw new Exception();
+
             string cik = symbolData[0].ToString() ?? throw new Exception();
             cik = (Int32.Parse(cik)).ToString("D10");
             return cik;
         }
 
-        public async Task<IEnumerable<string>> StockholdersEquity(List<string> cikList)
+        public async Task<IEnumerable<string>> StockholdersEquity(List<string> symbolList)
         {
             return await Task.Run(() =>
             {
@@ -40,7 +44,18 @@ namespace StockAnalyzer.DataProviders
                 "PG\t1,20829E+11\t\t1,22531E+11\t\t1,20709E+11\t1,19598E+11\t"
             };
             });
-          
+
+            //List<string> allDateLines = new();
+            //var allEquityLines = new List<string>();
+            //foreach (var symbol in symbolList)
+            //{
+            //    List<string> dateAndEquityLines = (await StockholdersEquity(symbol)).ToList();
+            //    allDateLines.Add(dateAndEquityLines.First());
+            //    allEquityLines.Add(dateAndEquityLines.Last());
+            //}
+
+            //throw new NotImplementedException();
+
         }
 
         public async Task<IEnumerable<string>> StockholdersEquity(string symbol)

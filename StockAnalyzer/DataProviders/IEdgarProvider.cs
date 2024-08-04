@@ -6,7 +6,7 @@ namespace StockAnalyzer.DataProviders
     public interface IEdgarProvider
     {
         Task<string> Cik(string symbol);
-        Task<IEnumerable<string>> StockholdersEquity(string cik);
-        Task<IEnumerable<string>> StockholdersEquity(List<string> cikList);
+        Task<IEnumerable<string>> StockholdersEquity(string symbol);
+        Task<IEnumerable<string>> StockholdersEquity(List<string> symbolList);
     }
 }
