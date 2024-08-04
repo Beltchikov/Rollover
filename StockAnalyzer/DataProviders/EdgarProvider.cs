@@ -31,14 +31,17 @@ namespace StockAnalyzer.DataProviders
 
         public async Task<IEnumerable<string>> StockholdersEquity(string symbol)
         {
-            string cik = await Cik(symbol); string url = $"https://data.sec.gov/api/xbrl/companyconcept/CIK{cik}/us-gaap/LiabilitiesAndStockholdersEquity.json";
+            string cik = await Cik(symbol); 
+            string url = $"https://data.sec.gov/api/xbrl/companyconcept/CIK{cik}/us-gaap/LiabilitiesAndStockholdersEquity.json";
             var response = await _httpClient.GetStringAsync(url);
 
             var liabilitiesAndStockholdersEquity = JsonSerializer.Deserialize<LiabilitiesAndStockholdersEquity>(response) ?? throw new Exception();
-            List<string> headers = liabilitiesAndStockholdersEquity?.units.USD.Select(u => u.end).ToList() ?? new List<string>();
+            List<USD> distinctUsdUnits = liabilitiesAndStockholdersEquity.units.USD.DistinctBy(u=>u.end).ToList();    
+
+            List<string> headers = distinctUsdUnits.Select(u => u.end).ToList() ?? new List<string>();
             var header = headers.Aggregate((r, n) => r + "\t" + n);
 
-            List<string> dataList = liabilitiesAndStockholdersEquity?.units.USD.Select(u => u.val.ToString() ?? "").ToList() ?? new List<string>();
+            List<string> dataList = distinctUsdUnits.Select(u => u.val.ToString() ?? "").ToList() ?? new List<string>();
             var data = dataList.Aggregate((r, n) => r + "\t" + n);
 
             return new List<string>() { header, data };
