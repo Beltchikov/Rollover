@@ -1,4 +1,5 @@
 ﻿using StockAnalyzer.DataProviders.Types;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -9,7 +10,7 @@ namespace StockAnalyzer.DataProviders
 {
     internal class EdgarProvider : IEdgarProvider
     {
-        HttpClient _httpClient = new();
+        readonly HttpClient _httpClient = new();
 
         public EdgarProvider()
         {
@@ -19,28 +20,18 @@ namespace StockAnalyzer.DataProviders
 
         public async Task<IEnumerable<string>> StockholdersEquity(string symbol)
         {
-            string cik = "0000200406"; // TODO
+            string cik = "0000200406"; // TODO CIK Repository  
             string url = $"https://data.sec.gov/api/xbrl/companyconcept/CIK{cik}/us-gaap/LiabilitiesAndStockholdersEquity.json";
             var response = await _httpClient.GetStringAsync(url);
 
-            var liabilitiesAndStockholdersEquity = JsonSerializer.Deserialize<LiabilitiesAndStockholdersEquity>(response);
-            var headers = liabilitiesAndStockholdersEquity?.units.USD.Select(u=>u.end).ToList();
-            var header = "Symbol\t" + headers.Aggregate((r, n) => r + "\t" + n);
+            var liabilitiesAndStockholdersEquity = JsonSerializer.Deserialize<LiabilitiesAndStockholdersEquity>(response) ?? throw new Exception();
+            List<string> headers = liabilitiesAndStockholdersEquity?.units.USD.Select(u => u.end).ToList() ?? new List<string>();
+            var header = headers.Aggregate((r, n) => r + "\t" + n);
 
-            // TODO
+            List<string> dataList = liabilitiesAndStockholdersEquity?.units.USD.Select(u => u.val.ToString() ?? "").ToList() ?? new List<string>();
+            var data = dataList.Aggregate((r, n) => r + "\t" + n);
 
-
-            //return new List<string>() {
-            //    "Symbol\t2024-03-31\t2024-06-30",
-            //    "JNJ\t171966000000\t181088000000",
-            //    "PG\t10\t18"};
-
-            return new List<string>() {
-                header,
-                "JNJ\t171966000000\t181088000000",
-                "PG\t10\t18"};
-
+            return new List<string>() { header, data };
         }
     }
 }
-    
