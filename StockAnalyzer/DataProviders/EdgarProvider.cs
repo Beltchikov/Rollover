@@ -16,13 +16,22 @@ namespace StockAnalyzer.DataProviders
         {
             _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("StockAnalyzer/1.0 (beltchikov@gmx.de)");
         }
-        
+
+        public async Task<string> Cik(string symbol)
+        {
+            string url = $"https://www.sec.gov/files/company_tickers_exchange.json";
+            var response = await _httpClient.GetStringAsync(url);
+            var companyTickersExchange = JsonSerializer.Deserialize<CompanyTickersExchange>(response) ?? throw new Exception();
+
+            List<object> symbolData = companyTickersExchange?.data.Where(d => (d[2]?.ToString() ?? "") == symbol).Single() ?? throw new Exception();
+            string cik = symbolData[0].ToString() ?? throw new Exception();
+            cik = (Int32.Parse(cik)).ToString("D10");
+            return cik;
+        }
+
         public async Task<IEnumerable<string>> StockholdersEquity(string symbol)
         {
-            string cik = await Cik(symbol);
-
-            cik = "0000200406"; // TODO CIK Repository  
-            string url = $"https://data.sec.gov/api/xbrl/companyconcept/CIK{cik}/us-gaap/LiabilitiesAndStockholdersEquity.json";
+            string cik = await Cik(symbol); string url = $"https://data.sec.gov/api/xbrl/companyconcept/CIK{cik}/us-gaap/LiabilitiesAndStockholdersEquity.json";
             var response = await _httpClient.GetStringAsync(url);
 
             var liabilitiesAndStockholdersEquity = JsonSerializer.Deserialize<LiabilitiesAndStockholdersEquity>(response) ?? throw new Exception();
@@ -34,18 +43,5 @@ namespace StockAnalyzer.DataProviders
 
             return new List<string>() { header, data };
         }
-
-        private async Task<string> Cik(string symbol)
-        {
-            string url = $"https://www.sec.gov/files/company_tickers_exchange.json";
-            var response = await _httpClient.GetStringAsync(url);
-            var companyTickersExchange = JsonSerializer.Deserialize<CompanyTickersExchange>(response) ?? throw new Exception();
-
-            return "todo";
-        }
-
-      
-
-        
     }
 }
