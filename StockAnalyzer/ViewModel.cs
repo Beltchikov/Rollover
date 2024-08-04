@@ -79,7 +79,8 @@ namespace StockAnalyzer
                 // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/LiabilitiesAndStockholdersEquity.json
                 await Task.Run(async () =>
                 {
-                    ResultCollectionEdgar = new ObservableCollection<string>(await edgarProvider.StockholdersEquity("JNJ"));
+                    //ResultCollectionEdgar = new ObservableCollection<string>(await edgarProvider.StockholdersEquity("JNJ"));
+                    ResultCollectionEdgar = new ObservableCollection<string>(await edgarProvider.StockholdersEquity(new List<string>{ "JNJ", "PG" }));
                 });
             });
 

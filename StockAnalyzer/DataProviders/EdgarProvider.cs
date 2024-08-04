@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows.Markup;
 
 namespace StockAnalyzer.DataProviders
 {
@@ -29,14 +30,27 @@ namespace StockAnalyzer.DataProviders
             return cik;
         }
 
+        public async Task<IEnumerable<string>> StockholdersEquity(List<string> cikList)
+        {
+            return await Task.Run(() =>
+            {
+                return new List<string>() {
+                "Symbol\t30.06.2023\t02.07.2023\t30.09.2023\t01.10.2023\t31.12.2023\t31.03.2024\t30.06.2024",
+                "JNJ\t\t1,91686E+11\t\t1,66061E+11\t1,67558E+11\t1,71966E+11\t1,81088E+11",
+                "PG\t1,20829E+11\t\t1,22531E+11\t\t1,20709E+11\t1,19598E+11\t"
+            };
+            });
+          
+        }
+
         public async Task<IEnumerable<string>> StockholdersEquity(string symbol)
         {
-            string cik = await Cik(symbol); 
+            string cik = await Cik(symbol);
             string url = $"https://data.sec.gov/api/xbrl/companyconcept/CIK{cik}/us-gaap/LiabilitiesAndStockholdersEquity.json";
             var response = await _httpClient.GetStringAsync(url);
 
             var liabilitiesAndStockholdersEquity = JsonSerializer.Deserialize<LiabilitiesAndStockholdersEquity>(response) ?? throw new Exception();
-            List<USD> distinctUsdUnits = liabilitiesAndStockholdersEquity.units.USD.DistinctBy(u=>u.end).ToList();    
+            List<USD> distinctUsdUnits = liabilitiesAndStockholdersEquity.units.USD.DistinctBy(u => u.end).ToList();
 
             List<string> headers = distinctUsdUnits.Select(u => u.end).ToList() ?? new List<string>();
             var header = headers.Aggregate((r, n) => r + "\t" + n);

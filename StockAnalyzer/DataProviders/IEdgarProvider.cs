@@ -7,5 +7,6 @@ namespace StockAnalyzer.DataProviders
     {
         Task<string> Cik(string symbol);
         Task<IEnumerable<string>> StockholdersEquity(string cik);
+        Task<IEnumerable<string>> StockholdersEquity(List<string> cikList);
     }
 }
