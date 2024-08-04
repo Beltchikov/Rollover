@@ -16,11 +16,12 @@ namespace StockAnalyzer.DataProviders
         {
             _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("StockAnalyzer/1.0 (beltchikov@gmx.de)");
         }
-
-
+        
         public async Task<IEnumerable<string>> StockholdersEquity(string symbol)
         {
-            string cik = "0000200406"; // TODO CIK Repository  
+            string cik = await Cik(symbol);
+
+            cik = "0000200406"; // TODO CIK Repository  
             string url = $"https://data.sec.gov/api/xbrl/companyconcept/CIK{cik}/us-gaap/LiabilitiesAndStockholdersEquity.json";
             var response = await _httpClient.GetStringAsync(url);
 
@@ -33,5 +34,18 @@ namespace StockAnalyzer.DataProviders
 
             return new List<string>() { header, data };
         }
+
+        private async Task<string> Cik(string symbol)
+        {
+            string url = $"https://www.sec.gov/files/company_tickers_exchange.json";
+            var response = await _httpClient.GetStringAsync(url);
+            var companyTickersExchange = JsonSerializer.Deserialize<CompanyTickersExchange>(response) ?? throw new Exception();
+
+            return "todo";
+        }
+
+      
+
+        
     }
 }
