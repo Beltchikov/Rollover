@@ -23,6 +23,8 @@ namespace StockAnalyzer
         private string _htmlSourceEarningsForWeek = null!;
         private double _marketCap;
 
+        private ObservableCollection<string> _tickerCollectionEdgar = null!;
+
         private ObservableCollection<string> _tickerCollectionYahoo = null!;
         private ObservableCollection<string> _tickersAlphaList = null!;
 
@@ -79,7 +81,23 @@ namespace StockAnalyzer
                 // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/LiabilitiesAndStockholdersEquity.json
                 await Task.Run(async () =>
                 {
-                    ResultCollectionEdgar = new ObservableCollection<string>(await edgarProvider.StockholdersEquity("JNJ"));
+                    //ResultCollectionEdgar = new ObservableCollection<string>(await edgarProvider.StockholdersEquity("JNJ"));
+
+                    //return new List<string>() {
+                    //    "Symbol\t2024-03-31\t2024-06-30",
+                    //    "JNJ\t171966000000\t181088000000",
+                    //    "PG\t10\t18"};
+
+                    ResultCollectionEdgar = new ObservableCollection<string>();
+                    foreach (var ticker in TickerCollectionEdgar.ToList())
+                    {
+                        var dateAndValueList = (await edgarProvider.StockholdersEquity(ticker)).ToList();
+                        var z = $"{ticker}\t{dateAndValueList.Select(dv => dv.Value).Aggregate((r, n) => r + "\t" + n)}";
+                        ResultCollectionEdgar.Add(z);
+                    }
+
+                   
+
                 });
             });
 
@@ -269,6 +287,7 @@ namespace StockAnalyzer
             });
 
             MarketCap = 00.1;
+            TickerCollectionEdgar= new ObservableCollection<string>((" JNJ\r\nPG").Split("\r\n").ToList());
             TickerCollectionYahoo = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA\r\n WT").Split("\r\n").ToList());
             ContractStringsTwsContractDetails = new ObservableCollection<string>(("ALD1;EUR;STK;SBF\r\nBWLPG;NOK;STK\r\nPFS\r\nSLCA").Split("\r\n").ToList());
             ContractStringsTwsFinStatements = new ObservableCollection<string>(("ALD1;EUR;STK;SBF\r\nBWLPG;NOK;\r\nPFS\r\nSLCA").Split("\r\n").ToList());
@@ -276,6 +295,16 @@ namespace StockAnalyzer
             TickersAlphaList = new ObservableCollection<string>("MSFT	ORCL	NOW	PANW	CRWD	FTNT".Split("\t").ToList()
                 .Select(t => t.Trim()));
             RiskFreeRate = 5.5;
+        }
+
+
+        public ObservableCollection<string> TickerCollectionEdgar
+        {
+            get => _tickerCollectionEdgar;
+            set
+            {
+                SetProperty(ref _tickerCollectionEdgar, value);
+            }
         }
 
         #region Yahoo

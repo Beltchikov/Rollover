@@ -1,4 +1,5 @@
 ﻿using StockAnalyzer.DataProviders.Types;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace StockAnalyzer.DataProviders
 {
-    internal class EdgarProvider : IEdgarProvider
+    public class EdgarProvider : IEdgarProvider
     {
         HttpClient _httpClient = new();
 
@@ -17,15 +18,18 @@ namespace StockAnalyzer.DataProviders
         }
 
 
-        public async Task<IEnumerable<string>> StockholdersEquity(string symbol)
+        [Obsolete]
+        public async Task<IEnumerable<string>> StockholdersEquityOld(string symbol)
         {
             string cik = "0000200406"; // TODO
             string url = $"https://data.sec.gov/api/xbrl/companyconcept/CIK{cik}/us-gaap/LiabilitiesAndStockholdersEquity.json";
             var response = await _httpClient.GetStringAsync(url);
 
             var liabilitiesAndStockholdersEquity = JsonSerializer.Deserialize<LiabilitiesAndStockholdersEquity>(response);
-            var headers = liabilitiesAndStockholdersEquity?.units.USD.Select(u=>u.end).ToList();
-            var header = "Symbol\t" + headers.Aggregate((r, n) => r + "\t" + n);
+            var headers = liabilitiesAndStockholdersEquity?.units.USD.Select(u => u.end).ToList();
+            var header = "Symbol\t" + headers?.Aggregate((r, n) => r + "\t" + n);
+            var dataList = liabilitiesAndStockholdersEquity?.units.USD.Select(u => u.val.ToString()).ToList();
+            var data = $"{symbol}" + dataList?.Aggregate((r, n) => r + "\t" + n);
 
             // TODO
 
@@ -41,6 +45,21 @@ namespace StockAnalyzer.DataProviders
                 "PG\t10\t18"};
 
         }
+
+        public async Task<IEnumerable<DateAndValue>> StockholdersEquity(string symbol)
+        {
+            string cik = "0000200406"; // TODO
+            string url = $"https://data.sec.gov/api/xbrl/companyconcept/CIK{cik}/us-gaap/LiabilitiesAndStockholdersEquity.json";
+            var response = await _httpClient.GetStringAsync(url);
+
+            var liabilitiesAndStockholdersEquity = JsonSerializer.Deserialize<LiabilitiesAndStockholdersEquity>(response) ?? throw new Exception();
+            var resultList = new List<DateAndValue>();
+            foreach (var t in liabilitiesAndStockholdersEquity.units.USD)
+            {
+                resultList.Add(new DateAndValue(t.end, t.val.ToString() ?? ""));
+            }
+
+            return resultList;
+        }
     }
 }
-    
