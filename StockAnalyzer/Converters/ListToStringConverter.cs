@@ -10,21 +10,21 @@ namespace StockAnalyzer.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var resultListYahooEps = value as ObservableCollection<string>;
+            var resultList = value as ObservableCollection<string>;
 
-            if (resultListYahooEps == null)
+            if (resultList == null)
             {
                 return string.Empty;
             }
             else
             {
-                if (!resultListYahooEps.Any())
+                if (!resultList.Any())
                 {
                     return string.Empty;
                 }
                 else
                 {
-                    return resultListYahooEps.Aggregate((r, n) => r + "\r\n" + n);
+                    return resultList.Select(v=>v.Trim()).Aggregate((r, n) => r + "\r\n" + n);
                 }
             }
         }
@@ -37,7 +37,7 @@ namespace StockAnalyzer.Converters
                 return new ObservableCollection<string>();
             }
 
-            var resultList = listAsString.Split("\r\n", StringSplitOptions.TrimEntries).ToList();
+            var resultList = listAsString.Split("\r\n", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).ToList();
             return new ObservableCollection<string>(resultList);
         }
     }
