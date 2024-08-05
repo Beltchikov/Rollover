@@ -4,13 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
-using System.Text.Json.Nodes;
 using System.Threading.Tasks;
-using System.Windows.Markup;
 
 namespace StockAnalyzer.DataProviders
 {
-    internal class EdgarProvider : IEdgarProvider
+    internal class EdgarProvider : EdgarProviderBase, IEdgarProvider
     {
         readonly HttpClient _httpClient = new();
 
