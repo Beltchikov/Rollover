@@ -28,37 +28,19 @@ namespace StockAnalyzer.DataProviders
                 .Single() ?? throw new Exception();
 
             string cik = symbolData[0].ToString() ?? throw new Exception();
-            cik = (Int32.Parse(cik)).ToString("D10");
+            cik = int.Parse(cik).ToString("D10");
             return cik;
         }
 
         public async Task<IEnumerable<string>> StockholdersEquity(List<string> symbolList)
         {
-            //return await Task.Run(() =>
-            //{
-            //    return new List<string>() {
-            //    "Symbol\t30.06.2023\t02.07.2023\t30.09.2023\t01.10.2023\t31.12.2023\t31.03.2024\t30.06.2024",
-            //    "JNJ\t\t1,91686E+11\t\t1,66061E+11\t1,67558E+11\t1,71966E+11\t1,81088E+11",
-            //    "PG\t1,20829E+11\t\t1,22531E+11\t\t1,20709E+11\t1,19598E+11\t"
-            //};
-            //});
-
             List<List<string>> symbolDataList = new();
             foreach (var symbol in symbolList)
             {
                 symbolDataList.Add((await StockholdersEquity(symbol)).ToList());
             }
-
-            // Test
-            symbolList = new List<string> { "A", "B" };
-            symbolDataList = new List<List<string>> {
-                new List<string>{"2024-01-01\t2024-03-01\t2024-04-01", "10\t30\t40" },
-                new List<string>{"2024-01-01\t2024-02-01\t2024-04-01", "100\t200\t400" }
-            };
-
-
-            List<string> resultList = TableForMultipleSymbols(symbolList, symbolDataList).ToList();
-            return resultList;
+            
+            return TableForMultipleSymbols(symbolList, symbolDataList).ToList();
         }
 
         public async Task<IEnumerable<string>> StockholdersEquity(string symbol)
