@@ -34,26 +34,23 @@ namespace StockAnalyzer.DataProviders
 
         public async Task<IEnumerable<string>> StockholdersEquity(List<string> symbolList)
         {
-            return await Task.Run(() =>
-            {
-                return new List<string>() {
-                "Symbol\t30.06.2023\t02.07.2023\t30.09.2023\t01.10.2023\t31.12.2023\t31.03.2024\t30.06.2024",
-                "JNJ\t\t1,91686E+11\t\t1,66061E+11\t1,67558E+11\t1,71966E+11\t1,81088E+11",
-                "PG\t1,20829E+11\t\t1,22531E+11\t\t1,20709E+11\t1,19598E+11\t"
-            };
-            });
-
-            //List<string> allDateLines = new();
-            //var allEquityLines = new List<string>();
-            //foreach (var symbol in symbolList)
+            //return await Task.Run(() =>
             //{
-            //    List<string> dateAndEquityLines = (await StockholdersEquity(symbol)).ToList();
-            //    allDateLines.Add(dateAndEquityLines.First());
-            //    allEquityLines.Add(dateAndEquityLines.Last());
-            //}
+            //    return new List<string>() {
+            //    "Symbol\t30.06.2023\t02.07.2023\t30.09.2023\t01.10.2023\t31.12.2023\t31.03.2024\t30.06.2024",
+            //    "JNJ\t\t1,91686E+11\t\t1,66061E+11\t1,67558E+11\t1,71966E+11\t1,81088E+11",
+            //    "PG\t1,20829E+11\t\t1,22531E+11\t\t1,20709E+11\t1,19598E+11\t"
+            //};
+            //});
 
-            //throw new NotImplementedException();
+            List<List<string>> symbolDataList = new();
+            foreach (var symbol in symbolList)
+            {
+                symbolDataList.Add((await StockholdersEquity(symbol)).ToList());
+            }
 
+            List<string> resultList = TableForMultipleSymbols(symbolList, symbolDataList).ToList();
+            return resultList;
         }
 
         public async Task<IEnumerable<string>> StockholdersEquity(string symbol)
