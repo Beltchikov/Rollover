@@ -52,7 +52,7 @@ namespace StockAnalyzer.DataProviders
             // Test
             symbolList = new List<string> { "A", "B" };
             symbolDataList = new List<List<string>> {
-                new List<string>{"2024-01-01\t2024-03-01\t2024-03-01", "10\t30\t40" },
+                new List<string>{"2024-01-01\t2024-03-01\t2024-04-01", "10\t30\t40" },
                 new List<string>{"2024-01-01\t2024-02-01\t2024-04-01", "100\t200\t400" }
             };
 
