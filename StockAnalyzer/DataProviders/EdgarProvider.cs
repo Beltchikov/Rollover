@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace StockAnalyzer.DataProviders
 {
-    internal class EdgarProvider : EdgarProviderBase, IEdgarProvider
+    public class EdgarProvider : EdgarProviderBase, IEdgarProvider
     {
         readonly HttpClient _httpClient = new();
 
