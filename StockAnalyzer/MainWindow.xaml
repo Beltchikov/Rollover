@@ -9,6 +9,7 @@
         xmlns:converters="clr-namespace:StockAnalyzer.Converters"
         mc:Ignorable="d"
         Title="Stock Analyzer" 
+        Width="1200"
         WindowState="Maximized">
     <Window.Resources>
         <BitmapImage x:Key="ConnectionCircle" UriSource="/Images/RedCircle.png" />
@@ -98,7 +99,8 @@
                             <TextBox x:Name="txtResultsEdgar" 
        Text="{Binding ResultCollectionEdgar, Converter={StaticResource ListToStringConverter}}" Grid.Column="3" Grid.Row="2" 
        AcceptsReturn="True"
-          VerticalScrollBarVisibility="Visible"></TextBox>                           
+          VerticalScrollBarVisibility="Visible"></TextBox>
+                            <Button Grid.Column="3" Grid.Row="4" Width="200" HorizontalAlignment="Left" ToolTip="Interpolate data for missing dates.">Interpolate</Button>
 
                         </Grid>
                     </GroupBox>
