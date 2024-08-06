@@ -89,6 +89,7 @@ namespace StockAnalyzer.DataProviders
             for (int eIdx = 0; eIdx < earnings.Count; eIdx++)
             {
                 Earning earning = earnings[eIdx];
+                Earning earningWithInterpolatedValues = null!;
 
                 for (int i = 0; i < earning.Data.Count; i++)
                 {
@@ -107,10 +108,12 @@ namespace StockAnalyzer.DataProviders
                             dataWithInterpolatedValues[i] = (valueBefore.Value + valueAfter.Value)/2;
                            
                         }
-                        Earning earningWithInterpolatedValues = new Earning(earning.Date, dataWithInterpolatedValues);
+                        earningWithInterpolatedValues = new Earning(earning.Date, dataWithInterpolatedValues);
                         earningsWithInterpolatedValues.Add(earningWithInterpolatedValues);  
                     }
                 }
+
+
             }
 
             throw new NotImplementedException();
