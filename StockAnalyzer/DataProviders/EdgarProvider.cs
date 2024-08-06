@@ -113,6 +113,10 @@ namespace StockAnalyzer.DataProviders
                     }
                 }
 
+                if(earningWithInterpolatedValues is null)
+                {
+                    earningsWithInterpolatedValues.Add(new Earning(earning.Date, earning.Data));
+                }
 
             }
 
