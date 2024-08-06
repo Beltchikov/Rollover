@@ -10,6 +10,8 @@ namespace StockAnalyzer.DataProviders
 {
     public class EdgarProvider : EdgarProviderBase, IEdgarProvider
     {
+        record Earning(DateOnly Date, List<int?> Data);
+
         readonly HttpClient _httpClient = new();
 
         public EdgarProvider()
@@ -70,7 +72,69 @@ namespace StockAnalyzer.DataProviders
 
         public IEnumerable<string> InterpolateDataForMissingDates(List<string> data)
         {
+            string header = data[0];
+            List<string> headerList = header.Split("\t").ToList();
+            List<string> datesStringsList = headerList.Skip(1).ToList();
+            List<DateOnly> datesList = datesStringsList.Select(s => DateOnly.ParseExact(s, "yyyy-MM-dd")).ToList();
+
+            List<string> valueRows = data.Skip(1).ToList();
+            List<List<string>> valueStrings2dList = valueRows.Select(r => r.Split("\t").ToList()).ToList();
+            List<List<string>> valuesListWithoutSymbol = valueStrings2dList.Select(v => v.Skip(1).ToList()).ToList();
+            List<List<int?>> intValuesList = valuesListWithoutSymbol
+                .Select(r => r.Select(v => (int?)(string.IsNullOrWhiteSpace(v) ? null : int.Parse(v))).ToList()).ToList();
+            
+            List<Earning> earnings = CreateEarningsList(datesList, intValuesList);
+
+            List<Earning> earningsWithInterpolatedValues = new();
+            for (int eIdx = 0; eIdx < earnings.Count; eIdx++)
+            {
+                Earning earning = earnings[eIdx];
+
+                for (int i = 0; i < earning.Data.Count; i++)
+                {
+                    int? value = earning.Data[i];
+                    if (!value.HasValue)
+                    {
+                        List<Earning> earningBefore = earnings.Take(eIdx).ToList();
+                        List<Earning> earningAfter = earnings.Skip(eIdx + 1).ToList();
+
+                        int? valueBefore = earningBefore.Select(e => e.Data[i]).Last(v => v.HasValue);
+                        int? valueAfter = earningAfter.Select(e => e.Data[i]).First(v => v.HasValue);
+
+                        List<int?> dataWithInterpolatedValues = new(earning.Data);
+                        if (valueBefore.HasValue && valueAfter.HasValue)
+                        {
+                            dataWithInterpolatedValues[i] = (valueBefore.Value + valueAfter.Value)/2;
+                           
+                        }
+                        Earning earningWithInterpolatedValues = new Earning(earning.Date, dataWithInterpolatedValues);
+                        earningsWithInterpolatedValues.Add(earningWithInterpolatedValues);  
+                    }
+                }
+            }
+
             throw new NotImplementedException();
+
+        }
+
+        private static List<Earning> CreateEarningsList(List<DateOnly> datesList, List<List<int?>> intValuesList)
+        {
+            List<Earning> earnings = new();
+            for (int i = 0; i < datesList.Count; i++)
+            {
+                DateOnly date = datesList[i];
+
+                List<int?> valuesForDate = new();
+                foreach (List<int?> valuesRow in intValuesList)
+                {
+                    int? value = valuesRow[i];
+                    valuesForDate.Add(value);
+                }
+                Earning earning = new(date, valuesForDate);
+                earnings.Add(earning);
+            }
+
+            return earnings;
         }
     }
 }
