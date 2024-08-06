@@ -84,8 +84,17 @@ namespace StockAnalyzer.DataProviders
                 .Select(r => r.Select(v => (int?)(string.IsNullOrWhiteSpace(v) ? null : int.Parse(v))).ToList()).ToList();
             
             List<Earning> earnings = CreateEarningsList(datesList, intValuesList);
+            List<Earning> earningsWithInterpolatedValues = InterpolateMissingValues(earnings);
 
+
+            throw new NotImplementedException();
+
+        }
+
+        private List<Earning> InterpolateMissingValues(List<Earning> earnings)
+        {
             List<Earning> earningsWithInterpolatedValues = new();
+            
             for (int eIdx = 0; eIdx < earnings.Count; eIdx++)
             {
                 Earning earning = earnings[eIdx];
@@ -105,23 +114,22 @@ namespace StockAnalyzer.DataProviders
                         List<int?> dataWithInterpolatedValues = new(earning.Data);
                         if (valueBefore.HasValue && valueAfter.HasValue)
                         {
-                            dataWithInterpolatedValues[i] = (valueBefore.Value + valueAfter.Value)/2;
-                           
+                            dataWithInterpolatedValues[i] = (valueBefore.Value + valueAfter.Value) / 2;
+
                         }
                         earningWithInterpolatedValues = new Earning(earning.Date, dataWithInterpolatedValues);
-                        earningsWithInterpolatedValues.Add(earningWithInterpolatedValues);  
+                        earningsWithInterpolatedValues.Add(earningWithInterpolatedValues);
                     }
                 }
 
-                if(earningWithInterpolatedValues is null)
+                if (earningWithInterpolatedValues is null)
                 {
                     earningsWithInterpolatedValues.Add(new Earning(earning.Date, earning.Data));
                 }
 
             }
 
-            throw new NotImplementedException();
-
+            return earningsWithInterpolatedValues;
         }
 
         private static List<Earning> CreateEarningsList(List<DateOnly> datesList, List<List<int?>> intValuesList)
