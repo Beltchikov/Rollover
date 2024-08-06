@@ -6,11 +6,8 @@ using StockAnalyzer.DataProviders.Types;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Markup;
 
 namespace StockAnalyzer
 {
@@ -76,7 +73,7 @@ namespace StockAnalyzer
             ISeekingAlphaProvider seekingAlphaProvider,
             IEdgarProvider edgarProvider,
             IIbHost ibHost)
-        {
+        {   
             yahooProvider.Status += YahooProvider_Status;
             twsProvider.Status += TwsProvider_Status;
 

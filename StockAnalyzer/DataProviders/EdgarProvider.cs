@@ -86,6 +86,7 @@ namespace StockAnalyzer.DataProviders
             List<Earning> earnings = CreateEarningsList(datesList, intValuesList);
             List<Earning> earningsWithInterpolatedValues = InterpolateMissingValues(earnings);
 
+            // TODO
 
             throw new NotImplementedException();
 
