@@ -6,9 +6,11 @@ using StockAnalyzer.DataProviders.Types;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Markup;
 
 namespace StockAnalyzer
 {
@@ -65,6 +67,7 @@ namespace StockAnalyzer
         public ICommand RiskAndReturnCommand { get; }
         public ICommand TwsSummaryCommand { get; }
         public ICommand ComparePeersCommand { get; }
+        public ICommand InterpolateCommand { get; }
 
         public ViewModel(
             IInvestingProvider investingProvider,
@@ -82,6 +85,11 @@ namespace StockAnalyzer
                 // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/LiabilitiesAndStockholdersEquity.json
                 ResultCollectionEdgar = new ObservableCollection<string>(await edgarProvider.StockholdersEquity(TickerCollectionEdgar.ToList()));
 
+            });
+
+            InterpolateCommand = new RelayCommand(() =>
+            {
+                ResultCollectionEdgar = new ObservableCollection<string>(edgarProvider.InterpolateDataForMissingDates(ResultCollectionEdgar.ToList()));
             });
 
             LastEpsCommand = new RelayCommand(async () =>

@@ -39,7 +39,14 @@ namespace StockAnalyzer.DataProviders
             {
                 symbolDataList.Add((await StockholdersEquity(symbol)).ToList());
             }
-            
+
+            // Test
+            symbolList = new List<string> { "A", "B" };
+            symbolDataList = new List<List<string>> {
+                new List<string>{"2024-01-01\t2024-03-01\t2024-04-01", "10\t30\t40" },
+                new List<string>{"2024-01-01\t2024-02-01\t2024-04-01", "100\t200\t400" }
+            };
+
             return TableForMultipleSymbols(symbolList, symbolDataList).ToList();
         }
 
@@ -59,6 +66,11 @@ namespace StockAnalyzer.DataProviders
             var data = dataList.Aggregate((r, n) => r + "\t" + n);
 
             return new List<string>() { header, data };
+        }
+
+        public IEnumerable<string> InterpolateDataForMissingDates(List<string> data)
+        {
+            throw new NotImplementedException();
         }
     }
 }
