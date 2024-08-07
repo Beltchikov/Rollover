@@ -10,7 +10,7 @@ namespace StockAnalyzer.DataProviders
 {
     public class EdgarProvider : EdgarProviderBase, IEdgarProvider
     {
-        record Earning(DateOnly Date, List<int?> Data);
+        record Earning(DateOnly Date, List<long?> Data);
 
         readonly HttpClient _httpClient = new();
 
@@ -42,12 +42,12 @@ namespace StockAnalyzer.DataProviders
                 symbolDataList.Add((await StockholdersEquity(symbol)).ToList());
             }
 
-            // Test
-            symbolList = new List<string> { "A", "B" };
-            symbolDataList = new List<List<string>> {
-                new List<string>{"2024-01-01\t2024-03-01\t2024-04-01", "10\t30\t40" },
-                new List<string>{"2024-01-01\t2024-02-01\t2024-04-01", "100\t200\t400" }
-            };
+            //// Test
+            //symbolList = new List<string> { "A", "B" };
+            //symbolDataList = new List<List<string>> {
+            //    new List<string>{"2024-01-01\t2024-03-01\t2024-04-01", "10\t30\t40" },
+            //    new List<string>{"2024-01-01\t2024-02-01\t2024-04-01", "100\t200\t400" }
+            //};
 
             return TableForMultipleSymbols(symbolList, symbolDataList).ToList();
         }
@@ -83,11 +83,11 @@ namespace StockAnalyzer.DataProviders
                 .Select(v => v[0])
                 .ToList();
             
-            List<List<int?>> values = data
+            List<List<long?>> values = data
                 .Skip(1)
                 .Select(r => r.Split("\t").ToList())
                 .Select(v => v.Skip(1).ToList())
-                .Select(r => r.Select(v => (int?)(string.IsNullOrWhiteSpace(v) ? null : int.Parse(v))).ToList())
+                .Select(r => r.Select(v => (long?)(string.IsNullOrWhiteSpace(v) ? null : long.Parse(v))).ToList())
                 .ToList();
 
             List<Earning> earnings = CreateEarningsList(dates, values);
@@ -130,16 +130,21 @@ namespace StockAnalyzer.DataProviders
 
                 for (int i = 0; i < earning.Data.Count; i++)
                 {
-                    int? value = earning.Data[i];
+                    long? value = earning.Data[i];
                     if (!value.HasValue)
                     {
                         List<Earning> earningBefore = earnings.Take(eIdx).ToList();
                         List<Earning> earningAfter = earnings.Skip(eIdx + 1).ToList();
 
-                        int? valueBefore = earningBefore.Select(e => e.Data[i]).Last(v => v.HasValue);
-                        int? valueAfter = earningAfter.Select(e => e.Data[i]).First(v => v.HasValue);
+                        if(!(earningBefore.Any() && earningAfter.Any()))
+                        {
+                            continue;
+                        }
 
-                        List<int?> dataWithInterpolatedValues = new(earning.Data);
+                        long? valueBefore = earningBefore.Select(e => e.Data[i]).Last(v => v.HasValue);
+                        long? valueAfter = earningAfter.Select(e => e.Data[i]).First(v => v.HasValue);
+
+                        List<long?> dataWithInterpolatedValues = new(earning.Data);
                         if (valueBefore.HasValue && valueAfter.HasValue)
                         {
                             dataWithInterpolatedValues[i] = (valueBefore.Value + valueAfter.Value) / 2;
@@ -160,17 +165,17 @@ namespace StockAnalyzer.DataProviders
             return earningsWithInterpolatedValues;
         }
 
-        private static List<Earning> CreateEarningsList(List<DateOnly> datesList, List<List<int?>> intValuesList)
+        private static List<Earning> CreateEarningsList(List<DateOnly> datesList, List<List<long?>> intValuesList)
         {
             List<Earning> earnings = new();
             for (int i = 0; i < datesList.Count; i++)
             {
                 DateOnly date = datesList[i];
 
-                List<int?> valuesForDate = new();
-                foreach (List<int?> valuesRow in intValuesList)
+                List<long?> valuesForDate = new();
+                foreach (List<long?> valuesRow in intValuesList)
                 {
-                    int? value = valuesRow[i];
+                    long? value = valuesRow[i];
                     valuesForDate.Add(value);
                 }
                 Earning earning = new(date, valuesForDate);
