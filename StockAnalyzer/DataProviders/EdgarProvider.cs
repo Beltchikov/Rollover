@@ -88,11 +88,13 @@ namespace StockAnalyzer.DataProviders
             List<Earning> earningsWithInterpolatedValues = InterpolateMissingValues(earnings);
 
             // Result
+            List<string> resultList = new();
+
             List<DateOnly> resultHeaderDateList = earnings.Select(r => r.Date).ToList();
             List<string> resultHeaderList = resultHeaderDateList.Select(y => y.ToString("yyyy-MM-dd")).ToList();
             string resultHeader = "Symbol\t" + resultHeaderList.Aggregate((r, n) => r + "\t" + n);
+            resultList.Add(resultHeader);   
 
-            List<string> resultList = new() { resultHeader };
             for (int i = 0; i < symbols.Count; i++)
             {
                 List<int?> resultDataRowListNullable = earningsWithInterpolatedValues.Select(e => e.Data[i]).ToList();
