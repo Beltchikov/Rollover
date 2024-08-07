@@ -136,7 +136,7 @@ namespace StockAnalyzer.DataProviders
                         List<Earning> earningBefore = earnings.Take(eIdx).ToList();
                         List<Earning> earningAfter = earnings.Skip(eIdx + 1).ToList();
 
-                        if(!(earningBefore.Any() && earningAfter.Any()))
+                        if(!(earningBefore.Any(e => e.Data[i].HasValue) && earningAfter.Any(e => e.Data[i].HasValue)))
                         {
                             continue;
                         }

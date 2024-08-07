@@ -275,7 +275,7 @@ namespace StockAnalyzer
             });
 
             MarketCap = 00.1;
-            TickerCollectionEdgar = new ObservableCollection<string>((" JNJ\r\nPG").Split("\r\n").ToList());
+            TickerCollectionEdgar = new ObservableCollection<string>((" NVDA\r\nGOOG\r\nMSFT\r\nAAPL\r\nAMZN\r\nMETA\r\nTSLA").Split("\r\n").ToList());
             TickerCollectionYahoo = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA\r\n WT").Split("\r\n").ToList());
             ContractStringsTwsContractDetails = new ObservableCollection<string>(("ALD1;EUR;STK;SBF\r\nBWLPG;NOK;STK\r\nPFS\r\nSLCA").Split("\r\n").ToList());
             ContractStringsTwsFinStatements = new ObservableCollection<string>(("ALD1;EUR;STK;SBF\r\nBWLPG;NOK;\r\nPFS\r\nSLCA").Split("\r\n").ToList());
