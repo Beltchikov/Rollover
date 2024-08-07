@@ -90,18 +90,18 @@ namespace StockAnalyzer.DataProviders
             // Result
             List<string> resultList = new();
 
-            List<DateOnly> resultHeaderDateList = earnings.Select(r => r.Date).ToList();
-            List<string> resultHeaderList = resultHeaderDateList.Select(y => y.ToString("yyyy-MM-dd")).ToList();
-            string resultHeader = "Symbol\t" + resultHeaderList.Aggregate((r, n) => r + "\t" + n);
-            resultList.Add(resultHeader);   
+            string resultHeader = "Symbol\t" + earnings.Select(r => r.Date)
+                .Select(y => y.ToString("yyyy-MM-dd"))
+                .Aggregate((r, n) => r + "\t" + n);
+            resultList.Add(resultHeader);
 
             for (int i = 0; i < symbols.Count; i++)
             {
-                List<int?> resultDataRowListNullable = earningsWithInterpolatedValues.Select(e => e.Data[i]).ToList();
-                List<string?> resultDataRowStringListNullable = resultDataRowListNullable.Select(n => n.HasValue ? n.ToString() : "").ToList();
-                List<string> resultDataRowStringList = resultDataRowStringListNullable.Select(x => string.IsNullOrWhiteSpace(x) ? "" : x).ToList();
-                string resultDataRow = symbols[i] + "\t" + resultDataRowStringList.Aggregate((r, n) => r + "\t" + n);
-
+                string resultDataRow = symbols[i] + "\t" + earningsWithInterpolatedValues
+                    .Select(e => e.Data[i])
+                    .Select(n => n.HasValue ? n.ToString() : "")
+                    .Select(x => string.IsNullOrWhiteSpace(x) ? "" : x)
+                    .Aggregate((r, n) => r + "\t" + n);
                 resultList.Add(resultDataRow);
             }
 
