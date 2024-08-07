@@ -96,7 +96,7 @@ namespace StockAnalyzer.DataProviders
             return resultList;
         }
 
-        private List<string> ListOfStringsFromEarnings(List<Earning> earnings, List<string> symbols)
+        private static List<string> ListOfStringsFromEarnings(List<Earning> earnings, List<string> symbols)
         {
             List<string> resultList = new();
 
@@ -118,7 +118,7 @@ namespace StockAnalyzer.DataProviders
             return resultList;
         }
 
-        private List<Earning> InterpolateMissingValues(List<Earning> earnings)
+        private static List<Earning> InterpolateMissingValues(List<Earning> earnings)
         {
             List<Earning> earningsWithInterpolatedValues = new();
 
@@ -156,7 +156,7 @@ namespace StockAnalyzer.DataProviders
 
                 if (earningWithInterpolatedValues is null)
                 {
-                    earningsWithInterpolatedValues.AddOrMerge(new Earning(earning.Date, earning.Data));
+                    earningsWithInterpolatedValues.AddOrMerge(earning);
                 }
 
             }
@@ -184,7 +184,7 @@ namespace StockAnalyzer.DataProviders
             return earnings;
         }
 
-        private IEnumerable<string> TableForMultipleSymbols(List<string> symbols, List<List<string>> symbolDataList)
+        private static IEnumerable<string> TableForMultipleSymbols(List<string> symbols, List<List<string>> symbolDataList)
         {
             List<string> uniqueDatesStringsListSorted = symbolDataList
                             .Select(d => d[0])
@@ -221,15 +221,32 @@ namespace StockAnalyzer.DataProviders
     {
         public static void AddOrMerge(this List<Earning> earningsList, Earning earning)
         {
-            Earning? earningToUpdate = earningsList.FirstOrDefault(e=> e.Date == earning.Date);
-
-            if(earningToUpdate == null)
+            Earning? earningToUpdate = earningsList.FirstOrDefault(e => e.Date == earning.Date);
+            int idx = -1;   
+            if (earningToUpdate == null)
             {
                 earningsList.Add(earning);
             }
             else
             {
-                earningToUpdate = earningToUpdate with { Data = new List<long?>(earning.Data) }; 
+                List<long?> updatedDataList = new(earningToUpdate.Data);
+
+                for (int i = 0; i < updatedDataList.Count; i++)
+                {
+                    long? value = updatedDataList[i];
+                    if (!value.HasValue)
+                    {
+                        long? incomingValue = earning.Data[i];
+                        if (incomingValue.HasValue)
+                        {
+                            updatedDataList[i] = incomingValue;
+                        }
+                    }
+                }
+
+                idx = earningsList.IndexOf(earningToUpdate);    
+                earningToUpdate = earningToUpdate with { Data = updatedDataList };
+                earningsList[idx] = earningToUpdate;
             }
         }
     }
