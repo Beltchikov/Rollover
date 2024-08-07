@@ -86,8 +86,13 @@ namespace StockAnalyzer.DataProviders
 
             List<Earning> earnings = CreateEarningsList(datesList, intValuesList);
             List<Earning> earningsWithInterpolatedValues = InterpolateMissingValues(earnings);
+            List<string> resultList = ListOfStringsFromEarnings(earningsWithInterpolatedValues, symbols);
+            
+            return resultList;
+        }
 
-            // Result
+        private List<string> ListOfStringsFromEarnings(List<Earning> earnings, List<string> symbols)
+        {
             List<string> resultList = new();
 
             string resultHeader = "Symbol\t" + earnings.Select(r => r.Date)
@@ -97,7 +102,7 @@ namespace StockAnalyzer.DataProviders
 
             for (int i = 0; i < symbols.Count; i++)
             {
-                string resultDataRow = symbols[i] + "\t" + earningsWithInterpolatedValues
+                string resultDataRow = symbols[i] + "\t" + earnings
                     .Select(e => e.Data[i])
                     .Select(n => n.HasValue ? n.ToString() : "")
                     .Select(x => string.IsNullOrWhiteSpace(x) ? "" : x)
