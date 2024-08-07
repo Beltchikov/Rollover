@@ -72,10 +72,10 @@ namespace StockAnalyzer.DataProviders
 
         public IEnumerable<string> InterpolateDataForMissingDates(List<string> data)
         {
-            string header = data[0];
-            List<string> headerList = header.Split("\t").ToList();
-            List<string> datesStringsList = headerList.Skip(1).ToList();
-            List<DateOnly> datesList = datesStringsList.Select(s => DateOnly.ParseExact(s, "yyyy-MM-dd")).ToList();
+            List<DateOnly> dates = data[0]
+                .Split("\t")
+                .Skip(1)
+                .Select(s => DateOnly.ParseExact(s, "yyyy-MM-dd")).ToList();
 
             List<string> valueRows = data.Skip(1).ToList();
             List<List<string>> valueStrings2dList = valueRows.Select(r => r.Split("\t").ToList()).ToList();
@@ -84,7 +84,7 @@ namespace StockAnalyzer.DataProviders
             List<List<int?>> intValuesList = valuesListWithoutSymbol
                 .Select(r => r.Select(v => (int?)(string.IsNullOrWhiteSpace(v) ? null : int.Parse(v))).ToList()).ToList();
 
-            List<Earning> earnings = CreateEarningsList(datesList, intValuesList);
+            List<Earning> earnings = CreateEarningsList(dates, intValuesList);
             List<Earning> earningsWithInterpolatedValues = InterpolateMissingValues(earnings);
             List<string> resultList = ListOfStringsFromEarnings(earningsWithInterpolatedValues, symbols);
             
