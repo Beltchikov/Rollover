@@ -77,14 +77,20 @@ namespace StockAnalyzer.DataProviders
                 .Skip(1)
                 .Select(s => DateOnly.ParseExact(s, "yyyy-MM-dd")).ToList();
 
-            List<string> valueRows = data.Skip(1).ToList();
-            List<List<string>> valueStrings2dList = valueRows.Select(r => r.Split("\t").ToList()).ToList();
-            List<string> symbols = valueStrings2dList.Select(v => v[0]).ToList();
-            List<List<string>> valuesListWithoutSymbol = valueStrings2dList.Select(v => v.Skip(1).ToList()).ToList();
-            List<List<int?>> intValuesList = valuesListWithoutSymbol
-                .Select(r => r.Select(v => (int?)(string.IsNullOrWhiteSpace(v) ? null : int.Parse(v))).ToList()).ToList();
+            List<string> symbols = data
+                .Skip(1)
+                .Select(r => r.Split("\t").ToList())
+                .Select(v => v[0])
+                .ToList();
+            
+            List<List<int?>> values = data
+                .Skip(1)
+                .Select(r => r.Split("\t").ToList())
+                .Select(v => v.Skip(1).ToList())
+                .Select(r => r.Select(v => (int?)(string.IsNullOrWhiteSpace(v) ? null : int.Parse(v))).ToList())
+                .ToList();
 
-            List<Earning> earnings = CreateEarningsList(dates, intValuesList);
+            List<Earning> earnings = CreateEarningsList(dates, values);
             List<Earning> earningsWithInterpolatedValues = InterpolateMissingValues(earnings);
             List<string> resultList = ListOfStringsFromEarnings(earningsWithInterpolatedValues, symbols);
             
