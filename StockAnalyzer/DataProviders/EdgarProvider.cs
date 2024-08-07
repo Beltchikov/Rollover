@@ -79,23 +79,37 @@ namespace StockAnalyzer.DataProviders
 
             List<string> valueRows = data.Skip(1).ToList();
             List<List<string>> valueStrings2dList = valueRows.Select(r => r.Split("\t").ToList()).ToList();
+            List<string> symbols = valueStrings2dList.Select(v => v[0]).ToList();
             List<List<string>> valuesListWithoutSymbol = valueStrings2dList.Select(v => v.Skip(1).ToList()).ToList();
             List<List<int?>> intValuesList = valuesListWithoutSymbol
                 .Select(r => r.Select(v => (int?)(string.IsNullOrWhiteSpace(v) ? null : int.Parse(v))).ToList()).ToList();
-            
+
             List<Earning> earnings = CreateEarningsList(datesList, intValuesList);
             List<Earning> earningsWithInterpolatedValues = InterpolateMissingValues(earnings);
 
-            // TODO
+            // Result
+            List<DateOnly> resultHeaderDateList = earnings.Select(r => r.Date).ToList();
+            List<string> resultHeaderList = resultHeaderDateList.Select(y => y.ToString("yyyy-MM-dd")).ToList();
+            string resultHeader = "Symbol\t" + resultHeaderList.Aggregate((r, n) => r + "\t" + n);
 
-            throw new NotImplementedException();
+            List<string> resultList = new() { resultHeader };
+            for (int i = 0; i < symbols.Count; i++)
+            {
+                List<int?> resultDataRowListNullable = earningsWithInterpolatedValues.Select(e => e.Data[i]).ToList();
+                List<string?> resultDataRowStringListNullable = resultDataRowListNullable.Select(n => n.HasValue ? n.ToString() : "").ToList();
+                List<string> resultDataRowStringList = resultDataRowStringListNullable.Select(x => string.IsNullOrWhiteSpace(x) ? "" : x).ToList();
+                string resultDataRow = symbols[i] + "\t" + resultDataRowStringList.Aggregate((r, n) => r + "\t" + n);
 
+                resultList.Add(resultDataRow);
+            }
+
+            return resultList;
         }
 
         private List<Earning> InterpolateMissingValues(List<Earning> earnings)
         {
             List<Earning> earningsWithInterpolatedValues = new();
-            
+
             for (int eIdx = 0; eIdx < earnings.Count; eIdx++)
             {
                 Earning earning = earnings[eIdx];
