@@ -1,4 +1,5 @@
-﻿using StockAnalyzer.DataProviders.Types;
+﻿using SimpleBrowser;
+using StockAnalyzer.DataProviders.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,6 @@ namespace StockAnalyzer.DataProviders
 {
     public class EdgarProvider : IEdgarProvider
     {
-        record Earning(DateOnly Date, List<long?> Data);
-
         readonly HttpClient _httpClient = new();
 
         public EdgarProvider()
@@ -82,7 +81,7 @@ namespace StockAnalyzer.DataProviders
                 .Select(r => r.Split("\t").ToList())
                 .Select(v => v[0])
                 .ToList();
-            
+
             List<List<long?>> values = data
                 .Skip(1)
                 .Select(r => r.Split("\t").ToList())
@@ -93,7 +92,7 @@ namespace StockAnalyzer.DataProviders
             List<Earning> earnings = CreateEarningsList(dates, values);
             List<Earning> earningsWithInterpolatedValues = InterpolateMissingValues(earnings);
             List<string> resultList = ListOfStringsFromEarnings(earningsWithInterpolatedValues, symbols);
-            
+
             return resultList;
         }
 
@@ -136,7 +135,7 @@ namespace StockAnalyzer.DataProviders
                         List<Earning> earningBefore = earnings.Take(eIdx).ToList();
                         List<Earning> earningAfter = earnings.Skip(eIdx + 1).ToList();
 
-                        if(!(earningBefore.Any(e => e.Data[i].HasValue) && earningAfter.Any(e => e.Data[i].HasValue)))
+                        if (!(earningBefore.Any(e => e.Data[i].HasValue) && earningAfter.Any(e => e.Data[i].HasValue)))
                         {
                             continue;
                         }
@@ -151,13 +150,13 @@ namespace StockAnalyzer.DataProviders
 
                         }
                         earningWithInterpolatedValues = new Earning(earning.Date, dataWithInterpolatedValues);
-                        earningsWithInterpolatedValues.Add(earningWithInterpolatedValues);
+                        earningsWithInterpolatedValues.AddOrMerge(earningWithInterpolatedValues);
                     }
                 }
 
                 if (earningWithInterpolatedValues is null)
                 {
-                    earningsWithInterpolatedValues.Add(new Earning(earning.Date, earning.Data));
+                    earningsWithInterpolatedValues.AddOrMerge(new Earning(earning.Date, earning.Data));
                 }
 
             }
@@ -215,4 +214,24 @@ namespace StockAnalyzer.DataProviders
             return resultList;
         }
     }
+
+    internal record Earning(DateOnly Date, List<long?> Data);
+
+    internal static class EdgarProviderExtensions
+    {
+        public static void AddOrMerge(this List<Earning> earningsList, Earning earning)
+        {
+            Earning? earningToUpdate = earningsList.FirstOrDefault(e=> e.Date == earning.Date);
+
+            if(earningToUpdate == null)
+            {
+                earningsList.Add(earning);
+            }
+            else
+            {
+                earningToUpdate = earningToUpdate with { Data = new List<long?>(earning.Data) }; 
+            }
+        }
+    }
+
 }
