@@ -54,7 +54,7 @@ namespace StockAnalyzer.DataProviders
         public async Task<IEnumerable<string>> StockholdersEquity(string symbol)
         {
             string cik = await Cik(symbol);
-            string url = $"https://data.sec.gov/api/xbrl/companyconcept/CIK{cik}/us-gaap/LiabilitiesAndStockholdersEquity.json";
+            string url = $"https://data.sec.gov/api/xbrl/companyconcept/CIK{cik}/us-gaap/StockholdersEquity.json";
             var response = await _httpClient.GetStringAsync(url);
 
             var liabilitiesAndStockholdersEquity = JsonSerializer.Deserialize<LiabilitiesAndStockholdersEquity>(response) ?? throw new Exception();
