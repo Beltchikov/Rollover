@@ -51,7 +51,7 @@ namespace StockAnalyzer.DataProviders
             string url = $"https://data.sec.gov/api/xbrl/companyconcept/CIK{await Cik(symbol)}/us-gaap/StockholdersEquity.json";
             var response = await _httpClient.GetStringAsync(url);
             
-            var stockholdersEquity = JsonSerializer.Deserialize<StockholdersEquity>(response) ?? throw new Exception();
+            var stockholdersEquity = JsonSerializer.Deserialize<CompanyConcept>(response) ?? throw new Exception();
             List<USD> distinctUsdUnits = stockholdersEquity.units.USD.DistinctBy(u => u.end).ToList();
 
             List<string> headers = distinctUsdUnits.Select(u => u.end).ToList() ?? new List<string>();
@@ -68,7 +68,7 @@ namespace StockAnalyzer.DataProviders
             string url = $"https://data.sec.gov/api/xbrl/companyconcept/CIK{await Cik(symbol)}/us-gaap/LongTermDebt.json";
             var response = await _httpClient.GetStringAsync(url);
 
-            var longTermDebt = JsonSerializer.Deserialize<LongTermDebt>(response) ?? throw new Exception();
+            var longTermDebt = JsonSerializer.Deserialize<CompanyConcept>(response) ?? throw new Exception();
             List<USD> distinctUsdUnits = longTermDebt.units.USD.DistinctBy(u => u.end).ToList();
 
             List<string> headers = distinctUsdUnits.Select(u => u.end).ToList() ?? new List<string>();
