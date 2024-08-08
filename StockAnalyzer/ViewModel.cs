@@ -91,21 +91,24 @@ namespace StockAnalyzer
             LongTermDebtCommand = new RelayCommand(async () =>
             {
                 // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/LongTermDebt.json
-                ResultCollectionEdgar = new ObservableCollection<string>(await edgarProvider.LongTermDebt(TickerCollectionEdgar.ToList()));
+                ResultCollectionEdgar = new ObservableCollection<string>(
+                    await edgarProvider.BatchProcessing(TickerCollectionEdgar.ToList(), edgarProvider.LongTermDebt));
 
             });
 
             DividendsCommand = new RelayCommand(async () =>
             {
                 // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/PaymentsOfDividends.json
-                ResultCollectionEdgar = new ObservableCollection<string>(await edgarProvider.Dividends(TickerCollectionEdgar.ToList()));
+                ResultCollectionEdgar = new ObservableCollection<string>(
+                    await edgarProvider.BatchProcessing(TickerCollectionEdgar.ToList(), edgarProvider.Dividends));
 
             });
 
             NetIncomeCommand = new RelayCommand(async () =>
             {
                 // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/NetIncomeLoss.json
-                ResultCollectionEdgar = new ObservableCollection<string>(await edgarProvider.NetIncome(TickerCollectionEdgar.ToList()));
+                ResultCollectionEdgar = new ObservableCollection<string>(
+                    await edgarProvider.BatchProcessing(TickerCollectionEdgar.ToList(), edgarProvider.NetIncome));
 
             });
 

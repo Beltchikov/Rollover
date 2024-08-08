@@ -1,5 +1,7 @@
-﻿using SimpleBrowser;
+﻿using Microsoft.CodeAnalysis;
+using SimpleBrowser;
 using StockAnalyzer.DataProviders.Types;
+using StockAnalyzer.DataProviders.Types.UsGaap;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,36 +40,19 @@ namespace StockAnalyzer.DataProviders
             List<List<string>> symbolDataList = new();
             foreach (var symbol in symbolList)
             {
-                //symbolDataList.Add((await StockholdersEquity(symbol)).ToList());
                 symbolDataList.Add((await processingFunc(symbol)).ToList());
             }
             
             return TableForMultipleSymbols(symbolList, symbolDataList).ToList();
         }
 
-        public Task<IEnumerable<string>> Dividends(List<string> list)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<string>> LongTermDebt(List<string> list)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<string>> NetIncome(List<string> list)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<IEnumerable<string>> StockholdersEquity(string symbol)
         {
-            string cik = await Cik(symbol);
-            string url = $"https://data.sec.gov/api/xbrl/companyconcept/CIK{cik}/us-gaap/StockholdersEquity.json";
+            string url = $"https://data.sec.gov/api/xbrl/companyconcept/CIK{await Cik(symbol)}/us-gaap/StockholdersEquity.json";
             var response = await _httpClient.GetStringAsync(url);
-
-            var liabilitiesAndStockholdersEquity = JsonSerializer.Deserialize<LiabilitiesAndStockholdersEquity>(response) ?? throw new Exception();
-            List<USD> distinctUsdUnits = liabilitiesAndStockholdersEquity.units.USD.DistinctBy(u => u.end).ToList();
+            
+            var stockholdersEquity = JsonSerializer.Deserialize<StockholdersEquity>(response) ?? throw new Exception();
+            List<USD> distinctUsdUnits = stockholdersEquity.units.USD.DistinctBy(u => u.end).ToList();
 
             List<string> headers = distinctUsdUnits.Select(u => u.end).ToList() ?? new List<string>();
             var header = headers.Aggregate((r, n) => r + "\t" + n);
@@ -76,6 +61,27 @@ namespace StockAnalyzer.DataProviders
             var data = dataList.Aggregate((r, n) => r + "\t" + n);
 
             return new List<string>() { header, data };
+        }
+
+        public async Task<IEnumerable<string>> LongTermDebt(string symbol)
+        {
+            string url = $"https://data.sec.gov/api/xbrl/companyconcept/CIK{await Cik(symbol)}/us-gaap/LongTermDebt.json";
+            var response = await _httpClient.GetStringAsync(url);
+
+            var longTermDebt = JsonSerializer.Deserialize<LongTermDebt>(response) ?? throw new Exception();
+
+            throw new NotImplementedException();
+
+        }
+
+        public Task<IEnumerable<string>> Dividends(string symbol)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<string>> NetIncome(string symbol)
+        {
+            throw new NotImplementedException();
         }
 
         public IEnumerable<string> InterpolateDataForMissingDates(List<string> data)
