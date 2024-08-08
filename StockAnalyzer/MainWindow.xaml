@@ -104,7 +104,7 @@ HorizontalAlignment="Stretch" VerticalAlignment="Center" Command="{Binding NetIn
                             <TextBox x:Name="txtResultsEdgar" 
        Text="{Binding ResultCollectionEdgar, Converter={StaticResource ListToStringConverter}}" Grid.Column="3" Grid.Row="2" 
        AcceptsReturn="True"
-          VerticalScrollBarVisibility="Visible"></TextBox>
+          VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto"></TextBox>
                             <Button Grid.Column="3" Grid.Row="4" Width="200" HorizontalAlignment="Left" ToolTip="Interpolate data for missing dates." Command="{Binding InterpolateCommand}">Interpolate</Button>
 
                         </Grid>
