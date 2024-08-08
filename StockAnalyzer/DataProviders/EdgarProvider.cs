@@ -69,9 +69,15 @@ namespace StockAnalyzer.DataProviders
             var response = await _httpClient.GetStringAsync(url);
 
             var longTermDebt = JsonSerializer.Deserialize<LongTermDebt>(response) ?? throw new Exception();
+            List<USD> distinctUsdUnits = longTermDebt.units.USD.DistinctBy(u => u.end).ToList();
 
-            throw new NotImplementedException();
+            List<string> headers = distinctUsdUnits.Select(u => u.end).ToList() ?? new List<string>();
+            var header = headers.Aggregate((r, n) => r + "\t" + n);
 
+            List<string> dataList = distinctUsdUnits.Select(u => u.val.ToString() ?? "").ToList() ?? new List<string>();
+            var data = dataList.Aggregate((r, n) => r + "\t" + n);
+
+            return new List<string>() { header, data };
         }
 
         public Task<IEnumerable<string>> Dividends(string symbol)
