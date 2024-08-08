@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace StockAnalyzer.DataProviders
@@ -11,6 +12,6 @@ namespace StockAnalyzer.DataProviders
         Task<IEnumerable<string>> LongTermDebt(List<string> list);
         Task<IEnumerable<string>> NetIncome(List<string> list);
         Task<IEnumerable<string>> StockholdersEquity(string symbol);
-        Task<IEnumerable<string>> StockholdersEquity(List<string> symbolList);
+        Task<IEnumerable<string>> BatchProcessing(List<string> symbolList, Func<string, Task<IEnumerable<string>>> processingFunc);
     }
 }

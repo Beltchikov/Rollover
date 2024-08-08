@@ -83,7 +83,8 @@ namespace StockAnalyzer
             EquityCommand = new RelayCommand(async () =>
             {
                 // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/StockholdersEquity.json
-                ResultCollectionEdgar = new ObservableCollection<string>(await edgarProvider.StockholdersEquity(TickerCollectionEdgar.ToList()));
+                ResultCollectionEdgar = new ObservableCollection<string>(
+                    await edgarProvider.BatchProcessing(TickerCollectionEdgar.ToList(), edgarProvider.StockholdersEquity));
 
             });
 

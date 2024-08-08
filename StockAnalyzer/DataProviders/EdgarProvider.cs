@@ -33,12 +33,13 @@ namespace StockAnalyzer.DataProviders
             return cik;
         }
 
-        public async Task<IEnumerable<string>> StockholdersEquity(List<string> symbolList)
+        public async Task<IEnumerable<string>> BatchProcessing(List<string> symbolList, Func<string, Task<IEnumerable<string>>> processingFunc)
         {
             List<List<string>> symbolDataList = new();
             foreach (var symbol in symbolList)
             {
-                symbolDataList.Add((await StockholdersEquity(symbol)).ToList());
+                //symbolDataList.Add((await StockholdersEquity(symbol)).ToList());
+                symbolDataList.Add((await processingFunc(symbol)).ToList());
             }
             
             return TableForMultipleSymbols(symbolList, symbolDataList).ToList();
