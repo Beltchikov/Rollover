@@ -1,5 +1,4 @@
 ﻿using Microsoft.CodeAnalysis;
-using SimpleBrowser;
 using StockAnalyzer.DataProviders.Types;
 using StockAnalyzer.DataProviders.Types.UsGaap;
 using System;
@@ -35,20 +34,23 @@ namespace StockAnalyzer.DataProviders
             return cik;
         }
 
-        public async Task<IEnumerable<string>> BatchProcessing(List<string> symbolList, Func<string, Task<IEnumerable<string>>> processingFunc)
+        public async Task<IEnumerable<string>> BatchProcessing(
+            List<string> symbolList,
+            string companyConcept,
+            Func<string, string, Task<IEnumerable<string>>> processingFunc)
         {
             List<List<string>> symbolDataList = new();
             foreach (var symbol in symbolList)
             {
-                symbolDataList.Add((await processingFunc(symbol)).ToList());
+                symbolDataList.Add((await processingFunc(symbol, companyConcept)).ToList());
             }
             
             return TableForMultipleSymbols(symbolList, symbolDataList).ToList();
         }
 
-        public async Task<IEnumerable<string>> StockholdersEquity(string symbol)
+        public async Task<IEnumerable<string>> CompanyConcept(string symbol, string companyConcept)
         {
-            string url = $"https://data.sec.gov/api/xbrl/companyconcept/CIK{await Cik(symbol)}/us-gaap/StockholdersEquity.json";
+            string url = $"https://data.sec.gov/api/xbrl/companyconcept/CIK{await Cik(symbol)}/us-gaap/{companyConcept}.json";
             var response = await _httpClient.GetStringAsync(url);
             
             var stockholdersEquity = JsonSerializer.Deserialize<CompanyConcept>(response) ?? throw new Exception();
@@ -61,33 +63,6 @@ namespace StockAnalyzer.DataProviders
             var data = dataList.Aggregate((r, n) => r + "\t" + n);
 
             return new List<string>() { header, data };
-        }
-
-        public async Task<IEnumerable<string>> LongTermDebt(string symbol)
-        {
-            string url = $"https://data.sec.gov/api/xbrl/companyconcept/CIK{await Cik(symbol)}/us-gaap/LongTermDebt.json";
-            var response = await _httpClient.GetStringAsync(url);
-
-            var longTermDebt = JsonSerializer.Deserialize<CompanyConcept>(response) ?? throw new Exception();
-            List<USD> distinctUsdUnits = longTermDebt.units.USD.DistinctBy(u => u.end).ToList();
-
-            List<string> headers = distinctUsdUnits.Select(u => u.end).ToList() ?? new List<string>();
-            var header = headers.Aggregate((r, n) => r + "\t" + n);
-
-            List<string> dataList = distinctUsdUnits.Select(u => u.val.ToString() ?? "").ToList() ?? new List<string>();
-            var data = dataList.Aggregate((r, n) => r + "\t" + n);
-
-            return new List<string>() { header, data };
-        }
-
-        public Task<IEnumerable<string>> Dividends(string symbol)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<string>> NetIncome(string symbol)
-        {
-            throw new NotImplementedException();
         }
 
         public IEnumerable<string> InterpolateDataForMissingDates(List<string> data)

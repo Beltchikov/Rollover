@@ -84,7 +84,7 @@ namespace StockAnalyzer
             {
                 // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/StockholdersEquity.json
                 ResultCollectionEdgar = new ObservableCollection<string>(
-                    await edgarProvider.BatchProcessing(TickerCollectionEdgar.ToList(), edgarProvider.StockholdersEquity));
+                    await edgarProvider.BatchProcessing(TickerCollectionEdgar.ToList(), "StockholdersEquity", edgarProvider.CompanyConcept));
 
             });
 
@@ -92,7 +92,7 @@ namespace StockAnalyzer
             {
                 // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/LongTermDebt.json
                 ResultCollectionEdgar = new ObservableCollection<string>(
-                    await edgarProvider.BatchProcessing(TickerCollectionEdgar.ToList(), edgarProvider.LongTermDebt));
+                    await edgarProvider.BatchProcessing(TickerCollectionEdgar.ToList(), "LongTermDebt", edgarProvider.CompanyConcept));
 
             });
 
@@ -100,7 +100,7 @@ namespace StockAnalyzer
             {
                 // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/PaymentsOfDividends.json
                 ResultCollectionEdgar = new ObservableCollection<string>(
-                    await edgarProvider.BatchProcessing(TickerCollectionEdgar.ToList(), edgarProvider.Dividends));
+                    await edgarProvider.BatchProcessing(TickerCollectionEdgar.ToList(), "PaymentsOfDividends", edgarProvider.CompanyConcept));
 
             });
 
@@ -108,13 +108,9 @@ namespace StockAnalyzer
             {
                 // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/NetIncomeLoss.json
                 ResultCollectionEdgar = new ObservableCollection<string>(
-                    await edgarProvider.BatchProcessing(TickerCollectionEdgar.ToList(), edgarProvider.NetIncome));
+                    await edgarProvider.BatchProcessing(TickerCollectionEdgar.ToList(), "NetIncomeLoss", edgarProvider.CompanyConcept));
 
             });
-
-            //     public ICommand  { get; }
-            //public ICommand  { get; }
-            //public ICommand  { get; }
 
             InterpolateCommand = new RelayCommand(() =>
             {
