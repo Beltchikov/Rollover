@@ -85,12 +85,17 @@
           VerticalScrollBarVisibility="Visible"></TextBox>
 
                             <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="2" >
-                                <Button Padding="10 0 10 0" 
-      Margin="10,0,10,0" 
-                Height="25" 
-          HorizontalAlignment="Stretch"
-              VerticalAlignment="Center" 
-              Command="{Binding EquityCommand}">Equity >>
+                                <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="25" 
+                                    HorizontalAlignment="Stretch" VerticalAlignment="Center" Command="{Binding EquityCommand}">Equity >>
+                                </Button>
+                                <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="25" 
+     HorizontalAlignment="Stretch" VerticalAlignment="Center" Command="{Binding LongTermDebtCommand}">Long-Term Debt >>
+                                </Button>
+                                <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="25" 
+HorizontalAlignment="Stretch" VerticalAlignment="Center" Command="{Binding DividendsCommand}">Dividends>>
+                                </Button>
+                                <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="25" 
+HorizontalAlignment="Stretch" VerticalAlignment="Center" Command="{Binding NetIncomeCommand}">Net Income>>
                                 </Button>
                             </StackPanel>
 

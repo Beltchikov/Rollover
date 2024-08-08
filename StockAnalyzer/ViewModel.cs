@@ -49,6 +49,9 @@ namespace StockAnalyzer
         private ObservableCollection<string> _resultCollectionTwsSummary = null!;
 
         public ICommand EquityCommand { get; }
+        public ICommand LongTermDebtCommand { get; }
+        public ICommand DividendsCommand { get; }
+        public ICommand NetIncomeCommand { get; }
         public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
         public ICommand EarningsForWeekCommand { get; }
@@ -79,10 +82,35 @@ namespace StockAnalyzer
 
             EquityCommand = new RelayCommand(async () =>
             {
-                // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/LiabilitiesAndStockholdersEquity.json
+                // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/StockholdersEquity.json
                 ResultCollectionEdgar = new ObservableCollection<string>(await edgarProvider.StockholdersEquity(TickerCollectionEdgar.ToList()));
 
             });
+
+            LongTermDebtCommand = new RelayCommand(async () =>
+            {
+                // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/LongTermDebt.json
+                ResultCollectionEdgar = new ObservableCollection<string>(await edgarProvider.LongTermDebt(TickerCollectionEdgar.ToList()));
+
+            });
+
+            DividendsCommand = new RelayCommand(async () =>
+            {
+                // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/PaymentsOfDividends.json
+                ResultCollectionEdgar = new ObservableCollection<string>(await edgarProvider.Dividends(TickerCollectionEdgar.ToList()));
+
+            });
+
+            NetIncomeCommand = new RelayCommand(async () =>
+            {
+                // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/NetIncomeLoss.json
+                ResultCollectionEdgar = new ObservableCollection<string>(await edgarProvider.NetIncome(TickerCollectionEdgar.ToList()));
+
+            });
+
+            //     public ICommand  { get; }
+            //public ICommand  { get; }
+            //public ICommand  { get; }
 
             InterpolateCommand = new RelayCommand(() =>
             {

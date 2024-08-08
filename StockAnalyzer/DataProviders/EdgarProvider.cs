@@ -40,15 +40,23 @@ namespace StockAnalyzer.DataProviders
             {
                 symbolDataList.Add((await StockholdersEquity(symbol)).ToList());
             }
-
-            //// Test
-            //symbolList = new List<string> { "A", "B" };
-            //symbolDataList = new List<List<string>> {
-            //    new List<string>{"2024-01-01\t2024-03-01\t2024-04-01", "10\t30\t40" },
-            //    new List<string>{"2024-01-01\t2024-02-01\t2024-04-01", "100\t200\t400" }
-            //};
-
+            
             return TableForMultipleSymbols(symbolList, symbolDataList).ToList();
+        }
+
+        public Task<IEnumerable<string>> Dividends(List<string> list)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<string>> LongTermDebt(List<string> list)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<string>> NetIncome(List<string> list)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<string>> StockholdersEquity(string symbol)
@@ -222,7 +230,7 @@ namespace StockAnalyzer.DataProviders
         public static void AddOrMerge(this List<Earning> earningsList, Earning earning)
         {
             Earning? earningToUpdate = earningsList.FirstOrDefault(e => e.Date == earning.Date);
-            int idx = -1;   
+            int idx = -1;
             if (earningToUpdate == null)
             {
                 earningsList.Add(earning);
@@ -244,7 +252,7 @@ namespace StockAnalyzer.DataProviders
                     }
                 }
 
-                idx = earningsList.IndexOf(earningToUpdate);    
+                idx = earningsList.IndexOf(earningToUpdate);
                 earningToUpdate = earningToUpdate with { Data = updatedDataList };
                 earningsList[idx] = earningToUpdate;
             }
