@@ -1,6 +1,4 @@
-﻿using OpenQA.Selenium;
-
-namespace StockAnalyzer.DataProviders.Types
+﻿namespace StockAnalyzer.DataProviders.Types
 {
     public class WithError<T>
     {
