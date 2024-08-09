@@ -57,10 +57,10 @@ namespace StockAnalyzer.DataProviders
             List<USD> distinctUsdUnits = stockholdersEquity.units.USD.DistinctBy(u => u.end).ToList();
 
             List<string> headers = distinctUsdUnits.Select(u => u.end).ToList() ?? new List<string>();
-            var header = $"Errors\t" + headers.Aggregate((r, n) => r + "\t" + n);
+            var header = headers.Aggregate((r, n) => r + "\t" + n);
 
             List<string> dataList = distinctUsdUnits.Select(u => u.val.ToString() ?? "").ToList() ?? new List<string>();
-            var data = $"\t" + dataList.Aggregate((r, n) => r + "\t" + n);
+            var data = dataList.Aggregate((r, n) => r + "\t" + n);
 
             return new List<string>() { header, data };
         }
@@ -188,7 +188,7 @@ namespace StockAnalyzer.DataProviders
                             .Distinct()
                             .OrderBy(s => s)
                             .ToList();
-            List<string> resultList = new() { "Symbol\t" + uniqueDatesStringsListSorted.Aggregate((r, n) => r + "\t" + n) };
+            List<string> resultList = new() { "Symbol\t" + "Errors\t" + uniqueDatesStringsListSorted.Aggregate((r, n) => r + "\t" + n) };
 
             string dataRow = "";
             for (int i = 0; i < symbols.Count; i++)
