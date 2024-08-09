@@ -16,5 +16,8 @@
 
         public T? Value { get; private set; }
         public string? Error { get; private set; }
+
+        public bool HasValue => Value != null;
+        public bool HasError=> ! string.IsNullOrWhiteSpace(Error);
     }
 }
