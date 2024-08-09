@@ -50,7 +50,7 @@ namespace StockAnalyzer.DataProviders
                 {
                     symbolData = symbolDataOrError.Data.ToList();
                     symbolDataList.Add(symbolData);
-                    
+
                     errorsOfAllSymbolsList.Add("");
                 }
                 else
@@ -226,11 +226,13 @@ namespace StockAnalyzer.DataProviders
             List<List<string>> symbolDataList)
         {
             List<string> uniqueDatesStringsListSorted = symbolDataList
-                            .Select(d => d[0])
-                            .SelectMany(u => u.Split("\t"))
-                            .Distinct()
-                            .OrderBy(s => s)
-                            .ToList();
+                .Where(s => s.Any())  
+                .Select(d => d[0])
+                .SelectMany(u => u.Split("\t"))
+                .Distinct()
+                .OrderBy(s => s)
+                .ToList();
+
             List<string> resultList = new() { "Symbol\t" + "Errors\t" + uniqueDatesStringsListSorted.Aggregate((r, n) => r + "\t" + n) };
 
             string dataRow = "";
@@ -238,11 +240,13 @@ namespace StockAnalyzer.DataProviders
             {
                 string symbol = symbols[i];
                 string errors = errorsList[i];
-                dataRow = symbol + "\t" + errors;   
-               
+                dataRow = symbol + "\t" + errors;
+
                 List<List<string>> symbolData = symbolDataList[i].Select(l => l.Split("\t").ToList()).ToList();
                 foreach (var date in uniqueDatesStringsListSorted)
                 {
+                    if (!symbolData.Any()) continue;
+                    
                     int ii = symbolData.First().IndexOf(date);
                     string data = ii >= 0 ? symbolData.Last()[ii] : null!;
                     dataRow += ("\t" + data);
