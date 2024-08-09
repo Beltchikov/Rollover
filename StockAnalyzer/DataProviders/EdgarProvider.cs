@@ -188,7 +188,7 @@ namespace StockAnalyzer.DataProviders
                             .Distinct()
                             .OrderBy(s => s)
                             .ToList();
-            List<string> resultList = new() { "Symbol\t" + "Errors\t" + uniqueDatesStringsListSorted.Aggregate((r, n) => r + "\t" + n) };
+            List<string> resultList = new() { "Symbol\t" + uniqueDatesStringsListSorted.Aggregate((r, n) => r + "\t" + n) };
 
             string dataRow = "";
             for (int i = 0; i < symbols.Count; i++)
