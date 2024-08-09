@@ -52,34 +52,34 @@ namespace StockAnalyzer.DataProviders
                 // Button Accept All Cookies
                 var buttonAcceptAllCookiesOrError = WaitUntilElementExists(driver, By.XPath(
                     "//button[text() = 'Accept All Cookies']"), false);
-                buttonAcceptAllCookiesOrError.Value?.Click();
+                buttonAcceptAllCookiesOrError.Data?.Click();
 
                 // EPS
                 WithError<IWebElement> epsElement = WaitUntilElementExists(driver, By.XPath(
                     "//div[text() = 'EPS (FWD)']/../following-sibling::*/div"));
                 if (epsElement.Error != null) result.Add(epsElement.Error);
-                if (epsElement.Value != null) result.Add(epsElement.Value.Text);
+                if (epsElement.Data != null) result.Add(epsElement.Data.Text);
                 
                 // ROE
                 //div[text() = 'Return on Equity']/../following-sibling::*/div
                 WithError<IWebElement> roeElement = WaitUntilElementExists(driver, By.XPath(
                     "//div[text() = 'Return on Equity']/../following-sibling::*/div"));
                 if (roeElement.Error != null) result.Add(roeElement.Error);
-                if (roeElement.Value != null) result.Add(roeElement.Value.Text);
+                if (roeElement.Data != null) result.Add(roeElement.Data.Text);
 
                 // DIV
                 // //div[text() = 'Latest Announced Dividend']/../following-sibling::*/div
                 WithError<IWebElement> divElement = WaitUntilElementExists(driver, By.XPath(
                     "//div[text() = 'Latest Announced Dividend']/../following-sibling::*/div"));
                 if (divElement.Error != null) result.Add(divElement.Error);
-                if (divElement.Value != null) result.Add(divElement.Value.Text);
+                if (divElement.Data != null) result.Add(divElement.Data.Text);
 
                 // Beta
                 // //div[text() = '24M Beta']/../following-sibling::*/div
                 WithError<IWebElement> betaElement = WaitUntilElementExists(driver, By.XPath(
                     "//div[text() = '24M Beta']/../following-sibling::*/div"));
                 if (betaElement.Error != null) result.Add(betaElement.Error);
-                if (betaElement.Value != null) result.Add(betaElement.Value.Text);
+                if (betaElement.Data != null) result.Add(betaElement.Data.Text);
 
                 driver.Quit();
                 process.Kill();

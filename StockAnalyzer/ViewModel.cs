@@ -84,7 +84,7 @@ namespace StockAnalyzer
             {
                 // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/StockholdersEquity.json
                 ResultCollectionEdgar = new ObservableCollection<string>(
-                    await edgarProvider.BatchProcessing(TickerCollectionEdgar.ToList(), "StockholdersEquity", edgarProvider.CompanyConcept));
+                    await edgarProvider.BatchProcessing(TickerCollectionEdgar.ToList(), "StockholdersEquity", edgarProvider.CompanyConceptOrError));
 
             });
 
@@ -92,7 +92,7 @@ namespace StockAnalyzer
             {
                 // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/LongTermDebt.json
                 ResultCollectionEdgar = new ObservableCollection<string>(
-                    await edgarProvider.BatchProcessing(TickerCollectionEdgar.ToList(), "LongTermDebt", edgarProvider.CompanyConcept));
+                    await edgarProvider.BatchProcessing(TickerCollectionEdgar.ToList(), "LongTermDebt", edgarProvider.CompanyConceptOrError));
 
             });
 
@@ -100,7 +100,7 @@ namespace StockAnalyzer
             {
                 // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/PaymentsOfDividends.json
                 ResultCollectionEdgar = new ObservableCollection<string>(
-                    await edgarProvider.BatchProcessing(TickerCollectionEdgar.ToList(), "PaymentsOfDividends", edgarProvider.CompanyConcept));
+                    await edgarProvider.BatchProcessing(TickerCollectionEdgar.ToList(), "PaymentsOfDividends", edgarProvider.CompanyConceptOrError));
 
             });
 
@@ -108,7 +108,7 @@ namespace StockAnalyzer
             {
                 // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/NetIncomeLoss.json
                 ResultCollectionEdgar = new ObservableCollection<string>(
-                    await edgarProvider.BatchProcessing(TickerCollectionEdgar.ToList(), "NetIncomeLoss", edgarProvider.CompanyConcept));
+                    await edgarProvider.BatchProcessing(TickerCollectionEdgar.ToList(), "NetIncomeLoss", edgarProvider.CompanyConceptOrError));
 
             });
 

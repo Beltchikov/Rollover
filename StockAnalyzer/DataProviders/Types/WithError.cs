@@ -2,22 +2,22 @@
 {
     public class WithError<T>
     {
-        public WithError(T? value)
+        public WithError(T? data)
         {            
-            Value = value;
+            Data = data;
             Error = null;  
         }
 
         public WithError(string error)
         {
             Error = error; 
-            Value = default; 
+            Data = default; 
         }
 
-        public T? Value { get; private set; }
+        public T? Data { get; private set; }
         public string? Error { get; private set; }
 
-        public bool HasValue => Value != null;
+        public bool HasData => Data != null;
         public bool HasError=> ! string.IsNullOrWhiteSpace(Error);
     }
 }

@@ -37,39 +37,79 @@ namespace StockAnalyzer.DataProviders
         public async Task<IEnumerable<string>> BatchProcessing(
             List<string> symbolList,
             string companyConcept,
-            Func<string, string, Task<IEnumerable<string>>> processingFunc)
+            Func<string, string, Task<WithError<IEnumerable<string>>>> processingFunc)
         {
             List<List<string>> symbolDataList = new();
+            List<string> errorsOfAllSymbolsList = new();
             foreach (var symbol in symbolList)
             {
-                symbolDataList.Add((await processingFunc(symbol, companyConcept)).ToList());
+                string error = "";
+                List<string> symbolData = null!;
+                WithError<IEnumerable<string>> symbolDataOrError = await processingFunc(symbol, companyConcept);
+                if (symbolDataOrError.Data != null)
+                {
+                    symbolData = symbolDataOrError.Data.ToList();
+                    symbolDataList.Add(symbolData);
+                    
+                    errorsOfAllSymbolsList.Add("");
+                }
+                else
+                {
+                    error = symbolDataOrError.Error ?? throw new Exception();
+                    errorsOfAllSymbolsList.Add(error);
+
+                    symbolDataList.Add(new List<string>());
+                }
             }
-            
-            return TableForMultipleSymbols(symbolList, symbolDataList).ToList();
+
+            return TableForMultipleSymbols(symbolList, errorsOfAllSymbolsList, symbolDataList).ToList();
         }
 
-        public async Task<IEnumerable<string>> CompanyConcept(string symbol, string companyConcept)
+        public async Task<WithError<IEnumerable<string>>> CompanyConceptOrError(string symbol, string companyConcept)
         {
+            WithError<IEnumerable<string>> resultListOrError = null!;
+            List<string> resultList = new();
+            string error = "";
+
             string url = $"https://data.sec.gov/api/xbrl/companyconcept/CIK{await Cik(symbol)}/us-gaap/{companyConcept}.json";
-            var response = await _httpClient.GetStringAsync(url);
-            
-            var stockholdersEquity = JsonSerializer.Deserialize<CompanyConcept>(response) ?? throw new Exception();
-            List<USD> distinctUsdUnits = stockholdersEquity.units.USD.DistinctBy(u => u.end).ToList();
 
-            List<string> headers = distinctUsdUnits.Select(u => u.end).ToList() ?? new List<string>();
-            var header = headers.Aggregate((r, n) => r + "\t" + n);
+            CompanyConcept companyConceptData = null!;
+            try
+            {
+                var response = await _httpClient.GetStringAsync(url);
+                companyConceptData = JsonSerializer.Deserialize<CompanyConcept>(response) ?? throw new Exception();
 
-            List<string> dataList = distinctUsdUnits.Select(u => u.val.ToString() ?? "").ToList() ?? new List<string>();
-            var data = dataList.Aggregate((r, n) => r + "\t" + n);
+                List<USD> distinctUsdUnits = companyConceptData.units.USD.DistinctBy(u => u.end).ToList();
+                List<string> headerColumns = distinctUsdUnits.Select(u => u.end).ToList() ?? new List<string>();
+                string? header = headerColumns.Aggregate((r, n) => r + "\t" + n);
 
-            return new List<string>() { header, data };
+                List<string> dataList = distinctUsdUnits.Select(u => u.val.ToString() ?? "").ToList() ?? new List<string>();
+                string? data = dataList.Aggregate((r, n) => r + "\t" + n);
+
+                resultList.AddRange(new List<string>() { header, data });
+            }
+            catch (Exception ex)
+            {
+                error = ex.ToString();
+            }
+
+            if (resultList.Any())
+            {
+                resultListOrError = new WithError<IEnumerable<string>>(resultList);
+            }
+            else
+            {
+                resultListOrError = new WithError<IEnumerable<string>>(error);
+            }
+
+            return resultListOrError;
         }
 
         public IEnumerable<string> InterpolateDataForMissingDates(List<string> data)
         {
             List<DateOnly> dates = data[0]
                 .Split("\t")
-                .Skip(1)
+                .Skip(2)
                 .Select(s => DateOnly.ParseExact(s, "yyyy-MM-dd")).ToList();
 
             List<string> symbols = data
@@ -81,7 +121,7 @@ namespace StockAnalyzer.DataProviders
             List<List<long?>> values = data
                 .Skip(1)
                 .Select(r => r.Split("\t").ToList())
-                .Select(v => v.Skip(1).ToList())
+                .Select(v => v.Skip(2).ToList())
                 .Select(r => r.Select(v => (long?)(string.IsNullOrWhiteSpace(v) ? null : long.Parse(v))).ToList())
                 .ToList();
 
@@ -180,7 +220,10 @@ namespace StockAnalyzer.DataProviders
             return earnings;
         }
 
-        private static IEnumerable<string> TableForMultipleSymbols(List<string> symbols, List<List<string>> symbolDataList)
+        private static IEnumerable<string> TableForMultipleSymbols(
+            List<string> symbols,
+            List<string> errorsList,
+            List<List<string>> symbolDataList)
         {
             List<string> uniqueDatesStringsListSorted = symbolDataList
                             .Select(d => d[0])
@@ -188,15 +231,16 @@ namespace StockAnalyzer.DataProviders
                             .Distinct()
                             .OrderBy(s => s)
                             .ToList();
-            List<string> resultList = new() { "Symbol\t" + uniqueDatesStringsListSorted.Aggregate((r, n) => r + "\t" + n) };
+            List<string> resultList = new() { "Symbol\t" + "Errors\t" + uniqueDatesStringsListSorted.Aggregate((r, n) => r + "\t" + n) };
 
             string dataRow = "";
             for (int i = 0; i < symbols.Count; i++)
             {
                 string symbol = symbols[i];
-                dataRow = symbol;
+                string errors = errorsList[i];
+                dataRow = symbol + "\t" + errors;   
+               
                 List<List<string>> symbolData = symbolDataList[i].Select(l => l.Split("\t").ToList()).ToList();
-
                 foreach (var date in uniqueDatesStringsListSorted)
                 {
                     int ii = symbolData.First().IndexOf(date);
