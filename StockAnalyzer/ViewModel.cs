@@ -100,7 +100,10 @@ namespace StockAnalyzer
             {
                 // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/PaymentsOfDividends.json
                 ResultCollectionEdgar = new ObservableCollection<string>(
-                    await edgarProvider.BatchProcessing(TickerCollectionEdgar.ToList(), "PaymentsOfDividends", edgarProvider.CompanyConceptOrError));
+                    await edgarProvider.BatchProcessing(
+                        TickerCollectionEdgar.ToList(),
+                        new string[] { "DividendsCommonStockCash", "DividendsCash", "Dividends", "PaymentsOfDividends" },
+                        edgarProvider.CompanyConceptOrError));
 
             });
 
