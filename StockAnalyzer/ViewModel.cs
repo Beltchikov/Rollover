@@ -84,7 +84,10 @@ namespace StockAnalyzer
             {
                 // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/StockholdersEquity.json
                 ResultCollectionEdgar = new ObservableCollection<string>(
-                    await edgarProvider.BatchProcessing(TickerCollectionEdgar.ToList(), "StockholdersEquity", edgarProvider.CompanyConceptOrError));
+                    await edgarProvider.BatchProcessing(
+                        TickerCollectionEdgar.ToList(),
+                        new string[] { "StockholdersEquity"},
+                        edgarProvider.CompanyConceptOrError));
 
             });
 
@@ -92,7 +95,10 @@ namespace StockAnalyzer
             {
                 // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/LongTermDebt.json
                 ResultCollectionEdgar = new ObservableCollection<string>(
-                    await edgarProvider.BatchProcessing(TickerCollectionEdgar.ToList(), "LongTermDebt", edgarProvider.CompanyConceptOrError));
+                    await edgarProvider.BatchProcessing(
+                        TickerCollectionEdgar.ToList(),
+                        new string[] { "LongTermDebt" },
+                        edgarProvider.CompanyConceptOrError));
 
             });
 
@@ -111,9 +117,12 @@ namespace StockAnalyzer
             {
                 // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/NetIncomeLoss.json
                 ResultCollectionEdgar = new ObservableCollection<string>(
-                    await edgarProvider.BatchProcessing(TickerCollectionEdgar.ToList(), "NetIncomeLoss", edgarProvider.CompanyConceptOrError));
+                    await edgarProvider.BatchProcessing(
+                        TickerCollectionEdgar.ToList(),
+                        new string[] { "NetIncomeLoss" },
+                        edgarProvider.CompanyConceptOrError));
 
-            });
+            }); 
 
             InterpolateCommand = new RelayCommand(() =>
             {

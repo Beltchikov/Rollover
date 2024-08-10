@@ -35,31 +35,6 @@ namespace StockAnalyzer.DataProviders
         }
 
         public async Task<IEnumerable<string>> BatchProcessing(
-            List<string> symbolList,
-            string companyConcept,
-            Func<string, string, Task<WithError<IEnumerable<string>>>> processingFunc)
-        {
-            List<List<string>> symbolDataList = new();
-            List<string> errorsOfAllSymbolsList = new();
-            foreach (var symbol in symbolList)
-            {
-                WithError<IEnumerable<string>> symbolDataOrError = await processingFunc(symbol, companyConcept);
-                if (symbolDataOrError.Data != null)
-                {
-                    symbolDataList.Add(symbolDataOrError.Data.ToList());
-                    errorsOfAllSymbolsList.Add("");
-                }
-                else
-                {
-                    errorsOfAllSymbolsList.Add(symbolDataOrError.Error ?? throw new Exception());
-                    symbolDataList.Add(new List<string>());
-                }
-            }
-
-            return TableForMultipleSymbols(symbolList, errorsOfAllSymbolsList, symbolDataList).ToList();
-        }
-
-        public async Task<IEnumerable<string>> BatchProcessing(
            List<string> symbolList,
            string[] companyConceptArray,
            Func<string, string, Task<WithError<IEnumerable<string>>>> processingFunc)
@@ -317,5 +292,4 @@ namespace StockAnalyzer.DataProviders
             }
         }
     }
-
 }
