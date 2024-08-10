@@ -233,14 +233,14 @@ namespace StockAnalyzer.DataProviders
                 .OrderBy(s => s)
                 .ToList();
 
-            List<string> resultList = new() { "Symbol\t" + "Errors\t" + uniqueDatesStringsListSorted.Aggregate((r, n) => r + "\t" + n) };
+            List<string> resultList = new() { "Symbol\t" + uniqueDatesStringsListSorted.Aggregate((r, n) => r + "\t" + n) };
 
             string dataRow = "";
             for (int i = 0; i < symbols.Count; i++)
             {
                 string symbol = symbols[i];
                 string errors = errorsList[i];
-                dataRow = symbol + "\t" + errors;
+                dataRow = symbol;
 
                 List<List<string>> symbolData = symbolDataList[i].Select(l => l.Split("\t").ToList()).ToList();
                 foreach (var date in uniqueDatesStringsListSorted)
