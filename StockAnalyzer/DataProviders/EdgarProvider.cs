@@ -132,7 +132,7 @@ namespace StockAnalyzer.DataProviders
         {
             List<DateOnly> dates = data[0]
                 .Split("\t")
-                .Skip(2)
+                .Skip(1)
                 .Select(s => DateOnly.ParseExact(s, "yyyy-MM-dd")).ToList();
 
             List<string> symbols = data
@@ -144,7 +144,7 @@ namespace StockAnalyzer.DataProviders
             List<List<long?>> values = data
                 .Skip(1)
                 .Select(r => r.Split("\t").ToList())
-                .Select(v => v.Skip(2).ToList())
+                .Select(v => v.Skip(1).ToList())
                 .Select(r => r.Select(v => (long?)(string.IsNullOrWhiteSpace(v) ? null : long.Parse(v))).ToList())
                 .ToList();
 
