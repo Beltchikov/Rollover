@@ -43,21 +43,15 @@ namespace StockAnalyzer.DataProviders
             List<string> errorsOfAllSymbolsList = new();
             foreach (var symbol in symbolList)
             {
-                string error = "";
-                List<string> symbolData = null!;
                 WithError<IEnumerable<string>> symbolDataOrError = await processingFunc(symbol, companyConcept);
                 if (symbolDataOrError.Data != null)
                 {
-                    symbolData = symbolDataOrError.Data.ToList();
-                    symbolDataList.Add(symbolData);
-
+                    symbolDataList.Add(symbolDataOrError.Data.ToList());
                     errorsOfAllSymbolsList.Add("");
                 }
                 else
                 {
-                    error = symbolDataOrError.Error ?? throw new Exception();
-                    errorsOfAllSymbolsList.Add(error);
-
+                    errorsOfAllSymbolsList.Add(symbolDataOrError.Error ?? throw new Exception());
                     symbolDataList.Add(new List<string>());
                 }
             }
@@ -226,7 +220,7 @@ namespace StockAnalyzer.DataProviders
             List<List<string>> symbolDataList)
         {
             List<string> uniqueDatesStringsListSorted = symbolDataList
-                .Where(s => s.Any())  
+                .Where(s => s.Any())
                 .Select(d => d[0])
                 .SelectMany(u => u.Split("\t"))
                 .Distinct()
@@ -246,7 +240,7 @@ namespace StockAnalyzer.DataProviders
                 foreach (var date in uniqueDatesStringsListSorted)
                 {
                     if (!symbolData.Any()) continue;
-                    
+
                     int ii = symbolData.First().IndexOf(date);
                     string data = ii >= 0 ? symbolData.Last()[ii] : null!;
                     dataRow += ("\t" + data);
