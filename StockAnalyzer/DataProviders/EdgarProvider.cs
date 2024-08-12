@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 
 namespace StockAnalyzer.DataProviders
 {
@@ -77,7 +78,11 @@ namespace StockAnalyzer.DataProviders
                 var response = await _httpClient.GetStringAsync(url);
                 companyConceptData = JsonSerializer.Deserialize<CompanyConcept>(response) ?? throw new Exception();
 
-                List<USD> distinctUsdUnits = companyConceptData.units.USD.DistinctBy(u => u.end).ToList();
+                List<USD> distinctUsdUnits = companyConceptData.units.USD
+                    .Where(u => u.form == "10-K")
+                    .DistinctBy(u => u.end).ToList();
+                distinctUsdUnits = HandleMultipleUsdUnitsForFiscalYear(distinctUsdUnits);
+
                 List<string> headerColumns = distinctUsdUnits.Select(u => u.end).ToList() ?? new List<string>();
                 string? header = headerColumns.Aggregate((r, n) => r + "\t" + n);
 
@@ -101,6 +106,36 @@ namespace StockAnalyzer.DataProviders
             }
 
             return resultListOrError;
+        }
+
+        private List<USD> HandleMultipleUsdUnitsForFiscalYear(List<USD> distinctUsdUnitsTill2019)
+        {
+            List<USD> resultList = new();
+
+            List<IGrouping<int, USD>> unitsGroupedByFiscalYear = distinctUsdUnitsTill2019
+                .GroupBy(u => u.fy)
+                .ToList();
+            foreach (IGrouping<int, USD> group in unitsGroupedByFiscalYear)
+            {
+                if (group.Count() == 1)
+                {
+                    resultList.Add(group.First());
+                }
+                else
+                {
+                    TimeSpan minTimeSpan = group
+                        .Select(u => u.FiledToEndDiff())
+                        .MinBy(s => s.TotalMilliseconds);
+                    List<USD> unitWithFiledClosestToEndList = group
+                        .Where(g => g.FiledToEndDiff() == minTimeSpan)
+                        .ToList();
+
+                    if (unitWithFiledClosestToEndList.Count != 1) throw new ApplicationException("Unexpected!");
+                    resultList.Add(unitWithFiledClosestToEndList.First());
+                }
+            }
+
+            return resultList;
         }
 
         public IEnumerable<string> InterpolateDataForMissingDates(List<string> data)
