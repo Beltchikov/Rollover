@@ -9,6 +9,6 @@
         WindowStartupLocation="CenterScreen"
         Topmost="True">
     <Grid>
-        
+        <Image Source="Images\Wait.gif" />
     </Grid>
 </Window>
