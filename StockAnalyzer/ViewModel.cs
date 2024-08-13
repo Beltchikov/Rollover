@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace StockAnalyzer
 {
@@ -51,6 +52,7 @@ namespace StockAnalyzer
         private ObservableCollection<string> _resultCollectionTwsSummary = null!;
 
         private int _progressBarValue;
+        private Brush _backgroundResults;
 
         public ICommand EquityCommand { get; }
         public ICommand LongTermDebtCommand { get; }
@@ -111,6 +113,12 @@ namespace StockAnalyzer
                 // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/PaymentsOfDividends.json
 
                 bool waiting = true;
+                Cursor previousCursor = Mouse.OverrideCursor;
+                Mouse.OverrideCursor = Cursors.Wait;
+                Mouse.OverrideCursor = Cursors.Wait;
+                BackgroundResults = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFC4C5C5"));
+
+
                 _ = Task.Run(() =>
                 {
                     while (waiting)
@@ -118,15 +126,18 @@ namespace StockAnalyzer
                         ProgressBarValue += 1;
                         Thread.Sleep(200);
                     };
-                });  
+                });
 
+                ResultCollectionEdgar = new ObservableCollection<string>(Enumerable.Empty<string>());
                 ResultCollectionEdgar = new ObservableCollection<string>(
-                    await edgarProvider.BatchProcessing(
-                        TickerCollectionEdgar.ToList(),
-                        new string[] { "DividendsCommonStockCash", "DividendsCash", "Dividends", "PaymentsOfDividends" },
-                        edgarProvider.CompanyConceptOrError));
+                                    await edgarProvider.BatchProcessing(
+                                        TickerCollectionEdgar.ToList(),
+                                        new string[] { "DividendsCommonStockCash", "DividendsCash", "Dividends", "PaymentsOfDividends" },
+                                        edgarProvider.CompanyConceptOrError));
 
                 waiting = false;
+                Mouse.OverrideCursor = previousCursor;
+                BackgroundResults = new SolidColorBrush(Colors.White);
                 ProgressBarValue = 0;
 
             });
@@ -341,10 +352,10 @@ namespace StockAnalyzer
             TickersAlphaList = new ObservableCollection<string>("MSFT	ORCL	NOW	PANW	CRWD	FTNT".Split("\t").ToList()
                 .Select(t => t.Trim()));
             RiskFreeRate = 5.5;
+            BackgroundResults = new SolidColorBrush(Colors.White);
         }
 
-        #region Yahoo
-
+        #region Edgar
 
         public ObservableCollection<string> TickerCollectionEdgar
         {
@@ -354,17 +365,6 @@ namespace StockAnalyzer
                 SetProperty(ref _tickerCollectionEdgar, value);
             }
         }
-
-        public ObservableCollection<string> TickerCollectionYahoo
-        {
-            get => _tickerCollectionYahoo;
-            set
-            {
-                SetProperty(ref _tickerCollectionYahoo, value);
-            }
-        }
-
-
         public ObservableCollection<string> ResultCollectionEdgar
         {
             get => _resultCollectionEdgar;
@@ -380,6 +380,28 @@ namespace StockAnalyzer
             set
             {
                 SetProperty(ref _progressBarValue, value);
+            }
+        }
+
+        public Brush BackgroundResults
+        {
+            get => _backgroundResults;
+            set
+            {
+                SetProperty(ref _backgroundResults, value);
+            }
+        }
+
+
+        #endregion
+
+        #region Yahoo
+        public ObservableCollection<string> TickerCollectionYahoo
+        {
+            get => _tickerCollectionYahoo;
+            set
+            {
+                SetProperty(ref _tickerCollectionYahoo, value);
             }
         }
 

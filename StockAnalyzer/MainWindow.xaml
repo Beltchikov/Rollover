@@ -18,7 +18,7 @@
         <converters:TrueToFalseConverter x:Key="TrueToFalseConverter"></converters:TrueToFalseConverter>
         <converters:ConnectToTwsButtonConverter x:Key="ConnectToTwsButtonConverter"></converters:ConnectToTwsButtonConverter>
     </Window.Resources>
-    <Grid Background="#FFC4C5C5">
+    <Grid Background="#2C3B41">
         <TabControl x:Name="tabControl" TabStripPlacement="Left" >
             <TabControl.Resources>
                 <Style TargetType="TabItem">
@@ -104,7 +104,7 @@ HorizontalAlignment="Stretch" VerticalAlignment="Center" Command="{Binding NetIn
      HorizontalAlignment="Left" Height="25" VerticalAlignment="Top"></Label>
                             <TextBox x:Name="txtResultsEdgar" 
        Text="{Binding ResultCollectionEdgar, Converter={StaticResource ListToStringConverter}}" Grid.Column="3" Grid.Row="2" 
-       AcceptsReturn="True"
+       AcceptsReturn="True" Background="{Binding BackgroundResults}"
           VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto"></TextBox>
                             <Button Grid.Column="3" Grid.Row="4" Width="200" HorizontalAlignment="Left" ToolTip="Interpolate data for missing dates." Command="{Binding InterpolateCommand}">Interpolate</Button>
                             
