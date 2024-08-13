@@ -75,13 +75,14 @@
                                 <RowDefinition Height="*"></RowDefinition>
                                 <RowDefinition Height="10"></RowDefinition>
                                 <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
                                 <RowDefinition Height="10"></RowDefinition>
                             </Grid.RowDefinitions>
 
                             <Label Content="Tickers:" Grid.Column="1" Grid.Row="1" 
      HorizontalAlignment="Left"></Label>
                             <TextBox Text="{Binding TickerCollectionEdgar, Converter={StaticResource ListToStringConverter}}" Grid.Column="1" Grid.Row="2" 
-       Grid.RowSpan="3" AcceptsReturn="True"
+       Grid.RowSpan="4" AcceptsReturn="True"
           VerticalScrollBarVisibility="Visible"></TextBox>
 
                             <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="2" >
@@ -106,6 +107,8 @@ HorizontalAlignment="Stretch" VerticalAlignment="Center" Command="{Binding NetIn
        AcceptsReturn="True"
           VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto"></TextBox>
                             <Button Grid.Column="3" Grid.Row="4" Width="200" HorizontalAlignment="Left" ToolTip="Interpolate data for missing dates." Command="{Binding InterpolateCommand}">Interpolate</Button>
+                            
+                            <ProgressBar Grid.Column="3" HorizontalAlignment="Stretch" Height="10"  Grid.Row="5" VerticalAlignment="Center" Value="{Binding ProgressBarValue}" Minimum="0" Maximum="100"/>
 
                         </Grid>
                     </GroupBox>
