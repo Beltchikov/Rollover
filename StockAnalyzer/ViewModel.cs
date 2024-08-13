@@ -1,20 +1,19 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using IbClient.IbHost;
+using StockAnalyzer.Commands;
 using StockAnalyzer.DataProviders;
 using StockAnalyzer.DataProviders.Types;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
 namespace StockAnalyzer
 {
-    public class ViewModel : ObservableObject, IIbConsumer
+    public class ViewModel : ObservableObject, IIbConsumer, IDividendsConsumer
     {
         private const int TIMEOUT_SIMPLE_BROWSER = 0;
         private const int TIMEOUT_TWS = 1000;
@@ -25,7 +24,7 @@ namespace StockAnalyzer
         private string _htmlSourceEarningsForWeek = null!;
         private double _marketCap;
 
-
+        IEdgarProvider _edgarProvider;
         private ObservableCollection<string> _tickerCollectionEdgar = null!;
 
         private ObservableCollection<string> _tickerCollectionYahoo = null!;
@@ -83,6 +82,8 @@ namespace StockAnalyzer
             IEdgarProvider edgarProvider,
             IIbHost ibHost)
         {
+            _edgarProvider = edgarProvider;
+
             yahooProvider.Status += YahooProvider_Status;
             twsProvider.Status += TwsProvider_Status;
 
@@ -108,39 +109,7 @@ namespace StockAnalyzer
 
             });
 
-            DividendsCommand = new RelayCommand(async () =>
-            {
-                // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/PaymentsOfDividends.json
-
-                bool waiting = true;
-                Cursor previousCursor = Mouse.OverrideCursor;
-                Mouse.OverrideCursor = Cursors.Wait;
-                Mouse.OverrideCursor = Cursors.Wait;
-                BackgroundResults = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFC4C5C5"));
-
-
-                _ = Task.Run(() =>
-                {
-                    while (waiting)
-                    {
-                        ProgressBarValue += 1;
-                        Thread.Sleep(200);
-                    };
-                });
-
-                ResultCollectionEdgar = new ObservableCollection<string>(Enumerable.Empty<string>());
-                ResultCollectionEdgar = new ObservableCollection<string>(
-                                    await edgarProvider.BatchProcessing(
-                                        TickerCollectionEdgar.ToList(),
-                                        new string[] { "DividendsCommonStockCash", "DividendsCash", "Dividends", "PaymentsOfDividends" },
-                                        edgarProvider.CompanyConceptOrError));
-
-                waiting = false;
-                Mouse.OverrideCursor = previousCursor;
-                BackgroundResults = new SolidColorBrush(Colors.White);
-                ProgressBarValue = 0;
-
-            });
+            DividendsCommand = new RelayCommand(async () => await Dividends.RunAsync(this));
 
             NetIncomeCommand = new RelayCommand(async () =>
             {
@@ -356,6 +325,8 @@ namespace StockAnalyzer
         }
 
         #region Edgar
+
+        public IEdgarProvider EdgarProvider => _edgarProvider;
 
         public ObservableCollection<string> TickerCollectionEdgar
         {
