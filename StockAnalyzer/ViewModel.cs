@@ -87,36 +87,21 @@ namespace StockAnalyzer
             yahooProvider.Status += YahooProvider_Status;
             twsProvider.Status += TwsProvider_Status;
 
-            EquityCommand = new RelayCommand(async () =>
-            {
-                // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/StockholdersEquity.json
-                ResultCollectionEdgar = new ObservableCollection<string>(
-                    await edgarProvider.BatchProcessing(
-                        TickerCollectionEdgar.ToList(),
-                        new string[] { "StockholdersEquity" },
-                        edgarProvider.CompanyConceptOrError));
+            // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/StockholdersEquity.json
+            EquityCommand = new RelayCommand(async ()
+                => await EdgarBatchProcessor.RunAsync(this, new string[] { "StockholdersEquity" }));
 
-            });
-
-            LongTermDebtCommand = new RelayCommand(async () =>
-            {
-                // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/LongTermDebt.json
-                ResultCollectionEdgar = new ObservableCollection<string>(
-                    await edgarProvider.BatchProcessing(
-                        TickerCollectionEdgar.ToList(),
-                        new string[] { "LongTermDebt" },
-                        edgarProvider.CompanyConceptOrError));
-
-            });
+            // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/LongTermDebt.json
+            LongTermDebtCommand = new RelayCommand(async ()
+                => await EdgarBatchProcessor.RunAsync(this, new string[] { "LongTermDebt" }));
 
             // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/PaymentsOfDividends.json
-            DividendsCommand = new RelayCommand(async () 
+            DividendsCommand = new RelayCommand(async ()
                 => await EdgarBatchProcessor.RunAsync(this, new string[] { "DividendsCommonStockCash", "DividendsCash", "Dividends", "PaymentsOfDividends" }));
 
             // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/PaymentsOfDividends.json
-            NetIncomeCommand = new RelayCommand(async () 
+            NetIncomeCommand = new RelayCommand(async ()
                 => await EdgarBatchProcessor.RunAsync(this, new string[] { "NetIncomeLoss" }));
-                        
 
             InterpolateCommand = new RelayCommand(() =>
             {
