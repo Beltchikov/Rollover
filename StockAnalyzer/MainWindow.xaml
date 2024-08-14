@@ -126,7 +126,7 @@ HorizontalAlignment="Stretch" VerticalAlignment="Center" Command="{Binding NetIn
                                 <RowDefinition Height="10"></RowDefinition>
                             </Grid.RowDefinitions>
 
-                            <TextBox Text="{Binding MessageYahoo, Mode=OneWay}" Background="#FFC4C5C5"
+                            <TextBox Text="{Binding MessageEdgar, Mode=OneWay}" Background="#FFC4C5C5"
        Grid.Column="1" Grid.Row="1" ></TextBox>
 
                         </Grid>

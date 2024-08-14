@@ -26,6 +26,7 @@ namespace StockAnalyzer
 
         IEdgarProvider _edgarProvider;
         private ObservableCollection<string> _tickerCollectionEdgar = null!;
+        private string _messageEdgar = null!;
 
         private ObservableCollection<string> _tickerCollectionYahoo = null!;
         private ObservableCollection<string> _tickersAlphaList = null!;
@@ -344,6 +345,15 @@ namespace StockAnalyzer
             }
         }
 
+        public string MessageEdgar
+        {
+            get => _messageEdgar;
+            set
+            {
+                SetProperty(ref _messageEdgar, value);
+            }
+        }
+
 
         #endregion
 
@@ -374,7 +384,7 @@ namespace StockAnalyzer
                 SetProperty(ref _messageYahoo, value);
             }
         }
-
+        
         public int DecimalSeparatorSelectedIndexYahoo
         {
             get => _decimalSeparatorSelectedIndexYahoo;
