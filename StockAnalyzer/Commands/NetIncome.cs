@@ -7,12 +7,10 @@ using System.Windows.Media;
 
 namespace StockAnalyzer.Commands
 {
-    public class Dividends
+    public class NetIncome
     {
         public static async Task RunAsync(IEdgarConsumer edgarConsumer)
         {
-            // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/PaymentsOfDividends.json
-
             bool waiting = true;
             Cursor previousCursor = Mouse.OverrideCursor;
             Mouse.OverrideCursor = Cursors.Wait;
@@ -29,11 +27,21 @@ namespace StockAnalyzer.Commands
             });
 
             edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(Enumerable.Empty<string>());
+
+            // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/PaymentsOfDividends.json
             edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(
                                 await edgarConsumer.EdgarProvider.BatchProcessing(
                                     edgarConsumer.TickerCollectionEdgar.ToList(),
-                                    new string[] { "DividendsCommonStockCash", "DividendsCash", "Dividends", "PaymentsOfDividends" },
+                                    new string[] { "NetIncomeLoss" },
                                     edgarConsumer.EdgarProvider.CompanyConceptOrError));
+
+            //// https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/NetIncomeLoss.json
+            //ResultCollectionEdgar = new ObservableCollection<string>(
+            //    await edgarProvider.BatchProcessing(
+            //        TickerCollectionEdgar.ToList(),
+            //        new string[] { "NetIncomeLoss" },
+            //        edgarProvider.CompanyConceptOrError));
+
 
             waiting = false;
             Mouse.OverrideCursor = previousCursor;

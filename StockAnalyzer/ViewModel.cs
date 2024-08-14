@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using IbClient.IbHost;
 using StockAnalyzer.Commands;
 using StockAnalyzer.DataProviders;
+using StockAnalyzer.DataProviders.FinancialStatements.Tws.Accounts;
 using StockAnalyzer.DataProviders.Types;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,10 +11,11 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using NetIncome = StockAnalyzer.Commands.NetIncome;
 
 namespace StockAnalyzer
 {
-    public class ViewModel : ObservableObject, IIbConsumer, IDividendsConsumer
+    public class ViewModel : ObservableObject, IIbConsumer, IEdgarConsumer
     {
         private const int TIMEOUT_SIMPLE_BROWSER = 0;
         private const int TIMEOUT_TWS = 1000;
@@ -110,17 +112,7 @@ namespace StockAnalyzer
             });
 
             DividendsCommand = new RelayCommand(async () => await Dividends.RunAsync(this));
-
-            NetIncomeCommand = new RelayCommand(async () =>
-            {
-                // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/NetIncomeLoss.json
-                ResultCollectionEdgar = new ObservableCollection<string>(
-                    await edgarProvider.BatchProcessing(
-                        TickerCollectionEdgar.ToList(),
-                        new string[] { "NetIncomeLoss" },
-                        edgarProvider.CompanyConceptOrError));
-
-            });
+            NetIncomeCommand = new RelayCommand(async () => await NetIncome.RunAsync(this));
 
             InterpolateCommand = new RelayCommand(() =>
             {

@@ -4,7 +4,7 @@ using System.Windows.Media;
 
 namespace StockAnalyzer.Commands
 {
-    public interface IDividendsConsumer
+    public interface IEdgarConsumer
     {
         ObservableCollection<string> TickerCollectionEdgar { get; set; }
         ObservableCollection<string> ResultCollectionEdgar { get; set; }
