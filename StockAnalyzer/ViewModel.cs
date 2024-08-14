@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using IbClient.IbHost;
 using StockAnalyzer.Commands;
 using StockAnalyzer.DataProviders;
-using StockAnalyzer.DataProviders.FinancialStatements.Tws.Accounts;
 using StockAnalyzer.DataProviders.Types;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,7 +10,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using NetIncome = StockAnalyzer.Commands.NetIncome;
 
 namespace StockAnalyzer
 {
@@ -111,8 +109,14 @@ namespace StockAnalyzer
 
             });
 
-            DividendsCommand = new RelayCommand(async () => await Dividends.RunAsync(this));
-            NetIncomeCommand = new RelayCommand(async () => await NetIncome.RunAsync(this));
+            // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/PaymentsOfDividends.json
+            DividendsCommand = new RelayCommand(async () 
+                => await EdgarBatchProcessor.RunAsync(this, new string[] { "DividendsCommonStockCash", "DividendsCash", "Dividends", "PaymentsOfDividends" }));
+
+            // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/PaymentsOfDividends.json
+            NetIncomeCommand = new RelayCommand(async () 
+                => await EdgarBatchProcessor.RunAsync(this, new string[] { "NetIncomeLoss" }));
+                        
 
             InterpolateCommand = new RelayCommand(() =>
             {

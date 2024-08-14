@@ -7,9 +7,9 @@ using System.Windows.Media;
 
 namespace StockAnalyzer.Commands
 {
-    public class Dividends
+    public class EdgarBatchProcessor
     {
-        public static async Task RunAsync(IEdgarConsumer edgarConsumer)
+        public static async Task RunAsync(IEdgarConsumer edgarConsumer, string[] companyConceptArray)
         {
             bool waiting = true;
             Cursor previousCursor = Mouse.OverrideCursor;
@@ -26,11 +26,10 @@ namespace StockAnalyzer.Commands
             });
             edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(Enumerable.Empty<string>());
 
-            // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/PaymentsOfDividends.json
             edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(
                                 await edgarConsumer.EdgarProvider.BatchProcessing(
                                     edgarConsumer.TickerCollectionEdgar.ToList(),
-                                    new string[] { "DividendsCommonStockCash", "DividendsCash", "Dividends", "PaymentsOfDividends" },
+                                    companyConceptArray,
                                     edgarConsumer.EdgarProvider.CompanyConceptOrError));
 
             waiting = false;
