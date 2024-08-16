@@ -103,7 +103,7 @@ namespace StockAnalyzer
 
             // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/PaymentsOfDividends.json
             NetIncomeCommand = new RelayCommand(async ()
-                => await EdgarBatchProcessor.RunAsync(this, new string[] { "NetIncomeLoss" }));
+                => await EdgarBatchProcessor.RunAsync(this, new string[] { "NetIncomeLoss", "ProfitLoss" }));
 
             InterpolateCommand = new RelayCommand(() =>
             {
@@ -308,12 +308,6 @@ namespace StockAnalyzer
             BackgroundResults = new SolidColorBrush(Colors.White);
         }
 
-        private IEnumerable<string> TestStringEdgar()
-        {
-            return (" NVDA\r\nGOOG\r\nMSFT\r\nAAPL\r\nAMZN\r\nMETA\r\nTSLA").Split("\r\n").ToList(); ;
-            //return (" KO\r\nPEP\r\nBUD").Split("\r\n").ToList(); ;
-        }
-
         #region Edgar
 
         public IEdgarProvider EdgarProvider => _edgarProvider;
@@ -362,6 +356,11 @@ namespace StockAnalyzer
             }
         }
 
+        private IEnumerable<string> TestStringEdgar()
+        {
+            //return (" NVDA\r\nGOOG\r\nMSFT\r\nAAPL\r\nAMZN\r\nMETA\r\nTSLA").Split("\r\n").ToList(); ;
+            return (" KO\r\nPEP\r\nBUD").Split("\r\n").ToList(); ;
+        }
 
         #endregion
 

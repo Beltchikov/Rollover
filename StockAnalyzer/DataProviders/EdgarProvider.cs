@@ -7,7 +7,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Windows.Documents;
 
 namespace StockAnalyzer.DataProviders
 {
@@ -44,21 +43,25 @@ namespace StockAnalyzer.DataProviders
             List<string> errorsOfAllSymbolsList = new();
             foreach (var symbol in symbolList)
             {
+                List<string> dataList = new List<string>();
+                string error = "";
+
                 foreach (string companyConcept in companyConceptArray)
                 {
                     WithError<IEnumerable<string>> symbolDataOrError = await processingFunc(symbol, companyConcept);
                     if (symbolDataOrError.Data != null)
                     {
-                        symbolDataList.Add(symbolDataOrError.Data.ToList());
-                        errorsOfAllSymbolsList.Add("");
+                        dataList = new(symbolDataOrError.Data.ToList());
                         break;
                     }
                     else
                     {
-                        errorsOfAllSymbolsList.Add(symbolDataOrError.Error ?? throw new Exception());
-                        symbolDataList.Add(new List<string>());
+                        error = symbolDataOrError.Error ?? throw new Exception();
                     }
                 }
+
+                symbolDataList.Add(dataList);
+                errorsOfAllSymbolsList.Add(error);
             }
 
             return TableForMultipleSymbols(symbolList, errorsOfAllSymbolsList, symbolDataList).ToList();
@@ -70,16 +73,17 @@ namespace StockAnalyzer.DataProviders
             List<string> resultList = new();
             string error = "";
 
-            string url = $"https://data.sec.gov/api/xbrl/companyconcept/CIK{await Cik(symbol)}/us-gaap/{companyConcept}.json";
+            string url10k = $"https://data.sec.gov/api/xbrl/companyconcept/CIK{await Cik(symbol)}/us-gaap/{companyConcept}.json";
+            string url20f = $"https://data.sec.gov/api/xbrl/companyconcept/CIK{await Cik(symbol)}/ifrs-full/{companyConcept}.json";
 
             CompanyConcept companyConceptData = null!;
             try
             {
-                var response = await _httpClient.GetStringAsync(url);
+                string response = await GetResponse10kOr20f(url10k, url20f);
                 companyConceptData = JsonSerializer.Deserialize<CompanyConcept>(response) ?? throw new Exception();
 
                 List<USD> distinctUsdUnits = companyConceptData.units.USD
-                    .Where(u => u.form == "10-K")
+                    .Where(u => u.form == "10-K" || u.form == "20-F")
                     .DistinctBy(u => u.end).ToList();
                 distinctUsdUnits = HandleMultipleUsdUnitsForFiscalYear(distinctUsdUnits);
 
@@ -106,6 +110,19 @@ namespace StockAnalyzer.DataProviders
             }
 
             return resultListOrError;
+        }
+
+        private async Task<string> GetResponse10kOr20f(string url10k, string url20f)
+        {
+            try
+            {
+                return await _httpClient.GetStringAsync(url10k);
+            }
+            catch(HttpRequestException) 
+            {
+                return await _httpClient.GetStringAsync(url20f);
+            }
+   
         }
 
         private List<USD> HandleMultipleUsdUnitsForFiscalYear(List<USD> distinctUsdUnitsTill2019)
