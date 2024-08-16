@@ -4,6 +4,7 @@ using IbClient.IbHost;
 using StockAnalyzer.Commands;
 using StockAnalyzer.DataProviders;
 using StockAnalyzer.DataProviders.Types;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -295,7 +296,8 @@ namespace StockAnalyzer
             });
 
             MarketCap = 00.1;
-            TickerCollectionEdgar = new ObservableCollection<string>((" NVDA\r\nGOOG\r\nMSFT\r\nAAPL\r\nAMZN\r\nMETA\r\nTSLA").Split("\r\n").ToList());
+            TickerCollectionEdgar = new ObservableCollection<string>(TestStringEdgar().ToList());
+
             TickerCollectionYahoo = new ObservableCollection<string>((" SKX\r\nPFS\r\nSLCA\r\n WT").Split("\r\n").ToList());
             ContractStringsTwsContractDetails = new ObservableCollection<string>(("ALD1;EUR;STK;SBF\r\nBWLPG;NOK;STK\r\nPFS\r\nSLCA").Split("\r\n").ToList());
             ContractStringsTwsFinStatements = new ObservableCollection<string>(("ALD1;EUR;STK;SBF\r\nBWLPG;NOK;\r\nPFS\r\nSLCA").Split("\r\n").ToList());
@@ -304,6 +306,12 @@ namespace StockAnalyzer
                 .Select(t => t.Trim()));
             RiskFreeRate = 5.5;
             BackgroundResults = new SolidColorBrush(Colors.White);
+        }
+
+        private IEnumerable<string> TestStringEdgar()
+        {
+            return (" NVDA\r\nGOOG\r\nMSFT\r\nAAPL\r\nAMZN\r\nMETA\r\nTSLA").Split("\r\n").ToList(); ;
+            //return (" KO\r\nPEP\r\nBUD").Split("\r\n").ToList(); ;
         }
 
         #region Edgar
