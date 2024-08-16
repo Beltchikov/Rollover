@@ -32,6 +32,16 @@ namespace StockAnalyzer.Commands
                                     companyConceptArray,
                                     edgarConsumer.EdgarProvider.CompanyConceptOrError));
 
+            //edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(
+            //                    await edgarConsumer.EdgarProvider.BatchProcessing(
+            //                        edgarConsumer.TickerCollectionEdgar.ToList(),
+            //                        companyConceptArray,
+            //                        edgarConsumer.EdgarProvider.CompanyConceptOrError,
+            //                        (exceptions) => edgarConsumer.MessageEdgar = exceptions
+            //                            .Select(e=>e.ToString())
+            //                            .Aggregate((r,n) => r + "\r\n" + n)));
+
+
             waiting = false;
             Mouse.OverrideCursor = previousCursor;
             edgarConsumer.BackgroundResults = new SolidColorBrush(Colors.White);

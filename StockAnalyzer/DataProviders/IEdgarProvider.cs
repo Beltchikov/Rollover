@@ -12,6 +12,14 @@ namespace StockAnalyzer.DataProviders
            List<string> symbolList,
            string[] companyConceptArray,
            Func<string, string, Task<WithError<IEnumerable<string>>>> processingFunc);
+
+        Task<IEnumerable<string>> BatchProcessing(
+           List<string> symbolList,
+           string[] companyConceptArray,
+           Func<string, string, Task<WithError<IEnumerable<string>>>> processingFunc,
+           Action<IEnumerable<Exception>> errorAction);
+
+
         Task<WithError<IEnumerable<string>>> CompanyConceptOrError(string symbol, string companyConcept);
         IEnumerable<string> InterpolateDataForMissingDates(List<string> data);
     }

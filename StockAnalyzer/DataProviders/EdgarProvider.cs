@@ -35,6 +35,7 @@ namespace StockAnalyzer.DataProviders
             return cik;
         }
 
+        [Obsolete]
         public async Task<IEnumerable<string>> BatchProcessing(
            List<string> symbolList,
            string[] companyConceptArray,
@@ -62,6 +63,15 @@ namespace StockAnalyzer.DataProviders
             }
 
             return TableForMultipleSymbols(symbolList, errorsOfAllSymbolsList, symbolDataList).ToList();
+        }
+
+        public async Task<IEnumerable<string>> BatchProcessing(
+           List<string> symbolList,
+           string[] companyConceptArray,
+           Func<string, string, Task<WithError<IEnumerable<string>>>> processingFunc,
+           Action<IEnumerable<Exception>> errorAction)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<WithError<IEnumerable<string>>> CompanyConceptOrError(string symbol, string companyConcept)

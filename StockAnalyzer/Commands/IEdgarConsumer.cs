@@ -11,5 +11,6 @@ namespace StockAnalyzer.Commands
         IEdgarProvider EdgarProvider { get; }
         Brush BackgroundResults { get; set; }
         int ProgressBarValue { get; set; }
+        string MessageEdgar { get; set; }
     }
 }
