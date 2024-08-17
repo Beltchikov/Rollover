@@ -95,7 +95,7 @@ namespace StockAnalyzer
 
             // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/LongTermDebt.json
             LongTermDebtCommand = new RelayCommand(async ()
-                => await EdgarBatchProcessor.RunAsync(this, new string[] { "LongTermDebt" }));
+                => await EdgarBatchProcessor.RunAsync(this, new string[] { "LongTermDebt", "NoncurrentLiabilities" }));
 
             // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/PaymentsOfDividends.json
             DividendsCommand = new RelayCommand(async ()
