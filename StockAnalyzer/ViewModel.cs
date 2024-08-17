@@ -91,7 +91,7 @@ namespace StockAnalyzer
 
             // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/StockholdersEquity.json
             EquityCommand = new RelayCommand(async ()
-                => await EdgarBatchProcessor.RunAsync(this, new string[] { "StockholdersEquity" }));
+                => await EdgarBatchProcessor.RunAsync(this, new string[] { "StockholdersEquity", "Equity" }));
 
             // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/LongTermDebt.json
             LongTermDebtCommand = new RelayCommand(async ()
