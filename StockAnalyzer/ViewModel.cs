@@ -99,7 +99,7 @@ namespace StockAnalyzer
 
             // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/PaymentsOfDividends.json
             DividendsCommand = new RelayCommand(async ()
-                => await EdgarBatchProcessor.RunAsync(this, new string[] { "DividendsCommonStockCash", "DividendsCash", "Dividends", "PaymentsOfDividends" }));
+                => await EdgarBatchProcessor.RunAsync(this, new string[] { "DividendsCommonStockCash", "DividendsCash", "Dividends", "PaymentsOfDividends", "DividendsPaid" }));
 
             // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/PaymentsOfDividends.json
             NetIncomeCommand = new RelayCommand(async ()
