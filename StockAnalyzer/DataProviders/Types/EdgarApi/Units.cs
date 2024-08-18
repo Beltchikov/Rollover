@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace StockAnalyzer.DataProviders.Types.UsGaap
+namespace StockAnalyzer.DataProviders.Types.EdgarApi
 {
     public class Units
     {

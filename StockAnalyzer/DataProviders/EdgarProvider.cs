@@ -1,6 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using StockAnalyzer.DataProviders.Types;
-using StockAnalyzer.DataProviders.Types.UsGaap;
+using StockAnalyzer.DataProviders.Types.EdgarApi;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,4 @@
-﻿namespace StockAnalyzer.DataProviders.Types.UsGaap
+﻿namespace StockAnalyzer.DataProviders.Types.EdgarApi
 {
     public class Currency
     {

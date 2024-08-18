@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace StockAnalyzer.DataProviders.Types.UsGaap
+namespace StockAnalyzer.DataProviders.Types.EdgarApi
 {
     public static class EdgarApiExtensions
     {
