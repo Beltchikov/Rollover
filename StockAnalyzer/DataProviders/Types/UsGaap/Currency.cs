@@ -1,6 +1,6 @@
 ﻿namespace StockAnalyzer.DataProviders.Types.UsGaap
 {
-    public class USD
+    public class Currency
     {
         public string end { get; set; }
         public object val { get; set; }

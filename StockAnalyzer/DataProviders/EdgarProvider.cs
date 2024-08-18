@@ -82,15 +82,13 @@ namespace StockAnalyzer.DataProviders
                 string response = await GetResponse10kOr20f(url10k, url20f);
                 companyConceptData = JsonSerializer.Deserialize<CompanyConcept>(response) ?? throw new Exception();
 
-                List<USD> distinctUsdUnits = companyConceptData.units.USD
-                    .Where(u => u.form == "10-K" || u.form == "20-F")
-                    .DistinctBy(u => u.end).ToList();
-                distinctUsdUnits = HandleMultipleUsdUnitsForFiscalYear(distinctUsdUnits);
+                List<Currency> distinctCurrencyUnits = GetCurrencyUnits(companyConceptData).ToList();
+                distinctCurrencyUnits = HandleMultipleUsdUnitsForFiscalYear(distinctCurrencyUnits);
 
-                List<string> headerColumns = distinctUsdUnits.Select(u => u.end).ToList() ?? new List<string>();
+                List<string> headerColumns = distinctCurrencyUnits.Select(u => u.end).ToList() ?? new List<string>();
                 string? header = headerColumns.Aggregate((r, n) => r + "\t" + n);
 
-                List<string> dataList = distinctUsdUnits.Select(u => u.val.ToString() ?? "").ToList() ?? new List<string>();
+                List<string> dataList = distinctCurrencyUnits.Select(u => u.val.ToString() ?? "").ToList() ?? new List<string>();
                 string? data = dataList.Aggregate((r, n) => r + "\t" + n);
 
                 resultList.AddRange(new List<string>() { header, data });
@@ -112,27 +110,44 @@ namespace StockAnalyzer.DataProviders
             return resultListOrError;
         }
 
+        private static IEnumerable<Currency> GetCurrencyUnits(CompanyConcept companyConceptData)
+        {
+            List<Currency> currencyUnitList = null!;
+
+            if (companyConceptData.units.USD != null)
+            {
+                currencyUnitList = companyConceptData.units.USD;
+            }
+            else
+            {
+                currencyUnitList = companyConceptData.units.EUR;
+            }
+
+            return currencyUnitList.Where(u => u.form == "10-K" || u.form == "20-F")
+                .DistinctBy(u => u.end);
+        }
+
         private async Task<string> GetResponse10kOr20f(string url10k, string url20f)
         {
             try
             {
                 return await _httpClient.GetStringAsync(url10k);
             }
-            catch(HttpRequestException) 
+            catch (HttpRequestException)
             {
                 return await _httpClient.GetStringAsync(url20f);
             }
-   
+
         }
 
-        private List<USD> HandleMultipleUsdUnitsForFiscalYear(List<USD> distinctUsdUnitsTill2019)
+        private List<Currency> HandleMultipleUsdUnitsForFiscalYear(List<Currency> distinctUsdUnitsTill2019)
         {
-            List<USD> resultList = new();
+            List<Currency> resultList = new();
 
-            List<IGrouping<int, USD>> unitsGroupedByFiscalYear = distinctUsdUnitsTill2019
+            List<IGrouping<int, Currency>> unitsGroupedByFiscalYear = distinctUsdUnitsTill2019
                 .GroupBy(u => u.fy)
                 .ToList();
-            foreach (IGrouping<int, USD> group in unitsGroupedByFiscalYear)
+            foreach (IGrouping<int, Currency> group in unitsGroupedByFiscalYear)
             {
                 if (group.Count() == 1)
                 {
@@ -143,7 +158,7 @@ namespace StockAnalyzer.DataProviders
                     TimeSpan minTimeSpan = group
                         .Select(u => u.FiledToEndDiff())
                         .MinBy(s => s.TotalMilliseconds);
-                    List<USD> unitWithFiledClosestToEndList = group
+                    List<Currency> unitWithFiledClosestToEndList = group
                         .Where(g => g.FiledToEndDiff() == minTimeSpan)
                         .ToList();
 
