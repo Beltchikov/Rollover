@@ -4,7 +4,6 @@ using IbClient.IbHost;
 using StockAnalyzer.Commands;
 using StockAnalyzer.DataProviders;
 using StockAnalyzer.DataProviders.Types;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -53,7 +52,7 @@ namespace StockAnalyzer
         private ObservableCollection<string> _resultCollectionTwsSummary = null!;
 
         private int _progressBarValue;
-        private Brush _backgroundResults;
+        private Brush _backgroundResults = null!;
 
         public ICommand EquityCommand { get; }
         public ICommand LongTermDebtCommand { get; }
@@ -103,15 +102,31 @@ namespace StockAnalyzer
 
             // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/LongTermDebt.json
             LongTermDebtCommand = new RelayCommand(async ()
-                => await EdgarBatchProcessor.RunAsync(this, new string[] { "LongTermDebt", "NoncurrentLiabilities", "LongtermBorrowings" }));
+                => await EdgarBatchProcessor.RunAsync(this, new string[]
+                {
+                    "LongTermDebt",
+                    "NoncurrentLiabilities",
+                    "LongtermBorrowings"
+                }));
 
             // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/PaymentsOfDividends.json
             DividendsCommand = new RelayCommand(async ()
-                => await EdgarBatchProcessor.RunAsync(this, new string[] { "DividendsCommonStockCash", "DividendsCash", "Dividends", "PaymentsOfDividends", "DividendsPaid" }));
+                => await EdgarBatchProcessor.RunAsync(this, new string[]
+                {
+                    "DividendsCommonStockCash",
+                    "DividendsCash",
+                    "Dividends",
+                    "PaymentsOfDividends",
+                    "DividendsPaid"
+                }));
 
             // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/PaymentsOfDividends.json
             NetIncomeCommand = new RelayCommand(async ()
-                => await EdgarBatchProcessor.RunAsync(this, new string[] { "NetIncomeLoss", "ProfitLoss" }));
+                => await EdgarBatchProcessor.RunAsync(this, new string[]
+                {
+                    "NetIncomeLoss",
+                    "ProfitLoss"
+                }));
 
             InterpolateCommand = new RelayCommand(() =>
             {

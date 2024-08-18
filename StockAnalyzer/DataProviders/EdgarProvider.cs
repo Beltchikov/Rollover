@@ -43,7 +43,7 @@ namespace StockAnalyzer.DataProviders
             List<string> errorsOfAllSymbolsList = new();
             foreach (var symbol in symbolList)
             {
-                List<string> dataList = new List<string>();
+                List<string> dataList = new();
                 string error = "";
 
                 foreach (string companyConcept in companyConceptArray)
