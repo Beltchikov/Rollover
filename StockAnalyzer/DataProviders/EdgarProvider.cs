@@ -40,10 +40,12 @@ namespace StockAnalyzer.DataProviders
            Func<string, string, Task<WithError<IEnumerable<string>>>> processingFunc)
         {
             List<List<string>> symbolDataList = new();
+            List<string> currencies = new();
             List<string> errorsOfAllSymbolsList = new();
             foreach (var symbol in symbolList)
             {
                 List<string> dataList = new();
+                string currency = "";
                 string error = "";
 
                 foreach (string companyConcept in companyConceptArray)
@@ -51,7 +53,8 @@ namespace StockAnalyzer.DataProviders
                     WithError<IEnumerable<string>> symbolDataOrError = await processingFunc(symbol, companyConcept);
                     if (symbolDataOrError.Data != null)
                     {
-                        dataList = new(symbolDataOrError.Data.ToList());
+                        dataList = new(symbolDataOrError.Data.Take(2).ToList());
+                        currency = symbolDataOrError.Data.Skip(2).First();
                         break;
                     }
                     else
@@ -61,10 +64,11 @@ namespace StockAnalyzer.DataProviders
                 }
 
                 symbolDataList.Add(dataList);
+                currencies.Add(currency);
                 errorsOfAllSymbolsList.Add(error);
             }
 
-            return TableForMultipleSymbols(symbolList, errorsOfAllSymbolsList, symbolDataList).ToList();
+            return TableForMultipleSymbols(symbolList, currencies, errorsOfAllSymbolsList, symbolDataList).ToList();
         }
 
         public async Task<WithError<IEnumerable<string>>> CompanyConceptOrError(string symbol, string companyConcept)
@@ -82,7 +86,8 @@ namespace StockAnalyzer.DataProviders
                 string response = await GetResponse10kOr20f(url10k, url20f);
                 companyConceptData = JsonSerializer.Deserialize<CompanyConcept>(response) ?? throw new Exception();
 
-                List<Currency> distinctCurrencyUnits = GetCurrencyUnits(companyConceptData).ToList();
+                List<CurrencyWithAcronym> distinctCurrencyUnitsWithAcronym = GetCurrencyUnits(companyConceptData).ToList();
+                List<Currency> distinctCurrencyUnits = distinctCurrencyUnitsWithAcronym.Select(u=>u.Currency).ToList(); 
                 distinctCurrencyUnits = HandleMultipleUsdUnitsForFiscalYear(distinctCurrencyUnits);
 
                 List<string> headerColumns = distinctCurrencyUnits.Select(u => u.end).ToList() ?? new List<string>();
@@ -90,8 +95,9 @@ namespace StockAnalyzer.DataProviders
 
                 List<string> dataList = distinctCurrencyUnits.Select(u => u.val.ToString() ?? "").ToList() ?? new List<string>();
                 string? data = dataList.Aggregate((r, n) => r + "\t" + n);
+                string currency = distinctCurrencyUnitsWithAcronym.First().Acronym;
 
-                resultList.AddRange(new List<string>() { header, data });
+                resultList.AddRange(new List<string>() { header, data, currency });
             }
             catch (Exception ex)
             {
@@ -110,21 +116,29 @@ namespace StockAnalyzer.DataProviders
             return resultListOrError;
         }
 
-        private static IEnumerable<Currency> GetCurrencyUnits(CompanyConcept companyConceptData)
+        private static IEnumerable<CurrencyWithAcronym> GetCurrencyUnits(CompanyConcept companyConceptData)
         {
             List<Currency> currencyUnitList = null!;
+            List<CurrencyWithAcronym> currencyWithAcronymList = null!;
 
             if (companyConceptData.units.USD != null)
             {
                 currencyUnitList = companyConceptData.units.USD;
+                currencyWithAcronymList = currencyUnitList.Select(c => new CurrencyWithAcronym(c, "USD")).ToList();
+            }
+            else if (companyConceptData.units.EUR != null)
+            {
+                currencyUnitList = companyConceptData.units.EUR;
+                currencyWithAcronymList = currencyUnitList.Select(c => new CurrencyWithAcronym(c, "EUR")).ToList();
             }
             else
             {
-                currencyUnitList = companyConceptData.units.EUR;
+                throw new NotImplementedException();
             }
 
-            return currencyUnitList.Where(u => u.form == "10-K" || u.form == "20-F")
-                .DistinctBy(u => u.end);
+            return currencyWithAcronymList
+                .Where(u => u.Currency.form == "10-K" || u.Currency.form == "20-F")
+                .DistinctBy(u => u.Currency.end);
         }
 
         private async Task<string> GetResponse10kOr20f(string url10k, string url20f)
@@ -287,6 +301,7 @@ namespace StockAnalyzer.DataProviders
 
         private static IEnumerable<string> TableForMultipleSymbols(
             List<string> symbols,
+            List<string> currencies,
             List<string> errorsList,
             List<List<string>> symbolDataList)
         {
@@ -304,8 +319,9 @@ namespace StockAnalyzer.DataProviders
             for (int i = 0; i < symbols.Count; i++)
             {
                 string symbol = symbols[i];
+                string currency = currencies[i];
                 string errors = errorsList[i];
-                dataRow = symbol;
+                dataRow = FirstDataRowCell(symbol, currency);
 
                 List<List<string>> symbolData = symbolDataList[i].Select(l => l.Split("\t").ToList()).ToList();
                 foreach (var date in uniqueDatesStringsListSorted)
@@ -321,6 +337,11 @@ namespace StockAnalyzer.DataProviders
             }
 
             return resultList;
+        }
+
+        private static string FirstDataRowCell(string symbol, string currency)
+        {
+            return $"{symbol} ({currency})";
         }
     }
 
