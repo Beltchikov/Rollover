@@ -8,7 +8,7 @@ namespace StockAnalyzer.DataProviders
     public interface IEdgarProvider
     {
         Task<string> Cik(string symbol);
-        Task<IEnumerable<string>> BatchProcessing(
+        Task<IEnumerable<WithError<string?>>> BatchProcessing(
            List<string> symbolList,
            string[] companyConceptArray,
            Func<string, string, Task<WithError<IEnumerable<string>>>> processingFunc);

@@ -14,8 +14,8 @@
             Data = default; 
         }
 
-        public T? Data { get; private set; }
-        public string? Error { get; private set; }
+        public T? Data { get; set; }
+        public string? Error { get; set; }
 
         public bool HasData => Data != null;
         public bool HasError=> ! string.IsNullOrWhiteSpace(Error);

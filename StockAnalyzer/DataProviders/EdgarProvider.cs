@@ -34,7 +34,7 @@ namespace StockAnalyzer.DataProviders
             return cik;
         }
 
-        public async Task<IEnumerable<string>> BatchProcessing(
+        public async Task<IEnumerable<WithError<string?>>> BatchProcessing(
            List<string> symbolList,
            string[] companyConceptArray,
            Func<string, string, Task<WithError<IEnumerable<string>>>> processingFunc)
@@ -68,7 +68,10 @@ namespace StockAnalyzer.DataProviders
                 errorsOfAllSymbolsList.Add(error);
             }
 
-            return TableForMultipleSymbols(symbolList, currencies, errorsOfAllSymbolsList, symbolDataList).ToList();
+            List<string> data = TableForMultipleSymbols(symbolList, currencies, errorsOfAllSymbolsList, symbolDataList).ToList();
+            // TODO 
+            List<WithError<string?>> dataWithErrors = data.Select(d=> new WithError<string?>(d) { Data = d, Error = null}).ToList();
+            return dataWithErrors;
         }
 
         public async Task<WithError<IEnumerable<string>>> CompanyConceptOrError(string symbol, string companyConcept)
@@ -87,7 +90,7 @@ namespace StockAnalyzer.DataProviders
                 companyConceptData = JsonSerializer.Deserialize<CompanyConcept>(response) ?? throw new Exception();
 
                 List<CurrencyWithAcronym> distinctCurrencyUnitsWithAcronym = GetCurrencyUnits(companyConceptData).ToList();
-                List<Currency> distinctCurrencyUnits = distinctCurrencyUnitsWithAcronym.Select(u=>u.Currency).ToList(); 
+                List<Currency> distinctCurrencyUnits = distinctCurrencyUnitsWithAcronym.Select(u => u.Currency).ToList();
                 distinctCurrencyUnits = HandleMultipleUsdUnitsForFiscalYear(distinctCurrencyUnits);
 
                 List<string> headerColumns = distinctCurrencyUnits.Select(u => u.end).ToList() ?? new List<string>();

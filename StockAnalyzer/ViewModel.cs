@@ -106,7 +106,10 @@ namespace StockAnalyzer
                 {
                     "LongTermDebt",
                     "NoncurrentLiabilities",
-                    "LongtermBorrowings"
+                    "LongtermBorrowings",
+                    "Borrowings",
+                    "DebtNoncurrent",
+                    "LongTermObligations"
                 }));
 
             // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/PaymentsOfDividends.json
@@ -376,6 +379,18 @@ namespace StockAnalyzer
             set
             {
                 SetProperty(ref _messageEdgar, value);
+            }
+        }
+
+        public void AddMessageEdgar(string message)
+        {
+            if (string.IsNullOrEmpty(MessageEdgar))
+            {
+                MessageEdgar = message;
+            }
+            else
+            {
+                MessageEdgar = message + "\r\n" + MessageEdgar;
             }
         }
 

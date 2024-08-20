@@ -1,4 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using StockAnalyzer.DataProviders.Types;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,12 +29,23 @@ namespace StockAnalyzer.Commands
             });
             edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(Enumerable.Empty<string>());
 
-            edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(
-                                await edgarConsumer.EdgarProvider.BatchProcessing(
+            List<WithError<string?>> batchProcessingResults = (await edgarConsumer.EdgarProvider.BatchProcessing(
                                     edgarConsumer.TickerCollectionEdgar.ToList(),
                                     companyConceptArray,
-                                    edgarConsumer.EdgarProvider.CompanyConceptOrError));
+                                    edgarConsumer.EdgarProvider.CompanyConceptOrError))?.ToList() ?? throw new ApplicationException();
+            List<string> data = batchProcessingResults
+                            .Where(x => x.Data != null)
+                            .Select(r => r.Data ?? "")
+                            .ToList();
+            List<string> errors = batchProcessingResults
+                            .Where(x => x.Error != null)
+                            .Select(r => r.Error ?? "")
+                            .ToList();
 
+            edgarConsumer.AddMessageEdgar("TODO");
+            edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(data);
+
+            //
             waiting = false;
             Mouse.OverrideCursor = previousCursor;
             edgarConsumer.BackgroundResults = new SolidColorBrush(Colors.White);
