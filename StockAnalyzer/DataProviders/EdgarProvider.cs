@@ -97,6 +97,7 @@ namespace StockAnalyzer.DataProviders
                 companyConceptData = JsonSerializer.Deserialize<CompanyConcept>(response) ?? throw new Exception();
 
                 List<CurrencyWithAcronym> distinctCurrencyUnitsWithAcronym = GetCurrencyUnits(companyConceptData).ToList();
+                string currency = distinctCurrencyUnitsWithAcronym.First().Acronym;
                 List<Currency> distinctCurrencyUnits = distinctCurrencyUnitsWithAcronym.Select(u => u.Currency).ToList();
                 distinctCurrencyUnits = HandleMultipleUsdUnitsForFiscalYear(distinctCurrencyUnits);
 
@@ -105,8 +106,7 @@ namespace StockAnalyzer.DataProviders
 
                 List<string> dataList = distinctCurrencyUnits.Select(u => u.val.ToString() ?? "").ToList() ?? new List<string>();
                 string? data = dataList.Aggregate((r, n) => r + "\t" + n);
-                string currency = distinctCurrencyUnitsWithAcronym.First().Acronym;
-
+                
                 resultList.AddRange(new List<string>() { header, data, currency });
             }
             catch (Exception ex)
