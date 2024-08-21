@@ -42,13 +42,14 @@ namespace StockAnalyzer.DataProviders
            string[] companyConceptArray,
            Func<string, string, Task<WithError<IEnumerable<string>>>> processingFunc)
         {
-            List<List<string>> symbolDataList = new();
+            List<string> symbolsWithDataList = new();
             List<string> currencies = new();
-            List<string> errorsOfAllSymbolsList = new();
+            List<List<string>> symbolDataList = new();
             foreach (var symbol in symbolList)
             {
-                List<string> dataList = new();
+                string symbolWithData = "";
                 string currency = "";
+                List<string> dataList = new();
                 string error = "";
 
                 foreach (string companyConcept in companyConceptArray)
@@ -56,8 +57,9 @@ namespace StockAnalyzer.DataProviders
                     WithError<IEnumerable<string>> symbolDataOrError = await processingFunc(symbol, companyConcept);
                     if (symbolDataOrError.Data != null)
                     {
-                        dataList = new(symbolDataOrError.Data.Take(2).ToList());
+                        symbolWithData = symbol;
                         currency = symbolDataOrError.Data.Skip(2).First();
+                        dataList = new(symbolDataOrError.Data.Take(2).ToList());
                         break;
                     }
                     else
@@ -66,12 +68,15 @@ namespace StockAnalyzer.DataProviders
                     }
                 }
 
-                symbolDataList.Add(dataList);
-                currencies.Add(currency);
-                errorsOfAllSymbolsList.Add(error);
+                if (dataList.Any())
+                {
+                    symbolsWithDataList.Add(symbolWithData);
+                    symbolDataList.Add(dataList);
+                    currencies.Add(currency);
+                }
             }
 
-            List<string> data = TableForMultipleSymbols(symbolList, currencies, errorsOfAllSymbolsList, symbolDataList).ToList();
+            List<string> data = TableForMultipleSymbols(symbolsWithDataList, currencies, symbolDataList).ToList();
             // TODO 
             List<WithError<string?>> dataWithErrors = data.Select(d => new WithError<string?>(d) { Data = d, Error = null }).ToList();
             return dataWithErrors;
@@ -106,7 +111,7 @@ namespace StockAnalyzer.DataProviders
 
                 List<string> dataList = distinctCurrencyUnits.Select(u => u.val.ToString() ?? "").ToList() ?? new List<string>();
                 string? data = dataList.Aggregate((r, n) => r + "\t" + n);
-                
+
                 resultList.AddRange(new List<string>() { header, data, currency });
             }
             catch (Exception ex)
@@ -317,10 +322,9 @@ namespace StockAnalyzer.DataProviders
         }
 
         private static IEnumerable<string> TableForMultipleSymbols(
-            List<string> symbols,
-            List<string> currencies,
-            List<string> errorsList,
-            List<List<string>> symbolDataList)
+              List<string> symbols,
+              List<string> currencies,
+              List<List<string>> symbolDataList)
         {
             List<string> uniqueDatesStringsListSorted = symbolDataList
                 .Where(s => s.Any())
@@ -337,7 +341,6 @@ namespace StockAnalyzer.DataProviders
             {
                 string symbol = symbols[i];
                 string currency = currencies[i];
-                string errors = errorsList[i];
                 dataRow = FirstDataRowCell(symbol, currency);
 
                 List<List<string>> symbolData = symbolDataList[i].Select(l => l.Split("\t").ToList()).ToList();
