@@ -21,17 +21,20 @@ namespace StockAnalyzer.DataProviders
 
         public async Task<string> Cik(string symbol)
         {
-            string url = $"https://www.sec.gov/files/company_tickers_exchange.json";
-            var response = await _httpClient.GetStringAsync(url);
+            string response = await _httpClient.GetStringAsync($"https://www.sec.gov/files/company_tickers_exchange.json");
             CompanyTickersExchange companyTickersExchange = JsonSerializer.Deserialize<CompanyTickersExchange>(response) ?? throw new Exception();
 
-            List<object> symbolData = companyTickersExchange?.data
-                .Where(d => (d[2]?.ToString() ?? "") == symbol.Trim().ToUpper())
-                .Single() ?? throw new Exception();
+            int idx = companyTickersExchange.fields.IndexOf("ticker");
+            List<List<object>> symbolData = companyTickersExchange?.data
+                .Where(d => (d[idx]?.ToString()?.ToUpper() ?? "") == symbol.Trim().ToUpper())
+                .ToList() ?? throw new Exception(); ;
+            if (!symbolData.Any())
+            {
+                return "";
+            }
 
-            string cik = symbolData[0].ToString() ?? throw new Exception();
-            cik = int.Parse(cik).ToString("D10");
-            return cik;
+            string cik = symbolData.Single()[0].ToString() ?? throw new Exception();
+            return int.Parse(cik).ToString("D10");
         }
 
         public async Task<IEnumerable<WithError<string?>>> BatchProcessing(
@@ -70,7 +73,7 @@ namespace StockAnalyzer.DataProviders
 
             List<string> data = TableForMultipleSymbols(symbolList, currencies, errorsOfAllSymbolsList, symbolDataList).ToList();
             // TODO 
-            List<WithError<string?>> dataWithErrors = data.Select(d=> new WithError<string?>(d) { Data = d, Error = null}).ToList();
+            List<WithError<string?>> dataWithErrors = data.Select(d => new WithError<string?>(d) { Data = d, Error = null }).ToList();
             return dataWithErrors;
         }
 
@@ -80,13 +83,17 @@ namespace StockAnalyzer.DataProviders
             List<string> resultList = new();
             string error = "";
 
-            string url10k = $"https://data.sec.gov/api/xbrl/companyconcept/CIK{await Cik(symbol)}/us-gaap/{companyConcept}.json";
-            string url20f = $"https://data.sec.gov/api/xbrl/companyconcept/CIK{await Cik(symbol)}/ifrs-full/{companyConcept}.json";
+            string cik = await Cik(symbol);
+            if (string.IsNullOrEmpty(cik))
+            {
+                error = $"Can not find CIK for symbol {symbol}";
+                return new WithError<IEnumerable<string>>(error) { Error = error };
+            }
 
             CompanyConcept companyConceptData = null!;
             try
             {
-                string response = await GetResponse10kOr20f(url10k, url20f);
+                string response = await GetResponse10kOr20f(GetUrlsCompanyConcept(cik, companyConcept));
                 companyConceptData = JsonSerializer.Deserialize<CompanyConcept>(response) ?? throw new Exception();
 
                 List<CurrencyWithAcronym> distinctCurrencyUnitsWithAcronym = GetCurrencyUnits(companyConceptData).ToList();
@@ -119,6 +126,13 @@ namespace StockAnalyzer.DataProviders
             return resultListOrError;
         }
 
+        private static UrlsCompanyConcept GetUrlsCompanyConcept(string cik, string companyConcept)
+        {
+            return new UrlsCompanyConcept(
+                $"https://data.sec.gov/api/xbrl/companyconcept/CIK{cik}/us-gaap/{companyConcept}.json",
+                $"https://data.sec.gov/api/xbrl/companyconcept/CIK{cik}/ifrs-full/{companyConcept}.json");
+        }
+
         private static IEnumerable<CurrencyWithAcronym> GetCurrencyUnits(CompanyConcept companyConceptData)
         {
             List<Currency> currencyUnitList = null!;
@@ -144,15 +158,15 @@ namespace StockAnalyzer.DataProviders
                 .DistinctBy(u => u.Currency.end);
         }
 
-        private async Task<string> GetResponse10kOr20f(string url10k, string url20f)
+        private async Task<string> GetResponse10kOr20f(UrlsCompanyConcept urls)
         {
             try
             {
-                return await _httpClient.GetStringAsync(url10k);
+                return await _httpClient.GetStringAsync(urls.Url10k);
             }
             catch (HttpRequestException)
             {
-                return await _httpClient.GetStringAsync(url20f);
+                return await _httpClient.GetStringAsync(urls.Url20f);
             }
 
         }
@@ -347,6 +361,8 @@ namespace StockAnalyzer.DataProviders
             return $"{symbol} ({currency})";
         }
     }
+
+    internal record UrlsCompanyConcept(string Url10k, string Url20f);
 
     internal record Earning(DateOnly Date, List<long?> Data);
 
