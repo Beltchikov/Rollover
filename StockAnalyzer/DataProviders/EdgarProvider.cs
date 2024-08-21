@@ -45,6 +45,7 @@ namespace StockAnalyzer.DataProviders
             List<string> symbolsWithDataList = new();
             List<string> currencies = new();
             List<List<string>> symbolDataList = new();
+            List<string> errorList = new();
             foreach (var symbol in symbolList)
             {
                 string symbolWithData = "";
@@ -74,11 +75,21 @@ namespace StockAnalyzer.DataProviders
                     symbolDataList.Add(dataList);
                     currencies.Add(currency);
                 }
+                else
+                {
+                    errorList.Add(error);
+                }
             }
 
             List<string> data = TableForMultipleSymbols(symbolsWithDataList, currencies, symbolDataList).ToList();
-            // TODO 
-            List<WithError<string?>> dataWithErrors = data.Select(d => new WithError<string?>(d) { Data = d, Error = null }).ToList();
+            // TODO display error 1 time instead of 4
+            List<WithError<string?>> dataWithErrors = data
+                .Select(d => new WithError<string?>(d) 
+                { 
+                    Data = d, 
+                    Error = errorList.Aggregate((r,n)=> r+"\r\n"+n) 
+                })
+                .ToList();
             return dataWithErrors;
         }
 

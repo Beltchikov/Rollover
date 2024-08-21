@@ -42,7 +42,7 @@ namespace StockAnalyzer.Commands
                             .Select(r => r.Error ?? "")
                             .ToList();
 
-            edgarConsumer.AddMessageEdgar("TODO");
+            edgarConsumer.AddMessageEdgar(errors.Aggregate((r,n)=> r + "\r\n"+n));
             edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(data);
 
             //
