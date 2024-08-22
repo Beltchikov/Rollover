@@ -60,6 +60,10 @@ namespace StockAnalyzer.DataProviders
                         symbolCurrencyDataError.Error = symbolDataOrError.Error ?? throw new Exception();
                     }
                 }
+                if (symbolCurrencyDataError.Data != null && symbolCurrencyDataError.Error != null)
+                {
+                    symbolCurrencyDataError.Error = null; // We do not care of intermediate errors if get the data finally
+                }
                 symbolCurrencyDataErrorList.Add(symbolCurrencyDataError);
             }
 
