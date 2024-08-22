@@ -63,20 +63,11 @@ namespace StockAnalyzer.DataProviders
                 symbolCurrencyDataErrorList.Add(symbolCurrencyDataError);
             }
 
-            List<SymbolCurrencyDataError> resultListData = symbolCurrencyDataErrorList.Where(d => d.Data != null).ToList();
-            
-            List<string> symbolsWithDataList = resultListData.Select(l => l.Symbol).ToList();
-            List<string> currencies = resultListData.Select(l => l.Currency).ToList();
-            List<List<string>> symbolDataList = new();
-            symbolDataList.AddRange(from List<string>? dataList in resultListData.Select(l => l.Data)
-                                    where dataList != null
-                                    select dataList);
-            List<string> data = TableForMultipleSymbols(symbolsWithDataList, currencies, symbolDataList).ToList();
-            
+            List<string> data = TableForMultipleSymbols(symbolCurrencyDataErrorList).ToList();
             string? errors = symbolCurrencyDataErrorList
-                .Where(d => d.Error != null)
-                .Select(l => l.Error)
-                .Aggregate((r, n) => r + "\r\n" + n);
+                            .Where(d => d.Error != null)
+                            .Select(l => l.Error)
+                            .Aggregate((r, n) => r + "\r\n" + n);
 
             // TODO display error 1 time instead of 4
             List<WithError<string?>> dataWithErrors = data
@@ -87,6 +78,19 @@ namespace StockAnalyzer.DataProviders
                 })
                 .ToList();
             return dataWithErrors;
+        }
+
+        private static List<string> TableForMultipleSymbols(List<SymbolCurrencyDataError> symbolCurrencyDataErrorList)
+        {
+            List<SymbolCurrencyDataError> resultListData = symbolCurrencyDataErrorList.Where(d => d.Data != null).ToList();
+
+            List<string> symbolsWithDataList = resultListData.Select(l => l.Symbol).ToList();
+            List<string> currencies = resultListData.Select(l => l.Currency).ToList();
+            List<List<string>> symbolDataList = new();
+            symbolDataList.AddRange(from List<string>? dataList in resultListData.Select(l => l.Data)
+                                    where dataList != null
+                                    select dataList);
+            return TableForMultipleSymbols(symbolsWithDataList, currencies, symbolDataList).ToList();
         }
 
         public async Task<WithError<IEnumerable<string>>> CompanyConceptOrError(string symbol, string companyConcept)
