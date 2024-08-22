@@ -171,7 +171,7 @@ namespace StockAnalyzer.DataProviders
             }
             else
             {
-                throw new NotImplementedException();
+                throw new ApplicationException($"Currency not found for {companyConceptData.entityName}");
             }
 
             return currencyWithAcronymList
