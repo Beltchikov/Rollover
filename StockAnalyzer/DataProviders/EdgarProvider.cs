@@ -42,52 +42,45 @@ namespace StockAnalyzer.DataProviders
            string[] companyConceptArray,
            Func<string, string, Task<WithError<IEnumerable<string>>>> processingFunc)
         {
-            List<string> symbolsWithDataList = new();
-            List<string> currencies = new();
-            List<List<string>> symbolDataList = new();
-            List<string> errorList = new();
+            List<SymbolCurrencyDataError> symbolCurrencyDataErrorList = new();
             foreach (var symbol in symbolList)
             {
-                string symbolWithData = "";
-                string currency = "";
-                List<string> dataList = new();
-                string error = "";
-
+                SymbolCurrencyDataError symbolCurrencyDataError = new(symbol, "", null, null);
                 foreach (string companyConcept in companyConceptArray)
                 {
                     WithError<IEnumerable<string>> symbolDataOrError = await processingFunc(symbol, companyConcept);
                     if (symbolDataOrError.Data != null)
                     {
-                        symbolWithData = symbol;
-                        currency = symbolDataOrError.Data.Skip(2).First();
-                        dataList = new(symbolDataOrError.Data.Take(2).ToList());
+                        symbolCurrencyDataError.Currency = symbolDataOrError.Data.Skip(2).First();
+                        symbolCurrencyDataError.Data = new(symbolDataOrError.Data.Take(2).ToList());
                         break;
                     }
                     else
                     {
-                        error = symbolDataOrError.Error ?? throw new Exception();
+                        symbolCurrencyDataError.Error = symbolDataOrError.Error ?? throw new Exception();
                     }
                 }
-
-                if (dataList.Any())
-                {
-                    symbolsWithDataList.Add(symbolWithData);
-                    symbolDataList.Add(dataList);
-                    currencies.Add(currency);
-                }
-                else
-                {
-                    errorList.Add(error);
-                }
+                symbolCurrencyDataErrorList.Add(symbolCurrencyDataError);
             }
 
+            List<SymbolCurrencyDataError> resultListData = symbolCurrencyDataErrorList.Where(d => d.Data != null).ToList();
+            List<SymbolCurrencyDataError> resultListErrors = symbolCurrencyDataErrorList.Where(d => d.Error != null).ToList();
+
+            List<string> symbolsWithDataList = resultListData.Select(l => l.Symbol).ToList();
+            List<string> currencies = resultListData.Select(l => l.Currency).ToList();
+            List<List<string>> symbolDataList = new();
+            symbolDataList.AddRange(from List<string>? dataList in resultListData.Select(l => l.Data)
+                                    where dataList != null
+                                    select dataList);
             List<string> data = TableForMultipleSymbols(symbolsWithDataList, currencies, symbolDataList).ToList();
+            string? errors = resultListErrors.Select(l => l.Error).Aggregate((r, n) => r + "\r\n" + n);
+
             // TODO display error 1 time instead of 4
             List<WithError<string?>> dataWithErrors = data
-                .Select(d => new WithError<string?>(d) 
-                { 
-                    Data = d, 
-                    Error = errorList.Aggregate((r,n)=> r+"\r\n"+n) 
+                .Select(d => new WithError<string?>(d)
+                {
+                    Data = d,
+                    Error = errors
                 })
                 .ToList();
             return dataWithErrors;
@@ -373,6 +366,23 @@ namespace StockAnalyzer.DataProviders
         private static string FirstDataRowCell(string symbol, string currency)
         {
             return $"{symbol} ({currency})";
+        }
+    }
+
+    internal class SymbolCurrencyDataError
+    {
+        public string Symbol { get; set; }
+        public string Currency { get; set; }
+        public List<string>? Data { get; set; }
+        public string? Error { get; set; }
+
+
+        public SymbolCurrencyDataError(string symbol, string currency, List<string>? data, string? error)
+        {
+            Symbol = symbol;
+            Currency = currency;
+            Data = data;
+            Error = error;
         }
     }
 
