@@ -75,12 +75,13 @@ namespace StockAnalyzer.DataProviders
 
             // TODO display error 1 time instead of 4
             List<WithError<string?>> dataWithErrors = data
-                .Select(d => new WithError<string?>(d)
+                .Select(d => new WithError<string?>(d) 
                 {
                     Data = d,
-                    Error = errors
+                    Error = null    
                 })
                 .ToList();
+            if(errors != null) dataWithErrors.Add(new WithError<string?>(errors)); 
             return dataWithErrors;
         }
 
