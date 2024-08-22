@@ -68,12 +68,8 @@ namespace StockAnalyzer.DataProviders
             }
 
             List<string> data = TableForMultipleSymbols(symbolCurrencyDataErrorList).ToList();
-            string? errors = symbolCurrencyDataErrorList
-                            .Where(d => d.Error != null)
-                            .Select(l => l.Error)
-                            .Aggregate((r, n) => r + "\r\n" + n);
+            string? errors = ErrorsFromSymbolCurrencyDataErrorList(symbolCurrencyDataErrorList);
 
-            // TODO display error 1 time instead of 4
             List<WithError<string?>> dataWithErrors = data
                 .Select(d => new WithError<string?>(d) 
                 {
@@ -83,6 +79,20 @@ namespace StockAnalyzer.DataProviders
                 .ToList();
             if(errors != null) dataWithErrors.Add(new WithError<string?>(errors)); 
             return dataWithErrors;
+        }
+
+        private static string? ErrorsFromSymbolCurrencyDataErrorList(List<SymbolCurrencyDataError> symbolCurrencyDataErrorList)
+        {
+            if (!symbolCurrencyDataErrorList.Any()) return null;
+
+            List<SymbolCurrencyDataError> symbolCurrencyDataErrorListWithErrors = symbolCurrencyDataErrorList
+                            .Where(d => d.Error != null)
+                            .ToList();
+            if (!symbolCurrencyDataErrorListWithErrors.Any()) return null;
+
+            return symbolCurrencyDataErrorListWithErrors
+                .Select(l => l.Error)
+                .Aggregate((r, n) => r + "\r\n" + n);
         }
 
         private static List<string> TableForMultipleSymbols(List<SymbolCurrencyDataError> symbolCurrencyDataErrorList)
