@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static StockAnalyzer.DataProviders.EdgarProvider;
 
 namespace StockAnalyzer.DataProviders
 {
@@ -11,7 +12,7 @@ namespace StockAnalyzer.DataProviders
         Task<IEnumerable<WithError<string?>>> BatchProcessing(
            List<string> symbolList,
            List<string> companyConceptArray,
-           Func<string, string, Task<WithError<IEnumerable<string>>>> processingFunc);
+           ConceptFuncDelegate conceptFunc);
         Task<WithError<IEnumerable<string>>> CompanyConceptOrError(string symbol, string companyConcept);
         IEnumerable<string> InterpolateDataForMissingDates(List<string> data);
     }

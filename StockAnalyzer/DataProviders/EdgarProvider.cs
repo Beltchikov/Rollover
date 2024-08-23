@@ -37,10 +37,12 @@ namespace StockAnalyzer.DataProviders
             return int.Parse(cik).ToString("D10");
         }
 
+        public delegate Task<WithError<IEnumerable<string>>> ConceptFuncDelegate(string symbol, string concept);
+
         public async Task<IEnumerable<WithError<string?>>> BatchProcessing(
-           List<string> symbolList,
-           List<string> companyConceptArray,
-           Func<string, string, Task<WithError<IEnumerable<string>>>> processingFunc)
+          List<string> symbolList,
+          List<string> companyConceptArray,
+          ConceptFuncDelegate processingFunc)
         {
             List<SymbolCurrencyDataError> symbolCurrencyDataErrorList = new();
             foreach (var symbol in symbolList)
