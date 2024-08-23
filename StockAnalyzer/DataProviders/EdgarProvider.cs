@@ -39,7 +39,7 @@ namespace StockAnalyzer.DataProviders
 
         public async Task<IEnumerable<WithError<string?>>> BatchProcessing(
            List<string> symbolList,
-           string[] companyConceptArray,
+           List<string> companyConceptArray,
            Func<string, string, Task<WithError<IEnumerable<string>>>> processingFunc)
         {
             List<SymbolCurrencyDataError> symbolCurrencyDataErrorList = new();

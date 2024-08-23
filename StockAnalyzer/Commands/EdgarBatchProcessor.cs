@@ -12,7 +12,7 @@ namespace StockAnalyzer.Commands
 {
     public class EdgarBatchProcessor
     {
-        public static async Task RunAsync(IEdgarConsumer edgarConsumer, string[] companyConceptArray)
+        public static async Task RunAsync(IEdgarConsumer edgarConsumer, List<string> companyConceptArray)
         {
             bool waiting = true;
             Cursor previousCursor = Mouse.OverrideCursor;

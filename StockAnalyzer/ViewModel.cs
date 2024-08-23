@@ -90,7 +90,7 @@ namespace StockAnalyzer
 
             // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/StockholdersEquity.json
             EquityCommand = new RelayCommand(async ()
-                => await EdgarBatchProcessor.RunAsync(this, new string[]
+                => await EdgarBatchProcessor.RunAsync(this, new List<string>
                 {
                     "StockholdersEquity",
                     "Equity",
@@ -102,7 +102,7 @@ namespace StockAnalyzer
 
             // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/LongTermDebt.json
             LongTermDebtCommand = new RelayCommand(async ()
-                => await EdgarBatchProcessor.RunAsync(this, new string[]
+                => await EdgarBatchProcessor.RunAsync(this, new List<string>
                 {
                     "LongTermDebt",
                     "NoncurrentLiabilities",
@@ -114,7 +114,7 @@ namespace StockAnalyzer
 
             // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/PaymentsOfDividends.json
             DividendsCommand = new RelayCommand(async ()
-                => await EdgarBatchProcessor.RunAsync(this, new string[]
+                => await EdgarBatchProcessor.RunAsync(this, new List<string>
                 {
                     "DividendsCommonStockCash",
                     "DividendsCash",
@@ -125,7 +125,7 @@ namespace StockAnalyzer
 
             // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/PaymentsOfDividends.json
             NetIncomeCommand = new RelayCommand(async ()
-                => await EdgarBatchProcessor.RunAsync(this, new string[]
+                => await EdgarBatchProcessor.RunAsync(this, new List<string>
                 {
                     "NetIncomeLoss",
                     "ProfitLoss"
