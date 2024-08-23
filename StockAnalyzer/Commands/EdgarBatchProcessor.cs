@@ -29,6 +29,7 @@ namespace StockAnalyzer.Commands
             });
             edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(Enumerable.Empty<string>());
 
+            //
             List<WithError<string?>> batchProcessingResults = (await edgarConsumer.EdgarProvider.BatchProcessing(
                                     edgarConsumer.TickerCollectionEdgar.ToList(),
                                     companyConceptArray,
