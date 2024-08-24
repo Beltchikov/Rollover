@@ -13,7 +13,7 @@ namespace StockAnalyzer.Commands
 {
     public class LongOperationWithFeedback
     {
-        public static async Task RunAsync(
+        public static async Task RunBatchProcessingAsync(
             IEdgarConsumer edgarConsumer,
             List<string> companyConceptArray,
             BatchProcessingDelegate batchProcessingFunc)
