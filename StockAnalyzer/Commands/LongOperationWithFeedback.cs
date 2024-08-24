@@ -11,7 +11,7 @@ using static StockAnalyzer.DataProviders.EdgarProvider;
 
 namespace StockAnalyzer.Commands
 {
-    public class EdgarBatchProcessor
+    public class LongOperationWithFeedback
     {
         public static async Task RunAsync(
             IEdgarConsumer edgarConsumer,
