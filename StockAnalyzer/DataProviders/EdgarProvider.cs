@@ -37,7 +37,6 @@ namespace StockAnalyzer.DataProviders
             return int.Parse(cik).ToString("D10");
         }
 
-        //
         public delegate Task<WithError<IEnumerable<string>>> ConceptFuncDelegate(string symbol, string concept);
         ConceptFuncDelegate IEdgarProvider.CompanyConceptOrError{ get => CompanyConceptOrErrorMethod; }
 
@@ -90,7 +89,6 @@ namespace StockAnalyzer.DataProviders
             return resultListOrError;
         }
 
-        //
         public delegate Task<IEnumerable<WithError<string?>>> BatchProcessingDelegate(
             List<string> symbolList,
             List<string> companyConceptArray,
