@@ -37,13 +37,66 @@ namespace StockAnalyzer.DataProviders
             return int.Parse(cik).ToString("D10");
         }
 
+        //
         public delegate Task<WithError<IEnumerable<string>>> ConceptFuncDelegate(string symbol, string concept);
+        ConceptFuncDelegate IEdgarProvider.CompanyConceptOrError{ get => CompanyConceptOrErrorMethod; }
+
+        private async Task<WithError<IEnumerable<string>>> CompanyConceptOrErrorMethod(string symbol, string companyConcept)
+        {
+            WithError<IEnumerable<string>> resultListOrError = null!;
+            List<string> resultList = new();
+            string error = "";
+
+            string cik = await Cik(symbol);
+            if (string.IsNullOrEmpty(cik))
+            {
+                error = $"Can not find CIK for symbol {symbol}";
+                return new WithError<IEnumerable<string>>(error) { Error = error };
+            }
+
+            CompanyConcept companyConceptData = null!;
+            try
+            {
+                string response = await GetResponse10kOr20f(GetUrlsCompanyConcept(cik, companyConcept));
+                companyConceptData = JsonSerializer.Deserialize<CompanyConcept>(response) ?? throw new Exception();
+
+                List<CurrencyWithAcronym> distinctCurrencyUnitsWithAcronym = GetCurrencyUnits(companyConceptData).ToList();
+                string currency = distinctCurrencyUnitsWithAcronym.First().Acronym;
+                List<Currency> distinctCurrencyUnits = distinctCurrencyUnitsWithAcronym.Select(u => u.Currency).ToList();
+                distinctCurrencyUnits = HandleMultipleUsdUnitsForFiscalYear(distinctCurrencyUnits);
+
+                List<string> headerColumns = distinctCurrencyUnits.Select(u => u.end).ToList() ?? new List<string>();
+                string? header = headerColumns.Aggregate((r, n) => r + "\t" + n);
+
+                List<string> dataList = distinctCurrencyUnits.Select(u => u.val.ToString() ?? "").ToList() ?? new List<string>();
+                string? data = dataList.Aggregate((r, n) => r + "\t" + n);
+
+                resultList.AddRange(new List<string>() { header, data, currency });
+            }
+            catch (Exception ex)
+            {
+                error = ex.ToString();
+            }
+
+            if (resultList.Any())
+            {
+                resultListOrError = new WithError<IEnumerable<string>>(resultList);
+            }
+            else
+            {
+                resultListOrError = new WithError<IEnumerable<string>>(error);
+            }
+
+            return resultListOrError;
+        }
+
+        //
         public delegate Task<IEnumerable<WithError<string?>>> BatchProcessingDelegate(
             List<string> symbolList,
             List<string> companyConceptArray,
             ConceptFuncDelegate processingFunc);
 
-       BatchProcessingDelegate IEdgarProvider.BatchProcessing { get => BatchProcessingMethod;}
+        BatchProcessingDelegate IEdgarProvider.BatchProcessing { get => BatchProcessingMethod;}
 
         private static async Task<IEnumerable<WithError<string?>>> BatchProcessingMethod(
           List<string> symbolList,
@@ -114,55 +167,6 @@ namespace StockAnalyzer.DataProviders
                                     where dataList != null
                                     select dataList);
             return TableForMultipleSymbols(symbolsWithDataList, currencies, symbolDataList).ToList();
-        }
-
-        public async Task<WithError<IEnumerable<string>>> CompanyConceptOrError(string symbol, string companyConcept)
-        {
-            WithError<IEnumerable<string>> resultListOrError = null!;
-            List<string> resultList = new();
-            string error = "";
-
-            string cik = await Cik(symbol);
-            if (string.IsNullOrEmpty(cik))
-            {
-                error = $"Can not find CIK for symbol {symbol}";
-                return new WithError<IEnumerable<string>>(error) { Error = error };
-            }
-
-            CompanyConcept companyConceptData = null!;
-            try
-            {
-                string response = await GetResponse10kOr20f(GetUrlsCompanyConcept(cik, companyConcept));
-                companyConceptData = JsonSerializer.Deserialize<CompanyConcept>(response) ?? throw new Exception();
-
-                List<CurrencyWithAcronym> distinctCurrencyUnitsWithAcronym = GetCurrencyUnits(companyConceptData).ToList();
-                string currency = distinctCurrencyUnitsWithAcronym.First().Acronym;
-                List<Currency> distinctCurrencyUnits = distinctCurrencyUnitsWithAcronym.Select(u => u.Currency).ToList();
-                distinctCurrencyUnits = HandleMultipleUsdUnitsForFiscalYear(distinctCurrencyUnits);
-
-                List<string> headerColumns = distinctCurrencyUnits.Select(u => u.end).ToList() ?? new List<string>();
-                string? header = headerColumns.Aggregate((r, n) => r + "\t" + n);
-
-                List<string> dataList = distinctCurrencyUnits.Select(u => u.val.ToString() ?? "").ToList() ?? new List<string>();
-                string? data = dataList.Aggregate((r, n) => r + "\t" + n);
-
-                resultList.AddRange(new List<string>() { header, data, currency });
-            }
-            catch (Exception ex)
-            {
-                error = ex.ToString();
-            }
-
-            if (resultList.Any())
-            {
-                resultListOrError = new WithError<IEnumerable<string>>(resultList);
-            }
-            else
-            {
-                resultListOrError = new WithError<IEnumerable<string>>(error);
-            }
-
-            return resultListOrError;
         }
 
         private static UrlsCompanyConcept GetUrlsCompanyConcept(string cik, string companyConcept)

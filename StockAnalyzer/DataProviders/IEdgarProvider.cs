@@ -1,5 +1,4 @@
-﻿using StockAnalyzer.DataProviders.Types;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using static StockAnalyzer.DataProviders.EdgarProvider;
 
@@ -9,7 +8,7 @@ namespace StockAnalyzer.DataProviders
     {
         Task<string> Cik(string symbol);
         BatchProcessingDelegate BatchProcessing { get;}   
-        Task<WithError<IEnumerable<string>>> CompanyConceptOrError(string symbol, string companyConcept);
+        ConceptFuncDelegate CompanyConceptOrError { get; }
         IEnumerable<string> InterpolateDataForMissingDates(List<string> data);
     }
 }
