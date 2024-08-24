@@ -38,17 +38,23 @@ namespace StockAnalyzer.DataProviders
         }
 
         public delegate Task<WithError<IEnumerable<string>>> ConceptFuncDelegate(string symbol, string concept);
+        public delegate Task<IEnumerable<WithError<string?>>> BatchProcessingDelegate(
+            List<string> symbolList,
+            List<string> companyConceptArray,
+            ConceptFuncDelegate processingFunc);
 
-        public async Task<IEnumerable<WithError<string?>>> BatchProcessing(
+       BatchProcessingDelegate IEdgarProvider.BatchProcessing { get => BatchProcessingMethod;}
+
+        private static async Task<IEnumerable<WithError<string?>>> BatchProcessingMethod(
           List<string> symbolList,
-          List<string> companyConceptArray,
+          List<string> companyConceptList,
           ConceptFuncDelegate processingFunc)
         {
             List<SymbolCurrencyDataError> symbolCurrencyDataErrorList = new();
             foreach (var symbol in symbolList)
             {
                 SymbolCurrencyDataError symbolCurrencyDataError = new(symbol, "", null, null);
-                foreach (string companyConcept in companyConceptArray)
+                foreach (string companyConcept in companyConceptList)
                 {
                     WithError<IEnumerable<string>> symbolDataOrError = await processingFunc(symbol, companyConcept);
                     if (symbolDataOrError.Data != null)
@@ -73,13 +79,13 @@ namespace StockAnalyzer.DataProviders
             string? errors = ErrorsFromSymbolCurrencyDataErrorList(symbolCurrencyDataErrorList);
 
             List<WithError<string?>> dataWithErrors = data
-                .Select(d => new WithError<string?>(d) 
+                .Select(d => new WithError<string?>(d)
                 {
                     Data = d,
-                    Error = null    
+                    Error = null
                 })
                 .ToList();
-            if(errors != null) dataWithErrors.Add(new WithError<string?>(errors)); 
+            if (errors != null) dataWithErrors.Add(new WithError<string?>(errors));
             return dataWithErrors;
         }
 

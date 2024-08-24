@@ -7,12 +7,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
+using static StockAnalyzer.DataProviders.EdgarProvider;
 
 namespace StockAnalyzer.Commands
 {
     public class EdgarBatchProcessor
     {
-        public static async Task RunAsync(IEdgarConsumer edgarConsumer, List<string> companyConceptArray)
+        public static async Task RunAsync(
+            IEdgarConsumer edgarConsumer,
+            List<string> companyConceptArray,
+            BatchProcessingDelegate batchProcessingFunc)
         {
             bool waiting = true;
             Cursor previousCursor = Mouse.OverrideCursor;
@@ -30,7 +34,7 @@ namespace StockAnalyzer.Commands
             edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(Enumerable.Empty<string>());
 
             //
-            List<WithError<string?>> batchProcessingResults = (await edgarConsumer.EdgarProvider.BatchProcessing(
+            List<WithError<string?>> batchProcessingResults = (await batchProcessingFunc(
                                     edgarConsumer.TickerCollectionEdgar.ToList(),
                                     companyConceptArray,
                                     edgarConsumer.EdgarProvider.CompanyConceptOrError))?.ToList() ?? throw new ApplicationException();

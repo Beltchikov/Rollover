@@ -98,7 +98,8 @@ namespace StockAnalyzer
                     "EquityAttributableToParent",
                     "TotalEquity",
                     "EquityAttributableToNoncontrollingInterest"
-                }));
+                },
+                edgarProvider.BatchProcessing));
 
             // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/LongTermDebt.json
             LongTermDebtCommand = new RelayCommand(async ()
@@ -110,7 +111,8 @@ namespace StockAnalyzer
                     "Borrowings",
                     "DebtNoncurrent",
                     "LongTermObligations"
-                }));
+                },
+                edgarProvider.BatchProcessing));
 
             // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/PaymentsOfDividends.json
             DividendsCommand = new RelayCommand(async ()
@@ -121,7 +123,8 @@ namespace StockAnalyzer
                     "Dividends",
                     "PaymentsOfDividends",
                     "DividendsPaid"
-                }));
+                },
+                edgarProvider.BatchProcessing));
 
             // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/PaymentsOfDividends.json
             NetIncomeCommand = new RelayCommand(async ()
@@ -129,7 +132,8 @@ namespace StockAnalyzer
                 {
                     "NetIncomeLoss",
                     "ProfitLoss"
-                }));
+                },
+                edgarProvider.BatchProcessing));
 
             InterpolateCommand = new RelayCommand(() =>
             {
