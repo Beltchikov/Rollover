@@ -4,6 +4,7 @@ using IbClient.IbHost;
 using StockAnalyzer.Commands;
 using StockAnalyzer.DataProviders;
 using StockAnalyzer.DataProviders.Types;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -54,10 +55,10 @@ namespace StockAnalyzer
         private int _progressBarValue;
         private Brush _backgroundResults = null!;
 
-        public ICommand EquityCommand { get; }
-        public ICommand LongTermDebtCommand { get; }
-        public ICommand DividendsCommand { get; }
-        public ICommand NetIncomeCommand { get; }
+        public ICommand EquityCommand { get; } = null!;
+        public ICommand LongTermDebtCommand { get; } = null!;
+        public ICommand DividendsCommand { get; } = null!;
+        public ICommand NetIncomeCommand { get; } = null!;
         public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
         public ICommand EarningsForWeekCommand { get; }
@@ -88,52 +89,10 @@ namespace StockAnalyzer
             yahooProvider.Status += YahooProvider_Status;
             twsProvider.Status += TwsProvider_Status;
 
-            // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/StockholdersEquity.json
-            EquityCommand = new RelayCommand(async ()
-                => await EdgarBatchProcessor.RunBatchProcessingAsync(this, new List<string>
-                {
-                    "StockholdersEquity",
-                    "Equity",
-                    "EquityAttributableToOwnersOfParent",
-                    "EquityAttributableToParent",
-                    "TotalEquity",
-                    "EquityAttributableToNoncontrollingInterest"
-                },
-                edgarProvider.BatchProcessing));
-
-            // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/LongTermDebt.json
-            LongTermDebtCommand = new RelayCommand(async ()
-                => await EdgarBatchProcessor.RunBatchProcessingAsync(this, new List<string>
-                {
-                    "LongTermDebt",
-                    "NoncurrentLiabilities",
-                    "LongtermBorrowings",
-                    "Borrowings",
-                    "DebtNoncurrent",
-                    "LongTermObligations"
-                },
-                edgarProvider.BatchProcessing));
-
-            // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/PaymentsOfDividends.json
-            DividendsCommand = new RelayCommand(async ()
-                => await EdgarBatchProcessor.RunBatchProcessingAsync(this, new List<string>
-                {
-                    "DividendsCommonStockCash",
-                    "DividendsCash",
-                    "Dividends",
-                    "PaymentsOfDividends",
-                    "DividendsPaid"
-                },
-                edgarProvider.BatchProcessing));
-
-            // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/PaymentsOfDividends.json
-            NetIncomeCommand = new RelayCommand(async ()
-                => await EdgarBatchProcessor.RunBatchProcessingAsync(this, new List<string>
-                {
-                    "NetIncomeLoss",
-                    "ProfitLoss"
-                },
-                edgarProvider.BatchProcessing));
+            EquityCommand = CommandFactory.Create(nameof(EquityCommand), this);
+            LongTermDebtCommand = CommandFactory.Create(nameof(EquityCommand), this);
+            DividendsCommand = CommandFactory.Create(nameof(DividendsCommand), this);
+            NetIncomeCommand = CommandFactory.Create(nameof(NetIncomeCommand), this);
 
             InterpolateCommand = new RelayCommand(() =>
             {
@@ -434,7 +393,7 @@ namespace StockAnalyzer
                 SetProperty(ref _messageYahoo, value);
             }
         }
-        
+
         public int DecimalSeparatorSelectedIndexYahoo
         {
             get => _decimalSeparatorSelectedIndexYahoo;
