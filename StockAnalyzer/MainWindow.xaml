@@ -123,7 +123,6 @@ HorizontalAlignment="Stretch" VerticalAlignment="Center" Command="{Binding NetIn
                                     https://www.sec.gov/search-filings/edgar-application-programming-interfaces
                                 </Hyperlink>
                             </Label>
-                            
 
                         </Grid>
                     </GroupBox>
