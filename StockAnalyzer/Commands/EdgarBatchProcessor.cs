@@ -30,6 +30,7 @@ namespace StockAnalyzer.Commands
 
             if(errors.Any()) edgarConsumer.AddMessageEdgar(errors.Aggregate((r,n)=> r + "\r\n"+n));
             edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(data);
+            edgarConsumer.ResultsCalculatedEdgar = true;
         }
     }
 }
