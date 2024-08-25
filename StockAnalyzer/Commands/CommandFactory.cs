@@ -50,10 +50,17 @@ namespace StockAnalyzer.Commands
             };
 
             return new RelayCommand(
-                async () => await EdgarBatchProcessor.RunBatchProcessingAsync(
-                    edgarConsumer,
-                    companyConceptArray,
-                    edgarConsumer.EdgarProvider.BatchProcessing));
+                async () => {
+                    Ui ui = new();
+                    ui.Disable(edgarConsumer, 200);
+                    
+                    await EdgarBatchProcessor.RunBatchProcessingAsync(
+                        edgarConsumer,
+                        companyConceptArray,
+                        edgarConsumer.EdgarProvider.BatchProcessing);
+                    
+                    ui.Enable(edgarConsumer);
+                });
         }
     }
 }
