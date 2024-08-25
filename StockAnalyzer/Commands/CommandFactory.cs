@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace StockAnalyzer.Commands
@@ -85,6 +86,14 @@ namespace StockAnalyzer.Commands
 
                    ui.Enable(edgarConsumer);
                });
+        }
+
+        public static ICommand CreateCagr(ViewModel viewModel)
+        {
+            return new RelayCommand(() =>
+            {
+                MessageBox.Show("CreateCagr");
+            });
         }
     }
 }

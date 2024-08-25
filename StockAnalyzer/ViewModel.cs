@@ -76,6 +76,7 @@ namespace StockAnalyzer
         public ICommand TwsSummaryCommand { get; }
         public ICommand ComparePeersCommand { get; }
         public ICommand InterpolateCommand { get; } = null!;
+        public ICommand CagrCommand { get; } = null!;
 
         public ViewModel(
             IInvestingProvider investingProvider,
@@ -95,6 +96,7 @@ namespace StockAnalyzer
             DividendsCommand = CommandFactory.CreateBatchProcessing(nameof(DividendsCommand), this);
             NetIncomeCommand = CommandFactory.CreateBatchProcessing(nameof(NetIncomeCommand), this);
             InterpolateCommand = CommandFactory.CreateInterpolate(this);
+            CagrCommand = CommandFactory.CreateCagr(this);
 
             LastEpsCommand = new RelayCommand(async () =>
             {
