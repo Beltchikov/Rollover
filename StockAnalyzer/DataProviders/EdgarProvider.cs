@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace StockAnalyzer.DataProviders
 {
@@ -398,6 +399,17 @@ namespace StockAnalyzer.DataProviders
         private static string FirstDataRowCell(string symbol, string currency)
         {
             return $"{symbol} ({currency})";
+        }
+
+        public IEnumerable<string> Cagr(List<string> inputList, int periods)
+        {
+            List<string> resultList = new List<string>();
+
+
+            MessageBox.Show("CreateCagr");
+
+            // TODO
+            return resultList;
         }
     }
 

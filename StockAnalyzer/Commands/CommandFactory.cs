@@ -88,12 +88,24 @@ namespace StockAnalyzer.Commands
                });
         }
 
-        public static ICommand CreateCagr(ViewModel viewModel)
+        public static ICommand CreateCagr(IEdgarConsumer edgarConsumer)
         {
-            return new RelayCommand(() =>
-            {
-                MessageBox.Show("CreateCagr");
-            });
+            return new RelayCommand(
+                async () =>
+                {
+                    List<string> resultList = edgarConsumer.ResultCollectionEdgar.ToList();
+
+                    Ui ui = new();
+                    ui.Disable(edgarConsumer, 200);
+
+                    await Task.Run(() =>
+                    {
+                        edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(
+                            edgarConsumer.EdgarProvider.Cagr(resultList, 10));
+                    });
+
+                    ui.Enable(edgarConsumer);
+                });
         }
     }
 }
