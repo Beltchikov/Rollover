@@ -74,7 +74,7 @@ namespace StockAnalyzer
         public ICommand RiskAndReturnCommand { get; }
         public ICommand TwsSummaryCommand { get; }
         public ICommand ComparePeersCommand { get; }
-        public ICommand InterpolateCommand { get; }
+        public ICommand InterpolateCommand { get; } = null!;
 
         public ViewModel(
             IInvestingProvider investingProvider,
@@ -93,11 +93,7 @@ namespace StockAnalyzer
             LongTermDebtCommand = CommandFactory.CreateBatchProcessing(nameof(EquityCommand), this);
             DividendsCommand = CommandFactory.CreateBatchProcessing(nameof(DividendsCommand), this);
             NetIncomeCommand = CommandFactory.CreateBatchProcessing(nameof(NetIncomeCommand), this);
-
-            InterpolateCommand = new RelayCommand(() =>
-            {
-                ResultCollectionEdgar = new ObservableCollection<string>(edgarProvider.InterpolateDataForMissingDates(ResultCollectionEdgar.ToList()));
-            });
+            InterpolateCommand = CommandFactory.CreateInterpolate(this);
 
             LastEpsCommand = new RelayCommand(async () =>
             {
