@@ -7,7 +7,7 @@ namespace StockAnalyzer.Commands
 {
     public class CommandFactory
     {
-        public static ICommand? Create(string commandName, IEdgarConsumer edgarConsumer)
+        public static ICommand? CreateBatchProcessing(string commandName, IEdgarConsumer edgarConsumer)
         {
             List<string> companyConceptArray = commandName switch
             {

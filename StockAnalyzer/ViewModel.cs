@@ -89,10 +89,10 @@ namespace StockAnalyzer
             yahooProvider.Status += YahooProvider_Status;
             twsProvider.Status += TwsProvider_Status;
 
-            EquityCommand = CommandFactory.Create(nameof(EquityCommand), this);
-            LongTermDebtCommand = CommandFactory.Create(nameof(EquityCommand), this);
-            DividendsCommand = CommandFactory.Create(nameof(DividendsCommand), this);
-            NetIncomeCommand = CommandFactory.Create(nameof(NetIncomeCommand), this);
+            EquityCommand = CommandFactory.CreateBatchProcessing(nameof(EquityCommand), this);
+            LongTermDebtCommand = CommandFactory.CreateBatchProcessing(nameof(EquityCommand), this);
+            DividendsCommand = CommandFactory.CreateBatchProcessing(nameof(DividendsCommand), this);
+            NetIncomeCommand = CommandFactory.CreateBatchProcessing(nameof(NetIncomeCommand), this);
 
             InterpolateCommand = new RelayCommand(() =>
             {
