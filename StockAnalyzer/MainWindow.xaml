@@ -66,6 +66,8 @@
                                 <ColumnDefinition Width="10"></ColumnDefinition>
                                 <ColumnDefinition Width="100"></ColumnDefinition>
                                 <ColumnDefinition Width="150"></ColumnDefinition>
+                                <ColumnDefinition Width="150"></ColumnDefinition>
+                                <ColumnDefinition Width="150"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="10"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
@@ -105,13 +107,16 @@ HorizontalAlignment="Stretch" VerticalAlignment="Center" Command="{Binding NetIn
      HorizontalAlignment="Left" Height="25" VerticalAlignment="Top"></Label>
                             <TextBox x:Name="txtResultsEdgar" 
        Text="{Binding ResultCollectionEdgar, Converter={StaticResource ListToStringConverter}}" Grid.Column="3" Grid.Row="2" 
+                                     Grid.ColumnSpan="3"
        AcceptsReturn="True" Background="{Binding BackgroundResults}"
           VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto"></TextBox>
-                            <Button Grid.Column="3" Grid.Row="4" Width="200" HorizontalAlignment="Left" ToolTip="Interpolate data for missing dates." Command="{Binding InterpolateCommand, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding ResultsCalculatedEdgar}">Interpolate</Button>
                             
-                            <ProgressBar Grid.Column="3" HorizontalAlignment="Stretch" Height="10"  Grid.Row="5" VerticalAlignment="Center" Value="{Binding ProgressBarValue}" Minimum="0" Maximum="100"/>
+                            <Button Grid.Column="3" Grid.Row="4" Width="140" HorizontalAlignment="Stretch" ToolTip="Interpolate data for missing dates." Command="{Binding InterpolateCommand, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding ResultsCalculatedEdgar}">Interpolate</Button>
+                            <Button Grid.Column="4" Grid.Row="4" Width="140" HorizontalAlignment="Stretch" ToolTip="Cummulated Annual Growth Rate" Command="{Binding CagrCommand, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding ResultsCalculatedEdgar}">CAGR</Button>
 
-                            <Label Grid.Column="3" Grid.Row="6" 
+                            <ProgressBar Grid.Column="3" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" Height="10"  Grid.Row="5" VerticalAlignment="Center" Value="{Binding ProgressBarValue}" Minimum="0" Maximum="100"/>
+
+                            <Label Grid.Column="3" Grid.Row="6" Grid.ColumnSpan="3"
                                    VerticalAlignment="Center" HorizontalAlignment="Right">
                                 <Hyperlink NavigateUri="https://www.sec.gov/search-filings/edgar-application-programming-interfaces"
                                            RequestNavigate="Hyperlink_RequestNavigate">
