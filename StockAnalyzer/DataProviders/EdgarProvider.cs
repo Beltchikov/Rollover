@@ -408,7 +408,7 @@ namespace StockAnalyzer.DataProviders
             resultList.Add("Symbol\tYears\tGrowth\tCAGR");
 
             string datesString = inputList[0];
-            if (String.IsNullOrWhiteSpace(datesString)) throw new ApplicationException();
+            if (string.IsNullOrWhiteSpace(datesString)) throw new ApplicationException();
 
             List<string> datesStringList = datesString.Split("\t").ToList();
             if (!datesStringList.Any()) throw new ApplicationException();
@@ -428,8 +428,7 @@ namespace StockAnalyzer.DataProviders
             for (int i = 0; i < symbolsList.Count; i++)
             {
                 string symbol = symbolsList[i];
-                string symbolDataLine = inputList[i + 1];
-                List<string> symbolDataListAsString = symbolDataLine.Split("\t").Skip(1).ToList();
+                List<string> symbolDataListAsString = inputList[i + 1].Split("\t").Skip(1).ToList();
                 symbolDataListAsString = symbolDataListAsString.Skip(symbolDataListAsString.Count - datesListPeriods.Count).ToList();
 
                 int idxFirst = FirstIndexOfNotEmptyString(symbolDataListAsString);
