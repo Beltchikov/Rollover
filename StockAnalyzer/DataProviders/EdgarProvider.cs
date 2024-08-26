@@ -450,10 +450,10 @@ namespace StockAnalyzer.DataProviders
 
                 long lastEarningData = lastEarning.Data.First() ?? throw new ApplicationException();
                 long firstEarningData = firstEarning.Data.First() ?? throw new ApplicationException();
-                double growth = (double)lastEarningData / (double)firstEarningData;
+                double growth = Math.Round(lastEarningData / (double)firstEarningData,3);
                 growthList.Add(growth);
 
-                double cagr = Math.Pow(growth, 1 / (double)years) - 1;
+                double cagr = Math.Round(Math.Pow(growth, 1 / (double)years) - 1,3);
                 cagrList.Add(cagr);
 
                 string resultString = $"{symbol}\t{years}\t{growth}\t{cagr}";
