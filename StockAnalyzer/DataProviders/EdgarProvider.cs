@@ -440,14 +440,9 @@ namespace StockAnalyzer.DataProviders
 
                 long firstData = Convert.ToInt64(symbolDataListAsString[idxFirst]);
                 long lastData = Convert.ToInt64(symbolDataListAsString[idxLast]);
-                Earning firstEarning = new(datesListPeriods[idxFirst], new List<long?> { firstData });
-                Earning lastEarning = new(datesListPeriods[idxLast], new List<long?> { lastData });
                 
-                int years = lastEarning.Date.Year - firstEarning.Date.Year;
-                
-                long lastEarningData = lastEarning.Data.First() ?? throw new ApplicationException();
-                long firstEarningData = firstEarning.Data.First() ?? throw new ApplicationException();
-                double growth = Math.Round(lastEarningData / (double)firstEarningData,3);
+                int years = datesListPeriods[idxLast].Year - datesListPeriods[idxFirst].Year;
+                double growth = Math.Round(lastData / (double)firstData, 3);
                 double cagr = Math.Round(Math.Pow(growth, 1 / (double)years) - 1,3);
                
                 string resultString = $"{symbol}\t{years}\t{growth}\t{cagr}";
