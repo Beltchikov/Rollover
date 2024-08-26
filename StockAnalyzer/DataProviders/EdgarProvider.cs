@@ -430,23 +430,18 @@ namespace StockAnalyzer.DataProviders
                 string symbol = symbolsList[i];
                 string symbolDataLine = inputList[i + 1];
                 List<string> symbolDataListAsString = symbolDataLine.Split("\t").Skip(1).ToList();
-
-                int countDatesListPeriods = datesListPeriods.Count;
-                int countSymbolDataListAsString = symbolDataListAsString.Count;
-                symbolDataListAsString = symbolDataListAsString.Skip(countSymbolDataListAsString- countDatesListPeriods).ToList();
+                symbolDataListAsString = symbolDataListAsString.Skip(symbolDataListAsString.Count - datesListPeriods.Count).ToList();
 
                 int idxFirst = FirstIndexOfNotEmptyString(symbolDataListAsString);
                 int idxLast = LastIndexOfNotEmptyString(symbolDataListAsString);
-
                 long firstData = Convert.ToInt64(symbolDataListAsString[idxFirst]);
                 long lastData = Convert.ToInt64(symbolDataListAsString[idxLast]);
-                
+
                 int years = datesListPeriods[idxLast].Year - datesListPeriods[idxFirst].Year;
                 double growth = Math.Round(lastData / (double)firstData, 3);
-                double cagr = Math.Round(Math.Pow(growth, 1 / (double)years) - 1,3);
-               
-                string resultString = $"{symbol}\t{years}\t{growth}\t{cagr}";
-                resultList.Add(resultString);   
+                double cagr = Math.Round(Math.Pow(growth, 1 / (double)years) - 1, 3);
+
+                resultList.Add($"{symbol}\t{years}\t{growth}\t{cagr}");
             }
 
             return resultList;
