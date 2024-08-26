@@ -433,6 +433,8 @@ namespace StockAnalyzer.DataProviders
 
                 int idxFirst = FirstIndexOfNotEmptyString(symbolDataListAsString);
                 int idxLast = LastIndexOfNotEmptyString(symbolDataListAsString);
+                if (idxFirst < 0 || idxLast < 0) continue;
+
                 long firstData = Convert.ToInt64(symbolDataListAsString[idxFirst]);
                 long lastData = Convert.ToInt64(symbolDataListAsString[idxLast]);
 
