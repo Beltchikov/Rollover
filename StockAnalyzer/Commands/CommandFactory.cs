@@ -11,11 +11,13 @@ namespace StockAnalyzer.Commands
 {
     public class CommandFactory
     {
+        const int PROGRESS_BAR_DELAY = 400;    
+        
         public static ICommand? CreateBatchProcessing(string commandName, IEdgarConsumer edgarConsumer)
         {
             List<string> companyConceptArray = commandName switch
             {
-                // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/StockholdersEquity.json
+                // https://data.sec.gov/api/xbrl/companyconcept/CIK0000PROGRESS_BAR_DELAY406/us-gaap/StockholdersEquity.json
                 "EquityCommand" => new List<string>
                     {
                         "StockholdersEquity",
@@ -25,7 +27,7 @@ namespace StockAnalyzer.Commands
                         "TotalEquity",
                         "EquityAttributableToNoncontrollingInterest"
                     },
-                // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/LongTermDebt.json
+                // https://data.sec.gov/api/xbrl/companyconcept/CIK0000PROGRESS_BAR_DELAY406/us-gaap/LongTermDebt.json
                 "LongTermDebtCommand" => new List<string>
                     {
                         "LongTermDebt",
@@ -57,7 +59,7 @@ namespace StockAnalyzer.Commands
                 async () =>
                 {
                     Ui ui = new();
-                    ui.Disable(edgarConsumer, 200);
+                    ui.Disable(edgarConsumer, PROGRESS_BAR_DELAY);
 
                     await EdgarBatchProcessor.RunBatchProcessingAsync(
                         edgarConsumer,
@@ -76,7 +78,7 @@ namespace StockAnalyzer.Commands
                    List<string> resultList = edgarConsumer.ResultCollectionEdgar.ToList();
 
                    Ui ui = new();
-                   ui.Disable(edgarConsumer, 200);
+                   ui.Disable(edgarConsumer, PROGRESS_BAR_DELAY);
 
                    await Task.Run(() =>
                    {
@@ -96,7 +98,7 @@ namespace StockAnalyzer.Commands
                     List<string> resultList = edgarConsumer.ResultCollectionEdgar.ToList();
 
                     Ui ui = new();
-                    ui.Disable(edgarConsumer, 200);
+                    ui.Disable(edgarConsumer, PROGRESS_BAR_DELAY);
 
                     await Task.Run(() =>
                     {
