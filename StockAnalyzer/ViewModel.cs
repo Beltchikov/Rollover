@@ -367,9 +367,11 @@ namespace StockAnalyzer
 
         private IEnumerable<string> TestStringEdgar()
         {
-            return (" NVDA\r\nGOOG\r\nMSFT\r\nAAPL\r\nAMZN\r\nMETA\r\nTSLA").Split("\r\n").ToList(); ;
+            //return (" NVDA\r\nGOOG\r\nMSFT\r\nAAPL\r\nAMZN\r\nMETA\r\nTSLA").Split("\r\n").ToList();
             //return (" KO\r\nPEP\r\nBUD").Split("\r\n").ToList();
             //return (" KO\r\nBEOB\r\nPEP\r\nBUD").Split("\r\n").ToList();
+            return (" ZM\r\nPRPL\r\nMRNA\r\nTWLO\r\nNVDA\r\nROKU\r\nELF").Split("\r\n").ToList();
+
         }
 
         #endregion

@@ -439,7 +439,8 @@ namespace StockAnalyzer.DataProviders
                 long lastData = Convert.ToInt64(symbolDataListAsString[idxLast]);
 
                 int years = datesListPeriods[idxLast].Year - datesListPeriods[idxFirst].Year;
-                double growth = Math.Round(lastData / (double)firstData, 3);
+                
+                double growth = lastData < 0 && firstData < 0 ? 0: Math.Round(lastData / (double)firstData, 3);
                 double cagr = Math.Round(Math.Pow(growth, 1 / (double)years) - 1, 3);
 
                 resultList.Add($"{symbol}\t{years}\t{growth}\t{cagr}");
