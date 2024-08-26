@@ -39,7 +39,7 @@ namespace StockAnalyzer.DataProviders
         }
 
         public delegate Task<WithError<IEnumerable<string>>> ConceptFuncDelegate(string symbol, string concept);
-        ConceptFuncDelegate IEdgarProvider.CompanyConceptOrError{ get => CompanyConceptOrErrorMethod; }
+        ConceptFuncDelegate IEdgarProvider.CompanyConceptOrError { get => CompanyConceptOrErrorMethod; }
 
         private async Task<WithError<IEnumerable<string>>> CompanyConceptOrErrorMethod(string symbol, string companyConcept)
         {
@@ -95,7 +95,7 @@ namespace StockAnalyzer.DataProviders
             List<string> companyConceptArray,
             ConceptFuncDelegate processingFunc);
 
-        BatchProcessingDelegate IEdgarProvider.BatchProcessing { get => BatchProcessingMethod;}
+        BatchProcessingDelegate IEdgarProvider.BatchProcessing { get => BatchProcessingMethod; }
 
         private static async Task<IEnumerable<WithError<string?>>> BatchProcessingMethod(
           List<string> symbolList,
@@ -404,12 +404,83 @@ namespace StockAnalyzer.DataProviders
         public IEnumerable<string> Cagr(List<string> inputList, int periods)
         {
             List<string> resultList = new List<string>();
+            if (!inputList.Any()) return resultList;
 
+            string datesString = inputList[0];
+            if (String.IsNullOrWhiteSpace(datesString)) throw new ApplicationException();
 
-            MessageBox.Show("CreateCagr");
+            List<string> datesStringList = datesString.Split("\t").ToList();
+            if (!datesStringList.Any()) throw new ApplicationException();
+            datesStringList = datesStringList.Skip(1).ToList();
 
-            // TODO
+            List<DateOnly> datesList = datesStringList.Select(s => DateOnly.ParseExact(s, "yyyy-MM-dd")).ToList();
+            if (!datesStringList.Any()) throw new ApplicationException();
+
+            DateOnly lastDate = datesList.Last();
+            int lastYear = lastDate.Year;
+            int firstYear = lastYear - periods;
+
+            List<DateOnly> datesListPeriods = datesList.Where(d => d.Year >= firstYear).ToList();
+            if (!datesStringList.Any()) throw new ApplicationException();
+
+            List<int> yearsList = new();
+            List<double> growthList = new();
+            List<double> cagrList = new();
+            List<string> symbolsList = inputList.Skip(1).Select(l => l.Split("\t")[0]).ToList();
+            for (int i = 0; i < symbolsList.Count; i++)
+            {
+                string symbol = symbolsList[i];
+                string symbolDataLine = inputList[i + 1];
+                List<string> symbolDataListAsString = symbolDataLine.Split("\t").Skip(1).ToList();
+
+                int countDatesListPeriods = datesListPeriods.Count;
+                int countSymbolDataListAsString = symbolDataListAsString.Count;
+                symbolDataListAsString = symbolDataListAsString.Skip(countSymbolDataListAsString- countDatesListPeriods).ToList();
+
+                int idxFirst = FirstIndexOfNotEmptyString(symbolDataListAsString);
+                int idxLast = LastIndexOfNotEmptyString(symbolDataListAsString);
+
+                long firstData = Convert.ToInt64(symbolDataListAsString[idxFirst]);
+                long lastData = Convert.ToInt64(symbolDataListAsString[idxLast]);
+                Earning firstEarning = new(datesListPeriods[idxFirst], new List<long?> { firstData });
+                Earning lastEarning = new(datesListPeriods[idxLast], new List<long?> { lastData });
+                
+                int years = lastEarning.Date.Year - firstEarning.Date.Year;
+                yearsList.Add(years);
+
+                long lastEarningData = lastEarning.Data.First() ?? throw new ApplicationException();
+                long firstEarningData = firstEarning.Data.First() ?? throw new ApplicationException();
+                double growth = (double)lastEarningData / (double)firstEarningData;
+                growthList.Add(growth);
+
+                double cagr = Math.Pow(growth, 1 / (double)years) - 1;
+                cagrList.Add(cagr);
+
+                string resultString = $"{symbol}\t{years}\t{growth}\t{cagr}";
+                resultList.Add(resultString);   
+            }
+
             return resultList;
+        }
+
+        private static int LastIndexOfNotEmptyString(List<string> symbolDataListAsString)
+        {
+            for (int i = symbolDataListAsString.Count - 1; i >= 0; i--)
+            {
+                if (!string.IsNullOrWhiteSpace(symbolDataListAsString[i]))
+                    return i;
+            }
+            return -1;
+        }
+
+        private static int FirstIndexOfNotEmptyString(List<string> symbolDataListAsString)
+        {
+            for (int i = 0; i < symbolDataListAsString.Count; i++)
+            {
+                if (!string.IsNullOrWhiteSpace(symbolDataListAsString[i]))
+                    return i;
+            }
+            return -1;
         }
     }
 
