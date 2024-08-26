@@ -405,6 +405,7 @@ namespace StockAnalyzer.DataProviders
         {
             List<string> resultList = new List<string>();
             if (!inputList.Any()) return resultList;
+            resultList.Add("Symbol\tYears\tGrowth\tCAGR");
 
             string datesString = inputList[0];
             if (String.IsNullOrWhiteSpace(datesString)) throw new ApplicationException();
