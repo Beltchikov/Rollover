@@ -424,9 +424,6 @@ namespace StockAnalyzer.DataProviders
             List<DateOnly> datesListPeriods = datesList.Where(d => d.Year >= firstYear).ToList();
             if (!datesStringList.Any()) throw new ApplicationException();
 
-            List<int> yearsList = new();
-            List<double> growthList = new();
-            List<double> cagrList = new();
             List<string> symbolsList = inputList.Skip(1).Select(l => l.Split("\t")[0]).ToList();
             for (int i = 0; i < symbolsList.Count; i++)
             {
@@ -447,16 +444,12 @@ namespace StockAnalyzer.DataProviders
                 Earning lastEarning = new(datesListPeriods[idxLast], new List<long?> { lastData });
                 
                 int years = lastEarning.Date.Year - firstEarning.Date.Year;
-                yearsList.Add(years);
-
+                
                 long lastEarningData = lastEarning.Data.First() ?? throw new ApplicationException();
                 long firstEarningData = firstEarning.Data.First() ?? throw new ApplicationException();
                 double growth = Math.Round(lastEarningData / (double)firstEarningData,3);
-                growthList.Add(growth);
-
                 double cagr = Math.Round(Math.Pow(growth, 1 / (double)years) - 1,3);
-                cagrList.Add(cagr);
-
+               
                 string resultString = $"{symbol}\t{years}\t{growth}\t{cagr}";
                 resultList.Add(resultString);   
             }
