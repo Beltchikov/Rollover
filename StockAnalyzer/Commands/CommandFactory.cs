@@ -17,6 +17,13 @@ namespace StockAnalyzer.Commands
         {
             List<string> companyConceptArray = commandName switch
             {
+                "RevenueCommand" => new List<string>
+                    {
+                        "RevenueFromContractWithCustomerExcludingAssessedTax",
+                        "SalesRevenueNet",
+                        "Revenues",
+                        "OperatingRevenue"
+                    },
                 // https://data.sec.gov/api/xbrl/companyconcept/CIK0000PROGRESS_BAR_DELAY406/us-gaap/StockholdersEquity.json
                 "EquityCommand" => new List<string>
                     {

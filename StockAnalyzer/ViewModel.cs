@@ -56,6 +56,7 @@ namespace StockAnalyzer
         private int _progressBarValue;
         private Brush _backgroundResults = null!;
 
+        public ICommand RevenueCommand { get; } = null!;
         public ICommand EquityCommand { get; } = null!;
         public ICommand LongTermDebtCommand { get; } = null!;
         public ICommand DividendsCommand { get; } = null!;
@@ -91,6 +92,7 @@ namespace StockAnalyzer
             yahooProvider.Status += YahooProvider_Status;
             twsProvider.Status += TwsProvider_Status;
 
+            RevenueCommand = CommandFactory.CreateBatchProcessing(nameof(RevenueCommand), this);
             EquityCommand = CommandFactory.CreateBatchProcessing(nameof(EquityCommand), this);
             LongTermDebtCommand = CommandFactory.CreateBatchProcessing(nameof(EquityCommand), this);
             DividendsCommand = CommandFactory.CreateBatchProcessing(nameof(DividendsCommand), this);
