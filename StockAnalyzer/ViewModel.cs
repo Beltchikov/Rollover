@@ -57,10 +57,11 @@ namespace StockAnalyzer
         private Brush _backgroundResults = null!;
 
         public ICommand RevenueCommand { get; } = null!;
+        public ICommand TaxCommand { get; } = null!;
+        public ICommand NetIncomeCommand { get; } = null!;
         public ICommand EquityCommand { get; } = null!;
         public ICommand LongTermDebtCommand { get; } = null!;
         public ICommand DividendsCommand { get; } = null!;
-        public ICommand NetIncomeCommand { get; } = null!;
         public ICommand LastEpsCommand { get; }
         public ICommand ExpectedEpsCommand { get; }
         public ICommand EarningsForWeekCommand { get; }
@@ -93,10 +94,13 @@ namespace StockAnalyzer
             twsProvider.Status += TwsProvider_Status;
 
             RevenueCommand = CommandFactory.CreateBatchProcessing(nameof(RevenueCommand), this);
+            TaxCommand = CommandFactory.CreateBatchProcessing(nameof(TaxCommand), this);
+            NetIncomeCommand = CommandFactory.CreateBatchProcessing(nameof(NetIncomeCommand), this);
+
             EquityCommand = CommandFactory.CreateBatchProcessing(nameof(EquityCommand), this);
             LongTermDebtCommand = CommandFactory.CreateBatchProcessing(nameof(EquityCommand), this);
             DividendsCommand = CommandFactory.CreateBatchProcessing(nameof(DividendsCommand), this);
-            NetIncomeCommand = CommandFactory.CreateBatchProcessing(nameof(NetIncomeCommand), this);
+            
             InterpolateCommand = CommandFactory.CreateInterpolate(this);
             CagrCommand = CommandFactory.CreateCagr(this);
 

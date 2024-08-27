@@ -24,6 +24,16 @@ namespace StockAnalyzer.Commands
                         "Revenues",
                         "OperatingRevenue"
                     },
+                "TaxCommand" => new List<string>
+                    {
+                        "IncomeTaxExpenseBenefit"
+                    },
+                // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/NetIncomeLoss.json
+                "NetIncomeCommand" => new List<string>
+                    {
+                        "NetIncomeLoss",
+                        "ProfitLoss"
+                    },
                 // https://data.sec.gov/api/xbrl/companyconcept/CIK0000PROGRESS_BAR_DELAY406/us-gaap/StockholdersEquity.json
                 "EquityCommand" => new List<string>
                     {
@@ -53,13 +63,7 @@ namespace StockAnalyzer.Commands
                         "PaymentsOfDividends",
                         "DividendsPaid"
                     },
-                // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/NetIncomeLoss.json
-                "NetIncomeCommand" => new List<string>
-                    {
-                        "NetIncomeLoss",
-                        "ProfitLoss"
-                    },
-                _ => throw new NotImplementedException(),
+               _ => throw new NotImplementedException(),
             };
 
             return new RelayCommand(
