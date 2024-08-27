@@ -89,7 +89,10 @@
           VerticalScrollBarVisibility="Visible"></TextBox>
 
                             <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="2" >
-                                <Button Padding="10 0 10 0" Margin="10,0,10,5" Height="15" FontSize="10" HorizontalAlignment="Stretch" VerticalAlignment="Center" Command="{Binding RevenueCommand}">Revenue >></Button>
+                                <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="15" FontSize="10" HorizontalAlignment="Stretch" VerticalAlignment="Center" Command="{Binding RevenueCommand}">Revenue >></Button>
+                                <Button Padding="10 0 10 0" Margin="10,0,10,5" Height="15" FontSize="10" 
+HorizontalAlignment="Stretch" VerticalAlignment="Center" Command="{Binding NetIncomeCommand}">Net Income>>
+                                </Button>
 
                                 <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="15" FontSize="10"
                                     HorizontalAlignment="Stretch" VerticalAlignment="Center" Command="{Binding EquityCommand}">Equity >>
@@ -100,9 +103,7 @@
                                 <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="15" FontSize="10"
 HorizontalAlignment="Stretch" VerticalAlignment="Center" Command="{Binding DividendsCommand}">Dividends>>
                                 </Button>
-                                <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="15" FontSize="10" 
-HorizontalAlignment="Stretch" VerticalAlignment="Center" Command="{Binding NetIncomeCommand}">Net Income>>
-                                </Button>
+                               
                             </StackPanel>
 
                             <Label Content="Results:" Grid.Column="3" Grid.Row="1" 
