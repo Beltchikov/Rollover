@@ -7,7 +7,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace StockAnalyzer.DataProviders
 {
@@ -410,11 +409,11 @@ namespace StockAnalyzer.DataProviders
             string datesString = inputList[0];
             if (string.IsNullOrWhiteSpace(datesString)) throw new ApplicationException();
 
-            List<string> datesStringList = datesString.Split("\t").ToList();
+            List<string> datesStringList = datesString.IntelliSplit().ToList();
             if (!datesStringList.Any()) throw new ApplicationException();
             datesStringList = datesStringList.Skip(1).ToList();
 
-            List<DateOnly> datesList = datesStringList.Select(s => DateOnly.ParseExact(s, "yyyy-MM-dd")).ToList();
+            List<DateOnly> datesList = datesStringList.Select(s => s.ToDateOnly()).ToList();
             if (!datesStringList.Any()) throw new ApplicationException();
 
             DateOnly lastDate = datesList.Last();
@@ -424,11 +423,11 @@ namespace StockAnalyzer.DataProviders
             List<DateOnly> datesListPeriods = datesList.Where(d => d.Year >= firstYear).ToList();
             if (!datesStringList.Any()) throw new ApplicationException();
 
-            List<string> symbolsList = inputList.Skip(1).Select(l => l.Split("\t")[0]).ToList();
+            List<string> symbolsList = inputList.Skip(1).Select(l => l.IntelliSplit().ToList()[0]).ToList();
             for (int i = 0; i < symbolsList.Count; i++)
             {
                 string symbol = symbolsList[i];
-                List<string> symbolDataListAsString = inputList[i + 1].Split("\t").Skip(1).ToList();
+                List<string> symbolDataListAsString = inputList[i + 1].IntelliSplit().Skip(1).ToList();
                 symbolDataListAsString = symbolDataListAsString.Skip(symbolDataListAsString.Count - datesListPeriods.Count).ToList();
 
                 int idxFirst = FirstIndexOfNotEmptyString(symbolDataListAsString);
@@ -439,8 +438,8 @@ namespace StockAnalyzer.DataProviders
                 long lastData = Convert.ToInt64(symbolDataListAsString[idxLast]);
 
                 int years = datesListPeriods[idxLast].Year - datesListPeriods[idxFirst].Year;
-                
-                double growth = lastData < 0 && firstData < 0 ? 0: Math.Round(lastData / (double)firstData, 3);
+
+                double growth = lastData < 0 && firstData < 0 ? 0 : Math.Round(lastData / (double)firstData, 3);
                 double cagr = Math.Round(Math.Pow(growth, 1 / (double)years) - 1, 3);
 
                 resultList.Add($"{symbol}\t{years}\t{growth}\t{cagr}");
@@ -493,6 +492,39 @@ namespace StockAnalyzer.DataProviders
 
     internal static class EdgarProviderExtensions
     {
+        public static DateOnly ToDateOnly(this string stringToConvert)
+        {
+            try
+            {
+                return DateOnly.ParseExact(stringToConvert, "yyyy-MM-dd");
+            }
+            catch (FormatException)
+            {
+
+                return DateOnly.ParseExact(stringToConvert, "dd.MM.yyyy");
+            }
+
+            throw new NotImplementedException();
+        }
+
+
+        public static IEnumerable<string> IntelliSplit(this string stringToSplit)
+        {
+            IEnumerable<string> resultList = stringToSplit.Split("\t", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            if (resultList.Count() > 1)
+            {
+                return resultList;
+            }
+
+            resultList = stringToSplit.Split(" ", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            if (resultList.Count() > 1)
+            {
+                return resultList;
+            }
+
+            throw new NotImplementedException();
+        }
+
         public static void AddOrMerge(this List<Earning> earningsList, Earning earning)
         {
             Earning? earningToUpdate = earningsList.FirstOrDefault(e => e.Date == earning.Date);
