@@ -4,15 +4,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 
 namespace StockAnalyzer.Commands
 {
     public class CommandFactory
     {
-        const int PROGRESS_BAR_DELAY = 400;    
-        
+        const int PROGRESS_BAR_DELAY = 400;
+
         public static ICommand? CreateBatchProcessing(string commandName, IEdgarConsumer edgarConsumer)
         {
             List<string> companyConceptArray = commandName switch
@@ -23,6 +22,22 @@ namespace StockAnalyzer.Commands
                         "SalesRevenueNet",
                         "Revenues",
                         "OperatingRevenue"
+                    },
+                "CogsCommand" => new List<string>
+                    {
+                        "CostOfGoodsAndServicesSold"
+                    },
+                "OperatingCostCommand" => new List<string>
+                    {
+                        "OperatingExpenses"
+                    },
+                "FinancingCostCommand" => new List<string>
+                    {
+                        "InterestIncomeExpenseNonoperatingNet",
+                        "InterestExpense",
+                        "FinanceCost",
+                        "BorrowingCost",
+                        "DebtInterestExpense"
                     },
                 "TaxCommand" => new List<string>
                     {
@@ -63,7 +78,7 @@ namespace StockAnalyzer.Commands
                         "PaymentsOfDividends",
                         "DividendsPaid"
                     },
-               _ => throw new NotImplementedException(),
+                _ => throw new NotImplementedException(),
             };
 
             return new RelayCommand(

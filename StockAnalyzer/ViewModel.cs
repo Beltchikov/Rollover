@@ -57,6 +57,9 @@ namespace StockAnalyzer
         private Brush _backgroundResults = null!;
 
         public ICommand RevenueCommand { get; } = null!;
+        public ICommand CogsCommand { get; } = null!;
+        public ICommand OperatingCostCommand { get; } = null!;
+        public ICommand FinancingCostCommand { get; } = null!;
         public ICommand TaxCommand { get; } = null!;
         public ICommand NetIncomeCommand { get; } = null!;
         public ICommand EquityCommand { get; } = null!;
@@ -94,6 +97,9 @@ namespace StockAnalyzer
             twsProvider.Status += TwsProvider_Status;
 
             RevenueCommand = CommandFactory.CreateBatchProcessing(nameof(RevenueCommand), this);
+            CogsCommand = CommandFactory.CreateBatchProcessing(nameof(CogsCommand), this);
+            OperatingCostCommand = CommandFactory.CreateBatchProcessing(nameof(OperatingCostCommand), this);
+            FinancingCostCommand = CommandFactory.CreateBatchProcessing(nameof(FinancingCostCommand), this);
             TaxCommand = CommandFactory.CreateBatchProcessing(nameof(TaxCommand), this);
             NetIncomeCommand = CommandFactory.CreateBatchProcessing(nameof(NetIncomeCommand), this);
 
