@@ -90,6 +90,12 @@
 
                             <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="2" >
                                 <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="15" FontSize="10" HorizontalAlignment="Stretch" VerticalAlignment="Center" Command="{Binding RevenueCommand}">Revenue >></Button>
+                                <Button Padding="10 0 10 0" Margin="20,0,10,0" Height="15" FontSize="10" HorizontalAlignment="Stretch" VerticalAlignment="Center" Command="{Binding CogsCommand}">COGS >>
+                                </Button>
+                                <Button Padding="10 0 10 0" Margin="20,0,10,0" Height="15" FontSize="10" HorizontalAlignment="Stretch" VerticalAlignment="Center" Command="{Binding OperatingCostCommand}">Operating Cost >>
+                                </Button>
+                                <Button Padding="10 0 10 0" Margin="20,0,10,0" Height="15" FontSize="10" HorizontalAlignment="Stretch" VerticalAlignment="Center" Command="{Binding FinancingCostCommand}">Financing Cost >>
+                                </Button>
                                 <Button Padding="10 0 10 0" Margin="20,0,10,0" Height="15" FontSize="10" HorizontalAlignment="Stretch" VerticalAlignment="Center" Command="{Binding TaxCommand}">Tax >>
                                 </Button>
                                 <Button Padding="0 0 10 0" Margin="10,0,10,5" Height="15" FontSize="10" HorizontalAlignment="Stretch" VerticalAlignment="Center" Command="{Binding NetIncomeCommand}">Net Income>>
