@@ -410,11 +410,11 @@ namespace StockAnalyzer.DataProviders
             string datesString = inputList[0];
             if (string.IsNullOrWhiteSpace(datesString)) throw new ApplicationException();
 
-            List<string> datesStringList = datesString.Split("\t").ToList();
+            List<string> datesStringList = SplitDatesString(datesString);
             if (!datesStringList.Any()) throw new ApplicationException();
             datesStringList = datesStringList.Skip(1).ToList();
 
-            List<DateOnly> datesList = datesStringList.Select(s => DateOnly.ParseExact(s, "yyyy-MM-dd")).ToList();
+            List<DateOnly> datesList = ParseDates(datesStringList);
             if (!datesStringList.Any()) throw new ApplicationException();
 
             DateOnly lastDate = datesList.Last();
@@ -424,11 +424,11 @@ namespace StockAnalyzer.DataProviders
             List<DateOnly> datesListPeriods = datesList.Where(d => d.Year >= firstYear).ToList();
             if (!datesStringList.Any()) throw new ApplicationException();
 
-            List<string> symbolsList = inputList.Skip(1).Select(l => l.Split("\t")[0]).ToList();
+            List<string> symbolsList = GetSymbolList(inputList);
             for (int i = 0; i < symbolsList.Count; i++)
             {
                 string symbol = symbolsList[i];
-                List<string> symbolDataListAsString = inputList[i + 1].Split("\t").Skip(1).ToList();
+                List<string> symbolDataListAsString = GetSymbolDataListAsString(inputList, i);
                 symbolDataListAsString = symbolDataListAsString.Skip(symbolDataListAsString.Count - datesListPeriods.Count).ToList();
 
                 int idxFirst = FirstIndexOfNotEmptyString(symbolDataListAsString);
@@ -439,14 +439,73 @@ namespace StockAnalyzer.DataProviders
                 long lastData = Convert.ToInt64(symbolDataListAsString[idxLast]);
 
                 int years = datesListPeriods[idxLast].Year - datesListPeriods[idxFirst].Year;
-                
-                double growth = lastData < 0 && firstData < 0 ? 0: Math.Round(lastData / (double)firstData, 3);
+
+                double growth = lastData < 0 && firstData < 0 ? 0 : Math.Round(lastData / (double)firstData, 3);
                 double cagr = Math.Round(Math.Pow(growth, 1 / (double)years) - 1, 3);
 
                 resultList.Add($"{symbol}\t{years}\t{growth}\t{cagr}");
             }
 
             return resultList;
+        }
+
+        private static List<string> GetSymbolDataListAsString(List<string> inputList, int symbolIdx)
+        {
+            List<string> symbolDataListAsString = inputList[symbolIdx + 1].Split("\t").Skip(1).ToList();
+            if(symbolDataListAsString.Any())
+            {
+                return symbolDataListAsString;
+            }
+
+            symbolDataListAsString = inputList[symbolIdx + 1].Split(" ").Skip(1).ToList();
+            if (symbolDataListAsString.Any())
+            {
+                return symbolDataListAsString;
+            }
+
+            throw new NotImplementedException();
+        }
+
+        private static List<string> GetSymbolList(List<string> inputList)
+        {
+            List<List<string>> dataLines = inputList.Skip(1).Select(l => l.Split("\t").ToList()).ToList();
+            if(dataLines[0].Count > 1)
+            {
+                return dataLines.Select(l=>l[0]).ToList();
+            }
+
+            dataLines = inputList.Skip(1).Select(l => l.Split(" ").ToList()).ToList();
+            if (dataLines[0].Count > 1)
+            {
+                return dataLines.Select(l => $"{l[0]} {l[1]}").ToList();
+            }
+
+            throw new NotImplementedException();
+        }
+
+        private static List<DateOnly> ParseDates(List<string> datesStringList)
+        {
+            try
+            {
+                return datesStringList.Select(s => DateOnly.ParseExact(s, "yyyy-MM-dd")).ToList();
+            }
+            catch (FormatException)
+            {
+                return datesStringList.Select(s => DateOnly.ParseExact(s, "dd.MM.yyyy")).ToList();
+            }
+
+            throw new NotImplementedException();
+        }
+
+        private static List<string> SplitDatesString(string datesString)
+        {
+            List<string> datesStringList = datesString.Split("\t").ToList();
+            if (datesStringList.Count > 1) return datesStringList;
+
+            datesStringList = datesString.Split(" ").ToList();
+            if (datesStringList.Count > 1) return datesStringList;
+
+            throw new NotImplementedException();
         }
 
         private static int LastIndexOfNotEmptyString(List<string> symbolDataListAsString)
