@@ -25,7 +25,8 @@ namespace StockAnalyzer.Commands
                     },
                 "CogsCommand" => new List<string>
                     {
-                        "CostOfGoodsAndServicesSold"
+                        "CostOfGoodsAndServicesSold",
+                        "CostOfRevenue"
                     },
                 "OperatingCostCommand" => new List<string>
                     {
