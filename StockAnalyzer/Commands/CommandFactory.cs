@@ -30,7 +30,8 @@ namespace StockAnalyzer.Commands
                     },
                 "OperatingCostCommand" => new List<string>
                     {
-                        "OperatingExpenses"
+                        "OperatingExpenses",
+                        "CostOfGoodsAndServicesSold"
                     },
                 "FinancingCostCommand" => new List<string>
                     {
