@@ -438,14 +438,18 @@ namespace StockAnalyzer.DataProviders
                 long lastData = Convert.ToInt64(symbolDataListAsString[idxLast]);
 
                 int years = datesListPeriods[idxLast].Year - datesListPeriods[idxFirst].Year +1;
-
-                double growth = lastData < 0 && firstData < 0 ? 0 : Math.Round(lastData / (double)firstData, 3);
+                double growth = CalculateGrowth(lastData, firstData);
                 double cagr = Math.Round(Math.Pow(growth, 1 / (double)years) - 1, 3);
 
                 resultList.Add($"{symbol}\t{years}\t{growth}\t{cagr}");
             }
 
             return resultList;
+        }
+
+        private static double CalculateGrowth(long lastData, long firstData)
+        {
+            return lastData < 0 && firstData < 0 ? 0 : Math.Round(lastData / (double)firstData, 3);
         }
 
         private static int LastIndexOfNotEmptyString(List<string> symbolDataListAsString)
