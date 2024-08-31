@@ -449,7 +449,17 @@ namespace StockAnalyzer.DataProviders
 
         private static double CalculateGrowth(long lastData, long firstData)
         {
-            return lastData < 0 && firstData < 0 ? 0 : Math.Round(lastData / (double)firstData, 3);
+            if (firstData < 0 && lastData >= 0)
+            {
+                long correctionValue = 1 - firstData;
+                long firstDataCorrected = firstData +correctionValue;
+                long lastDataCorrected = lastData + correctionValue;
+                return Math.Round(lastDataCorrected / (double)firstDataCorrected, 3);  
+            }
+            else
+            {
+                return lastData < 0 && firstData < 0 ? 0 : Math.Round(lastData / (double)firstData, 3);
+            }
         }
 
         private static int LastIndexOfNotEmptyString(List<string> symbolDataListAsString)
