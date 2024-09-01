@@ -25,13 +25,13 @@ namespace StockAnalyzer.Commands
                     },
                 "CogsCommand" => new List<string>
                     {
-                        "CostOfGoodsAndServicesSold",
+                        "CostOfGoodsAndServicesSold", // TODO check
                         "CostOfRevenue"
                     },
                 "OperatingCostCommand" => new List<string>
                     {
                         "OperatingExpenses",
-                        "CostOfGoodsAndServicesSold"
+                        "CostOfGoodsAndServicesSold" // TODO check
                     },
                 "FinancingCostCommand" => new List<string>
                     {
