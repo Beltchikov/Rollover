@@ -94,6 +94,30 @@ namespace StockAnalyzer.Commands
                         companyConceptArray,
                         edgarConsumer.EdgarProvider.BatchProcessing);
 
+
+                    // TODO
+                    //IAccountingAttribute = accountingAttribute;
+                    //if(accountingAttribute is SimpleAccountingAttribute)
+                    //{
+                    //    await EdgarBatchProcessor.RunBatchProcessingAsync(
+                    //    edgarConsumer,
+                    //    (SimpleAccountingAttribute)accountingAttribute,
+                    //    edgarConsumer.EdgarProvider.BatchProcessing);
+                    //}
+                    //else if (accountingAttribute is ComputedAccountingAttribute)
+                    //{
+                    //    await EdgarBatchProcessor.RunBatchProcessingAsync(
+                    //    edgarConsumer,
+                    //    (ComputedAccountingAttribute)accountingAttribute,
+                    //    edgarConsumer.EdgarProvider.BatchProcessing);
+                    //}
+
+
+                    await EdgarBatchProcessor.RunBatchProcessingAsync(
+                        edgarConsumer,
+                        companyConceptArray,
+                        edgarConsumer.EdgarProvider.BatchProcessing);
+
                     ui.Enable(edgarConsumer);
                 });
         }
