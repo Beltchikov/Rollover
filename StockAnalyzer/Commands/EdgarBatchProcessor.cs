@@ -17,8 +17,7 @@ namespace StockAnalyzer.Commands
         {
            List<WithError<string?>> batchProcessingResults = (await batchProcessingFunc(
                                     edgarConsumer.TickerCollectionEdgar.ToList(),
-                                    companyConceptArray,
-                                    edgarConsumer.EdgarProvider.CompanyConceptOrError))?.ToList() ?? throw new ApplicationException();
+                                    companyConceptArray))?.ToList() ?? throw new ApplicationException();
             List<string> data = batchProcessingResults
                             .Where(x => x.Data != null)
                             .Select(r => r.Data ?? "")

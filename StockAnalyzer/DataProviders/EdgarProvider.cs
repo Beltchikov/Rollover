@@ -91,15 +91,13 @@ namespace StockAnalyzer.DataProviders
 
         public delegate Task<IEnumerable<WithError<string?>>> BatchProcessingDelegate(
             List<string> symbolList,
-            List<string> companyConceptArray,
-            ConceptFuncDelegate processingFunc);
+            List<string> companyConceptArray);
 
         BatchProcessingDelegate IEdgarProvider.BatchProcessing { get => BatchProcessingMethod; }
 
         private async Task<IEnumerable<WithError<string?>>> BatchProcessingMethod(
           List<string> symbolList,
-          List<string> companyConceptList,
-          ConceptFuncDelegate processingFunc)
+          List<string> companyConceptList)
         {
             List<SymbolCurrencyDataError> symbolCurrencyDataErrorList = new();
             foreach (var symbol in symbolList)
@@ -107,7 +105,7 @@ namespace StockAnalyzer.DataProviders
                 SymbolCurrencyDataError symbolCurrencyDataError = new(symbol, "", null, null);
                 foreach (string companyConcept in companyConceptList)
                 {
-                    WithError<IEnumerable<string>> symbolDataOrError = await processingFunc(symbol, companyConcept);
+                    WithError<IEnumerable<string>> symbolDataOrError = await CompanyConceptOrErrorMethod(symbol, companyConcept);
                     if (symbolDataOrError.Data != null)
                     {
                         symbolCurrencyDataError.Currency = symbolDataOrError.Data.Skip(2).First();
