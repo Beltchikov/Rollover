@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using static StockAnalyzer.Commands.EdgarBatchProcessor;
 
 namespace StockAnalyzer.Commands
 {
@@ -14,45 +15,58 @@ namespace StockAnalyzer.Commands
 
         public static ICommand? CreateBatchProcessing(string commandName, IEdgarConsumer edgarConsumer)
         {
-            List<string> companyConceptArray = commandName switch
+            SimpleAccountingAttribute simpleAccountingAttribute = commandName switch
             {
-                "RevenueCommand" => new List<string>
-                    {
+                "RevenueCommand" => new SimpleAccountingAttribute(
+                    "Revenue",
+                    new List<string> {
                         "RevenueFromContractWithCustomerExcludingAssessedTax",
                         "SalesRevenueNet",
                         "Revenues",
                         "OperatingRevenue"
-                    },
-                "CogsCommand" => new List<string>
+                    }),
+                "CogsCommand" => new SimpleAccountingAttribute(
+                    "CostOfRevenue",
+                    new List<string>
                     {
                         "CostOfGoodsAndServicesSold", // TODO check
                         "CostOfRevenue"
-                    },
-                "OperatingCostCommand" => new List<string>
+                    }),
+                "OperatingCostCommand" => new SimpleAccountingAttribute(
+                    "OperatingExpenses",
+                    new List<string>
                     {
                         "OperatingExpenses",
                         "CostOfGoodsAndServicesSold" // TODO check
-                    },
-                "FinancingCostCommand" => new List<string>
+                    }),
+                "FinancingCostCommand" => new SimpleAccountingAttribute(
+                    "InterestExpense",
+                    new List<string>
                     {
                         "InterestIncomeExpenseNonoperatingNet",
                         "InterestExpense",
                         "FinanceCost",
                         "BorrowingCost",
                         "DebtInterestExpense"
-                    },
-                "TaxCommand" => new List<string>
+                    }),
+                "TaxCommand" => new SimpleAccountingAttribute(
+                    "Tax",
+                    new List<string>
                     {
                         "IncomeTaxExpenseBenefit"
-                    },
+                    }),
                 // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/NetIncomeLoss.json
-                "NetIncomeCommand" => new List<string>
+                "NetIncomeCommand" => new SimpleAccountingAttribute(
+                    "NetIncome",
+                    new List<string>
                     {
                         "NetIncomeLoss",
                         "ProfitLoss"
-                    },
+                    }),
                 // https://data.sec.gov/api/xbrl/companyconcept/CIK0000PROGRESS_BAR_DELAY406/us-gaap/StockholdersEquity.json
-                "EquityCommand" => new List<string>
+                "EquityCommand" => new SimpleAccountingAttribute(
+                    "Equity",
+                    new List<string>
                     {
                         "StockholdersEquity",
                         "Equity",
@@ -60,9 +74,11 @@ namespace StockAnalyzer.Commands
                         "EquityAttributableToParent",
                         "TotalEquity",
                         "EquityAttributableToNoncontrollingInterest"
-                    },
+                    }),
                 // https://data.sec.gov/api/xbrl/companyconcept/CIK0000PROGRESS_BAR_DELAY406/us-gaap/LongTermDebt.json
-                "LongTermDebtCommand" => new List<string>
+                "LongTermDebtCommand" => new SimpleAccountingAttribute(
+                    "LongTermDebt",
+                    new List<string>
                     {
                         "LongTermDebt",
                         "NoncurrentLiabilities",
@@ -70,17 +86,19 @@ namespace StockAnalyzer.Commands
                         "Borrowings",
                         "DebtNoncurrent",
                         "LongTermObligations"
-                    },
+                    }),
                 // https://data.sec.gov/api/xbrl/companyconcept/CIK0000200406/us-gaap/PaymentsOfDividends.json
-                "DividendsCommand" => new List<string>
+                "DividendsCommand" => new SimpleAccountingAttribute(
+                    "Dividends",
+                    new List<string>
                     {
                         "DividendsCommonStockCash",
                         "DividendsCash",
                         "Dividends",
                         "PaymentsOfDividends",
                         "DividendsPaid"
-                    },
-                _ => throw new NotImplementedException(),
+                    }),
+                _ => throw new NotImplementedException()
             };
 
             return new RelayCommand(
@@ -89,9 +107,9 @@ namespace StockAnalyzer.Commands
                     Ui ui = new();
                     ui.Disable(edgarConsumer, PROGRESS_BAR_DELAY);
 
-                    await EdgarBatchProcessor.RunBatchProcessingAsync(
+                    await RunBatchProcessingAsync(
                         edgarConsumer,
-                        companyConceptArray,
+                        simpleAccountingAttribute, 
                         edgarConsumer.EdgarProvider.BatchProcessing);
 
 
@@ -113,10 +131,9 @@ namespace StockAnalyzer.Commands
                     //}
 
 
-                    await EdgarBatchProcessor.RunBatchProcessingAsync(
-                        edgarConsumer,
-                        companyConceptArray,
-                        edgarConsumer.EdgarProvider.BatchProcessing);
+                    //await EdgarBatchProcessor.RunBatchProcessingAsync(
+                    //    edgarConsumer,
+                    //    TODO, edgarConsumer.EdgarProvider.BatchProcessing);
 
                     ui.Enable(edgarConsumer);
                 });

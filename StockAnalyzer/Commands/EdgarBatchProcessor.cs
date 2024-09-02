@@ -12,12 +12,12 @@ namespace StockAnalyzer.Commands
     {
         public static async Task RunBatchProcessingAsync(
             IEdgarConsumer edgarConsumer,
-            List<string> companyConceptArray,
+            SimpleAccountingAttribute accountingAttribute,
             BatchProcessingDelegate batchProcessingFunc)
         {
            List<WithError<string?>> batchProcessingResults = (await batchProcessingFunc(
                                     edgarConsumer.TickerCollectionEdgar.ToList(),
-                                    companyConceptArray))?.ToList() ?? throw new ApplicationException();
+                                    accountingAttribute.OtherNames))?.ToList() ?? throw new ApplicationException();
             List<string> data = batchProcessingResults
                             .Where(x => x.Data != null)
                             .Select(r => r.Data ?? "")
@@ -31,5 +31,7 @@ namespace StockAnalyzer.Commands
             edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(data);
             edgarConsumer.ResultsCalculatedEdgar = true;
         }
+
+        public record SimpleAccountingAttribute(string Name, List<string> OtherNames );
     }
 }
