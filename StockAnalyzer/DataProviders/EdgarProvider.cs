@@ -195,6 +195,31 @@ namespace StockAnalyzer.DataProviders
             //return dataWithErrors;
 
             throw new NotImplementedException();
+
+            // TODO
+            // The following block must be changed
+
+            //    foreach (string companyConcept in companyConceptList)
+            //    {
+            //        WithError<IEnumerable<string>> symbolDataOrError = await CompanyConceptOrErrorMethod(symbol, companyConcept);
+            //        if (symbolDataOrError.Data != null)
+            //        {
+            //            symbolCurrencyDataError.Currency = symbolDataOrError.Data.Skip(2).First();
+            //            symbolCurrencyDataError.Data = new(symbolDataOrError.Data.Take(2).ToList());
+            //            break;
+            //        }
+            //        else
+            //        {
+            //            symbolCurrencyDataError.Error = symbolDataOrError.Error ?? throw new Exception();
+            //        }
+            //    }
+            //    if (symbolCurrencyDataError.Data != null && symbolCurrencyDataError.Error != null)
+            //    {
+            //        symbolCurrencyDataError.Error = null; // We do not care of intermediate errors if get the data finally
+            //    }
+            //    symbolCurrencyDataErrorList.Add(symbolCurrencyDataError);
+
+
         }
 
         private static string? ErrorsFromSymbolCurrencyDataErrorList(List<SymbolCurrencyDataError> symbolCurrencyDataErrorList)
