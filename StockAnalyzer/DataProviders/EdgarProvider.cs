@@ -92,14 +92,14 @@ namespace StockAnalyzer.DataProviders
             List<string> companyConceptArray);
 
         /// <summary>
-         //IEdgarProvider provider = new EdgarProvider();
-         //List<WithError<string?>> result = provider.BatchProcessing(
-         //    ["NVDA", "MSFT"],
-         //    ["NetIncomeLoss", "ProfitLoss"]).Result.ToList();
+        //IEdgarProvider provider = new EdgarProvider();
+        //List<WithError<string?>> result = provider.BatchProcessing(
+        //    ["NVDA", "MSFT"],
+        //    ["NetIncomeLoss", "ProfitLoss"]).Result.ToList();
         /// </summary>
-        SimpleBatchProcessingDelegate IEdgarProvider.BatchProcessing { get => BatchProcessingMethod; }
+        SimpleBatchProcessingDelegate IEdgarProvider.SimpleBatchProcessing { get => SimpleBatchProcessingMethod; }
 
-        private async Task<IEnumerable<WithError<string?>>> BatchProcessingMethod(
+        private async Task<IEnumerable<WithError<string?>>> SimpleBatchProcessingMethod(
           List<string> symbolList,
           List<string> companyConceptList)
         {
@@ -140,6 +140,61 @@ namespace StockAnalyzer.DataProviders
                 .ToList();
             if (errors != null) dataWithErrors.Add(new WithError<string?>(errors));
             return dataWithErrors;
+        }
+
+        public delegate Task<IEnumerable<WithError<string?>>> ComputedBatchProcessingDelegate(
+            List<string> symbolList,
+            List<string> companyConceptArray1,
+            List<string> companyConceptArray2,
+            Func<long, long, long> computeFunc);
+
+        ComputedBatchProcessingDelegate IEdgarProvider.ComputedBatchProcessing { get => ComputedBatchProcessingMethod; }
+
+        private async Task<IEnumerable<WithError<string?>>> ComputedBatchProcessingMethod(
+            List<string> symbolList,
+            List<string> companyConceptArray1,
+            List<string> companyConceptArray2,
+            Func<long, long, long> computeFunc)
+        {
+            //List<SymbolCurrencyDataError> symbolCurrencyDataErrorList = new();
+            //foreach (var symbol in symbolList)
+            //{
+            //    SymbolCurrencyDataError symbolCurrencyDataError = new(symbol, "", null, null);
+            //    foreach (string companyConcept in companyConceptList)
+            //    {
+            //        WithError<IEnumerable<string>> symbolDataOrError = await CompanyConceptOrErrorMethod(symbol, companyConcept);
+            //        if (symbolDataOrError.Data != null)
+            //        {
+            //            symbolCurrencyDataError.Currency = symbolDataOrError.Data.Skip(2).First();
+            //            symbolCurrencyDataError.Data = new(symbolDataOrError.Data.Take(2).ToList());
+            //            break;
+            //        }
+            //        else
+            //        {
+            //            symbolCurrencyDataError.Error = symbolDataOrError.Error ?? throw new Exception();
+            //        }
+            //    }
+            //    if (symbolCurrencyDataError.Data != null && symbolCurrencyDataError.Error != null)
+            //    {
+            //        symbolCurrencyDataError.Error = null; // We do not care of intermediate errors if get the data finally
+            //    }
+            //    symbolCurrencyDataErrorList.Add(symbolCurrencyDataError);
+            //}
+
+            //List<string> data = TableForMultipleSymbols(symbolCurrencyDataErrorList).ToList();
+            //string? errors = ErrorsFromSymbolCurrencyDataErrorList(symbolCurrencyDataErrorList);
+
+            //List<WithError<string?>> dataWithErrors = data
+            //    .Select(d => new WithError<string?>(d)
+            //    {
+            //        Data = d,
+            //        Error = null
+            //    })
+            //    .ToList();
+            //if (errors != null) dataWithErrors.Add(new WithError<string?>(errors));
+            //return dataWithErrors;
+
+            throw new NotImplementedException();
         }
 
         private static string? ErrorsFromSymbolCurrencyDataErrorList(List<SymbolCurrencyDataError> symbolCurrencyDataErrorList)

@@ -32,27 +32,29 @@ namespace StockAnalyzer.Commands
             edgarConsumer.ResultsCalculatedEdgar = true;
         }
 
-        //public static async Task RunComputedBatchProcessingAsync(
-        //    IEdgarConsumer edgarConsumer,
-        //    SimpleAccountingAttribute accountingAttribute,
-        //    BatchProcessingDelegate batchProcessingFunc)
-        //{
-        //    List<WithError<string?>> batchProcessingResults = (await batchProcessingFunc(
-        //                             edgarConsumer.TickerCollectionEdgar.ToList(),
-        //                             accountingAttribute.OtherNames))?.ToList() ?? throw new ApplicationException();
-        //    List<string> data = batchProcessingResults
-        //                    .Where(x => x.Data != null)
-        //                    .Select(r => r.Data ?? "")
-        //                    .ToList();
-        //    List<string> errors = batchProcessingResults
-        //                    .Where(x => x.Error != null)
-        //                    .Select(r => r.Error ?? "")
-        //                    .ToList();
+        public static async Task RunComputedBatchProcessingAsync(
+            IEdgarConsumer edgarConsumer,
+            ComputedAccountingAttribute computedAccountingAttribute,
+            ComputedBatchProcessingDelegate batchProcessingFunc)
+        {
+            List<WithError<string?>> batchProcessingResults = (await batchProcessingFunc(
+                                     edgarConsumer.TickerCollectionEdgar.ToList(),
+                                     computedAccountingAttribute.OtherNames1,
+                                     computedAccountingAttribute.OtherNames2,
+                                     computedAccountingAttribute.computeFunc))?.ToList() ?? throw new ApplicationException();
+            List<string> data = batchProcessingResults
+                            .Where(x => x.Data != null)
+                            .Select(r => r.Data ?? "")
+                            .ToList();
+            List<string> errors = batchProcessingResults
+                            .Where(x => x.Error != null)
+                            .Select(r => r.Error ?? "")
+                            .ToList();
 
-        //    if (errors.Any()) edgarConsumer.AddMessageEdgar(errors.Aggregate((r, n) => r + "\r\n" + n));
-        //    edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(data);
-        //    edgarConsumer.ResultsCalculatedEdgar = true;
-        //}
+            if (errors.Any()) edgarConsumer.AddMessageEdgar(errors.Aggregate((r, n) => r + "\r\n" + n));
+            edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(data);
+            edgarConsumer.ResultsCalculatedEdgar = true;
+        }
 
         public record SimpleAccountingAttribute(string Name, List<string> OtherNames );
         public record ComputedAccountingAttribute(string Name, List<string> OtherNames1, List<string> OtherNames2, Func<long, long, long> computeFunc);
