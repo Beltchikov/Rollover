@@ -1,4 +1,4 @@
-﻿using StockAnalyzer.DataProviders.Types;
+﻿using StockAnalyzer.DataProviders;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
