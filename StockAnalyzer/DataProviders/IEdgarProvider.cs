@@ -7,7 +7,7 @@ namespace StockAnalyzer.DataProviders
     public interface IEdgarProvider
     {
         Task<string> Cik(string symbol);
-        BatchProcessingDelegate BatchProcessing { get;}   
+        SimpleBatchProcessingDelegate BatchProcessing { get;}   
         ConceptFuncDelegate CompanyConceptOrError { get; }
         IEnumerable<string> InterpolateDataForMissingDates(List<string> data);
         IEnumerable<string> Cagr(List<string> inputList, int periods);

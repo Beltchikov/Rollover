@@ -87,7 +87,7 @@ namespace StockAnalyzer.DataProviders
             return resultListOrError;
         }
 
-        public delegate Task<IEnumerable<WithError<string?>>> BatchProcessingDelegate(
+        public delegate Task<IEnumerable<WithError<string?>>> SimpleBatchProcessingDelegate(
             List<string> symbolList,
             List<string> companyConceptArray);
 
@@ -97,7 +97,7 @@ namespace StockAnalyzer.DataProviders
          //    ["NVDA", "MSFT"],
          //    ["NetIncomeLoss", "ProfitLoss"]).Result.ToList();
         /// </summary>
-        BatchProcessingDelegate IEdgarProvider.BatchProcessing { get => BatchProcessingMethod; }
+        SimpleBatchProcessingDelegate IEdgarProvider.BatchProcessing { get => BatchProcessingMethod; }
 
         private async Task<IEnumerable<WithError<string?>>> BatchProcessingMethod(
           List<string> symbolList,
