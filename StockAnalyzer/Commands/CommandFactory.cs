@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using static StockAnalyzer.Commands.EdgarBatchProcessor;
 
@@ -13,7 +14,31 @@ namespace StockAnalyzer.Commands
     {
         const int PROGRESS_BAR_DELAY = 400;
 
-        public static ICommand? CreateBatchProcessing(string commandName, IEdgarConsumer edgarConsumer)
+        public static ICommand? CreateBatchProcessingComputed(string commandName, IEdgarConsumer edgarConsumer)
+        {
+            if (commandName == "FreeCashFlowCommand")
+            {
+                
+            }
+
+            return new RelayCommand(
+               async () =>
+               {
+                   Ui ui = new();
+                   ui.Disable(edgarConsumer, PROGRESS_BAR_DELAY);
+
+                   MessageBox.Show("FreeCashFlow");
+
+                   //await RunBatchProcessingAsync(
+                   //    edgarConsumer,
+                   //    simpleAccountingAttribute,
+                   //    edgarConsumer.EdgarProvider.BatchProcessing);
+
+                   ui.Enable(edgarConsumer);
+               });
+        }
+
+        public static ICommand? CreateBatchProcessingSimple(string commandName, IEdgarConsumer edgarConsumer)
         {
             SimpleAccountingAttribute simpleAccountingAttribute = commandName switch
             {

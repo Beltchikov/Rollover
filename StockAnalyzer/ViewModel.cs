@@ -56,6 +56,7 @@ namespace StockAnalyzer
         private int _progressBarValue;
         private Brush _backgroundResults = null!;
 
+        public ICommand FreeCashFlowCommand { get; } = null!;
         public ICommand RevenueCommand { get; } = null!;
         public ICommand CogsCommand { get; } = null!;
         public ICommand OperatingCostCommand { get; } = null!;
@@ -96,16 +97,18 @@ namespace StockAnalyzer
             yahooProvider.Status += YahooProvider_Status;
             twsProvider.Status += TwsProvider_Status;
 
-            RevenueCommand = CommandFactory.CreateBatchProcessing(nameof(RevenueCommand), this);
-            CogsCommand = CommandFactory.CreateBatchProcessing(nameof(CogsCommand), this);
-            OperatingCostCommand = CommandFactory.CreateBatchProcessing(nameof(OperatingCostCommand), this);
-            FinancingCostCommand = CommandFactory.CreateBatchProcessing(nameof(FinancingCostCommand), this);
-            TaxCommand = CommandFactory.CreateBatchProcessing(nameof(TaxCommand), this);
-            NetIncomeCommand = CommandFactory.CreateBatchProcessing(nameof(NetIncomeCommand), this);
+            FreeCashFlowCommand = CommandFactory.CreateBatchProcessingComputed(nameof(FreeCashFlowCommand), this);
 
-            EquityCommand = CommandFactory.CreateBatchProcessing(nameof(EquityCommand), this);
-            LongTermDebtCommand = CommandFactory.CreateBatchProcessing(nameof(EquityCommand), this);
-            DividendsCommand = CommandFactory.CreateBatchProcessing(nameof(DividendsCommand), this);
+            RevenueCommand = CommandFactory.CreateBatchProcessingSimple(nameof(RevenueCommand), this);
+            CogsCommand = CommandFactory.CreateBatchProcessingSimple(nameof(CogsCommand), this);
+            OperatingCostCommand = CommandFactory.CreateBatchProcessingSimple(nameof(OperatingCostCommand), this);
+            FinancingCostCommand = CommandFactory.CreateBatchProcessingSimple(nameof(FinancingCostCommand), this);
+            TaxCommand = CommandFactory.CreateBatchProcessingSimple(nameof(TaxCommand), this);
+            NetIncomeCommand = CommandFactory.CreateBatchProcessingSimple(nameof(NetIncomeCommand), this);
+
+            EquityCommand = CommandFactory.CreateBatchProcessingSimple(nameof(EquityCommand), this);
+            LongTermDebtCommand = CommandFactory.CreateBatchProcessingSimple(nameof(EquityCommand), this);
+            DividendsCommand = CommandFactory.CreateBatchProcessingSimple(nameof(DividendsCommand), this);
             
             InterpolateCommand = CommandFactory.CreateInterpolate(this);
             CagrCommand = CommandFactory.CreateCagr(this);

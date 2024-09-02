@@ -89,6 +89,8 @@
                                               VerticalScrollBarVisibility="Visible"></TextBox>
 
                             <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="2" >
+                                <Button Padding="10 0 10 0" Margin="10,0,10,10" Height="15" FontSize="10" HorizontalAlignment="Stretch" VerticalAlignment="Center" Command="{Binding FreeCashFlowCommand}">Free Cash Flow >></Button>
+                                
                                 <Button Padding="10 0 10 0" Margin="10,0,10,0" Height="15" FontSize="10" HorizontalAlignment="Stretch" VerticalAlignment="Center" Command="{Binding RevenueCommand}">Revenue >></Button>
                                 <Button Padding="10 0 10 0" Margin="20,0,10,0" Height="15" FontSize="10" HorizontalAlignment="Stretch" VerticalAlignment="Center" Command="{Binding CogsCommand}">COGS >>
                                 </Button>
