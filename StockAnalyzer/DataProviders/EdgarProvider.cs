@@ -91,6 +91,12 @@ namespace StockAnalyzer.DataProviders
             List<string> symbolList,
             List<string> companyConceptArray);
 
+        /// <summary>
+         //IEdgarProvider provider = new EdgarProvider();
+         //List<WithError<string?>> result = provider.BatchProcessing(
+         //    ["NVDA", "MSFT"],
+         //    ["NetIncomeLoss", "ProfitLoss"]).Result.ToList();
+        /// </summary>
         BatchProcessingDelegate IEdgarProvider.BatchProcessing { get => BatchProcessingMethod; }
 
         private async Task<IEnumerable<WithError<string?>>> BatchProcessingMethod(
