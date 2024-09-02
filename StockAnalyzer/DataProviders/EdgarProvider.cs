@@ -96,7 +96,7 @@ namespace StockAnalyzer.DataProviders
 
         BatchProcessingDelegate IEdgarProvider.BatchProcessing { get => BatchProcessingMethod; }
 
-        private static async Task<IEnumerable<WithError<string?>>> BatchProcessingMethod(
+        private async Task<IEnumerable<WithError<string?>>> BatchProcessingMethod(
           List<string> symbolList,
           List<string> companyConceptList,
           ConceptFuncDelegate processingFunc)
