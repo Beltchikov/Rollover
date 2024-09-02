@@ -10,7 +10,7 @@ namespace StockAnalyzer.Commands
 {
     public class EdgarBatchProcessor
     {
-        public static async Task RunBatchProcessingAsync(
+        public static async Task RunSimpleBatchProcessingAsync(
             IEdgarConsumer edgarConsumer,
             SimpleAccountingAttribute accountingAttribute,
             BatchProcessingDelegate batchProcessingFunc)
@@ -33,5 +33,6 @@ namespace StockAnalyzer.Commands
         }
 
         public record SimpleAccountingAttribute(string Name, List<string> OtherNames );
+        public record ComputedAccountingAttribute(string Name, List<string> OtherNames1, List<string> OtherNames2, Func<long, long, long> computeFunc);
     }
 }

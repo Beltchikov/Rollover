@@ -16,10 +16,15 @@ namespace StockAnalyzer.Commands
 
         public static ICommand? CreateBatchProcessingComputed(string commandName, IEdgarConsumer edgarConsumer)
         {
-            if (commandName == "FreeCashFlowCommand")
+            ComputedAccountingAttribute computedAccountingAttribute = commandName switch
             {
-                
-            }
+                "FreeCashFlowCommand" => new ComputedAccountingAttribute(
+                    "FreeCashFlow",
+                    new List<string> { "NetCashProvidedByUsedInOperatingActivities" },
+                    new List<string> { "PaymentsToAcquirePropertyPlantAndEquipment" },
+                    (a, b) => a - b),
+                _ => throw new NotImplementedException()
+            };
 
             return new RelayCommand(
                async () =>
@@ -132,7 +137,7 @@ namespace StockAnalyzer.Commands
                     Ui ui = new();
                     ui.Disable(edgarConsumer, PROGRESS_BAR_DELAY);
 
-                    await RunBatchProcessingAsync(
+                    await RunSimpleBatchProcessingAsync(
                         edgarConsumer,
                         simpleAccountingAttribute, 
                         edgarConsumer.EdgarProvider.BatchProcessing);
