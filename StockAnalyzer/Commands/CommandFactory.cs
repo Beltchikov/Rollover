@@ -21,7 +21,8 @@ namespace StockAnalyzer.Commands
                     "FreeCashFlow",
                     new List<string> { "NetCashProvidedByUsedInOperatingActivities" },
                     new List<string> { "PaymentsToAcquirePropertyPlantAndEquipment" },
-                    (a, b) => a - b),
+                    (a, b) => a - b,
+                    new DataProviders.EdgarProvider.ThreeLabels("Cash from operation","Cap. ex.", "Free cash flow")),
                 _ => throw new NotImplementedException()
             };
 

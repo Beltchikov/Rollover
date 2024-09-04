@@ -149,7 +149,8 @@ namespace StockAnalyzer.DataProviders
             List<string> symbolList,
             List<string> companyConceptArray1,
             List<string> companyConceptArray2,
-            Func<long, long, long> computeFunc);
+            Func<long, long, long> computeFunc, 
+            ThreeLabels labels);
 
         ComputedBatchProcessingDelegate IEdgarProvider.ComputedBatchProcessing { get => ComputedBatchProcessingMethod; }
 
@@ -157,7 +158,8 @@ namespace StockAnalyzer.DataProviders
             List<string> symbolList,
             List<string> companyConceptList1,
             List<string> companyConceptList2,
-            Func<long, long, long> computeFunc)
+            Func<long, long, long> computeFunc, 
+            ThreeLabels labels)
         {
             List<SymbolCurrencyDataError> symbolCurrencyDataErrorList1 = new();
             List<SymbolCurrencyDataError> symbolCurrencyDataErrorList2 = new();
@@ -174,7 +176,8 @@ namespace StockAnalyzer.DataProviders
             List<SymbolDateTwoValues> symbolDateTwoValuesList = SymbolDateTwoValuesList(
                 TableForMultipleSymbols(symbolCurrencyDataErrorList1),
                 TableForMultipleSymbols(symbolCurrencyDataErrorList2));
-            List<string> tableForMultipleSymbolsTwoValues = TableForMultipleSymbols(symbolDateTwoValuesList, computeFunc).ToList();
+            List<string> tableForMultipleSymbolsTwoValues = 
+                TableForMultipleSymbols(symbolDateTwoValuesList, computeFunc, labels).ToList();
             string? errors = ErrorsFromSymbolCurrencyDataErrorList(symbolCurrencyDataErrorList1)
                 + "\r\n" + ErrorsFromSymbolCurrencyDataErrorList(symbolCurrencyDataErrorList2);
 
@@ -216,9 +219,12 @@ namespace StockAnalyzer.DataProviders
             return symbolCurrencyDataError1;
         }
 
+        public record ThreeLabels (string Label1, string Label2, string Label3);
+
         private static IEnumerable<string> TableForMultipleSymbols(
             List<SymbolDateTwoValues> symbolDateTwoValuesList,
-            Func<long, long, long> computeFunc)
+            Func<long, long, long> computeFunc, 
+            ThreeLabels labels)
         {
             List<string> resultList = new();
             List<IGrouping<string, SymbolDateTwoValues>> groupedBySymbol = symbolDateTwoValuesList
@@ -233,9 +239,9 @@ namespace StockAnalyzer.DataProviders
 
                 List<long> values1List = group.Select(g => g.Value1).Reverse().ToList();
                 List<long> values2List = group.Select(g => g.Value2).Reverse().ToList();
-                string values1Line = $"Value1\t" + values1List.Select(v1 => v1.ToString()).Aggregate((r, n) => r + "\t" + n);
-                string values2Line = $"Value2\t" + values2List.Select(v2 => v2.ToString()).Aggregate((r, n) => r + "\t" + n);
-                string computedValuesLine = $"Computed\t" + values1List
+                string values1Line = $"{labels.Label1}\t" + values1List.Select(v1 => v1.ToString()).Aggregate((r, n) => r + "\t" + n);
+                string values2Line = $"{labels.Label2}\t" + values2List.Select(v2 => v2.ToString()).Aggregate((r, n) => r + "\t" + n);
+                string computedValuesLine = $"{labels.Label3}\t" + values1List
                     .Zip(values2List, (v1, v2) => computeFunc(v1, v2))
                     .Select(cv => cv.ToString())
                     .Aggregate((r, n) => r + "\t" + n);
