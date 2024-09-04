@@ -248,13 +248,10 @@ namespace StockAnalyzer.DataProviders
 
             foreach(IGrouping<string, SymbolDateTwoValues> group in groupedBySymbol)
             {
-                List<DateOnly> dates = group.Select(g => g.Date).ToList();
-                dates.Reverse();
-                List<long> values1List = group.Select(g => g.Value1).ToList();
-                values1List.Reverse();
-                List<long> values2List = group.Select(g => g.Value2).ToList();
-                values2List.Reverse();
-                
+                List<DateOnly> dates = group.Select(g => g.Date).Reverse().ToList();
+                List<long> values1List = group.Select(g => g.Value1).Reverse().ToList();
+                List<long> values2List = group.Select(g => g.Value2).Reverse().ToList();
+                               
                 string datesLine = dates.Select(l=>l.ToString("yyyy-MM-dd")).Aggregate((r, n) => r + "\t" + n);
                 string header = $"{group.Key}\t{datesLine}";
 
