@@ -155,6 +155,11 @@ namespace StockAnalyzer.Commands
 
                    await Task.Run(() =>
                    {
+                       // TODO
+                       //edgarConsumer.ResultCollectionEdgar = resultList.MultipleTables()
+                       // ? new ObservableCollection<string>(edgarConsumer.EdgarProvider.InterpolateDataOneTable(resultList))
+                       // : new ObservableCollection<string>(edgarConsumer.EdgarProvider.InterpolateDataMultipleTables(resultList);
+
                        edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(
                            edgarConsumer.EdgarProvider.InterpolateDataForMissingDates(resultList));
                    });
