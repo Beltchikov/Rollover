@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace StockAnalyzer.DataProviders
@@ -11,6 +12,7 @@ namespace StockAnalyzer.DataProviders
     public class EdgarProvider : IEdgarProvider
     {
         readonly HttpClient _httpClient = new();
+        private readonly int REQUEST_DELAY = 200;
 
         public EdgarProvider()
         {
@@ -110,6 +112,7 @@ namespace StockAnalyzer.DataProviders
                 foreach (string companyConcept in companyConceptList)
                 {
                     WithError<IEnumerable<string>> symbolDataOrError = await CompanyConceptOrErrorMethod(symbol, companyConcept);
+                    Thread.Sleep(REQUEST_DELAY);
                     if (symbolDataOrError.Data != null)
                     {
                         symbolCurrencyDataError.Currency = symbolDataOrError.Data.Skip(2).First();
@@ -152,74 +155,180 @@ namespace StockAnalyzer.DataProviders
 
         private async Task<IEnumerable<WithError<string?>>> ComputedBatchProcessingMethod(
             List<string> symbolList,
-            List<string> companyConceptArray1,
-            List<string> companyConceptArray2,
+            List<string> companyConceptList1,
+            List<string> companyConceptList2,
             Func<long, long, long> computeFunc)
         {
-            //List<SymbolCurrencyDataError> symbolCurrencyDataErrorList = new();
-            //foreach (var symbol in symbolList)
-            //{
-            //    SymbolCurrencyDataError symbolCurrencyDataError = new(symbol, "", null, null);
-            //    foreach (string companyConcept in companyConceptList)
-            //    {
-            //        WithError<IEnumerable<string>> symbolDataOrError = await CompanyConceptOrErrorMethod(symbol, companyConcept);
-            //        if (symbolDataOrError.Data != null)
-            //        {
-            //            symbolCurrencyDataError.Currency = symbolDataOrError.Data.Skip(2).First();
-            //            symbolCurrencyDataError.Data = new(symbolDataOrError.Data.Take(2).ToList());
-            //            break;
-            //        }
-            //        else
-            //        {
-            //            symbolCurrencyDataError.Error = symbolDataOrError.Error ?? throw new Exception();
-            //        }
-            //    }
-            //    if (symbolCurrencyDataError.Data != null && symbolCurrencyDataError.Error != null)
-            //    {
-            //        symbolCurrencyDataError.Error = null; // We do not care of intermediate errors if get the data finally
-            //    }
-            //    symbolCurrencyDataErrorList.Add(symbolCurrencyDataError);
-            //}
-
-            //List<string> data = TableForMultipleSymbols(symbolCurrencyDataErrorList).ToList();
-            //string? errors = ErrorsFromSymbolCurrencyDataErrorList(symbolCurrencyDataErrorList);
-
-            //List<WithError<string?>> dataWithErrors = data
-            //    .Select(d => new WithError<string?>(d)
-            //    {
-            //        Data = d,
-            //        Error = null
-            //    })
-            //    .ToList();
-            //if (errors != null) dataWithErrors.Add(new WithError<string?>(errors));
-            //return dataWithErrors;
-
-            throw new NotImplementedException();
-
-            // TODO
-            // The following block must be changed
-
-            //    foreach (string companyConcept in companyConceptList)
-            //    {
-            //        WithError<IEnumerable<string>> symbolDataOrError = await CompanyConceptOrErrorMethod(symbol, companyConcept);
-            //        if (symbolDataOrError.Data != null)
-            //        {
-            //            symbolCurrencyDataError.Currency = symbolDataOrError.Data.Skip(2).First();
-            //            symbolCurrencyDataError.Data = new(symbolDataOrError.Data.Take(2).ToList());
-            //            break;
-            //        }
-            //        else
-            //        {
-            //            symbolCurrencyDataError.Error = symbolDataOrError.Error ?? throw new Exception();
-            //        }
-            //    }
-            //    if (symbolCurrencyDataError.Data != null && symbolCurrencyDataError.Error != null)
-            //    {
-            //        symbolCurrencyDataError.Error = null; // We do not care of intermediate errors if get the data finally
-            //    }
-            //    symbolCurrencyDataErrorList.Add(symbolCurrencyDataError);
+            List<SymbolCurrencyDataError> symbolCurrencyDataErrorList1 = new();
+            List<SymbolCurrencyDataError> symbolCurrencyDataErrorList2 = new();
 
 
+            foreach (var symbol in symbolList)
+            {
+                SymbolCurrencyDataError symbolCurrencyDataError1 = new(symbol, "", null, null);
+                foreach (string companyConcept in companyConceptList1)
+                {
+                    WithError<IEnumerable<string>> symbolDataOrError = await CompanyConceptOrErrorMethod(symbol, companyConcept);
+                    Thread.Sleep(REQUEST_DELAY);
+                    if (symbolDataOrError.Data != null)
+                    {
+                        symbolCurrencyDataError1.Currency = symbolDataOrError.Data.Skip(2).First();
+                        symbolCurrencyDataError1.Data = new(symbolDataOrError.Data.Take(2).ToList());
+                        break;
+                    }
+                    else
+                    {
+                        symbolCurrencyDataError1.Error = symbolDataOrError.Error ?? throw new Exception();
+                    }
+                }
+
+                if (symbolCurrencyDataError1.Data != null && symbolCurrencyDataError1.Error != null)
+                {
+                    symbolCurrencyDataError1.Error = null; // We do not care of intermediate errors if get the data finally
+                }
+                symbolCurrencyDataErrorList1.Add(symbolCurrencyDataError1);
+
+                //
+                SymbolCurrencyDataError symbolCurrencyDataError2 = new(symbol, "", null, null);
+                foreach (string companyConcept in companyConceptList2)
+                {
+                    WithError<IEnumerable<string>> symbolDataOrError = await CompanyConceptOrErrorMethod(symbol, companyConcept);
+                    Thread.Sleep(REQUEST_DELAY);
+                    if (symbolDataOrError.Data != null)
+                    {
+                        symbolCurrencyDataError2.Currency = symbolDataOrError.Data.Skip(2).First();
+                        symbolCurrencyDataError2.Data = new(symbolDataOrError.Data.Take(2).ToList());
+                        break;
+                    }
+                    else
+                    {
+                        symbolCurrencyDataError2.Error = symbolDataOrError.Error ?? throw new Exception();
+                    }
+                }
+
+                if (symbolCurrencyDataError2.Data != null && symbolCurrencyDataError2.Error != null)
+                {
+                    symbolCurrencyDataError2.Error = null; // We do not care of intermediate errors if get the data finally
+                }
+                symbolCurrencyDataErrorList2.Add(symbolCurrencyDataError2);
+
+
+            }
+
+            List<string> tableForMultipleSymbols1 = TableForMultipleSymbols(symbolCurrencyDataErrorList1).ToList();
+            List<string> tableForMultipleSymbols2 = TableForMultipleSymbols(symbolCurrencyDataErrorList2).ToList();
+            
+            List<SymbolDateTwoValues> symbolDateTwoValuesList = SymbolDateTwoValuesList(tableForMultipleSymbols1, tableForMultipleSymbols2);
+            List<string> tableForMultipleSymbolsTwoValues = TableForMultipleSymbols(symbolDateTwoValuesList, computeFunc).ToList();
+
+            string? errors = ErrorsFromSymbolCurrencyDataErrorList(symbolCurrencyDataErrorList1)
+                + "\r\n" + ErrorsFromSymbolCurrencyDataErrorList(symbolCurrencyDataErrorList2);
+
+
+            List<WithError<string?>> dataWithErrors = tableForMultipleSymbolsTwoValues
+                .Select(d => new WithError<string?>(d)
+                {
+                    Data = d,
+                    Error = null
+                })
+                .ToList();
+            if (errors != null) dataWithErrors.Add(new WithError<string?>(errors));
+            return dataWithErrors;
+        }
+
+        private IEnumerable<string> TableForMultipleSymbols(
+            List<SymbolDateTwoValues> symbolDateTwoValuesList,
+            Func<long, long, long> computeFunc)
+        {
+            List<string> resultList = new();
+
+            List<IGrouping<string, SymbolDateTwoValues>> groupedBySymbol = symbolDateTwoValuesList
+                .GroupBy(d => d.Symbol)
+                .ToList();  
+
+            foreach(IGrouping<string, SymbolDateTwoValues> group in groupedBySymbol)
+            {
+                List<DateOnly> dates = group.Select(g => g.Date).ToList();
+                dates.Reverse();
+                List<long> values1List = group.Select(g => g.Value1).ToList();
+                values1List.Reverse();
+                List<long> values2List = group.Select(g => g.Value2).ToList();
+                values2List.Reverse();
+                List<long> computedValuesList = values1List.Zip(values2List, (v1, v2) => computeFunc(v1, v2)).ToList();
+
+                string datesLine = dates.Select(l=>l.ToString("yyyy-MM-dd")).Aggregate((r, n) => r + "\t" + n);
+                string header = $"{group.Key}\t{datesLine}";
+
+                string values1Line = $"Value1\t" + values1List.Select(v1=>v1.ToString()).Aggregate((r, n) => r + "\t" + n);
+                string values2Line = $"Value2\t" + values2List.Select(v2=>v2.ToString()).Aggregate((r, n) => r + "\t" + n);
+                string computedValuesLine = $"Computed\t" + computedValuesList.Select(cv=>cv.ToString()).Aggregate((r, n) => r + "\t" + n);
+
+                resultList.Add(header);
+                resultList.Add(values1Line);
+                resultList.Add(values2Line);
+                resultList.Add(computedValuesLine);
+                resultList.Add(Environment.NewLine);
+            }
+
+            return resultList;
+        }
+
+        private List<SymbolDateTwoValues> SymbolDateTwoValuesList(List<string> tableForMultipleSymbols1, List<string> tableForMultipleSymbols2)
+        {
+            List<SymbolDateTwoValues> resultList = new();
+
+            string header1 = tableForMultipleSymbols1.First();
+            string header2 = tableForMultipleSymbols2.First();
+            List<string> header1AsList = header1.Split("\t", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToList();
+            List<string> header2AsList = header2.Split("\t", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToList();
+            List<string> dates1AsStringList = header1AsList.Skip(1).ToList();
+            List<string> dates2AsStringList = header2AsList.Skip(1).ToList();
+            List<DateOnly> dates1 = dates1AsStringList.Select(d => d.ToDateOnly()).ToList();
+            List<DateOnly> dates2 = dates2AsStringList.Select(d => d.ToDateOnly()).ToList();
+
+            List<string> symbolsAndDataStringsWithoutHeader1 = tableForMultipleSymbols1.Skip(1).ToList();
+            List<string> symbolsAndDataStringsWithoutHeader2 = tableForMultipleSymbols2.Skip(1).ToList();
+            List<List<string>> symbolsAndDataWithoutHeader1 = symbolsAndDataStringsWithoutHeader1
+                .Select(t => t.Split("\t", StringSplitOptions.TrimEntries).ToList())
+                .ToList();
+            List<List<string>> symbolsAndDataWithoutHeader2 = symbolsAndDataStringsWithoutHeader2
+                .Select(t => t.Split("\t", StringSplitOptions.TrimEntries).ToList())
+                .ToList();
+            List<List<string>> dataForAllSymbols1 = symbolsAndDataWithoutHeader1.Select(s => s.Skip(1).ToList()).ToList();
+            List<List<string>> dataForAllSymbols2 = symbolsAndDataWithoutHeader2.Select(s => s.Skip(1).ToList()).ToList();
+
+            List<string> symbols = symbolsAndDataWithoutHeader1.Select(s => s.First()).ToList();
+
+            for (int i = 0; i < symbols.Count; i++)
+            {
+                string symbol = symbols[i];
+                List<string> data1ForSymbol = dataForAllSymbols1[i];
+                List<string> data2ForSymbol = dataForAllSymbols2[i];
+
+                for (int ii = dates1.Count - 1; ii >= 0; ii--)
+                {
+                    DateOnly date1 = dates1[ii];
+                    string data1 = data1ForSymbol[ii];
+                    if (string.IsNullOrWhiteSpace(data1))
+                        continue;
+
+                    int idxOfDateInData2 = dates2.IndexOf(date1);
+                    if (idxOfDateInData2 >= 0)
+                    {
+                        string data2 = data2ForSymbol[idxOfDateInData2];
+                        if (!string.IsNullOrWhiteSpace(data2))
+                        {
+                            long data1AsLong = Convert.ToInt64(data1);
+                            long data2AsLong = Convert.ToInt64(data2);
+
+                            SymbolDateTwoValues symbolDateTwoValues = new(symbol, date1, data1AsLong, data2AsLong);
+                            resultList.Add(symbolDateTwoValues);
+                        }
+                    }
+                }
+            }
+
+            return resultList;
         }
 
         private static string? ErrorsFromSymbolCurrencyDataErrorList(List<SymbolCurrencyDataError> symbolCurrencyDataErrorList)
@@ -564,6 +673,8 @@ namespace StockAnalyzer.DataProviders
             return -1;
         }
     }
+
+    internal record SymbolDateTwoValues(string Symbol, DateOnly Date, long Value1, long Value2);
 
     public class WithError<T>
     {
