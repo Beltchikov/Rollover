@@ -260,11 +260,8 @@ namespace StockAnalyzer.DataProviders
                     .Select(cv => cv.ToString())
                     .Aggregate((r, n) => r + "\t" + n);
 
-                resultList.Add(header);
-                resultList.Add(values1Line);
-                resultList.Add(values2Line);
-                resultList.Add(computedValuesLine);
-                resultList.Add(Environment.NewLine);
+                resultList.AddRange(new List<string> 
+                    { header, values1Line, values2Line, computedValuesLine, Environment.NewLine });
             }
 
             return resultList;
