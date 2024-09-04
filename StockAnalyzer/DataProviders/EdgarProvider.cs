@@ -254,14 +254,16 @@ namespace StockAnalyzer.DataProviders
                 values1List.Reverse();
                 List<long> values2List = group.Select(g => g.Value2).ToList();
                 values2List.Reverse();
-                List<long> computedValuesList = values1List.Zip(values2List, (v1, v2) => computeFunc(v1, v2)).ToList();
-
+                
                 string datesLine = dates.Select(l=>l.ToString("yyyy-MM-dd")).Aggregate((r, n) => r + "\t" + n);
                 string header = $"{group.Key}\t{datesLine}";
 
                 string values1Line = $"Value1\t" + values1List.Select(v1=>v1.ToString()).Aggregate((r, n) => r + "\t" + n);
                 string values2Line = $"Value2\t" + values2List.Select(v2=>v2.ToString()).Aggregate((r, n) => r + "\t" + n);
-                string computedValuesLine = $"Computed\t" + computedValuesList.Select(cv=>cv.ToString()).Aggregate((r, n) => r + "\t" + n);
+                string computedValuesLine = $"Computed\t" + values1List
+                    .Zip(values2List, (v1, v2) => computeFunc(v1, v2))
+                    .Select(cv=>cv.ToString())
+                    .Aggregate((r, n) => r + "\t" + n);
 
                 resultList.Add(header);
                 resultList.Add(values1Line);
