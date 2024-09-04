@@ -167,28 +167,7 @@ namespace StockAnalyzer.DataProviders
                 SymbolCurrencyDataError symbolCurrencyDataError1 = await SymbolCurrencyDataErrorAsync(symbol, companyConceptList1);
                 symbolCurrencyDataErrorList1.Add(symbolCurrencyDataError1);
 
-                //
-                SymbolCurrencyDataError symbolCurrencyDataError2 = new(symbol, "", null, null);
-                foreach (string companyConcept in companyConceptList2)
-                {
-                    WithError<IEnumerable<string>> symbolDataOrError = await CompanyConceptOrErrorMethod(symbol, companyConcept);
-                    Thread.Sleep(REQUEST_DELAY);
-                    if (symbolDataOrError.Data != null)
-                    {
-                        symbolCurrencyDataError2.Currency = symbolDataOrError.Data.Skip(2).First();
-                        symbolCurrencyDataError2.Data = new(symbolDataOrError.Data.Take(2).ToList());
-                        break;
-                    }
-                    else
-                    {
-                        symbolCurrencyDataError2.Error = symbolDataOrError.Error ?? throw new Exception();
-                    }
-                }
-
-                if (symbolCurrencyDataError2.Data != null && symbolCurrencyDataError2.Error != null)
-                {
-                    symbolCurrencyDataError2.Error = null; // We do not care of intermediate errors if get the data finally
-                }
+                SymbolCurrencyDataError symbolCurrencyDataError2 = await SymbolCurrencyDataErrorAsync(symbol, companyConceptList2);
                 symbolCurrencyDataErrorList2.Add(symbolCurrencyDataError2);
             }
 
