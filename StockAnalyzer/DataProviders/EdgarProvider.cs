@@ -162,7 +162,6 @@ namespace StockAnalyzer.DataProviders
             List<SymbolCurrencyDataError> symbolCurrencyDataErrorList1 = new();
             List<SymbolCurrencyDataError> symbolCurrencyDataErrorList2 = new();
 
-
             foreach (var symbol in symbolList)
             {
                 SymbolCurrencyDataError symbolCurrencyDataError1 = new(symbol, "", null, null);
@@ -211,18 +210,14 @@ namespace StockAnalyzer.DataProviders
                     symbolCurrencyDataError2.Error = null; // We do not care of intermediate errors if get the data finally
                 }
                 symbolCurrencyDataErrorList2.Add(symbolCurrencyDataError2);
-
-
             }
 
             List<SymbolDateTwoValues> symbolDateTwoValuesList = SymbolDateTwoValuesList(
-                TableForMultipleSymbols(symbolCurrencyDataErrorList1), 
+                TableForMultipleSymbols(symbolCurrencyDataErrorList1),
                 TableForMultipleSymbols(symbolCurrencyDataErrorList2));
             List<string> tableForMultipleSymbolsTwoValues = TableForMultipleSymbols(symbolDateTwoValuesList, computeFunc).ToList();
-
             string? errors = ErrorsFromSymbolCurrencyDataErrorList(symbolCurrencyDataErrorList1)
                 + "\r\n" + ErrorsFromSymbolCurrencyDataErrorList(symbolCurrencyDataErrorList2);
-
 
             List<WithError<string?>> dataWithErrors = tableForMultipleSymbolsTwoValues
                 .Select(d => new WithError<string?>(d)
@@ -259,7 +254,7 @@ namespace StockAnalyzer.DataProviders
                     .Select(cv => cv.ToString())
                     .Aggregate((r, n) => r + "\t" + n);
 
-                resultList.AddRange(new List<string> 
+                resultList.AddRange(new List<string>
                     { header, values1Line, values2Line, computedValuesLine, Environment.NewLine });
             }
 
