@@ -164,27 +164,7 @@ namespace StockAnalyzer.DataProviders
 
             foreach (var symbol in symbolList)
             {
-                SymbolCurrencyDataError symbolCurrencyDataError1 = new(symbol, "", null, null);
-                foreach (string companyConcept in companyConceptList1)
-                {
-                    WithError<IEnumerable<string>> symbolDataOrError = await CompanyConceptOrErrorMethod(symbol, companyConcept);
-                    Thread.Sleep(REQUEST_DELAY);
-                    if (symbolDataOrError.Data != null)
-                    {
-                        symbolCurrencyDataError1.Currency = symbolDataOrError.Data.Skip(2).First();
-                        symbolCurrencyDataError1.Data = new(symbolDataOrError.Data.Take(2).ToList());
-                        break;
-                    }
-                    else
-                    {
-                        symbolCurrencyDataError1.Error = symbolDataOrError.Error ?? throw new Exception();
-                    }
-                }
-
-                if (symbolCurrencyDataError1.Data != null && symbolCurrencyDataError1.Error != null)
-                {
-                    symbolCurrencyDataError1.Error = null; // We do not care of intermediate errors if get the data finally
-                }
+                SymbolCurrencyDataError symbolCurrencyDataError1 = await SymbolCurrencyDataErrorAsync(symbol, companyConceptList1);
                 symbolCurrencyDataErrorList1.Add(symbolCurrencyDataError1);
 
                 //
@@ -228,6 +208,33 @@ namespace StockAnalyzer.DataProviders
                 .ToList();
             if (errors != null) dataWithErrors.Add(new WithError<string?>(errors));
             return dataWithErrors;
+        }
+
+        private async Task<SymbolCurrencyDataError> SymbolCurrencyDataErrorAsync(string symbol, List<string> companyConceptList1)
+        {
+            SymbolCurrencyDataError symbolCurrencyDataError1 = new(symbol, "", null, null);
+            foreach (string companyConcept in companyConceptList1)
+            {
+                WithError<IEnumerable<string>> symbolDataOrError = await CompanyConceptOrErrorMethod(symbol, companyConcept);
+                Thread.Sleep(REQUEST_DELAY);
+                if (symbolDataOrError.Data != null)
+                {
+                    symbolCurrencyDataError1.Currency = symbolDataOrError.Data.Skip(2).First();
+                    symbolCurrencyDataError1.Data = new(symbolDataOrError.Data.Take(2).ToList());
+                    break;
+                }
+                else
+                {
+                    symbolCurrencyDataError1.Error = symbolDataOrError.Error ?? throw new Exception();
+                }
+            }
+
+            if (symbolCurrencyDataError1.Data != null && symbolCurrencyDataError1.Error != null)
+            {
+                symbolCurrencyDataError1.Error = null; // We do not care of intermediate errors if get the data finally
+            }
+
+            return symbolCurrencyDataError1;
         }
 
         private static IEnumerable<string> TableForMultipleSymbols(
