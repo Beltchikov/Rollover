@@ -215,10 +215,9 @@ namespace StockAnalyzer.DataProviders
 
             }
 
-            List<string> tableForMultipleSymbols1 = TableForMultipleSymbols(symbolCurrencyDataErrorList1).ToList();
-            List<string> tableForMultipleSymbols2 = TableForMultipleSymbols(symbolCurrencyDataErrorList2).ToList();
-
-            List<SymbolDateTwoValues> symbolDateTwoValuesList = SymbolDateTwoValuesList(tableForMultipleSymbols1, tableForMultipleSymbols2);
+            List<SymbolDateTwoValues> symbolDateTwoValuesList = SymbolDateTwoValuesList(
+                TableForMultipleSymbols(symbolCurrencyDataErrorList1), 
+                TableForMultipleSymbols(symbolCurrencyDataErrorList2));
             List<string> tableForMultipleSymbolsTwoValues = TableForMultipleSymbols(symbolDateTwoValuesList, computeFunc).ToList();
 
             string? errors = ErrorsFromSymbolCurrencyDataErrorList(symbolCurrencyDataErrorList1)
@@ -267,7 +266,9 @@ namespace StockAnalyzer.DataProviders
             return resultList;
         }
 
-        private static List<SymbolDateTwoValues> SymbolDateTwoValuesList(List<string> tableForMultipleSymbols1, List<string> tableForMultipleSymbols2)
+        private static List<SymbolDateTwoValues> SymbolDateTwoValuesList(
+            IEnumerable<string> tableForMultipleSymbols1,
+            IEnumerable<string> tableForMultipleSymbols2)
         {
             List<SymbolDateTwoValues> resultList = new();
 
