@@ -217,7 +217,7 @@ namespace StockAnalyzer.DataProviders
 
             List<string> tableForMultipleSymbols1 = TableForMultipleSymbols(symbolCurrencyDataErrorList1).ToList();
             List<string> tableForMultipleSymbols2 = TableForMultipleSymbols(symbolCurrencyDataErrorList2).ToList();
-            
+
             List<SymbolDateTwoValues> symbolDateTwoValuesList = SymbolDateTwoValuesList(tableForMultipleSymbols1, tableForMultipleSymbols2);
             List<string> tableForMultipleSymbolsTwoValues = TableForMultipleSymbols(symbolDateTwoValuesList, computeFunc).ToList();
 
@@ -241,25 +241,23 @@ namespace StockAnalyzer.DataProviders
             Func<long, long, long> computeFunc)
         {
             List<string> resultList = new();
-
             List<IGrouping<string, SymbolDateTwoValues>> groupedBySymbol = symbolDateTwoValuesList
-                .GroupBy(d => d.Symbol)
-                .ToList();  
+                            .GroupBy(d => d.Symbol)
+                            .ToList();
 
-            foreach(IGrouping<string, SymbolDateTwoValues> group in groupedBySymbol)
+            foreach (IGrouping<string, SymbolDateTwoValues> group in groupedBySymbol)
             {
-                List<DateOnly> dates = group.Select(g => g.Date).Reverse().ToList();
-                List<long> values1List = group.Select(g => g.Value1).Reverse().ToList();
-                List<long> values2List = group.Select(g => g.Value2).Reverse().ToList();
-                               
-                string datesLine = dates.Select(l=>l.ToString("yyyy-MM-dd")).Aggregate((r, n) => r + "\t" + n);
+                string datesLine = group.Select(g => g.Date).Reverse().Select(l => l.ToString("yyyy-MM-dd"))
+                    .Aggregate((r, n) => r + "\t" + n);
                 string header = $"{group.Key}\t{datesLine}";
 
-                string values1Line = $"Value1\t" + values1List.Select(v1=>v1.ToString()).Aggregate((r, n) => r + "\t" + n);
-                string values2Line = $"Value2\t" + values2List.Select(v2=>v2.ToString()).Aggregate((r, n) => r + "\t" + n);
+                List<long> values1List = group.Select(g => g.Value1).Reverse().ToList();
+                List<long> values2List = group.Select(g => g.Value2).Reverse().ToList();
+                string values1Line = $"Value1\t" + values1List.Select(v1 => v1.ToString()).Aggregate((r, n) => r + "\t" + n);
+                string values2Line = $"Value2\t" + values2List.Select(v2 => v2.ToString()).Aggregate((r, n) => r + "\t" + n);
                 string computedValuesLine = $"Computed\t" + values1List
                     .Zip(values2List, (v1, v2) => computeFunc(v1, v2))
-                    .Select(cv=>cv.ToString())
+                    .Select(cv => cv.ToString())
                     .Aggregate((r, n) => r + "\t" + n);
 
                 resultList.Add(header);
