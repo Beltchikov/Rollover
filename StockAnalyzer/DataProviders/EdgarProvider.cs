@@ -236,7 +236,7 @@ namespace StockAnalyzer.DataProviders
             return dataWithErrors;
         }
 
-        private IEnumerable<string> TableForMultipleSymbols(
+        private static IEnumerable<string> TableForMultipleSymbols(
             List<SymbolDateTwoValues> symbolDateTwoValuesList,
             Func<long, long, long> computeFunc)
         {
@@ -267,7 +267,7 @@ namespace StockAnalyzer.DataProviders
             return resultList;
         }
 
-        private List<SymbolDateTwoValues> SymbolDateTwoValuesList(List<string> tableForMultipleSymbols1, List<string> tableForMultipleSymbols2)
+        private static List<SymbolDateTwoValues> SymbolDateTwoValuesList(List<string> tableForMultipleSymbols1, List<string> tableForMultipleSymbols2)
         {
             List<SymbolDateTwoValues> resultList = new();
 
