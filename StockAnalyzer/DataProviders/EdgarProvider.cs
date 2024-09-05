@@ -656,11 +656,50 @@ namespace StockAnalyzer.DataProviders
             return -1;
         }
 
-        public IEnumerable<string> MergeMultipleTables(List<string> resultList)
+        public IEnumerable<string> MergeMultipleTables(List<string> inputList)
         {
-            MessageBox.Show("MergeMultipleTable");
+            inputList = RemoveNewLinesEnd(inputList);
+            inputList = RemoveNewLinesStart(inputList);
 
-            throw new NotImplementedException();
+            if (!inputList.Contains(Environment.NewLine))
+            {
+                MessageBox.Show("No multiple table found");
+                return inputList;  
+            }
+            
+            List<SymbolCurrencyDataError> symbolCurrencyDataErrorList = new();
+
+
+
+            return TableForMultipleSymbols(symbolCurrencyDataErrorList);
+        }
+
+        private static List<string> RemoveNewLinesStart(List<string> inputList)
+        {
+            List<string> resultList = new();
+
+            for(int i = 0; i < inputList.Count; i++)
+            {
+                if (inputList[i] == Environment.NewLine)
+                    continue;
+                resultList.Add(inputList[i]);
+            }
+
+            return resultList;
+        }
+
+        private static List<string> RemoveNewLinesEnd(List<string> inputList)
+        {
+            List<string> resultList = new();
+
+            for (int i = inputList.Count-1; i >=0; i--)
+            {
+                if (inputList[i] == Environment.NewLine)
+                    continue;
+                resultList.Insert(0,inputList[i]);   
+            }
+
+            return resultList;  
         }
     }
 
