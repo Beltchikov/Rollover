@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using static StockAnalyzer.Commands.EdgarBatchProcessor;
 
@@ -13,6 +12,7 @@ namespace StockAnalyzer.Commands
     public class CommandFactory
     {
         const int PROGRESS_BAR_DELAY = 400;
+        private static readonly int CAGR_PERIODS = 10;
 
         public static ICommand? CreateBatchProcessingComputed(string commandName, IEdgarConsumer edgarConsumer)
         {
@@ -178,7 +178,7 @@ namespace StockAnalyzer.Commands
                     await Task.Run(() =>
                     {
                         edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(
-                            edgarConsumer.EdgarProvider.Cagr(resultList, 10));
+                            edgarConsumer.EdgarProvider.Cagr(resultList, CAGR_PERIODS));
                     });
 
                     ui.Enable(edgarConsumer);
@@ -195,13 +195,11 @@ namespace StockAnalyzer.Commands
                     Ui ui = new();
                     ui.Disable(edgarConsumer, PROGRESS_BAR_DELAY);
 
-                    MessageBox.Show("MergeMultipleTable");
-
-                    //await Task.Run(() =>
-                    //{
-                    //    edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(
-                    //        edgarConsumer.EdgarProvider.Cagr(resultList, 10));
-                    //});
+                    await Task.Run(() =>
+                    {
+                        edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(
+                            edgarConsumer.EdgarProvider.MergeMultipleTables(resultList));
+                    });
 
                     ui.Enable(edgarConsumer);
                 });

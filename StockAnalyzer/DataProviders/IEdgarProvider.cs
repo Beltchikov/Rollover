@@ -12,5 +12,6 @@ namespace StockAnalyzer.DataProviders
         ConceptFuncDelegate CompanyConceptOrError { get; }
         IEnumerable<string> InterpolateDataForMissingDates(List<string> data);
         IEnumerable<string> Cagr(List<string> inputList, int periods);
+        IEnumerable<string> MergeMultipleTables(List<string> resultList);
     }
 }

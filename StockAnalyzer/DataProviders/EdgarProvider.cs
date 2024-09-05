@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace StockAnalyzer.DataProviders
 {
@@ -653,6 +654,13 @@ namespace StockAnalyzer.DataProviders
                     return i;
             }
             return -1;
+        }
+
+        public IEnumerable<string> MergeMultipleTables(List<string> resultList)
+        {
+            MessageBox.Show("MergeMultipleTable");
+
+            throw new NotImplementedException();
         }
     }
 
