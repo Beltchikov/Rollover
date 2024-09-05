@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using static StockAnalyzer.Commands.EdgarBatchProcessor;
 
@@ -156,11 +157,6 @@ namespace StockAnalyzer.Commands
 
                    await Task.Run(() =>
                    {
-                       // TODO
-                       //edgarConsumer.ResultCollectionEdgar = resultList.MultipleTables()
-                       // ? new ObservableCollection<string>(edgarConsumer.EdgarProvider.InterpolateDataOneTable(resultList))
-                       // : new ObservableCollection<string>(edgarConsumer.EdgarProvider.InterpolateDataMultipleTables(resultList);
-
                        edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(
                            edgarConsumer.EdgarProvider.InterpolateDataForMissingDates(resultList));
                    });
@@ -184,6 +180,28 @@ namespace StockAnalyzer.Commands
                         edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(
                             edgarConsumer.EdgarProvider.Cagr(resultList, 10));
                     });
+
+                    ui.Enable(edgarConsumer);
+                });
+        }
+
+        public static ICommand CreateMergeMultipleTables(IEdgarConsumer edgarConsumer)
+        {
+            return new RelayCommand(
+                async () =>
+                {
+                    List<string> resultList = edgarConsumer.ResultCollectionEdgar.ToList();
+
+                    Ui ui = new();
+                    ui.Disable(edgarConsumer, PROGRESS_BAR_DELAY);
+
+                    MessageBox.Show("MergeMultipleTable");
+
+                    //await Task.Run(() =>
+                    //{
+                    //    edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(
+                    //        edgarConsumer.EdgarProvider.Cagr(resultList, 10));
+                    //});
 
                     ui.Enable(edgarConsumer);
                 });
