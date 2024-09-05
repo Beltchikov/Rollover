@@ -150,7 +150,7 @@ namespace StockAnalyzer.DataProviders
             List<string> symbolList,
             List<string> companyConceptArray1,
             List<string> companyConceptArray2,
-            Func<long, long, long> computeFunc, 
+            Func<long, long, long> computeFunc,
             ThreeLabels labels);
 
         ComputedBatchProcessingDelegate IEdgarProvider.ComputedBatchProcessing { get => ComputedBatchProcessingMethod; }
@@ -159,7 +159,7 @@ namespace StockAnalyzer.DataProviders
             List<string> symbolList,
             List<string> companyConceptList1,
             List<string> companyConceptList2,
-            Func<long, long, long> computeFunc, 
+            Func<long, long, long> computeFunc,
             ThreeLabels labels)
         {
             List<SymbolCurrencyDataError> symbolCurrencyDataErrorList1 = new();
@@ -177,7 +177,7 @@ namespace StockAnalyzer.DataProviders
             List<SymbolDateTwoValues> symbolDateTwoValuesList = SymbolDateTwoValuesList(
                 TableForMultipleSymbols(symbolCurrencyDataErrorList1),
                 TableForMultipleSymbols(symbolCurrencyDataErrorList2));
-            List<string> tableForMultipleSymbolsTwoValues = 
+            List<string> tableForMultipleSymbolsTwoValues =
                 TableForMultipleSymbols(symbolDateTwoValuesList, computeFunc, labels).ToList();
             string? errors = ErrorsFromSymbolCurrencyDataErrorList(symbolCurrencyDataErrorList1)
                 + "\r\n" + ErrorsFromSymbolCurrencyDataErrorList(symbolCurrencyDataErrorList2);
@@ -220,11 +220,11 @@ namespace StockAnalyzer.DataProviders
             return symbolCurrencyDataError1;
         }
 
-        public record ThreeLabels (string Label1, string Label2, string Label3);
+        public record ThreeLabels(string Label1, string Label2, string Label3);
 
         private static IEnumerable<string> TableForMultipleSymbols(
             List<SymbolDateTwoValues> symbolDateTwoValuesList,
-            Func<long, long, long> computeFunc, 
+            Func<long, long, long> computeFunc,
             ThreeLabels labels)
         {
             List<string> resultList = new();
@@ -664,24 +664,51 @@ namespace StockAnalyzer.DataProviders
             if (!inputList.Contains(Environment.NewLine))
             {
                 MessageBox.Show("No multiple table found");
-                return inputList;  
+                return inputList;
             }
-            
+
+            List<List<string>> multipleTables = SplitMultipleTables(inputList);
+
+
+
+
             List<SymbolCurrencyDataError> symbolCurrencyDataErrorList = new();
 
-
-
             return TableForMultipleSymbols(symbolCurrencyDataErrorList);
+        }
+
+        private static List<List<string>> SplitMultipleTables(List<string> inputList)
+        {
+            List<List<string>> resultMultiplTables = new();
+
+            List<string> multipleTable = new();
+            foreach(string inputListLine in inputList)
+            {
+                if(inputListLine == Environment.NewLine)
+                {
+                    resultMultiplTables.Add(multipleTable);
+                    multipleTable = new();
+                    continue;
+                }
+
+                multipleTable.Add(inputListLine);   
+            }
+            resultMultiplTables.Add(multipleTable);
+
+            return resultMultiplTables;
         }
 
         private static List<string> RemoveNewLinesStart(List<string> inputList)
         {
             List<string> resultList = new();
+            bool notEmptyLineFound = false;
 
-            for(int i = 0; i < inputList.Count; i++)
+            for (int i = 0; i < inputList.Count; i++)
             {
-                if (inputList[i] == Environment.NewLine)
+                if (inputList[i] == Environment.NewLine && !notEmptyLineFound)
                     continue;
+                else
+                    notEmptyLineFound = true;
                 resultList.Add(inputList[i]);
             }
 
@@ -691,15 +718,18 @@ namespace StockAnalyzer.DataProviders
         private static List<string> RemoveNewLinesEnd(List<string> inputList)
         {
             List<string> resultList = new();
+            bool notEmptyLineFound = false;
 
-            for (int i = inputList.Count-1; i >=0; i--)
+            for (int i = inputList.Count - 1; i >= 0; i--)
             {
-                if (inputList[i] == Environment.NewLine)
+                if (inputList[i] == Environment.NewLine && !notEmptyLineFound)
                     continue;
-                resultList.Insert(0,inputList[i]);   
+                else
+                    notEmptyLineFound = true;
+                resultList.Insert(0, inputList[i]);
             }
 
-            return resultList;  
+            return resultList;
         }
     }
 
