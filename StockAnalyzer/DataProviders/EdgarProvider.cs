@@ -668,13 +668,49 @@ namespace StockAnalyzer.DataProviders
             }
 
             List<List<string>> multipleTables = SplitMultipleTables(inputList);
+            List<List<string>> multipleTablesIntermediateValuesRemoved = new();
+            foreach (List<string> table in multipleTables)
+            {
+                List<string> tableIntermediateValuesRemoved = new();
+                tableIntermediateValuesRemoved.Add(table.First());
+                tableIntermediateValuesRemoved.Add(table.Last());
 
-
-
-
-            List<SymbolCurrencyDataError> symbolCurrencyDataErrorList = new();
+                multipleTablesIntermediateValuesRemoved.Add(tableIntermediateValuesRemoved);
+            }
+            List<SymbolCurrencyDataError> symbolCurrencyDataErrorList = SymbolCurrencyDataErrorListFromMultipleTables(multipleTablesIntermediateValuesRemoved);
 
             return TableForMultipleSymbols(symbolCurrencyDataErrorList);
+        }
+
+        private List<SymbolCurrencyDataError> SymbolCurrencyDataErrorListFromMultipleTables(List<List<string>> multipleTables)
+        {
+            List<SymbolCurrencyDataError> resultList = new();
+
+            List<string> symbolAndDatesStringsList = multipleTables.Select(t => t[0]).ToList();
+            List<string> dataLabelAndValuesStringsList = multipleTables.Select(t => t[1]).ToList();
+            for (int i = 0; i < symbolAndDatesStringsList.Count; i++)
+            {
+                string symbolAndDatesLine = symbolAndDatesStringsList[i];
+                int idx = symbolAndDatesLine.IndexOf("\t");
+                string symbolAndCurrency = symbolAndDatesLine[..idx];
+                string datesOnlyLine = symbolAndDatesLine[(idx + 1)..];
+
+                string[] symbolAndCurrencyArray = symbolAndCurrency.Split(" ");
+                string symbol = symbolAndCurrencyArray[0];
+                string currency = symbolAndCurrencyArray[1].Replace("(", "").Replace(")", "");
+
+                string dataLabelAndValuesLine = dataLabelAndValuesStringsList[i];
+                idx = dataLabelAndValuesLine.IndexOf("\t");
+                string dataLabel = dataLabelAndValuesLine[..idx];
+                string data = dataLabelAndValuesLine[(idx + 1)..];
+                
+                List<string> dataList = new() { datesOnlyLine, data };
+                SymbolCurrencyDataError symbolCurrencyDataError = new(symbol, currency, dataList, null);
+                resultList.Add(symbolCurrencyDataError);
+            }
+
+            return resultList;
+
         }
 
         private static List<List<string>> SplitMultipleTables(List<string> inputList)
@@ -682,16 +718,16 @@ namespace StockAnalyzer.DataProviders
             List<List<string>> resultMultiplTables = new();
 
             List<string> multipleTable = new();
-            foreach(string inputListLine in inputList)
+            foreach (string inputListLine in inputList)
             {
-                if(inputListLine == Environment.NewLine)
+                if (inputListLine == Environment.NewLine)
                 {
                     resultMultiplTables.Add(multipleTable);
                     multipleTable = new();
                     continue;
                 }
 
-                multipleTable.Add(inputListLine);   
+                multipleTable.Add(inputListLine);
             }
             resultMultiplTables.Add(multipleTable);
 
