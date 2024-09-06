@@ -34,6 +34,7 @@ namespace StockAnalyzer
 
         private ObservableCollection<string> _resultCollectionEdgar = null!;
         private bool _resultsCalculatedEdgar;
+        private bool _multipleTablesInResultsField;
         private ObservableCollection<string> _resultCollectionYahooEps = null!;
         private ObservableCollection<string> _resultCollectionAlpha = null!;
         private string _messageYahoo = null!;
@@ -331,6 +332,15 @@ namespace StockAnalyzer
             set
             {
                 SetProperty(ref _resultCollectionEdgar, value);
+            }
+        }
+
+        public bool MultipleTablesInResultsField
+        {
+            get => _multipleTablesInResultsField;
+            set
+            {
+                SetProperty(ref _multipleTablesInResultsField, value);
             }
         }
 

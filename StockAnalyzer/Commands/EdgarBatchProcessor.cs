@@ -29,7 +29,9 @@ namespace StockAnalyzer.Commands
 
             if (errors.Any()) edgarConsumer.AddMessageEdgar(errors.Aggregate((r, n) => r + "\r\n" + n));
             edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(data);
+            
             edgarConsumer.ResultsCalculatedEdgar = true;
+            edgarConsumer.MultipleTablesInResultsField = false;
         }
 
         public static async Task RunComputedBatchProcessingAsync(
@@ -54,7 +56,9 @@ namespace StockAnalyzer.Commands
 
             if (errors.Any()) edgarConsumer.AddMessageEdgar(errors.Aggregate((r, n) => r + "\r\n" + n));
             edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(data);
-            edgarConsumer.ResultsCalculatedEdgar = true;
+            
+            edgarConsumer.MultipleTablesInResultsField = true;
+            edgarConsumer.ResultsCalculatedEdgar = false;
         }
 
         public record SimpleAccountingAttribute(string Name, List<string> OtherNames);

@@ -125,7 +125,7 @@
 
                             <Button Grid.Column="3" Grid.Row="4" Width="100" HorizontalAlignment="Stretch" ToolTip="Interpolate data for missing dates." Command="{Binding InterpolateCommand, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding ResultsCalculatedEdgar}">Interpolate</Button>
                             <Button Grid.Column="4" Grid.Row="4" Width="100" HorizontalAlignment="Stretch" ToolTip="Cummulated Annual Growth Rate" Command="{Binding CagrCommand, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding ResultsCalculatedEdgar}">CAGR 10</Button>
-                            <Button Grid.Column="5" Grid.Row="4" Width="130" HorizontalAlignment="Stretch" Command="{Binding MergeMultipleTablesCommand, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding ResultsCalculatedEdgar}">Merge Multiple Tables</Button>
+                            <Button Grid.Column="5" Grid.Row="4" Width="130" HorizontalAlignment="Stretch" Command="{Binding MergeMultipleTablesCommand, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding MultipleTablesInResultsField}">Merge Multiple Tables</Button>
 
                             <ProgressBar Grid.Column="3" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" Height="10"  Grid.Row="5" VerticalAlignment="Center" Value="{Binding ProgressBarValue}" Minimum="0" Maximum="100"/>
 
