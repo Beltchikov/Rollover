@@ -685,32 +685,41 @@ namespace StockAnalyzer.DataProviders
         private List<SymbolCurrencyDataError> SymbolCurrencyDataErrorListFromMultipleTables(List<List<string>> multipleTables)
         {
             List<SymbolCurrencyDataError> resultList = new();
-
             List<string> symbolAndDatesStringsList = multipleTables.Select(t => t[0]).ToList();
             List<string> dataLabelAndValuesStringsList = multipleTables.Select(t => t[1]).ToList();
+
             for (int i = 0; i < symbolAndDatesStringsList.Count; i++)
             {
                 string symbolAndDatesLine = symbolAndDatesStringsList[i];
                 int idx = symbolAndDatesLine.IndexOf("\t");
-                string symbolAndCurrency = symbolAndDatesLine[..idx];
+                string symbolAndCurrencyString = symbolAndDatesLine[..idx];
                 string datesOnlyLine = symbolAndDatesLine[(idx + 1)..];
-
-                string[] symbolAndCurrencyArray = symbolAndCurrency.Split(" ");
-                string symbol = symbolAndCurrencyArray[0];
-                string currency = symbolAndCurrencyArray[1].Replace("(", "").Replace(")", "");
+                SymbolAndCurrency symbolAndCurrency = SymbolAndCurrency(symbolAndCurrencyString);
 
                 string dataLabelAndValuesLine = dataLabelAndValuesStringsList[i];
                 idx = dataLabelAndValuesLine.IndexOf("\t");
                 string dataLabel = dataLabelAndValuesLine[..idx];
                 string data = dataLabelAndValuesLine[(idx + 1)..];
-                
+
                 List<string> dataList = new() { datesOnlyLine, data };
-                SymbolCurrencyDataError symbolCurrencyDataError = new(symbol, currency, dataList, null);
+                SymbolCurrencyDataError symbolCurrencyDataError = new(
+                    symbolAndCurrency.Symbol,
+                    symbolAndCurrency.Currency,
+                    dataList,
+                    null);
                 resultList.Add(symbolCurrencyDataError);
             }
 
             return resultList;
+        }
 
+        private static SymbolAndCurrency SymbolAndCurrency(string symbolAndCurrencyString)
+        {
+            string[] symbolAndCurrencyArray = symbolAndCurrencyString.Split(" ");
+            string symbol = symbolAndCurrencyArray[0];
+            string currency = symbolAndCurrencyArray[1].Replace("(", "").Replace(")", "");
+
+            return new(symbol, currency);
         }
 
         private static List<List<string>> SplitMultipleTables(List<string> inputList)
@@ -768,6 +777,8 @@ namespace StockAnalyzer.DataProviders
             return resultList;
         }
     }
+
+    internal record SymbolAndCurrency(string Symbol, string Currency);
 
     internal record SymbolDateTwoValues(string Symbol, DateOnly Date, long Value1, long Value2);
 
