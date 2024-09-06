@@ -31,7 +31,7 @@ namespace StockAnalyzer.Commands
             edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(data);
             
             edgarConsumer.ResultsCalculatedEdgar = true;
-            edgarConsumer.MultipleTablesInResultsField = false;
+            edgarConsumer.ResultsCalculatedEdgarMultipleTables = false;
         }
 
         public static async Task RunComputedBatchProcessingAsync(
@@ -57,7 +57,7 @@ namespace StockAnalyzer.Commands
             if (errors.Any()) edgarConsumer.AddMessageEdgar(errors.Aggregate((r, n) => r + "\r\n" + n));
             edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(data);
             
-            edgarConsumer.MultipleTablesInResultsField = true;
+            edgarConsumer.ResultsCalculatedEdgarMultipleTables = true;
             edgarConsumer.ResultsCalculatedEdgar = false;
         }
 

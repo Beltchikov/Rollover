@@ -34,7 +34,7 @@ namespace StockAnalyzer
 
         private ObservableCollection<string> _resultCollectionEdgar = null!;
         private bool _resultsCalculatedEdgar;
-        private bool _multipleTablesInResultsField;
+        private bool _resultsCalculatedEdgarMultipleTables;
         private ObservableCollection<string> _resultCollectionYahooEps = null!;
         private ObservableCollection<string> _resultCollectionAlpha = null!;
         private string _messageYahoo = null!;
@@ -85,7 +85,9 @@ namespace StockAnalyzer
         public ICommand InterpolateCommand { get; } = null!;
         public ICommand CagrCommand { get; } = null!;
         public ICommand MergeMultipleTablesCommand { get; } = null!;
+        public ICommand DataFromRepo10YCommand { get; } = null!;
         
+
         public ViewModel(
             IInvestingProvider investingProvider,
             IYahooProvider yahooProvider,
@@ -115,6 +117,7 @@ namespace StockAnalyzer
             InterpolateCommand = CommandFactory.CreateInterpolate(this);
             CagrCommand = CommandFactory.CreateCagr(this);
             MergeMultipleTablesCommand = CommandFactory.CreateMergeMultipleTables(this);
+            DataFromRepo10YCommand = CommandFactory.CreateDataFromRepo10Y(this);
 
             LastEpsCommand = new RelayCommand(async () =>
             {
@@ -335,12 +338,12 @@ namespace StockAnalyzer
             }
         }
 
-        public bool MultipleTablesInResultsField
+        public bool ResultsCalculatedEdgarMultipleTables
         {
-            get => _multipleTablesInResultsField;
+            get => _resultsCalculatedEdgarMultipleTables;
             set
             {
-                SetProperty(ref _multipleTablesInResultsField, value);
+                SetProperty(ref _resultsCalculatedEdgarMultipleTables, value);
             }
         }
 

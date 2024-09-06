@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using static StockAnalyzer.Commands.EdgarBatchProcessor;
 
@@ -200,6 +201,28 @@ namespace StockAnalyzer.Commands
                         edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(
                             edgarConsumer.EdgarProvider.MergeMultipleTables(resultList));
                     });
+
+                    ui.Enable(edgarConsumer);
+                });
+        }
+
+        public static ICommand CreateDataFromRepo10Y(IEdgarConsumer edgarConsumer)
+        {
+            return new RelayCommand(
+                async () =>
+                {
+                    List<string> resultList = edgarConsumer.ResultCollectionEdgar.ToList();
+
+                    Ui ui = new();
+                    ui.Disable(edgarConsumer, PROGRESS_BAR_DELAY);
+
+                    MessageBox.Show("CreateDataFromRepo10Y");
+
+                    //await Task.Run(() =>
+                    //{
+                    //    edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(
+                    //        edgarConsumer.EdgarProvider.MergeMultipleTables(resultList));
+                    //});
 
                     ui.Enable(edgarConsumer);
                 });
