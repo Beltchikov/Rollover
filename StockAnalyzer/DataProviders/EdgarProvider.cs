@@ -730,6 +730,16 @@ namespace StockAnalyzer.DataProviders
             List<List<string>> multipleTables = EdgarProvider.SplitMultipleTables(inputListMultipleTables);
             List<SymbolCurrencyDataError> symbolCurrencyDataErrorList = EdgarProvider.SymbolCurrencyDataErrorListFromMultipleTables(multipleTables);
 
+            foreach(SymbolCurrencyDataError symbolCurrencyDataError in symbolCurrencyDataErrorList)
+            {
+                List<string>? data = symbolCurrencyDataError.Data;
+                if (data == null) continue;
+
+                string datesLine = data.First();
+                List<string> datesList = datesLine.IntelliSplit().ToList();
+                List<DateOnly> dateOnlyList = datesList.Select(d=>d.ToDateOnly()).ToList(); 
+            }
+
             // TODO
 
             return resultList;
@@ -946,19 +956,23 @@ namespace StockAnalyzer.DataProviders
 
         public static IEnumerable<string> IntelliSplit(this string stringToSplit)
         {
-            IEnumerable<string> resultList = stringToSplit.Split("\t", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-            if (resultList.Count() > 1)
+            List<string> resultList = stringToSplit
+                .Split("\t", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                .ToList();
+            if (resultList.Count > 1)
             {
                 return resultList;
             }
 
-            resultList = stringToSplit.Split(" ", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-            if (resultList.Count() > 1)
+            resultList = stringToSplit
+                .Split(" ", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                .ToList();
+            if (resultList.Count > 1)
             {
                 return resultList;
             }
 
-            throw new NotImplementedException();
+            return resultList; 
         }
 
         public static void AddOrMerge(this List<Earning> earningsList, Earning earning)
