@@ -668,18 +668,27 @@ namespace StockAnalyzer.DataProviders
             }
 
             List<List<string>> multipleTables = SplitMultipleTables(inputList);
-            List<List<string>> multipleTablesIntermediateValuesRemoved = new();
-            foreach (List<string> table in multipleTables)
-            {
-                List<string> tableIntermediateValuesRemoved = new();
-                tableIntermediateValuesRemoved.Add(table.First());
-                tableIntermediateValuesRemoved.Add(table.Last());
-
-                multipleTablesIntermediateValuesRemoved.Add(tableIntermediateValuesRemoved);
-            }
+            List<List<string>> multipleTablesIntermediateValuesRemoved = RemoveIntermediateValues(multipleTables);
             List<SymbolCurrencyDataError> symbolCurrencyDataErrorList = SymbolCurrencyDataErrorListFromMultipleTables(multipleTablesIntermediateValuesRemoved);
 
             return TableForMultipleSymbols(symbolCurrencyDataErrorList);
+        }
+
+        private static List<List<string>> RemoveIntermediateValues(List<List<string>> multipleTables)
+        {
+            List<List<string>> multipleTablesIntermediateValuesRemoved = new();
+            foreach (List<string> table in multipleTables)
+            {
+                List<string> tableIntermediateValuesRemoved = new()
+                {
+                    table.First(),
+                    table.Last()
+                };
+
+                multipleTablesIntermediateValuesRemoved.Add(tableIntermediateValuesRemoved);
+            }
+
+            return multipleTablesIntermediateValuesRemoved;
         }
 
         private List<SymbolCurrencyDataError> SymbolCurrencyDataErrorListFromMultipleTables(List<List<string>> multipleTables)
