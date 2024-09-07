@@ -723,14 +723,16 @@ namespace StockAnalyzer.DataProviders
             return resultList;
         }
 
-        public static List<DataDescriptor> MissingData(List<string> inputListMultipleTables)
+        public static List<DataDescriptor> MissingData(List<string> inputListMultipleTables, int yearsBack)
         {
             List<DataDescriptor> resultList = new();
 
             List<List<string>> multipleTables = EdgarProvider.SplitMultipleTables(inputListMultipleTables);
             List<SymbolCurrencyDataError> symbolCurrencyDataErrorList = EdgarProvider.SymbolCurrencyDataErrorListFromMultipleTables(multipleTables);
 
-            foreach(SymbolCurrencyDataError symbolCurrencyDataError in symbolCurrencyDataErrorList)
+            int endYear = DateTime.Now.Year;
+            int startYear = endYear - yearsBack;
+            foreach (SymbolCurrencyDataError symbolCurrencyDataError in symbolCurrencyDataErrorList)
             {
                 List<string>? data = symbolCurrencyDataError.Data;
                 if (data == null) continue;
@@ -739,6 +741,8 @@ namespace StockAnalyzer.DataProviders
                 List<string> datesList = datesLine.IntelliSplit().ToList();
                 List<DateOnly> dateOnlyList = datesList.Select(d=>d.ToDateOnly()).ToList(); 
             }
+
+            
 
             // TODO
 

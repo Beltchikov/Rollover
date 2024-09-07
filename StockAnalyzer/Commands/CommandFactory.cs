@@ -217,7 +217,7 @@ namespace StockAnalyzer.Commands
                     Ui ui = new();
                     ui.Disable(edgarConsumer, PROGRESS_BAR_DELAY);
 
-                    List<DataDescriptor> missingData = EdgarProvider.MissingData(resultList);
+                    List<DataDescriptor> missingData = EdgarProvider.MissingData(resultList, 10);
 
                     MessageBox.Show("CreateDataFromRepo10Y");
 
