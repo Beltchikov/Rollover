@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using StockAnalyzer.DataProviders;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -216,13 +217,11 @@ namespace StockAnalyzer.Commands
                     Ui ui = new();
                     ui.Disable(edgarConsumer, PROGRESS_BAR_DELAY);
 
-                    MessageBox.Show("CreateDataFromRepo10Y");
+                    List<List<string>> multipleTables = EdgarProvider.SplitMultipleTables(resultList);
+                    //List<List<string>> multipleTablesIntermediateValuesRemoved = EdgarProvider.RemoveIntermediateValues(multipleTables);
+                    List<SymbolCurrencyDataError> symbolCurrencyDataErrorList = EdgarProvider.SymbolCurrencyDataErrorListFromMultipleTables(multipleTables);
 
-                    //await Task.Run(() =>
-                    //{
-                    //    edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(
-                    //        edgarConsumer.EdgarProvider.MergeMultipleTables(resultList));
-                    //});
+                    MessageBox.Show("CreateDataFromRepo10Y");
 
                     ui.Enable(edgarConsumer);
                 });

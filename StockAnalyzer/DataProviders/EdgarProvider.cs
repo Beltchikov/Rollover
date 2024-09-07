@@ -674,7 +674,7 @@ namespace StockAnalyzer.DataProviders
             return TableForMultipleSymbols(symbolCurrencyDataErrorList);
         }
 
-        private static List<List<string>> RemoveIntermediateValues(List<List<string>> multipleTables)
+        public static List<List<string>> RemoveIntermediateValues(List<List<string>> multipleTables)
         {
             List<List<string>> multipleTablesIntermediateValuesRemoved = new();
             foreach (List<string> table in multipleTables)
@@ -691,7 +691,7 @@ namespace StockAnalyzer.DataProviders
             return multipleTablesIntermediateValuesRemoved;
         }
 
-        private List<SymbolCurrencyDataError> SymbolCurrencyDataErrorListFromMultipleTables(List<List<string>> multipleTables)
+        public static List<SymbolCurrencyDataError> SymbolCurrencyDataErrorListFromMultipleTables(List<List<string>> multipleTables)
         {
             List<SymbolCurrencyDataError> resultList = new();
             List<string> symbolAndDatesStringsList = multipleTables.Select(t => t[0]).ToList();
@@ -731,7 +731,7 @@ namespace StockAnalyzer.DataProviders
             return new(symbol, currency);
         }
 
-        private static List<List<string>> SplitMultipleTables(List<string> inputList)
+        public static List<List<string>> SplitMultipleTables(List<string> inputList)
         {
             List<List<string>> resultMultiplTables = new();
 
@@ -747,7 +747,9 @@ namespace StockAnalyzer.DataProviders
 
                 multipleTable.Add(inputListLine);
             }
-            resultMultiplTables.Add(multipleTable);
+            
+            if(multipleTable.Any()) 
+                resultMultiplTables.Add(multipleTable);
 
             return resultMultiplTables;
         }
@@ -879,7 +881,7 @@ namespace StockAnalyzer.DataProviders
     }
 
 
-    internal class SymbolCurrencyDataError
+    public class SymbolCurrencyDataError
     {
         public string Symbol { get; set; }
         public string Currency { get; set; }
