@@ -7,6 +7,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using static StockAnalyzer.DataProviders.EdgarProvider;
 
 namespace StockAnalyzer.DataProviders
 {
@@ -722,6 +723,18 @@ namespace StockAnalyzer.DataProviders
             return resultList;
         }
 
+        public static List<DataDescriptor> MissingData(List<string> inputListMultipleTables)
+        {
+            List<DataDescriptor> resultList = new();
+
+            List<List<string>> multipleTables = EdgarProvider.SplitMultipleTables(inputListMultipleTables);
+            List<SymbolCurrencyDataError> symbolCurrencyDataErrorList = EdgarProvider.SymbolCurrencyDataErrorListFromMultipleTables(multipleTables);
+
+            // TODO
+
+            return resultList;
+        }
+
         private static SymbolAndCurrency SymbolAndCurrency(string symbolAndCurrencyString)
         {
             string[] symbolAndCurrencyArray = symbolAndCurrencyString.Split(" ");
@@ -788,6 +801,8 @@ namespace StockAnalyzer.DataProviders
             return resultList;
         }
     }
+
+    public record DataDescriptor(string Symbol, SimpleAccountingAttribute Attribute, int Year);
 
     internal record SymbolAndCurrency(string Symbol, string Currency);
 
@@ -901,6 +916,15 @@ namespace StockAnalyzer.DataProviders
     internal record UrlsCompanyConcept(string Url10k, string Url20f);
 
     internal record Earning(DateOnly Date, List<long?> Data);
+
+
+    public record SimpleAccountingAttribute(string Name, List<string> OtherNames);
+    public record ComputedAccountingAttribute(
+        string Name,
+        List<string> OtherNames1,
+        List<string> OtherNames2,
+        Func<long, long, long> computeFunc,
+        ThreeLabels Labels);
 
     internal static class EdgarProviderExtensions
     {

@@ -217,9 +217,7 @@ namespace StockAnalyzer.Commands
                     Ui ui = new();
                     ui.Disable(edgarConsumer, PROGRESS_BAR_DELAY);
 
-                    List<List<string>> multipleTables = EdgarProvider.SplitMultipleTables(resultList);
-                    //List<List<string>> multipleTablesIntermediateValuesRemoved = EdgarProvider.RemoveIntermediateValues(multipleTables);
-                    List<SymbolCurrencyDataError> symbolCurrencyDataErrorList = EdgarProvider.SymbolCurrencyDataErrorListFromMultipleTables(multipleTables);
+                    List<DataDescriptor> missingData = EdgarProvider.MissingData(resultList);
 
                     MessageBox.Show("CreateDataFromRepo10Y");
 

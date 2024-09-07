@@ -60,13 +60,5 @@ namespace StockAnalyzer.Commands
             edgarConsumer.ResultsCalculatedEdgarMultipleTables = true;
             edgarConsumer.ResultsCalculatedEdgar = false;
         }
-
-        public record SimpleAccountingAttribute(string Name, List<string> OtherNames);
-        public record ComputedAccountingAttribute(
-            string Name,
-            List<string> OtherNames1,
-            List<string> OtherNames2,
-            Func<long, long, long> computeFunc,
-            ThreeLabels Labels);
     }
 }
