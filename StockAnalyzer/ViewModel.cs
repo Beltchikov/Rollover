@@ -4,6 +4,7 @@ using IbClient.IbHost;
 using StockAnalyzer.Commands;
 using StockAnalyzer.DataProviders;
 using StockAnalyzer.DataProviders.Types;
+using StockAnalyzer.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -26,6 +27,7 @@ namespace StockAnalyzer
         private double _marketCap;
 
         IEdgarProvider _edgarProvider;
+        private IRepository _repositry;
         private ObservableCollection<string> _tickerCollectionEdgar = null!;
         private string _messageEdgar = null!;
 
@@ -44,7 +46,7 @@ namespace StockAnalyzer
         private int _port = 4001;
         private int _clientId = 1;
         private bool _connectedToTws;
-        private ObservableCollection<string> _twsMessageColllection = new ObservableCollection<string>();
+        private ObservableCollection<string> _twsMessageColllection = new();
         private ObservableCollection<string> _tickerCollectionTwsContractDetails = null!;
         private ObservableCollection<string> _resultCollectionTwsContractIds = null!;
         private ObservableCollection<string> _contractStringsTwsFinStatements = null!;
@@ -56,7 +58,7 @@ namespace StockAnalyzer
 
         private int _progressBarValue;
         private Brush _backgroundResults = null!;
-
+        
         public ICommand FreeCashFlowCommand { get; } = null!;
         public ICommand RevenueCommand { get; } = null!;
         public ICommand CogsCommand { get; } = null!;
@@ -94,9 +96,11 @@ namespace StockAnalyzer
             ITwsProvider twsProvider,
             ISeekingAlphaProvider seekingAlphaProvider,
             IEdgarProvider edgarProvider,
+            IRepository repository,
             IIbHost ibHost)
         {
             _edgarProvider = edgarProvider;
+            _repositry = repository;
 
             yahooProvider.Status += YahooProvider_Status;
             twsProvider.Status += TwsProvider_Status;
@@ -320,6 +324,8 @@ namespace StockAnalyzer
         #region Edgar
 
         public IEdgarProvider EdgarProvider => _edgarProvider;
+
+        public IRepository Repositry => _repositry;
 
         public ObservableCollection<string> TickerCollectionEdgar
         {

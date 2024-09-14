@@ -43,7 +43,7 @@ namespace StockAnalyzer.Commands
                                      edgarConsumer.TickerCollectionEdgar.ToList(),
                                      computedAccountingAttribute.OtherNames1,
                                      computedAccountingAttribute.OtherNames2,
-                                     computedAccountingAttribute.computeFunc,
+                                     computedAccountingAttribute.ComputeFunc,
                                      computedAccountingAttribute.Labels))?.ToList() ?? throw new ApplicationException();
             List<string> data = batchProcessingResults
                             .Where(x => x.Data != null)

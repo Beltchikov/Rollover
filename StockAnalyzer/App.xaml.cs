@@ -1,6 +1,7 @@
 ﻿using IbClient.IbHost;
 using Microsoft.Extensions.DependencyInjection;
 using StockAnalyzer.DataProviders;
+using StockAnalyzer.Repositories;
 using StockAnalyzer.WebScraping;
 using System;
 using System.Windows;
@@ -23,6 +24,7 @@ namespace StockAnalyzer
                 .AddSingleton<IIbHostQueue, IbHostQueue>()
                 .AddSingleton<ISeekingAlphaProvider, SeekingAlphaProvider>()
                 .AddSingleton<IEdgarProvider, EdgarProvider>()
+                .AddSingleton<IRepository, AccessRepository>()
                 .BuildServiceProvider();
         }
 
@@ -37,6 +39,7 @@ namespace StockAnalyzer
                     Services.GetRequiredService<ITwsProvider>(),
                     Services.GetRequiredService<ISeekingAlphaProvider>(),
                     Services.GetRequiredService<IEdgarProvider>(),
+                    Services.GetRequiredService<IRepository>(),
                     Services.GetRequiredService<IIbHost>())
             };
             mainWindow.Show();

@@ -419,30 +419,15 @@ namespace StockAnalyzer.DataProviders
 
         public IEnumerable<string> InterpolateDataForMissingDates(List<string> data)
         {
-            List<DateOnly> dates = data[0]
-                .Split("\t")
-                .Skip(1)
-                .Select(s => DateOnly.ParseExact(s, "yyyy-MM-dd")).ToList();
+            var financeDataTable = new FinanceDataTable(data);
 
-            List<string> symbols = data
-                .Skip(1)
-                .Select(r => r.Split("\t").ToList())
-                .Select(v => v[0])
-                .ToList();
-
-            List<List<long?>> values = data
-                .Skip(1)
-                .Select(r => r.Split("\t").ToList())
-                .Select(v => v.Skip(1).ToList())
-                .Select(r => r.Select(v => (long?)(string.IsNullOrWhiteSpace(v) ? null : long.Parse(v))).ToList())
-                .ToList();
-
-            List<Earning> earnings = CreateEarningsList(dates, values);
+            List<Earning> earnings = CreateEarningsList(financeDataTable.Dates.ToDateOnly(), financeDataTable.Values.ToInt64Nullable());
             List<Earning> earningsWithInterpolatedValues = InterpolateMissingValues(earnings);
-            List<string> resultList = ListOfStringsFromEarnings(earningsWithInterpolatedValues, symbols);
+            List<string> resultList = ListOfStringsFromEarnings(earningsWithInterpolatedValues, financeDataTable.Symbols);
 
             return resultList;
         }
+
 
         private static List<string> ListOfStringsFromEarnings(List<Earning> earnings, List<string> symbols)
         {
@@ -575,35 +560,27 @@ namespace StockAnalyzer.DataProviders
             return $"{symbol} ({currency})";
         }
 
-        public IEnumerable<string> Cagr(List<string> inputList, int periods)
+        public IEnumerable<string> Cagr(List<string> inputList, int yearsBack)
         {
-            List<string> resultList = new List<string>();
+            List<string> resultList = new();
             if (!inputList.Any()) return resultList;
             resultList.Add("Symbol\tYears\tGrowth\tCAGR");
 
-            string datesString = inputList[0];
-            if (string.IsNullOrWhiteSpace(datesString)) throw new ApplicationException();
+            var financeDataTable = new FinanceDataTable(inputList);
+            if (!financeDataTable.Dates.Any()) throw new ApplicationException();
 
-            List<string> datesStringList = datesString.IntelliSplit().ToList();
-            if (!datesStringList.Any()) throw new ApplicationException();
-            datesStringList = datesStringList.Skip(1).ToList();
+            List<DateOnly> datesList = financeDataTable.Dates.ToDateOnly();
+            int firstYear = datesList.Last().Year - yearsBack - 1; // A fiscal year can be a filed year – 1
+            List<DateOnly> datesListYearsBack = datesList.Where(d => d.Year >= firstYear).ToList();
+            if (!datesListYearsBack.Any()) throw new ApplicationException();
 
-            List<DateOnly> datesList = datesStringList.Select(s => s.ToDateOnly()).ToList();
-            if (!datesStringList.Any()) throw new ApplicationException();
-
-            DateOnly lastDate = datesList.Last();
-            int lastYear = lastDate.Year;
-            int firstYear = lastYear - periods;
-
-            List<DateOnly> datesListPeriods = datesList.Where(d => d.Year >= firstYear).ToList();
-            if (!datesStringList.Any()) throw new ApplicationException();
-
-            List<string> symbolsList = inputList.Skip(1).Select(l => l.IntelliSplit().ToList()[0]).ToList();
+            List<string> symbolsList = financeDataTable.Symbols;
             for (int i = 0; i < symbolsList.Count; i++)
             {
                 string symbol = symbolsList[i];
-                List<string> symbolDataListAsString = inputList[i + 1].IntelliSplit().Skip(1).ToList();
-                symbolDataListAsString = symbolDataListAsString.Skip(symbolDataListAsString.Count - datesListPeriods.Count).ToList();
+
+                List<string> symbolDataListAsString = financeDataTable.Values[i];
+                symbolDataListAsString = symbolDataListAsString.Skip(symbolDataListAsString.Count - datesListYearsBack.Count + 1).ToList();
 
                 int idxFirst = FirstIndexOfNotEmptyString(symbolDataListAsString);
                 int idxLast = LastIndexOfNotEmptyString(symbolDataListAsString);
@@ -612,7 +589,7 @@ namespace StockAnalyzer.DataProviders
                 long firstData = Convert.ToInt64(symbolDataListAsString[idxFirst]);
                 long lastData = Convert.ToInt64(symbolDataListAsString[idxLast]);
 
-                int years = datesListPeriods[idxLast].Year - datesListPeriods[idxFirst].Year + 1;
+                int years = datesListYearsBack[idxLast].Year - datesListYearsBack[idxFirst].Year + 1;
                 double growth = CalculateGrowth(lastData, firstData);
                 double cagr = Math.Round(Math.Pow(growth, 1 / (double)years) - 1, 3);
 
@@ -723,11 +700,15 @@ namespace StockAnalyzer.DataProviders
             return resultList;
         }
 
-        public static List<DataDescriptor> MissingData(List<string> inputListMultipleTables, int yearsBack)
+        public static List<SymbolAndAccountingAttribute> MissingData(List<string> inputListMultipleTables, int yearsBack)
         {
-            List<DataDescriptor> resultList = new();
+            List<SymbolAndAccountingAttribute> resultList = new();
 
             List<List<string>> multipleTables = EdgarProvider.SplitMultipleTables(inputListMultipleTables);
+            // TODO
+            string attribute = AccountingAttributeNameFromMultipleTables(multipleTables);
+
+
             List<SymbolCurrencyDataError> symbolCurrencyDataErrorList = EdgarProvider.SymbolCurrencyDataErrorListFromMultipleTables(multipleTables);
 
             int endYear = DateTime.Now.Year;
@@ -739,14 +720,87 @@ namespace StockAnalyzer.DataProviders
 
                 string datesLine = data.First();
                 List<string> datesList = datesLine.IntelliSplit().ToList();
-                List<DateOnly> dateOnlyList = datesList.Select(d=>d.ToDateOnly()).ToList(); 
-            }
+                List<DateOnly> dateOnlyList = datesList.Select(d => d.ToDateOnly()).ToList();
+                List<int> yearsList = dateOnlyList.Select(d => d.Year).ToList();
 
-            
+                for (int year = endYear; year >= startYear; year--)
+                {
+                    if (yearsList.Contains(year))
+                        continue;
+
+                    // TD
+                    //SimpleAccountingAttribute attribute = new(attributeName, new List<string>());
+                    SymbolAndAccountingAttribute symbolAndAccountingAttribute
+                        = new SymbolAndAccountingAttribute(symbolCurrencyDataError.Symbol, attribute);
+
+                    if (resultList.Contains(symbolAndAccountingAttribute)) continue;
+                    resultList.Add(symbolAndAccountingAttribute);
+                }
+            }
 
             // TODO
 
             return resultList;
+
+        }
+
+        public static List<string> AddMissingData(List<string> inputList, List<string> missingData, int yearsBack)
+        {
+            List<string> resultList = new();
+            List<List<string>> splittedInputList = EdgarProvider.SplitMultipleTables(inputList);
+
+            foreach (List<string> inputListForOneSymbol in splittedInputList)
+            {
+                List<string> resultListForOneSymbol = AddMissingDataForOneSymbol(inputListForOneSymbol, missingData, yearsBack);
+                resultList.AddRange(resultListForOneSymbol);
+                resultList.Add("\r\n");
+            }
+
+            return resultList;
+        }
+
+        public static List<string> AddMissingDataForOneSymbol(List<string> inputListForOneSymbol,
+                                                              List<string> missingData,
+                                                              int yearsBack)
+        {
+            List<string> resultList = new(inputListForOneSymbol);
+
+
+            string symbolAndCurrency = resultList.First().IntelliSplit().First();
+            string symbol = symbolAndCurrency.IntelliSplit().First();
+
+            int recentYear = DateTime.Now.YearFromFiledData();
+            for (int year = recentYear; year > recentYear - yearsBack; year--)
+            {
+                string header = resultList.First();
+                List<string> headerList = header.IntelliSplit().ToList();
+                List<string> filedDatesStringList = headerList.Skip(1).ToList();
+                List<DateTime> filedDatesList = filedDatesStringList
+                    .Select(f => DateTime.ParseExact(f, "yyyy-MM-dd", CultureInfo.InvariantCulture))
+                    .ToList();
+                List<int> filedDatesYearsList = filedDatesList.Select(d => d.YearFromFiledData()).ToList();
+
+                if (filedDatesYearsList.Contains(year))
+                    continue;
+
+                // TODO
+                resultList = EnrichInputList(missingData, resultList);
+            }
+
+            return resultList;
+        }
+
+        private static List<string> EnrichInputList(List<string> missingData, List<string> inputList)
+        {
+            //FinanceDataTable financeDataTable = new(inputList);
+
+
+            throw new NotImplementedException();
+        }
+
+        private static string AccountingAttributeNameFromMultipleTables(List<List<string>> multipleTables)
+        {
+            return multipleTables.First()[3].IntelliSplit().First();
         }
 
         private static SymbolAndCurrency SymbolAndCurrency(string symbolAndCurrencyString)
@@ -774,8 +828,8 @@ namespace StockAnalyzer.DataProviders
 
                 multipleTable.Add(inputListLine);
             }
-            
-            if(multipleTable.Any()) 
+
+            if (multipleTable.Any())
                 resultMultiplTables.Add(multipleTable);
 
             return resultMultiplTables;
@@ -816,7 +870,7 @@ namespace StockAnalyzer.DataProviders
         }
     }
 
-    public record DataDescriptor(string Symbol, SimpleAccountingAttribute Attribute, int Year);
+    public record SymbolAndAccountingAttribute(string Symbol, string AccountingAttribute);
 
     internal record SymbolAndCurrency(string Symbol, string Currency);
 
@@ -888,15 +942,6 @@ namespace StockAnalyzer.DataProviders
 
     #endregion
 
-    internal static class EdgarApiExtensions
-    {
-        public static TimeSpan FiledToEndDiff(this Currency currency)
-        {
-            return DateTime.ParseExact(currency.filed, "yyyy-MM-dd", CultureInfo.InvariantCulture)
-                            - DateTime.ParseExact(currency.end, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-        }
-    }
-
     internal class CurrencyWithAcronym
     {
         public CurrencyWithAcronym(Currency currency, string acronym)
@@ -927,6 +972,31 @@ namespace StockAnalyzer.DataProviders
         }
     }
 
+    public class FinanceDataTable
+    {
+        public List<string> Dates { get; }
+        public List<string> Symbols { get; }
+        public List<List<string>> Values { get; }
+
+        public FinanceDataTable(List<string> data)
+        {
+            Dates = data[0]
+                .Split("\t")
+                .Skip(1)
+                .ToList();
+
+            Symbols = data
+                .Skip(1)
+                .Select(r => r.Split("\t").ToList()[0])
+                .ToList();
+
+            Values = data
+                .Skip(1)
+                .Select(r => r.Split("\t").Skip(1).ToList())
+                .ToList();
+        }
+    }
+
     internal record UrlsCompanyConcept(string Url10k, string Url20f);
 
     internal record Earning(DateOnly Date, List<long?> Data);
@@ -937,7 +1007,7 @@ namespace StockAnalyzer.DataProviders
         string Name,
         List<string> OtherNames1,
         List<string> OtherNames2,
-        Func<long, long, long> computeFunc,
+        Func<long, long, long> ComputeFunc,
         ThreeLabels Labels);
 
     internal static class EdgarProviderExtensions
@@ -957,7 +1027,17 @@ namespace StockAnalyzer.DataProviders
             throw new NotImplementedException();
         }
 
+        public static List<DateOnly> ToDateOnly(this List<string> stringListToConvert)
+        {
+            return stringListToConvert.Select(s => s.ToDateOnly()).ToList();
+        }
 
+
+        /// <summary>
+        /// The function tries to split using the '\t' char. If the char is absent, it tries again with the white line.
+        /// </summary>
+        /// <param name="stringToSplit"></param>
+        /// <returns></returns>
         public static IEnumerable<string> IntelliSplit(this string stringToSplit)
         {
             List<string> resultList = stringToSplit
@@ -976,7 +1056,7 @@ namespace StockAnalyzer.DataProviders
                 return resultList;
             }
 
-            return resultList; 
+            return resultList;
         }
 
         public static void AddOrMerge(this List<Earning> earningsList, Earning earning)
@@ -1008,6 +1088,44 @@ namespace StockAnalyzer.DataProviders
                 earningToUpdate = earningToUpdate with { Data = updatedDataList };
                 earningsList[idx] = earningToUpdate;
             }
+        }
+
+        public static int YearFromFiledData(this DateTime filedData)
+        {
+            return filedData.Month <= 6
+                ? filedData.Year - 1
+                : filedData.Year;
+        }
+
+        public static TimeSpan FiledToEndDiff(this Currency currency)
+        {
+            return DateTime.ParseExact(currency.filed, "yyyy-MM-dd", CultureInfo.InvariantCulture)
+                            - DateTime.ParseExact(currency.end, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+        }
+
+        public static long? ToInt64Nullable(this string stringToConvert)
+        {
+            if (string.IsNullOrWhiteSpace(stringToConvert))
+            {
+                return null;
+            }
+
+            if (long.TryParse(stringToConvert, out long result))
+            {
+                return result;
+            }
+
+            return null;
+        }
+
+        public static List<long?> ToInt64Nullable(this List<string> stringListToConvert)
+        {
+            return stringListToConvert.Select(s => s.ToInt64Nullable()).ToList();
+        }
+
+        public static List<List<long?>> ToInt64Nullable(this List<List<string>> stringList2dToConvert)
+        {
+            return stringList2dToConvert.Select(sl => sl.ToInt64Nullable()).ToList();
         }
     }
 }

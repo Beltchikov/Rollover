@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using static StockAnalyzer.Commands.EdgarBatchProcessor;
 
@@ -25,7 +24,7 @@ namespace StockAnalyzer.Commands
                     new List<string> { "NetCashProvidedByUsedInOperatingActivities" },
                     new List<string> { "PaymentsToAcquirePropertyPlantAndEquipment" },
                     (a, b) => a - b,
-                    new DataProviders.EdgarProvider.ThreeLabels("Cash from operation","Cap. ex.", "Free cash flow")),
+                    new DataProviders.EdgarProvider.ThreeLabels("Cash from operation", "Cap. ex.", "Free cash flow")),
                 _ => throw new NotImplementedException()
             };
 
@@ -140,7 +139,7 @@ namespace StockAnalyzer.Commands
 
                     await RunSimpleBatchProcessingAsync(
                         edgarConsumer,
-                        simpleAccountingAttribute, 
+                        simpleAccountingAttribute,
                         edgarConsumer.EdgarProvider.SimpleBatchProcessing);
 
                     ui.Enable(edgarConsumer);
@@ -212,14 +211,18 @@ namespace StockAnalyzer.Commands
             return new RelayCommand(
                 async () =>
                 {
-                    List<string> resultList = edgarConsumer.ResultCollectionEdgar.ToList();
+                    List<string> inputList = edgarConsumer.ResultCollectionEdgar.ToList();
 
                     Ui ui = new();
                     ui.Disable(edgarConsumer, PROGRESS_BAR_DELAY);
 
-                    List<DataDescriptor> missingData = EdgarProvider.MissingData(resultList, 10);
+                    List<SymbolAndAccountingAttribute> symbolAndAccountingAttributes = EdgarProvider.MissingData(inputList, CAGR_PERIODS);
+                    // TODO make async
+                    List<string> missingData = edgarConsumer.Repositry.Get(symbolAndAccountingAttributes);
+                    List<string> resultList = EdgarProvider.AddMissingData(inputList, missingData, CAGR_PERIODS);
 
-                    MessageBox.Show("CreateDataFromRepo10Y");
+                    edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(
+                            edgarConsumer.EdgarProvider.MergeMultipleTables(resultList));
 
                     ui.Enable(edgarConsumer);
                 });

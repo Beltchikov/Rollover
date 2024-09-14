@@ -1,4 +1,5 @@
 ﻿using StockAnalyzer.DataProviders;
+using StockAnalyzer.Repositories;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
 
@@ -13,6 +14,7 @@ namespace StockAnalyzer.Commands
         IEdgarProvider EdgarProvider { get; }
         Brush BackgroundResults { get; set; }
         int ProgressBarValue { get; set; }
+        IRepository Repositry { get; }
         void AddMessageEdgar(string message);
     }
 }
