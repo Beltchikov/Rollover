@@ -792,7 +792,7 @@ namespace StockAnalyzer.DataProviders
 
         private static List<string> EnrichInputList(List<string> missingData, List<string> inputList)
         {
-            //FinanceDataTable financeDataTable = new(inputList);
+            FinanceDataTable financeDataTable = new(inputList);
 
 
             throw new NotImplementedException();
