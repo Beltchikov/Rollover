@@ -54,8 +54,10 @@ namespace StockAnalyzer.Commands
                             .Select(r => r.Error ?? "")
                             .ToList();
 
+            List<string> data = edgarConsumer.EdgarProvider.MergeMultipleTables(dataWithIntermediateValues).ToList();
+
             if (errors.Any()) edgarConsumer.AddMessageEdgar(errors.Aggregate((r, n) => r + "\r\n" + n));
-            edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(dataWithIntermediateValues);
+            edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(data);
             edgarConsumer.DebugOutput = new ObservableCollection<string>(dataWithIntermediateValues);
             
             edgarConsumer.ResultsCalculatedEdgarMultipleTables = true;

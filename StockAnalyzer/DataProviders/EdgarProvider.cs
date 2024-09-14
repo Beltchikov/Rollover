@@ -996,7 +996,6 @@ namespace StockAnalyzer.DataProviders
                 .ToList();
         }
     }
-
     internal record UrlsCompanyConcept(string Url10k, string Url20f);
 
     internal record Earning(DateOnly Date, List<long?> Data);
