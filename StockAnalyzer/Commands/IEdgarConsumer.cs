@@ -9,6 +9,7 @@ namespace StockAnalyzer.Commands
     {
         ObservableCollection<string> TickerCollectionEdgar { get; set; }
         ObservableCollection<string> ResultCollectionEdgar { get; set; }
+        ObservableCollection<string> DebugOutput { get; set; }
         bool ResultsCalculatedEdgar { get; set; }
         bool ResultsCalculatedEdgarMultipleTables { get; set; }
         IEdgarProvider EdgarProvider { get; }

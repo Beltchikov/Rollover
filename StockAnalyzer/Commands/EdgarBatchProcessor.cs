@@ -45,7 +45,7 @@ namespace StockAnalyzer.Commands
                                      computedAccountingAttribute.OtherNames2,
                                      computedAccountingAttribute.ComputeFunc,
                                      computedAccountingAttribute.Labels))?.ToList() ?? throw new ApplicationException();
-            List<string> data = batchProcessingResults
+            List<string> dataWithIntermediateValues = batchProcessingResults
                             .Where(x => x.Data != null)
                             .Select(r => r.Data ?? "")
                             .ToList();
@@ -55,7 +55,8 @@ namespace StockAnalyzer.Commands
                             .ToList();
 
             if (errors.Any()) edgarConsumer.AddMessageEdgar(errors.Aggregate((r, n) => r + "\r\n" + n));
-            edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(data);
+            edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(dataWithIntermediateValues);
+            edgarConsumer.DebugOutput = new ObservableCollection<string>(dataWithIntermediateValues);
             
             edgarConsumer.ResultsCalculatedEdgarMultipleTables = true;
             edgarConsumer.ResultsCalculatedEdgar = false;

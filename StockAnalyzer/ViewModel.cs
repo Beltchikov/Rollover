@@ -35,6 +35,7 @@ namespace StockAnalyzer
         private ObservableCollection<string> _tickersAlphaList = null!;
 
         private ObservableCollection<string> _resultCollectionEdgar = null!;
+        private ObservableCollection<string> _debugOutput = null!;
         private bool _resultsCalculatedEdgar;
         private bool _resultsCalculatedEdgarMultipleTables;
         private ObservableCollection<string> _resultCollectionYahooEps = null!;
@@ -58,7 +59,7 @@ namespace StockAnalyzer
 
         private int _progressBarValue;
         private Brush _backgroundResults = null!;
-        
+
         public ICommand FreeCashFlowCommand { get; } = null!;
         public ICommand RevenueCommand { get; } = null!;
         public ICommand CogsCommand { get; } = null!;
@@ -88,7 +89,7 @@ namespace StockAnalyzer
         public ICommand CagrCommand { get; } = null!;
         public ICommand MergeMultipleTablesCommand { get; } = null!;
         public ICommand DataFromRepo10YCommand { get; } = null!;
-        
+
 
         public ViewModel(
             IInvestingProvider investingProvider,
@@ -117,7 +118,7 @@ namespace StockAnalyzer
             EquityCommand = CommandFactory.CreateBatchProcessingSimple(nameof(EquityCommand), this);
             LongTermDebtCommand = CommandFactory.CreateBatchProcessingSimple(nameof(EquityCommand), this);
             DividendsCommand = CommandFactory.CreateBatchProcessingSimple(nameof(DividendsCommand), this);
-            
+
             InterpolateCommand = CommandFactory.CreateInterpolate(this);
             CagrCommand = CommandFactory.CreateCagr(this);
             MergeMultipleTablesCommand = CommandFactory.CreateMergeMultipleTables(this);
@@ -341,6 +342,15 @@ namespace StockAnalyzer
             set
             {
                 SetProperty(ref _resultCollectionEdgar, value);
+            }
+        }
+
+        public ObservableCollection<string> DebugOutput
+        {
+            get => _debugOutput;
+            set
+            {
+                SetProperty(ref _debugOutput, value);
             }
         }
 
