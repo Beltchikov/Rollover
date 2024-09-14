@@ -87,7 +87,6 @@ namespace StockAnalyzer
         public ICommand ComparePeersCommand { get; }
         public ICommand InterpolateCommand { get; } = null!;
         public ICommand CagrCommand { get; } = null!;
-        public ICommand MergeMultipleTablesCommand { get; } = null!;
         public ICommand DataFromRepo10YCommand { get; } = null!;
 
 
@@ -121,7 +120,6 @@ namespace StockAnalyzer
 
             InterpolateCommand = CommandFactory.CreateInterpolate(this);
             CagrCommand = CommandFactory.CreateCagr(this);
-            MergeMultipleTablesCommand = CommandFactory.CreateMergeMultipleTables(this);
             DataFromRepo10YCommand = CommandFactory.CreateDataFromRepo10Y(this);
 
             LastEpsCommand = new RelayCommand(async () =>

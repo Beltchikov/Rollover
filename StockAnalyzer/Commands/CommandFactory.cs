@@ -186,26 +186,6 @@ namespace StockAnalyzer.Commands
                 });
         }
 
-        public static ICommand CreateMergeMultipleTables(IEdgarConsumer edgarConsumer)
-        {
-            return new RelayCommand(
-                async () =>
-                {
-                    List<string> resultList = edgarConsumer.ResultCollectionEdgar.ToList();
-
-                    Ui ui = new();
-                    ui.Disable(edgarConsumer, PROGRESS_BAR_DELAY);
-
-                    await Task.Run(() =>
-                    {
-                        edgarConsumer.ResultCollectionEdgar = new ObservableCollection<string>(
-                            edgarConsumer.EdgarProvider.MergeMultipleTables(resultList));
-                    });
-
-                    ui.Enable(edgarConsumer);
-                });
-        }
-
         public static ICommand CreateDataFromRepo10Y(IEdgarConsumer edgarConsumer)
         {
             return new RelayCommand(

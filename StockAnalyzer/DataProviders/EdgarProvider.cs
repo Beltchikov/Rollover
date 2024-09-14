@@ -700,44 +700,51 @@ namespace StockAnalyzer.DataProviders
             return resultList;
         }
 
-        public static List<SymbolAndAccountingAttribute> MissingData(List<string> inputListMultipleTables, int yearsBack)
+        public static List<SymbolAndAccountingAttribute> MissingData(List<string> inputList, int yearsBack)
         {
-            List<SymbolAndAccountingAttribute> resultList = new();
+            //List<SymbolAndAccountingAttribute> resultList = new();
 
-            List<List<string>> multipleTables = EdgarProvider.SplitMultipleTables(inputListMultipleTables);
-            // TODO
-            string attribute = AccountingAttributeNameFromMultipleTables(multipleTables);
+            //List<List<string>> multipleTables = EdgarProvider.SplitMultipleTables(inputList);
+            //// TODO
+            //string attribute = AccountingAttributeNameFromMultipleTables(multipleTables);
 
 
-            List<SymbolCurrencyDataError> symbolCurrencyDataErrorList = EdgarProvider.SymbolCurrencyDataErrorListFromMultipleTables(multipleTables);
+            //List<SymbolCurrencyDataError> symbolCurrencyDataErrorList = EdgarProvider.SymbolCurrencyDataErrorListFromMultipleTables(multipleTables);
 
-            int endYear = DateTime.Now.Year;
-            int startYear = endYear - yearsBack;
-            foreach (SymbolCurrencyDataError symbolCurrencyDataError in symbolCurrencyDataErrorList)
-            {
-                List<string>? data = symbolCurrencyDataError.Data;
-                if (data == null) continue;
+            //int endYear = DateTime.Now.Year;
+            //int startYear = endYear - yearsBack;
+            //foreach (SymbolCurrencyDataError symbolCurrencyDataError in symbolCurrencyDataErrorList)
+            //{
+            //    List<string>? data = symbolCurrencyDataError.Data;
+            //    if (data == null) continue;
 
-                string datesLine = data.First();
-                List<string> datesList = datesLine.IntelliSplit().ToList();
-                List<DateOnly> dateOnlyList = datesList.Select(d => d.ToDateOnly()).ToList();
-                List<int> yearsList = dateOnlyList.Select(d => d.Year).ToList();
+            //    string datesLine = data.First();
+            //    List<string> datesList = datesLine.IntelliSplit().ToList();
+            //    List<DateOnly> dateOnlyList = datesList.Select(d => d.ToDateOnly()).ToList();
+            //    List<int> yearsList = dateOnlyList.Select(d => d.Year).ToList();
 
-                for (int year = endYear; year >= startYear; year--)
-                {
-                    if (yearsList.Contains(year))
-                        continue;
+            //    for (int year = endYear; year >= startYear; year--)
+            //    {
+            //        if (yearsList.Contains(year))
+            //            continue;
 
-                    // TD
-                    //SimpleAccountingAttribute attribute = new(attributeName, new List<string>());
-                    SymbolAndAccountingAttribute symbolAndAccountingAttribute
-                        = new SymbolAndAccountingAttribute(symbolCurrencyDataError.Symbol, attribute);
+            //        // TD
+            //        //SimpleAccountingAttribute attribute = new(attributeName, new List<string>());
+            //        SymbolAndAccountingAttribute symbolAndAccountingAttribute
+            //            = new SymbolAndAccountingAttribute(symbolCurrencyDataError.Symbol, attribute);
 
-                    if (resultList.Contains(symbolAndAccountingAttribute)) continue;
-                    resultList.Add(symbolAndAccountingAttribute);
-                }
-            }
+            //        if (resultList.Contains(symbolAndAccountingAttribute)) continue;
+            //        resultList.Add(symbolAndAccountingAttribute);
+            //    }
+            //}
 
+            //// TODO
+
+            //return resultList;
+
+            List < SymbolAndAccountingAttribute > resultList = new();
+
+            FinanceDataTable financeDataTable = new(inputList);
             // TODO
 
             return resultList;
