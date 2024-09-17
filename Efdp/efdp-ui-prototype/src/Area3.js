@@ -1,6 +1,6 @@
 // Area3.js
 import React from 'react';
-import './MainContent.css';
+import './Area3.css';
 
 function Area3() {
   return (

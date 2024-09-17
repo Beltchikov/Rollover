@@ -1,6 +1,6 @@
 // Area2.js
 import React from 'react';
-import './MainContent.css';
+import './Area2.css';
 
 function Area2() {
   return (
