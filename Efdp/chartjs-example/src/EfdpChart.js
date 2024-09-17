@@ -45,9 +45,31 @@ const EfdpChart = () => {
     ]
   };
 
+  // Options for the multi-axis chart
+  const options = {
+    scales: {
+      'y-axis-1': {
+        type: 'linear',
+        position: 'left',
+        beginAtZero: true,
+        ticks: {
+          callback: (value) => `${value} $`, // Custom label formatting (optional)
+        },
+      },
+    //   'y-axis-2': {
+    //     type: 'linear',
+    //     position: 'right',
+    //     beginAtZero: true,
+    //     grid: {
+    //       drawOnChartArea: false, // Optional: Do not draw grid lines on the right axis
+    //     },
+    //  },
+    },
+  };
+
   return (
     <div>
-     <ChartComponent data={data} />
+     <ChartComponent data={data} options={options} />
     </div>
   );
 };

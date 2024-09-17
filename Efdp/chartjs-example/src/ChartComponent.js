@@ -23,30 +23,8 @@ ChartJS.register(
   Legend
 );
 
-const ChartComponent = ({ data }) => {
+const ChartComponent = ({ data, options }) => {
   
-  // Options for the multi-axis chart
-  const options = {
-    scales: {
-      'y-axis-1': {
-        type: 'linear',
-        position: 'left',
-        beginAtZero: true,
-        ticks: {
-          callback: (value) => `${value} $`, // Custom label formatting (optional)
-        },
-      },
-    //   'y-axis-2': {
-    //     type: 'linear',
-    //     position: 'right',
-    //     beginAtZero: true,
-    //     grid: {
-    //       drawOnChartArea: false, // Optional: Do not draw grid lines on the right axis
-    //     },
-    //  },
-    },
-  };
-
   // Render the Line chart with multi-axis
   return <Line data={data} options={options} />;
 };
