@@ -60,7 +60,7 @@ const EfdpChart = () => {
       {/* Checkbox Section */}
       <div style={{ marginRight: '20px', display: 'flex', flexDirection: 'column' }}>
         {data.datasets.map((dataset, index) => (
-          <label key={index}>
+          <label key={index} style={{textAlign:'left'}}>
             <input
               type="checkbox"
               checked={!dataset.hidden} // If dataset is not hidden, checkbox is checked
