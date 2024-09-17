@@ -101,7 +101,7 @@ const ChartComponent = () => {
         position: 'left',
         beginAtZero: true,
         ticks: {
-          callback: (value) => `${value} units`, // Custom label formatting (optional)
+          callback: (value) => `${value} $`, // Custom label formatting (optional)
         },
       },
     //   'y-axis-2': {
