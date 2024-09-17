@@ -1,0 +1,9 @@
+.Banner {
+    background-color: #f0d3a4;
+    height: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  
