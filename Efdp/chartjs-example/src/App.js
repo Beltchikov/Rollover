@@ -1,12 +1,11 @@
 import './App.css';
-import EfdpChart from './EfdpChart'; // Import the new EfdpChart component
+import TestCanvas from './TestCanvas'; // Import the new TestCanvas component
 
 function App() {
   return (
     <div className="App">
       <h1>Chart.js in React</h1>
-       {/* Use the EfdpChart component */}
-       <EfdpChart />
+      <TestCanvas />
     </div>
   );
 }
