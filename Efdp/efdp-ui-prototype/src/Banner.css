@@ -7,3 +7,7 @@
     text-align: center;
   }
   
+  .BannerImage {
+    max-width: 100%;
+    height: auto;
+  }
