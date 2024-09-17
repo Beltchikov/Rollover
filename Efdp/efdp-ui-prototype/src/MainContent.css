@@ -25,13 +25,7 @@
     margin-bottom: 10px;
   }
   
-  .Area2Section {
-    flex: 1;
-    background-color: #d1e7d1;
-    margin-right: 10px;
-  }
-  
-  .Area3 {
+   .Area3 {
     height: 20%;
     background-color: #d1e7d1;
     padding: 10px;
