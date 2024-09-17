@@ -1,11 +1,12 @@
 import './App.css';
-import ChartComponent from './ChartComponent';
+import EfdpChart from './EfdpChart'; // Import the new EfdpChart component
 
 function App() {
   return (
     <div className="App">
       <h1>Chart.js in React</h1>
-      <ChartComponent />
+       {/* Use the EfdpChart component */}
+       <EfdpChart />
     </div>
   );
 }
