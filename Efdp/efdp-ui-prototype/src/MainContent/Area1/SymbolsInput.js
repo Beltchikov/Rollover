@@ -9,8 +9,7 @@ function SymbolsInput() {
     event.preventDefault();
     const text = event.dataTransfer.getData('text/plain');
     if (text) {
-      setInputText(text);
-      alert(text); // Show the input in an alert box
+      setInputText(text); // Replace the content with dropped text
     }
   };
 
@@ -18,13 +17,22 @@ function SymbolsInput() {
     event.preventDefault();
   };
 
+  const handlePaste = (event) => {
+    const pastedText = event.clipboardData.getData('text');
+    if (pastedText) {
+      setInputText(pastedText); // Replace the content with pasted text
+    }
+  };
+
   return (
     <div
       className="SymbolsInput"
       onDrop={handleDrop}
       onDragOver={handleDragOver}
+      contentEditable={false} // Disable text input but keep it editable via drag and paste
+      onPaste={handlePaste}
     >
-      Drag and drop a multiline string here
+      {inputText ? inputText : "Drag and drop or paste a multiline string here"}
     </div>
   );
 }
