@@ -1,9 +1,9 @@
 // MainContent.js
 import React from 'react';
 import './MainContent.css';
-import Area1 from './Area1';
-import Area2 from './Area2';
-import Area3 from './Area3';
+import Area1 from '../Area1';
+import Area2 from '../Area2';
+import Area3 from '../Area3';
 
 function MainContent() {
   return (

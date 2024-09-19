@@ -3,7 +3,7 @@ import React from 'react';
 import Banner from './Banner';
 import Menu from './Menu';
 import MenuSidebar from './MenuSidebar';
-import MainContent from './MainContent';
+import MainContent from './MainContent/MainContent';
 import Footer from './Footer';
 import './App.css';
 
