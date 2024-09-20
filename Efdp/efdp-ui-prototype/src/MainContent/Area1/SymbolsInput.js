@@ -32,7 +32,7 @@ function SymbolsInput() {
       contentEditable={false} // Disable text input but keep it editable via drag and paste
       onPaste={handlePaste}
     >
-      {inputText ? inputText : "Drag and drop or paste a multiline string here"}
+      {inputText ? inputText : "Drag and drop or paste your stock symbols below - one symbol per line."}
     </div>
   );
 }
