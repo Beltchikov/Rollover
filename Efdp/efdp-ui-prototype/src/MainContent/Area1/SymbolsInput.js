@@ -25,14 +25,19 @@ function SymbolsInput() {
   };
 
   return (
-    <div
-      className="SymbolsInput"
-      onDrop={handleDrop}
-      onDragOver={handleDragOver}
-      contentEditable={false} // Disable text input but keep it editable via drag and paste
-      onPaste={handlePaste}
-    >
-      {inputText ? inputText : "Drag and drop or paste your stock symbols below - one symbol per line."}
+    <div className="SymbolsInputContainer">
+      <label className="SymbolsInputLabel">
+        Drag and drop or paste your stock symbols below - one symbol per line:
+      </label>
+      <div
+        className="SymbolsInput"
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        contentEditable={false} // Disable text input but keep it editable via drag and paste
+        onPaste={handlePaste}
+      >
+        {inputText ? inputText : ""}
+      </div>
     </div>
   );
 }
