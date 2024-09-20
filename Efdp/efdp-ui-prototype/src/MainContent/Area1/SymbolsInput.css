@@ -28,5 +28,5 @@
   white-space: pre-wrap; /* Preserves multiline text formatting */
   overflow-y: auto; /* Allows scrolling for long text */
   padding: 10px; /* Adds padding to make it look better */
-  text-align: center;
+  text-align: left;
 }
