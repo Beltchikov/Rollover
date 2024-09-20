@@ -18,8 +18,8 @@
   height: 150px;
   border: 2px dashed #4caf50;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: left;
+  align-items: top;
   color: #4caf50;
   font-size: 16px;
   background-color: #f9f9f9;

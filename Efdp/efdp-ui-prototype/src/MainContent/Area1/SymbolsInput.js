@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import './SymbolsInput.css';
 
 function SymbolsInput() {
-  const [inputText, setInputText] = useState('');
+  const [inputText, setInputText] = useState('NVDA\nMSFT\nGOOG');
 
   const handleDrop = (event) => {
     event.preventDefault();
