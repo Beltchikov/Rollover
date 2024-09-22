@@ -1,6 +1,7 @@
 import React from 'react';
 import Comp1 from './Comp1'
 import Comp2 from './Comp2'
+import Comp3 from './Comp3'
 
 function Area2() {
   const area2Style = {
@@ -20,6 +21,8 @@ function Area2() {
       <Comp2/>
       <span style={{width:'10px'}}/>
       <Comp2/>
+      <span style={{width:'10px'}}/>
+      <Comp3/>
     </div>
   );
 }
