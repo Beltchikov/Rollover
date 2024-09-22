@@ -16,7 +16,9 @@ function Area2() {
   return (
     <div style={area2Style}>
       <Comp1/>
+      <span style={{width:'10px'}}/>
       <Comp2/>
+      <span style={{width:'10px'}}/>
       <Comp2/>
     </div>
   );

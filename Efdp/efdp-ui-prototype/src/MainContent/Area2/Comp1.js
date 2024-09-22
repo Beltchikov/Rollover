@@ -5,8 +5,7 @@ function Comp1() {
     flexGrow:1,
     flexBasis: '10%',
     backgroundColor: 'gainsboro',
-    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
-    marginRight: '10px'
+    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)'
   };
 
   return (
