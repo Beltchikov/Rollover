@@ -1,11 +1,19 @@
-// Area2.js
 import React from 'react';
-import './Area2.css';
 
 function Area2() {
+  const area2Style = {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    height: '40%',
+    backgroundColor: '#d1e7d1',
+    padding: '10px',
+    marginBottom: '10px',
+  };
+
   return (
-    <div className="Area2">
-      <div className="Area2">Area 2</div>
+    <div style={area2Style}>
+      <div>Area 2</div>
     </div>
   );
 }
