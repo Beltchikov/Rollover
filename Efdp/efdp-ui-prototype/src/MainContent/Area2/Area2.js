@@ -1,10 +1,12 @@
 import React from 'react';
+import Comp1 from './Comp1'
+import Comp2 from './Comp2'
 
 function Area2() {
   const area2Style = {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     height: '40%',
     backgroundColor: '#d1e7d1',
     padding: '10px',
@@ -13,7 +15,8 @@ function Area2() {
 
   return (
     <div style={area2Style}>
-      <div>Area 2</div>
+      <Comp1/>
+      <Comp2/>
     </div>
   );
 }
