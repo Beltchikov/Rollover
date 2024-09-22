@@ -17,6 +17,7 @@ function Area2() {
     <div style={area2Style}>
       <Comp1/>
       <Comp2/>
+      <Comp2/>
     </div>
   );
 }
