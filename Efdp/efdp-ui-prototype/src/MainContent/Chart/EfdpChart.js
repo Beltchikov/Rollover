@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import './EfdpChart.css'; // Import the extracted CSS
-import ChartComponent from './LineChartComponent'; // Import the existing ChartComponent
+import LineChartComponent from './LineChartComponent'; 
+import BarChartComponent from './BarChartComponent';
 
-const EfdpChart = () => {
+const EfdpChart = (type ) => {
     // State for data
     const [data, setData] = useState({
         labels: [
@@ -78,7 +79,8 @@ const EfdpChart = () => {
 
             {/* Chart Section */}
             <div className="ChartSection">
-                <ChartComponent data={data} options={options} />
+                {/* <LineChartComponent data={data} options={options} /> */}
+                <BarChartComponent data={data} options={options} />
             </div>
         </div>
     );
