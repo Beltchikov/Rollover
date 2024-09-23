@@ -3,7 +3,7 @@ import './EfdpChart.css'; // Import the extracted CSS
 import ChartComponent from './ChartComponent'; // Import the existing ChartComponent
 
 const EfdpChart = () => {
-    // Move the data object here
+    // State for data
     const [data, setData] = useState({
         labels: [
             '2009-09-26', '2009-12-31', '2010-06-30', '2010-09-25', '2010-12-31',
@@ -28,6 +28,23 @@ const EfdpChart = () => {
             },
             // Continue this process for MSFT, AAPL, AMZN, META, TSLA
         ]
+    });
+
+    // State for chart options
+    const [options, setOptions] = useState({
+        responsive: true,
+        scales: {
+            yAxes: [
+                {
+                    id: 'y-axis-1',
+                    type: 'linear',
+                    position: 'left',
+                    ticks: {
+                        beginAtZero: true,
+                    },
+                },
+            ],
+        },
     });
 
     // Handle checkbox change to show/hide datasets
@@ -59,7 +76,7 @@ const EfdpChart = () => {
 
             {/* Chart Section */}
             <div className="ChartSection">
-                <ChartComponent data={data} />
+                <ChartComponent data={data} options={options} />
             </div>
         </div>
     );
