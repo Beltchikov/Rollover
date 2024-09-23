@@ -17,7 +17,7 @@ function Area1() {
     <div style={area1Style}>
       <SymbolsInput />
       <span style={{ width: '10px' }} />
-      <EfdpChart />
+      <EfdpChart type={'bar'} />
       <span style={{ width: '10px' }} />
       <EfdpChart />
       <span style={{ width: '10px' }} />

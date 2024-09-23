@@ -3,7 +3,7 @@ import './EfdpChart.css'; // Import the extracted CSS
 import LineChartComponent from './LineChartComponent'; 
 import BarChartComponent from './BarChartComponent';
 
-const EfdpChart = (type ) => {
+const EfdpChart = ({type} ) => {
     // State for data
     const [data, setData] = useState({
         labels: [
@@ -79,8 +79,11 @@ const EfdpChart = (type ) => {
 
             {/* Chart Section */}
             <div className="ChartSection">
-                {/* <LineChartComponent data={data} options={options} /> */}
-                <BarChartComponent data={data} options={options} />
+                {type === 'bar' ? (
+                    <BarChartComponent data={data} options={options} />
+                ) : (
+                    <LineChartComponent data={data} options={options} />
+                )}
             </div>
         </div>
     );
