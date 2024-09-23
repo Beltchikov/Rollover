@@ -1,6 +1,6 @@
 import React from 'react';
 import SymbolsInput from './SymbolsInput';
-import EfdpChart from '../Chart/EfdpChart'; 
+import EfdpChart from '../Chart/EfdpChart';
 import Comp3 from '../Area2/Comp3'
 
 function Area1() {
@@ -16,9 +16,12 @@ function Area1() {
   return (
     <div style={area1Style}>
       <SymbolsInput />
-      <EfdpChart style={{flexBasis:'35%'}} />
+      <span style={{ width: '10px' }} />
       <EfdpChart />
-      <Comp3/>
+      <span style={{ width: '10px' }} />
+      <EfdpChart />
+      <span style={{ width: '10px' }} />
+      <Comp3 />
     </div>
   );
 }
