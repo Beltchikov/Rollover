@@ -51,6 +51,7 @@ function Comp1() {
       <label style={SymbolsInputLabel}>
         Drag and drop or paste stock symbols below:
       </label>
+      <div style={{height:'10px'}}></div>
       <div
         style={SymbolsInput}
         onDrop={handleDrop}
