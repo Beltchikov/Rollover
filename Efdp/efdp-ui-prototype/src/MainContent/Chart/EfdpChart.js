@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './EfdpChart.css'; // Import the extracted CSS
-import ChartComponent from './ChartComponent'; // Import the existing ChartComponent
+import ChartComponent from './LineChartComponent'; // Import the existing ChartComponent
 
 const EfdpChart = () => {
     // State for data

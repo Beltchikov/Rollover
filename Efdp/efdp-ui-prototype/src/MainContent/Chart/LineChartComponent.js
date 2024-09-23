@@ -1,4 +1,4 @@
-// src/ChartComponent.js
+// src/LineChartComponent.js
 import React from 'react';
 import { Line } from 'react-chartjs-2';
 import {
@@ -23,10 +23,10 @@ ChartJS.register(
   Legend
 );
 
-const ChartComponent = ({ data, options }) => {
+const LineChartComponent = ({ data, options }) => {
   
   // Render the Line chart with multi-axis
   return <Line data={data} options={options} />;
 };
 
-export default ChartComponent;
+export default LineChartComponent;
