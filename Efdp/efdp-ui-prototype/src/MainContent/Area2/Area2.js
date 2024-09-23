@@ -1,5 +1,5 @@
 import React from 'react';
-import Comp1 from './Comp1'
+import Comp1 from '../Area1/SymbolsInput'
 import Comp2 from './Comp2'
 import Comp3 from './Comp3'
 

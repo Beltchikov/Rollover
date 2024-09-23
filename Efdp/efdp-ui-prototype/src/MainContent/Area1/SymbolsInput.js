@@ -1,8 +1,30 @@
-// SymbolsInput.js
 import React, { useState } from 'react';
-import './SymbolsInput.css';
 
 function SymbolsInput() {
+  const SymbolsInputStyle = {
+    flexGrow: 1,
+    flexBasis: '10%',
+    backgroundColor: 'gainsboro',
+    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
+    display:'flex',
+    flexDirection:'column'
+  };
+
+  const SymbolsInputLabel = {
+    display: 'block',
+    textAlign: 'left',
+    fontSize: '12px'
+  };
+
+  const SymbolsInput = {
+    textAlign: 'left',
+    fontSize: '12px',
+    backgroundColor: 'white',
+    height:'100%',
+    border: '2px dashed black',
+    whiteSpace: 'pre-wrap'
+  };
+
   const [inputText, setInputText] = useState('NVDA\nMSFT\nGOOG');
 
   const handleDrop = (event) => {
@@ -25,15 +47,16 @@ function SymbolsInput() {
   };
 
   return (
-    <div className="SymbolsInputContainer">
-      <label className="SymbolsInputLabel">
-        Drag and drop or paste your stock symbols below - one symbol per line:
+    <div style={SymbolsInputStyle}>
+      <label style={SymbolsInputLabel}>
+        Drag and drop or paste stock symbols below:
       </label>
+      <div style={{height:'10px'}}></div>
       <div
-        className="SymbolsInput"
+        style={SymbolsInput}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
-        contentEditable={false} // Disable text input but keep it editable via drag and paste
+        // contentEditable={false} 
         onPaste={handlePaste}
       >
         {inputText ? inputText : ""}
