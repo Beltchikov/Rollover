@@ -17,6 +17,7 @@ const EfdpChart = () => {
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 yAxisID: 'y-axis-1',
                 hidden: false,
+                borderWidth: 1, // Set line width to 1px
             },
             {
                 label: 'GOOG',
@@ -25,6 +26,7 @@ const EfdpChart = () => {
                 backgroundColor: 'rgba(54, 162, 235, 0.2)',
                 yAxisID: 'y-axis-1',
                 hidden: false,
+                borderWidth: 1, // Set line width to 1px
             },
             // Continue this process for MSFT, AAPL, AMZN, META, TSLA
         ]
