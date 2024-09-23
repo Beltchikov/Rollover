@@ -6,7 +6,6 @@ import Comp3 from './Comp3'
 function Area2() {
   const area2Style = {
     display: 'flex',
-    flexDirection: 'row',
     justifyContent: 'flex-start',
     height: '40%',
     backgroundColor: '#d1e7d1',
