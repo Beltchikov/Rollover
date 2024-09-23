@@ -1,7 +1,7 @@
 import React from 'react';
 import SymbolsInput from './SymbolsInput';
 import EfdpChart from '../Chart/EfdpChart';
-import Comp3 from '../Area2/Comp3'
+import AdTeaser from '../AdTeaser';
 
 function Area1() {
   const area1Style = {
@@ -21,7 +21,7 @@ function Area1() {
       <span style={{ width: '10px' }} />
       <EfdpChart />
       <span style={{ width: '10px' }} />
-      <Comp3 />
+      <AdTeaser />
     </div>
   );
 }
