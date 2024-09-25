@@ -3,7 +3,7 @@ import './EfdpChart.css';
 import LineChartComponent from './LineChartComponent'; 
 import BarChartComponent from './BarChartComponent';
 
-const EfdpChart = ({ type }) => {
+const EfdpChart = ({ type, title }) => {
     const [data, setData] = useState({
         labels: [
             '2009-09-26', '2009-12-31', '2010-06-30', '2010-09-25', '2010-12-31',
@@ -28,7 +28,6 @@ const EfdpChart = ({ type }) => {
                 hidden: false,
                 borderWidth: 1,
             },
-            // Continue for MSFT, AAPL, AMZN, META, TSLA
         ]
     });
 
@@ -59,7 +58,7 @@ const EfdpChart = ({ type }) => {
         <div className="EfdpChartContainer">
             {/* Title Section */}
             <div className="TitleSection">
-                <label>Title</label>
+                <label>{title}</label> {/* Dynamically renders the title prop */}
             </div>
 
             {/* Content Section */}

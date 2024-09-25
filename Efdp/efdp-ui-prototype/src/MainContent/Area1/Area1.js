@@ -17,9 +17,9 @@ function Area1() {
     <div style={area1Style}>
       <SymbolsInput />
       <span style={{ width: '10px' }} />
-      <EfdpChart type={'bar'} />
+      <EfdpChart type={'bar'} title='Annual Growth of FCF' />
       <span style={{ width: '10px' }} />
-      <EfdpChart />
+      <EfdpChart title='Free Cash Flow' />
       <span style={{ width: '10px' }} />
       <AdTeaser />
     </div>
