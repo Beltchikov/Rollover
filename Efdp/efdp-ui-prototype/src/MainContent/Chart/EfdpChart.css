@@ -17,7 +17,7 @@
 
 .ContentSection {
   display: grid;
-  grid-template-columns: 12% 88%; /* Two columns: checkbox section and chart section */
+  grid-template-columns: auto 1fr; /* Two columns: checkbox section and chart section */
   padding: 10px;
   gap: 20px; /* Space between columns */
 }
@@ -27,7 +27,9 @@
 }
 
 .CheckboxSection label {
-  text-align: left;
+  display: flex;       
+  align-items: center;   
+  gap: 1px;               
 }
 
 .ChartSection {
