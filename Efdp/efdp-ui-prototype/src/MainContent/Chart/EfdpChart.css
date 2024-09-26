@@ -1,4 +1,5 @@
 .EfdpChartContainer {
+  flex:1;
   display: grid;
   grid-template-rows: auto 1fr; /* One row for title, second row for content */
   grid-template-columns: 1fr;   /* Single column layout */
