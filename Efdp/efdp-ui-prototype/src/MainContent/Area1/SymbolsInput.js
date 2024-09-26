@@ -2,12 +2,10 @@ import React, { useState } from 'react';
 
 function SymbolsInput() {
   const SymbolsInputStyle = {
-    flexGrow: 1,
-    flexBasis: '10%',
     backgroundColor: 'gainsboro',
     boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
-    display:'flex',
-    flexDirection:'column'
+    display: 'flex',
+    flexDirection: 'column'
   };
 
   const SymbolsInputLabel = {
@@ -20,7 +18,7 @@ function SymbolsInput() {
     textAlign: 'left',
     fontSize: '12px',
     backgroundColor: 'white',
-    height:'100%',
+    flex: 1,
     border: '2px dashed black',
     whiteSpace: 'pre-wrap'
   };
@@ -51,7 +49,6 @@ function SymbolsInput() {
       <label style={SymbolsInputLabel}>
         Drag and drop or paste stock symbols below:
       </label>
-      <div style={{height:'10px'}}></div>
       <div
         style={SymbolsInput}
         onDrop={handleDrop}
