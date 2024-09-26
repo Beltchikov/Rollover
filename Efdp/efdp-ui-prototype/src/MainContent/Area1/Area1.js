@@ -5,9 +5,9 @@ import AdTeaser from '../AdTeaser';
 
 function Area1() {
   const area1Style = {
+    flexBasis:'34%',
     display: 'flex',
     justifyContent: 'flex-start',
-    height: '40%',
     backgroundColor: '#d1e7d1',
     padding: '10px',
     marginBottom: '10px',

@@ -3,9 +3,9 @@ import EfdpChart from '../Chart/EfdpChart';
 
 function Area2() {
   const area2Style = {
+    flexBasis:'33%',
     display: 'flex',
     justifyContent: 'flex-start',
-    height: '40%',
     backgroundColor: '#d1e7d1',
     padding: '10px',
     marginBottom: '10px',
