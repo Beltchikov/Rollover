@@ -2,7 +2,7 @@
 import React from 'react';
 import Banner from './Banner';
 import Menu from './Menu';
-import MenuSidebar from './MenuSidebar';
+// import MenuSidebar from './MenuSidebar';
 import MainContent from './MainContent/MainContent';
 import Footer from './Footer';
 import './App.css';
@@ -16,10 +16,6 @@ function App() {
         {/* <MenuSidebar /> */}
         <MainContent />
       </div>
-          {/* <div className="MainLayout">
-          <MenuSidebar />
-              <MainContent />
-      </div> */}
       <Footer />
     </div>
   );
