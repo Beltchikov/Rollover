@@ -1,8 +1,8 @@
-// Menu.js
+// Info.js
 import React from 'react';
 
-function Menu() {
-  const menuStyle = {
+function Info() {
+  const InfoStyle = {
     backgroundColor: '#14141328',
     height: '2%',
     display: 'flex',
@@ -11,7 +11,7 @@ function Menu() {
     textAlign: 'center',
   };
 
-  return <div style={menuStyle}>&nbsp;</div>;
+  return <div style={InfoStyle}>&nbsp;</div>;
 }
 
-export default Menu;
+export default Info;
