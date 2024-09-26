@@ -13,7 +13,6 @@ function App() {
       <Banner />
       <Menu />
       <div className="MainLayout">
-        {/* <MenuSidebar /> */}
         <MainContent />
       </div>
       <Footer />

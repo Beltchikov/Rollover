@@ -1,13 +1,30 @@
 // Banner.js
 import React from 'react';
-import './Banner.css';
 
 function Banner() {
-  // return <div className="Banner">Essential Finance Data Portal</div>;
-  return <div className="Banner">
-    {/* <image src="../public/EfdpTitle.png"></image> */}
-    <img src={`${process.env.PUBLIC_URL}/EfdpTitle.png`} alt="Essential Finance Data Portal" className="BannerImage" />
-    </div>;
+  const bannerStyle = {
+    backgroundColor: '#f0d3a4',
+    height: '8%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+  };
+
+  const bannerImageStyle = {
+    maxWidth: '100%',
+    height: 'auto',
+  };
+
+  return (
+    <div style={bannerStyle}>
+      <img
+        src={`${process.env.PUBLIC_URL}/EfdpTitle.png`}
+        alt="Essential Finance Data Portal"
+        style={bannerImageStyle}
+      />
+    </div>
+  );
 }
 
 export default Banner;
