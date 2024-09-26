@@ -18,6 +18,8 @@ function Area3() {
       <AdTeaser />
       <span style={{ width: '10px' }} />
       <EfdpChart title='Long-Term Debt to Earnings Ratio' />
+      <span style={{ width: '10px' }} />
+      <AdTeaser />
     </div>
   );
 }
