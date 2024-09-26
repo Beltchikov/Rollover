@@ -1,6 +1,5 @@
 import React from 'react';
-import Comp1 from '../Area1/SymbolsInput'
-import Comp2 from './Comp2'
+import EfdpChart from '../Chart/EfdpChart';
 import Comp3 from './Comp3'
 
 function Area2() {
@@ -15,11 +14,11 @@ function Area2() {
 
   return (
     <div style={area2Style}>
-      <Comp1/>
+      <EfdpChart title='FCF-CapEx-Ratio' />
       <span style={{width:'10px'}}/>
-      <Comp2/>
+      <EfdpChart title='Retained Earnings' />
       <span style={{width:'10px'}}/>
-      <Comp2/>
+      <EfdpChart title='Gross Profit Margin' />
       <span style={{width:'10px'}}/>
       <Comp3/>
     </div>
