@@ -3,7 +3,6 @@ import React from 'react';
 function AdTeaser() {
 
   const AdTeaser = {
-    flexBasis: '20%',
     backgroundColor: 'white',
     whiteSpace: 'pre-wrap'
   };
@@ -11,7 +10,6 @@ function AdTeaser() {
   const AdTeaserLabel = {
     display: 'block',
     textAlign: 'center',
-    // verticalAlign:'middle',
     fontSize: '20px'
   };
 
