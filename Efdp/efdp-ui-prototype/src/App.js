@@ -13,7 +13,7 @@ function App() {
       <Banner />
       <Menu />
       <div className="MainLayout">
-        <MenuSidebar />
+        {/* <MenuSidebar /> */}
         <MainContent />
       </div>
           {/* <div className="MainLayout">
