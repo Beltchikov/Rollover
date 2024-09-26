@@ -5,7 +5,6 @@ function AdTeaser() {
   const AdTeaser = {
     flexBasis: '20%',
     backgroundColor: 'white',
-    height: '100%',
     whiteSpace: 'pre-wrap'
   };
 
