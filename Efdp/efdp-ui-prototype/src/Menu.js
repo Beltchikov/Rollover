@@ -11,7 +11,7 @@ function Menu() {
     textAlign: 'center',
   };
 
-  return <div style={menuStyle}></div>;
+  return <div style={menuStyle}>&nbsp;</div>;
 }
 
 export default Menu;
