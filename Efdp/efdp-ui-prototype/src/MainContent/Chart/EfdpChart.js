@@ -33,6 +33,7 @@ const EfdpChart = ({ type, title }) => {
 
     const [options, setOptions] = useState({
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
             yAxes: [
                 {
