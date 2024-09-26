@@ -1,9 +1,17 @@
 // Menu.js
 import React from 'react';
-import './Menu.css';
 
 function Menu() {
-  return <div className="Menu"></div>;
+  const menuStyle = {
+    backgroundColor: '#14141328',
+    height: '2%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+  };
+
+  return <div style={menuStyle}></div>;
 }
 
 export default Menu;
