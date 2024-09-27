@@ -1,7 +1,7 @@
 import React from 'react';
 import EfdpChart from './Chart/EfdpChart';
 
-const dataForFCF = {
+const dataFcfCapExRatio = {
   labels: [
       '2009-09-26', '2009-12-31', '2010-06-30', '2010-09-25', '2010-12-31',
       // other labels...
@@ -28,7 +28,7 @@ const dataForFCF = {
   ]
 };
 
-const dataForRetainedEarnings = {
+const dataRetainedEarnings = {
   labels: [
       '2009-09-26', '2009-12-31', '2010-06-30', '2010-09-25', '2010-12-31',
       // other labels...
@@ -55,7 +55,7 @@ const dataForRetainedEarnings = {
   ]
 };
 
-const dataForGPM = {
+const dataGpm = {
   labels: [
       '2009-09-26', '2009-12-31', '2010-06-30', '2010-09-25', '2010-12-31',
       // other labels...
@@ -94,11 +94,11 @@ function Area2() {
 
   return (
     <div style={area2Style}>
-      <EfdpChart title='FCF-CapEx-Ratio' data={dataForFCF} />
+      <EfdpChart title='FCF-CapEx-Ratio' data={dataFcfCapExRatio} />
       <span style={{ width: '10px' }} />
-      <EfdpChart title='Retained Earnings' data={dataForRetainedEarnings} />
+      <EfdpChart title='Retained Earnings' data={dataRetainedEarnings} />
       <span style={{ width: '10px' }} />
-      <EfdpChart title='Gross Profit Margin' data={dataForGPM} />
+      <EfdpChart title='Gross Profit Margin' data={dataGpm} />
     </div>
   );
 }

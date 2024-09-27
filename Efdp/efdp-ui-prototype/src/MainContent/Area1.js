@@ -3,7 +3,7 @@ import SymbolsInput from './SymbolsInput';
 import EfdpChart from './Chart/EfdpChart';
 import AdTeaser from './AdTeaser';
 
-const dataForChart1 = {
+const dataCagrFcf = {
   labels: [
       '2009-09-26', '2009-12-31', '2010-06-30', '2010-09-25', '2010-12-31',
       // other labels...
@@ -30,7 +30,7 @@ const dataForChart1 = {
   ]
 };
 
-const dataForChart2 = {
+const dataFcf = {
   labels: [
       '2009-09-26', '2009-12-31', '2010-06-30', '2010-09-25', '2010-12-31',
       // other labels...
@@ -78,8 +78,8 @@ function Area1() {
   return (
     <div style={area1Style}>
       <SymbolsInput />
-      <EfdpChart type={'bar'} title='Annual Growth of FCF' data={dataForChart1} style={chartStyle} />
-      <EfdpChart title='Free Cash Flow' data={dataForChart2} style={chartStyle} />
+      <EfdpChart type={'bar'} title='Annual Growth of FCF' data={dataCagrFcf} style={chartStyle} />
+      <EfdpChart title='Free Cash Flow' data={dataFcf} style={chartStyle} />
       <AdTeaser style={adTeaserStyle} />
     </div>
   );

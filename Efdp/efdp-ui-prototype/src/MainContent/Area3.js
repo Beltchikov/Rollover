@@ -2,7 +2,7 @@ import React from 'react';
 import EfdpChart from './Chart/EfdpChart';
 import AdTeaser from './AdTeaser';
 
-const dataForDebtToEarnings = {
+const dataLongTermDebtToEarnings = {
   labels: [
       '2009-09-26', '2009-12-31', '2010-06-30', '2010-09-25', '2010-12-31',
       // other labels...
@@ -43,7 +43,7 @@ function Area3() {
     <div style={area3Style}>
       <AdTeaser />
       <span style={{ width: '10px' }} />
-      <EfdpChart title='Long-Term Debt to Earnings Ratio' data={dataForDebtToEarnings} />
+      <EfdpChart title='Long-Term Debt to Earnings Ratio' data={dataLongTermDebtToEarnings} />
       <span style={{ width: '10px' }} />
       <AdTeaser />
     </div>
