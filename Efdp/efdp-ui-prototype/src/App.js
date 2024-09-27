@@ -1,5 +1,7 @@
 // App.js
 import React from 'react';
+import { Provider } from 'react-redux';
+import { store } from './store';  // Import the store
 import Banner from './Banner';
 import MainContent from './MainContent/MainContent';
 import Footer from './Footer';
@@ -8,14 +10,16 @@ import Info from './Info';
 
 function App() {
   return (
-    <div className="App">
-      <Banner />
-      <Info />
-      <div className="MainLayout">
-        <MainContent />
+    <Provider store={store}>
+      <div className="App">
+        <Banner />
+        <Info />
+        <div className="MainLayout">
+          <MainContent />
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </Provider>
   );
 }
 

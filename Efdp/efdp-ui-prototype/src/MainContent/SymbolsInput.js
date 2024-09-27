@@ -1,18 +1,23 @@
-import React, { useState, useEffect, useRef } from 'react';
+// SymbolsInput.js
+import React, { useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateSymbolsInput } from '../store';
 
 function SymbolsInput() {
+  const dispatch = useDispatch();
+  const inputText = useSelector((state) => state.global.symbolsInput);  // Access global state
+
   const SymbolsInputStyle = {
     backgroundColor: 'gainsboro',
-    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
     display: 'flex',
     flexDirection: 'column',
-    width: 'auto' // Initially auto width
+    width: 'auto',
   };
 
   const SymbolsInputLabel = {
     display: 'block',
     textAlign: 'left',
-    fontSize: '12px'
+    fontSize: '12px',
   };
 
   const SymbolsInputDiv = {
@@ -21,18 +26,17 @@ function SymbolsInput() {
     backgroundColor: 'white',
     flex: 1,
     border: '2px dashed black',
-    whiteSpace: 'pre-wrap'
+    whiteSpace: 'pre-wrap',
   };
 
-  const [inputText, setInputText] = useState('NVDA\nMSFT\nGOOG');
-  const [inputWidth, setInputWidth] = useState('auto');
   const hiddenDivRef = useRef(null);
+  const [inputWidth, setInputWidth] = React.useState('auto');
 
   const handleDrop = (event) => {
     event.preventDefault();
     const text = event.dataTransfer.getData('text/plain');
     if (text) {
-      setInputText(text); // Replace the content with dropped text
+      dispatch(updateSymbolsInput(text));
     }
   };
 
@@ -43,19 +47,17 @@ function SymbolsInput() {
   const handlePaste = (event) => {
     const pastedText = event.clipboardData.getData('text');
     if (pastedText) {
-      setInputText(pastedText); // Replace the content with pasted text
+      dispatch(updateSymbolsInput(pastedText));
     }
   };
 
-  // Measure the longest line and set the width dynamically
   useEffect(() => {
     if (hiddenDivRef.current) {
       const width = hiddenDivRef.current.offsetWidth;
-      const adjustedWidth = Math.max(width + 10, 150); 
+      const adjustedWidth = Math.max(width + 10, 150);
       setInputWidth(`${adjustedWidth}px`);
     }
   }, [inputText]);
-  
 
   return (
     <div style={{ ...SymbolsInputStyle, width: inputWidth }}>
@@ -68,9 +70,8 @@ function SymbolsInput() {
         onDragOver={handleDragOver}
         onPaste={handlePaste}
       >
-        {inputText ? inputText : ""}
+        {inputText}
       </div>
-      {/* Hidden div to calculate the width of the longest line */}
       <div
         ref={hiddenDivRef}
         style={{
@@ -78,7 +79,6 @@ function SymbolsInput() {
           visibility: 'hidden',
           whiteSpace: 'pre-wrap',
           fontSize: '12px',
-          fontFamily: 'inherit'
         }}
       >
         {inputText}
