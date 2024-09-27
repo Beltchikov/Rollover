@@ -1,5 +1,5 @@
 import React from 'react';
-import EfdpChart from '../Chart/EfdpChart';
+import EfdpChart from './Chart/EfdpChart';
 
 function Area2() {
   const area2Style = {
