@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import EfdpChart from './Chart/EfdpChart';
 import { fetchRetainedEarnings } from '../store';
+import AdTeaser from './AdTeaser';
 
 function Area2() {
   const dispatch = useDispatch();
@@ -36,7 +37,10 @@ function Area2() {
       {dataRetainedEarnings ? (
         <EfdpChart title="Retained Earnings" data={dataRetainedEarnings} style={chartStyle}/>
       ) : (
-        <div style={area2Style}>Loading...</div>
+        <div>
+          <div style={area2Style}>Loading...</div>
+          <AdTeaser />  
+        </div>
       )}
       <EfdpChart title="Gross Profit Margin" data={dataGpm} style={chartStyle}/>
     </div>
