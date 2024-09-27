@@ -1,7 +1,7 @@
 import React from 'react';
-import SymbolsInput from '../SymbolsInput';
-import EfdpChart from '../Chart/EfdpChart';
-import AdTeaser from '../AdTeaser';
+import SymbolsInput from './SymbolsInput';
+import EfdpChart from './Chart/EfdpChart';
+import AdTeaser from './AdTeaser';
 
 function Area1() {
   const area1Style = {
