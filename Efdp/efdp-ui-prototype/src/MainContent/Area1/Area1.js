@@ -1,5 +1,5 @@
 import React from 'react';
-import SymbolsInput from './SymbolsInput';
+import SymbolsInput from '../SymbolsInput';
 import EfdpChart from '../Chart/EfdpChart';
 import AdTeaser from '../AdTeaser';
 
