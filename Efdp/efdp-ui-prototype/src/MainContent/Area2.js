@@ -25,15 +25,20 @@ function Area2() {
     gap: '10px'
   };
 
+  const chartStyle = {
+    flex: '1 1 30%',  // Each chart takes up 30% of the width
+    margin: '0 10px',  // Adds some spacing between charts
+  };
+
   return (
     <div style={area2Style}>
-      <EfdpChart title="FCF-CapEx-Ratio" data={dataFcfCapExRatio} />
+      <EfdpChart title="FCF-CapEx-Ratio" data={dataFcfCapExRatio} style={chartStyle}/>
       {dataRetainedEarnings ? (
-        <EfdpChart title="Retained Earnings" data={dataRetainedEarnings} />
+        <EfdpChart title="Retained Earnings" data={dataRetainedEarnings} style={chartStyle}/>
       ) : (
         <div style={area2Style}>Loading...</div>
       )}
-      <EfdpChart title="Gross Profit Margin" data={dataGpm} />
+      <EfdpChart title="Gross Profit Margin" data={dataGpm} style={chartStyle}/>
     </div>
   );
 }
