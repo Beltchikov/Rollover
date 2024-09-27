@@ -37,8 +37,8 @@ function Area2() {
       {dataRetainedEarnings ? (
         <EfdpChart title="Retained Earnings" data={dataRetainedEarnings} style={chartStyle}/>
       ) : (
-        <div>
-          <div style={area2Style}>Loading...</div>
+        <div style={area2Style}>
+          <div>Loading...</div>
           <AdTeaser />  
         </div>
       )}
