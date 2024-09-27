@@ -1,7 +1,7 @@
 // Area3.js
 import React from 'react';
-import EfdpChart from '../Chart/EfdpChart';
-import AdTeaser from '../AdTeaser';
+import EfdpChart from './Chart/EfdpChart';
+import AdTeaser from './AdTeaser';
 
 function Area3() {
   const area3Style = {

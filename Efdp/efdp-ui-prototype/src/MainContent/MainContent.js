@@ -2,7 +2,7 @@
 import React from 'react';
 import Area1 from './Area1';
 import Area2 from './Area2';
-import Area3 from './Area3/Area3';
+import Area3 from './Area3';
 
 function MainContent() {
   const mainContentStyle = {
