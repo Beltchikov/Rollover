@@ -1,0 +1,37 @@
+.EfdpChartContainer {
+  flex:1;
+  display: grid;
+  grid-template-rows: auto 1fr; /* One row for title, second row for content */
+  grid-template-columns: 1fr;   /* Single column layout */
+  background-color: gainsboro;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.TitleSection {
+  font-size: 20px;
+  text-align: center;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.ContentSection {
+  display: grid;
+  grid-template-columns: auto 1fr; /* Two columns: checkbox section and chart section */
+  padding: 10px;
+  gap: 20px; /* Space between columns */
+}
+
+.CheckboxSection {
+  font-size: 11px;
+}
+
+.CheckboxSection label {
+  display: flex;       
+  align-items: center;   
+  gap: 1px;               
+}
+
+.ChartSection {
+  flex: 1;
+}
