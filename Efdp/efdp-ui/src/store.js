@@ -1,10 +1,10 @@
 // store.js
 import { configureStore, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchRetainedEarningsData } from './Api/fakeApi';
+import { fetchRetainedEarningsData } from './Api/retainedEarningsEndpoint';  // Update this import to the correct file
 
 // Define the initial state for the data
 const initialState = {
-    symbolsInput: 'NVDA\nMSFT\nGOOG',
+    symbolsInput: 'NVDA\nMSFT\nGOOG', // List of stock symbols, separated by new lines
     area1: {
         dataCagrFcf: {
             labels: [
@@ -147,8 +147,10 @@ const initialState = {
 // Create an async thunk for fetching retained earnings data
 export const fetchRetainedEarnings = createAsyncThunk(
     'global/fetchRetainedEarnings',
-    async () => {
-        const response = await fetchRetainedEarningsData();
+    async (_, { getState }) => {
+        const state = getState();
+        const stockSymbols = state.global.symbolsInput.split('\n').map(symbol => symbol.trim()).filter(Boolean); // Extract symbols from input
+        const response = await fetchRetainedEarningsData(stockSymbols);  // Pass symbols to fetchRetainedEarningsData
         return response;
     }
 );
