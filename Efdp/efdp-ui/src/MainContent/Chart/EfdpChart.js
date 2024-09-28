@@ -2,14 +2,14 @@ import React from 'react';
 import './EfdpChart.css';
 import LineChartComponent from './LineChartComponent'; 
 import BarChartComponent from './BarChartComponent';
+import { useDispatch } from 'react-redux';
+import { toggleDatasetVisibility } from '../../store'; 
 
-const EfdpChart = ({ type, title, data }) => {
+const EfdpChart = ({ type, title, data, areaKey, chartKey  }) => {
+    const dispatch = useDispatch();
 
     const handleCheckboxChange = (index) => {
-        const updatedDatasets = data.datasets.map((dataset, i) =>
-            i === index ? { ...dataset, hidden: !dataset.hidden } : dataset
-        );
-        // You will need to handle the state change for the parent component if necessary
+        dispatch(toggleDatasetVisibility({ areaKey, datasetKey: chartKey, datasetIndex: index }));
     };
 
     return (

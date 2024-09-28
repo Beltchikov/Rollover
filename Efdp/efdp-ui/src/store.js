@@ -163,16 +163,63 @@ const globalSlice = createSlice({
         updateSymbolsInput: (state, action) => {
             state.symbolsInput = action.payload;
         },
+        toggleDatasetVisibility: (state, action) => {
+            const { areaKey, datasetKey, datasetIndex } = action.payload;
+        
+            // Logging the action payload
+            console.log('Action Payload:', { areaKey, datasetKey, datasetIndex });
+            
+            // Log the state structure
+            console.log('Current state:', state);
+        
+            // Check if areaKey exists in the state
+            if (!state[areaKey]) {
+                console.error(`Error: Area "${areaKey}" not found in state.`);
+                return;
+            }
+        
+            console.log(`Area "${areaKey}" found in state.`);
+        
+            // Check if datasetKey exists within the specified area
+            const areaState = state[areaKey];
+            if (!areaState[datasetKey]) {
+                console.error(`Error: Dataset key "${datasetKey}" not found in area "${areaKey}".`);
+                return;
+            }
+        
+            console.log(`Dataset key "${datasetKey}" found in area "${areaKey}".`);
+        
+            // Check if datasets exist within the datasetKey
+            const datasets = areaState[datasetKey].datasets;
+            if (!datasets) {
+                console.error(`Error: Datasets not found in dataset key "${datasetKey}" under area "${areaKey}".`);
+                return;
+            }
+        
+            console.log('Datasets:', datasets);
+        
+            // Check if the dataset at datasetIndex exists
+            const dataset = datasets[datasetIndex];
+            if (!dataset) {
+                console.error(`Error: Dataset at index ${datasetIndex} not found.`);
+                return;
+            }
+        
+            // Toggle the hidden state of the dataset
+            dataset.hidden = !dataset.hidden;
+            console.log(`Toggled hidden state for dataset "${dataset.label}".`);
+        }
+        
     },
     extraReducers: (builder) => {
         builder.addCase(fetchRetainedEarnings.fulfilled, (state, action) => {
             state.area2.dataRetainedEarnings = action.payload;
         });
-      },
+    },
 });
 
 // Export actions
-export const { updateSymbolsInput } = globalSlice.actions;
+export const { updateSymbolsInput, toggleDatasetVisibility } = globalSlice.actions;
 
 // Configure and export the Redux store
 export const store = configureStore({
