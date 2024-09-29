@@ -100,11 +100,12 @@ internal class Program
     var sortedLabels = labels.OrderBy(date => date).ToArray(); // Sort the dates to maintain order
 
     // Prepare the datasets based on the retained earnings data
-    var datasets = retainedEarningsDict.Select(entry => new Dataset(
+    var colors = Helper.GetRandomRgbColors(stockSymbols.Length);
+    var datasets = retainedEarningsDict.Select((entry, index) => new Dataset(
         Label: entry.Key, // The stock symbol
         Data: entry.Value.ToArray(), // Retained earnings data
-        BorderColor: "rgba(54, 162, 235, 1)", // Example color, can be customized per symbol
-        BackgroundColor: "rgba(54, 162, 235, 0.2)", // Example background color
+        BorderColor: colors[index], // Assign a random color to each dataset
+        BackgroundColor: colors[index].Replace("1)", "0.2)"), // Transparent background color
         YAxisID: "y-axis-1",
         Hidden: false,
         BorderWidth: 1
@@ -151,11 +152,32 @@ internal class Program
 .WithName("GetBalanceSheetStatement")
 .WithOpenApi();
 
-
-
         app.Run();
     }
 }
+
+internal class Helper
+{
+    internal static string[] GetRandomRgbColors(int numberOfColors)
+    {
+        var colors = new string[numberOfColors];
+        var rand = new Random();
+
+        // Generate distinct colors (similar to Excel-like charts)
+        for (int i = 0; i < numberOfColors; i++)
+        {
+            // Create random RGB values with high contrast
+            var r = rand.Next(0, 256);
+            var g = rand.Next(0, 256);
+            var b = rand.Next(0, 256);
+
+            colors[i] = $"rgba({r}, {g}, {b}, 1)";
+        }
+
+        return colors;
+    }
+}
+
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
