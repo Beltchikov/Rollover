@@ -1,4 +1,5 @@
 // store.js
+import { EFDP_API_BASE_URL } from './config';
 import { configureStore, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchRetainedEarningsData } from './Api/retainedEarningsEndpoint';  // Update this import to the correct file
 
@@ -149,10 +150,8 @@ export const fetchRetainedEarnings = createAsyncThunk(
     'global/fetchRetainedEarnings',
     async (_, { getState }) => {
         const state = getState();
-        const stockSymbols = state.global.symbolsInput.split('\n').map(symbol => symbol.trim()).filter(Boolean); // Extract symbols from input
-        //const baseUrl = 'http://localhost:5266'; 
-        const baseUrl = ''; 
-        const response = await fetchRetainedEarningsData(stockSymbols, baseUrl);  // Pass symbols to fetchRetainedEarningsData
+        const stockSymbols = state.global.symbolsInput.split('\n').map(symbol => symbol.trim()).filter(Boolean); 
+        const response = await fetchRetainedEarningsData(stockSymbols, EFDP_API_BASE_URL);  
         return response;
     }
 );
