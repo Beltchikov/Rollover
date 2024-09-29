@@ -88,9 +88,6 @@ internal class Program
                 // Store the raw response (optional)
                 balanceSheetStatementArray.Add(response);
             }
-
-            // Log the response (Console.WriteLine in .NET)
-            Console.WriteLine($"Response for {symbol}: {response}");
         }
         catch (Exception ex)
         {
@@ -118,6 +115,35 @@ internal class Program
         Labels: sortedLabels,
         Datasets: datasets
     );
+
+    var retainedEarningsData = new RetainedEarningsResponse(
+                Labels: new[]
+                {
+            "2009-09-26", "2009-12-31", "2010-06-30", "2010-09-25", "2010-12-31"
+                    // add more labels as needed...
+                },
+                Datasets: new[]
+                {
+            new Dataset(
+                Label: "NVDA",
+                Data: new[] { 253146000L, 417118000L, 581090000L, 571813000L, 562536000L },
+                BorderColor: "rgba(255, 99, 132, 1)",
+                BackgroundColor: "rgba(255, 99, 132, 0.2)",
+                YAxisID: "y-axis-1",
+                Hidden: false,
+                BorderWidth: 1
+            ),
+            new Dataset(
+                Label: "GOOG",
+                Data: new[] { 16348000000L, 17913000000L, 19478000000L, 16070000000L, 21699000000L },
+                BorderColor: "rgba(54, 162, 235, 1)",
+                BackgroundColor: "rgba(54, 162, 235, 0.2)",
+                YAxisID: "y-axis-1",
+                Hidden: false,
+                BorderWidth: 1
+            )
+                }
+      );
 
     // Return the RetainedEarningsResponse
     return Results.Ok(retainedEarningsData2);
