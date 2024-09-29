@@ -2,8 +2,6 @@ import axios from 'axios';
 
 export const fetchRetainedEarningsData = (stockSymbols, baseUrl) => {
     return new Promise((resolve, reject) => {
-        //const BASE_URL = '';
-        //const BASE_URL = 'http://localhost:5266';
         const query = stockSymbols.map(symbol => `stockSymbols=${encodeURIComponent(symbol)}`).join('&');
         const url = `${baseUrl}/retainedEarnings?${query}`;
         //const url = `/retainedEarnings?${query}`;
