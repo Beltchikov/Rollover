@@ -8,7 +8,7 @@ internal class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
-        builder.Services.AddHttpClient(); 
+        builder.Services.AddHttpClient();
         // builder.Services.AddCors(options =>
         // {
         //     options.AddPolicy("AllowAllOrigins", builder =>
@@ -51,68 +51,80 @@ internal class Program
         .WithOpenApi();
 
         app.MapGet("/balance-sheet-statement", async (HttpClient httpClient, string[] stockSymbols) =>
+{
+    // API Key and base URL
+    string apiKey = "14e7a22ed6110f130afa41af05599bb6";
+    string baseUrl = "https://financialmodelingprep.com/api/v3/balance-sheet-statement/";
+
+    // List to store the balance sheet responses
+    var balanceSheetStatementArray = new List<string>();
+
+    // Dictionary to store the retained earnings for each stock symbol
+    var retainedEarningsDict = new Dictionary<string, List<long>>();
+    var labels = new HashSet<string>(); // HashSet to avoid duplicate labels
+
+    // Iterate over stock symbols and make API calls
+    foreach (var symbol in stockSymbols)
+    {
+        var apiUrl = $"{baseUrl}{symbol}?period=annual&apikey={apiKey}";
+        try
         {
-            // API Key and base URL
-            string apiKey = "14e7a22ed6110f130afa41af05599bb6";
-            string baseUrl = "https://financialmodelingprep.com/api/v3/balance-sheet-statement/";
+            // Make the API call and get the response
+            var response = await httpClient.GetStringAsync(apiUrl);
 
-            // List to store the balance sheet responses
-            var balanceSheetStatementArray = new List<string>();
-
-            // Iterate over stock symbols and make API calls
-            foreach (var symbol in stockSymbols)
+            // Deserialize the JSON response
+            var balanceSheets = System.Text.Json.JsonSerializer.Deserialize<List<BalanceSheetStatement>>(response);
+            if (balanceSheets != null)
             {
-                var apiUrl = $"{baseUrl}{symbol}?period=annual&apikey={apiKey}";
-                try
-                {
-                    // Make the API call and get the response
-                    var response = await httpClient.GetStringAsync(apiUrl);
+                retainedEarningsDict[symbol] = new List<long>();
 
-                    // Store the response in the array
-                    balanceSheetStatementArray.Add(response);
-
-                    // Log the response (Console.WriteLine in .NET)
-                    Console.WriteLine($"Response for {symbol}: {response}");
-                }
-                catch (Exception ex)
+                // Extract retained earnings and labels (dates)
+                foreach (var balanceSheet in balanceSheets)
                 {
-                    // Handle errors (e.g., log them or return a meaningful response)
-                    Console.WriteLine($"Error fetching balance sheet for {symbol}: {ex.Message}");
+                    retainedEarningsDict[symbol].Add(balanceSheet.retainedEarnings);
+                    labels.Add(balanceSheet.date); // Store the date as a label
                 }
+
+                // Store the raw response (optional)
+                balanceSheetStatementArray.Add(response);
             }
 
-            var retainedEarningsData = new RetainedEarningsResponse(
-                Labels: new[]
-                {
-            "2009-09-26", "2009-12-31", "2010-06-30", "2010-09-25", "2010-12-31"
-                    // add more labels as needed...
-                },
-                Datasets: new[]
-                {
-            new Dataset(
-                Label: "NVDA",
-                Data: new[] { 253146000L, 417118000L, 581090000L, 571813000L, 562536000L },
-                BorderColor: "rgba(255, 99, 132, 1)",
-                BackgroundColor: "rgba(255, 99, 132, 0.2)",
-                YAxisID: "y-axis-1",
-                Hidden: false,
-                BorderWidth: 1
-            ),
-            new Dataset(
-                Label: "GOOG",
-                Data: new[] { 16348000000L, 17913000000L, 19478000000L, 16070000000L, 21699000000L },
-                BorderColor: "rgba(54, 162, 235, 1)",
-                BackgroundColor: "rgba(54, 162, 235, 0.2)",
-                YAxisID: "y-axis-1",
-                Hidden: false,
-                BorderWidth: 1
-            )
-                }
-            );
-            return retainedEarningsData;
-        })
-        .WithName("GetRetainedEarnings")
-        .WithOpenApi();  // Ensure this is included to expose the endpoint in Swagger
+            // Log the response (Console.WriteLine in .NET)
+            Console.WriteLine($"Response for {symbol}: {response}");
+        }
+        catch (Exception ex)
+        {
+            // Handle errors (e.g., log them or return a meaningful response)
+            Console.WriteLine($"Error fetching balance sheet for {symbol}: {ex.Message}");
+        }
+    }
+
+    // Prepare the labels (dates) for the response
+    var sortedLabels = labels.OrderBy(date => date).ToArray(); // Sort the dates to maintain order
+
+    // Prepare the datasets based on the retained earnings data
+    var datasets = retainedEarningsDict.Select(entry => new Dataset(
+        Label: entry.Key, // The stock symbol
+        Data: entry.Value.ToArray(), // Retained earnings data
+        BorderColor: "rgba(54, 162, 235, 1)", // Example color, can be customized per symbol
+        BackgroundColor: "rgba(54, 162, 235, 0.2)", // Example background color
+        YAxisID: "y-axis-1",
+        Hidden: false,
+        BorderWidth: 1
+    )).ToArray();
+
+    // Create the RetainedEarningsResponse
+    var retainedEarningsData2 = new RetainedEarningsResponse(
+        Labels: sortedLabels,
+        Datasets: datasets
+    );
+
+    // Return the RetainedEarningsResponse
+    return Results.Ok(retainedEarningsData2);
+})
+.WithName("GetBalanceSheetStatement")
+.WithOpenApi();
+
 
 
         app.Run();
@@ -138,4 +150,12 @@ record RetainedEarningsResponse(
     string[] Labels,
     Dataset[] Datasets
 );
+
+public class BalanceSheetStatement
+{
+    public string date { get; set; }
+    public string symbol { get; set; }
+    public long retainedEarnings { get; set; }
+}
+
 
