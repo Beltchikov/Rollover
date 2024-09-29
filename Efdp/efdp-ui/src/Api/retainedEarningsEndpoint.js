@@ -2,10 +2,11 @@ import axios from 'axios';
 
 export const fetchRetainedEarningsData = (stockSymbols) => {
     return new Promise((resolve, reject) => {
-        const BASE_URL = 'http://localhost:5266';
+        const BASE_URL = '';
+        //const BASE_URL = 'http://localhost:5266';
         const query = stockSymbols.map(symbol => `stockSymbols=${encodeURIComponent(symbol)}`).join('&');
-        // const url = `${BASE_URL}/retainedEarnings?${query}`;
-        const url = `/retainedEarnings?${query}`;
+        const url = `${BASE_URL}/retainedEarnings?${query}`;
+        //const url = `/retainedEarnings?${query}`;
         console.log(url);
         
         axios.get(url)
