@@ -97,7 +97,8 @@ internal class Program
     }
 
     // Prepare the labels (dates) for the response
-    var sortedLabels = labels.OrderBy(date => date).ToArray(); // Sort the dates to maintain order
+    //var sortedLabels = labels.OrderBy(date => date).ToArray(); // Sort the dates to maintain order
+    var labelsAsArray = labels.ToArray();
 
     // Prepare the datasets based on the retained earnings data
     var colors = Helper.GetRandomRgbColors(stockSymbols.Length);
@@ -111,9 +112,29 @@ internal class Program
         BorderWidth: 1
     )).ToArray();
 
+    //
+    // Diagnostic output for labels
+    Console.WriteLine("Labels (Dates):");
+    foreach (var label in labelsAsArray)
+    {
+        Console.WriteLine(label);
+    }
+    // Diagnostic output for datasets
+    Console.WriteLine("Datasets:");
+    foreach (var dataset in datasets)
+    {
+        Console.WriteLine($"Symbol: {dataset.Label}");
+        Console.WriteLine("Retained Earnings Data:");
+        foreach (var dataPoint in dataset.Data)
+        {
+            Console.WriteLine(dataPoint);
+        }
+    }
+
+
     // Create the RetainedEarningsResponse
     var retainedEarningsData2 = new RetainedEarningsResponse(
-        Labels: sortedLabels,
+        Labels: labelsAsArray,
         Datasets: datasets
     );
 
