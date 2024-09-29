@@ -4,12 +4,8 @@ export const fetchRetainedEarningsData = (stockSymbols, baseUrl) => {
     return new Promise((resolve, reject) => {
         const query = stockSymbols.map(symbol => `stockSymbols=${encodeURIComponent(symbol)}`).join('&');
         const url = `${baseUrl}/retainedEarnings?${query}`;
-        //const url = `/retainedEarnings?${query}`;
-        console.log(url);
-        
         axios.get(url)
         .then(response => {
-            console.log(response.data);
             resolve(response.data); // Resolve with the data from axios
         })
         .catch(error => {
