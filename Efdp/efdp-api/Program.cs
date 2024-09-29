@@ -45,7 +45,7 @@ app.MapGet("/weatherforecast", () =>
 .WithName("GetWeatherForecast")
 .WithOpenApi();
 
-app.MapGet("/retainedEarnings", (string[] stockSymbols) =>
+app.MapGet("/balance-sheet-statement", (string[] stockSymbols) =>
 {
     var retainedEarningsData = new RetainedEarningsResponse(
         Labels: new[]

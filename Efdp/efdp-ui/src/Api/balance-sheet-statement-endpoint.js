@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-export const fetchRetainedEarningsData = (stockSymbols, baseUrl) => {
+export const fetchBalanceSheetStatementData = (stockSymbols, baseUrl) => {
     return new Promise((resolve, reject) => {
         const query = stockSymbols.map(symbol => `stockSymbols=${encodeURIComponent(symbol)}`).join('&');
-        const url = `${baseUrl}/retainedEarnings?${query}`;
+        const url = `${baseUrl}/balance-sheet-statement?${query}`;
         axios.get(url)
         .then(response => {
             resolve(response.data); // Resolve with the data from axios
