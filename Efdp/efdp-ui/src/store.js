@@ -150,7 +150,9 @@ export const fetchRetainedEarnings = createAsyncThunk(
     async (_, { getState }) => {
         const state = getState();
         const stockSymbols = state.global.symbolsInput.split('\n').map(symbol => symbol.trim()).filter(Boolean); // Extract symbols from input
-        const response = await fetchRetainedEarningsData(stockSymbols);  // Pass symbols to fetchRetainedEarningsData
+        //const baseUrl = 'http://localhost:5266'; 
+        const baseUrl = ''; 
+        const response = await fetchRetainedEarningsData(stockSymbols, baseUrl);  // Pass symbols to fetchRetainedEarningsData
         return response;
     }
 );
