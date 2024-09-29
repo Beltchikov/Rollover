@@ -2,16 +2,7 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        WebApplication app = Helpers.Build();
-
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
-
-        app.UseHttpsRedirection();
+        WebApplication app = Helpers.BuildWebApplication();
 
         var summaries = new[]
         {
@@ -84,7 +75,7 @@ internal class Program
             var labelsAsArray = labels.ToArray();
 
             // Prepare the datasets based on the retained earnings data
-            var colors = Helper.GetRandomRgbColors(stockSymbols.Length);
+            var colors = Helpers.GetRandomRgbColors(stockSymbols.Length);
             var datasets = retainedEarningsDict.Select((entry, index) => new Dataset(
                 Label: entry.Key, // The stock symbol
                 Data: entry.Value.ToArray(), // Retained earnings data
@@ -129,29 +120,6 @@ internal class Program
         app.Run();
     }
 }
-
-internal class Helper
-{
-    internal static string[] GetRandomRgbColors(int numberOfColors)
-    {
-        var colors = new string[numberOfColors];
-        var rand = new Random();
-
-        // Generate distinct colors (similar to Excel-like charts)
-        for (int i = 0; i < numberOfColors; i++)
-        {
-            // Create random RGB values with high contrast
-            var r = rand.Next(0, 256);
-            var g = rand.Next(0, 256);
-            var b = rand.Next(0, 256);
-
-            colors[i] = $"rgba({r}, {g}, {b}, 1)";
-        }
-
-        return colors;
-    }
-}
-
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {

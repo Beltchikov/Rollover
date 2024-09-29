@@ -1,7 +1,7 @@
 ﻿internal static class Helpers
 {
 
-    internal static WebApplication Build()
+    internal static WebApplication BuildWebApplication()
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder();
 
@@ -33,5 +33,24 @@
         app.UseHttpsRedirection();
 
         return app;
+    }
+
+    internal static string[] GetRandomRgbColors(int numberOfColors)
+    {
+        var colors = new string[numberOfColors];
+        var rand = new Random();
+
+        // Generate distinct colors (similar to Excel-like charts)
+        for (int i = 0; i < numberOfColors; i++)
+        {
+            // Create random RGB values with high contrast
+            var r = rand.Next(0, 256);
+            var g = rand.Next(0, 256);
+            var b = rand.Next(0, 256);
+
+            colors[i] = $"rgba({r}, {g}, {b}, 1)";
+        }
+
+        return colors;
     }
 }
