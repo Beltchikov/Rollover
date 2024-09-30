@@ -45,7 +45,7 @@ internal class Program
             var labels = labelsAsDict.SelectMany(x => x.Value).Distinct().OrderBy(date => date).ToArray();
 
             // TODO
-            //List<string> symbolsTable = createSymbolsTable(labelsAsArray, retainedEarningsDict);
+            //List<string> symbolsTable = createSymbolsTable(labels, retainedEarningsDict);
 
             // Prepare the datasets based on the retained earnings data
             var colors = Helpers.GetRandomRgbColors(stockSymbols.Length);
