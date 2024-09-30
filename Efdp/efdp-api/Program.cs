@@ -86,25 +86,7 @@ internal class Program
                 BorderWidth: 1
             )).ToArray();
 
-            //
-            // Diagnostic output for labels
-            Console.WriteLine("Labels (Dates):");
-            foreach (var label in labelsAsArray)
-            {
-                Console.WriteLine(label);
-            }
-            // Diagnostic output for datasets
-            Console.WriteLine("Datasets:");
-            foreach (var dataset in datasets)
-            {
-                Console.WriteLine($"Symbol: {dataset.Label}");
-                Console.WriteLine("Retained Earnings Data:");
-                foreach (var dataPoint in dataset.Data)
-                {
-                    Console.WriteLine(dataPoint);
-                }
-            }
-
+            //DiagOutput(labelsAsArray, datasets);
 
             // Create the RetainedEarningsResponse
             var retainedEarningsData2 = new RetainedEarningsResponse(
@@ -118,6 +100,28 @@ internal class Program
 .WithOpenApi();
 
         app.Run();
+    }
+
+    private static void DiagOutput(string[] labelsAsArray, Dataset[] datasets)
+    {
+        //
+        // Diagnostic output for labels
+        Console.WriteLine("Labels (Dates):");
+        foreach (var label in labelsAsArray)
+        {
+            Console.WriteLine(label);
+        }
+        // Diagnostic output for datasets
+        Console.WriteLine("Datasets:");
+        foreach (var dataset in datasets)
+        {
+            Console.WriteLine($"Symbol: {dataset.Label}");
+            Console.WriteLine("Retained Earnings Data:");
+            foreach (var dataPoint in dataset.Data)
+            {
+                Console.WriteLine(dataPoint);
+            }
+        }
     }
 }
 
