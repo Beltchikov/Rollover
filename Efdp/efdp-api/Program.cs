@@ -218,13 +218,36 @@ internal class Program
         }
     }
 
+    //private static void DiagOutput(List<string> symbolTable)
+    //{
+    //    foreach (var row in symbolTable)
+    //    {
+    //        Console.WriteLine(row);
+    //    }
+    //}
+
     private static void DiagOutput(List<string> symbolTable)
     {
-        foreach (var row in symbolTable)
+        string filePath = "symbolTableOutput.txt";
+
+        try
         {
-            Console.WriteLine(row);
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                foreach (var row in symbolTable)
+                {
+                    writer.WriteLine(row);
+                }
+            }
+
+            Console.WriteLine($"Symbol table successfully written to {filePath}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error writing to file: {ex.Message}");
         }
     }
+
 }
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
