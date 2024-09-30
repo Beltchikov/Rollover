@@ -48,18 +48,44 @@ internal class Program
             List<string> symbolsTable = CreateSymbolsTable(labels, balanceSheetStatementDict);
             List<string> interpolatedSymbolsTable = InterpolateSymbolsTable(symbolsTable);
 
-            // Prepare the datasets based on the retained earnings data
-            var colors = Helpers.GetRandomRgbColors(stockSymbols.Length);
-            
-            var datasets = retainedEarningsDict.Select((entry, index) => new Dataset(
-                Label: entry.Key,
-                Data: entry.Value.ToArray(),
-                BorderColor: colors[index],
-                BackgroundColor: colors[index].Replace("1)", "0.2)"),
-                YAxisID: "y-axis-1",
-                Hidden: false,
-                BorderWidth: 1
-            )).ToArray();
+            //// Prepare the datasets based on the retained earnings data
+            //var colors = Helpers.GetRandomRgbColors(stockSymbols.Length);
+            //var datasets = retainedEarningsDict.Select((entry, index) => new Dataset(
+            //    Label: entry.Key,
+            //    Data: entry.Value.ToArray(),
+            //    BorderColor: colors[index],
+            //    BackgroundColor: colors[index].Replace("1)", "0.2)"),
+            //    YAxisID: "y-axis-1",
+            //    Hidden: false,
+            //    BorderWidth: 1
+            //)).ToArray();
+
+            // Extract the header row (which contains the labels/dates)
+            var headerRow = interpolatedSymbolsTable[0].Split('\t').Skip(1).ToArray(); // Skip the "Symbol" column
+
+            // Prepare the datasets based on the interpolated symbols table data
+            var colors = Helpers.GetRandomRgbColors(interpolatedSymbolsTable.Count - 1); // Skip the header row
+
+            var datasets = interpolatedSymbolsTable.Skip(1) // Skip the header row
+                .Select((row, index) =>
+                {
+                    var columns = row.Split('\t');
+                    var symbol = columns[0];  // The first column is the stock symbol
+                    var data = columns.Skip(1) // Skip the symbol
+                        .Select(val => string.IsNullOrWhiteSpace(val) || val == "" ? (long?)null : long.Parse(val))
+                        .ToArray();
+
+                    return new Dataset(
+                        Label: symbol, // Stock symbol is used as the label for the dataset
+                        Data: data,    // Interpolated retained earnings values
+                        BorderColor: colors[index],
+                        BackgroundColor: colors[index].Replace("1)", "0.2)"),
+                        YAxisID: "y-axis-1",
+                        Hidden: false,
+                        BorderWidth: 1
+                    );
+                })
+                .ToArray();
 
             // Create the RetainedEarningsResponse
             var retainedEarningsData2 = new RetainedEarningsResponse(
@@ -322,7 +348,7 @@ record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 
 record Dataset(
     string Label,
-    long[] Data,
+    long?[] Data,
     string BorderColor,
     string BackgroundColor,
     string YAxisID,
