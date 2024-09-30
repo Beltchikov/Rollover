@@ -114,7 +114,7 @@ internal class Program
                 else
                 {
                     // If not found, add "NULL"
-                    row += "\tNULL";
+                    row += "\t";
                 }
             }
 
