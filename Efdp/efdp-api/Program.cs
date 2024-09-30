@@ -62,6 +62,8 @@ internal class Program
                 Datasets: datasets
             );
 
+            DiagOutput(labelsAsArray, datasets);
+
             return Results.Ok(retainedEarningsData2);
         })
      .WithName("GetBalanceSheetStatement")
