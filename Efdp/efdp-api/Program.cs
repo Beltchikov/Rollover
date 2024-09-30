@@ -44,8 +44,8 @@ internal class Program
             // Prepare the labels (dates) for the response
             var labels = labelsAsDict.SelectMany(x => x.Value).Distinct().OrderBy(date => date).ToArray();
 
-            // TODO
-            //List<string> symbolsTable = createSymbolsTable(labels, retainedEarningsDict);
+            // Create symbols table
+            List<string> symbolsTable = CreateSymbolsTable(labels, balanceSheetStatementDict);
 
             // Prepare the datasets based on the retained earnings data
             var colors = Helpers.GetRandomRgbColors(stockSymbols.Length);
@@ -74,6 +74,57 @@ internal class Program
 
         app.Run();
     }
+
+    /// <summary>
+    /// Creates a symbols table based on the provided labels and retained earnings.
+    /// </summary>
+    static List<string> CreateSymbolsTable(string[] labels, Dictionary<string, List<BalanceSheetStatement>> balanceSheetStatementDict)
+    {
+        // Ensure unique and sorted labels
+        var uniqueLabels = labels.Distinct().OrderBy(x => x).ToList();
+
+        // Initialize the table
+        var symbolsTable = new List<string>();
+
+        // Create header with "Symbol" followed by the labels (dates)
+        var header = "Symbol" + "\t" + string.Join("\t", uniqueLabels);
+        symbolsTable.Add(header);
+
+        // Iterate over the stock symbols (keys of balanceSheetStatementDict)
+        foreach (var symbol in balanceSheetStatementDict.Keys)
+        {
+            // Start with the symbol name
+            var row = symbol;
+
+            // Get the balance sheet data for the current symbol
+            var balanceSheetStatements = balanceSheetStatementDict[symbol];
+
+            // Iterate over unique labels (dates)
+            foreach (var label in uniqueLabels)
+            {
+                // Try to find the retained earnings for the current label (date)
+                var balanceSheet = balanceSheetStatements.FirstOrDefault(bs => bs.date == label);
+
+                if (balanceSheet != null)
+                {
+                    // If found, add the retained earnings to the row
+                    row += "\t" + balanceSheet.retainedEarnings;
+                }
+                else
+                {
+                    // If not found, add "NULL"
+                    row += "\tNULL";
+                }
+            }
+
+            // Add the completed row to the table
+            symbolsTable.Add(row);
+        }
+
+        return symbolsTable;
+    }
+
+
 
     /// <summary>
     /// Step 1: Fetch balance sheet responses from the API for each stock symbol.
