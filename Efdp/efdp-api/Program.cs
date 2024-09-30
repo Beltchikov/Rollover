@@ -36,13 +36,16 @@ internal class Program
             var balanceSheetStatementDict = DeserializeBalanceSheetResponses(balanceSheetResponseDict);
 
             // Step 3: Extract all date attributes into the labels variable
-            var labels = ExtractLabels(balanceSheetStatementDict);
+            var labelsAsDict = ExtractLabels(balanceSheetStatementDict);
 
             // Step 4: Fill out the retainedEarningsDict from balanceSheetStatementDict
             var retainedEarningsDict = FillRetainedEarningsDict(balanceSheetStatementDict);
 
             // Prepare the labels (dates) for the response
-            var labelsAsArray = labels.SelectMany(x => x.Value).Distinct().OrderBy(date => date).ToArray();
+            var labels = labelsAsDict.SelectMany(x => x.Value).Distinct().OrderBy(date => date).ToArray();
+
+            // TODO
+            //List<string> symbolsTable = createSymbolsTable(labelsAsArray, retainedEarningsDict);
 
             // Prepare the datasets based on the retained earnings data
             var colors = Helpers.GetRandomRgbColors(stockSymbols.Length);
@@ -58,11 +61,11 @@ internal class Program
 
             // Create the RetainedEarningsResponse
             var retainedEarningsData2 = new RetainedEarningsResponse(
-                Labels: labelsAsArray,
+                Labels: labels,
                 Datasets: datasets
             );
 
-            DiagOutput(labelsAsArray, datasets);
+            DiagOutput(labels, datasets);
 
             return Results.Ok(retainedEarningsData2);
         })
