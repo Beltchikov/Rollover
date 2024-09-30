@@ -26,65 +26,35 @@ internal class Program
 
         app.MapGet("/balance-sheet-statement", async (HttpClient httpClient, string[] stockSymbols) =>
         {
-            // API Key and base URL
             string apiKey = "14e7a22ed6110f130afa41af05599bb6";
             string baseUrl = "https://financialmodelingprep.com/api/v3/balance-sheet-statement/";
 
-            var balanceSheetResponseDict = new Dictionary<string, string>();
+            // Step 1: Call the API for every symbol and store results in balanceSheetResponseDict
+            var balanceSheetResponseDict = await FetchBalanceSheetResponses(httpClient, stockSymbols, baseUrl, apiKey);
 
-            // Dictionary to store the retained earnings for each stock symbol
-            var retainedEarningsDict = new Dictionary<string, List<long>>();
-            var labels = new HashSet<string>(); // HashSet to avoid duplicate labels
+            // Step 2: Serialize the responses into balanceSheetStatementDict
+            var balanceSheetStatementDict = DeserializeBalanceSheetResponses(balanceSheetResponseDict);
 
-            // Iterate over stock symbols and make API calls
-            foreach (var symbol in stockSymbols)
-            {
-                var apiUrl = $"{baseUrl}{symbol}?period=annual&apikey={apiKey}";
-                try
-                {
-                    // Make the API call and get the response
-                    var response = await httpClient.GetStringAsync(apiUrl);
+            // Step 3: Extract all date attributes into the labels variable
+            var labels = ExtractLabels(balanceSheetStatementDict);
 
-                    // Deserialize the JSON response
-                    var balanceSheets = System.Text.Json.JsonSerializer.Deserialize<List<BalanceSheetStatement>>(response);
-                    if (balanceSheets != null)
-                    {
-                        retainedEarningsDict[symbol] = new List<long>();
-
-                        // Extract retained earnings and labels (dates)
-                        foreach (var balanceSheet in balanceSheets)
-                        {
-                            retainedEarningsDict[symbol].Add(balanceSheet.retainedEarnings);
-                            labels.Add(balanceSheet.date); // Store the date as a label
-                        }
-
-                        balanceSheetResponseDict[symbol] = response;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Handle errors (e.g., log them or return a meaningful response)
-                    Console.WriteLine($"Error fetching balance sheet for {symbol}: {ex.Message}");
-                }
-            }
+            // Step 4: Fill out the retainedEarningsDict from balanceSheetStatementDict
+            var retainedEarningsDict = FillRetainedEarningsDict(balanceSheetStatementDict);
 
             // Prepare the labels (dates) for the response
-            //var sortedLabels = labels.OrderBy(date => date).ToArray(); // Sort the dates to maintain order
-            var labelsAsArray = labels.ToArray();
+            var labelsAsArray = labels.SelectMany(x => x.Value).Distinct().OrderBy(date => date).ToArray();
 
             // Prepare the datasets based on the retained earnings data
             var colors = Helpers.GetRandomRgbColors(stockSymbols.Length);
             var datasets = retainedEarningsDict.Select((entry, index) => new Dataset(
-                Label: entry.Key, // The stock symbol
-                Data: entry.Value.ToArray(), // Retained earnings data
-                BorderColor: colors[index], // Assign a random color to each dataset
-                BackgroundColor: colors[index].Replace("1)", "0.2)"), // Transparent background color
+                Label: entry.Key,
+                Data: entry.Value.ToArray(),
+                BorderColor: colors[index],
+                BackgroundColor: colors[index].Replace("1)", "0.2)"),
                 YAxisID: "y-axis-1",
                 Hidden: false,
                 BorderWidth: 1
             )).ToArray();
-
-            //DiagOutput(labelsAsArray, datasets);
 
             // Create the RetainedEarningsResponse
             var retainedEarningsData2 = new RetainedEarningsResponse(
@@ -94,10 +64,79 @@ internal class Program
 
             return Results.Ok(retainedEarningsData2);
         })
-.WithName("GetBalanceSheetStatement")
-.WithOpenApi();
+     .WithName("GetBalanceSheetStatement")
+     .WithOpenApi();
 
         app.Run();
+    }
+
+    /// <summary>
+    /// Step 1: Fetch balance sheet responses from the API for each stock symbol.
+    /// </summary>
+    async static Task<Dictionary<string, string>> FetchBalanceSheetResponses(HttpClient httpClient, string[] stockSymbols, string baseUrl, string apiKey)
+    {
+        var balanceSheetResponseDict = new Dictionary<string, string>();
+
+        foreach (var symbol in stockSymbols)
+        {
+            var apiUrl = $"{baseUrl}{symbol}?period=annual&apikey={apiKey}";
+            try
+            {
+                var response = await httpClient.GetStringAsync(apiUrl);
+                balanceSheetResponseDict[symbol] = response;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching balance sheet for {symbol}: {ex.Message}");
+            }
+        }
+        return balanceSheetResponseDict;
+    }
+
+    /// <summary>
+    /// Step 2: Deserialize the API responses into balance sheet statement objects.
+    /// </summary>
+    static Dictionary<string, List<BalanceSheetStatement>> DeserializeBalanceSheetResponses(Dictionary<string, string> balanceSheetResponseDict)
+    {
+        var balanceSheetStatementDict = new Dictionary<string, List<BalanceSheetStatement>>();
+
+        foreach (var entry in balanceSheetResponseDict)
+        {
+            var balanceSheets = System.Text.Json.JsonSerializer.Deserialize<List<BalanceSheetStatement>>(entry.Value);
+            if (balanceSheets != null)
+            {
+                balanceSheetStatementDict[entry.Key] = balanceSheets;
+            }
+        }
+        return balanceSheetStatementDict;
+    }
+
+    /// <summary>
+    /// Step 3: Extract all date attributes into the labels variable.
+    /// </summary>
+    static Dictionary<string, List<string>> ExtractLabels(Dictionary<string, List<BalanceSheetStatement>> balanceSheetStatementDict)
+    {
+        var labels = new Dictionary<string, List<string>>();
+
+        foreach (var entry in balanceSheetStatementDict)
+        {
+            labels[entry.Key] = entry.Value.Select(bs => bs.date).ToList();
+        }
+        return labels;
+    }
+
+    /// <summary>
+    /// Step 4: Fill out the retainedEarningsDict from balanceSheetStatementDict.
+    /// </summary>
+    static Dictionary<string, List<long>> FillRetainedEarningsDict(Dictionary<string, List<BalanceSheetStatement>> balanceSheetStatementDict)
+    {
+        var retainedEarningsDict = new Dictionary<string, List<long>>();
+
+        foreach (var entry in balanceSheetStatementDict)
+        {
+            retainedEarningsDict[entry.Key] = entry.Value.Select(bs => bs.retainedEarnings).ToList();
+        }
+        return retainedEarningsDict;
     }
 
     private static void DiagOutput(string[] labelsAsArray, Dataset[] datasets)
