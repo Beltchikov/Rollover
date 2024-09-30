@@ -47,6 +47,9 @@ internal class Program
             // Create symbols table
             List<string> symbolsTable = CreateSymbolsTable(labels, balanceSheetStatementDict);
 
+            // TODO
+            List<string> interpolatedSymbolsTable = InterpolateSymbolsTable(symbolsTable);
+
             // Prepare the datasets based on the retained earnings data
             var colors = Helpers.GetRandomRgbColors(stockSymbols.Length);
             var datasets = retainedEarningsDict.Select((entry, index) => new Dataset(
@@ -66,7 +69,7 @@ internal class Program
             );
 
             //DiagOutput(labels, datasets);
-            DiagOutput(symbolsTable);
+            DiagOutput(interpolatedSymbolsTable);
 
             return Results.Ok(retainedEarningsData2);
         })
@@ -75,6 +78,69 @@ internal class Program
 
         app.Run();
     }
+
+    /// <summary>
+    /// Interpolates missing retained earnings values (marked as "NULL") within the symbol table,
+    /// but only for values not at the beginning or end of the row.
+    /// </summary>
+    static List<string> InterpolateSymbolsTable(List<string> symbolsTable)
+    {
+        // Initialize the interpolated table with the header row
+        var interpolatedTable = new List<string> { symbolsTable[0] };  // Add the header directly
+
+        // Iterate through each row (skip the header, which is at index 0)
+        for (int i = 1; i < symbolsTable.Count; i++)
+        {
+            var row = symbolsTable[i];
+            var columns = row.Split('\t');  // Split the row into columns (tab-separated)
+
+            string symbol = columns[0];  // First column is the symbol
+            var dataColumns = columns.Skip(1).ToArray();  // The rest are retained earnings values
+
+            // Convert the data columns to a list of nullable longs, interpreting "NULL" as null
+            //var values = dataColumns.Select(val => val == "NULL" ? (long?)null : long.Parse(val)).ToArray();
+            var values = dataColumns.Select(val => string.IsNullOrWhiteSpace(val) || val == "NULL" ? (long?)null : long.Parse(val)).ToArray();
+
+            // Perform interpolation
+            for (int j = 1; j < values.Length - 1; j++)  // Don't interpolate at the first and last positions
+            {
+                if (values[j] == null)  // Only interpolate if the value is "NULL" (null)
+                {
+                    // Find the previous non-null value
+                    int prevIndex = j - 1;
+                    while (prevIndex >= 0 && values[prevIndex] == null)
+                    {
+                        prevIndex--;
+                    }
+
+                    // Find the next non-null value
+                    int nextIndex = j + 1;
+                    while (nextIndex < values.Length && values[nextIndex] == null)
+                    {
+                        nextIndex++;
+                    }
+
+                    // If both previous and next values are found, interpolate
+                    if (prevIndex >= 0 && nextIndex < values.Length && values[prevIndex] != null && values[nextIndex] != null)
+                    {
+                        long prevValue = values[prevIndex].Value;
+                        long nextValue = values[nextIndex].Value;
+                        int gap = nextIndex - prevIndex;
+
+                        // Linear interpolation formula
+                        values[j] = prevValue + (nextValue - prevValue) * (j - prevIndex) / gap;
+                    }
+                }
+            }
+
+            // Rebuild the row with interpolated values
+            var interpolatedRow = symbol + "\t" + string.Join("\t", values.Select(v => v?.ToString() ?? ""));
+            interpolatedTable.Add(interpolatedRow);  // Add the row to the new table
+        }
+
+        return interpolatedTable;
+    }
+
 
     /// <summary>
     /// Creates a symbols table based on the provided labels and retained earnings.
