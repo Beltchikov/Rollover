@@ -48,18 +48,6 @@ internal class Program
             List<string> symbolsTable = CreateSymbolsTable(labels, balanceSheetStatementDict);
             List<string> interpolatedSymbolsTable = InterpolateSymbolsTable(symbolsTable);
 
-            //// Prepare the datasets based on the retained earnings data
-            //var colors = Helpers.GetRandomRgbColors(stockSymbols.Length);
-            //var datasets = retainedEarningsDict.Select((entry, index) => new Dataset(
-            //    Label: entry.Key,
-            //    Data: entry.Value.ToArray(),
-            //    BorderColor: colors[index],
-            //    BackgroundColor: colors[index].Replace("1)", "0.2)"),
-            //    YAxisID: "y-axis-1",
-            //    Hidden: false,
-            //    BorderWidth: 1
-            //)).ToArray();
-
             // Extract the header row (which contains the labels/dates)
             var headerRow = interpolatedSymbolsTable[0].Split('\t').Skip(1).ToArray(); // Skip the "Symbol" column
 
@@ -123,7 +111,6 @@ internal class Program
             var dataColumns = columns.Skip(1).ToArray();  // The rest are retained earnings values
 
             // Convert the data columns to a list of nullable longs, interpreting "NULL" as null
-            //var values = dataColumns.Select(val => val == "NULL" ? (long?)null : long.Parse(val)).ToArray();
             var values = dataColumns.Select(val => string.IsNullOrWhiteSpace(val) || val == "NULL" ? (long?)null : long.Parse(val)).ToArray();
 
             // Perform interpolation
