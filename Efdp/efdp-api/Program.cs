@@ -46,12 +46,11 @@ internal class Program
 
             // Create symbols table
             List<string> symbolsTable = CreateSymbolsTable(labels, balanceSheetStatementDict);
-
-            // TODO
             List<string> interpolatedSymbolsTable = InterpolateSymbolsTable(symbolsTable);
 
             // Prepare the datasets based on the retained earnings data
             var colors = Helpers.GetRandomRgbColors(stockSymbols.Length);
+            
             var datasets = retainedEarningsDict.Select((entry, index) => new Dataset(
                 Label: entry.Key,
                 Data: entry.Value.ToArray(),
