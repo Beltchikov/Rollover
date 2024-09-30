@@ -65,7 +65,8 @@ internal class Program
                 Datasets: datasets
             );
 
-            DiagOutput(labels, datasets);
+            //DiagOutput(labels, datasets);
+            DiagOutput(symbolsTable);
 
             return Results.Ok(retainedEarningsData2);
         })
@@ -214,6 +215,14 @@ internal class Program
             {
                 Console.WriteLine(dataPoint);
             }
+        }
+    }
+
+    private static void DiagOutput(List<string> symbolTable)
+    {
+        foreach (var row in symbolTable)
+        {
+            Console.WriteLine(row);
         }
     }
 }
