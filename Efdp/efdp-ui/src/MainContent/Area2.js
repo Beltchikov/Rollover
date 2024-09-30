@@ -7,10 +7,20 @@ import AdTeaser from './AdTeaser';
 function Area2() {
   const dispatch = useDispatch();
 
-  // Fetch retained earnings data when the component is mounted
+  // Get the symbolsInput from the Redux store
+  const symbolsInput = useSelector((state) => state.global.symbolsInput);
+
+  // // Fetch retained earnings data when the component is mounted
+  // useEffect(() => {
+  //   dispatch(fetchRetainedEarnings());
+  // }, [dispatch]);
+  // Use useEffect to dispatch fetchRetainedEarnings after any change in symbolsInput
   useEffect(() => {
-    dispatch(fetchRetainedEarnings());
-  }, [dispatch]);
+    if (symbolsInput) {  // Ensure symbolsInput is not an empty string
+        // Dispatch fetchRetainedEarnings whenever symbolsInput changes
+        dispatch(fetchRetainedEarnings());
+    }
+}, [symbolsInput, dispatch]); // Add symbolsInput as a dependency
 
   const { dataFcfCapExRatio, dataRetainedEarnings, dataGpm } = useSelector(
     (state) => state.global.area2
