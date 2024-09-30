@@ -94,7 +94,7 @@ internal class Program
             );
 
             //DiagOutput(labels, datasets);
-            DiagOutput(interpolatedSymbolsTable);
+            //DiagOutput(interpolatedSymbolsTable);
 
             return Results.Ok(retainedEarningsData2);
         })
