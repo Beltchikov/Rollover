@@ -30,8 +30,7 @@ internal class Program
             string apiKey = "14e7a22ed6110f130afa41af05599bb6";
             string baseUrl = "https://financialmodelingprep.com/api/v3/balance-sheet-statement/";
 
-            // List to store the balance sheet responses
-            var balanceSheetStatementArray = new List<string>();
+            var balanceSheetResponseDict = new Dictionary<string, string>();
 
             // Dictionary to store the retained earnings for each stock symbol
             var retainedEarningsDict = new Dictionary<string, List<long>>();
@@ -59,8 +58,7 @@ internal class Program
                             labels.Add(balanceSheet.date); // Store the date as a label
                         }
 
-                        // Store the raw response (optional)
-                        balanceSheetStatementArray.Add(response);
+                        balanceSheetResponseDict[symbol] = response;
                     }
                 }
                 catch (Exception ex)
