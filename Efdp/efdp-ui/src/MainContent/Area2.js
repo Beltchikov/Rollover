@@ -1,24 +1,13 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import EfdpChart from './Chart/EfdpChart';
-import { fetchRetainedEarnings } from '../store';
 import AdTeaser from './AdTeaser';
 
 function Area2() {
-  const dispatch = useDispatch();
-
   // Get the symbolsInput from the Redux store
   const symbolsInput = useSelector((state) => state.global.symbolsInput);
 
-  // Use useEffect to dispatch fetchRetainedEarnings after any change in symbolsInput
-  useEffect(() => {
-    if (symbolsInput) {  // Ensure symbolsInput is not an empty string
-        // Dispatch fetchRetainedEarnings whenever symbolsInput changes
-        dispatch(fetchRetainedEarnings());
-    }
-}, [symbolsInput, dispatch]); // Add symbolsInput as a dependency
-
-  const { dataFcfCapExRatio, dataRetainedEarnings, dataGpm } = useSelector(
+ const { dataFcfCapExRatio, dataRetainedEarnings, dataGpm } = useSelector(
     (state) => state.global.area2
   );
 

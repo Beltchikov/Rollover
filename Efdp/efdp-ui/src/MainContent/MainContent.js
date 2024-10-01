@@ -1,10 +1,25 @@
 // MainContent.js
-import React from 'react';
+import React, { useEffect } from 'react';
 import Area1 from './Area1';
 import Area2 from './Area2';
 import Area3 from './Area3';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchRetainedEarnings } from '../store';
 
 function MainContent() {
+  const dispatch = useDispatch();
+
+  // Get the symbolsInput from the Redux store
+  const symbolsInput = useSelector((state) => state.global.symbolsInput);
+
+// Use useEffect to dispatch fetchRetainedEarnings after any change in symbolsInput
+useEffect(() => {
+  if (symbolsInput) {  // Ensure symbolsInput is not an empty string
+      // Dispatch fetchRetainedEarnings whenever symbolsInput changes
+      dispatch(fetchRetainedEarnings());
+  }
+}, [symbolsInput, dispatch]); // Add symbolsInput as a dependency
+
   const mainContentStyle = {
     display: 'flex',
     flexDirection: 'column',
