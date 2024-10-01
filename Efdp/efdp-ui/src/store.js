@@ -187,8 +187,15 @@ const globalSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(fetchRetainedEarnings.fulfilled, (state, action) => {
-            state.balanceSheetStatementDict = action.payload;
-            state.area2.dataRetainedEarnings = retainedEarningAdapter(state.balanceSheetStatementDict, getRandomColor);
+            var processingInUi = false;
+
+            if (processingInUi) {
+                state.balanceSheetStatementDict = action.payload;
+                state.area2.dataRetainedEarnings = retainedEarningAdapter(state.balanceSheetStatementDict, getRandomColor);
+            }
+            else {
+                state.area2.dataRetainedEarnings = action.payload;
+            }
         });
     },
 });

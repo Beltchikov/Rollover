@@ -84,7 +84,7 @@ internal class Program
             //DiagOutput(labels, datasets);
             //DiagOutput(interpolatedSymbolsTable);
 
-            bool processingInUi = true;
+            bool processingInUi = false;
             
             return processingInUi 
                 ? Results.Ok(balanceSheetStatementDict)
