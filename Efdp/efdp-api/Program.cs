@@ -84,7 +84,11 @@ internal class Program
             //DiagOutput(labels, datasets);
             //DiagOutput(interpolatedSymbolsTable);
 
-            return Results.Ok(retainedEarningsData2);
+            bool processingInUi = true;
+            
+            return processingInUi 
+                ? Results.Ok(balanceSheetStatementDict)
+                : Results.Ok(retainedEarningsData2);
         })
      .WithName("GetBalanceSheetStatement")
      .WithOpenApi();
