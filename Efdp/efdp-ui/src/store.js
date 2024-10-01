@@ -8,6 +8,8 @@ import { getRandomColor } from './helpers'
 // Define the initial state for the data
 const initialState = {
     symbolsInput: 'NVDA\nMSFT\nGOOG', // List of stock symbols, separated by new lines
+    incomeStatementDict: {},
+    cashFlowStatementDict: {},
     balanceSheetStatementDict: {},
     area1: {
         dataCagrFcf: {
