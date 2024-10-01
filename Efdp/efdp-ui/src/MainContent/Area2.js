@@ -10,10 +10,6 @@ function Area2() {
   // Get the symbolsInput from the Redux store
   const symbolsInput = useSelector((state) => state.global.symbolsInput);
 
-  // // Fetch retained earnings data when the component is mounted
-  // useEffect(() => {
-  //   dispatch(fetchRetainedEarnings());
-  // }, [dispatch]);
   // Use useEffect to dispatch fetchRetainedEarnings after any change in symbolsInput
   useEffect(() => {
     if (symbolsInput) {  // Ensure symbolsInput is not an empty string
