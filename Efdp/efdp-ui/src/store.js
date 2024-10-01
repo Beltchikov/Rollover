@@ -2,10 +2,13 @@
 import { EFDP_API_BASE_URL } from './config';
 import { configureStore, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchBalanceSheetStatementData } from './Api/balance-sheet-statement-endpoint';  // Update this import to the correct file
+import { retainedEarningAdapter } from './Api/adapters'
+import { getRandomColor } from './helpers'
 
 // Define the initial state for the data
 const initialState = {
     symbolsInput: 'NVDA\nMSFT\nGOOG', // List of stock symbols, separated by new lines
+    balanceSheetStatementDict: {},
     area1: {
         dataCagrFcf: {
             labels: [
@@ -150,8 +153,8 @@ export const fetchRetainedEarnings = createAsyncThunk(
     'global/fetchRetainedEarnings',
     async (_, { getState }) => {
         const state = getState();
-        const stockSymbols = state.global.symbolsInput.split('\n').map(symbol => symbol.trim()).filter(Boolean); 
-        const response = await fetchBalanceSheetStatementData(stockSymbols, EFDP_API_BASE_URL);  
+        const stockSymbols = state.global.symbolsInput.split('\n').map(symbol => symbol.trim()).filter(Boolean);
+        const response = await fetchBalanceSheetStatementData(stockSymbols, EFDP_API_BASE_URL);
         return response;
     }
 );
@@ -182,7 +185,8 @@ const globalSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(fetchRetainedEarnings.fulfilled, (state, action) => {
-            state.area2.dataRetainedEarnings = action.payload;
+            state.balanceSheetStatementDict = action.payload;
+            state.area2.dataRetainedEarnings = retainedEarningAdapter(state.balanceSheetStatementDict, getRandomColor);
         });
     },
 });
