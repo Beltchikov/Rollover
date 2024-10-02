@@ -156,7 +156,6 @@ export const fetchRetainedEarnings = createAsyncThunk(
     'global/fetchRetainedEarnings',
     async (_, { getState }) => {
         const state = getState();
-
         const stockSymbols = state.global.symbolsInput.split('\n').map(symbol => symbol.trim()).filter(Boolean);
         const response = USE_MOCK_RESPONSES
             ? await fetchBalanceSheetStatementMockData(EFDP_API_BASE_URL)
