@@ -38,17 +38,12 @@ internal class Program
             // Step 2: Serialize the responses into balanceSheetStatementDict
             var balanceSheetStatementDict = DeserializeBalanceSheetResponses(balanceSheetResponseDict);
 
-            // Step 3: Extract all date attributes into the labels variable
+            // Step 3: Create symbols table
             var labelsAsDict = ExtractLabels(balanceSheetStatementDict);
-
-            // Step 4: Fill out the retainedEarningsDict from balanceSheetStatementDict
-            var retainedEarningsDict = FillRetainedEarningsDict(balanceSheetStatementDict);
-
-            // Prepare the labels (dates) for the response
             var labels = labelsAsDict.SelectMany(x => x.Value).Distinct().OrderBy(date => date).ToArray();
-
-            // Create symbols table
             List<string> symbolsTable = CreateSymbolsTable(labels, balanceSheetStatementDict);
+
+            // Step 4: Interpolate data
             List<string> interpolatedSymbolsTable = InterpolateSymbolsTable(symbolsTable);
 
             // Extract the header row (which contains the labels/dates)
@@ -87,7 +82,7 @@ internal class Program
             //DiagOutput(labels, datasets);
             //DiagOutput(interpolatedSymbolsTable);
 
-            bool processingInUi = false;
+            bool processingInUi = true;
 
             return processingInUi
                 ? Results.Ok(balanceSheetStatementDict)

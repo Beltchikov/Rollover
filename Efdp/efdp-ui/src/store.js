@@ -1,7 +1,8 @@
 // store.js
 import { EFDP_API_BASE_URL, USE_MOCK_RESPONSES } from './config';
 import { configureStore, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchBalanceSheetStatementData } from './Api/balance-sheet-statement-endpoint';  // Update this import to the correct file
+import { fetchBalanceSheetStatementData } from './Api/balance-sheet-statement-endpoint';
+import { fetchBalanceSheetStatementMockData } from './Api/balance-sheet-statement-mock-endpoint';
 import { retainedEarningAdapter } from './Api/adapters'
 import { getRandomColor } from './helpers'
 
@@ -156,11 +157,11 @@ export const fetchRetainedEarnings = createAsyncThunk(
     async (_, { getState }) => {
         const state = getState();
 
-        console.log('USE_MOCK_RESPONSES');
-        console.log(USE_MOCK_RESPONSES);
-
         const stockSymbols = state.global.symbolsInput.split('\n').map(symbol => symbol.trim()).filter(Boolean);
-        const response = await fetchBalanceSheetStatementData(stockSymbols, EFDP_API_BASE_URL);
+        const response = USE_MOCK_RESPONSES
+            ? await fetchBalanceSheetStatementMockData(EFDP_API_BASE_URL)
+            : await fetchBalanceSheetStatementData(stockSymbols, EFDP_API_BASE_URL);
+
         return response;
     }
 );
@@ -191,8 +192,11 @@ const globalSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(fetchRetainedEarnings.fulfilled, (state, action) => {
-            var processingInUi = false;
 
+            console.log(`EFDP_API_BASE_URL:${EFDP_API_BASE_URL}`);
+            console.log(`USE_MOCK_RESPONSES:${USE_MOCK_RESPONSES}`);
+
+            var processingInUi = true;
             if (processingInUi) {
                 state.balanceSheetStatementDict = action.payload;
                 state.area2.dataRetainedEarnings = retainedEarningAdapter(state.balanceSheetStatementDict, getRandomColor);
