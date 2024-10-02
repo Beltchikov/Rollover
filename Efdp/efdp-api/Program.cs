@@ -47,15 +47,10 @@ internal class Program
             // Step 5:
             ChartData chartData = CreateChartData(interpolatedSymbolsTable);
 
-           
             //DiagOutput(labels, datasets);
             //DiagOutput(interpolatedSymbolsTable);
 
-            bool processingInUi = true;
-
-            return processingInUi
-                ? Results.Ok(balanceSheetStatementDict)
-                : Results.Ok(chartData);
+            return Results.Ok(balanceSheetStatementDict);
         })
      .WithName("GetBalanceSheetStatement")
      .WithOpenApi();

@@ -4,7 +4,7 @@ import { configureStore, createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { fetchBalanceSheetStatementData } from './Api/balance-sheet-statement-endpoint';
 import { fetchBalanceSheetStatementMockData } from './Api/balance-sheet-statement-mock-endpoint';
 import { getRandomColor } from './helpers'
-import {createSymbolsTable, interpolateSymbolsTable, createChartData} from './Api/responseProcessing'
+import { createSymbolsTable, interpolateSymbolsTable, createChartData } from './Api/responseProcessing'
 
 // Define the initial state for the data
 const initialState = {
@@ -192,25 +192,16 @@ const globalSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(fetchRetainedEarnings.fulfilled, (state, action) => {
-
             console.log(`EFDP_API_BASE_URL:${EFDP_API_BASE_URL}`);
             console.log(`USE_MOCK_RESPONSES:${USE_MOCK_RESPONSES}`);
 
-            var processingInUi = true;
-            if (processingInUi) {
-                state.balanceSheetStatementDict = action.payload;
+            state.balanceSheetStatementDict = action.payload;
 
-                // import {createSymbolsTable, interpolateSymbolsTable} from './Api/responseProcessing'
-                var symbolsTable= createSymbolsTable(state.balanceSheetStatementDict);
-                var interpolatedsymbolsTable = interpolateSymbolsTable(symbolsTable);
-                var chartData = createChartData(interpolatedsymbolsTable, getRandomColor);
-                state.area2.dataRetainedEarnings = chartData;
+            var symbolsTable = createSymbolsTable(state.balanceSheetStatementDict);
+            var interpolatedsymbolsTable = interpolateSymbolsTable(symbolsTable);
+            var chartData = createChartData(interpolatedsymbolsTable, getRandomColor);
 
-                //state.area2.dataRetainedEarnings = retainedEarningAdapter(state.balanceSheetStatementDict, getRandomColor);
-            }
-            else {
-                state.area2.dataRetainedEarnings = action.payload;
-            }
+            state.area2.dataRetainedEarnings = chartData;
         });
     },
 });
