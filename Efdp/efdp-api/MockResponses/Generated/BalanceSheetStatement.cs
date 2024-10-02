@@ -44,7 +44,7 @@ public class BalanceSheetStatement
     public object totalLiabilities { get; set; }
     public long preferredStock { get; set; }
     public object commonStock { get; set; }
-    public object retainedEarnings { get; set; }
+    public long retainedEarnings { get; set; }
     public long accumulatedOtherComprehensiveIncomeLoss { get; set; }
     public long othertotalStockholdersEquity { get; set; }
     public object totalStockholdersEquity { get; set; }

@@ -39,7 +39,7 @@ internal class Program
             var balanceSheetStatementDict = DeserializeFmpResponses<BalanceSheetStatement>(balanceSheetResponseDict);
 
             // Step 3: Create symbols table
-            List<string> symbolsTable = CreateSymbolsTable(balanceSheetStatementDict);
+            List<string> symbolsTable = CreateSymbolsTable(balanceSheetStatementDict,bss=>bss.retainedEarnings);
 
             // Step 4: Interpolate data
             List<string> interpolatedSymbolsTable = InterpolateSymbolsTable(symbolsTable);
@@ -106,6 +106,9 @@ internal class Program
             var cashFlowStatementDict = DeserializeFmpResponses<CashFlowStatement>(cashFlowResponseDict);
 
             // TODO
+            // operatingCashFlow  - capitalExpenditure
+
+
             // // Step 3: Create symbols table
             //List<string> symbolsTable = CreateSymbolsTable(cashFlowStatementDict);
 
@@ -264,7 +267,9 @@ internal class Program
     /// <summary>
     /// Creates a symbols table based on the provided labels and retained earnings.
     /// </summary>
-    static List<string> CreateSymbolsTable(Dictionary<string, List<BalanceSheetStatement>> balanceSheetStatementDict)
+    static List<string> CreateSymbolsTable(
+        Dictionary<string, List<BalanceSheetStatement>> balanceSheetStatementDict,
+        Func<BalanceSheetStatement, long> selector)
     {
         var labelsAsDict = ExtractLabels(balanceSheetStatementDict);
         var labels = labelsAsDict.SelectMany(x => x.Value).Distinct().OrderBy(date => date).ToArray();
@@ -297,7 +302,7 @@ internal class Program
                 if (balanceSheet != null)
                 {
                     // If found, add the retained earnings to the row
-                    row += "\t" + balanceSheet.retainedEarnings;
+                    row += "\t" + selector(balanceSheet);
                 }
                 else
                 {
