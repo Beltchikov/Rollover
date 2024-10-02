@@ -39,9 +39,7 @@ internal class Program
             var balanceSheetStatementDict = DeserializeBalanceSheetResponses(balanceSheetResponseDict);
 
             // Step 3: Create symbols table
-            var labelsAsDict = ExtractLabels(balanceSheetStatementDict);
-            var labels = labelsAsDict.SelectMany(x => x.Value).Distinct().OrderBy(date => date).ToArray();
-            List<string> symbolsTable = CreateSymbolsTable(labels, balanceSheetStatementDict);
+            List<string> symbolsTable = CreateSymbolsTable(balanceSheetStatementDict);
 
             // Step 4: Interpolate data
             List<string> interpolatedSymbolsTable = InterpolateSymbolsTable(symbolsTable);
@@ -73,7 +71,10 @@ internal class Program
                 })
                 .ToArray();
 
-            // Create the RetainedEarningsResponse
+            // TODO remove later
+            // Create the RetainedEarningsResponse 
+            var labelsAsDict = ExtractLabels(balanceSheetStatementDict);
+            var labels = labelsAsDict.SelectMany(x => x.Value).Distinct().OrderBy(date => date).ToArray();
             var retainedEarningsData2 = new RetainedEarningsResponse(
                 Labels: labels,
                 Datasets: datasets
@@ -196,8 +197,11 @@ internal class Program
     /// <summary>
     /// Creates a symbols table based on the provided labels and retained earnings.
     /// </summary>
-    static List<string> CreateSymbolsTable(string[] labels, Dictionary<string, List<BalanceSheetStatement>> balanceSheetStatementDict)
+    static List<string> CreateSymbolsTable(Dictionary<string, List<BalanceSheetStatement>> balanceSheetStatementDict)
     {
+        var labelsAsDict = ExtractLabels(balanceSheetStatementDict);
+        var labels = labelsAsDict.SelectMany(x => x.Value).Distinct().OrderBy(date => date).ToArray();
+
         // Ensure unique and sorted labels
         var uniqueLabels = labels.Distinct().OrderBy(x => x).ToList();
 
