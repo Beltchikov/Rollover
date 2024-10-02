@@ -1,5 +1,6 @@
 using System.IO;
 using System.Text.Json;
+using Generated;
 
 internal class Program
 {
@@ -105,12 +106,12 @@ internal class Program
             // Step 2: Serialize the responses into balanceSheetStatementDict
             var cashFlowStatementDict = DeserializeFmpResponses<CashFlowStatement>(cashFlowResponseDict);
 
+            // Step 3: Create symbols tables
+            List<string> symbolsTableOperatingCashFlow = CreateSymbolsTableCashFlow(cashFlowStatementDict, s=>s.operatingCashFlow);
+            List<string> symbolsTableCapitalExpenditure = CreateSymbolsTableCashFlow(cashFlowStatementDict, s=>s.capitalExpenditure);
+
             // TODO
-            // operatingCashFlow  - capitalExpenditure
-
-
-            // // Step 3: Create symbols table
-            //List<string> symbolsTable = CreateSymbolsTable(cashFlowStatementDict);
+            //MergeSymbolTables((v1,v2)=> v1- v2))
 
             // // Step 4: Interpolate data
             // List<string> interpolatedSymbolsTable = InterpolateSymbolsTable(symbolsTable);
@@ -118,7 +119,7 @@ internal class Program
             // // Step 5:
             // ChartData chartData = CreateChartData(interpolatedSymbolsTable);
 
-            return Results.Ok(cashFlowStatementDict);
+            return Results.Ok(symbolsTableCapitalExpenditure);
         })
         .WithName("GetCashFlowStatement")
         .WithOpenApi();
@@ -268,7 +269,7 @@ internal class Program
         Dictionary<string, List<BalanceSheetStatement>> balanceSheetStatementDict,
         Func<BalanceSheetStatement, long> selector)
     {
-        var labelsAsDict = ExtractLabels(balanceSheetStatementDict);
+        var labelsAsDict = ExtractLabelsBalanceSheet(balanceSheetStatementDict);
         var labels = labelsAsDict.SelectMany(x => x.Value).Distinct().OrderBy(date => date).ToArray();
 
         // Ensure unique and sorted labels
@@ -300,6 +301,57 @@ internal class Program
                 {
                     // If found, add the retained earnings to the row
                     row += "\t" + selector(balanceSheet);
+                }
+                else
+                {
+                    // If not found, add "NULL"
+                    row += "\t";
+                }
+            }
+
+            // Add the completed row to the table
+            symbolsTable.Add(row);
+        }
+
+        return symbolsTable;
+    }
+
+    static List<string> CreateSymbolsTableCashFlow(
+        Dictionary<string, List<CashFlowStatement>> cashFlowStatementDict,
+        Func<CashFlowStatement, long> selector)
+    {
+        var labelsAsDict = ExtractLabelsCashFlow(cashFlowStatementDict);
+        var labels = labelsAsDict.SelectMany(x => x.Value).Distinct().OrderBy(date => date).ToArray();
+
+        // Ensure unique and sorted labels
+        var uniqueLabels = labels.Distinct().OrderBy(x => x).ToList();
+
+        // Initialize the table
+        var symbolsTable = new List<string>();
+
+        // Create header with "Symbol" followed by the labels (dates)
+        var header = "Symbol" + "\t" + string.Join("\t", uniqueLabels);
+        symbolsTable.Add(header);
+
+        // Iterate over the stock symbols (keys of statement)
+        foreach (var symbol in cashFlowStatementDict.Keys)
+        {
+            // Start with the symbol name
+            var row = symbol;
+
+            // Get the balance sheet data for the current symbol
+            var cashFlowStatements = cashFlowStatementDict[symbol];
+
+            // Iterate over unique labels (dates)
+            foreach (var label in uniqueLabels)
+            {
+                // Try to find the retained earnings for the current label (date)
+                var cashFlowStatement = cashFlowStatements.FirstOrDefault(bs => bs.date == label);
+
+                if (cashFlowStatement != null)
+                {
+                    // If found, add the retained earnings to the row
+                    row += "\t" + selector(cashFlowStatement);
                 }
                 else
                 {
@@ -352,7 +404,7 @@ internal class Program
         return responseDictTyped;
     }
 
-    static Dictionary<string, List<string>> ExtractLabels(Dictionary<string, List<BalanceSheetStatement>> balanceSheetStatementDict)
+    static Dictionary<string, List<string>> ExtractLabelsBalanceSheet(Dictionary<string, List<BalanceSheetStatement>> balanceSheetStatementDict)
     {
         var labels = new Dictionary<string, List<string>>();
 
@@ -362,6 +414,18 @@ internal class Program
         }
         return labels;
     }
+
+    static Dictionary<string, List<string>> ExtractLabelsCashFlow(Dictionary<string, List<CashFlowStatement>> cashFlowStatementDict)
+    {
+        var labels = new Dictionary<string, List<string>>();
+
+        foreach (var entry in cashFlowStatementDict)
+        {
+            labels[entry.Key] = entry.Value.Select(bs => bs.date).ToList();
+        }
+        return labels;
+    }
+    
 
     static Dictionary<string, List<long>> FillRetainedEarningsDict(Dictionary<string, List<BalanceSheetStatement>> balanceSheetStatementDict)
     {
