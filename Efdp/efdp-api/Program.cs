@@ -33,7 +33,7 @@ internal class Program
             string baseUrl = "https://financialmodelingprep.com/api/v3/balance-sheet-statement/";
 
             // Step 1: Call the API for every symbol and store results in balanceSheetResponseDict
-            var balanceSheetResponseDict = await FetchBalanceSheetResponses(httpClient, stockSymbols, baseUrl, apiKey);
+            var balanceSheetResponseDict = await FetchFmpResponses(httpClient, stockSymbols, baseUrl, apiKey);
 
             // Step 2: Serialize the responses into balanceSheetStatementDict
             var balanceSheetStatementDict = DeserializeBalanceSheetResponses(balanceSheetResponseDict);
@@ -92,15 +92,22 @@ internal class Program
             return Results.Json(balanceSheetResponseDict);
         })
         .WithName("GetBalanceSheetStatementMock")
-        .WithOpenApi();;
+        .WithOpenApi(); ;
 
         app.MapGet("/cash-flow-statement", async (HttpClient httpClient, string[] stockSymbols) =>
              {
                  string apiKey = "14e7a22ed6110f130afa41af05599bb6";
                  string baseUrl = "https://financialmodelingprep.com/api/v3/cash-flow-statement/";
 
-                 // // Step 1: Call the API for every symbol and store results in balanceSheetResponseDict
-                 // var balanceSheetResponseDict = await FetchBalanceSheetResponses(httpClient, stockSymbols, baseUrl, apiKey);
+                 // Step 1: Call the API for every symbol and store results in balanceSheetResponseDict
+                 Dictionary<string, string> balanceSheetResponseDict = await FetchFmpResponses(httpClient, stockSymbols, baseUrl, apiKey);
+                 foreach (var entry in balanceSheetResponseDict)
+                 {
+                     Console.WriteLine($"Symbol: {entry.Key}");
+                     Console.WriteLine("Cash Flow Statement Data:");
+                     Console.WriteLine(entry.Value); // Assuming the value is a serialized JSON string
+                     Console.WriteLine("-------------------------------------------------");
+                 }
 
                  // // Step 2: Serialize the responses into balanceSheetStatementDict
                  // var balanceSheetStatementDict = DeserializeBalanceSheetResponses(balanceSheetResponseDict);
@@ -156,9 +163,9 @@ internal class Program
            return Results.Json(cashFlowResponseDict);
        })
        .WithName("GetCashFlowStatementMock")
-       .WithOpenApi();;
+       .WithOpenApi(); ;
 
-       app.Run();
+        app.Run();
     }
 
     private static ChartData CreateChartData(List<string> interpolatedSymbolsTable)
@@ -312,14 +319,9 @@ internal class Program
         return symbolsTable;
     }
 
-
-
-    /// <summary>
-    /// Step 1: Fetch balance sheet responses from the API for each stock symbol.
-    /// </summary>
-    async static Task<Dictionary<string, string>> FetchBalanceSheetResponses(HttpClient httpClient, string[] stockSymbols, string baseUrl, string apiKey)
+    async static Task<Dictionary<string, string>> FetchFmpResponses(HttpClient httpClient, string[] stockSymbols, string baseUrl, string apiKey)
     {
-        var balanceSheetResponseDict = new Dictionary<string, string>();
+        var responseDict = new Dictionary<string, string>();
 
         foreach (var symbol in stockSymbols)
         {
@@ -327,14 +329,14 @@ internal class Program
             try
             {
                 var response = await httpClient.GetStringAsync(apiUrl);
-                balanceSheetResponseDict[symbol] = response;
+                responseDict[symbol] = response;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error fetching balance sheet for {symbol}: {ex.Message}");
+                Console.WriteLine($"Error fetching FMP data for {symbol}: {ex.Message}");
             }
         }
-        return balanceSheetResponseDict;
+        return responseDict;
     }
 
     /// <summary>
