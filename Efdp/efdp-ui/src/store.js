@@ -3,8 +3,8 @@ import { EFDP_API_BASE_URL, USE_MOCK_RESPONSES } from './config';
 import { configureStore, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchBalanceSheetStatementData } from './Api/balance-sheet-statement-endpoint';
 import { fetchBalanceSheetStatementMockData } from './Api/balance-sheet-statement-mock-endpoint';
-import { retainedEarningAdapter } from './Api/adapters'
 import { getRandomColor } from './helpers'
+import {createSymbolsTable, interpolateSymbolsTable, createChartData} from './Api/responseProcessing'
 
 // Define the initial state for the data
 const initialState = {
@@ -199,7 +199,14 @@ const globalSlice = createSlice({
             var processingInUi = true;
             if (processingInUi) {
                 state.balanceSheetStatementDict = action.payload;
-                state.area2.dataRetainedEarnings = retainedEarningAdapter(state.balanceSheetStatementDict, getRandomColor);
+
+                // import {createSymbolsTable, interpolateSymbolsTable} from './Api/responseProcessing'
+                var symbolsTable= createSymbolsTable(state.balanceSheetStatementDict);
+                var interpolatedsymbolsTable = interpolateSymbolsTable(symbolsTable);
+                var chartData = createChartData(interpolatedsymbolsTable, getRandomColor);
+                state.area2.dataRetainedEarnings = chartData;
+
+                //state.area2.dataRetainedEarnings = retainedEarningAdapter(state.balanceSheetStatementDict, getRandomColor);
             }
             else {
                 state.area2.dataRetainedEarnings = action.payload;
