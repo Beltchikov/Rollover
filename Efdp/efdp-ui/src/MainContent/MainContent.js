@@ -15,8 +15,6 @@ function MainContent() {
 // Use useEffect to dispatch fetchRetainedEarnings after any change in symbolsInput
 useEffect(() => {
   if (symbolsInput) {  // Ensure symbolsInput is not an empty string
-      // Dispatch fetchRetainedEarnings whenever symbolsInput changes
-      //dispatch(fetchRetainedEarnings());
       dispatch(fetchAllData());
   }
 }, [symbolsInput, dispatch]); // Add symbolsInput as a dependency
