@@ -4,7 +4,7 @@ import Area1 from './Area1';
 import Area2 from './Area2';
 import Area3 from './Area3';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchRetainedEarnings } from '../store';
+import { fetchRetainedEarnings, fetchAllData } from '../store';
 
 function MainContent() {
   const dispatch = useDispatch();
@@ -16,7 +16,8 @@ function MainContent() {
 useEffect(() => {
   if (symbolsInput) {  // Ensure symbolsInput is not an empty string
       // Dispatch fetchRetainedEarnings whenever symbolsInput changes
-      dispatch(fetchRetainedEarnings());
+      //dispatch(fetchRetainedEarnings());
+      dispatch(fetchAllData());
   }
 }, [symbolsInput, dispatch]); // Add symbolsInput as a dependency
 

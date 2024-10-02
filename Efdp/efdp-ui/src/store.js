@@ -151,6 +151,26 @@ const initialState = {
     },
 };
 
+export const fetchAllData = createAsyncThunk(
+    'global/fetchAllData',
+    async (_, { dispatch, getState }) => {
+        // Get state if needed
+        const state = getState();
+
+        // Dispatch both thunks (fetchRetainedEarnings and fetchFreeCashFlow)
+        const [retainedEarningsResponse, freeCashFlowResponse] = await Promise.all([
+            dispatch(fetchRetainedEarnings()), // Dispatch retained earnings fetch
+            dispatch(fetchFreeCashFlow())      // Dispatch free cash flow fetch
+        ]);
+
+        // Combine the responses into one object
+        return {
+            retainedEarnings: retainedEarningsResponse.payload,
+            freeCashFlow: freeCashFlowResponse.payload
+        };
+    }
+);
+
 // Create an async thunk for fetching retained earnings data
 export const fetchRetainedEarnings = createAsyncThunk(
     'global/fetchRetainedEarnings',
@@ -164,6 +184,19 @@ export const fetchRetainedEarnings = createAsyncThunk(
         return response;
     }
 );
+
+// Create an async thunk for fetching free cash flow data (empty body for now)
+export const fetchFreeCashFlow = createAsyncThunk(
+    'global/fetchFreeCashFlow',
+    async (_, { getState }) => {
+        // Empty body for now
+        const state = getState();
+        console.log('fetchFreeCashFlow called with state:', state);
+        // Add your fetch logic here later
+        return {}; // Temporary response
+    }
+);
+
 
 // Create a slice of the state
 const globalSlice = createSlice({
