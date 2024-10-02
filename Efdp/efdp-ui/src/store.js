@@ -3,6 +3,8 @@ import { EFDP_API_BASE_URL, USE_MOCK_RESPONSES } from './config';
 import { configureStore, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchBalanceSheetStatementData } from './Api/balance-sheet-statement-endpoint';
 import { fetchBalanceSheetStatementMockData } from './Api/balance-sheet-statement-mock-endpoint';
+import { fetchCashFlowStatementData } from './Api/cash-flow-statement-endpoint';
+import { fetchCashFlowStatementMockData } from './Api/cash-flow-statement-mock-endpoint';
 import { getRandomColor } from './helpers'
 import { createSymbolsTable, interpolateSymbolsTable, createChartData } from './Api/responseProcessing'
 
@@ -189,11 +191,13 @@ export const fetchRetainedEarnings = createAsyncThunk(
 export const fetchFreeCashFlow = createAsyncThunk(
     'global/fetchFreeCashFlow',
     async (_, { getState }) => {
-        // Empty body for now
         const state = getState();
-        console.log('fetchFreeCashFlow called with state:', state);
-        // Add your fetch logic here later
-        return {}; // Temporary response
+        const stockSymbols = state.global.symbolsInput.split('\n').map(symbol => symbol.trim()).filter(Boolean);
+        const response = USE_MOCK_RESPONSES
+            ? await fetchCashFlowStatementMockData(EFDP_API_BASE_URL)
+            : await fetchCashFlowStatementData(stockSymbols, EFDP_API_BASE_URL);
+
+        return response;
     }
 );
 
