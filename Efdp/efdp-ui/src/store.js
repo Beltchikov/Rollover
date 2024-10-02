@@ -1,5 +1,5 @@
 // store.js
-import { EFDP_API_BASE_URL } from './config';
+import { EFDP_API_BASE_URL, USE_MOCK_RESPONSES } from './config';
 import { configureStore, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchBalanceSheetStatementData } from './Api/balance-sheet-statement-endpoint';  // Update this import to the correct file
 import { retainedEarningAdapter } from './Api/adapters'
@@ -155,6 +155,10 @@ export const fetchRetainedEarnings = createAsyncThunk(
     'global/fetchRetainedEarnings',
     async (_, { getState }) => {
         const state = getState();
+
+        console.log('USE_MOCK_RESPONSES');
+        console.log(USE_MOCK_RESPONSES);
+
         const stockSymbols = state.global.symbolsInput.split('\n').map(symbol => symbol.trim()).filter(Boolean);
         const response = await fetchBalanceSheetStatementData(stockSymbols, EFDP_API_BASE_URL);
         return response;
