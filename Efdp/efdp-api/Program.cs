@@ -56,43 +56,105 @@ internal class Program
      .WithOpenApi();
 
         app.MapGet("/balance-sheet-statement-mock", () =>
-   {
-       // Define the path to the MockResponses directory
-       string mockDirectory = Path.Combine(Directory.GetCurrentDirectory(), "MockResponses", "balance-sheet-statement");
+        {
+            // Define the path to the MockResponses directory
+            string mockDirectory = Path.Combine(Directory.GetCurrentDirectory(), "MockResponses", "balance-sheet-statement");
 
-       // Check if the directory exists
-       if (!Directory.Exists(mockDirectory))
+            // Check if the directory exists
+            if (!Directory.Exists(mockDirectory))
+            {
+                return Results.NotFound("MockResponses directory not found.");
+            }
+
+            // Prepare a dictionary to hold the mock responses
+            var balanceSheetResponseDict = new Dictionary<string, List<BalanceSheetStatement>>();
+
+            // Get all the files in the directory (assuming .json files)
+            var files = Directory.GetFiles(mockDirectory, "*.json");
+
+            foreach (var file in files)
+            {
+                // Extract the symbol from the file name (assuming the file name follows a certain pattern)
+                var fileName = Path.GetFileNameWithoutExtension(file); // e.g., "AAPL.json" -> "AAPL"
+                string jsonContent = File.ReadAllText(file); // Read the file content
+
+                // Deserialize the content into a list of BalanceSheetStatement objects
+                var balanceSheetStatements = JsonSerializer.Deserialize<List<BalanceSheetStatement>>(jsonContent);
+
+                // Add the deserialized content to the response dictionary
+                if (balanceSheetStatements != null)
+                {
+                    balanceSheetResponseDict[fileName] = balanceSheetStatements;
+                }
+            }
+
+            // Return the response as JSON
+            return Results.Json(balanceSheetResponseDict);
+        });
+
+        app.MapGet("/cash-flow-statement", async (HttpClient httpClient, string[] stockSymbols) =>
+             {
+                 string apiKey = "14e7a22ed6110f130afa41af05599bb6";
+                 string baseUrl = "https://financialmodelingprep.com/api/v3/cash-flow-statement/";
+
+                 // // Step 1: Call the API for every symbol and store results in balanceSheetResponseDict
+                 // var balanceSheetResponseDict = await FetchBalanceSheetResponses(httpClient, stockSymbols, baseUrl, apiKey);
+
+                 // // Step 2: Serialize the responses into balanceSheetStatementDict
+                 // var balanceSheetStatementDict = DeserializeBalanceSheetResponses(balanceSheetResponseDict);
+
+                 // // Step 3: Create symbols table
+                 // List<string> symbolsTable = CreateSymbolsTable(balanceSheetStatementDict);
+
+                 // // Step 4: Interpolate data
+                 // List<string> interpolatedSymbolsTable = InterpolateSymbolsTable(symbolsTable);
+
+                 // // Step 5:
+                 // ChartData chartData = CreateChartData(interpolatedSymbolsTable);
+
+                 return Results.Ok("TODO");
+             })
+          .WithName("GetCashFlowStatement")
+          .WithOpenApi();
+
+        app.MapGet("/cash-flow-statement-mock", () =>
        {
-           return Results.NotFound("MockResponses directory not found.");
-       }
+           // Define the path to the MockResponses directory
+           string mockDirectory = Path.Combine(Directory.GetCurrentDirectory(), "MockResponses", "cash-flow-statement");
 
-       // Prepare a dictionary to hold the mock responses
-       var balanceSheetResponseDict = new Dictionary<string, List<BalanceSheetStatement>>();
-
-       // Get all the files in the directory (assuming .json files)
-       var files = Directory.GetFiles(mockDirectory, "*.json");
-
-       foreach (var file in files)
-       {
-           // Extract the symbol from the file name (assuming the file name follows a certain pattern)
-           var fileName = Path.GetFileNameWithoutExtension(file); // e.g., "AAPL.json" -> "AAPL"
-           string jsonContent = File.ReadAllText(file); // Read the file content
-
-           // Deserialize the content into a list of BalanceSheetStatement objects
-           var balanceSheetStatements = JsonSerializer.Deserialize<List<BalanceSheetStatement>>(jsonContent);
-
-           // Add the deserialized content to the response dictionary
-           if (balanceSheetStatements != null)
+           // Check if the directory exists
+           if (!Directory.Exists(mockDirectory))
            {
-               balanceSheetResponseDict[fileName] = balanceSheetStatements;
+               return Results.NotFound("MockResponses directory not found.");
            }
-       }
 
-       // Return the response as JSON
-       return Results.Json(balanceSheetResponseDict);
-   });
+           // Prepare a dictionary to hold the mock responses
+           var cashFlowResponseDict = new Dictionary<string, List<CashFlowStatement>>();
 
-        app.Run();
+           // Get all the files in the directory (assuming .json files)
+           var files = Directory.GetFiles(mockDirectory, "*.json");
+
+           foreach (var file in files)
+           {
+               // Extract the symbol from the file name (assuming the file name follows a certain pattern)
+               var fileName = Path.GetFileNameWithoutExtension(file); // e.g., "AAPL.json" -> "AAPL"
+               string jsonContent = File.ReadAllText(file); // Read the file content
+
+               // Deserialize the content into a list of BalanceSheetStatement objects
+               var cashFlowStatements = JsonSerializer.Deserialize<List<CashFlowStatement>>(jsonContent);
+
+               // Add the deserialized content to the response dictionary
+               if (cashFlowStatements != null)
+               {
+                   cashFlowResponseDict[fileName] = cashFlowStatements;
+               }
+           }
+
+           // Return the response as JSON
+           return Results.Json(cashFlowResponseDict);
+       });
+
+       app.Run();
     }
 
     private static ChartData CreateChartData(List<string> interpolatedSymbolsTable)
@@ -448,6 +510,50 @@ public class BalanceSheetStatement
     public object totalInvestments { get; set; }
     public object totalDebt { get; set; }
     public object netDebt { get; set; }
+    public string link { get; set; }
+    public string finalLink { get; set; }
+}
+
+public class CashFlowStatement
+{
+    public string date { get; set; }
+    public string symbol { get; set; }
+    public string reportedCurrency { get; set; }
+    public string cik { get; set; }
+    public string fillingDate { get; set; }
+    public string acceptedDate { get; set; }
+    public string calendarYear { get; set; }
+    public string period { get; set; }
+    public object netIncome { get; set; }
+    public object depreciationAndAmortization { get; set; }
+    public int deferredIncomeTax { get; set; }
+    public object stockBasedCompensation { get; set; }
+    public long changeInWorkingCapital { get; set; }
+    public int accountsReceivables { get; set; }
+    public int inventory { get; set; }
+    public object accountsPayables { get; set; }
+    public object otherWorkingCapital { get; set; }
+    public long otherNonCashItems { get; set; }
+    public object netCashProvidedByOperatingActivities { get; set; }
+    public int investmentsInPropertyPlantAndEquipment { get; set; }
+    public int acquisitionsNet { get; set; }
+    public int purchasesOfInvestments { get; set; }
+    public object salesMaturitiesOfInvestments { get; set; }
+    public int otherInvestingActivites { get; set; }
+    public int netCashUsedForInvestingActivites { get; set; }
+    public int debtRepayment { get; set; }
+    public int commonStockIssued { get; set; }
+    public int commonStockRepurchased { get; set; }
+    public int dividendsPaid { get; set; }
+    public int otherFinancingActivites { get; set; }
+    public int netCashUsedProvidedByFinancingActivities { get; set; }
+    public int effectOfForexChangesOnCash { get; set; }
+    public object netChangeInCash { get; set; }
+    public object cashAtEndOfPeriod { get; set; }
+    public object cashAtBeginningOfPeriod { get; set; }
+    public object operatingCashFlow { get; set; }
+    public int capitalExpenditure { get; set; }
+    public object freeCashFlow { get; set; }
     public string link { get; set; }
     public string finalLink { get; set; }
 }
