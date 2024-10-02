@@ -90,7 +90,9 @@ internal class Program
 
             // Return the response as JSON
             return Results.Json(balanceSheetResponseDict);
-        });
+        })
+        .WithName("GetBalanceSheetStatementMock")
+        .WithOpenApi();;
 
         app.MapGet("/cash-flow-statement", async (HttpClient httpClient, string[] stockSymbols) =>
              {
@@ -152,7 +154,9 @@ internal class Program
 
            // Return the response as JSON
            return Results.Json(cashFlowResponseDict);
-       });
+       })
+       .WithName("GetCashFlowStatementMock")
+       .WithOpenApi();;
 
        app.Run();
     }
@@ -526,33 +530,33 @@ public class CashFlowStatement
     public string period { get; set; }
     public object netIncome { get; set; }
     public object depreciationAndAmortization { get; set; }
-    public int deferredIncomeTax { get; set; }
+    public long deferredIncomeTax { get; set; }
     public object stockBasedCompensation { get; set; }
     public long changeInWorkingCapital { get; set; }
-    public int accountsReceivables { get; set; }
-    public int inventory { get; set; }
+    public long accountsReceivables { get; set; }
+    public long inventory { get; set; }
     public object accountsPayables { get; set; }
     public object otherWorkingCapital { get; set; }
     public long otherNonCashItems { get; set; }
     public object netCashProvidedByOperatingActivities { get; set; }
-    public int investmentsInPropertyPlantAndEquipment { get; set; }
-    public int acquisitionsNet { get; set; }
-    public int purchasesOfInvestments { get; set; }
+    public long investmentsInPropertyPlantAndEquipment { get; set; }
+    public long acquisitionsNet { get; set; }
+    public long purchasesOfInvestments { get; set; }
     public object salesMaturitiesOfInvestments { get; set; }
-    public int otherInvestingActivites { get; set; }
-    public int netCashUsedForInvestingActivites { get; set; }
-    public int debtRepayment { get; set; }
-    public int commonStockIssued { get; set; }
-    public int commonStockRepurchased { get; set; }
-    public int dividendsPaid { get; set; }
-    public int otherFinancingActivites { get; set; }
-    public int netCashUsedProvidedByFinancingActivities { get; set; }
-    public int effectOfForexChangesOnCash { get; set; }
+    public long otherInvestingActivites { get; set; }
+    public long netCashUsedForInvestingActivites { get; set; }
+    public long debtRepayment { get; set; }
+    public long commonStockIssued { get; set; }
+    public long commonStockRepurchased { get; set; }
+    public long dividendsPaid { get; set; }
+    public long otherFinancingActivites { get; set; }
+    public long netCashUsedProvidedByFinancingActivities { get; set; }
+    public long effectOfForexChangesOnCash { get; set; }
     public object netChangeInCash { get; set; }
     public object cashAtEndOfPeriod { get; set; }
     public object cashAtBeginningOfPeriod { get; set; }
     public object operatingCashFlow { get; set; }
-    public int capitalExpenditure { get; set; }
+    public long capitalExpenditure { get; set; }
     public object freeCashFlow { get; set; }
     public string link { get; set; }
     public string finalLink { get; set; }
