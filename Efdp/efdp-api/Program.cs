@@ -9,8 +9,8 @@ internal class Program
 
         var summaries = new[]
         {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+        };
 
         app.MapGet("/weatherforecast", () =>
         {
@@ -36,7 +36,7 @@ internal class Program
             var balanceSheetResponseDict = await FetchFmpResponses(httpClient, stockSymbols, baseUrl, apiKey);
 
             // Step 2: Serialize the responses into balanceSheetStatementDict
-            var balanceSheetStatementDict = DeserializeBalanceSheetResponses(balanceSheetResponseDict);
+            var balanceSheetStatementDict = DeserializeFmpResponses<BalanceSheetStatement>(balanceSheetResponseDict);
 
             // Step 3: Create symbols table
             List<string> symbolsTable = CreateSymbolsTable(balanceSheetStatementDict);
@@ -52,8 +52,8 @@ internal class Program
 
             return Results.Ok(balanceSheetStatementDict);
         })
-     .WithName("GetBalanceSheetStatement")
-     .WithOpenApi();
+        .WithName("GetBalanceSheetStatement")
+        .WithOpenApi();
 
         app.MapGet("/balance-sheet-statement-mock", () =>
         {
@@ -95,39 +95,33 @@ internal class Program
         .WithOpenApi(); ;
 
         app.MapGet("/cash-flow-statement", async (HttpClient httpClient, string[] stockSymbols) =>
-             {
-                 string apiKey = "14e7a22ed6110f130afa41af05599bb6";
-                 string baseUrl = "https://financialmodelingprep.com/api/v3/cash-flow-statement/";
+        {
+            string apiKey = "14e7a22ed6110f130afa41af05599bb6";
+            string baseUrl = "https://financialmodelingprep.com/api/v3/cash-flow-statement/";
 
-                 // Step 1: Call the API for every symbol and store results in balanceSheetResponseDict
-                 Dictionary<string, string> balanceSheetResponseDict = await FetchFmpResponses(httpClient, stockSymbols, baseUrl, apiKey);
-                 foreach (var entry in balanceSheetResponseDict)
-                 {
-                     Console.WriteLine($"Symbol: {entry.Key}");
-                     Console.WriteLine("Cash Flow Statement Data:");
-                     Console.WriteLine(entry.Value); // Assuming the value is a serialized JSON string
-                     Console.WriteLine("-------------------------------------------------");
-                 }
+            // Step 1: Call the API for every symbol and store results in balanceSheetResponseDict
+            Dictionary<string, string> cashFlowResponseDict = await FetchFmpResponses(httpClient, stockSymbols, baseUrl, apiKey);
+        
+            // Step 2: Serialize the responses into balanceSheetStatementDict
+            var cashFlowStatementDict = DeserializeFmpResponses<CashFlowStatement>(cashFlowResponseDict);
 
-                 // // Step 2: Serialize the responses into balanceSheetStatementDict
-                 // var balanceSheetStatementDict = DeserializeBalanceSheetResponses(balanceSheetResponseDict);
+            // TODO
+            // // Step 3: Create symbols table
+            //List<string> symbolsTable = CreateSymbolsTable(cashFlowStatementDict);
 
-                 // // Step 3: Create symbols table
-                 // List<string> symbolsTable = CreateSymbolsTable(balanceSheetStatementDict);
+            // // Step 4: Interpolate data
+            // List<string> interpolatedSymbolsTable = InterpolateSymbolsTable(symbolsTable);
 
-                 // // Step 4: Interpolate data
-                 // List<string> interpolatedSymbolsTable = InterpolateSymbolsTable(symbolsTable);
+            // // Step 5:
+            // ChartData chartData = CreateChartData(interpolatedSymbolsTable);
 
-                 // // Step 5:
-                 // ChartData chartData = CreateChartData(interpolatedSymbolsTable);
-
-                 return Results.Ok("TODO");
-             })
-          .WithName("GetCashFlowStatement")
-          .WithOpenApi();
+            return Results.Ok(cashFlowStatementDict);
+        })
+        .WithName("GetCashFlowStatement")
+        .WithOpenApi();
 
         app.MapGet("/cash-flow-statement-mock", () =>
-       {
+        {
            // Define the path to the MockResponses directory
            string mockDirectory = Path.Combine(Directory.GetCurrentDirectory(), "MockResponses", "cash-flow-statement");
 
@@ -161,7 +155,7 @@ internal class Program
 
            // Return the response as JSON
            return Results.Json(cashFlowResponseDict);
-       })
+        })
        .WithName("GetCashFlowStatementMock")
        .WithOpenApi(); ;
 
@@ -339,27 +333,23 @@ internal class Program
         return responseDict;
     }
 
-    /// <summary>
-    /// Step 2: Deserialize the API responses into balance sheet statement objects.
-    /// </summary>
-    static Dictionary<string, List<BalanceSheetStatement>> DeserializeBalanceSheetResponses(Dictionary<string, string> balanceSheetResponseDict)
+    static Dictionary<string, List<T>> DeserializeFmpResponses<T>(Dictionary<string, string> responseDict)
     {
-        var balanceSheetStatementDict = new Dictionary<string, List<BalanceSheetStatement>>();
+        var responseDictTyped = new Dictionary<string, List<T>>();
 
-        foreach (var entry in balanceSheetResponseDict)
+        foreach (var entry in responseDict)
         {
-            var balanceSheets = System.Text.Json.JsonSerializer.Deserialize<List<BalanceSheetStatement>>(entry.Value);
-            if (balanceSheets != null)
+            // Deserialize the JSON string into a list of the specified type T
+            var deserializedList = System.Text.Json.JsonSerializer.Deserialize<List<T>>(entry.Value);
+            if (deserializedList != null)
             {
-                balanceSheetStatementDict[entry.Key] = balanceSheets;
+                responseDictTyped[entry.Key] = deserializedList;
             }
         }
-        return balanceSheetStatementDict;
+
+        return responseDictTyped;
     }
 
-    /// <summary>
-    /// Step 3: Extract all date attributes into the labels variable.
-    /// </summary>
     static Dictionary<string, List<string>> ExtractLabels(Dictionary<string, List<BalanceSheetStatement>> balanceSheetStatementDict)
     {
         var labels = new Dictionary<string, List<string>>();
@@ -371,9 +361,6 @@ internal class Program
         return labels;
     }
 
-    /// <summary>
-    /// Step 4: Fill out the retainedEarningsDict from balanceSheetStatementDict.
-    /// </summary>
     static Dictionary<string, List<long>> FillRetainedEarningsDict(Dictionary<string, List<BalanceSheetStatement>> balanceSheetStatementDict)
     {
         var retainedEarningsDict = new Dictionary<string, List<long>>();
@@ -406,14 +393,6 @@ internal class Program
             }
         }
     }
-
-    //private static void DiagOutput(List<string> symbolTable)
-    //{
-    //    foreach (var row in symbolTable)
-    //    {
-    //        Console.WriteLine(row);
-    //    }
-    //}
 
     private static void DiagOutput(List<string> symbolTable)
     {
