@@ -44,42 +44,10 @@ internal class Program
             // Step 4: Interpolate data
             List<string> interpolatedSymbolsTable = InterpolateSymbolsTable(symbolsTable);
 
-            // Extract the header row (which contains the labels/dates)
-            var headerRow = interpolatedSymbolsTable[0].Split('\t').Skip(1).ToArray(); // Skip the "Symbol" column
+            // Step 5:
+            ChartData chartData = CreateChartData(interpolatedSymbolsTable);
 
-            // Prepare the datasets based on the interpolated symbols table data
-            var colors = Helpers.GetRandomRgbColors(interpolatedSymbolsTable.Count - 1); // Skip the header row
-
-            var datasets = interpolatedSymbolsTable.Skip(1) // Skip the header row
-                .Select((row, index) =>
-                {
-                    var columns = row.Split('\t');
-                    var symbol = columns[0];  // The first column is the stock symbol
-                    var data = columns.Skip(1) // Skip the symbol
-                        .Select(val => string.IsNullOrWhiteSpace(val) || val == "" ? (long?)null : long.Parse(val))
-                        .ToArray();
-
-                    return new Dataset(
-                        Label: symbol, // Stock symbol is used as the label for the dataset
-                        Data: data,    // Interpolated retained earnings values
-                        BorderColor: colors[index],
-                        BackgroundColor: colors[index].Replace("1)", "0.2)"),
-                        YAxisID: "y-axis-1",
-                        Hidden: false,
-                        BorderWidth: 1
-                    );
-                })
-                .ToArray();
-
-            // TODO remove later
-            // Create the RetainedEarningsResponse 
-            var labelsAsDict = ExtractLabels(balanceSheetStatementDict);
-            var labels = labelsAsDict.SelectMany(x => x.Value).Distinct().OrderBy(date => date).ToArray();
-            var retainedEarningsData2 = new RetainedEarningsResponse(
-                Labels: labels,
-                Datasets: datasets
-            );
-
+           
             //DiagOutput(labels, datasets);
             //DiagOutput(interpolatedSymbolsTable);
 
@@ -87,7 +55,7 @@ internal class Program
 
             return processingInUi
                 ? Results.Ok(balanceSheetStatementDict)
-                : Results.Ok(retainedEarningsData2);
+                : Results.Ok(chartData);
         })
      .WithName("GetBalanceSheetStatement")
      .WithOpenApi();
@@ -130,6 +98,43 @@ internal class Program
    });
 
         app.Run();
+    }
+
+    private static ChartData CreateChartData(List<string> interpolatedSymbolsTable)
+    {
+        // Prepare the datasets based on the interpolated symbols table data
+        var colors = Helpers.GetRandomRgbColors(interpolatedSymbolsTable.Count - 1); // Skip the header row
+        // Extract the header row (which contains the labels/dates)
+        var labels = interpolatedSymbolsTable[0].Split('\t').Skip(1).ToArray(); // Skip the "Symbol" column
+        var datasets = interpolatedSymbolsTable.Skip(1) // Skip the header row
+            .Select((row, index) =>
+            {
+                var columns = row.Split('\t');
+                var symbol = columns[0];  // The first column is the stock symbol
+                var data = columns.Skip(1) // Skip the symbol
+                    .Select(val => string.IsNullOrWhiteSpace(val) || val == "" ? (long?)null : long.Parse(val))
+                    .ToArray();
+
+                return new Dataset(
+                    Label: symbol, // Stock symbol is used as the label for the dataset
+                    Data: data,    // Interpolated retained earnings values
+                    BorderColor: colors[index],
+                    BackgroundColor: colors[index].Replace("1)", "0.2)"),
+                    YAxisID: "y-axis-1",
+                    Hidden: false,
+                    BorderWidth: 1
+                );
+            })
+            .ToArray();
+
+        //
+        var chartData = new ChartData(
+            Labels: labels,
+            Datasets: datasets
+        );
+
+        return chartData;
+
     }
 
     /// <summary>
@@ -386,7 +391,7 @@ record Dataset(
     int BorderWidth
 );
 
-record RetainedEarningsResponse(
+record ChartData(
     string[] Labels,
     Dataset[] Datasets
 );
