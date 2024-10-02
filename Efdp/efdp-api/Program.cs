@@ -1,3 +1,6 @@
+using System.IO;
+using System.Text.Json;
+
 internal class Program
 {
     private static void Main(string[] args)
@@ -85,13 +88,50 @@ internal class Program
             //DiagOutput(interpolatedSymbolsTable);
 
             bool processingInUi = false;
-            
-            return processingInUi 
+
+            return processingInUi
                 ? Results.Ok(balanceSheetStatementDict)
                 : Results.Ok(retainedEarningsData2);
         })
      .WithName("GetBalanceSheetStatement")
      .WithOpenApi();
+
+        app.MapGet("/balance-sheet-statement-mock", () =>
+   {
+       // Define the path to the MockResponses directory
+       string mockDirectory = Path.Combine(Directory.GetCurrentDirectory(), "MockResponses", "balance-sheet-statement");
+
+       // Check if the directory exists
+       if (!Directory.Exists(mockDirectory))
+       {
+           return Results.NotFound("MockResponses directory not found.");
+       }
+
+       // Prepare a dictionary to hold the mock responses
+       var balanceSheetResponseDict = new Dictionary<string, List<BalanceSheetStatement>>();
+
+       // Get all the files in the directory (assuming .json files)
+       var files = Directory.GetFiles(mockDirectory, "*.json");
+
+       foreach (var file in files)
+       {
+           // Extract the symbol from the file name (assuming the file name follows a certain pattern)
+           var fileName = Path.GetFileNameWithoutExtension(file); // e.g., "AAPL.json" -> "AAPL"
+           string jsonContent = File.ReadAllText(file); // Read the file content
+
+           // Deserialize the content into a list of BalanceSheetStatement objects
+           var balanceSheetStatements = JsonSerializer.Deserialize<List<BalanceSheetStatement>>(jsonContent);
+
+           // Add the deserialized content to the response dictionary
+           if (balanceSheetStatements != null)
+           {
+               balanceSheetResponseDict[fileName] = balanceSheetStatements;
+           }
+       }
+
+       // Return the response as JSON
+       return Results.Json(balanceSheetResponseDict);
+   });
 
         app.Run();
     }
