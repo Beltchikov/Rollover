@@ -4,7 +4,7 @@ import Area1 from './Area1';
 import Area2 from './Area2';
 import Area3 from './Area3';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchRetainedEarnings, fetchAllData } from '../store';
+import { fetchAllData } from '../store';
 
 function MainContent() {
   const dispatch = useDispatch();
