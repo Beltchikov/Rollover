@@ -40,7 +40,10 @@ internal class Program
             var balanceSheetStatementDict = DeserializeFmpResponses<BalanceSheetStatement>(balanceSheetResponseDict);
 
             // Step 3: Create symbols table
-            List<string> symbolsTable = CreateSymbolsTableBalanceSheet(balanceSheetStatementDict, bss => bss.retainedEarnings);
+            List<string> symbolsTable = CreateSymbolsTable<BalanceSheetStatement>(
+                balanceSheetStatementDict,
+                bss => bss.retainedEarnings,
+                bss => bss.date);
 
             // Step 4: Interpolate data
             List<string> interpolatedSymbolsTable = InterpolateSymbolsTable(symbolsTable);
@@ -107,7 +110,10 @@ internal class Program
             var cashFlowStatementDict = DeserializeFmpResponses<CashFlowStatement>(cashFlowResponseDict);
 
             // Step 3: Create symbols tables
-            List<string> symbolsTableFreeCashFlow = CreateSymbolsTableCashFlow(cashFlowStatementDict, s => s.operatingCashFlow + s.capitalExpenditure);
+            List<string> symbolsTableFreeCashFlow = CreateSymbolsTable<CashFlowStatement>(
+                cashFlowStatementDict,
+                s => s.operatingCashFlow + s.capitalExpenditure,
+                s => s.date);
 
             // Step 4: Interpolate data
             List<string> interpolatedSymbolsTable = InterpolateSymbolsTable(symbolsTableFreeCashFlow);
@@ -261,107 +267,161 @@ internal class Program
     }
 
 
-    static List<string> CreateSymbolsTableBalanceSheet(
-        Dictionary<string, List<BalanceSheetStatement>> balanceSheetStatementDict,
-        Func<BalanceSheetStatement, long> selector)
+    // static List<string> CreateSymbolsTableBalanceSheet(
+    //     Dictionary<string, List<BalanceSheetStatement>> balanceSheetStatementDict,
+    //     Func<BalanceSheetStatement, long> selector)
+    // {
+    //     var labelsAsDict = ExtractLabels<BalanceSheetStatement>(balanceSheetStatementDict, bs=>bs.date);
+    //     var labels = labelsAsDict.SelectMany(x => x.Value).Distinct().OrderBy(date => date).ToArray();
+
+    //     // Ensure unique and sorted labels
+    //     var uniqueLabels = labels.Distinct().OrderBy(x => x).ToList();
+
+    //     // Initialize the table
+    //     var symbolsTable = new List<string>();
+
+    //     // Create header with "Symbol" followed by the labels (dates)
+    //     var header = "Symbol" + "\t" + string.Join("\t", uniqueLabels);
+    //     symbolsTable.Add(header);
+
+    //     // Iterate over the stock symbols (keys of balanceSheetStatementDict)
+    //     foreach (var symbol in balanceSheetStatementDict.Keys)
+    //     {
+    //         // Start with the symbol name
+    //         var row = symbol;
+
+    //         // Get the balance sheet data for the current symbol
+    //         var balanceSheetStatements = balanceSheetStatementDict[symbol];
+
+    //         // Iterate over unique labels (dates)
+    //         foreach (var label in uniqueLabels)
+    //         {
+    //             // Try to find the retained earnings for the current label (date)
+    //             var balanceSheet = balanceSheetStatements.FirstOrDefault(bs => bs.date == label);
+
+    //             if (balanceSheet != null)
+    //             {
+    //                 // If found, add the retained earnings to the row
+    //                 row += "\t" + selector(balanceSheet);
+    //             }
+    //             else
+    //             {
+    //                 // If not found, add "NULL"
+    //                 row += "\t";
+    //             }
+    //         }
+
+    //         // Add the completed row to the table
+    //         symbolsTable.Add(row);
+    //     }
+
+    //     return symbolsTable;
+    // }
+
+    // static List<string> CreateSymbolsTableCashFlow(
+    //     Dictionary<string, List<CashFlowStatement>> cashFlowStatementDict,
+    //     Func<CashFlowStatement, long> selector)
+    // {
+    //     var labelsAsDict = ExtractLabels<CashFlowStatement>(cashFlowStatementDict, cfs => cfs.date);
+    //     var labels = labelsAsDict.SelectMany(x => x.Value).Distinct().OrderBy(date => date).ToArray();
+
+    //     // Ensure unique and sorted labels
+    //     var uniqueLabels = labels.Distinct().OrderBy(x => x).ToList();
+
+    //     // Initialize the table
+    //     var symbolsTable = new List<string>();
+
+    //     // Create header with "Symbol" followed by the labels (dates)
+    //     var header = "Symbol" + "\t" + string.Join("\t", uniqueLabels);
+    //     symbolsTable.Add(header);
+
+    //     // Iterate over the stock symbols (keys of statement)
+    //     foreach (var symbol in cashFlowStatementDict.Keys)
+    //     {
+    //         // Start with the symbol name
+    //         var row = symbol;
+
+    //         // Get the balance sheet data for the current symbol
+    //         var cashFlowStatements = cashFlowStatementDict[symbol];
+
+    //         // Iterate over unique labels (dates)
+    //         foreach (var label in uniqueLabels)
+    //         {
+    //             // Try to find the retained earnings for the current label (date)
+    //             var cashFlowStatement = cashFlowStatements.FirstOrDefault(bs => bs.date == label);
+
+    //             if (cashFlowStatement != null)
+    //             {
+    //                 // If found, add the retained earnings to the row
+    //                 row += "\t" + selector(cashFlowStatement);
+    //             }
+    //             else
+    //             {
+    //                 // If not found, add "NULL"
+    //                 row += "\t";
+    //             }
+    //         }
+
+    //         // Add the completed row to the table
+    //         symbolsTable.Add(row);
+    //     }
+
+    //     return symbolsTable;
+    // }
+
+    static List<string> CreateSymbolsTable<T>(
+    Dictionary<string, List<T>> statementDict,
+    Func<T, long> financialAttributeSelector,
+    Func<T, string> dateSelector)
+{
+    // Extract labels (dates) using the dateSelector
+    var labelsAsDict = ExtractLabels(statementDict, dateSelector);
+    var labels = labelsAsDict.SelectMany(x => x.Value).Distinct().OrderBy(date => date).ToArray();
+
+    // Ensure unique and sorted labels
+    var uniqueLabels = labels.Distinct().OrderBy(x => x).ToList();
+
+    // Initialize the table
+    var symbolsTable = new List<string>();
+
+    // Create header with "Symbol" followed by the labels (dates)
+    var header = "Symbol" + "\t" + string.Join("\t", uniqueLabels);
+    symbolsTable.Add(header);
+
+    // Iterate over the stock symbols (keys of statementDict)
+    foreach (var symbol in statementDict.Keys)
     {
-        var labelsAsDict = ExtractLabels<BalanceSheetStatement>(balanceSheetStatementDict, bs=>bs.date);
-        var labels = labelsAsDict.SelectMany(x => x.Value).Distinct().OrderBy(date => date).ToArray();
+        // Start with the symbol name
+        var row = symbol;
 
-        // Ensure unique and sorted labels
-        var uniqueLabels = labels.Distinct().OrderBy(x => x).ToList();
+        // Get the statement data for the current symbol
+        var statements = statementDict[symbol];
 
-        // Initialize the table
-        var symbolsTable = new List<string>();
-
-        // Create header with "Symbol" followed by the labels (dates)
-        var header = "Symbol" + "\t" + string.Join("\t", uniqueLabels);
-        symbolsTable.Add(header);
-
-        // Iterate over the stock symbols (keys of balanceSheetStatementDict)
-        foreach (var symbol in balanceSheetStatementDict.Keys)
+        // Iterate over unique labels (dates)
+        foreach (var label in uniqueLabels)
         {
-            // Start with the symbol name
-            var row = symbol;
+            // Try to find the statement for the current label (date)
+            var statement = statements.FirstOrDefault(s => dateSelector(s) == label);
 
-            // Get the balance sheet data for the current symbol
-            var balanceSheetStatements = balanceSheetStatementDict[symbol];
-
-            // Iterate over unique labels (dates)
-            foreach (var label in uniqueLabels)
+            if (statement != null)
             {
-                // Try to find the retained earnings for the current label (date)
-                var balanceSheet = balanceSheetStatements.FirstOrDefault(bs => bs.date == label);
-
-                if (balanceSheet != null)
-                {
-                    // If found, add the retained earnings to the row
-                    row += "\t" + selector(balanceSheet);
-                }
-                else
-                {
-                    // If not found, add "NULL"
-                    row += "\t";
-                }
+                // If found, add the selected value to the row
+                row += "\t" + financialAttributeSelector(statement);
             }
-
-            // Add the completed row to the table
-            symbolsTable.Add(row);
+            else
+            {
+                // If not found, add an empty value
+                row += "\t";
+            }
         }
 
-        return symbolsTable;
+        // Add the completed row to the table
+        symbolsTable.Add(row);
     }
 
-    static List<string> CreateSymbolsTableCashFlow(
-        Dictionary<string, List<CashFlowStatement>> cashFlowStatementDict,
-        Func<CashFlowStatement, long> selector)
-    {
-        var labelsAsDict = ExtractLabels<CashFlowStatement>(cashFlowStatementDict, cfs => cfs.date);
-        var labels = labelsAsDict.SelectMany(x => x.Value).Distinct().OrderBy(date => date).ToArray();
+    return symbolsTable;
+}
 
-        // Ensure unique and sorted labels
-        var uniqueLabels = labels.Distinct().OrderBy(x => x).ToList();
-
-        // Initialize the table
-        var symbolsTable = new List<string>();
-
-        // Create header with "Symbol" followed by the labels (dates)
-        var header = "Symbol" + "\t" + string.Join("\t", uniqueLabels);
-        symbolsTable.Add(header);
-
-        // Iterate over the stock symbols (keys of statement)
-        foreach (var symbol in cashFlowStatementDict.Keys)
-        {
-            // Start with the symbol name
-            var row = symbol;
-
-            // Get the balance sheet data for the current symbol
-            var cashFlowStatements = cashFlowStatementDict[symbol];
-
-            // Iterate over unique labels (dates)
-            foreach (var label in uniqueLabels)
-            {
-                // Try to find the retained earnings for the current label (date)
-                var cashFlowStatement = cashFlowStatements.FirstOrDefault(bs => bs.date == label);
-
-                if (cashFlowStatement != null)
-                {
-                    // If found, add the retained earnings to the row
-                    row += "\t" + selector(cashFlowStatement);
-                }
-                else
-                {
-                    // If not found, add "NULL"
-                    row += "\t";
-                }
-            }
-
-            // Add the completed row to the table
-            symbolsTable.Add(row);
-        }
-
-        return symbolsTable;
-    }
 
     async static Task<Dictionary<string, string>> FetchFmpResponses(HttpClient httpClient, string[] stockSymbols, string baseUrl, string apiKey)
     {
