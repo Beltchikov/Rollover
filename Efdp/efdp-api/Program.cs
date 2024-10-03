@@ -1,4 +1,3 @@
-using System.IO;
 using System.Text.Json;
 using Generated;
 
@@ -6,7 +5,16 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        string apiKey = "14e7a22ed6110f130afa41af05599bb6";
+        _= args;
+        
+        // Get API key from environment variables
+        var apiKeyFmp = Environment.GetEnvironmentVariable("API_KEY_FMP");
+        if (string.IsNullOrEmpty(apiKeyFmp))
+        {
+            throw new InvalidOperationException(
+                "The environment variable 'API_KEY_FMP' was not found. Run setx API_KEY_FMP value and restart the process.");
+        }
+
         string baseUrl = "https://financialmodelingprep.com/api/v3";
 
         WebApplication app = Helpers.BuildWebApplication();
@@ -14,7 +22,7 @@ internal class Program
         app.MapGet("/balance-sheet-statement", async (HttpClient httpClient, string[] stockSymbols) =>
         {
             string url = $"{baseUrl}/balance-sheet-statement/";
-            var balanceSheetResponseDict = await FetchFmpResponses(httpClient, stockSymbols, url, apiKey);
+            var balanceSheetResponseDict = await FetchFmpResponses(httpClient, stockSymbols, url, apiKeyFmp);
             var balanceSheetStatementDict = DeserializeFmpResponses<BalanceSheetStatement>(balanceSheetResponseDict);
             return Results.Ok(balanceSheetStatementDict);
         })
@@ -24,7 +32,7 @@ internal class Program
         app.MapGet("/cash-flow-statement", async (HttpClient httpClient, string[] stockSymbols) =>
         {
             string url = $"{baseUrl}/cash-flow-statement/";
-            Dictionary<string, string> cashFlowResponseDict = await FetchFmpResponses(httpClient, stockSymbols, url, apiKey);
+            Dictionary<string, string> cashFlowResponseDict = await FetchFmpResponses(httpClient, stockSymbols, url, apiKeyFmp);
             var cashFlowStatementDict = DeserializeFmpResponses<CashFlowStatement>(cashFlowResponseDict);
             return Results.Ok(cashFlowStatementDict);
         })
