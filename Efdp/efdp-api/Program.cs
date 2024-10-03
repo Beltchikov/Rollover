@@ -7,13 +7,13 @@ internal class Program
     private static void Main(string[] args)
     {
         string apiKey = "14e7a22ed6110f130afa41af05599bb6";
-        
+        string baseUrl = "https://financialmodelingprep.com/api/v3";
+
         WebApplication app = Helpers.BuildWebApplication();
 
         app.MapGet("/balance-sheet-statement", async (HttpClient httpClient, string[] stockSymbols) =>
         {
-            string url = "https://financialmodelingprep.com/api/v3/balance-sheet-statement/";
-
+            string url = $"{baseUrl}/balance-sheet-statement/";
             var balanceSheetResponseDict = await FetchFmpResponses(httpClient, stockSymbols, url, apiKey);
             var balanceSheetStatementDict = DeserializeFmpResponses<BalanceSheetStatement>(balanceSheetResponseDict);
             return Results.Ok(balanceSheetStatementDict);
@@ -23,11 +23,9 @@ internal class Program
 
         app.MapGet("/cash-flow-statement", async (HttpClient httpClient, string[] stockSymbols) =>
         {
-            string url = "https://financialmodelingprep.com/api/v3/cash-flow-statement/";
-
+            string url = $"{baseUrl}/cash-flow-statement/";
             Dictionary<string, string> cashFlowResponseDict = await FetchFmpResponses(httpClient, stockSymbols, url, apiKey);
             var cashFlowStatementDict = DeserializeFmpResponses<CashFlowStatement>(cashFlowResponseDict);
-
             return Results.Ok(cashFlowStatementDict);
         })
        .WithName("GetCashFlowStatement")
