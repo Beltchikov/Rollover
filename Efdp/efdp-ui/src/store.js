@@ -6,7 +6,7 @@ import { fetchBalanceSheetStatementMockData } from './Api/balance-sheet-statemen
 import { fetchCashFlowStatementData } from './Api/cash-flow-statement-endpoint';
 import { fetchCashFlowStatementMockData } from './Api/cash-flow-statement-mock-endpoint';
 import { getRandomColor } from './helpers'
-import { createSymbolsTable, interpolateSymbolsTable, createChartData } from './Api/responseProcessing'
+import { createSymbolsTableBalanceSheet, interpolateSymbolsTable, createChartData } from './Api/responseProcessing'
 
 // Define the initial state for the data
 const initialState = {
@@ -233,7 +233,7 @@ const globalSlice = createSlice({
 
             state.balanceSheetStatementDict = action.payload;
 
-            var symbolsTable = createSymbolsTable(state.balanceSheetStatementDict);
+            var symbolsTable = createSymbolsTableBalanceSheet(state.balanceSheetStatementDict);
             var interpolatedsymbolsTable = interpolateSymbolsTable(symbolsTable);
             var chartData = createChartData(interpolatedsymbolsTable, getRandomColor);
 
@@ -243,7 +243,7 @@ const globalSlice = createSlice({
             state.cashFlowStatementDict = action.payload;
             console.log('state.cashFlowStatementDict:', state.cashFlowStatementDict);
 
-            const symbolsTable = createSymbolsTable(action.payload);
+            const symbolsTable = createSymbolsTableBalanceSheet(action.payload);
             // const interpolatedSymbolsTable = interpolateSymbolsTable(symbolsTable);
             // const chartData = createChartData(interpolatedSymbolsTable, getRandomColor);
 

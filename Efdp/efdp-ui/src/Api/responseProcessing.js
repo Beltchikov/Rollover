@@ -1,4 +1,4 @@
-export function createSymbolsTable(balanceSheetStatementDict) {
+export function createSymbolsTableBalanceSheet(balanceSheetStatementDict) {
     // Extract and sort unique labels (dates)
     const uniqueLabels = Object.values(balanceSheetStatementDict)
         .flatMap(statements => statements.map(bs => bs.date))
