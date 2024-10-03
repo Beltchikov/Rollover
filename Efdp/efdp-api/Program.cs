@@ -53,6 +53,10 @@ internal class Program
        .WithName("GetCashFlowStatement")
        .WithOpenApi();
 
+        app.MapGet("/income-statement-mock", () => GetMockStatements<IncomeStatement>("income-statement"))
+        .WithName("IncomeStatementMock")
+        .WithOpenApi();
+        
         app.MapGet("/balance-sheet-statement-mock", () => GetMockStatements<BalanceSheetStatement>("balance-sheet-statement"))
         .WithName("GetBalanceSheetStatementMock")
         .WithOpenApi();
@@ -60,7 +64,7 @@ internal class Program
         app.MapGet("/cash-flow-statement-mock", () => GetMockStatements<CashFlowStatement>("cash-flow-statement"))
         .WithName("GetCashFlowStatementMock")
         .WithOpenApi();
-       
+
         app.Run();
     }
 
