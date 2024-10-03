@@ -21,9 +21,6 @@ export function createSymbolsTableBalanceSheet(balanceSheetStatementDict, select
         for (const label of uniqueLabels) {
             // Try to find the balance sheet statement for the current label (date)
             const balanceSheet = balanceSheetStatementDict[symbol].find(bs => bs.date === label);
-
-            // Add retained earnings if found, otherwise add empty value
-            //row.push(balanceSheet ? balanceSheet.retainedEarnings : "");
             row.push(balanceSheet ? selector(balanceSheet) : "");
         }
 
