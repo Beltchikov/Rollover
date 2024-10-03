@@ -8,6 +8,43 @@ internal class Program
     {
         WebApplication app = Helpers.BuildWebApplication();
 
+        app.MapGet("/balance-sheet-statement", async (HttpClient httpClient, string[] stockSymbols) =>
+        {
+            string apiKey = "14e7a22ed6110f130afa41af05599bb6";
+            string baseUrl = "https://financialmodelingprep.com/api/v3/balance-sheet-statement/";
+
+            var balanceSheetResponseDict = await FetchFmpResponses(httpClient, stockSymbols, baseUrl, apiKey);
+            var balanceSheetStatementDict = DeserializeFmpResponses<BalanceSheetStatement>(balanceSheetResponseDict);
+            return Results.Ok(balanceSheetStatementDict);
+        })
+        .WithName("GetBalanceSheetStatement")
+        .WithOpenApi();
+
+        app.MapGet("/cash-flow-statement", async (HttpClient httpClient, string[] stockSymbols) =>
+        {
+            string apiKey = "14e7a22ed6110f130afa41af05599bb6";
+            string baseUrl = "https://financialmodelingprep.com/api/v3/cash-flow-statement/";
+
+            Dictionary<string, string> cashFlowResponseDict = await FetchFmpResponses(httpClient, stockSymbols, baseUrl, apiKey);
+            var cashFlowStatementDict = DeserializeFmpResponses<CashFlowStatement>(cashFlowResponseDict);
+
+            return Results.Ok(cashFlowStatementDict);
+        })
+       .WithName("GetCashFlowStatement")
+       .WithOpenApi();
+
+        app.MapGet("/income-statement-mock", () => GetMockStatements<IncomeStatement>("income-statement"))
+        .WithName("IncomeStatementMock")
+        .WithOpenApi();
+
+        app.MapGet("/balance-sheet-statement-mock", () => GetMockStatements<BalanceSheetStatement>("balance-sheet-statement"))
+        .WithName("GetBalanceSheetStatementMock")
+        .WithOpenApi();
+
+        app.MapGet("/cash-flow-statement-mock", () => GetMockStatements<CashFlowStatement>("cash-flow-statement"))
+        .WithName("GetCashFlowStatementMock")
+        .WithOpenApi();
+
         var summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -26,43 +63,6 @@ internal class Program
             return forecast;
         })
         .WithName("GetWeatherForecast")
-        .WithOpenApi();
-
-        app.MapGet("/balance-sheet-statement", async (HttpClient httpClient, string[] stockSymbols) =>
-        {
-            string apiKey = "14e7a22ed6110f130afa41af05599bb6";
-            string baseUrl = "https://financialmodelingprep.com/api/v3/balance-sheet-statement/";
-
-            var balanceSheetResponseDict = await FetchFmpResponses(httpClient, stockSymbols, baseUrl, apiKey);
-            var balanceSheetStatementDict = DeserializeFmpResponses<BalanceSheetStatement>(balanceSheetResponseDict);
-            return Results.Ok(balanceSheetStatementDict);
-        })
-        .WithName("GetBalanceSheetStatement")
-        .WithOpenApi();
-
-        app.MapGet("/cash-flow-statement", async (HttpClient httpClient, string[] stockSymbols) =>
-       {
-           string apiKey = "14e7a22ed6110f130afa41af05599bb6";
-           string baseUrl = "https://financialmodelingprep.com/api/v3/cash-flow-statement/";
-
-           Dictionary<string, string> cashFlowResponseDict = await FetchFmpResponses(httpClient, stockSymbols, baseUrl, apiKey);
-           var cashFlowStatementDict = DeserializeFmpResponses<CashFlowStatement>(cashFlowResponseDict);
-
-           return Results.Ok(cashFlowStatementDict);
-       })
-       .WithName("GetCashFlowStatement")
-       .WithOpenApi();
-
-        app.MapGet("/income-statement-mock", () => GetMockStatements<IncomeStatement>("income-statement"))
-        .WithName("IncomeStatementMock")
-        .WithOpenApi();
-        
-        app.MapGet("/balance-sheet-statement-mock", () => GetMockStatements<BalanceSheetStatement>("balance-sheet-statement"))
-        .WithName("GetBalanceSheetStatementMock")
-        .WithOpenApi();
-        
-        app.MapGet("/cash-flow-statement-mock", () => GetMockStatements<CashFlowStatement>("cash-flow-statement"))
-        .WithName("GetCashFlowStatementMock")
         .WithOpenApi();
 
         app.Run();
