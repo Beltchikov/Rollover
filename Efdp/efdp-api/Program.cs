@@ -6,11 +6,12 @@ internal class Program
 {
     private static void Main(string[] args)
     {
+        string apiKey = "14e7a22ed6110f130afa41af05599bb6";
+        
         WebApplication app = Helpers.BuildWebApplication();
 
         app.MapGet("/balance-sheet-statement", async (HttpClient httpClient, string[] stockSymbols) =>
         {
-            string apiKey = "14e7a22ed6110f130afa41af05599bb6";
             string baseUrl = "https://financialmodelingprep.com/api/v3/balance-sheet-statement/";
 
             var balanceSheetResponseDict = await FetchFmpResponses(httpClient, stockSymbols, baseUrl, apiKey);
@@ -22,7 +23,6 @@ internal class Program
 
         app.MapGet("/cash-flow-statement", async (HttpClient httpClient, string[] stockSymbols) =>
         {
-            string apiKey = "14e7a22ed6110f130afa41af05599bb6";
             string baseUrl = "https://financialmodelingprep.com/api/v3/cash-flow-statement/";
 
             Dictionary<string, string> cashFlowResponseDict = await FetchFmpResponses(httpClient, stockSymbols, baseUrl, apiKey);
