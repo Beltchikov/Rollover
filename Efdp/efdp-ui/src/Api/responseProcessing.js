@@ -1,35 +1,92 @@
-export function createSymbolsTableBalanceSheet(balanceSheetStatementDict, selector) {
-    // Extract and sort unique labels (dates)
-    const uniqueLabels = Object.values(balanceSheetStatementDict)
-        .flatMap(statements => statements.map(bs => bs.date))
-        .filter((value, index, self) => self.indexOf(value) === index) // Unique values
-        .sort(); // Sort the dates
+// export function createSymbolsTableBalanceSheet(balanceSheetStatementDict, selector) {
+//     // Extract and sort unique labels (dates)
+//     const uniqueLabels = Object.values(balanceSheetStatementDict)
+//         .flatMap(statements => statements.map(bs => bs.date))
+//         .filter((value, index, self) => self.indexOf(value) === index) // Unique values
+//         .sort(); // Sort the dates
 
-    // Initialize the table with the header row
+//     // Initialize the table with the header row
+//     const symbolsTable = [];
+
+//     // Create header with "Symbol" followed by the labels (dates)
+//     const header = ["Symbol", ...uniqueLabels].join("\t");
+//     symbolsTable.push(header);
+
+//     // Iterate over each stock symbol in the balanceSheetStatementDict
+//     for (const symbol in balanceSheetStatementDict) {
+//         // Start the row with the symbol name
+//         let row = [symbol];
+
+//         // Iterate over unique labels (dates)
+//         for (const label of uniqueLabels) {
+//             // Try to find the balance sheet statement for the current label (date)
+//             const balanceSheet = balanceSheetStatementDict[symbol].find(bs => bs.date === label);
+//             row.push(balanceSheet ? selector(balanceSheet) : "");
+//         }
+
+//         // Add the row to the table
+//         symbolsTable.push(row.join("\t"));
+//     }
+
+//     return symbolsTable;
+// }
+
+function extractLabels(statementDict, dateSelector) {
+    const labels = {};
+
+    // Iterate over the keys (symbols) in the dictionary
+    for (const [key, statements] of Object.entries(statementDict)) {
+        // Use the dateSelector to extract the date and store it in the labels object
+        labels[key] = statements.map(dateSelector);
+    }
+
+    return labels;
+}
+
+export function createSymbolsTable(statementDict, financialAttributeSelector, dateSelector) {
+    // Extract labels (dates) using the dateSelector
+    const labelsAsDict = extractLabels(statementDict, dateSelector);
+    const labels = Object.values(labelsAsDict).flat().filter((v, i, a) => a.indexOf(v) === i).sort();
+
+    // Ensure unique and sorted labels
+    const uniqueLabels = [...new Set(labels)].sort();
+
+    // Initialize the table
     const symbolsTable = [];
 
     // Create header with "Symbol" followed by the labels (dates)
     const header = ["Symbol", ...uniqueLabels].join("\t");
     symbolsTable.push(header);
 
-    // Iterate over each stock symbol in the balanceSheetStatementDict
-    for (const symbol in balanceSheetStatementDict) {
-        // Start the row with the symbol name
-        let row = [symbol];
+    // Iterate over the stock symbols (keys of statementDict)
+    for (const symbol in statementDict) {
+        // Start with the symbol name
+        let row = symbol;
+
+        // Get the statement data for the current symbol
+        const statements = statementDict[symbol];
 
         // Iterate over unique labels (dates)
         for (const label of uniqueLabels) {
-            // Try to find the balance sheet statement for the current label (date)
-            const balanceSheet = balanceSheetStatementDict[symbol].find(bs => bs.date === label);
-            row.push(balanceSheet ? selector(balanceSheet) : "");
+            // Try to find the statement for the current label (date)
+            const statement = statements.find(s => dateSelector(s) === label);
+
+            if (statement) {
+                // If found, add the selected value to the row
+                row += "\t" + financialAttributeSelector(statement);
+            } else {
+                // If not found, add an empty value
+                row += "\t";
+            }
         }
 
-        // Add the row to the table
-        symbolsTable.push(row.join("\t"));
+        // Add the completed row to the table
+        symbolsTable.push(row);
     }
 
     return symbolsTable;
 }
+
 
 export function interpolateSymbolsTable(symbolsTable) {
     const interpolatedTable = [symbolsTable[0]]; // Copy the header row

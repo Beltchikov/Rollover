@@ -6,7 +6,7 @@ import { fetchBalanceSheetStatementMockData } from './Api/balance-sheet-statemen
 import { fetchCashFlowStatementData } from './Api/cash-flow-statement-endpoint';
 import { fetchCashFlowStatementMockData } from './Api/cash-flow-statement-mock-endpoint';
 import { getRandomColor } from './helpers'
-import { createSymbolsTableBalanceSheet, interpolateSymbolsTable, createChartData } from './Api/responseProcessing'
+import { createSymbolsTable, interpolateSymbolsTable, createChartData } from './Api/responseProcessing'
 
 // Define the initial state for the data
 const initialState = {
@@ -233,7 +233,7 @@ const globalSlice = createSlice({
 
             state.balanceSheetStatementDict = action.payload;
 
-            var symbolsTable = createSymbolsTableBalanceSheet(state.balanceSheetStatementDict, bs => bs.retainedEarnings);
+            var symbolsTable = createSymbolsTable(state.balanceSheetStatementDict, bs => bs.retainedEarnings, bs=>bs.date);
             var interpolatedsymbolsTable = interpolateSymbolsTable(symbolsTable);
             var chartData = createChartData(interpolatedsymbolsTable, getRandomColor);
 
@@ -243,7 +243,7 @@ const globalSlice = createSlice({
             state.cashFlowStatementDict = action.payload;
             console.log('state.cashFlowStatementDict:', state.cashFlowStatementDict);
 
-            const symbolsTable = createSymbolsTableBalanceSheet(action.payload);
+            const symbolsTable = createSymbolsTable(state.cashFlowStatementDict, s=>s.operatingCashFlow + s.capitalExpenditure, s=>s.date);
             // const interpolatedSymbolsTable = interpolateSymbolsTable(symbolsTable);
             // const chartData = createChartData(interpolatedSymbolsTable, getRandomColor);
 
