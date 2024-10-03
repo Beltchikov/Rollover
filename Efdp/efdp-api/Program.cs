@@ -178,20 +178,6 @@ record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }
 
-record Dataset(
-    string Label,
-    long?[] Data,
-    string BorderColor,
-    string BackgroundColor,
-    string YAxisID,
-    bool Hidden,
-    int BorderWidth
-);
-
-record ChartData(
-    string[] Labels,
-    Dataset[] Datasets
-);
 
 
 
