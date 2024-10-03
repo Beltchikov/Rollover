@@ -243,12 +243,15 @@ const globalSlice = createSlice({
             state.cashFlowStatementDict = action.payload;
             console.log('state.cashFlowStatementDict:', state.cashFlowStatementDict);
 
-            const symbolsTable = createSymbolsTable(state.cashFlowStatementDict, s=>s.operatingCashFlow + s.capitalExpenditure, s=>s.date);
-            // const interpolatedSymbolsTable = interpolateSymbolsTable(symbolsTable);
-            // const chartData = createChartData(interpolatedSymbolsTable, getRandomColor);
+            const symbolsTable = createSymbolsTable(
+                state.cashFlowStatementDict, 
+                s=>s.operatingCashFlow + s.capitalExpenditure, 
+                s=>s.date);
+            const interpolatedSymbolsTable = interpolateSymbolsTable(symbolsTable);
+            const chartData = createChartData(interpolatedSymbolsTable, getRandomColor);
 
-            // state.area1.dataFcf = chartData; // Assuming the dataFcf field in area1 is for free cash flow
-        });;
+            state.area1.dataFcf = chartData; // Assuming the dataFcf field in area1 is for free cash flow
+        });
     },
 });
 
