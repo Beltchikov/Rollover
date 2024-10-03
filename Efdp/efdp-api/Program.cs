@@ -107,19 +107,15 @@ internal class Program
             var cashFlowStatementDict = DeserializeFmpResponses<CashFlowStatement>(cashFlowResponseDict);
 
             // Step 3: Create symbols tables
-            List<string> symbolsTableOperatingCashFlow = CreateSymbolsTableCashFlow(cashFlowStatementDict, s=>s.operatingCashFlow);
-            List<string> symbolsTableCapitalExpenditure = CreateSymbolsTableCashFlow(cashFlowStatementDict, s=>s.capitalExpenditure);
-
-            // TODO
-            //MergeSymbolTables((v1,v2)=> v1- v2))
-
+            List<string> symbolsTableFreeCashFlow = CreateSymbolsTableCashFlow(cashFlowStatementDict, s=>s.operatingCashFlow + s.capitalExpenditure);
+          
             // // Step 4: Interpolate data
             // List<string> interpolatedSymbolsTable = InterpolateSymbolsTable(symbolsTable);
 
             // // Step 5:
             // ChartData chartData = CreateChartData(interpolatedSymbolsTable);
 
-            return Results.Ok(symbolsTableCapitalExpenditure);
+            return Results.Ok(symbolsTableFreeCashFlow);
         })
         .WithName("GetCashFlowStatement")
         .WithOpenApi();
