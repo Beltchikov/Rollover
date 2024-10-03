@@ -41,32 +41,7 @@ const initialState = {
                 },
             ]
         },
-        dataFcf: {
-            labels: [
-                '2009-09-26', '2009-12-31', '2010-06-30', '2010-09-25', '2010-12-31',
-                // other labels...
-            ],
-            datasets: [
-                {
-                    label: 'NVDA',
-                    data: [253146000, 417118000, 581090000, 571813000, 562536000],
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    yAxisID: 'y-axis-1',
-                    hidden: false,
-                    borderWidth: 1,
-                },
-                {
-                    label: 'GOOG',
-                    data: [16348000000, 17913000000, 19478000000, 16070000000, 21699000000],
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    yAxisID: 'y-axis-1',
-                    hidden: false,
-                    borderWidth: 1,
-                },
-            ]
-        },
+        dataFcf: null,
     },
     area2: {
         dataFcfCapExRatio: {
@@ -196,7 +171,6 @@ export const fetchFreeCashFlow = createAsyncThunk(
         const response = USE_MOCK_RESPONSES
             ? await fetchCashFlowStatementMockData(EFDP_API_BASE_URL)
             : await fetchCashFlowStatementData(stockSymbols, EFDP_API_BASE_URL);
-
         return response;
     }
 );
@@ -233,25 +207,24 @@ const globalSlice = createSlice({
 
             state.balanceSheetStatementDict = action.payload;
 
-            var symbolsTable = createSymbolsTable(state.balanceSheetStatementDict, bs => bs.retainedEarnings, bs=>bs.date);
+            var symbolsTable = createSymbolsTable(state.balanceSheetStatementDict, bs => bs.retainedEarnings, bs => bs.date);
             var interpolatedsymbolsTable = interpolateSymbolsTable(symbolsTable);
             var chartData = createChartData(interpolatedsymbolsTable, getRandomColor);
 
             state.area2.dataRetainedEarnings = chartData;
         })
-        .addCase(fetchFreeCashFlow.fulfilled, (state, action) => {
-            state.cashFlowStatementDict = action.payload;
-            console.log('state.cashFlowStatementDict:', state.cashFlowStatementDict);
+            .addCase(fetchFreeCashFlow.fulfilled, (state, action) => {
+                state.cashFlowStatementDict = action.payload;
+               
+                const symbolsTable = createSymbolsTable(
+                    state.cashFlowStatementDict,
+                    s => s.operatingCashFlow + s.capitalExpenditure,
+                    s => s.date);
+                const interpolatedSymbolsTable = interpolateSymbolsTable(symbolsTable);
+                const chartData = createChartData(interpolatedSymbolsTable, getRandomColor);
 
-            const symbolsTable = createSymbolsTable(
-                state.cashFlowStatementDict, 
-                s=>s.operatingCashFlow + s.capitalExpenditure, 
-                s=>s.date);
-            const interpolatedSymbolsTable = interpolateSymbolsTable(symbolsTable);
-            const chartData = createChartData(interpolatedSymbolsTable, getRandomColor);
-
-            state.area1.dataFcf = chartData; // Assuming the dataFcf field in area1 is for free cash flow
-        });
+                state.area1.dataFcf = chartData; // Assuming the dataFcf field in area1 is for free cash flow
+            });
     },
 });
 
