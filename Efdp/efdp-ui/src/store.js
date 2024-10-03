@@ -238,7 +238,17 @@ const globalSlice = createSlice({
             var chartData = createChartData(interpolatedsymbolsTable, getRandomColor);
 
             state.area2.dataRetainedEarnings = chartData;
-        });
+        })
+        .addCase(fetchFreeCashFlow.fulfilled, (state, action) => {
+            state.cashFlowStatementDict = action.payload;
+            console.log('state.cashFlowStatementDict:', state.cashFlowStatementDict);
+
+            const symbolsTable = createSymbolsTable(action.payload);
+            // const interpolatedSymbolsTable = interpolateSymbolsTable(symbolsTable);
+            // const chartData = createChartData(interpolatedSymbolsTable, getRandomColor);
+
+            // state.area1.dataFcf = chartData; // Assuming the dataFcf field in area1 is for free cash flow
+        });;
     },
 });
 

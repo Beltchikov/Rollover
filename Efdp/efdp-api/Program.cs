@@ -109,13 +109,13 @@ internal class Program
             // Step 3: Create symbols tables
             List<string> symbolsTableFreeCashFlow = CreateSymbolsTableCashFlow(cashFlowStatementDict, s=>s.operatingCashFlow + s.capitalExpenditure);
           
-            // // Step 4: Interpolate data
-            // List<string> interpolatedSymbolsTable = InterpolateSymbolsTable(symbolsTable);
+            // Step 4: Interpolate data
+            List<string> interpolatedSymbolsTable = InterpolateSymbolsTable(symbolsTableFreeCashFlow);
 
-            // // Step 5:
-            // ChartData chartData = CreateChartData(interpolatedSymbolsTable);
+            // Step 5:
+            ChartData chartData = CreateChartData(interpolatedSymbolsTable);
 
-            return Results.Ok(symbolsTableFreeCashFlow);
+            return Results.Ok(cashFlowStatementDict);
         })
         .WithName("GetCashFlowStatement")
         .WithOpenApi();
