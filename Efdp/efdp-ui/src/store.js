@@ -233,7 +233,7 @@ const globalSlice = createSlice({
 
             state.balanceSheetStatementDict = action.payload;
 
-            var symbolsTable = createSymbolsTableBalanceSheet(state.balanceSheetStatementDict);
+            var symbolsTable = createSymbolsTableBalanceSheet(state.balanceSheetStatementDict, bs => bs.retainedEarnings);
             var interpolatedsymbolsTable = interpolateSymbolsTable(symbolsTable);
             var chartData = createChartData(interpolatedsymbolsTable, getRandomColor);
 

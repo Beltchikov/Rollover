@@ -1,4 +1,4 @@
-export function createSymbolsTableBalanceSheet(balanceSheetStatementDict) {
+export function createSymbolsTableBalanceSheet(balanceSheetStatementDict, selector) {
     // Extract and sort unique labels (dates)
     const uniqueLabels = Object.values(balanceSheetStatementDict)
         .flatMap(statements => statements.map(bs => bs.date))
@@ -23,7 +23,8 @@ export function createSymbolsTableBalanceSheet(balanceSheetStatementDict) {
             const balanceSheet = balanceSheetStatementDict[symbol].find(bs => bs.date === label);
 
             // Add retained earnings if found, otherwise add empty value
-            row.push(balanceSheet ? balanceSheet.retainedEarnings : "");
+            //row.push(balanceSheet ? balanceSheet.retainedEarnings : "");
+            row.push(balanceSheet ? selector(balanceSheet) : "");
         }
 
         // Add the row to the table
