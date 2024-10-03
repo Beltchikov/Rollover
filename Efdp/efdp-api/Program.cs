@@ -40,7 +40,7 @@ internal class Program
             var balanceSheetStatementDict = DeserializeFmpResponses<BalanceSheetStatement>(balanceSheetResponseDict);
 
             // Step 3: Create symbols table
-            List<string> symbolsTable = CreateSymbolsTableBalanceSheet(balanceSheetStatementDict,bss=>bss.retainedEarnings);
+            List<string> symbolsTable = CreateSymbolsTableBalanceSheet(balanceSheetStatementDict, bss => bss.retainedEarnings);
 
             // Step 4: Interpolate data
             List<string> interpolatedSymbolsTable = InterpolateSymbolsTable(symbolsTable);
@@ -102,13 +102,13 @@ internal class Program
 
             // Step 1: Call the API for every symbol and store results in balanceSheetResponseDict
             Dictionary<string, string> cashFlowResponseDict = await FetchFmpResponses(httpClient, stockSymbols, baseUrl, apiKey);
-        
+
             // Step 2: Serialize the responses into balanceSheetStatementDict
             var cashFlowStatementDict = DeserializeFmpResponses<CashFlowStatement>(cashFlowResponseDict);
 
             // Step 3: Create symbols tables
-            List<string> symbolsTableFreeCashFlow = CreateSymbolsTableCashFlow(cashFlowStatementDict, s=>s.operatingCashFlow + s.capitalExpenditure);
-          
+            List<string> symbolsTableFreeCashFlow = CreateSymbolsTableCashFlow(cashFlowStatementDict, s => s.operatingCashFlow + s.capitalExpenditure);
+
             // Step 4: Interpolate data
             List<string> interpolatedSymbolsTable = InterpolateSymbolsTable(symbolsTableFreeCashFlow);
 
@@ -122,39 +122,39 @@ internal class Program
 
         app.MapGet("/cash-flow-statement-mock", () =>
         {
-           // Define the path to the MockResponses directory
-           string mockDirectory = Path.Combine(Directory.GetCurrentDirectory(), "MockResponses", "cash-flow-statement");
+            // Define the path to the MockResponses directory
+            string mockDirectory = Path.Combine(Directory.GetCurrentDirectory(), "MockResponses", "cash-flow-statement");
 
-           // Check if the directory exists
-           if (!Directory.Exists(mockDirectory))
-           {
-               return Results.NotFound("MockResponses directory not found.");
-           }
+            // Check if the directory exists
+            if (!Directory.Exists(mockDirectory))
+            {
+                return Results.NotFound("MockResponses directory not found.");
+            }
 
-           // Prepare a dictionary to hold the mock responses
-           var cashFlowResponseDict = new Dictionary<string, List<CashFlowStatement>>();
+            // Prepare a dictionary to hold the mock responses
+            var cashFlowResponseDict = new Dictionary<string, List<CashFlowStatement>>();
 
-           // Get all the files in the directory (assuming .json files)
-           var files = Directory.GetFiles(mockDirectory, "*.json");
+            // Get all the files in the directory (assuming .json files)
+            var files = Directory.GetFiles(mockDirectory, "*.json");
 
-           foreach (var file in files)
-           {
-               // Extract the symbol from the file name (assuming the file name follows a certain pattern)
-               var fileName = Path.GetFileNameWithoutExtension(file); // e.g., "AAPL.json" -> "AAPL"
-               string jsonContent = File.ReadAllText(file); // Read the file content
+            foreach (var file in files)
+            {
+                // Extract the symbol from the file name (assuming the file name follows a certain pattern)
+                var fileName = Path.GetFileNameWithoutExtension(file); // e.g., "AAPL.json" -> "AAPL"
+                string jsonContent = File.ReadAllText(file); // Read the file content
 
-               // Deserialize the content into a list of BalanceSheetStatement objects
-               var cashFlowStatements = JsonSerializer.Deserialize<List<CashFlowStatement>>(jsonContent);
+                // Deserialize the content into a list of BalanceSheetStatement objects
+                var cashFlowStatements = JsonSerializer.Deserialize<List<CashFlowStatement>>(jsonContent);
 
-               // Add the deserialized content to the response dictionary
-               if (cashFlowStatements != null)
-               {
-                   cashFlowResponseDict[fileName] = cashFlowStatements;
-               }
-           }
+                // Add the deserialized content to the response dictionary
+                if (cashFlowStatements != null)
+                {
+                    cashFlowResponseDict[fileName] = cashFlowStatements;
+                }
+            }
 
-           // Return the response as JSON
-           return Results.Json(cashFlowResponseDict);
+            // Return the response as JSON
+            return Results.Json(cashFlowResponseDict);
         })
        .WithName("GetCashFlowStatementMock")
        .WithOpenApi(); ;
@@ -265,7 +265,7 @@ internal class Program
         Dictionary<string, List<BalanceSheetStatement>> balanceSheetStatementDict,
         Func<BalanceSheetStatement, long> selector)
     {
-        var labelsAsDict = ExtractLabelsBalanceSheet(balanceSheetStatementDict);
+        var labelsAsDict = ExtractLabels<BalanceSheetStatement>(balanceSheetStatementDict, bs=>bs.date);
         var labels = labelsAsDict.SelectMany(x => x.Value).Distinct().OrderBy(date => date).ToArray();
 
         // Ensure unique and sorted labels
@@ -316,7 +316,7 @@ internal class Program
         Dictionary<string, List<CashFlowStatement>> cashFlowStatementDict,
         Func<CashFlowStatement, long> selector)
     {
-        var labelsAsDict = ExtractLabelsCashFlow(cashFlowStatementDict);
+        var labelsAsDict = ExtractLabels<CashFlowStatement>(cashFlowStatementDict, cfs => cfs.date);
         var labels = labelsAsDict.SelectMany(x => x.Value).Distinct().OrderBy(date => date).ToArray();
 
         // Ensure unique and sorted labels
@@ -400,28 +400,21 @@ internal class Program
         return responseDictTyped;
     }
 
-    static Dictionary<string, List<string>> ExtractLabelsBalanceSheet(Dictionary<string, List<BalanceSheetStatement>> balanceSheetStatementDict)
+    static Dictionary<string, List<string>> ExtractLabels<T>(
+    Dictionary<string, List<T>> statementDict,
+    Func<T, string> dateSelector)
     {
         var labels = new Dictionary<string, List<string>>();
 
-        foreach (var entry in balanceSheetStatementDict)
+        foreach (var entry in statementDict)
         {
-            labels[entry.Key] = entry.Value.Select(bs => bs.date).ToList();
+            labels[entry.Key] = entry.Value.Select(dateSelector).ToList();
         }
+
         return labels;
     }
 
-    static Dictionary<string, List<string>> ExtractLabelsCashFlow(Dictionary<string, List<CashFlowStatement>> cashFlowStatementDict)
-    {
-        var labels = new Dictionary<string, List<string>>();
 
-        foreach (var entry in cashFlowStatementDict)
-        {
-            labels[entry.Key] = entry.Value.Select(bs => bs.date).ToList();
-        }
-        return labels;
-    }
-    
 
     static Dictionary<string, List<long>> FillRetainedEarningsDict(Dictionary<string, List<BalanceSheetStatement>> balanceSheetStatementDict)
     {
