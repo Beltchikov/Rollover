@@ -27,11 +27,8 @@ interface AreaState {
 interface GlobalState {
     symbolsInput: string;
     incomeStatementDict: Record<string, any>;
-    incomeStatementUpdated: Date;
     cashFlowStatementDict: Record<string, any>;
-    cashFlowStatementUpdated: Date;
     balanceSheetStatementDict: Record<string, any>;
-    balanceSheetStatementUpdated: Date;
     area1: {
         dataCagrFcf: AreaState;
         dataFcf: AreaState | null;  // Could be null initially
@@ -50,11 +47,8 @@ interface GlobalState {
 const initialState: GlobalState = {
     symbolsInput: 'NVDA\nMSFT\nGOOG',
     incomeStatementDict: {},
-    incomeStatementUpdated: new Date(),
     cashFlowStatementDict: {},
-    cashFlowStatementUpdated: new Date(),
     balanceSheetStatementDict: {},
-    balanceSheetStatementUpdated: new Date(),
     area1: {
         dataCagrFcf: {
             labels: ['2009-09-26', '2009-12-31', '2010-06-30', '2010-09-25', '2010-12-31'],
