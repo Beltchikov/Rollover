@@ -31,7 +31,7 @@ interface GlobalState {
     cashFlowStatementDict: Record<string, any>;
     cashFlowStatementUpdated: Date;
     balanceSheetStatementDict: Record<string, any>;
-    balanceSheetStatement: Date;
+    balanceSheetStatementUpdated: Date;
     area1: {
         dataCagrFcf: AreaState;
         dataFcf: AreaState | null;  // Could be null initially
@@ -54,7 +54,7 @@ const initialState: GlobalState = {
     cashFlowStatementDict: {},
     cashFlowStatementUpdated: new Date(),
     balanceSheetStatementDict: {},
-    balanceSheetStatement: new Date(),
+    balanceSheetStatementUpdated: new Date(),
     area1: {
         dataCagrFcf: {
             labels: ['2009-09-26', '2009-12-31', '2010-06-30', '2010-09-25', '2010-12-31'],
