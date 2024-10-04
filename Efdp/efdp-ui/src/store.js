@@ -137,8 +137,8 @@ export const fetchAllData = createAsyncThunk(
 
         // Dispatch both thunks (fetchRetainedEarnings and fetchFreeCashFlow)
         const [retainedEarningsResponse, freeCashFlowResponse] = await Promise.all([
-            dispatch(fetchRetainedEarnings()), // Dispatch retained earnings fetch
-            dispatch(fetchFreeCashFlow())      // Dispatch free cash flow fetch
+            dispatch(fetchBalanceSheetStatementDict()), // Dispatch retained earnings fetch
+            dispatch(fetchCashFlowStatementDict())      // Dispatch free cash flow fetch
         ]);
 
         // Combine the responses into one object
@@ -150,7 +150,7 @@ export const fetchAllData = createAsyncThunk(
 );
 
 // Create an async thunk for fetching retained earnings data
-export const fetchRetainedEarnings = createAsyncThunk(
+export const fetchBalanceSheetStatementDict = createAsyncThunk(
     'global/fetchRetainedEarnings',
     async (_, { getState }) => {
         const state = getState();
@@ -164,7 +164,7 @@ export const fetchRetainedEarnings = createAsyncThunk(
 );
 
 // Create an async thunk for fetching free cash flow data (empty body for now)
-export const fetchFreeCashFlow = createAsyncThunk(
+export const fetchCashFlowStatementDict = createAsyncThunk(
     'global/fetchFreeCashFlow',
     async (_, { getState }) => {
         const state = getState();
@@ -202,7 +202,7 @@ const globalSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(fetchRetainedEarnings.fulfilled, (state, action) => {
+        builder.addCase(fetchBalanceSheetStatementDict.fulfilled, (state, action) => {
             const filteredBalanceSheetStatementDict = filterStatementsOlderThan(action.payload, 10);
             state.balanceSheetStatementDict = filteredBalanceSheetStatementDict;
             
@@ -212,7 +212,7 @@ const globalSlice = createSlice({
 
             state.area2.dataRetainedEarnings = chartData;
         })
-            .addCase(fetchFreeCashFlow.fulfilled, (state, action) => {
+            .addCase(fetchCashFlowStatementDict.fulfilled, (state, action) => {
                 const filteredCashFlowStatementDict = filterStatementsOlderThan(action.payload, 10);
                 state.cashFlowStatementDict = filteredCashFlowStatementDict;
                 
