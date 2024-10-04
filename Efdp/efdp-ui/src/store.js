@@ -7,6 +7,7 @@ import { fetchCashFlowStatementData } from './Api/cash-flow-statement-endpoint';
 import { fetchCashFlowStatementMockData } from './Api/cash-flow-statement-mock-endpoint';
 import { getRandomColor } from './helpers'
 import { createSymbolsTable, interpolateSymbolsTable, createChartData } from './Api/responseProcessing'
+import dayjs from 'dayjs';
 
 // Define the initial state for the data
 const initialState = {
@@ -132,7 +133,7 @@ export const fetchAllData = createAsyncThunk(
     'global/fetchAllData',
     async (_, { dispatch, getState }) => {
         // Get state if needed
-        const state = getState();
+        //const state = getState();
 
         // Dispatch both thunks (fetchRetainedEarnings and fetchFreeCashFlow)
         const [retainedEarningsResponse, freeCashFlowResponse] = await Promise.all([
@@ -202,7 +203,8 @@ const globalSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(fetchRetainedEarnings.fulfilled, (state, action) => {
-            state.balanceSheetStatementDict = action.payload;
+            const filteredBalanceSheetStatementDict = filterStatementsOlderThan(action.payload, 10);
+            state.balanceSheetStatementDict = filteredBalanceSheetStatementDict;
             
             var symbolsTable = createSymbolsTable(state.balanceSheetStatementDict, bs => bs.retainedEarnings, bs => bs.date);
             var interpolatedsymbolsTable = interpolateSymbolsTable(symbolsTable);
@@ -211,7 +213,8 @@ const globalSlice = createSlice({
             state.area2.dataRetainedEarnings = chartData;
         })
             .addCase(fetchFreeCashFlow.fulfilled, (state, action) => {
-                state.cashFlowStatementDict = action.payload;
+                const filteredCashFlowStatementDict = filterStatementsOlderThan(action.payload, 10);
+                state.cashFlowStatementDict = filteredCashFlowStatementDict;
                 
                 const symbolsTable = createSymbolsTable(
                     state.cashFlowStatementDict,
@@ -224,6 +227,21 @@ const globalSlice = createSlice({
             });
     },
 });
+
+// Utility function to filter out statements older than X years
+function filterStatementsOlderThan(data, years) {
+    const currentDate = dayjs();  // Get the current date
+    const tenYearsAgo = currentDate.subtract(years, 'year');  // Calculate the cutoff date
+
+    // Filter out statements older than X years
+    return Object.keys(data).reduce((filteredDict, symbol) => {
+        const filteredStatements = data[symbol].filter(statement => dayjs(statement.date).isAfter(tenYearsAgo));
+        if (filteredStatements.length > 0) {
+            filteredDict[symbol] = filteredStatements;  // Only include if there are valid statements left
+        }
+        return filteredDict;
+    }, {});
+}
 
 // Export actions
 export const { updateSymbolsInput, toggleDatasetVisibility } = globalSlice.actions;
