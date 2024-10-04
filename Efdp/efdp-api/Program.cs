@@ -5,8 +5,8 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        _= args;
-        
+        _ = args;
+
         // Get API key from environment variables
         var apiKeyFmp = Environment.GetEnvironmentVariable("API_KEY_FMP");
         if (string.IsNullOrEmpty(apiKeyFmp))
@@ -16,28 +16,21 @@ internal class Program
         }
 
         string baseUrl = "https://financialmodelingprep.com/api/v3";
-
         WebApplication app = Helpers.BuildWebApplication();
 
         app.MapGet("/balance-sheet-statement", async (HttpClient httpClient, string[] stockSymbols) =>
         {
-            string url = $"{baseUrl}/balance-sheet-statement/";
-            var balanceSheetResponseDict = await FetchFmpResponses(httpClient, stockSymbols, url, apiKeyFmp);
-            var balanceSheetStatementDict = DeserializeFmpResponses<BalanceSheetStatement>(balanceSheetResponseDict);
-            return Results.Ok(balanceSheetStatementDict);
+            return await FetchAndReturnStatements<BalanceSheetStatement>(httpClient, stockSymbols, "balance-sheet-statement", baseUrl, apiKeyFmp);
         })
         .WithName("GetBalanceSheetStatement")
         .WithOpenApi();
 
         app.MapGet("/cash-flow-statement", async (HttpClient httpClient, string[] stockSymbols) =>
         {
-            string url = $"{baseUrl}/cash-flow-statement/";
-            Dictionary<string, string> cashFlowResponseDict = await FetchFmpResponses(httpClient, stockSymbols, url, apiKeyFmp);
-            var cashFlowStatementDict = DeserializeFmpResponses<CashFlowStatement>(cashFlowResponseDict);
-            return Results.Ok(cashFlowStatementDict);
+            return await FetchAndReturnStatements<CashFlowStatement>(httpClient, stockSymbols, "cash-flow-statement", baseUrl, apiKeyFmp);
         })
-       .WithName("GetCashFlowStatement")
-       .WithOpenApi();
+        .WithName("GetCashFlowStatement")
+        .WithOpenApi();
 
         app.MapGet("/income-statement-mock", () => GetMockStatements<IncomeStatement>("income-statement"))
         .WithName("IncomeStatementMock")
@@ -73,6 +66,15 @@ internal class Program
 
         app.Run();
     }
+
+    async static Task<IResult> FetchAndReturnStatements<T>(HttpClient httpClient, string[] stockSymbols, string urlPath, string baseUrl, string apiKeyFmp)
+    {
+        string url = $"{baseUrl}/{urlPath}/";
+        Dictionary<string, string> responseDict = await FetchFmpResponses(httpClient, stockSymbols, url, apiKeyFmp);
+        var statementDict = DeserializeFmpResponses<T>(responseDict);
+        return Results.Ok(statementDict);
+    }
+
 
     // Helper method to read mock responses from a directory
     static IResult GetMockStatements<T>(string statementType)
