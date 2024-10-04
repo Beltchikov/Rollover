@@ -1,6 +1,8 @@
 import { configureStore, createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { EFDP_API_BASE_URL, USE_MOCK_RESPONSES } from './config';
+import { fetchIncomeStatementMockData } from './Api/income-statement-mock-endpoint';
 import { fetchBalanceSheetStatementData } from './Api/balance-sheet-statement-endpoint';
+import { fetchIncomeStatementData } from './Api/income-statement-endpoint';
 import { fetchBalanceSheetStatementMockData } from './Api/balance-sheet-statement-mock-endpoint';
 import { fetchCashFlowStatementData } from './Api/cash-flow-statement-endpoint';
 import { fetchCashFlowStatementMockData } from './Api/cash-flow-statement-mock-endpoint';
@@ -36,7 +38,7 @@ interface GlobalState {
     area2: {
         dataFcfCapExRatio: AreaState;
         dataRetainedEarnings: AreaState | null;  // Could be null initially
-        dataGpm: AreaState;
+        dataGpm: AreaState | null;
     };
     area3: {
         dataLongTermDebtToEarnings: AreaState;
@@ -100,29 +102,7 @@ const initialState: GlobalState = {
             ],
         },
         dataRetainedEarnings: null,
-        dataGpm: {
-            labels: ['2009-09-26', '2009-12-31', '2010-06-30', '2010-09-25', '2010-12-31'],
-            datasets: [
-                {
-                    label: 'NVDA',
-                    data: [253146000, 417118000, 581090000, 571813000, 562536000],
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    yAxisID: 'y-axis-1',
-                    hidden: false,
-                    borderWidth: 1,
-                },
-                {
-                    label: 'GOOG',
-                    data: [16348000000, 17913000000, 19478000000, 16070000000, 21699000000],
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    yAxisID: 'y-axis-1',
-                    hidden: false,
-                    borderWidth: 1,
-                },
-            ],
-        },
+        dataGpm: null
     },
     area3: {
         dataLongTermDebtToEarnings: {
@@ -165,6 +145,31 @@ function filterStatementsOlderThan<T extends { date: string }>(data: Record<stri
     }, {});
 }
 
+// Combined thunk for fetching all data
+export const fetchAllData = createAsyncThunk(
+    'global/fetchAllData',
+    async (_, { dispatch }) => {
+        await dispatch(fetchIncomeStatementDict());
+        await dispatch(fetchBalanceSheetStatementDict());
+        await dispatch(fetchCashFlowStatementDict());
+    }
+);
+
+// Async thunk for fetching income statement data
+export const fetchIncomeStatementDict = createAsyncThunk(
+    'global/fetchIncomeStatementDict',
+    async (_, { getState }) => {
+        const state = getState() as { global: GlobalState };
+        const stockSymbols = state.global.symbolsInput.split('\n').map(symbol => symbol.trim()).filter(Boolean);
+
+        const response = USE_MOCK_RESPONSES
+            ? await fetchIncomeStatementMockData(EFDP_API_BASE_URL)
+            : await fetchIncomeStatementData(stockSymbols, EFDP_API_BASE_URL);
+
+        return response;
+    }
+);
+
 // Async thunk for fetching balance sheet data
 export const fetchBalanceSheetStatementDict = createAsyncThunk(
     'global/fetchBalanceSheetStatementDict',
@@ -195,17 +200,6 @@ export const fetchCashFlowStatementDict = createAsyncThunk(
     }
 );
 
-// Combined thunk for fetching all data
-export const fetchAllData = createAsyncThunk(
-    'global/fetchAllData',
-    async (_, { dispatch }) => {
-        // Fetch balance sheet data
-        await dispatch(fetchBalanceSheetStatementDict());
-        // Fetch cash flow data
-        await dispatch(fetchCashFlowStatementDict());
-    }
-);
-
 // Create a slice of the state
 const globalSlice = createSlice({
     name: 'global',
@@ -229,6 +223,20 @@ const globalSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
+        builder.addCase(fetchIncomeStatementDict.fulfilled, (state, action) => {
+            const filteredIncomeStatementDict = filterStatementsOlderThan(action.payload, 10);
+            state.incomeStatementDict = filteredIncomeStatementDict;
+
+            const symbolsTable = createSymbolsTable(
+                state.incomeStatementDict, 
+                (is: { grossProfit: number; revenue: number; }) => 
+                    Math.round(is.grossProfit * 100 / (is.revenue !== 0 ? is.revenue : 1)),
+                (is: { date: any; }) => is.date);
+            const interpolatedSymbolsTable = interpolateSymbolsTable(symbolsTable);
+            const chartData = createChartData(interpolatedSymbolsTable, getRandomColor);
+
+            state.area2.dataGpm = chartData;
+        });
         builder.addCase(fetchBalanceSheetStatementDict.fulfilled, (state, action) => {
             const filteredBalanceSheetStatementDict = filterStatementsOlderThan(action.payload, 10);
             state.balanceSheetStatementDict = filteredBalanceSheetStatementDict;

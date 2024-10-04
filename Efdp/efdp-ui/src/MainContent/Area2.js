@@ -37,7 +37,15 @@ function Area2() {
           <AdTeaser />  
         </div>
       )}
-      <EfdpChart title="Gross Profit Margin" data={dataGpm} areaKey="area2" chartKey="dataGpm" style={chartStyle}/>
+      {/* <EfdpChart title="Gross Profit Margin" data={dataGpm} areaKey="area2" chartKey="dataGpm" style={chartStyle}/> */}
+      {dataGpm ? (
+        <EfdpChart title="Gross Profit Margin" data={dataGpm} areaKey="area2" chartKey="dataGpm" style={chartStyle}/>
+      ) : (
+        <div style={area2Style}>
+          <div>Loading...</div>
+          <AdTeaser />  
+        </div>
+      )}
     </div>
   );
 }
