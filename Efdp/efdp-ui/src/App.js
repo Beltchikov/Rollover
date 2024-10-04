@@ -1,7 +1,7 @@
 // App.js
 import React from 'react';
 import { Provider } from 'react-redux';
-import { store } from './store';  // Import the store
+import { store } from './store.ts';  // Import the store
 import Banner from './Banner';
 import MainContent from './MainContent/MainContent';
 import Footer from './Footer';

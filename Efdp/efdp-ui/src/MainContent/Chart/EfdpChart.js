@@ -3,7 +3,7 @@ import './EfdpChart.css';
 import LineChartComponent from './LineChartComponent'; 
 import BarChartComponent from './BarChartComponent';
 import { useDispatch } from 'react-redux';
-import { toggleDatasetVisibility } from '../../store'; 
+import { toggleDatasetVisibility } from '../../store.ts'; 
 
 const EfdpChart = ({ type, title, data, areaKey, chartKey  }) => {
     const dispatch = useDispatch();

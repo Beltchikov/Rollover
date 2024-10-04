@@ -1,7 +1,7 @@
 // SymbolsInput.js
 import React, { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateSymbolsInput } from '../store';
+import { updateSymbolsInput } from '../store.ts';
 
 function SymbolsInput() {
   const dispatch = useDispatch();
