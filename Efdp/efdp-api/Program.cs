@@ -18,6 +18,13 @@ internal class Program
         string baseUrl = "https://financialmodelingprep.com/api/v3";
         WebApplication app = Helpers.BuildWebApplication();
 
+        app.MapGet("/income-statement", async (HttpClient httpClient, string[] stockSymbols) =>
+        {
+            return await FetchAndReturnStatements<IncomeStatement>(httpClient, stockSymbols, "income-statement", baseUrl, apiKeyFmp);
+        })
+        .WithName("GetIncomeStatement")
+        .WithOpenApi();
+        
         app.MapGet("/balance-sheet-statement", async (HttpClient httpClient, string[] stockSymbols) =>
         {
             return await FetchAndReturnStatements<BalanceSheetStatement>(httpClient, stockSymbols, "balance-sheet-statement", baseUrl, apiKeyFmp);
