@@ -202,11 +202,8 @@ const globalSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(fetchRetainedEarnings.fulfilled, (state, action) => {
-            console.log(`EFDP_API_BASE_URL:${EFDP_API_BASE_URL}`);
-            console.log(`USE_MOCK_RESPONSES:${USE_MOCK_RESPONSES}`);
-
             state.balanceSheetStatementDict = action.payload;
-
+            
             var symbolsTable = createSymbolsTable(state.balanceSheetStatementDict, bs => bs.retainedEarnings, bs => bs.date);
             var interpolatedsymbolsTable = interpolateSymbolsTable(symbolsTable);
             var chartData = createChartData(interpolatedsymbolsTable, getRandomColor);
@@ -215,7 +212,7 @@ const globalSlice = createSlice({
         })
             .addCase(fetchFreeCashFlow.fulfilled, (state, action) => {
                 state.cashFlowStatementDict = action.payload;
-               
+                
                 const symbolsTable = createSymbolsTable(
                     state.cashFlowStatementDict,
                     s => s.operatingCashFlow + s.capitalExpenditure,
