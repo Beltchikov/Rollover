@@ -254,12 +254,12 @@ const globalSlice = createSlice({
             const filteredCashFlowStatementDict = filterStatementsOlderThan(action.payload, 10);
             state.cashFlowStatementDict = filteredCashFlowStatementDict;
 
-            const symbolsTable = createSymbolsTable(
+            const symbolsTableFcf = createSymbolsTable(
                 state.cashFlowStatementDict,
                 (s: { operatingCashFlow: any; capitalExpenditure: any; }) => s.operatingCashFlow + s.capitalExpenditure,
                 (s: { date: any; }) => s.date
             );
-            const interpolatedSymbolsTable = interpolateSymbolsTable(symbolsTable);
+            const interpolatedSymbolsTable = interpolateSymbolsTable(symbolsTableFcf);
             const chartDataFcf = createChartData(interpolatedSymbolsTable, getRandomColor);
 
             state.area1.dataFcf = chartDataFcf;
