@@ -219,11 +219,24 @@ const globalSlice = createSlice({
                 (bs: { date: any }) => bs.date
             );
 
+            // TODO use datalongTermDebt to dataFcf instead of longTermDebt only
+
             state.area3.dataLongTermDebtToFcf = createChartDataForArea(
                 state.balanceSheetStatementDict,
                 (bs: { longTermDebt: any }) => bs.longTermDebt,
                 (bs: { date: any }) => bs.date
             );
+
+            const dataLongTermDebt = createChartDataForArea(
+                state.balanceSheetStatementDict,
+                (bs: { longTermDebt: any }) => bs.longTermDebt,
+                (bs: { date: any }) => bs.date
+            );
+
+            const dataFcf = state.area1.dataFcf;
+
+
+
         });
     },
 });
