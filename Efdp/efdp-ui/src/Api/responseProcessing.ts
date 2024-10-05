@@ -69,11 +69,13 @@ export function interpolateSymbolsTable(symbolsTable: string[]): string[] {
                 }
 
                 if (prevIndex >= 0 && nextIndex < values.length && values[prevIndex] !== null && values[nextIndex] !== null) {
-                    const prevValue = values[prevIndex];
-                    const nextValue = values[nextIndex];
+                    const prevValue : number | null = values[prevIndex];
+                    const nextValue: number | null = values[nextIndex];
                     const gap = nextIndex - prevIndex;
 
+                    if (prevValue !== null && nextValue !== null) {
                     values[j] = prevValue + ((nextValue - prevValue) * (j - prevIndex)) / gap;
+                    }
                 }
             }
         }
