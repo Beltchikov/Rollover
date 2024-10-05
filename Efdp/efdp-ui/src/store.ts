@@ -32,16 +32,16 @@ interface GlobalState {
     cashFlowStatementDict: Record<string, any>;
     balanceSheetStatementDict: Record<string, any>;
     area1: {
-        dataCagrFcf: AreaState;
-        dataFcf: AreaState | null;  // Could be null initially
+        dataCagrFcf: AreaState | null;
+        dataFcf: AreaState | null;  
     };
     area2: {
         dataFcfCapExRatio: AreaState;
-        dataRetainedEarnings: AreaState | null;  // Could be null initially
+        dataRetainedEarnings: AreaState | null;  
         dataGpm: AreaState | null;
     };
     area3: {
-        dataLongTermDebtToEarnings: AreaState;
+        dataLongTermDebtToEarnings: AreaState | null;
     };
 }
 
