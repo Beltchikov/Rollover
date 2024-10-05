@@ -212,18 +212,7 @@ const globalSlice = createSlice({
                 (is: { date: any }) => is.date
             );
         });
-    
-        builder.addCase(fetchBalanceSheetStatementDict.fulfilled, (state, action) => {
-            const filteredBalanceSheetStatementDict = filterStatementsOlderThan(action.payload, 10);
-            state.balanceSheetStatementDict = filteredBalanceSheetStatementDict;
-    
-            state.area2.dataRetainedEarnings = createChartDataForArea(
-                state.balanceSheetStatementDict,
-                (bs: { retainedEarnings: any }) => bs.retainedEarnings,
-                (bs: { date: any }) => bs.date
-            );
-        });
-    
+
         builder.addCase(fetchCashFlowStatementDict.fulfilled, (state, action) => {
             const filteredCashFlowStatementDict = filterStatementsOlderThan(action.payload, 10);
             state.cashFlowStatementDict = filteredCashFlowStatementDict;
@@ -239,6 +228,17 @@ const globalSlice = createSlice({
                 (s: { operatingCashFlow: number; capitalExpenditure: number; }) => 
                     Math.round((s.operatingCashFlow + s.capitalExpenditure) * -100 / (s.capitalExpenditure !== 0 ? s.capitalExpenditure : 1)),
                 (s: { date: any }) => s.date
+            );
+        });
+    
+        builder.addCase(fetchBalanceSheetStatementDict.fulfilled, (state, action) => {
+            const filteredBalanceSheetStatementDict = filterStatementsOlderThan(action.payload, 10);
+            state.balanceSheetStatementDict = filteredBalanceSheetStatementDict;
+    
+            state.area2.dataRetainedEarnings = createChartDataForArea(
+                state.balanceSheetStatementDict,
+                (bs: { retainedEarnings: any }) => bs.retainedEarnings,
+                (bs: { date: any }) => bs.date
             );
         });
     },
