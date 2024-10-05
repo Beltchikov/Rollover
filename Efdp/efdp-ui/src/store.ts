@@ -21,7 +21,7 @@ interface Dataset {
     borderWidth: number;
 }
 
-interface AreaState {
+interface ChartData {
     labels: string[];
     datasets: Dataset[];
 }
@@ -32,16 +32,16 @@ interface GlobalState {
     cashFlowStatementDict: Record<string, any>;
     balanceSheetStatementDict: Record<string, any>;
     area1: {
-        dataCagrFcf: AreaState | null;
-        dataFcf: AreaState | null;  
+        dataCagrFcf: ChartData | null;
+        dataFcf: ChartData | null;  
     };
     area2: {
-        dataFcfCapExRatio: AreaState | null;
-        dataRetainedEarnings: AreaState | null;  
-        dataGpm: AreaState | null;
+        dataFcfCapExRatio: ChartData | null;
+        dataRetainedEarnings: ChartData | null;  
+        dataGpm: ChartData | null;
     };
     area3: {
-        dataLongTermDebtToFcf: AreaState | null;
+        dataLongTermDebtToFcf: ChartData | null;
     };
 }
 
