@@ -28,7 +28,15 @@ function Area2() {
 
   return (
     <div style={area2Style}>
-      <EfdpChart title="FCF-CapEx-Ratio" data={dataFcfCapExRatio} areaKey="area2" chartKey="dataFcfCapExRatio" style={chartStyle}/>
+      {dataFcfCapExRatio ? (
+        <EfdpChart title="FCF-CapEx-Ratio" data={dataFcfCapExRatio} areaKey="area2" chartKey="dataFcfCapExRatio" style={chartStyle}/>
+      ) : (
+        <div style={area2Style}>
+          <div>Loading...</div>
+          <AdTeaser />  
+        </div>
+      )}
+
       {dataRetainedEarnings ? (
         <EfdpChart title="Retained Earnings" data={dataRetainedEarnings} areaKey="area2" chartKey="dataRetainedEarnings" style={chartStyle}/>
       ) : (
@@ -37,7 +45,7 @@ function Area2() {
           <AdTeaser />  
         </div>
       )}
-      {/* <EfdpChart title="Gross Profit Margin" data={dataGpm} areaKey="area2" chartKey="dataGpm" style={chartStyle}/> */}
+
       {dataGpm ? (
         <EfdpChart title="Gross Profit Margin" data={dataGpm} areaKey="area2" chartKey="dataGpm" style={chartStyle}/>
       ) : (
