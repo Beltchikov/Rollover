@@ -41,7 +41,7 @@ interface GlobalState {
         dataGpm: AreaState | null;
     };
     area3: {
-        dataLongTermDebtToEarnings: AreaState | null;
+        dataLongTermDebtToFcf: AreaState | null;
     };
 }
 
@@ -83,7 +83,7 @@ const initialState: GlobalState = {
         dataGpm: null
     },
     area3: {
-        dataLongTermDebtToEarnings: {
+        dataLongTermDebtToFcf: {
             labels: ['2009-09-26', '2009-12-31', '2010-06-30', '2010-09-25', '2010-12-31'],
             datasets: [
                 {
