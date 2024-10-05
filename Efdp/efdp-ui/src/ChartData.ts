@@ -1,6 +1,6 @@
-import { Dataset } from "./Dataset";
+import { ChartDataset } from "./ChartDataset";
 
 export interface ChartData {
     labels: string[];
-    datasets: Dataset[];
+    datasets: ChartDataset[];
 }

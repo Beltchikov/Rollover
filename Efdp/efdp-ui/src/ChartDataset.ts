@@ -1,5 +1,5 @@
 // Define interfaces for datasets and statements
-export interface Dataset {
+export interface ChartDataset {
     label: string;
     data: number[];
     borderColor: string;
