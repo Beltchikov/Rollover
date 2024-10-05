@@ -260,9 +260,9 @@ const globalSlice = createSlice({
                 (s: { date: any; }) => s.date
             );
             const interpolatedSymbolsTable = interpolateSymbolsTable(symbolsTable);
-            const chartData = createChartData(interpolatedSymbolsTable, getRandomColor);
+            const chartDataFcf = createChartData(interpolatedSymbolsTable, getRandomColor);
 
-            state.area1.dataFcf = chartData;
+            state.area1.dataFcf = chartDataFcf;
         });
     },
 });
