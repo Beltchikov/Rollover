@@ -226,46 +226,49 @@ const globalSlice = createSlice({
         builder.addCase(fetchIncomeStatementDict.fulfilled, (state, action) => {
             const filteredIncomeStatementDict = filterStatementsOlderThan(action.payload, 10);
             state.incomeStatementDict = filteredIncomeStatementDict;
-
-            const symbolsTable = createSymbolsTable(
-                state.incomeStatementDict, 
+    
+            state.area2.dataGpm = createChartDataForArea(
+                state.incomeStatementDict,
                 (is: { grossProfit: number; revenue: number; }) => 
                     Math.round(is.grossProfit * 100 / (is.revenue !== 0 ? is.revenue : 1)),
-                (is: { date: any; }) => is.date);
-            const interpolatedSymbolsTable = interpolateSymbolsTable(symbolsTable);
-            const chartData = createChartData(interpolatedSymbolsTable, getRandomColor);
-
-            state.area2.dataGpm = chartData;
+                (is: { date: any }) => is.date
+            );
         });
+    
         builder.addCase(fetchBalanceSheetStatementDict.fulfilled, (state, action) => {
             const filteredBalanceSheetStatementDict = filterStatementsOlderThan(action.payload, 10);
             state.balanceSheetStatementDict = filteredBalanceSheetStatementDict;
-
-            const symbolsTable = createSymbolsTable(
-                state.balanceSheetStatementDict, 
-                (bs: { retainedEarnings: any; }) => bs.retainedEarnings, 
-                (bs: { date: any; }) => bs.date);
-            const interpolatedSymbolsTable = interpolateSymbolsTable(symbolsTable);
-            const chartData = createChartData(interpolatedSymbolsTable, getRandomColor);
-
-            state.area2.dataRetainedEarnings = chartData;
+    
+            state.area2.dataRetainedEarnings = createChartDataForArea(
+                state.balanceSheetStatementDict,
+                (bs: { retainedEarnings: any }) => bs.retainedEarnings,
+                (bs: { date: any }) => bs.date
+            );
         });
+    
         builder.addCase(fetchCashFlowStatementDict.fulfilled, (state, action) => {
             const filteredCashFlowStatementDict = filterStatementsOlderThan(action.payload, 10);
             state.cashFlowStatementDict = filteredCashFlowStatementDict;
-
-            const symbolsTableFcf = createSymbolsTable(
+    
+            state.area1.dataFcf = createChartDataForArea(
                 state.cashFlowStatementDict,
                 (s: { operatingCashFlow: any; capitalExpenditure: any; }) => s.operatingCashFlow + s.capitalExpenditure,
-                (s: { date: any; }) => s.date
+                (s: { date: any }) => s.date
             );
-            const interpolatedSymbolsTable = interpolateSymbolsTable(symbolsTableFcf);
-            const chartDataFcf = createChartData(interpolatedSymbolsTable, getRandomColor);
-
-            state.area1.dataFcf = chartDataFcf;
         });
     },
 });
+
+const createChartDataForArea = (
+    statementDict: any, 
+    financialAttributeSelector: (item: any) => number, 
+    dateSelector: (item: any) => any
+) => {
+    const symbolsTable = createSymbolsTable(statementDict, financialAttributeSelector, dateSelector);
+    const interpolatedSymbolsTable = interpolateSymbolsTable(symbolsTable);
+    return createChartData(interpolatedSymbolsTable, getRandomColor);
+};
+
 
 // Export actions
 export const { updateSymbolsInput, toggleDatasetVisibility } = globalSlice.actions;
