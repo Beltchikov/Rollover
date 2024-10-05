@@ -18,11 +18,11 @@ interface GlobalState {
     balanceSheetStatementDict: Record<string, any>;
     area1: {
         dataCagrFcf: ChartData | null;
-        dataFcf: ChartData | null;  
+        dataFcf: ChartData | null;
     };
     area2: {
         dataFcfCapExRatio: ChartData | null;
-        dataRetainedEarnings: ChartData | null;  
+        dataRetainedEarnings: ChartData | null;
         dataGpm: ChartData | null;
     };
     area3: {
@@ -167,10 +167,10 @@ const globalSlice = createSlice({
         builder.addCase(fetchIncomeStatementDict.fulfilled, (state, action) => {
             const filteredIncomeStatementDict = filterStatementsOlderThan(action.payload, 10);
             state.incomeStatementDict = filteredIncomeStatementDict;
-    
+
             state.area2.dataGpm = createChartDataForArea(
                 state.incomeStatementDict,
-                (is: { grossProfit: number; revenue: number; }) => 
+                (is: { grossProfit: number; revenue: number; }) =>
                     Math.round(is.grossProfit * 100 / (is.revenue !== 0 ? is.revenue : 1)),
                 (is: { date: any }) => is.date
             );
@@ -179,7 +179,7 @@ const globalSlice = createSlice({
         builder.addCase(fetchCashFlowStatementDict.fulfilled, (state, action) => {
             const filteredCashFlowStatementDict = filterStatementsOlderThan(action.payload, 10);
             state.cashFlowStatementDict = filteredCashFlowStatementDict;
-    
+
             state.area1.dataFcf = createChartDataForArea(
                 state.cashFlowStatementDict,
                 (s: { operatingCashFlow: any; capitalExpenditure: any; }) => s.operatingCashFlow + s.capitalExpenditure,
@@ -188,41 +188,41 @@ const globalSlice = createSlice({
 
             state.area2.dataFcfCapExRatio = createChartDataForArea(
                 state.cashFlowStatementDict,
-                (s: { operatingCashFlow: number; capitalExpenditure: number; }) => 
+                (s: { operatingCashFlow: number; capitalExpenditure: number; }) =>
                     Math.round((s.operatingCashFlow + s.capitalExpenditure) * -100 / (s.capitalExpenditure !== 0 ? s.capitalExpenditure : 1)),
                 (s: { date: any }) => s.date
             );
         });
-    
+
         builder.addCase(fetchBalanceSheetStatementDict.fulfilled, (state, action) => {
             const filteredBalanceSheetStatementDict = filterStatementsOlderThan(action.payload, 10);
             state.balanceSheetStatementDict = filteredBalanceSheetStatementDict;
-    
+
             state.area2.dataRetainedEarnings = createChartDataForArea(
                 state.balanceSheetStatementDict,
                 (bs: { retainedEarnings: any }) => bs.retainedEarnings,
                 (bs: { date: any }) => bs.date
             );
 
-            // TODO use datalongTermDebt to dataFcf instead of longTermDebt only
-
+            // TODO Variant1: use datalongTermDebt to dataFcf instead of longTermDebt only
             state.area3.dataLongTermDebtToFcf = createChartDataForArea(
                 state.balanceSheetStatementDict,
                 (bs: { longTermDebt: any }) => bs.longTermDebt,
                 (bs: { date: any }) => bs.date
             );
 
-            const dataLongTermDebt:ChartData = createChartDataForArea(
+            const dataLongTermDebt: ChartData = createChartDataForArea(
                 state.balanceSheetStatementDict,
                 (bs: { longTermDebt: any }) => bs.longTermDebt,
                 (bs: { date: any }) => bs.date
             );
 
             const dataFcf: ChartData = state.area1.dataFcf ?? { labels: [], datasets: [] };
-            
-            // TODO
+
             //const dataLongTermDebtToFcf = computeChartData(dataLongTermDebt, dataFcf);
 
+            // TODO Variant2: 
+            //const dataLongTermDebtToFcfDict = computeDict(filteredBalanceSheetStatementDict, state.incomeStatementDict);
 
 
         });
@@ -230,8 +230,8 @@ const globalSlice = createSlice({
 });
 
 const createChartDataForArea = (
-    statementDict: any, 
-    financialAttributeSelector: (item: any) => number, 
+    statementDict: any,
+    financialAttributeSelector: (item: any) => number,
     dateSelector: (item: any) => any
 ) => {
     const symbolsTable = createSymbolsTable(statementDict, financialAttributeSelector, dateSelector);
