@@ -212,13 +212,16 @@ const globalSlice = createSlice({
                 (bs: { date: any }) => bs.date
             );
 
-            const dataLongTermDebt = createChartDataForArea(
+            const dataLongTermDebt:ChartData = createChartDataForArea(
                 state.balanceSheetStatementDict,
                 (bs: { longTermDebt: any }) => bs.longTermDebt,
                 (bs: { date: any }) => bs.date
             );
 
-            const dataFcf = state.area1.dataFcf;
+            const dataFcf: ChartData = state.area1.dataFcf ?? { labels: [], datasets: [] };
+            
+            // TODO
+            //const dataLongTermDebtToFcf = computeChartData(dataLongTermDebt, dataFcf);
 
 
 
