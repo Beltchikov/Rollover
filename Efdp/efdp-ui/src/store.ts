@@ -221,10 +221,6 @@ const globalSlice = createSlice({
 
             //const dataLongTermDebtToFcf = computeChartData(dataLongTermDebt, dataFcf);
 
-            // TODO Variant2: 
-            //const dataLongTermDebtToFcfDict = computeDict(filteredBalanceSheetStatementDict, state.incomeStatementDict);
-
-
         });
     },
 });
