@@ -255,6 +255,13 @@ const globalSlice = createSlice({
                 (s: { operatingCashFlow: any; capitalExpenditure: any; }) => s.operatingCashFlow + s.capitalExpenditure,
                 (s: { date: any }) => s.date
             );
+
+            state.area2.dataFcfCapExRatio = createChartDataForArea(
+                state.cashFlowStatementDict,
+                (s: { operatingCashFlow: number; capitalExpenditure: number; }) => 
+                    Math.round((s.operatingCashFlow + s.capitalExpenditure) * -100 / (s.capitalExpenditure !== 0 ? s.capitalExpenditure : 1)),
+                (s: { date: any }) => s.date
+            );
         });
     },
 });
