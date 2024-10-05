@@ -241,7 +241,10 @@ const globalSlice = createSlice({
             const filteredBalanceSheetStatementDict = filterStatementsOlderThan(action.payload, 10);
             state.balanceSheetStatementDict = filteredBalanceSheetStatementDict;
 
-            const symbolsTable = createSymbolsTable(state.balanceSheetStatementDict, (bs) => bs.retainedEarnings, (bs) => bs.date);
+            const symbolsTable = createSymbolsTable(
+                state.balanceSheetStatementDict, 
+                (bs: { retainedEarnings: any; }) => bs.retainedEarnings, 
+                (bs: { date: any; }) => bs.date);
             const interpolatedSymbolsTable = interpolateSymbolsTable(symbolsTable);
             const chartData = createChartData(interpolatedSymbolsTable, getRandomColor);
 
@@ -253,8 +256,8 @@ const globalSlice = createSlice({
 
             const symbolsTable = createSymbolsTable(
                 state.cashFlowStatementDict,
-                (s) => s.operatingCashFlow + s.capitalExpenditure,
-                (s) => s.date
+                (s: { operatingCashFlow: any; capitalExpenditure: any; }) => s.operatingCashFlow + s.capitalExpenditure,
+                (s: { date: any; }) => s.date
             );
             const interpolatedSymbolsTable = interpolateSymbolsTable(symbolsTable);
             const chartData = createChartData(interpolatedSymbolsTable, getRandomColor);
