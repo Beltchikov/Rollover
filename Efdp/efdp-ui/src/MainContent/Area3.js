@@ -4,7 +4,7 @@ import EfdpChart from './Chart/EfdpChart';
 import AdTeaser from './AdTeaser';
 
 function Area3() {
-  const { dataLongTermDebtToEarnings: dataLongTermDebtToFcf } = useSelector((state) => state.global.area3);
+  const { dataLongTermDebtToEarnings } = useSelector((state) => state.global.area3);
 
   const area3Style = {
     flexBasis: '33%',
@@ -19,7 +19,7 @@ function Area3() {
     <div style={area3Style}>
       <AdTeaser />
       <span style={{ width: '10px' }} />
-      <EfdpChart title='Long-Term Debt to FCF Ratio' data={dataLongTermDebtToFcf} areaKey="area3" chartKey="dataLongTermDebtToEarnings" />
+      <EfdpChart title='Long-Term Debt to FCF Ratio' data={dataLongTermDebtToEarnings} areaKey="area3" chartKey="dataLongTermDebtToEarnings" />
       <span style={{ width: '10px' }} />
       <AdTeaser />
     </div>
