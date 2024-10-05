@@ -7,7 +7,7 @@ import { fetchBalanceSheetStatementMockData } from './Api/balance-sheet-statemen
 import { fetchCashFlowStatementData } from './Api/cash-flow-statement-endpoint';
 import { fetchCashFlowStatementMockData } from './Api/cash-flow-statement-mock-endpoint';
 import { getRandomColor } from './helpers';
-import { createSymbolsTable, interpolateSymbolsTable, createChartData } from './Api/responseProcessing';
+import { createSymbolsTable, interpolateSymbolsTable, createChartData } from './Api/responseProcessing.ts';
 import dayjs from 'dayjs';
 
 // Define interfaces for datasets and statements
