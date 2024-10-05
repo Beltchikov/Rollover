@@ -128,8 +128,8 @@ export const fetchAllData = createAsyncThunk(
     'global/fetchAllData',
     async (_, { dispatch }) => {
         await dispatch(fetchIncomeStatementDict());
-        await dispatch(fetchBalanceSheetStatementDict());
         await dispatch(fetchCashFlowStatementDict());
+        await dispatch(fetchBalanceSheetStatementDict());
     }
 );
 
@@ -148,21 +148,6 @@ export const fetchIncomeStatementDict = createAsyncThunk(
     }
 );
 
-// Async thunk for fetching balance sheet data
-export const fetchBalanceSheetStatementDict = createAsyncThunk(
-    'global/fetchBalanceSheetStatementDict',
-    async (_, { getState }) => {
-        const state = getState() as { global: GlobalState };
-        const stockSymbols = state.global.symbolsInput.split('\n').map(symbol => symbol.trim()).filter(Boolean);
-
-        const response = USE_MOCK_RESPONSES
-            ? await fetchBalanceSheetStatementMockData(EFDP_API_BASE_URL)
-            : await fetchBalanceSheetStatementData(stockSymbols, EFDP_API_BASE_URL);
-
-        return response;
-    }
-);
-
 // Async thunk for fetching cash flow data
 export const fetchCashFlowStatementDict = createAsyncThunk(
     'global/fetchCashFlowStatementDict',
@@ -173,6 +158,21 @@ export const fetchCashFlowStatementDict = createAsyncThunk(
         const response = USE_MOCK_RESPONSES
             ? await fetchCashFlowStatementMockData(EFDP_API_BASE_URL)
             : await fetchCashFlowStatementData(stockSymbols, EFDP_API_BASE_URL);
+
+        return response;
+    }
+);
+
+// Async thunk for fetching balance sheet data
+export const fetchBalanceSheetStatementDict = createAsyncThunk(
+    'global/fetchBalanceSheetStatementDict',
+    async (_, { getState }) => {
+        const state = getState() as { global: GlobalState };
+        const stockSymbols = state.global.symbolsInput.split('\n').map(symbol => symbol.trim()).filter(Boolean);
+
+        const response = USE_MOCK_RESPONSES
+            ? await fetchBalanceSheetStatementMockData(EFDP_API_BASE_URL)
+            : await fetchBalanceSheetStatementData(stockSymbols, EFDP_API_BASE_URL);
 
         return response;
     }
