@@ -9,22 +9,7 @@ import { fetchCashFlowStatementMockData } from './Api/cash-flow-statement-mock-e
 import { getRandomColor } from './helpers';
 import { createSymbolsTable, interpolateSymbolsTable, createChartData } from './Api/responseProcessing.ts';
 import dayjs from 'dayjs';
-
-// Define interfaces for datasets and statements
-interface Dataset {
-    label: string;
-    data: number[];
-    borderColor: string;
-    backgroundColor: string;
-    yAxisID: string;
-    hidden: boolean;
-    borderWidth: number;
-}
-
-interface ChartData {
-    labels: string[];
-    datasets: Dataset[];
-}
+import { ChartData } from './ChartData.ts';
 
 interface GlobalState {
     symbolsInput: string;
