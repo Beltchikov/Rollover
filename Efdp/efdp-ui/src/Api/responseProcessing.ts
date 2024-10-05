@@ -1,16 +1,8 @@
+import { ChartDataset } from "../ChartDataset";
+
 interface Statement {
     date: string;
     [key: string]: any; // Allows other fields besides date
-}
-
-interface Dataset {
-    label: string;
-    data: (number | null)[];
-    borderColor: string;
-    backgroundColor: string;
-    yAxisID: string;
-    hidden: boolean;
-    borderWidth: number;
 }
 
 type StatementDict = Record<string, Statement[]>;  // e.g., { 'GOOG': [ { date: '2023-12-31', ... }, ... ] }
@@ -96,14 +88,15 @@ export function interpolateSymbolsTable(symbolsTable: string[]): string[] {
 export function createChartData(
     interpolatedSymbolsTable: string[],
     getRandomRgbColors: (count: number) => string[]
-): { labels: string[]; datasets: Dataset[] } {
+): { labels: string[]; datasets: ChartDataset[] } {
     const colors = getRandomRgbColors(interpolatedSymbolsTable.length - 1);
     const labels = interpolatedSymbolsTable[0].split("\t").slice(1);
 
-    const datasets: Dataset[] = interpolatedSymbolsTable.slice(1).map((row, index) => {
+    const datasets: ChartDataset[] = interpolatedSymbolsTable.slice(1).map((row, index) => {
         const columns = row.split("\t");
         const symbol = columns[0];
-        const data = columns.slice(1).map(val => (val === "" ? null : Number(val)));
+        const data: Array<number | null> = columns.slice(1).map(val => (val === "" ? null : Number(val)));
+
 
         return {
             label: symbol,
