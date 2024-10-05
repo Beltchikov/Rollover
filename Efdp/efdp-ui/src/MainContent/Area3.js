@@ -19,7 +19,16 @@ function Area3() {
     <div style={area3Style}>
       <AdTeaser />
       <span style={{ width: '10px' }} />
-      <EfdpChart title='Long-Term Debt to FCF Ratio' data={dataLongTermDebtToFcf} areaKey="area3" chartKey="dataLongTermDebtToFcf" />
+      
+      {dataLongTermDebtToFcf ? (
+        <EfdpChart title='Long-Term Debt to FCF Ratio' data={dataLongTermDebtToFcf} areaKey="area3" chartKey="dataLongTermDebtToFcf" />
+      ) : (
+        <div style={area3Style}>
+          <div>Loading...</div>
+          <AdTeaser />
+        </div>
+      )}
+
       <span style={{ width: '10px' }} />
       <AdTeaser />
     </div>
