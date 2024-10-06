@@ -9,7 +9,7 @@ import { fetchCashFlowStatementMockData } from './Api/cash-flow-statement-mock-e
 import { getRandomColor } from './helpers';
 import { createSymbolsTable, interpolateSymbolsTable, createChartData } from './Api/responseProcessing.ts';
 import dayjs from 'dayjs';
-import { ChartData, ChartDataset } from './ChartData.ts';
+import { IChartData, IChartDataset, ChartData, ChartDataset } from './ChartData.ts';
 import { IGlobalState } from './IGlobalState.ts';
 
 // Define the initial state for the data
@@ -309,7 +309,7 @@ function createGlobalSlice() {
                     ))
                 );
 
-                const dataFcf: ChartData = state.area1.dataFcf ?? new ChartData([], []);
+                const dataFcf: IChartData = state.area1.dataFcf ?? new ChartData([], []);
 
                 // //TODO
                 // const computedChartData: ChartData = computeChartData(dataLongTermDebt, dataFcf, (d1: number | null, d2: number | null): number | null => {
