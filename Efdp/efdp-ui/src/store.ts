@@ -219,7 +219,13 @@ const globalSlice = createSlice({
 
             const dataFcf: ChartData = state.area1.dataFcf ?? { labels: [], datasets: [] };
 
-            //const dataLongTermDebtToFcf = computeChartData(dataLongTermDebt, dataFcf);
+            // //TODO
+            // const computedChartData: ChartData = computeChartData(dataLongTermDebt, dataFcf, (d1: number | null, d2: number | null): number | null => {
+            //     if (d1 !== null && d2 !== null) {
+            //         return Math.round(d1 *100 / (d2!==0?d2:1));  
+            //     }
+            //     return null;  // If either value is null, return null
+            // });
 
         });
     },
