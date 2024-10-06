@@ -313,31 +313,19 @@ function createGlobalSlice() {
                 // };
 
                 //TODO
-                const computedChartData: IChartData = computeChartData(dataLongTermDebt, dataFcf, (d1: number | null, d2: number | null): number | null => {
+                const computedChartData = computeChartData(dataLongTermDebt, dataFcf, (d1: number | null, d2: number | null): number | null => {
                     if (d1 !== null && d2 !== null) {
                         return Math.round(d1 * 100 / (d2 !== 0 ? d2 : 1));
                     }
                     return null;  // If either value is null, return null
                 });
 
-                // Convert the class instance into a plain JS object
-                const serializableComputedChartData = {
-                    labels: [...computedChartData.labels], // Spread to ensure plain array
-                    datasets: computedChartData.datasets.map(dataset => ({
-                        label: dataset.label,
-                        data: [...dataset.data],  // Spread to ensure plain array
-                        borderColor: dataset.borderColor,
-                        backgroundColor: dataset.backgroundColor,
-                        yAxisID: dataset.yAxisID,
-                        hidden: dataset.hidden,
-                        borderWidth: dataset.borderWidth
-                    }))
-                };
+                
 
-                console.log('serializableComputedChartData');
-                console.log(serializableComputedChartData);
+                console.log('computedChartData');
+                console.log(computedChartData);
 
-                state.area3.dataLongTermDebtToFcf = serializableComputedChartData;
+                state.area3.dataLongTermDebtToFcf = computedChartData;
 
             });
         },
@@ -349,7 +337,7 @@ function computeChartData(
     chartData1: ChartData,
     chartData2: ChartData,
     computeFn: (d1: number | null, d2: number | null) => number | null
-): ChartData {
+) {
 
     // Check if labels are the same in both datasets
     if (JSON.stringify(chartData1.labels) !== JSON.stringify(chartData2.labels)) {
@@ -402,8 +390,22 @@ function computeChartData(
         });
     }
 
+    // Convert the class instance into a plain JS object
+    const serializableResultData = {
+        labels: [...resultChartData.labels], // Spread to ensure plain array
+        datasets: resultChartData.datasets.map(dataset => ({
+            label: dataset.label,
+            data: [...dataset.data],  // Spread to ensure plain array
+            borderColor: dataset.borderColor,
+            backgroundColor: dataset.backgroundColor,
+            yAxisID: dataset.yAxisID,
+            hidden: dataset.hidden,
+            borderWidth: dataset.borderWidth
+        }))
+    };
+
     // Return the final computed chart data
-    return resultChartData;
+    return serializableResultData;
 }
 
 
