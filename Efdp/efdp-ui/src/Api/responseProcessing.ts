@@ -1,5 +1,5 @@
 import { ChartDataset } from "../ChartDataset";
-import { ChartData } from "../ChartData";
+import { IChartData } from "../ChartData";
 
 interface Statement {
     date: string;
@@ -91,7 +91,7 @@ export function interpolateSymbolsTable(symbolsTable: string[]): string[] {
 export function createChartData(
     interpolatedSymbolsTable: string[],
     getRandomRgbColors: (count: number) => string[]
-): ChartData {
+): IChartData {
     const colors = getRandomRgbColors(interpolatedSymbolsTable.length - 1);
     const labels = interpolatedSymbolsTable[0].split("\t").slice(1);
 

@@ -1,9 +1,9 @@
-export interface ChartData {
+export interface IChartData {
     labels: string[];
-    datasets: ChartDataset[];
+    datasets: IChartDataset[];
 }
 
-export interface ChartDataset {
+export interface IChartDataset {
     label: string;
     data: (number | null)[]; 
     borderColor: string;

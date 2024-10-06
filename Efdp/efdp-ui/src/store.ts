@@ -9,7 +9,7 @@ import { fetchCashFlowStatementMockData } from './Api/cash-flow-statement-mock-e
 import { getRandomColor } from './helpers';
 import { createSymbolsTable, interpolateSymbolsTable, createChartData } from './Api/responseProcessing.ts';
 import dayjs from 'dayjs';
-import { ChartData } from './ChartData.ts';
+import { IChartData } from './ChartData.ts';
 
 interface GlobalState {
     symbolsInput: string;
@@ -17,16 +17,16 @@ interface GlobalState {
     cashFlowStatementDict: Record<string, any>;
     balanceSheetStatementDict: Record<string, any>;
     area1: {
-        dataCagrFcf: ChartData | null;
-        dataFcf: ChartData | null;
+        dataCagrFcf: IChartData | null;
+        dataFcf: IChartData | null;
     };
     area2: {
-        dataFcfCapExRatio: ChartData | null;
-        dataRetainedEarnings: ChartData | null;
-        dataGpm: ChartData | null;
+        dataFcfCapExRatio: IChartData | null;
+        dataRetainedEarnings: IChartData | null;
+        dataGpm: IChartData | null;
     };
     area3: {
-        dataLongTermDebtToFcf: ChartData | null;
+        dataLongTermDebtToFcf: IChartData | null;
     };
 }
 
@@ -211,13 +211,13 @@ const globalSlice = createSlice({
                 (bs: { date: any }) => bs.date
             );
 
-            const dataLongTermDebt: ChartData = createChartDataForArea(
+            const dataLongTermDebt: IChartData = createChartDataForArea(
                 state.balanceSheetStatementDict,
                 (bs: { longTermDebt: any }) => bs.longTermDebt,
                 (bs: { date: any }) => bs.date
             );
 
-            const dataFcf: ChartData = state.area1.dataFcf ?? { labels: [], datasets: [] };
+            const dataFcf: IChartData = state.area1.dataFcf ?? { labels: [], datasets: [] };
 
             // //TODO
             // const computedChartData: ChartData = computeChartData(dataLongTermDebt, dataFcf, (d1: number | null, d2: number | null): number | null => {
