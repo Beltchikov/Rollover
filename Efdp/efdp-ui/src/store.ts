@@ -173,143 +173,143 @@ function createGlobalSlice() {
                 const filteredIncomeStatementDict = filterStatementsOlderThan(action.payload, 10);
                 state.incomeStatementDict = filteredIncomeStatementDict;
 
-                state.area2.dataGpm = new ChartData(
-                    createChartDataForArea(
+                state.area2.dataGpm = {
+                    labels: createChartDataForArea(
                         state.incomeStatementDict,
                         (is: { grossProfit: number; revenue: number; }) => Math.round(is.grossProfit * 100 / (is.revenue !== 0 ? is.revenue : 1)),
                         (is: { date: any; }) => is.date
                     ).labels,
-                    createChartDataForArea(
+                    datasets: createChartDataForArea(
                         state.incomeStatementDict,
                         (is: { grossProfit: number; revenue: number; }) => Math.round(is.grossProfit * 100 / (is.revenue !== 0 ? is.revenue : 1)),
                         (is: { date: any; }) => is.date
-                    ).datasets.map(dataset => new ChartDataset(
-                        dataset.label,
-                        dataset.data,
-                        dataset.borderColor,
-                        dataset.backgroundColor,
-                        dataset.yAxisID,
-                        dataset.hidden,
-                        dataset.borderWidth
-                    ))
-                );
+                    ).datasets.map(dataset => ({
+                        label: dataset.label,
+                        data: dataset.data,
+                        borderColor: dataset.borderColor,
+                        backgroundColor: dataset.backgroundColor,
+                        yAxisID: dataset.yAxisID,
+                        hidden: dataset.hidden,
+                        borderWidth: dataset.borderWidth
+                    }))
+                };
             });
 
             builder.addCase(fetchCashFlowStatementDict.fulfilled, (state, action) => {
                 const filteredCashFlowStatementDict = filterStatementsOlderThan(action.payload, 10);
                 state.cashFlowStatementDict = filteredCashFlowStatementDict;
 
-                state.area1.dataFcf = new ChartData(
-                    createChartDataForArea(
+                state.area1.dataFcf = {
+                    labels: createChartDataForArea(
                         state.cashFlowStatementDict,
                         (s: { operatingCashFlow: any; capitalExpenditure: any; }) => s.operatingCashFlow + s.capitalExpenditure,
                         (s: { date: any; }) => s.date
                     ).labels,
-                    createChartDataForArea(
+                    datasets: createChartDataForArea(
                         state.cashFlowStatementDict,
                         (s: { operatingCashFlow: any; capitalExpenditure: any; }) => s.operatingCashFlow + s.capitalExpenditure,
                         (s: { date: any; }) => s.date
-                    ).datasets.map(dataset => new ChartDataset(
-                        dataset.label,
-                        dataset.data,
-                        dataset.borderColor,
-                        dataset.backgroundColor,
-                        dataset.yAxisID,
-                        dataset.hidden,
-                        dataset.borderWidth
-                    ))
-                );
+                    ).datasets.map(dataset => ({
+                        label: dataset.label,
+                        data: dataset.data,
+                        borderColor: dataset.borderColor,
+                        backgroundColor: dataset.backgroundColor,
+                        yAxisID: dataset.yAxisID,
+                        hidden: dataset.hidden,
+                        borderWidth: dataset.borderWidth
+                    }))
+                };
 
-                state.area2.dataFcfCapExRatio = new ChartData(
-                    createChartDataForArea(
+                state.area2.dataFcfCapExRatio = {
+                    labels: createChartDataForArea(
                         state.cashFlowStatementDict,
                         (s: { operatingCashFlow: number; capitalExpenditure: number; }) => Math.round((s.operatingCashFlow + s.capitalExpenditure) * -100 / (s.capitalExpenditure !== 0 ? s.capitalExpenditure : 1)),
                         (s: { date: any; }) => s.date
                     ).labels,
-                    createChartDataForArea(
+                    datasets: createChartDataForArea(
                         state.cashFlowStatementDict,
                         (s: { operatingCashFlow: number; capitalExpenditure: number; }) => Math.round((s.operatingCashFlow + s.capitalExpenditure) * -100 / (s.capitalExpenditure !== 0 ? s.capitalExpenditure : 1)),
                         (s: { date: any; }) => s.date
-                    ).datasets.map(dataset => new ChartDataset(
-                        dataset.label,
-                        dataset.data,
-                        dataset.borderColor,
-                        dataset.backgroundColor,
-                        dataset.yAxisID,
-                        dataset.hidden,
-                        dataset.borderWidth
-                    ))
-                );
+                    ).datasets.map(dataset => ({
+                        label: dataset.label,
+                        data: dataset.data,
+                        borderColor: dataset.borderColor,
+                        backgroundColor: dataset.backgroundColor,
+                        yAxisID: dataset.yAxisID,
+                        hidden: dataset.hidden,
+                        borderWidth: dataset.borderWidth
+                    }))
+                };
             });
 
             builder.addCase(fetchBalanceSheetStatementDict.fulfilled, (state, action) => {
                 const filteredBalanceSheetStatementDict = filterStatementsOlderThan(action.payload, 10);
                 state.balanceSheetStatementDict = filteredBalanceSheetStatementDict;
 
-                state.area2.dataRetainedEarnings = new ChartData(
-                    createChartDataForArea(
+                state.area2.dataRetainedEarnings = {
+                    labels: createChartDataForArea(
                         state.balanceSheetStatementDict,
                         (bs: { retainedEarnings: any; }) => bs.retainedEarnings,
                         (bs: { date: any; }) => bs.date
                     ).labels,
-                    createChartDataForArea(
+                    datasets: createChartDataForArea(
                         state.balanceSheetStatementDict,
                         (bs: { retainedEarnings: any; }) => bs.retainedEarnings,
                         (bs: { date: any; }) => bs.date
-                    ).datasets.map(dataset => new ChartDataset(
-                        dataset.label,
-                        dataset.data,
-                        dataset.borderColor,
-                        dataset.backgroundColor,
-                        dataset.yAxisID,
-                        dataset.hidden,
-                        dataset.borderWidth
-                    ))
-                );
+                    ).datasets.map(dataset => ({
+                        label: dataset.label,
+                        data: dataset.data,
+                        borderColor: dataset.borderColor,
+                        backgroundColor: dataset.backgroundColor,
+                        yAxisID: dataset.yAxisID,
+                        hidden: dataset.hidden,
+                        borderWidth: dataset.borderWidth
+                    }))
+                };
 
-                state.area3.dataLongTermDebtToFcf = new ChartData(
-                    createChartDataForArea(
+                state.area3.dataLongTermDebtToFcf = {
+                    labels: createChartDataForArea(
                         state.balanceSheetStatementDict,
                         (bs: { longTermDebt: any; }) => bs.longTermDebt,
                         (bs: { date: any; }) => bs.date
                     ).labels,
-                    createChartDataForArea(
+                    datasets: createChartDataForArea(
                         state.balanceSheetStatementDict,
                         (bs: { longTermDebt: any; }) => bs.longTermDebt,
                         (bs: { date: any; }) => bs.date
-                    ).datasets.map(dataset => new ChartDataset(
-                        dataset.label,
-                        dataset.data,
-                        dataset.borderColor,
-                        dataset.backgroundColor,
-                        dataset.yAxisID,
-                        dataset.hidden,
-                        dataset.borderWidth
-                    ))
-                );
+                    ).datasets.map(dataset => ({
+                        label: dataset.label,
+                        data: dataset.data,
+                        borderColor: dataset.borderColor,
+                        backgroundColor: dataset.backgroundColor,
+                        yAxisID: dataset.yAxisID,
+                        hidden: dataset.hidden,
+                        borderWidth: dataset.borderWidth
+                    }))
+                };
 
-                const dataLongTermDebt: ChartData = new ChartData(
-                    createChartDataForArea(
+                const dataLongTermDebt = {
+                    labels: createChartDataForArea(
                         state.balanceSheetStatementDict,
                         (bs: { longTermDebt: any; }) => bs.longTermDebt,
                         (bs: { date: any; }) => bs.date
                     ).labels,
-                    createChartDataForArea(
+                    datasets: createChartDataForArea(
                         state.balanceSheetStatementDict,
                         (bs: { longTermDebt: any; }) => bs.longTermDebt,
                         (bs: { date: any; }) => bs.date
-                    ).datasets.map(dataset => new ChartDataset(
-                        dataset.label,
-                        dataset.data,
-                        dataset.borderColor,
-                        dataset.backgroundColor,
-                        dataset.yAxisID,
-                        dataset.hidden,
-                        dataset.borderWidth
-                    ))
-                );
+                    ).datasets.map(dataset => ({
+                        label: dataset.label,
+                        data: dataset.data,
+                        borderColor: dataset.borderColor,
+                        backgroundColor: dataset.backgroundColor,
+                        yAxisID: dataset.yAxisID,
+                        hidden: dataset.hidden,
+                        borderWidth: dataset.borderWidth
+                    }))
+                };
 
-                const dataFcf: IChartData = state.area1.dataFcf ?? new ChartData([], []);
+                const dataFcf = state.area1.dataFcf ?? { labels: [], datasets: [] };
 
                 // //TODO
                 // const computedChartData: IChartData = computeChartData(dataLongTermDebt, dataFcf, (d1: number | null, d2: number | null): number | null => {
@@ -323,6 +323,7 @@ function createGlobalSlice() {
         },
     });
 }
+
 
 function computeChartData(
   chartData1: ChartData, 
