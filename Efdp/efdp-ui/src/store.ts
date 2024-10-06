@@ -312,7 +312,7 @@ function createGlobalSlice() {
                 //     }))
                 // };
 
-                //TODO
+                //TODO fix computeChartData function
                 const computedChartData = computeChartData(dataLongTermDebt, dataFcf, (d1: number | null, d2: number | null): number | null => {
                     if (d1 !== null && d2 !== null) {
                         return Math.round(d1 * 100 / (d2 !== 0 ? d2 : 1));
@@ -320,14 +320,11 @@ function createGlobalSlice() {
                     return null;  // If either value is null, return null
                 });
 
-                
-
                 console.log('computedChartData');
                 console.log(computedChartData);
 
                 state.area3.dataLongTermDebtToFcf = computedChartData;
-
-            });
+});
         },
     });
 }
