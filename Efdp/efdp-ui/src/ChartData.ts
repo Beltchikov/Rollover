@@ -4,7 +4,7 @@ export interface IChartData {
 }
 
 export interface IChartDataset {
-    datasetLabel: string;
+    label: string;
     data: (number | null)[]; 
     borderColor: string;
     backgroundColor: string;
@@ -14,7 +14,7 @@ export interface IChartDataset {
 }
 
 export class ChartDataset implements IChartDataset {
-    datasetLabel: string;
+    label: string;
     data: (number | null)[];
     borderColor: string;
     backgroundColor: string;
@@ -31,7 +31,7 @@ export class ChartDataset implements IChartDataset {
         hidden: boolean, 
         borderWidth: number
     ) {
-        this.datasetLabel = label;
+        this.label = label;
         this.data = data;
         this.borderColor = borderColor;
         this.backgroundColor = backgroundColor;
