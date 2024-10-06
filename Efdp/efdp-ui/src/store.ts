@@ -291,39 +291,39 @@ function createGlobalSlice() {
                 const dataFcf = state.area1.dataFcf ?? { labels: [], datasets: [] };
 
                 // TODO remove later after computeChartData functions works
-                // state.area3.dataLongTermDebtToFcf = {
-                //     labels: createChartDataForArea(
-                //         state.balanceSheetStatementDict,
-                //         (bs: { longTermDebt: any; }) => bs.longTermDebt,
-                //         (bs: { date: any; }) => bs.date
-                //     ).labels,
-                //     datasets: createChartDataForArea(
-                //         state.balanceSheetStatementDict,
-                //         (bs: { longTermDebt: any; }) => bs.longTermDebt,
-                //         (bs: { date: any; }) => bs.date
-                //     ).datasets.map(dataset => ({
-                //         label: dataset.label,
-                //         data: dataset.data,
-                //         borderColor: dataset.borderColor,
-                //         backgroundColor: dataset.backgroundColor,
-                //         yAxisID: dataset.yAxisID,
-                //         hidden: dataset.hidden,
-                //         borderWidth: dataset.borderWidth
-                //     }))
-                // };
+                state.area3.dataLongTermDebtToFcf = {
+                    labels: createChartDataForArea(
+                        state.balanceSheetStatementDict,
+                        (bs: { longTermDebt: any; }) => bs.longTermDebt,
+                        (bs: { date: any; }) => bs.date
+                    ).labels,
+                    datasets: createChartDataForArea(
+                        state.balanceSheetStatementDict,
+                        (bs: { longTermDebt: any; }) => bs.longTermDebt,
+                        (bs: { date: any; }) => bs.date
+                    ).datasets.map(dataset => ({
+                        label: dataset.label,
+                        data: dataset.data,
+                        borderColor: dataset.borderColor,
+                        backgroundColor: dataset.backgroundColor,
+                        yAxisID: dataset.yAxisID,
+                        hidden: dataset.hidden,
+                        borderWidth: dataset.borderWidth
+                    }))
+                };
 
                 //TODO fix computeChartData function
-                const computedChartData = computeChartData(dataLongTermDebt, dataFcf, (d1: number | null, d2: number | null): number | null => {
-                    if (d1 !== null && d2 !== null) {
-                        return Math.round(d1 * 100 / (d2 !== 0 ? d2 : 1));
-                    }
-                    return null;  // If either value is null, return null
-                });
+                // const computedChartData = computeChartData(dataLongTermDebt, dataFcf, (d1: number | null, d2: number | null): number | null => {
+                //     if (d1 !== null && d2 !== null) {
+                //         return Math.round(d1 * 100 / (d2 !== 0 ? d2 : 1));
+                //     }
+                //     return null;  // If either value is null, return null
+                // });
 
-                console.log('computedChartData');
-                console.log(computedChartData);
+                // console.log('computedChartData');
+                // console.log(computedChartData);
 
-                state.area3.dataLongTermDebtToFcf = computedChartData;
+                // state.area3.dataLongTermDebtToFcf = computedChartData;
 });
         },
     });
