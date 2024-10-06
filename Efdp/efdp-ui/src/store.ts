@@ -311,6 +311,14 @@ function createGlobalSlice() {
 
                 const dataFcf: ChartData = state.area1.dataFcf ?? new ChartData([], []);
 
+                // //TODO
+                // const computedChartData: ChartData = computeChartData(dataLongTermDebt, dataFcf, (d1: number | null, d2: number | null): number | null => {
+                //     if (d1 !== null && d2 !== null) {
+                //         return Math.round(d1 *100 / (d2!==0?d2:1));  
+                //     }
+                //     return null;  // If either value is null, return null
+                // });
+
             });
         },
     });
