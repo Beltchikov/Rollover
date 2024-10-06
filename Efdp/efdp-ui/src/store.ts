@@ -267,26 +267,26 @@ function createGlobalSlice() {
                     }))
                 };
 
-                state.area3.dataLongTermDebtToFcf = {
-                    labels: createChartDataForArea(
-                        state.balanceSheetStatementDict,
-                        (bs: { longTermDebt: any; }) => bs.longTermDebt,
-                        (bs: { date: any; }) => bs.date
-                    ).labels,
-                    datasets: createChartDataForArea(
-                        state.balanceSheetStatementDict,
-                        (bs: { longTermDebt: any; }) => bs.longTermDebt,
-                        (bs: { date: any; }) => bs.date
-                    ).datasets.map(dataset => ({
-                        label: dataset.label,
-                        data: dataset.data,
-                        borderColor: dataset.borderColor,
-                        backgroundColor: dataset.backgroundColor,
-                        yAxisID: dataset.yAxisID,
-                        hidden: dataset.hidden,
-                        borderWidth: dataset.borderWidth
-                    }))
-                };
+                // state.area3.dataLongTermDebtToFcf = {
+                //     labels: createChartDataForArea(
+                //         state.balanceSheetStatementDict,
+                //         (bs: { longTermDebt: any; }) => bs.longTermDebt,
+                //         (bs: { date: any; }) => bs.date
+                //     ).labels,
+                //     datasets: createChartDataForArea(
+                //         state.balanceSheetStatementDict,
+                //         (bs: { longTermDebt: any; }) => bs.longTermDebt,
+                //         (bs: { date: any; }) => bs.date
+                //     ).datasets.map(dataset => ({
+                //         label: dataset.label,
+                //         data: dataset.data,
+                //         borderColor: dataset.borderColor,
+                //         backgroundColor: dataset.backgroundColor,
+                //         yAxisID: dataset.yAxisID,
+                //         hidden: dataset.hidden,
+                //         borderWidth: dataset.borderWidth
+                //     }))
+                // };
 
                 const dataLongTermDebt = {
                     labels: createChartDataForArea(
@@ -311,13 +311,32 @@ function createGlobalSlice() {
 
                 const dataFcf = state.area1.dataFcf ?? { labels: [], datasets: [] };
 
-                // //TODO
-                // const computedChartData: IChartData = computeChartData(dataLongTermDebt, dataFcf, (d1: number | null, d2: number | null): number | null => {
-                //     if (d1 !== null && d2 !== null) {
-                //         return Math.round(d1 *100 / (d2!==0?d2:1));  
-                //     }
-                //     return null;  // If either value is null, return null
-                // });
+                //TODO
+                const computedChartData: IChartData = computeChartData(dataLongTermDebt, dataFcf, (d1: number | null, d2: number | null): number | null => {
+                    if (d1 !== null && d2 !== null) {
+                        return Math.round(d1 * 100 / (d2 !== 0 ? d2 : 1));
+                    }
+                    return null;  // If either value is null, return null
+                });
+
+                // Convert the class instance into a plain JS object
+                const serializableComputedChartData = {
+                    labels: [...computedChartData.labels], // Spread to ensure plain array
+                    datasets: computedChartData.datasets.map(dataset => ({
+                        label: dataset.label,
+                        data: [...dataset.data],  // Spread to ensure plain array
+                        borderColor: dataset.borderColor,
+                        backgroundColor: dataset.backgroundColor,
+                        yAxisID: dataset.yAxisID,
+                        hidden: dataset.hidden,
+                        borderWidth: dataset.borderWidth
+                    }))
+                };
+
+                console.log('serializableComputedChartData');
+                console.log(serializableComputedChartData);
+
+                state.area3.dataLongTermDebtToFcf = serializableComputedChartData;
 
             });
         },
@@ -326,64 +345,64 @@ function createGlobalSlice() {
 
 
 function computeChartData(
-  chartData1: ChartData, 
-  chartData2: ChartData, 
-  computeFn: (d1: number | null, d2: number | null) => number | null
+    chartData1: ChartData,
+    chartData2: ChartData,
+    computeFn: (d1: number | null, d2: number | null) => number | null
 ): ChartData {
-  
-  // Check if labels are the same in both datasets
-  if (JSON.stringify(chartData1.labels) !== JSON.stringify(chartData2.labels)) {
-    throw new Error('Labels in the two datasets do not match.');
-  }
 
-  // Create an empty resultChartData object
-  const resultChartData: ChartData = new ChartData([], []);
+    // Check if labels are the same in both datasets
+    if (JSON.stringify(chartData1.labels) !== JSON.stringify(chartData2.labels)) {
+        throw new Error('Labels in the two datasets do not match.');
+    }
 
-  // Loop through labels
-  for (let i = 0; i < chartData1.labels.length; i++) {
-    const currentLabel = chartData1.labels[i];
+    // Create an empty resultChartData object
+    const resultChartData: ChartData = new ChartData([], []);
 
-    // Add the current label to resultChartData.labels
-    resultChartData.labels.push(currentLabel);
+    // Loop through labels
+    for (let i = 0; i < chartData1.labels.length; i++) {
+        const currentLabel = chartData1.labels[i];
 
-    // Find datasetsArray1 and datasetsArray2
-    const datasetsArray1 = chartData1.datasets;
-    const datasetsArray2 = chartData2.datasets;
+        // Add the current label to resultChartData.labels
+        resultChartData.labels.push(currentLabel);
 
-    // Inner datasets loop
-    datasetsArray1.forEach((currentDataset1, datasetIndex) => {
-      const currentDataset2 = datasetsArray2[datasetIndex];
+        // Find datasetsArray1 and datasetsArray2
+        const datasetsArray1 = chartData1.datasets;
+        const datasetsArray2 = chartData2.datasets;
 
-      // Create an empty computedDataSet
-      const computedDataSet = new ChartDataset(
-        currentDataset1.label,
-        [],
-        currentDataset1.borderColor,
-        currentDataset1.backgroundColor,
-        currentDataset1.yAxisID,
-        currentDataset1.hidden,
-        currentDataset1.borderWidth
-      );
+        // Inner datasets loop
+        datasetsArray1.forEach((currentDataset1, datasetIndex) => {
+            const currentDataset2 = datasetsArray2[datasetIndex];
 
-      // Loop through data for each label in the dataset
-      for (let j = 0; j < currentDataset1.data.length; j++) {
-        const data1 = currentDataset1.data[j];
-        const data2 = currentDataset2.data[j];
+            // Create an empty computedDataSet
+            const computedDataSet = new ChartDataset(
+                currentDataset1.label,
+                [],
+                currentDataset1.borderColor,
+                currentDataset1.backgroundColor,
+                currentDataset1.yAxisID,
+                currentDataset1.hidden,
+                currentDataset1.borderWidth
+            );
 
-        // Calculate the computedData using the provided function
-        const computedData = computeFn(data1, data2);
+            // Loop through data for each label in the dataset
+            for (let j = 0; j < currentDataset1.data.length; j++) {
+                const data1 = currentDataset1.data[j];
+                const data2 = currentDataset2.data[j];
 
-        // Add computedData to the computedDataSet
-        computedDataSet.data.push(computedData);
-      }
+                // Calculate the computedData using the provided function
+                const computedData = computeFn(data1, data2);
 
-      // Add the computedDataSet to resultChartData.datasets
-      resultChartData.datasets.push(computedDataSet);
-    });
-  }
+                // Add computedData to the computedDataSet
+                computedDataSet.data.push(computedData);
+            }
 
-  // Return the final computed chart data
-  return resultChartData;
+            // Add the computedDataSet to resultChartData.datasets
+            resultChartData.datasets.push(computedDataSet);
+        });
+    }
+
+    // Return the final computed chart data
+    return resultChartData;
 }
 
 
