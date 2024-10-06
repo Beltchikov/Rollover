@@ -9,27 +9,8 @@ import { fetchCashFlowStatementMockData } from './Api/cash-flow-statement-mock-e
 import { getRandomColor } from './helpers';
 import { createSymbolsTable, interpolateSymbolsTable, createChartData } from './Api/responseProcessing.ts';
 import dayjs from 'dayjs';
-import { IChartData } from './ChartData.ts';
 import { ChartData, ChartDataset } from './ChartData.ts';
-
-interface IGlobalState {
-    symbolsInput: string;
-    incomeStatementDict: Record<string, any>;
-    cashFlowStatementDict: Record<string, any>;
-    balanceSheetStatementDict: Record<string, any>;
-    area1: {
-        dataCagrFcf: IChartData | null;
-        dataFcf: IChartData | null;
-    };
-    area2: {
-        dataFcfCapExRatio: IChartData | null;
-        dataRetainedEarnings: IChartData | null;
-        dataGpm: IChartData | null;
-    };
-    area3: {
-        dataLongTermDebtToFcf: IChartData | null;
-    };
-}
+import { IGlobalState } from './IGlobalState.ts';
 
 // Define the initial state for the data
 const initialState: IGlobalState = {
