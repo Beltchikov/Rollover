@@ -267,27 +267,6 @@ function createGlobalSlice() {
                     }))
                 };
 
-                // state.area3.dataLongTermDebtToFcf = {
-                //     labels: createChartDataForArea(
-                //         state.balanceSheetStatementDict,
-                //         (bs: { longTermDebt: any; }) => bs.longTermDebt,
-                //         (bs: { date: any; }) => bs.date
-                //     ).labels,
-                //     datasets: createChartDataForArea(
-                //         state.balanceSheetStatementDict,
-                //         (bs: { longTermDebt: any; }) => bs.longTermDebt,
-                //         (bs: { date: any; }) => bs.date
-                //     ).datasets.map(dataset => ({
-                //         label: dataset.label,
-                //         data: dataset.data,
-                //         borderColor: dataset.borderColor,
-                //         backgroundColor: dataset.backgroundColor,
-                //         yAxisID: dataset.yAxisID,
-                //         hidden: dataset.hidden,
-                //         borderWidth: dataset.borderWidth
-                //     }))
-                // };
-
                 const dataLongTermDebt = {
                     labels: createChartDataForArea(
                         state.balanceSheetStatementDict,
@@ -310,6 +289,28 @@ function createGlobalSlice() {
                 };
 
                 const dataFcf = state.area1.dataFcf ?? { labels: [], datasets: [] };
+
+                // TODO remove later after computeChartData functions works
+                // state.area3.dataLongTermDebtToFcf = {
+                //     labels: createChartDataForArea(
+                //         state.balanceSheetStatementDict,
+                //         (bs: { longTermDebt: any; }) => bs.longTermDebt,
+                //         (bs: { date: any; }) => bs.date
+                //     ).labels,
+                //     datasets: createChartDataForArea(
+                //         state.balanceSheetStatementDict,
+                //         (bs: { longTermDebt: any; }) => bs.longTermDebt,
+                //         (bs: { date: any; }) => bs.date
+                //     ).datasets.map(dataset => ({
+                //         label: dataset.label,
+                //         data: dataset.data,
+                //         borderColor: dataset.borderColor,
+                //         backgroundColor: dataset.backgroundColor,
+                //         yAxisID: dataset.yAxisID,
+                //         hidden: dataset.hidden,
+                //         borderWidth: dataset.borderWidth
+                //     }))
+                // };
 
                 //TODO
                 const computedChartData: IChartData = computeChartData(dataLongTermDebt, dataFcf, (d1: number | null, d2: number | null): number | null => {
