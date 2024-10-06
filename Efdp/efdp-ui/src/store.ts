@@ -324,3 +324,65 @@ function createGlobalSlice() {
     });
 }
 
+function computeChartData(
+  chartData1: ChartData, 
+  chartData2: ChartData, 
+  computeFn: (d1: number | null, d2: number | null) => number | null
+): ChartData {
+  
+  // Check if labels are the same in both datasets
+  if (JSON.stringify(chartData1.labels) !== JSON.stringify(chartData2.labels)) {
+    throw new Error('Labels in the two datasets do not match.');
+  }
+
+  // Create an empty resultChartData object
+  const resultChartData: ChartData = new ChartData([], []);
+
+  // Loop through labels
+  for (let i = 0; i < chartData1.labels.length; i++) {
+    const currentLabel = chartData1.labels[i];
+
+    // Add the current label to resultChartData.labels
+    resultChartData.labels.push(currentLabel);
+
+    // Find datasetsArray1 and datasetsArray2
+    const datasetsArray1 = chartData1.datasets;
+    const datasetsArray2 = chartData2.datasets;
+
+    // Inner datasets loop
+    datasetsArray1.forEach((currentDataset1, datasetIndex) => {
+      const currentDataset2 = datasetsArray2[datasetIndex];
+
+      // Create an empty computedDataSet
+      const computedDataSet = new ChartDataset(
+        currentDataset1.label,
+        [],
+        currentDataset1.borderColor,
+        currentDataset1.backgroundColor,
+        currentDataset1.yAxisID,
+        currentDataset1.hidden,
+        currentDataset1.borderWidth
+      );
+
+      // Loop through data for each label in the dataset
+      for (let j = 0; j < currentDataset1.data.length; j++) {
+        const data1 = currentDataset1.data[j];
+        const data2 = currentDataset2.data[j];
+
+        // Calculate the computedData using the provided function
+        const computedData = computeFn(data1, data2);
+
+        // Add computedData to the computedDataSet
+        computedDataSet.data.push(computedData);
+      }
+
+      // Add the computedDataSet to resultChartData.datasets
+      resultChartData.datasets.push(computedDataSet);
+    });
+  }
+
+  // Return the final computed chart data
+  return resultChartData;
+}
+
+
