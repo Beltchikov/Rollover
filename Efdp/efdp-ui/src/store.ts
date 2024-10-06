@@ -220,6 +220,21 @@ function createGlobalSlice() {
                     }))
                 };
 
+                // TODO
+                //state.area1.dataCagrFcf
+
+                // const firstData = parseInt(symbolDataListAsString[idxFirst]);
+                // const lastData = parseInt(symbolDataListAsString[idxLast]);
+        
+                // const years = datesListYearsBack[idxLast].getFullYear() - datesListYearsBack[idxFirst].getFullYear() + 1;
+                // const growth = calculateGrowth(lastData, firstData);
+                // const cagr = Math.round((Math.pow(growth, 1 / years) - 1) * 1000) / 1000;
+
+                // function calculateGrowth(lastValue: number, firstValue: number): number {
+                //     return lastValue / firstValue;
+                // }
+        
+
                 state.area2.dataFcfCapExRatio = {
                     labels: createChartDataForArea(
                         state.cashFlowStatementDict,
