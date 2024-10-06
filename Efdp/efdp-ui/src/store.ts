@@ -9,7 +9,7 @@ import { fetchCashFlowStatementMockData } from './Api/cash-flow-statement-mock-e
 import { getRandomColor } from './helpers';
 import { createSymbolsTable, interpolateSymbolsTable, createChartData } from './Api/responseProcessing.ts';
 import dayjs from 'dayjs';
-import { IChartData, IChartDataset, ChartData, ChartDataset } from './ChartData.ts';
+import { ChartData } from './ChartData.ts';
 import { IGlobalState } from './IGlobalState.ts';
 
 // Define the initial state for the data
