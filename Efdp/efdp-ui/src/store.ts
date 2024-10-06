@@ -12,7 +12,7 @@ import dayjs from 'dayjs';
 import { IChartData } from './ChartData.ts';
 import { ChartData, ChartDataset } from './ChartData.ts';
 
-interface GlobalState {
+interface IGlobalState {
     symbolsInput: string;
     incomeStatementDict: Record<string, any>;
     cashFlowStatementDict: Record<string, any>;
@@ -32,7 +32,7 @@ interface GlobalState {
 }
 
 // Define the initial state for the data
-const initialState: GlobalState = {
+const initialState: IGlobalState = {
     symbolsInput: 'NVDA\nMSFT\nGOOG',
     incomeStatementDict: {},
     cashFlowStatementDict: {},
@@ -101,7 +101,7 @@ export const fetchAllData = createAsyncThunk(
 export const fetchIncomeStatementDict = createAsyncThunk(
     'global/fetchIncomeStatementDict',
     async (_, { getState }) => {
-        const state = getState() as { global: GlobalState };
+        const state = getState() as { global: IGlobalState };
         const stockSymbols = state.global.symbolsInput.split('\n').map(symbol => symbol.trim()).filter(Boolean);
 
         const response = USE_MOCK_RESPONSES
@@ -116,7 +116,7 @@ export const fetchIncomeStatementDict = createAsyncThunk(
 export const fetchCashFlowStatementDict = createAsyncThunk(
     'global/fetchCashFlowStatementDict',
     async (_, { getState }) => {
-        const state = getState() as { global: GlobalState };
+        const state = getState() as { global: IGlobalState };
         const stockSymbols = state.global.symbolsInput.split('\n').map(symbol => symbol.trim()).filter(Boolean);
 
         const response = USE_MOCK_RESPONSES
@@ -131,7 +131,7 @@ export const fetchCashFlowStatementDict = createAsyncThunk(
 export const fetchBalanceSheetStatementDict = createAsyncThunk(
     'global/fetchBalanceSheetStatementDict',
     async (_, { getState }) => {
-        const state = getState() as { global: GlobalState };
+        const state = getState() as { global: IGlobalState };
         const stockSymbols = state.global.symbolsInput.split('\n').map(symbol => symbol.trim()).filter(Boolean);
 
         const response = USE_MOCK_RESPONSES
@@ -150,7 +150,7 @@ const globalSlice = createSlice({
         updateSymbolsInput: (state, action: PayloadAction<string>) => {
             state.symbolsInput = action.payload;
         },
-        toggleDatasetVisibility: (state, action: PayloadAction<{ areaKey: keyof GlobalState; datasetKey: string; datasetIndex: number }>) => {
+        toggleDatasetVisibility: (state, action: PayloadAction<{ areaKey: keyof IGlobalState; datasetKey: string; datasetIndex: number }>) => {
             const { areaKey, datasetKey, datasetIndex } = action.payload;
 
             const areaState = state[areaKey] as any;
