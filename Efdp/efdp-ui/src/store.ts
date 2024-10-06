@@ -23,7 +23,7 @@ const initialState: IGlobalState = {
             labels: ['2009-09-26', '2009-12-31', '2010-06-30', '2010-09-25', '2010-12-31'],  // Labels
             datasets: [
                 {
-                    label: 'NVDA',
+                    datasetLabel: 'NVDA',
                     data: [253146000, 417118000, 581090000, 571813000, 562536000],
                     borderColor: 'rgba(255, 99, 132, 1)',
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
@@ -32,7 +32,7 @@ const initialState: IGlobalState = {
                     borderWidth: 1,
                 },
                 {
-                    label: 'GOOG',
+                    datasetLabel: 'GOOG',
                     data: [16348000000, 17913000000, 19478000000, 16070000000, 21699000000],
                     borderColor: 'rgba(54, 162, 235, 1)',
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
@@ -184,7 +184,7 @@ function createGlobalSlice() {
                         (is: { grossProfit: number; revenue: number; }) => Math.round(is.grossProfit * 100 / (is.revenue !== 0 ? is.revenue : 1)),
                         (is: { date: any; }) => is.date
                     ).datasets.map(dataset => ({
-                        label: dataset.label,
+                        label: dataset.datasetLabel,
                         data: dataset.data,
                         borderColor: dataset.borderColor,
                         backgroundColor: dataset.backgroundColor,
@@ -210,7 +210,7 @@ function createGlobalSlice() {
                         (s: { operatingCashFlow: any; capitalExpenditure: any; }) => s.operatingCashFlow + s.capitalExpenditure,
                         (s: { date: any; }) => s.date
                     ).datasets.map(dataset => ({
-                        label: dataset.label,
+                        label: dataset.datasetLabel,
                         data: dataset.data,
                         borderColor: dataset.borderColor,
                         backgroundColor: dataset.backgroundColor,
@@ -231,7 +231,7 @@ function createGlobalSlice() {
                         (s: { operatingCashFlow: number; capitalExpenditure: number; }) => Math.round((s.operatingCashFlow + s.capitalExpenditure) * -100 / (s.capitalExpenditure !== 0 ? s.capitalExpenditure : 1)),
                         (s: { date: any; }) => s.date
                     ).datasets.map(dataset => ({
-                        label: dataset.label,
+                        label: dataset.datasetLabel,
                         data: dataset.data,
                         borderColor: dataset.borderColor,
                         backgroundColor: dataset.backgroundColor,
@@ -257,7 +257,7 @@ function createGlobalSlice() {
                         (bs: { retainedEarnings: any; }) => bs.retainedEarnings,
                         (bs: { date: any; }) => bs.date
                     ).datasets.map(dataset => ({
-                        label: dataset.label,
+                        label: dataset.datasetLabel,
                         data: dataset.data,
                         borderColor: dataset.borderColor,
                         backgroundColor: dataset.backgroundColor,
@@ -278,7 +278,7 @@ function createGlobalSlice() {
                         (bs: { longTermDebt: any; }) => bs.longTermDebt,
                         (bs: { date: any; }) => bs.date
                     ).datasets.map(dataset => ({
-                        label: dataset.label,
+                        label: dataset.datasetLabel,
                         data: dataset.data,
                         borderColor: dataset.borderColor,
                         backgroundColor: dataset.backgroundColor,
@@ -302,7 +302,7 @@ function createGlobalSlice() {
                         (bs: { longTermDebt: any; }) => bs.longTermDebt,
                         (bs: { date: any; }) => bs.date
                     ).datasets.map(dataset => ({
-                        label: dataset.label,
+                        label: dataset.datasetLabel,
                         data: dataset.data,
                         borderColor: dataset.borderColor,
                         backgroundColor: dataset.backgroundColor,
@@ -361,7 +361,7 @@ function computeChartData(
 
             // Create an empty computedDataSet
             const computedDataSet = new ChartDataset(
-                currentDataset1.label,
+                currentDataset1.datasetLabel,
                 [],
                 currentDataset1.borderColor,
                 currentDataset1.backgroundColor,
@@ -391,7 +391,7 @@ function computeChartData(
     const serializableResultData = {
         labels: [...resultChartData.labels], // Spread to ensure plain array
         datasets: resultChartData.datasets.map(dataset => ({
-            label: dataset.label,
+            label: dataset.datasetLabel,
             data: [...dataset.data],  // Spread to ensure plain array
             borderColor: dataset.borderColor,
             backgroundColor: dataset.backgroundColor,
