@@ -320,9 +320,7 @@ function createGlobalSlice() {
                     return null;  // If either value is null, return null
                 });
 
-                console.log('computedChartData');
-                console.log(computedChartData);
-
+             
                 state.area3.dataLongTermDebtToFcf = computedChartData;
             });
         },
