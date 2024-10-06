@@ -344,7 +344,7 @@ function computeChartData(
     // Create an empty resultChartData object
     const resultChartData: ChartData = new ChartData([], []);
 
-    // Loop through labels
+    // Loop through labels (dates)
     for (let i = 0; i < chartData1.labels.length; i++) {
         const currentLabel = chartData1.labels[i];
 
