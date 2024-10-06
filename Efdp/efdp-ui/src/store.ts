@@ -334,35 +334,24 @@ function computeChartData(
     chartData1: ChartData,
     chartData2: ChartData,
     computeFn: (d1: number | null, d2: number | null) => number | null) {
+
     // Check if labels are the same in both datasets
     if (JSON.stringify(chartData1.labels) !== JSON.stringify(chartData2.labels)) {
         throw new Error('Labels in the two datasets do not match.');
     }
 
-    // Create an empty resultChartData object
     const resultChartData: ChartData = new ChartData([], []);
-
-    // Loop through labels (dates)
     for (let i = 0; i < chartData1.labels.length; i++) {
-        const currentLabel = chartData1.labels[i];
-
-        // Add the current label to resultChartData.labels
-        resultChartData.labels.push(currentLabel);
+        resultChartData.labels.push(chartData1.labels[i]);
     }
 
     for (let ii = 0; ii < chartData1.datasets.length; ii++) {
         const data1 = chartData1.datasets[ii].data;
         const data2 = chartData2.datasets[ii].data;
         const computedData = data1.map((v, i) => computeFn(v, data2[i]));
-        console.log('computedData');
-        console.log(computedData);
-
         resultChartData.datasets.push({ ...chartData1.datasets[ii], data: computedData });
 
     }
-
-    console.log('resultChartData');
-    console.log(resultChartData);
 
     // Convert the class instance into a plain JS object
     const serializableResultData = {
