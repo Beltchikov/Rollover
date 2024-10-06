@@ -328,7 +328,7 @@ function computeChartData(
     const serializableResultData = {
         labels: [...resultChartData.labels], // Spread to ensure plain array
         datasets: resultChartData.datasets.map(dataset => ({
-            label: dataset.datasetLabel,
+            datasetLabel: dataset.datasetLabel,
             data: [...dataset.data],  // Spread to ensure plain array
             borderColor: dataset.borderColor,
             backgroundColor: dataset.backgroundColor,
