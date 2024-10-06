@@ -102,7 +102,7 @@ export function createChartData(
 
 
         return {
-            label: symbol,
+            datasetLabel: symbol,
             data: data,
             borderColor: colors[index],
             backgroundColor: colors[index].replace('1)', '0.2)'), // Making the color transparent
