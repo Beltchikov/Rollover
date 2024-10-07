@@ -12,7 +12,7 @@ function SymbolsInput() {
     display: 'flex',
     flexDirection: 'column',
     width: 'auto',
-  };
+ };
 
   const SymbolsInputLabel = {
     display: 'block',
@@ -27,6 +27,7 @@ function SymbolsInput() {
     flex: 1,
     border: '2px dashed black',
     whiteSpace: 'pre-wrap',
+    padding: '5px'
   };
 
   const hiddenDivRef = useRef(null);
