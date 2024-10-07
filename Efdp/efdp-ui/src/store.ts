@@ -16,7 +16,11 @@ import { IGlobalState } from './IGlobalState.ts';
 const initialState: IGlobalState = {
     symbolsInput: 'NVDA\nMSFT\nGOOG',
     stockSymbols: ['NVDA','MSFT','GOOG'],
-    colors: [],
+    colors: [
+        "rgba(160, 16, 89, 1)",
+        "rgba(43, 139, 195, 1)",
+        "rgba(84, 120, 27, 1)"
+    ],
     incomeStatementDict: {},
     cashFlowStatementDict: {},
     balanceSheetStatementDict: {},
@@ -109,11 +113,11 @@ const globalSlice = createGlobalSlice();
 const createChartDataForArea = (
     statementDict: any,
     financialAttributeSelector: (item: any) => number,
-    dateSelector: (item: any) => any
+    dateSelector: (item: any) => any,
+    colors: string[]
 ) => {
     const symbolsTable = createSymbolsTable(statementDict, financialAttributeSelector, dateSelector);
     const interpolatedSymbolsTable = interpolateSymbolsTable(symbolsTable);
-    const colors = getRandomColor(interpolatedSymbolsTable.length-1);
     return createChartData(interpolatedSymbolsTable, colors);
 };
 
@@ -160,12 +164,14 @@ function createGlobalSlice() {
                     labels: createChartDataForArea(
                         state.incomeStatementDict,
                         (is: { grossProfit: number; revenue: number; }) => Math.round(is.grossProfit * 100 / (is.revenue !== 0 ? is.revenue : 1)),
-                        (is: { date: any; }) => is.date
+                        (is: { date: any; }) => is.date,
+                        state.colors
                     ).labels,
                     datasets: createChartDataForArea(
                         state.incomeStatementDict,
                         (is: { grossProfit: number; revenue: number; }) => Math.round(is.grossProfit * 100 / (is.revenue !== 0 ? is.revenue : 1)),
-                        (is: { date: any; }) => is.date
+                        (is: { date: any; }) => is.date,
+                        state.colors
                     ).datasets.map(dataset => ({
                         label: dataset.label,
                         data: dataset.data,
@@ -186,12 +192,14 @@ function createGlobalSlice() {
                     labels: createChartDataForArea(
                         state.cashFlowStatementDict,
                         (s: { operatingCashFlow: any; capitalExpenditure: any; }) => s.operatingCashFlow + s.capitalExpenditure,
-                        (s: { date: any; }) => s.date
+                        (s: { date: any; }) => s.date,
+                        state.colors
                     ).labels,
                     datasets: createChartDataForArea(
                         state.cashFlowStatementDict,
                         (s: { operatingCashFlow: any; capitalExpenditure: any; }) => s.operatingCashFlow + s.capitalExpenditure,
-                        (s: { date: any; }) => s.date
+                        (s: { date: any; }) => s.date,
+                        state.colors
                     ).datasets.map(dataset => ({
                         label: dataset.label,
                         data: dataset.data,
@@ -223,12 +231,14 @@ function createGlobalSlice() {
                     labels: createChartDataForArea(
                         state.cashFlowStatementDict,
                         (s: { operatingCashFlow: number; capitalExpenditure: number; }) => Math.round((s.operatingCashFlow + s.capitalExpenditure) * -100 / (s.capitalExpenditure !== 0 ? s.capitalExpenditure : 1)),
-                        (s: { date: any; }) => s.date
+                        (s: { date: any; }) => s.date,
+                        state.colors
                     ).labels,
                     datasets: createChartDataForArea(
                         state.cashFlowStatementDict,
                         (s: { operatingCashFlow: number; capitalExpenditure: number; }) => Math.round((s.operatingCashFlow + s.capitalExpenditure) * -100 / (s.capitalExpenditure !== 0 ? s.capitalExpenditure : 1)),
-                        (s: { date: any; }) => s.date
+                        (s: { date: any; }) => s.date,
+                        state.colors
                     ).datasets.map(dataset => ({
                         label: dataset.label,
                         data: dataset.data,
@@ -249,12 +259,14 @@ function createGlobalSlice() {
                     labels: createChartDataForArea(
                         state.balanceSheetStatementDict,
                         (bs: { retainedEarnings: any; }) => bs.retainedEarnings,
-                        (bs: { date: any; }) => bs.date
+                        (bs: { date: any; }) => bs.date,
+                        state.colors
                     ).labels,
                     datasets: createChartDataForArea(
                         state.balanceSheetStatementDict,
                         (bs: { retainedEarnings: any; }) => bs.retainedEarnings,
-                        (bs: { date: any; }) => bs.date
+                        (bs: { date: any; }) => bs.date,
+                        state.colors
                     ).datasets.map(dataset => ({
                         label: dataset.label,
                         data: dataset.data,
@@ -270,12 +282,14 @@ function createGlobalSlice() {
                     labels: createChartDataForArea(
                         state.balanceSheetStatementDict,
                         (bs: { longTermDebt: any; }) => bs.longTermDebt,
-                        (bs: { date: any; }) => bs.date
+                        (bs: { date: any; }) => bs.date,
+                        state.colors
                     ).labels,
                     datasets: createChartDataForArea(
                         state.balanceSheetStatementDict,
                         (bs: { longTermDebt: any; }) => bs.longTermDebt,
-                        (bs: { date: any; }) => bs.date
+                        (bs: { date: any; }) => bs.date,
+                        state.colors
                     ).datasets.map(dataset => ({
                         label: dataset.label,
                         data: dataset.data,
