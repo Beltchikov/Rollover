@@ -20,10 +20,6 @@ function Area1() {
     width: '35%',
   };
 
-  const adTeaserStyle = {
-    flexGrow: 1,
-  };
-
   return (
     <div style={area1Style}>
       <SymbolsInput />
@@ -46,7 +42,7 @@ function Area1() {
         </div>
       )}
 
-      <AdTeaser style={adTeaserStyle} />
+      <AdTeaser  />
     </div>
   );
 }
