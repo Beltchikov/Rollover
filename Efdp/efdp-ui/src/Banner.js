@@ -3,7 +3,7 @@ import React from 'react';
 
 function Banner() {
   const bannerStyle = {
-    backgroundColor: '#f0d3a4',
+    backgroundColor: '#14141328',
     height: '8%',
     display: 'flex',
     alignItems: 'center',
