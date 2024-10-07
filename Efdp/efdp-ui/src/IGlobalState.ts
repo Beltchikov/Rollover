@@ -2,6 +2,7 @@ import { IChartData } from "./ChartData";
 
 export interface IGlobalState {
     symbolsInput: string;
+    stockSymbols: string[];
     incomeStatementDict: Record<string, any>;
     cashFlowStatementDict: Record<string, any>;
     balanceSheetStatementDict: Record<string, any>;

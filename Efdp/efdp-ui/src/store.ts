@@ -15,6 +15,7 @@ import { IGlobalState } from './IGlobalState.ts';
 // Define the initial state for the data
 const initialState: IGlobalState = {
     symbolsInput: 'NVDA\nMSFT\nGOOG',
+    stockSymbols: ['NVDA','MSFT','GOOG'],
     incomeStatementDict: {},
     cashFlowStatementDict: {},
     balanceSheetStatementDict: {},
@@ -132,6 +133,7 @@ function createGlobalSlice() {
         reducers: {
             updateSymbolsInput: (state, action: PayloadAction<string>) => {
                 state.symbolsInput = action.payload;
+                state.stockSymbols = action.payload.split('\n').map(symbol => symbol.trim()).filter(Boolean);
             },
             toggleDatasetVisibility: (state, action: PayloadAction<{ areaKey: keyof IGlobalState; datasetKey: string; datasetIndex: number; }>) => {
                 const { areaKey, datasetKey, datasetIndex } = action.payload;
