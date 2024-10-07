@@ -21,7 +21,7 @@ const styles = `
 function AdTeaser() {
 
   const AdTeaser = {
-    backgroundColor: 'white',
+    backgroundColor: 'red',
     whiteSpace: 'pre-wrap',
     display: 'flex', // Use flexbox
     justifyContent: 'center', // Horizontally center the label
