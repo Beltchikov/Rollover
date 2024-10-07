@@ -221,13 +221,15 @@ function createGlobalSlice() {
                 };
 
                 // TODO
-                var dataCagrFcf:IChartData = {labels:[], datasets:[]};
+                var dataCagrFcf:IChartData = {labels:[''], datasets:[]};
                 for(var i=0; i < state.area1.dataFcf.datasets.length; i++)
                 {
                     const dataset = state.area1.dataFcf.datasets[i];
-                    dataCagrFcf.labels.push(dataset.label);
+                    //dataCagrFcf.labels.push(dataset.label);
                     dataCagrFcf.datasets.push({
                         label: dataset.label,
+                        // TODO
+                        //data: [cagr(dataset.data, 10)],
                         data: dataset.data,
                         borderColor: dataset.borderColor,
                         backgroundColor: dataset.backgroundColor,
@@ -242,16 +244,7 @@ function createGlobalSlice() {
 
                 //state.area1.dataCagrFcf
 
-                // const firstData = parseInt(symbolDataListAsString[idxFirst]);
-                // const lastData = parseInt(symbolDataListAsString[idxLast]);
-        
-                // const years = datesListYearsBack[idxLast].getFullYear() - datesListYearsBack[idxFirst].getFullYear() + 1;
-                // const growth = calculateGrowth(lastData, firstData);
-                // const cagr = Math.round((Math.pow(growth, 1 / years) - 1) * 1000) / 1000;
-
-                // function calculateGrowth(lastValue: number, firstValue: number): number {
-                //     return lastValue / firstValue;
-                // }
+                
         
 
                 state.area2.dataFcfCapExRatio = {
@@ -376,4 +369,16 @@ function computeChartData(
     return serializableResultData;
 }
 
+
+function cagr(data: (number | null)[], years:number): (number | null) {
+    throw new Error('Function not implemented.');
+
+    // TODO pseudo C# code
+    // const firstData = data.First();
+    // const lastData = data.Last;
+
+    // const growth = lastValue / (firstValue != 0 firstValue : 1);
+    // const cagr = Math.round((Math.pow(growth, 1 / years) - 1) * 1000) / 1000;
+    // return cagr;
+}
 
