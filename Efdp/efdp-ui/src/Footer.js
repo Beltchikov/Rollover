@@ -3,15 +3,15 @@ import React from 'react';
 
 function Footer() {
   const footerStyle = {
-    backgroundColor: '#225f91',
+    backgroundColor: '#14141328',
     height: '10%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: 'white',
+    color: 'Black',
   };
 
-  return <div style={footerStyle}>Footer</div>;
+  return <div style={footerStyle}>EFDP Team</div>;
 }
 
 export default Footer;
