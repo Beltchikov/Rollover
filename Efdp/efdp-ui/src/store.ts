@@ -1,5 +1,5 @@
 import { configureStore, createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { EFDP_API_BASE_URL, USE_MOCK_RESPONSES } from './config';
+import { EFDP_API_BASE_URL, USE_MOCK_RESPONSES, YEARS_AGO } from './config';
 import { fetchIncomeStatementMockData } from './Api/income-statement-mock-endpoint';
 import { fetchBalanceSheetStatementData } from './Api/balance-sheet-statement-endpoint';
 import { fetchIncomeStatementData } from './Api/income-statement-endpoint';
@@ -148,7 +148,7 @@ function createGlobalSlice() {
         },
         extraReducers: (builder) => {
             builder.addCase(fetchIncomeStatementDict.fulfilled, (state, action) => {
-                const filteredIncomeStatementDict = filterStatementsOlderThan(action.payload, 10);
+                const filteredIncomeStatementDict = filterStatementsOlderThan(action.payload, YEARS_AGO);
                 state.incomeStatementDict = filteredIncomeStatementDict;
 
                 state.area2.dataGpm = {
@@ -174,7 +174,7 @@ function createGlobalSlice() {
             });
 
             builder.addCase(fetchCashFlowStatementDict.fulfilled, (state, action) => {
-                const filteredCashFlowStatementDict = filterStatementsOlderThan(action.payload, 10);
+                const filteredCashFlowStatementDict = filterStatementsOlderThan(action.payload, YEARS_AGO);
                 state.cashFlowStatementDict = filteredCashFlowStatementDict;
 
                 state.area1.dataFcf = {
@@ -204,7 +204,7 @@ function createGlobalSlice() {
                     const dataset = state.area1.dataFcf.datasets[i];
                     dataCagrFcf.datasets.push({
                         label: dataset.label,
-                        data: [cagr(dataset.data, 10)],
+                        data: [cagr(dataset.data, YEARS_AGO)],
                         borderColor: dataset.borderColor,
                         backgroundColor: dataset.backgroundColor,
                         yAxisID: dataset.yAxisID,
@@ -237,7 +237,7 @@ function createGlobalSlice() {
             });
 
             builder.addCase(fetchBalanceSheetStatementDict.fulfilled, (state, action) => {
-                const filteredBalanceSheetStatementDict = filterStatementsOlderThan(action.payload, 10);
+                const filteredBalanceSheetStatementDict = filterStatementsOlderThan(action.payload, YEARS_AGO);
                 state.balanceSheetStatementDict = filteredBalanceSheetStatementDict;
 
                 state.area2.dataRetainedEarnings = {

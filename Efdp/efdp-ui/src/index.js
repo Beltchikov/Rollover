@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { EFDP_API_BASE_URL, USE_MOCK_RESPONSES } from './config';
+import { EFDP_API_BASE_URL, USE_MOCK_RESPONSES, YEARS_AGO } from './config';
 
 console.log(`EFDP_API_BASE_URL:${EFDP_API_BASE_URL}`);
 console.log(`USE_MOCK_RESPONSES:${USE_MOCK_RESPONSES}`);
+console.log(`YEARS_AGO:${YEARS_AGO}`);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
