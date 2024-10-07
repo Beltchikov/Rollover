@@ -26,6 +26,7 @@ function AdTeaser() {
     display: 'flex', // Use flexbox
     justifyContent: 'center', // Horizontally center the label
     alignItems: 'center', // Vertically center the label
+    padding: '10px'
   };
 
   const AdTeaserLabel = {
