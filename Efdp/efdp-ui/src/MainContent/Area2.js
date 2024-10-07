@@ -4,10 +4,7 @@ import EfdpChart from './Chart/EfdpChart';
 import AdTeaser from './AdTeaser';
 
 function Area2() {
-  // Get the symbolsInput from the Redux store
-  const symbolsInput = useSelector((state) => state.global.symbolsInput);
-
- const { dataFcfCapExRatio, dataRetainedEarnings, dataGpm } = useSelector(
+  const { dataFcfCapExRatio, dataRetainedEarnings, dataGpm } = useSelector(
     (state) => state.global.area2
   );
 
@@ -15,7 +12,7 @@ function Area2() {
     flexBasis: '33%',
     display: 'flex',
     justifyContent: 'flex-start',
-    backgroundColor: '#d1e7d1',
+    backgroundColor: '#14141328',
     padding: '10px',
     marginBottom: '10px',
     gap: '10px'

@@ -10,7 +10,7 @@ function Area1() {
   const area1Style = {
     display: 'flex',
     justifyContent: 'flex-start',
-    backgroundColor: '#d1e7d1',
+    backgroundColor: '#14141328',
     padding: '10px',
     marginBottom: '10px',
     gap: '10px',

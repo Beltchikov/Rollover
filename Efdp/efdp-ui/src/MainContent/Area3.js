@@ -11,7 +11,7 @@ function Area3() {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#d1e7d1',
+    backgroundColor: '#14141328',
     padding: '10px',
   };
 
