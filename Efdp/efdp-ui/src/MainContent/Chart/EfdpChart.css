@@ -3,7 +3,7 @@
   display: grid;
   grid-template-rows: auto 1fr; /* One row for title, second row for content */
   grid-template-columns: 1fr;   /* Single column layout */
-  background-color: gainsboro;
+  background-color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
 }
