@@ -23,7 +23,9 @@ function AdTeaser() {
   const AdTeaser = {
     backgroundColor: 'white',
     whiteSpace: 'pre-wrap',
-    display: 'inline-block',
+    display: 'flex', // Use flexbox
+    justifyContent: 'center', // Horizontally center the label
+    alignItems: 'center', // Vertically center the label
   };
 
   const AdTeaserLabel = {
