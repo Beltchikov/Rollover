@@ -9,7 +9,7 @@ import { fetchCashFlowStatementMockData } from './Api/cash-flow-statement-mock-e
 import { getRandomColor } from './helpers';
 import { createSymbolsTable, interpolateSymbolsTable, createChartData } from './Api/responseProcessing.ts';
 import dayjs from 'dayjs';
-import { ChartData } from './ChartData.ts';
+import { ChartData, IChartData } from './ChartData.ts';
 import { IGlobalState } from './IGlobalState.ts';
 
 // Define the initial state for the data
@@ -20,11 +20,11 @@ const initialState: IGlobalState = {
     balanceSheetStatementDict: {},
     area1: {
         dataCagrFcf: {
-            labels: ['2009-09-26', '2009-12-31', '2010-06-30', '2010-09-25', '2010-12-31'],  // Labels
+            labels: [''],  // Labels
             datasets: [
                 {
                     label: 'NVDA',
-                    data: [253146000, 417118000, 581090000, 571813000, 562536000],
+                    data: [30],
                     borderColor: 'rgba(255, 99, 132, 1)',
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     yAxisID: 'y-axis-1',
@@ -33,7 +33,7 @@ const initialState: IGlobalState = {
                 },
                 {
                     label: 'GOOG',
-                    data: [16348000000, 17913000000, 19478000000, 16070000000, 21699000000],
+                    data: [20],
                     borderColor: 'rgba(54, 162, 235, 1)',
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     yAxisID: 'y-axis-1',
@@ -221,6 +221,25 @@ function createGlobalSlice() {
                 };
 
                 // TODO
+                var dataCagrFcf:IChartData = {labels:[], datasets:[]};
+                for(var i=0; i < state.area1.dataFcf.datasets.length; i++)
+                {
+                    const dataset = state.area1.dataFcf.datasets[i];
+                    dataCagrFcf.labels.push(dataset.label);
+                    dataCagrFcf.datasets.push({
+                        label: dataset.label,
+                        data: dataset.data,
+                        borderColor: dataset.borderColor,
+                        backgroundColor: dataset.backgroundColor,
+                        yAxisID: dataset.yAxisID,
+                        hidden: dataset.hidden,
+                        borderWidth: dataset.borderWidth
+                    });
+                }
+                console.log('dataCagrFcf');
+                console.log(dataCagrFcf);
+                
+
                 //state.area1.dataCagrFcf
 
                 // const firstData = parseInt(symbolDataListAsString[idxFirst]);
