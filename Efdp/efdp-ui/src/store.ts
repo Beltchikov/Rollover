@@ -16,6 +16,7 @@ import { IGlobalState } from './IGlobalState.ts';
 const initialState: IGlobalState = {
     symbolsInput: 'NVDA\nMSFT\nGOOG',
     stockSymbols: ['NVDA','MSFT','GOOG'],
+    colors: [],
     incomeStatementDict: {},
     cashFlowStatementDict: {},
     balanceSheetStatementDict: {},
