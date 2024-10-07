@@ -90,9 +90,8 @@ export function interpolateSymbolsTable(symbolsTable: string[]): string[] {
 
 export function createChartData(
     interpolatedSymbolsTable: string[],
-    getRandomRgbColors: (count: number) => string[]
+    colors: string[]
 ): IChartData {
-    const colors = getRandomRgbColors(interpolatedSymbolsTable.length - 1);
     const labels = interpolatedSymbolsTable[0].split("\t").slice(1);
 
     const datasets: ChartDataset[] = interpolatedSymbolsTable.slice(1).map((row, index) => {

@@ -111,7 +111,8 @@ const createChartDataForArea = (
 ) => {
     const symbolsTable = createSymbolsTable(statementDict, financialAttributeSelector, dateSelector);
     const interpolatedSymbolsTable = interpolateSymbolsTable(symbolsTable);
-    return createChartData(interpolatedSymbolsTable, getRandomColor);
+    const colors = getRandomColor(interpolatedSymbolsTable.length-1);
+    return createChartData(interpolatedSymbolsTable, colors);
 };
 
 // Export actions
