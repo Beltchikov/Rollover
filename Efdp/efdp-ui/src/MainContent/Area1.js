@@ -27,7 +27,16 @@ function Area1() {
   return (
     <div style={area1Style}>
       <SymbolsInput />
-      <EfdpChart type={'bar'} title='Annual Growth of FCF' data={dataCagrFcf} areaKey="area1" chartKey="dataCagrFcf" style={chartStyle} />
+      
+      {dataCagrFcf ? (
+        <EfdpChart type={'bar'} title='Annual Growth of FCF' data={dataCagrFcf} areaKey="area1" chartKey="dataCagrFcf" style={chartStyle} />
+      ) : (
+        <div style={area1Style}>
+          <div>Loading...</div>
+          <AdTeaser />
+        </div>
+      )}
+
       {dataFcf ? (
         <EfdpChart title='Free Cash Flow (FCF)' data={dataFcf} areaKey="area1" chartKey="dataFcf" style={chartStyle} />
       ) : (

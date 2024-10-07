@@ -19,29 +19,7 @@ const initialState: IGlobalState = {
     cashFlowStatementDict: {},
     balanceSheetStatementDict: {},
     area1: {
-        dataCagrFcf: {
-            labels: [''],  // Labels
-            datasets: [
-                {
-                    label: 'NVDA',
-                    data: [30],
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    yAxisID: 'y-axis-1',
-                    hidden: false,
-                    borderWidth: 1,
-                },
-                {
-                    label: 'GOOG',
-                    data: [20],
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    yAxisID: 'y-axis-1',
-                    hidden: false,
-                    borderWidth: 1,
-                },
-            ],
-        },
+        dataCagrFcf: null,
         dataFcf: null,
     },
     area2: {
