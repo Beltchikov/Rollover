@@ -135,6 +135,7 @@ function createGlobalSlice() {
             updateSymbolsInput: (state, action: PayloadAction<string>) => {
                 state.symbolsInput = action.payload;
                 state.stockSymbols = action.payload.split('\n').map(symbol => symbol.trim()).filter(Boolean);
+                state.colors = getRandomColor(state.stockSymbols.length);
             },
             toggleDatasetVisibility: (state, action: PayloadAction<{ areaKey: keyof IGlobalState; datasetKey: string; datasetIndex: number; }>) => {
                 const { areaKey, datasetKey, datasetIndex } = action.payload;
