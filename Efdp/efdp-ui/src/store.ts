@@ -220,17 +220,13 @@ function createGlobalSlice() {
                     }))
                 };
 
-                // TODO
                 var dataCagrFcf:IChartData = {labels:[''], datasets:[]};
                 for(var i=0; i < state.area1.dataFcf.datasets.length; i++)
                 {
                     const dataset = state.area1.dataFcf.datasets[i];
-                    //dataCagrFcf.labels.push(dataset.label);
                     dataCagrFcf.datasets.push({
                         label: dataset.label,
-                        // TODO
                         data: [cagr(dataset.data, 10)],
-                        //data: dataset.data,
                         borderColor: dataset.borderColor,
                         backgroundColor: dataset.backgroundColor,
                         yAxisID: dataset.yAxisID,
@@ -238,14 +234,7 @@ function createGlobalSlice() {
                         borderWidth: dataset.borderWidth
                     });
                 }
-                console.log('dataCagrFcf');
-                console.log(dataCagrFcf);
-                
-
                 state.area1.dataCagrFcf = dataCagrFcf;
-
-                
-        
 
                 state.area2.dataFcfCapExRatio = {
                     labels: createChartDataForArea(
