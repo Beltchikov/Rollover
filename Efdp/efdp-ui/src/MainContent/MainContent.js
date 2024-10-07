@@ -23,7 +23,7 @@ useEffect(() => {
     display: 'flex',
     flexDirection: 'column',
     flex: 1,
-    backgroundColor: '#e0f0d9',
+    backgroundColor: 'white',
     padding: '10px',
   };
 
