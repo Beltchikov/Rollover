@@ -22,6 +22,7 @@ function AdTeaser() {
 
   const AdTeaser = {
     backgroundColor: 'red',
+    fontWeight:'bold',
     whiteSpace: 'pre-wrap',
     display: 'flex', // Use flexbox
     justifyContent: 'center', // Horizontally center the label
@@ -32,7 +33,7 @@ function AdTeaser() {
   const AdTeaserLabel = {
     display: 'block',
     textAlign: 'center',
-    fontSize: '20px',
+    fontSize: '30px',
     // The animation runs for 14s (4s animation + 10s pause)
     animation: 'rotateScaleUp 14s ease-in-out infinite',
   };
