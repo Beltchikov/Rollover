@@ -229,8 +229,8 @@ function createGlobalSlice() {
                     dataCagrFcf.datasets.push({
                         label: dataset.label,
                         // TODO
-                        //data: [cagr(dataset.data, 10)],
-                        data: dataset.data,
+                        data: [cagr(dataset.data, 10)],
+                        //data: dataset.data,
                         borderColor: dataset.borderColor,
                         backgroundColor: dataset.backgroundColor,
                         yAxisID: dataset.yAxisID,
@@ -242,7 +242,7 @@ function createGlobalSlice() {
                 console.log(dataCagrFcf);
                 
 
-                //state.area1.dataCagrFcf
+                state.area1.dataCagrFcf = dataCagrFcf;
 
                 
         
@@ -371,14 +371,24 @@ function computeChartData(
 
 
 function cagr(data: (number | null)[], years:number): (number | null) {
-    throw new Error('Function not implemented.');
+    // Filter out any null values to find the first and last non-null data points
+    const filteredData = data.filter(d => d !== null) as number[];
 
-    // TODO pseudo C# code
-    // const firstData = data.First();
-    // const lastData = data.Last;
+    // If there are not enough data points, return null
+    if (filteredData.length < 2) {
+        return null;
+    }
 
-    // const growth = lastValue / (firstValue != 0 firstValue : 1);
-    // const cagr = Math.round((Math.pow(growth, 1 / years) - 1) * 1000) / 1000;
-    // return cagr;
+    // Get the first and last data points
+    const firstData = filteredData[0]; // First non-null data
+    const lastData = filteredData[filteredData.length - 1]; // Last non-null data
+
+    // Handle case where the first value is 0 to prevent division by 0
+    const growth = lastData / (firstData !== 0 ? firstData : 1);
+
+    // Calculate CAGR: (lastData / firstData)^(1/years) - 1
+    const cagrValue = Math.round((Math.pow(growth, 1 / years) - 1) * 1000) / 1000;
+
+    return cagrValue;
 }
 
