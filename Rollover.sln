@@ -74,6 +74,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioTrader", "Portfoli
 		{8EDE0744-96C2-40B0-A8DC-37DF79370203} = {8EDE0744-96C2-40B0-A8DC-37DF79370203}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptionHelperUi", "OptionHelperUi\OptionHelperUi.csproj", "{5692AA30-3DFD-48B4-84D1-F36DD4478952}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -164,6 +166,10 @@ Global
 		{C821CD23-9A79-4A9C-BEDD-ED3A2C0B4269}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C821CD23-9A79-4A9C-BEDD-ED3A2C0B4269}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C821CD23-9A79-4A9C-BEDD-ED3A2C0B4269}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5692AA30-3DFD-48B4-84D1-F36DD4478952}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5692AA30-3DFD-48B4-84D1-F36DD4478952}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5692AA30-3DFD-48B4-84D1-F36DD4478952}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5692AA30-3DFD-48B4-84D1-F36DD4478952}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
