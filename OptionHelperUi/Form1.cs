@@ -32,13 +32,21 @@ namespace OptionHelperUi
         private void btCalculatePrice_Click(object sender, EventArgs e)
         {
             var sut = new BlackScholes();
-            //var result = sut.CallPrice(
-            //   underlying,
-            //   strike,
-            //   volatility,
-            //   interestRate,
-            //   dividendYield,
-            //   daysToExpiration);
+            double result = cbIsCall.Checked
+                ? sut.CallPrice(Convert.ToDouble(txtUnderlyingPrice.Text),
+                   Convert.ToDouble(txtStrike.Text),
+                   Convert.ToDouble(txtVolatility.Text),
+                   Convert.ToDouble(txtInterestRate.Text),
+                   Convert.ToDouble(txtDividendYield.Text),
+                   Convert.ToDouble(txtDaysToExpiration.Text))
+                : sut.PutPrice(Convert.ToDouble(txtUnderlyingPrice.Text),
+                   Convert.ToDouble(txtStrike.Text),
+                   Convert.ToDouble(txtVolatility.Text),
+                   Convert.ToDouble(txtInterestRate.Text),
+                   Convert.ToDouble(txtDividendYield.Text),
+                   Convert.ToDouble(txtDaysToExpiration.Text));
+
+            txtPrice.Text = result.ToString("F3", System.Globalization.CultureInfo.InvariantCulture);   
         }
     }
 }
