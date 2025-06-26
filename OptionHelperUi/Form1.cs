@@ -10,12 +10,12 @@ namespace OptionHelperUi
             InitializeComponent();
 
             txtUnderlyingPrice.Text = "36,07";
-            txtStrike.Text = "35";
+            txtStrike.Text = "607";
             txtVolatility.Text = "0,4825";
 
             txtInterestRate.Text = "0,045";
             txtDividendYield.Text = "0";
-            txtDaysToExpiration.Text = "26";
+            txtDaysToExpiration.Text = "0";
 
             cbIsCall.Checked = true;
         }
