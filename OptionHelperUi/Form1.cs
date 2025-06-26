@@ -8,7 +8,15 @@ namespace OptionHelperUi
         {
             InitializeComponent();
 
-            
+            txtUnderlyingPrice.Text = "36,07";
+            txtStrike.Text = "35";
+            txtVolatility.Text = "0,4825";
+
+            txtInterestRate.Text = "0,01";
+            txtDividendYield.Text = "0";
+            txtDaysToExpiration.Text = "26";
+
+            cbIsCall.Checked = true;
         }
 
         private void label1_Click(object sender, EventArgs e)

@@ -41,6 +41,8 @@
             cbIsCall = new CheckBox();
             btCalculatePrice = new Button();
             txtPrice = new TextBox();
+            txtUnderlyingPrice = new TextBox();
+            label4 = new Label();
             SuspendLayout();
             // 
             // label1
@@ -136,7 +138,7 @@
             // 
             // btCalculatePrice
             // 
-            btCalculatePrice.Location = new Point(42, 232);
+            btCalculatePrice.Location = new Point(42, 298);
             btCalculatePrice.Name = "btCalculatePrice";
             btCalculatePrice.Size = new Size(203, 23);
             btCalculatePrice.TabIndex = 11;
@@ -148,16 +150,34 @@
             // 
             txtPrice.BackColor = SystemColors.InactiveCaption;
             txtPrice.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            txtPrice.Location = new Point(42, 261);
+            txtPrice.Location = new Point(42, 327);
             txtPrice.Name = "txtPrice";
             txtPrice.Size = new Size(203, 32);
             txtPrice.TabIndex = 7;
+            // 
+            // txtUnderlyingPrice
+            // 
+            txtUnderlyingPrice.Location = new Point(145, 246);
+            txtUnderlyingPrice.Name = "txtUnderlyingPrice";
+            txtUnderlyingPrice.Size = new Size(100, 23);
+            txtUnderlyingPrice.TabIndex = 13;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(38, 249);
+            label4.Name = "label4";
+            label4.Size = new Size(94, 15);
+            label4.TabIndex = 12;
+            label4.Text = "Underlying Price";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(314, 352);
+            ClientSize = new Size(287, 399);
+            Controls.Add(txtUnderlyingPrice);
+            Controls.Add(label4);
             Controls.Add(btCalculatePrice);
             Controls.Add(cbIsCall);
             Controls.Add(txtDaysToExpiration);
@@ -192,5 +212,7 @@
         private CheckBox cbIsCall;
         private Button btCalculatePrice;
         private TextBox txtPrice;
+        private TextBox txtUnderlyingPrice;
+        private Label label4;
     }
 }
