@@ -1,4 +1,5 @@
 using OptionHelper;
+using System.Globalization;
 
 namespace OptionHelperUi
 {
@@ -12,7 +13,7 @@ namespace OptionHelperUi
             txtStrike.Text = "35";
             txtVolatility.Text = "0,4825";
 
-            txtInterestRate.Text = "0,01";
+            txtInterestRate.Text = "0,045";
             txtDividendYield.Text = "0";
             txtDaysToExpiration.Text = "26";
 
@@ -46,7 +47,7 @@ namespace OptionHelperUi
                    Convert.ToDouble(txtDividendYield.Text),
                    Convert.ToDouble(txtDaysToExpiration.Text));
 
-            txtPrice.Text = result.ToString("F3", System.Globalization.CultureInfo.InvariantCulture);   
+            txtPrice.Text = result.ToString("F3", new CultureInfo("DE-de"));   
         }
     }
 }
