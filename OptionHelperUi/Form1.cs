@@ -9,7 +9,7 @@ namespace OptionHelperUi
         {
             InitializeComponent();
 
-            txtUnderlyingPrice.Text = "36,07";
+            txtUnderlyingPrice.Text = "606,5";
             txtStrike.Text = "607";
             txtVolatility.Text = "0,4825";
 
