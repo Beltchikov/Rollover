@@ -15,7 +15,7 @@ namespace OptionHelperUi
 
             txtInterestRate.Text = "0,045";
             txtDividendYield.Text = "0";
-            txtDaysToExpiration.Text = "0";
+            txtDaysToExpiration.Text = "0,27";
 
             cbIsCall.Checked = true;
         }
